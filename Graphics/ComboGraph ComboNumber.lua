@@ -1,0 +1,1 @@
+return LoadFont("_v 26px bold black")..{ InitCommand=cmd(zoom,0.5;); };
