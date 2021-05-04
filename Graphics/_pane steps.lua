@@ -6,10 +6,10 @@ return Def.ActorFrame{
 		Name="StepCount";
 		InitCommand=cmd(x,-67;y,120+4;horizalign,center;zoom,.35;diffusealpha,0;);
 		OnCommand=cmd(sleep,.4;linear,0.2;diffusealpha,1;shadowlength,2);
-		OffCommand=cmd(linear,0.4;diffusealpha,0);
+		OffCommand=function(self) self:linear(0.4):diffusealpha(0) end;
 		--[[
 		SongNumStepsTextGainFocusCommand=cmd(stoptweening;sleep,.15;linear,.2;diffusealpha,1);
-		SongNumStepsTextLoseFocusCommand=cmd(stoptweening;linear,.2;diffusealpha,0);
+		SongNumStepsTextLoseFocusCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(0) end;
 		--]]
 		SetCommand=function(self)
 			local val = 0
@@ -57,8 +57,9 @@ return Def.ActorFrame{
 				val = "?"
 			end
 			self:settext(val)
+			self:maxwidth(150)
 		end;
-		CurrentSongChangedMessageCommand=cmd(playcommand,"Set");
+		CurrentSongChangedMessageCommand=function(self) self:playcommand("Set") end;
 		CurrentStepsP1ChangedMessageCommand=function(self)
 			if player == PLAYER_1 then self:playcommand("Set"); end
 		end;
@@ -70,6 +71,6 @@ return Def.ActorFrame{
 		Name="Label";
 		InitCommand=cmd(x,-67;y,120+17;settext,"STEPS";shadowlength,2;zoomx,.45;zoomy,.4;horizalign,center;diffusealpha,0;);
 		OnCommand=cmd(sleep,.85;linear,0.2;diffusebottomedge,color("#8F8F8F");diffusealpha,1);
-		OffCommand=cmd(linear,0.4;diffusealpha,0);
+		OffCommand=function(self) self:linear(0.4):diffusealpha(0) end;
 	};
 };

@@ -14,7 +14,7 @@ local t = Def.ActorFrame{
 	};
 
 	LoadActor(THEME:GetPathB("ScreenOptions","overlay/_frame"))..{
-		InitCommand=cmd(Center);
+		InitCommand=function(self) self:Center() end;
 		OnCommand=cmd(diffusealpha,0;zoom,.7;bounceend,0.3;diffusealpha,.7;zoom,1);
 	};
 	LoadActor(THEME:GetPathB("ScreenOptions","overlay/_frame"))..{
@@ -30,7 +30,7 @@ local t = Def.ActorFrame{
 	Def.Quad{
 		InitCommand=cmd(FullScreen;);
 		OnCommand=cmd(diffusealpha,1;sleep,.2;linear,0.4;diffusealpha,0);
-		OffCommand=cmd(visible,false);
+		OffCommand=function(self) self:visible(false) end;
 	};
 	LoadActor(THEME:GetPathB("","_coins"));
 };

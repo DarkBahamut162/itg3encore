@@ -1,29 +1,29 @@
 local t = Def.ActorFrame{
 	LoadActor("glow")..{
-		InitCommand=cmd(diffusealpha,0;);
-		OnCommand=cmd(sleep,0.1;linear,0.3;diffusealpha,1;diffuseshift;effectcolor1,color("#00FFFF");effectcolor2,color("#0000CC");effectclock,"beat");
-		OffCommand=cmd(stoptweening;decelerate,0.3;diffusealpha,0);
-		CurrentSongChangedMessageCommand=cmd(stoptweening;linear,0.15;x,10;decelerate,0.3;x,0);
+		InitCommand=function(self) self:diffusealpha(0) end;
+		OnCommand=function(self) self:sleep(0.1):linear(0.3):diffusealpha(1):diffuseshift():effectcolor1(color("#00FFFF")):effectcolor2(color("#0000CC")):effectclock("beat") end;
+		OffCommand=function(self) self:stoptweening():decelerate(0.3):diffusealpha(0) end;
+		CurrentSongChangedMessageCommand=function(self) self:stoptweening():linear(0.15):x(10):decelerate(0.3):x(0) end;
 	};
 	LoadActor("wheel cursor normal")..{
-		InitCommand=cmd(diffusealpha,0;);
-		OnCommand=cmd(sleep,0.1;linear,0.3;diffusealpha,1);
-		OffCommand=cmd(stoptweening;decelerate,0.3;diffusealpha,0);
-		CurrentSongChangedMessageCommand=cmd(stoptweening;linear,0.15;x,10;decelerate,0.3;x,0);
+		InitCommand=function(self) self:diffusealpha(0) end;
+		OnCommand=function(self) self:sleep(0.1):linear(0.3):diffusealpha(1) end;
+		OffCommand=function(self) self:stoptweening():decelerate(0.3):diffusealpha(0) end;
+		CurrentSongChangedMessageCommand=function(self) self:stoptweening():linear(0.15):x(10):decelerate(0.3):x(0) end;
 	};
 	LoadActor("outline")..{
-		InitCommand=cmd(diffusealpha,0;blend,Blend.Add);
-		OffCommand=cmd(stoptweening;decelerate,0.3;diffusealpha,0);
+		InitCommand=function(self) self:diffusealpha(0):blend(Blend.Add) end;
+		OffCommand=function(self) self:stoptweening():decelerate(0.3):diffusealpha(0) end;
 		-- original version
-		RefreshCommand=cmd(stoptweening;linear,.1;diffusealpha,0;sleep,.2;diffusealpha,1;cropright,-0.3;cropleft,1.1;fadeleft,.05;faderight,.05;diffusealpha,1;linear,0.72;cropright,1;cropleft,-0.3;);
-		CurrentSongChangedMessageCommand=cmd(diffusealpha,0;stoptweening;playcommand,"Refresh");
+		RefreshCommand=function(self) self:stoptweening():linear(.1):diffusealpha(0):sleep(.2):diffusealpha(1):cropright(-0.3):cropleft(1.1):fadeleft(.05):faderight(.05):diffusealpha(1):linear(0.72):cropright(1):cropleft(-0.3) end;
+		CurrentSongChangedMessageCommand=function(self) self:diffusealpha(0):stoptweening():playcommand("Refresh") end;
 
 		-- freem's version
 		--[[
-		NextSongMessageCommand=cmd(diffusealpha,0;stoptweening;playcommand,"GoRight");
-		PreviousSongMessageCommand=cmd(diffusealpha,0;stoptweening;playcommand,"GoLeft");
-		GoLeftCommand=cmd(stoptweening;linear,.1;diffusealpha,0;sleep,.2;diffusealpha,1;cropright,-0.3;cropleft,1.1;fadeleft,.05;faderight,.05;diffusealpha,1;linear,0.72;cropright,1;cropleft,-0.3;);
-		GoRightCommand=cmd(stoptweening;linear,.1;diffusealpha,0;sleep,.2;diffusealpha,1;cropleft,-0.3;cropright,1.1;faderight,.05;fadeleft,.05;diffusealpha,1;linear,0.72;cropleft,1;cropright,-0.3;);
+		NextSongMessageCommand=function(self) self:diffusealpha(0):stoptweening():playcommand("GoRight") end;
+		PreviousSongMessageCommand=function(self) self:diffusealpha(0):stoptweening():playcommand("GoLeft") end;
+		GoLeftCommand=function(self) self:stoptweening():linear(.1):diffusealpha(0):sleep(.2):diffusealpha(1):cropright(-0.3):cropleft(1.1):fadeleft(.05):faderight(.05):diffusealpha(1):linear(0.72):cropright(1):cropleft(-0.3) end;
+		GoRightCommand=function(self) self:stoptweening():linear(.1):diffusealpha(0):sleep(.2):diffusealpha(1):cropleft(-0.3):cropright(1.1):faderight(.05):fadeleft(.05):diffusealpha(1):linear(0.72):cropleft(1):cropright(-0.3) end;
 		--]]
 	};
 };

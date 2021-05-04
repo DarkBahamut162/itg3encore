@@ -1,39 +1,39 @@
 return Def.ActorFrame{
 	Def.ActorFrame{
 		Name="ChartList";
-		InitCommand=cmd(x,SCREEN_RIGHT-20;y,SCREEN_BOTTOM-200;);
-		OnCommand=cmd(sleep,16;linear,6;y,SCREEN_TOP+200);
+		InitCommand=function(self) self:x(SCREEN_RIGHT-20):y(SCREEN_BOTTOM-200) end;
+		OnCommand=function(self) self:sleep(16):linear(6):y(SCREEN_TOP+200) end;
 		LoadFont("_v credit")..{
 			Text=THEME:GetString("ScreenIntro","ChartFacts");
-			InitCommand=cmd(horizalign,right;zoom,0.8;diffusealpha,0;);
-			OnCommand=cmd(sleep,16.5;linear,0.5;diffusealpha,0.3;linear,3;linear,0.5;diffusealpha,0.0);
+			InitCommand=function(self) self:horizalign(right):zoom(0.8):diffusealpha(0) end;
+			OnCommand=function(self) self:sleep(16.5):linear(0.5):diffusealpha(0.3):linear(3):linear(0.5):diffusealpha(0.0) end;
 		};
 	};
 
 	Def.ActorFrame{
-		InitCommand=cmd(CenterX;y,SCREEN_TOP+100;rotationz,3;);
-		OnCommand=cmd(sleep,16;linear,6;addx,-10;addy,5);
+		InitCommand=function(self) self:CenterX():y(SCREEN_TOP+100):rotationz(3) end;
+		OnCommand=function(self) self:sleep(16):linear(6):addx(-10):addy(5) end;
 		LoadActor(THEME:GetPathB("ScreenIntro","background/green"))..{
-			InitCommand=cmd(x,SCREEN_RIGHT+SCREEN_WIDTH*2;zoomto,SCREEN_WIDTH*1.5,100;);
-			OnCommand=cmd(sleep,16;linear,0.5;fadeleft,0.3;faderight,0.3;x,50;linear,4;addx,-100;accelerate,0.5;addx,-SCREEN_WIDTH*2);
+			InitCommand=function(self) self:x(SCREEN_RIGHT+SCREEN_WIDTH*2):zoomto(SCREEN_WIDTH*1.5,100) end;
+			OnCommand=function(self) self:sleep(16):linear(0.5):fadeleft(0.3):faderight(0.3):x(50):linear(4):addx(-100):accelerate(0.5):addx(-SCREEN_WIDTH*2) end;
 		};
 		LoadActor("charts")..{
-			InitCommand=cmd(x,-100;zoom,.8;diffusealpha,0;);
-			OnCommand=cmd(sleep,16.5;linear,0.3;diffusealpha,1;sleep,4;linear,0.3;diffusealpha,0);
+			InitCommand=function(self) self:x(-100):zoom(.8):diffusealpha(0) end;
+			OnCommand=function(self) self:sleep(16.5):linear(0.3):diffusealpha(1):sleep(4):linear(0.3):diffusealpha(0) end;
 		};
 	};
 
 	Def.ActorFrame{
-		InitCommand=cmd(CenterX;y,SCREEN_CENTER_Y+150;);
+		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+150) end;
 		LoadActor(THEME:GetPathB("ScreenIntro","background/swoosh"))..{
-			InitCommand=cmd(zoomtowidth,SCREEN_WIDTH;zoomy,-1;y,-10;blend,Blend.Add;cropleft,1;fadeleft,1;);
-			OnCommand=cmd(sleep,16;linear,0.5;cropleft,0;fadeleft,0;sleep,4;linear,0.5;diffusealpha,0.0;addx,50;cropright,1;faderight,1;);
+			InitCommand=function(self) self:zoomtowidth(SCREEN_WIDTH):zoomy(-1):y(-10):blend(Blend.Add):cropleft(1):fadeleft(1) end;
+			OnCommand=function(self) self:sleep(16):linear(0.5):cropleft(0):fadeleft(0):sleep(4):linear(0.5):diffusealpha(0.0):addx(50):cropright(1):faderight(1) end;
 		};
 		Def.ActorFrame{
-			OnCommand=cmd(sleep,16;linear,6;addx,20;);
+			OnCommand=function(self) self:sleep(16):linear(6):addx(20) end;
 			LoadActor("1500")..{
-				InitCommand=cmd(x,-75;y,-80;diffusealpha,0;);
-				OnCommand=cmd(sleep,16.5;linear,0.5;diffusealpha,1;sleep,4;linear,0.5;diffusealpha,0.0);
+				InitCommand=function(self) self:x(-75):y(-80):diffusealpha(0) end;
+				OnCommand=function(self) self:sleep(16.5):linear(0.5):diffusealpha(1):sleep(4):linear(0.5):diffusealpha(0.0) end;
 			};
 		};
 	};

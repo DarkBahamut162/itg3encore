@@ -2,7 +2,7 @@ local t = Def.ActorFrame{
 	LoadActor(THEME:GetPathB("_grade","list"));
 
 	LoadActor(THEME:GetPathB("_grade","difficulties"))..{
-		InitCommand=cmd(x,SCREEN_LEFT+80);
+		InitCommand=function(self) self:x(SCREEN_LEFT+80) end;
 	};
 };
 
@@ -24,11 +24,11 @@ local tiers = Enum.Reverse(Grade)
 for i=diffs['Difficulty_Easy'],diffs['Difficulty_Challenge'] do
 	local nums = Def.ActorFrame{
 		Name="NumbersTier"..i;
-		InitCommand=cmd(y,scale(i+1,1,7,SCREEN_CENTER_Y-130,SCREEN_CENTER_Y+130));
+		InitCommand=function(self) self:y(scale(i+1,1,7,SCREEN_CENTER_Y-130,SCREEN_CENTER_Y+130)) end;
 	};
 	for s=tiers['Grade_Tier01'],tiers['Grade_Tier11'] do
 		local score = LoadFont("_futurist metalic")..{
-			InitCommand=cmd(x,scale(s,1,10,SCREEN_LEFT+160,SCREEN_RIGHT-50);zoom,.7);
+			InitCommand=function(self) self:x(scale(s,1,10,SCREEN_LEFT+160,SCREEN_RIGHT-50)):zoom(.7) end;
 			BeginCommand=function(self)
 				local tier = string.format('Grade_Tier%02i',s)
 				self:settext(prof:GetTotalStepsWithTopGrade('StepsType_Dance_Double',Difficulty[i],tier))
@@ -41,11 +41,11 @@ end
 for i=diffs['Difficulty_Medium'],diffs['Difficulty_Hard'] do
 	local nums = Def.ActorFrame{
 		Name="NumbersTier"..i;
-		InitCommand=cmd(y,scale(i+4,1,7,SCREEN_CENTER_Y-130,SCREEN_CENTER_Y+130));
+		InitCommand=function(self) self:y(scale(i+4,1,7,SCREEN_CENTER_Y-130,SCREEN_CENTER_Y+130)) end;
 	};
 	for s=tiers['Grade_Tier01'],tiers['Grade_Tier11'] do
 		local score = LoadFont("_futurist metalic")..{
-			InitCommand=cmd(x,scale(s,1,10,SCREEN_LEFT+160,SCREEN_RIGHT-50);zoom,.7);
+			InitCommand=function(self) self:x(scale(s,1,10,SCREEN_LEFT+160,SCREEN_RIGHT-50)):zoom(.7) end;
 			BeginCommand=function(self)
 				local tier = string.format('Grade_Tier%02i',s)
 				self:settext(prof:GetTotalTrailsWithTopGrade('StepsType_Dance_Double',Difficulty[i],tier))

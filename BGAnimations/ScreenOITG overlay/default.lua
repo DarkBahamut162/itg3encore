@@ -1,24 +1,24 @@
 return Def.ActorFrame{
 	--[[
 	LoadActor("openitg")..{
-		InitCommand=cmd(x,SCREEN_LEFT-15;y,SCREEN_CENTER_Y-SCREEN_HEIGHT/2.8;zoom,.65;);
+		InitCommand=function(self) self:x(SCREEN_LEFT-15):y(SCREEN_CENTER_Y-SCREEN_HEIGHT/2.8):zoom(.65) end;
 	};
 	--]]
 
 	LoadActor("itg")..{
-		InitCommand=cmd(CenterX;y,SCREEN_CENTER_Y-80;zoom,.7;);
+		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y-80):zoom(.7) end;
 	};
 
 	LoadActor("sm5")..{
-		InitCommand=cmd(x,SCREEN_LEFT+192;y,WideScale(SCREEN_CENTER_Y+64,SCREEN_CENTER_Y+80);zoom,.65;);
+		InitCommand=function(self) self:x(SCREEN_LEFT+192):y(WideScale(SCREEN_CENTER_Y+64,SCREEN_CENTER_Y+80)):zoom(.65) end;
 	};
 	LoadActor("bxrx")..{
-		InitCommand=cmd(x,SCREEN_RIGHT-SCREEN_WIDTH/3.3;y,WideScale(SCREEN_CENTER_Y+132,SCREEN_CENTER_Y+80);zoom,.6;);
+		InitCommand=function(self) self:x(SCREEN_RIGHT-SCREEN_WIDTH/3.3):y(WideScale(SCREEN_CENTER_Y+132,SCREEN_CENTER_Y+80)):zoom(.6) end;
 	};
 
 	Def.Quad{
-		InitCommand=cmd(Center;FullScreen;diffusealpha,1;);
-		OnCommand=cmd(sleep,0.1;accelerate,0.5;diffusealpha,0);
+		InitCommand=function(self) self:Center():FullScreen():diffusealpha(1) end;
+		OnCommand=function(self) self:sleep(0.1):accelerate(0.5):diffusealpha(0) end;
 	};
 	LoadActor(THEME:GetPathB("ScreenAttract","overlay"));
 };

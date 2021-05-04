@@ -4,7 +4,7 @@ assert(player,"[Graphics/_player scores] player required")
 return Def.ActorFrame{
 	Def.ActorFrame{
 		Name="MachineScore";
-		InitCommand=cmd(x,-55;);
+		InitCommand=function(self) self:x(-55) end;
 		SetCommand=function(self)
 			local name = self:GetChild("ScoreName")
 			local score = self:GetChild("ScorePercent")
@@ -56,7 +56,7 @@ return Def.ActorFrame{
 			name:settext(nameText)
 			score:settext(scoreText)
 		end;
-		CurrentSongChangedMessageCommand=cmd(playcommand,"Set");
+		CurrentSongChangedMessageCommand=function(self) self:playcommand("Set") end;
 		CurrentStepsP1ChangedMessageCommand=function(self)
 			if player == PLAYER_1 then self:playcommand("Set"); end;
 		end;
@@ -72,22 +72,22 @@ return Def.ActorFrame{
 		LoadFont("_z 36px shadowx")..{
 			Name="ScoreName";
 			Text="MACH";
-			InitCommand=cmd(y,85;diffusealpha,0;zoom,.55;shadowlength,2;maxwidth,135;);
-			OnCommand=cmd(sleep,.5;linear,0.2;diffusealpha,1);
-			OffCommand=cmd(linear,0.4;diffusealpha,0);
+			InitCommand=function(self) self:y(85):diffusealpha(0):zoom(.55):shadowlength(2):maxwidth(135) end;
+			OnCommand=function(self) self:sleep(.5):linear(0.2):diffusealpha(1) end;
+			OffCommand=function(self) self:linear(0.4):diffusealpha(0) end;
 		};
 		LoadFont("_z 36px shadowx")..{
 			Name="ScorePercent";
 			Text="0.00%";
-			InitCommand=cmd(y,100;diffusealpha,0;zoom,.55;shadowlength,2;maxwidth,175;diffusebottomedge,color("#AAAAAA"));
-			OnCommand=cmd(sleep,.6;linear,0.2;diffusealpha,1);
-			OffCommand=cmd(linear,0.4;diffusealpha,0);
+			InitCommand=function(self) self:y(100):diffusealpha(0):zoom(.55):shadowlength(2):maxwidth(175):diffusebottomedge(color("#AAAAAA")) end;
+			OnCommand=function(self) self:sleep(.6):linear(0.2):diffusealpha(1) end;
+			OffCommand=function(self) self:linear(0.4):diffusealpha(0) end;
 		};
 	};
 
 	Def.ActorFrame{
 		Name="ProfileScore";
-		InitCommand=cmd(x,46;);
+		InitCommand=function(self) self:x(46) end;
 		SetCommand=function(self)
 			local name = self:GetChild("ScoreName")
 			local score = self:GetChild("ScorePercent")
@@ -134,7 +134,7 @@ return Def.ActorFrame{
 			name:settext(nameText)
 			score:settext(scoreText)
 		end;
-		CurrentSongChangedMessageCommand=cmd(playcommand,"Set");
+		CurrentSongChangedMessageCommand=function(self) self:playcommand("Set") end;
 		CurrentStepsP1ChangedMessageCommand=function(self)
 			if player == PLAYER_1 then self:playcommand("Set"); end;
 		end;
@@ -150,16 +150,16 @@ return Def.ActorFrame{
 		LoadFont("_z 36px shadowx")..{
 			Name="ScoreName";
 			Text="CARD";
-			InitCommand=cmd(y,85;diffusealpha,0;zoom,.55;shadowlength,2;maxwidth,200;);
-			OnCommand=cmd(sleep,.85;linear,0.2;diffusealpha,1);
-			OffCommand=cmd(linear,0.4;diffusealpha,0);
+			InitCommand=function(self) self:y(85):diffusealpha(0):zoom(.55):shadowlength(2):maxwidth(200) end;
+			OnCommand=function(self) self:sleep(.85):linear(0.2):diffusealpha(1) end;
+			OffCommand=function(self) self:linear(0.4):diffusealpha(0) end;
 		};
 		LoadFont("_z 36px shadowx")..{
 			Name="ScorePercent";
 			Text="0.00%";
-			InitCommand=cmd(y,100;diffusealpha,0;zoom,.55;shadowlength,2;maxwidth,175;diffusebottomedge,PlayerColor(player));
-			OnCommand=cmd(sleep,.6;linear,0.2;diffusealpha,1);
-			OffCommand=cmd(linear,0.4;diffusealpha,0);
+			InitCommand=function(self) self:y(100):diffusealpha(0):zoom(.55):shadowlength(2):maxwidth(175):diffusebottomedge(PlayerColor(player)) end;
+			OnCommand=function(self) self:sleep(.6):linear(0.2):diffusealpha(1) end;
+			OffCommand=function(self) self:linear(0.4):diffusealpha(0) end;
 		};
 	};
 };

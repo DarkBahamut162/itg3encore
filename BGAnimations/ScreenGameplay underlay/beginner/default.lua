@@ -1,97 +1,97 @@
 return Def.ActorFrame{
 	Def.ActorFrame{
-		InitCommand=cmd(CenterX;y,SCREEN_CENTER_Y-30);
+		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y-30) end;
 		Def.ActorFrame{
 			LoadActor("light_frame");
 
 			Def.ActorFrame{
 				Name="LightColors";
 				LoadActor("light_green")..{
-					InitCommand=cmd(y,-96;diffusealpha,0;rotationz,0;blend,Blend.Add);
-					NoteCrossedMessageCommand=cmd(finishtweening;diffusealpha,1;zoom,1.4;linear,0.2;zoom,1;diffusealpha,0);
+					InitCommand=function(self) self:y(-96):diffusealpha(0):rotationz(0):blend(Blend.Add) end;
+					NoteCrossedMessageCommand=function(self) self:finishtweening():diffusealpha(1):zoom(1.4):linear(0.2):zoom(1):diffusealpha(0) end;
 				};
 				LoadActor("light_yellow")..{
-					InitCommand=cmd(y,-32;diffusealpha,0;rotationz,45;blend,Blend.Add);
-					NoteWillCrossIn400MsMessageCommand=cmd(finishtweening;diffusealpha,1;zoom,1.1;linear,0.2;zoom,.8;diffusealpha,0);
+					InitCommand=function(self) self:y(-32):diffusealpha(0):rotationz(45):blend(Blend.Add) end;
+					NoteWillCrossIn400MsMessageCommand=function(self) self:finishtweening():diffusealpha(1):zoom(1.1):linear(0.2):zoom(.8):diffusealpha(0) end;
 				};
 				LoadActor("light_yellow")..{
-					InitCommand=cmd(y,31;diffusealpha,0;rotationz,90;blend,Blend.Add);
-					NoteWillCrossIn800MsMessageCommand=cmd(finishtweening;diffusealpha,1;zoom,1.1;linear,0.2;zoom,.8;diffusealpha,0);
+					InitCommand=function(self) self:y(31):diffusealpha(0):rotationz(90):blend(Blend.Add) end;
+					NoteWillCrossIn800MsMessageCommand=function(self) self:finishtweening():diffusealpha(1):zoom(1.1):linear(0.2):zoom(.8):diffusealpha(0) end;
 				};
 				LoadActor("light_red")..{
-					InitCommand=cmd(y,95;diffusealpha,0;rotationz,135;blend,Blend.Add);
-					NoteWillCrossIn1200MsMessageCommand=cmd(finishtweening;diffusealpha,1;zoom,1.1;linear,0.2;zoom,.8;diffusealpha,0);
+					InitCommand=function(self) self:y(95):diffusealpha(0):rotationz(135):blend(Blend.Add) end;
+					NoteWillCrossIn1200MsMessageCommand=function(self) self:finishtweening():diffusealpha(1):zoom(1.1):linear(0.2):zoom(.8):diffusealpha(0) end;
 				};
 			};
 
 			Def.ActorFrame{
 				Name="LightDots";
 				LoadActor("light_dot")..{
-					InitCommand=cmd(diffusealpha,0);
-					NoteWillCrossIn400MsMessageCommand=cmd(finishtweening;y,-32;diffusealpha,0.55;linear,0.5;addy,-64;sleep,0.01;diffusealpha,0);
+					InitCommand=function(self) self:diffusealpha(0) end;
+					NoteWillCrossIn400MsMessageCommand=function(self) self:finishtweening():y(-32):diffusealpha(0.55):linear(0.5):addy(-64):sleep(0.01):diffusealpha(0) end;
 				};
 				LoadActor("light_dot")..{
-					InitCommand=cmd(diffusealpha,0);
-					NoteWillCrossIn800MsMessageCommand=cmd(finishtweening;y,32;diffusealpha,0.55;linear,0.5;addy,-64;sleep,0.01;diffusealpha,0);
+					InitCommand=function(self) self:diffusealpha(0) end;
+					NoteWillCrossIn800MsMessageCommand=function(self) self:finishtweening():y(32):diffusealpha(0.55):linear(0.5):addy(-64):sleep(0.01):diffusealpha(0) end;
 				};
 				LoadActor("light_dot")..{
-					InitCommand=cmd(diffusealpha,0);
-					NoteWillCrossIn1200MsMessageCommand=cmd(finishtweening;y,96;diffusealpha,0.55;linear,0.5;addy,-64;sleep,0.01;diffusealpha,0);
+					InitCommand=function(self) self:diffusealpha(0) end;
+					NoteWillCrossIn1200MsMessageCommand=function(self) self:finishtweening():y(96):diffusealpha(0.55):linear(0.5):addy(-64):sleep(0.01):diffusealpha(0) end;
 				};
 			};
 
 			Def.ActorFrame{
 				Name="DirectionText";
-				InitCommand=cmd(y,-96);
+				InitCommand=function(self) self:y(-96) end;
 
 				LoadFont("_r bold shadow 30px")..{
 					Text="Left!";
-					InitCommand=cmd(diffusealpha,0;maxwidth,70);
-					CrossCommand=cmd(finishtweening;diffusealpha,1;zoom,1.4;linear,0.2;zoom,1;sleep,0.4;diffusealpha,0);
+					InitCommand=function(self) self:diffusealpha(0):maxwidth(70) end;
+					CrossCommand=function(self) self:finishtweening():diffusealpha(1):zoom(1.4):linear(0.2):zoom(1):sleep(0.4):diffusealpha(0) end;
 					NoteCrossedMessageCommand=function(self,param)
 						if param.ButtonName == "Left" then
 							self:playcommand("Cross");
 						end
 					end;
-					NoteCrossedJumpMessageCommand=cmd(finishtweening;diffusealpha,0);
+					NoteCrossedJumpMessageCommand=function(self) self:finishtweening():diffusealpha(0) end;
 				};
 				LoadFont("_r bold shadow 30px")..{
 					Text="Right";
-					InitCommand=cmd(diffusealpha,0;maxwidth,70);
-					CrossCommand=cmd(finishtweening;diffusealpha,1;zoom,1.4;linear,0.2;zoom,1;sleep,0.4;diffusealpha,0);
+					InitCommand=function(self) self:diffusealpha(0):maxwidth(70) end;
+					CrossCommand=function(self) self:finishtweening():diffusealpha(1):zoom(1.4):linear(0.2):zoom(1):sleep(0.4):diffusealpha(0) end;
 					NoteCrossedMessageCommand=function(self,param)
 						if param.ButtonName == "Right" then
 							self:playcommand("Cross");
 						end
 					end;
-					NoteCrossedJumpMessageCommand=cmd(finishtweening;diffusealpha,0);
+					NoteCrossedJumpMessageCommand=function(self) self:finishtweening():diffusealpha(0) end;
 				};
 				LoadFont("_r bold shadow 30px")..{
 					Text="Up";
-					InitCommand=cmd(diffusealpha,0;maxwidth,70);
-					CrossCommand=cmd(finishtweening;diffusealpha,1;zoom,1.4;linear,0.2;zoom,1;sleep,0.4;diffusealpha,0);
+					InitCommand=function(self) self:diffusealpha(0):maxwidth(70) end;
+					CrossCommand=function(self) self:finishtweening():diffusealpha(1):zoom(1.4):linear(0.2):zoom(1):sleep(0.4):diffusealpha(0) end;
 					NoteCrossedMessageCommand=function(self,param)
 						if param.ButtonName == "Up" then
 							self:playcommand("Cross");
 						end
 					end;
-					NoteCrossedJumpMessageCommand=cmd(finishtweening;diffusealpha,0);
+					NoteCrossedJumpMessageCommand=function(self) self:finishtweening():diffusealpha(0) end;
 				};
 				LoadFont("_r bold shadow 30px")..{
 					Text="Down!";
-					InitCommand=cmd(diffusealpha,0;maxwidth,70);
-					CrossCommand=cmd(finishtweening;diffusealpha,1;zoom,1.4;linear,0.2;zoom,1;sleep,0.4;diffusealpha,0);
+					InitCommand=function(self) self:diffusealpha(0):maxwidth(70) end;
+					CrossCommand=function(self) self:finishtweening():diffusealpha(1):zoom(1.4):linear(0.2):zoom(1):sleep(0.4):diffusealpha(0) end;
 					NoteCrossedMessageCommand=function(self,param)
 						if param.ButtonName == "Down" then
 							self:playcommand("Cross");
 						end
 					end;
-					NoteCrossedJumpMessageCommand=cmd(finishtweening;diffusealpha,0);
+					NoteCrossedJumpMessageCommand=function(self) self:finishtweening():diffusealpha(0) end;
 				};
 				LoadFont("_r bold shadow 30px")..{
 					Text="Jump!";
-					InitCommand=cmd(diffusealpha,0;maxwidth,70);
-					NoteCrossedJumpMessageCommand=cmd(finishtweening;diffusealpha,1;zoom,1.4;linear,0.2;zoom,1;sleep,0.4;diffusealpha,0);
+					InitCommand=function(self) self:diffusealpha(0):maxwidth(70) end;
+					NoteCrossedJumpMessageCommand=function(self) self:finishtweening():diffusealpha(1):zoom(1.4):linear(0.2):zoom(1):sleep(0.4):diffusealpha(0) end;
 				};
 			};
 		};

@@ -1,4 +1,5 @@
-#TITLE:common menu music (loop);
+#TITLE:Menu music;
+#MUSIC:_Menu music (loop).ogg;
 #OFFSET:0;
 #BPMS:0.000=144;
 #STOPS:;

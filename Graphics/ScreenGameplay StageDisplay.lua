@@ -5,7 +5,7 @@ local stageRemap = {
 
 return Def.ActorFrame{
 	Def.Sprite{
-		InitCommand=cmd(playcommand,"Set");
+		InitCommand=function(self) self:playcommand("Set") end;
 		SetCommand=function(self)
 			local curStage = GAMESTATE:GetCurrentStage()
 

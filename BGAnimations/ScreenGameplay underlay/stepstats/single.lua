@@ -9,14 +9,11 @@ return Def.ActorFrame{
 	end;
 	Def.ActorFrame{
 		Name="JudgePane";
-		BeginCommand=cmd(visible,GAMESTATE:IsHumanPlayer(pn));
+		BeginCommand=function(self) self:visible(GAMESTATE:IsHumanPlayer(pn)) end;
 		OnCommand=function(self)
-			--self:x(SCREEN_WIDTH/4+(CustomMods[pn].solo and 64 or 0));
-			self:x(SCREEN_WIDTH/4);
-			--self:y(CustomMods[pn].solo and 34 or 0);
-			self:y(0);
-			--self:zoom(CustomMods[pn].solo and .75 or 1)
-			self:zoom(1)
+			self:x(SCREEN_WIDTH/4+(PREFSMAN:GetPreference('Center1Player') and 64 or 0));
+			self:y(PREFSMAN:GetPreference('Center1Player') and 34 or 0);
+			self:zoom(PREFSMAN:GetPreference('Center1Player') and .75 or 1)
 			self:addx(SCREEN_WIDTH/2);
 			self:decelerate(1);
 			self:addx(-SCREEN_WIDTH/2);
@@ -24,7 +21,7 @@ return Def.ActorFrame{
 		LoadActor("stats bg");
 
 		Def.ActorFrame{
-			OnCommand=cmd(addx,10);
+			OnCommand=function(self) self:addx(10) end;
 			StepMessageCommand=function(self,p)
 				if p.PlayerNumber == pn then
 					-- stuff
@@ -37,29 +34,25 @@ return Def.ActorFrame{
 			end;
 			LoadFont("ScreenGameplay judgment")..{
 				Text="Holds Dropped:";
-				InitCommand=cmd(horizalign,right;zoom,0.5;shadowlength,0;addy,120;addx,-24;);
+				InitCommand=function(self) self:horizalign(left):zoom(0.75):shadowlength(0):addy(145):addx(-110) end;
 			};
 			LoadFont("ScreenGameplay judgment")..{
 				Text="Mines Hit: ";
-				InitCommand=cmd(horizalign,right;zoom,0.5;shadowlength,0;addy,140;addx,-24;);
-			};
-			LoadFont("ScreenGameplay judgment")..{
-				Text="Current BPM";
-				InitCommand=cmd(zoom,0.5;shadowlength,0;addy,116;addx,56;);
+				InitCommand=function(self) self:horizalign(left):zoom(0.75):shadowlength(0):addy(125):addx(-110) end;
 			};
 			LoadFont("ScreenGameplay judgment")..{
 				Name="HoldMiss";
-				InitCommand=cmd(horizalign,left;zoom,0.5;shadowlength,0;addy,120;addx,-20;settext,"0");
+				InitCommand=function(self) self:horizalign(right):zoom(0.75):shadowlength(0):addy(145):addx(90):settext("0") end;
 			};
 			LoadFont("ScreenGameplay judgment")..{
 				Name="Mine";
-				InitCommand=cmd(horizalign,left;zoom,0.5;shadowlength,0;addy,140;addx,-20;settext,"0");
+				InitCommand=function(self) self:horizalign(right):zoom(0.75):shadowlength(0):addy(125):addx(90):settext("0") end;
 			};
 		};
 
 		LoadFont("ScreenGameplay judgment")..{
 			Name="NumbersW1";
-			InitCommand=cmd(settext,"0";zoom,0.5;addy,96;addx,73*-1;shadowlength,0);
+			InitCommand=function(self) self:settext("0"):zoom(0.75):addy(100):addx(73*-1):shadowlength(0) end;
 			StepMessageCommand=function(self,p)
 				if p.PlayerNumber == pn then
 					self:playcommand("Update")
@@ -73,7 +66,7 @@ return Def.ActorFrame{
 		};
 		LoadFont("ScreenGameplay judgment")..{
 			Name="NumbersW2";
-			InitCommand=cmd(settext,"0";zoom,0.5;addy,96;shadowlength,0);
+			InitCommand=function(self) self:settext("0"):zoom(0.75):addy(100):shadowlength(0) end;
 			StepMessageCommand=function(self,p)
 				if p.PlayerNumber == pn then
 					self:playcommand("Update")
@@ -87,7 +80,7 @@ return Def.ActorFrame{
 		};
 		LoadFont("ScreenGameplay judgment")..{
 			Name="NumbersOther";
-			InitCommand=cmd(settext,"0";zoom,0.5;addy,96;addx,73*1;shadowlength,0);
+			InitCommand=function(self) self:settext("0"):zoom(0.75):addy(100):addx(73*1):shadowlength(0) end;
 			StepMessageCommand=function(self,p)
 				if p.PlayerNumber == pn then
 					self:playcommand("Update")
@@ -105,26 +98,26 @@ return Def.ActorFrame{
 		Def.ActorFrame{
 			Name="BarLabels";
 			-- only show on first stage
-			InitCommand=cmd(visible,GAMESTATE:GetCurrentStageIndex()==0);
+			InitCommand=function(self) self:visible(GAMESTATE:GetCurrentStageIndex()==0) end;
 			LoadFont("_v 26px bold black")..{
 				Text="Fantastics";
-				InitCommand=cmd(rotationz,-90;addx,73*-1;addy,-20;shadowlength,0;queuecommand,"FadeOn");
-				FadeOnCommand=cmd(sleep,2;linear,1;diffusealpha,0);
+				InitCommand=function(self) self:rotationz(-90):addx(73*-1):addy(-20):shadowlength(0):queuecommand("FadeOn") end;
+				FadeOnCommand=function(self) self:sleep(2):linear(1):diffusealpha(0) end;
 			};
 			LoadFont("_v 26px bold black")..{
 				Text="Excellents";
-				InitCommand=cmd(rotationz,-90;addx,73*-0;addy,-20;shadowlength,0;queuecommand,"FadeOn");
-				FadeOnCommand=cmd(sleep,2.25;linear,1;diffusealpha,0);
+				InitCommand=function(self) self:rotationz(-90):addx(73*-0):addy(-20):shadowlength(0):queuecommand("FadeOn") end;
+				FadeOnCommand=function(self) self:sleep(2.25):linear(1):diffusealpha(0) end;
 			};
 			LoadFont("_v 26px bold black")..{
 				Text="Greats, Decents\nWay-Offs";
-				InitCommand=cmd(rotationz,-90;zoom,.8;addx,73*1;addy,-20;shadowlength,0;queuecommand,"FadeOn");
-				FadeOnCommand=cmd(sleep,2.5;linear,1;diffusealpha,0);
+				InitCommand=function(self) self:rotationz(-90):zoom(.8):addx(73*1):addy(-20):shadowlength(0):queuecommand("FadeOn") end;
+				FadeOnCommand=function(self) self:sleep(2.5):linear(1):diffusealpha(0) end;
 			};
 		};
 
 		LoadActor("bar_fantastic")..{
-			InitCommand=cmd(vertalign,bottom;addx,73*-1;addy,86;zoomy,0;);
+			InitCommand=function(self) self:vertalign(bottom):addx(73*-1):addy(86):zoomy(0) end;
 			StepMessageCommand=function(self,p)
 				if p.PlayerNumber == pn then
 					self:playcommand("Update")
@@ -141,7 +134,7 @@ return Def.ActorFrame{
 			end;
 		};
 		LoadActor("bar_excellent")..{
-			InitCommand=cmd(vertalign,bottom;addy,86;zoomy,0;);
+			InitCommand=function(self) self:vertalign(bottom):addy(86):zoomy(0) end;
 			StepMessageCommand=function(self,p)
 				if p.PlayerNumber == pn then
 					self:playcommand("Update")
@@ -158,7 +151,7 @@ return Def.ActorFrame{
 			end;
 		};
 		LoadActor("bar_other")..{
-			InitCommand=cmd(vertalign,bottom;addx,73*1;addy,86;zoomy,0;);
+			InitCommand=function(self) self:vertalign(bottom):addx(73*1):addy(86):zoomy(0) end;
 			StepMessageCommand=function(self,p)
 				if p.PlayerNumber == pn then
 					self:playcommand("Update")

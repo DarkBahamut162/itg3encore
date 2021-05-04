@@ -4,15 +4,15 @@ return Def.ActorFrame{
 	LoadActor(THEME:GetPathB("ScreenWithMenuElements","underlay/_normaltop"));
 	Def.ActorFrame{
 		Name="Page";
-		InitCommand=cmd(Center);
+		InitCommand=function(self) self:Center() end;
 		LoadActor(THEME:GetPathG("_mapcontrollers","page"));
 		LoadActor(THEME:GetPathG("_mapcontrollers","line"))..{
 			Name="LeftLine";
-			InitCommand=cmd(x,-64;y,-25;);
+			InitCommand=function(self) self:x(-64):y(-25) end;
 		};
 		LoadActor(THEME:GetPathG("_mapcontrollers","line"))..{
 			Name="RightLine";
-			InitCommand=cmd(x,64;y,-25;);
+			InitCommand=function(self) self:x(64):y(-25) end;
 		};
 	};
 };

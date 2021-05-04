@@ -1,1 +1,1 @@
-return Def.Actor{ OnCommand=cmd(sleep,0.0); };
+return Def.Actor{ OnCommand=function(self) self:sleep(0.0) end; };

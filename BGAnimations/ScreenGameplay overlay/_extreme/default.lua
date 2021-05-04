@@ -1,55 +1,55 @@
 local t = Def.ActorFrame{
 	Def.ActorFrame{
-		InitCommand=cmd(CenterX;y,SCREEN_TOP+27;addy,-100;);
-		OnCommand=cmd(sleep,0.5;queuecommand,"TweenOn");
-		OffCommand=cmd(queuecommand,"TweenOff");
-		TweenOnCommand=cmd(decelerate,0.8;addy,100);
+		InitCommand=function(self) self:CenterX():y(SCREEN_TOP+27):addy(-100) end;
+		OnCommand=function(self) self:sleep(0.5):queuecommand("TweenOn") end;
+		OffCommand=function(self) self:queuecommand("TweenOff") end;
+		TweenOnCommand=function(self) self:decelerate(0.8):addy(100) end;
 		-- xxx: if any player full comboed, sleep 3
-		TweenOffCommand=cmd(accelerate,0.8;addy,-100);
+		TweenOffCommand=function(self) self:accelerate(0.8):addy(-100) end;
 		Def.SongMeterDisplay{
-			InitCommand=cmd(SetStreamWidth,292);
+			InitCommand=function(self) self:SetStreamWidth(292) end;
 			Stream=LoadActor("meter stream");
 			Tip=LoadActor("tip");
 		};
 	};
 	Def.ActorFrame{
-		OnCommand=cmd(addy,-100;sleep,0.5;queuecommand,"TweenOn");
-		OffCommand=cmd(queuecommand,"TweenOff");
-		TweenOnCommand=cmd(decelerate,0.8;addy,100);
+		OnCommand=function(self) self:addy(-100):sleep(0.5):queuecommand("TweenOn") end;
+		OffCommand=function(self) self:queuecommand("TweenOff") end;
+		TweenOnCommand=function(self) self:decelerate(0.8):addy(100) end;
 		-- todo: full combo
-		TweenOffCommand=cmd(accelerate,0.8;addy,-100);
+		TweenOffCommand=function(self) self:accelerate(0.8):addy(-100) end;
 
 		LoadActor("width")..{
-			InitCommand=cmd(x,SCREEN_CENTER_X-190;y,SCREEN_TOP+23;halign,1);
-			OnCommand=cmd(sleep,1.5;linear,.1;zoomtowidth,SCREEN_WIDTH/2-200);
+			InitCommand=function(self) self:x(SCREEN_CENTER_X-190):y(SCREEN_TOP+23):halign(1) end;
+			OnCommand=function(self) self:sleep(1.5):linear(.1):zoomtowidth(SCREEN_WIDTH/2-200) end;
 		};
 		LoadActor("width")..{
-			InitCommand=cmd(x,SCREEN_CENTER_X+190;y,SCREEN_TOP+23;halign,0);
-			OnCommand=cmd(sleep,1.5;linear,.1;zoomtowidth,SCREEN_WIDTH/2-200);
+			InitCommand=function(self) self:x(SCREEN_CENTER_X+190):y(SCREEN_TOP+23):halign(0) end;
+			OnCommand=function(self) self:sleep(1.5):linear(.1):zoomtowidth(SCREEN_WIDTH/2-200) end;
 		};
 		LoadActor("left")..{
-			InitCommand=cmd(x,SCREEN_CENTER_X-193;y,SCREEN_TOP+23;halign,1);
-			OnCommand=cmd(sleep,1.5;linear,.1;x,SCREEN_LEFT+16);
+			InitCommand=function(self) self:x(SCREEN_CENTER_X-193):y(SCREEN_TOP+23):halign(1) end;
+			OnCommand=function(self) self:sleep(1.5):linear(.1):x(SCREEN_LEFT+16) end;
 		};
 		LoadActor("left")..{
-			InitCommand=cmd(x,SCREEN_CENTER_X+193;y,SCREEN_TOP+23;halign,1;zoomx,-1);
-			OnCommand=cmd(sleep,1.5;linear,.1;x,SCREEN_RIGHT-16);
+			InitCommand=function(self) self:x(SCREEN_CENTER_X+193):y(SCREEN_TOP+23):halign(1):zoomx(-1) end;
+			OnCommand=function(self) self:sleep(1.5):linear(.1):x(SCREEN_RIGHT-16) end;
 		};
-		LoadActor("base")..{ InitCommand=cmd(CenterX;y,SCREEN_TOP+24); };
+		LoadActor("base")..{ InitCommand=function(self) self:CenterX():y(SCREEN_TOP+24) end; };
 		LoadActor("_neons")..{
-			InitCommand=cmd(CenterX;y,SCREEN_TOP+24;blend,Blend.Add);
+			InitCommand=function(self) self:CenterX():y(SCREEN_TOP+24):blend(Blend.Add) end;
 			--effectdelay,0.5;
-			OnCommand=cmd(effectclock,'beat';diffuseramp;effectcolor1,color("#007892");effectcolor2,color("#00EAFF");effectperiod,0.5;effectoffset,0.05;diffusealpha,0;linear,.4;diffusealpha,1;);
+			OnCommand=function(self) self:effectclock('beat'):diffuseramp():effectcolor1(color("#007892")):effectcolor2(color("#00EAFF")):effectperiod(0.5):effectoffset(0.05):diffusealpha(0):linear(.4):diffusealpha(1) end;
 		};
 		LoadActor("_neons")..{
-			InitCommand=cmd(x,SCREEN_CENTER_X;y,SCREEN_TOP+24);
+			InitCommand=function(self) self:x(SCREEN_CENTER_X):y(SCREEN_TOP+24) end;
 			--effectdelay,0.5;
-			OnCommand=cmd(effectclock,'beat';diffuseramp;effectcolor1,color("#FFFFFF00");effectcolor2,color("#00EAFF");effectperiod,0.5;effectoffset,0.05;diffusealpha,0;linear,.4;diffusealpha,1;);
+			OnCommand=function(self) self:effectclock('beat'):diffuseramp():effectcolor1(color("#FFFFFF00")):effectcolor2(color("#00EAFF")):effectperiod(0.5):effectoffset(0.05):diffusealpha(0):linear(.4):diffusealpha(1) end;
 		};
 		LoadFont("_serpentine outline")..{
-			InitCommand=cmd(CenterX;y,SCREEN_TOP+23;maxwidth,540*0.6825;diffusebottomedge,color("#dedede"));
-			OnCommand=cmd(addy,3;zoom,.5;shadowlength,2;zoomy,0;sleep,2;decelerate,0.3;zoomy,.45;animate,0;playcommand,"Update");
-			CurrentSongChangedMessageCommand=cmd(playcommand,"Update");
+			InitCommand=function(self) self:CenterX():y(SCREEN_TOP+23):maxwidth(540*0.6825):diffusebottomedge(color("#dedede")) end;
+			OnCommand=function(self) self:addy(3):zoom(.5):shadowlength(2):zoomy(0):sleep(2):decelerate(0.3):zoomy(.45):animate(0):playcommand("Update") end;
+			CurrentSongChangedMessageCommand=function(self) self:playcommand("Update") end;
 			UpdateCommand=function(self)
 				local text = ""
 				local song = GAMESTATE:GetCurrentSong()
@@ -67,10 +67,10 @@ local t = Def.ActorFrame{
 
 	-- difficulty
 	Def.ActorFrame{
-		OnCommand=cmd(draworder,1;sleep,0.5;queuecommand,"TweenOn");
-		OffCommand=cmd(queuecommand,"Hide");
-		ShowGameplayTopFrameMessageCommand=cmd(playcommand,"TweenOn");
-		HideGameplayTopFrameMessageCommand=cmd(queuecommand,"Hide");
+		OnCommand=function(self) self:draworder(1):sleep(0.5):queuecommand("TweenOn") end;
+		OffCommand=function(self) self:queuecommand("Hide") end;
+		ShowGameplayTopFrameMessageCommand=function(self) self:playcommand("TweenOn") end;
+		HideGameplayTopFrameMessageCommand=function(self) self:queuecommand("Hide") end;
 		HideCommand=function(self)
 			--if AnyPlayerFullComboed() then self:sleep(3) end
 			self:queuecommand('TweenOff')
@@ -78,12 +78,12 @@ local t = Def.ActorFrame{
 
 		Def.ActorFrame{
 			Name="Player1";
-			OnCommand=cmd(player,PLAYER_1;x,SCREEN_CENTER_X-256;y,SCREEN_TOP+32;addx,-SCREEN_WIDTH/3);
-			TweenOnCommand=cmd(sleep,1.5;decelerate,0.5;addx,SCREEN_WIDTH/3);
-			TweenOffCommand=cmd(accelerate,0.8;addx,-SCREEN_WIDTH/3);
+			OnCommand=function(self) self:player(PLAYER_1):x(SCREEN_CENTER_X-256):y(SCREEN_TOP+32):addx(-SCREEN_WIDTH/3) end;
+			TweenOnCommand=function(self) self:sleep(1.5):decelerate(0.5):addx(SCREEN_WIDTH/3) end;
+			TweenOffCommand=function(self) self:accelerate(0.8):addx(-SCREEN_WIDTH/3) end;
 
-			LoadActor(THEME:GetPathB("ScreenGameplay","overlay/_extreme/_difficulty icons"))..{
-				InitCommand=cmd(pause;playcommand,"Update");
+			LoadActor("_difficulty icons")..{
+				InitCommand=function(self) self:pause():playcommand("Update") end;
 				UpdateCommand=function(self)
 					local steps = GAMESTATE:GetCurrentSteps(PLAYER_1)
 					if steps then
@@ -94,8 +94,8 @@ local t = Def.ActorFrame{
 					end
 				end;
 			};
-			LoadActor(THEME:GetPathB("ScreenGameplay","overlay/_extreme/_difficulty names"))..{
-				InitCommand=cmd(pause;playcommand,"Update");
+			LoadActor("_difficulty names")..{
+				InitCommand=function(self) self:pause():playcommand("Update") end;
 				UpdateCommand=function(self)
 					local steps = GAMESTATE:GetCurrentSteps(PLAYER_1)
 					if steps then
@@ -110,12 +110,12 @@ local t = Def.ActorFrame{
 
 		Def.ActorFrame{
 			Name="Player2";
-			OnCommand=cmd(player,PLAYER_2;x,SCREEN_CENTER_X+256;y,SCREEN_TOP+32;addx,SCREEN_WIDTH/3);
-			TweenOnCommand=cmd(sleep,1.5;decelerate,0.5;addx,-SCREEN_WIDTH/3);
-			TweenOffCommand=cmd(accelerate,0.8;addx,SCREEN_WIDTH/3);
+			OnCommand=function(self) self:player(PLAYER_2):x(SCREEN_CENTER_X+256):y(SCREEN_TOP+32):addx(SCREEN_WIDTH/3) end;
+			TweenOnCommand=function(self) self:sleep(1.5):decelerate(0.5):addx(-SCREEN_WIDTH/3) end;
+			TweenOffCommand=function(self) self:accelerate(0.8):addx(SCREEN_WIDTH/3) end;
 
-			LoadActor(THEME:GetPathB("ScreenGameplay","overlay/_extreme/_difficulty icons"))..{
-				InitCommand=cmd(pause;zoomx,-1;playcommand,"Update");
+			LoadActor("_difficulty icons")..{
+				InitCommand=function(self) self:pause():zoomx(-1):playcommand("Update") end;
 				UpdateCommand=function(self)
 					local steps = GAMESTATE:GetCurrentSteps(PLAYER_2)
 					if steps then
@@ -126,8 +126,8 @@ local t = Def.ActorFrame{
 					end
 				end;
 			};
-			LoadActor(THEME:GetPathB("ScreenGameplay","overlay/_extreme/_difficulty names"))..{
-				InitCommand=cmd(x,19;pause;playcommand,"Update");
+			LoadActor("_difficulty names")..{
+				InitCommand=function(self) self:x(19):pause():playcommand("Update") end;
 				UpdateCommand=function(self)
 					local steps = GAMESTATE:GetCurrentSteps(PLAYER_2)
 					if steps then

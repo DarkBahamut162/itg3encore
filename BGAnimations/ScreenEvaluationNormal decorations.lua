@@ -4,9 +4,9 @@ local t = LoadFallbackB();
 if ShowStandardDecoration("StepsDisplay") then
 	for pn in ivalues(PlayerNumber) do
 		local t2 = Def.ActorFrame{
-			InitCommand=cmd(player,pn);
+			InitCommand=function(self) self:player(pn) end;
 			LoadActor(THEME:GetPathG("_difficulty","icons"))..{
-				InitCommand=cmd(zoomy,.8;animate,0;zoomx,(pn==PLAYER_2) and -0.8 or 0.8;playcommand,"Update");
+				InitCommand=function(self) self:zoomy(.8):animate(0):zoomx((pn==PLAYER_2) and -0.8 or 0.8):playcommand("Update") end;
 				UpdateCommand=function(self)
 					local steps = GAMESTATE:GetCurrentSteps(pn)
 					if steps then
@@ -15,7 +15,7 @@ if ShowStandardDecoration("StepsDisplay") then
 				end;
 			};
 			Def.StepsDisplay {
-				InitCommand=cmd(Load,"StepsDisplayEvaluation",pn;SetFromGameState,pn;);
+				InitCommand=function(self) self:Load("StepsDisplayEvaluation",pn):SetFromGameState(pn) end;
 				UpdateNetEvalStatsMessageCommand=function(self,param)
 					if GAMESTATE:IsPlayerEnabled(pn) then
 						self:SetFromSteps(param.Steps)
@@ -54,7 +54,7 @@ end
 local function GraphDisplay(pn)
 	local t = Def.ActorFrame {
 		Def.GraphDisplay {
-			InitCommand=cmd(Load,"GraphDisplay"..ToEnumShortString(pn););
+			InitCommand=function(self) self:Load("GraphDisplay"..ToEnumShortString(pn)) end;
 			BeginCommand=function(self)
 				local ss = SCREENMAN:GetTopScreen():GetStageStats();
 				self:Set( ss, ss:GetPlayerStageStats(pn) );
@@ -75,7 +75,7 @@ end
 local function ComboGraph( pn )
 	local t = Def.ActorFrame {
 		Def.ComboGraph {
-			InitCommand=cmd(Load,"ComboGraph"..ToEnumShortString(pn););
+			InitCommand=function(self) self:Load("ComboGraph"..ToEnumShortString(pn)) end;
 			BeginCommand=function(self)
 				local ss = SCREENMAN:GetTopScreen():GetStageStats();
 				self:Set( ss, ss:GetPlayerStageStats(pn) );

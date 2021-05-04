@@ -18,7 +18,7 @@ return Def.ActorFrame{
 	};
 	LoadActor("left")..{
 		InitCommand=cmd(x,SCREEN_CENTER_X-120-17;y,SCREEN_TOP+4;vertalign,top;horizalign,right;zoomtowidth,SCREEN_WIDTH);
-		OnCommand=cmd();
+		OnCommand=function(self) end;
 	};
 	LoadActor("right")..{
 		InitCommand=cmd(x,SCREEN_CENTER_X-120+14;y,SCREEN_TOP+4;vertalign,top;horizalign,left;zoomtowidth,SCREEN_WIDTH);

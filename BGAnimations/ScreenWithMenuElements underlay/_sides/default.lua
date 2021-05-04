@@ -7,6 +7,6 @@ return Def.ActorFrame{
 	LoadActor("right")..{
 		InitCommand=cmd(x,SCREEN_RIGHT+50;CenterY;halign,1);
 		OnCommand=cmd(sleep,0.2;decelerate,0.6;x,SCREEN_RIGHT);
-		OffCommand=cmd(accelerate,0.4;addx,100);
+		OffCommand=function(self) self:accelerate(0.4):addx(100) end;
 	};
 };

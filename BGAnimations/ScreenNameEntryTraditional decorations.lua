@@ -97,7 +97,7 @@ table.insert(t,Def.Actor{
 			MESSAGEMAN:Broadcast("ChangeDisplayedFeat",{Player=pn,NewIndex=curFeatNumber[pn]})
 		end
 	end,
-	OnCommand=cmd(queuecommand,"RunFeat"),
+	OnCommand=function(self) self:queuecommand("RunFeat") end,
 
 	-- Menu Timer message
 	MenuTimerExpiredMessageCommand = function(self)

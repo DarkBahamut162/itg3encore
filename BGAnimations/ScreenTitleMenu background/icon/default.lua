@@ -2,60 +2,60 @@ return Def.ActorFrame{
 	Def.ActorFrame{
 		Name="Stages";
 		LoadActor("_icon")..{
-			InitCommand=cmd(x,SCREEN_RIGHT-200;y,SCREEN_TOP-2+34;);
-			OnCommand=cmd(diffusealpha,0;sleep,.7;linear,.4;diffusealpha,1);
+			InitCommand=function(self) self:x(SCREEN_RIGHT-200):y(SCREEN_TOP-2+34) end;
+			OnCommand=function(self) self:diffusealpha(0):sleep(.7):linear(.4):diffusealpha(1) end;
 		};
 		LoadFont("_v 26px bold black")..{
 			Text=PREFSMAN:GetPreference('SongsPerPlay');
-			InitCommand=cmd(x,SCREEN_RIGHT-200+1;y,SCREEN_TOP-2+29;horizalign,center;zoom,.8;);
-			OnCommand=cmd(diffusealpha,0;sleep,.7;linear,.4;diffusealpha,1);
+			InitCommand=function(self) self:x(SCREEN_RIGHT-200+1):y(SCREEN_TOP-2+29):horizalign(center):zoom(.8) end;
+			OnCommand=function(self) self:diffusealpha(0):sleep(.7):linear(.4):diffusealpha(1) end;
 		};
 		LoadFont("_v 26px bold black")..{
 			Text="ROUNDS";
-			InitCommand=cmd(x,SCREEN_RIGHT-200;y,SCREEN_TOP-2+46;zoom,0.4;);
-			OnCommand=cmd(diffusealpha,0;sleep,.7;linear,.4;diffusealpha,1);
+			InitCommand=function(self) self:x(SCREEN_RIGHT-200):y(SCREEN_TOP-2+46):zoom(0.4) end;
+			OnCommand=function(self) self:diffusealpha(0):sleep(.7):linear(.4):diffusealpha(1) end;
 		};
 	};
 	Def.ActorFrame{
 		Name="Difficulty";
-		InitCommand=cmd(x,SCREEN_RIGHT-200+53*1;);
+		InitCommand=function(self) self:x(SCREEN_RIGHT-200+53*1) end;
 		LoadActor("_icon")..{
-			InitCommand=cmd(y,SCREEN_TOP-2+34;);
-			OnCommand=cmd(diffusealpha,0;sleep,.7;linear,.4;diffusealpha,1);
+			InitCommand=function(self) self:y(SCREEN_TOP-2+34) end;
+			OnCommand=function(self) self:diffusealpha(0):sleep(.7):linear(.4):diffusealpha(1) end;
 		};
 		Def.ActorFrame{
 			Name="DiffBars";
-			InitCommand=cmd(y,SCREEN_TOP-2+40);
+			InitCommand=function(self) self:y(SCREEN_TOP-2+40) end;
 
 			Def.ActorFrame{
 				Name="BG";
 				Def.Quad{
-					InitCommand=cmd(x,-5*3;vertalign,bottom;zoomtowidth,4;zoomtoheight,3;diffusealpha,0;);
-					OnCommand=cmd(sleep,.7;linear,.4;diffusealpha,1;diffuse,color("#77777777"));
+					InitCommand=function(self) self:x(-5*3):vertalign(bottom):zoomtowidth(4):zoomtoheight(3):diffusealpha(0) end;
+					OnCommand=function(self) self:sleep(.7):linear(.4):diffusealpha(1):diffuse(color("#77777777")) end;
 				};
 				Def.Quad{
-					InitCommand=cmd(x,-5*2;vertalign,bottom;zoomtowidth,4;zoomtoheight,6;diffusealpha,0;);
-					OnCommand=cmd(sleep,.7;linear,.4;diffusealpha,1;diffuse,color("#77777777"));
+					InitCommand=function(self) self:x(-5*2):vertalign(bottom):zoomtowidth(4):zoomtoheight(6):diffusealpha(0) end;
+					OnCommand=function(self) self:sleep(.7):linear(.4):diffusealpha(1):diffuse(color("#77777777")) end;
 				};
 				Def.Quad{
-					InitCommand=cmd(x,-5*1;vertalign,bottom;zoomtowidth,4;zoomtoheight,9;diffusealpha,0;);
-					OnCommand=cmd(sleep,.7;linear,.4;diffusealpha,1;diffuse,color("#77777777"));
+					InitCommand=function(self) self:x(-5*1):vertalign(bottom):zoomtowidth(4):zoomtoheight(9):diffusealpha(0) end;
+					OnCommand=function(self) self:sleep(.7):linear(.4):diffusealpha(1):diffuse(color("#77777777")) end;
 				};
 				Def.Quad{
-					InitCommand=cmd(x,0;vertalign,bottom;zoomtowidth,4;zoomtoheight,12;diffusealpha,0;);
-					OnCommand=cmd(sleep,.7;linear,.4;diffusealpha,1;diffuse,color("#77777777"));
+					InitCommand=function(self) self:x(0):vertalign(bottom):zoomtowidth(4):zoomtoheight(12):diffusealpha(0) end;
+					OnCommand=function(self) self:sleep(.7):linear(.4):diffusealpha(1):diffuse(color("#77777777")) end;
 				};
 				Def.Quad{
-					InitCommand=cmd(x,5*1;vertalign,bottom;zoomtowidth,4;zoomtoheight,15;diffusealpha,0;);
-					OnCommand=cmd(sleep,.7;linear,.4;diffusealpha,1;diffuse,color("#77777777"));
+					InitCommand=function(self) self:x(5*1):vertalign(bottom):zoomtowidth(4):zoomtoheight(15):diffusealpha(0) end;
+					OnCommand=function(self) self:sleep(.7):linear(.4):diffusealpha(1):diffuse(color("#77777777")) end;
 				};
 				Def.Quad{
-					InitCommand=cmd(x,5*2;vertalign,bottom;zoomtowidth,4;zoomtoheight,18;diffusealpha,0;);
-					OnCommand=cmd(sleep,.7;linear,.4;diffusealpha,1;diffuse,color("#77777777"));
+					InitCommand=function(self) self:x(5*2):vertalign(bottom):zoomtowidth(4):zoomtoheight(18):diffusealpha(0) end;
+					OnCommand=function(self) self:sleep(.7):linear(.4):diffusealpha(1):diffuse(color("#77777777")) end;
 				};
 				Def.Quad{
-					InitCommand=cmd(x,5*3;vertalign,bottom;zoomtowidth,4;zoomtoheight,21;diffusealpha,0;);
-					OnCommand=cmd(sleep,.7;linear,.4;diffusealpha,1;diffuse,color("#77777777"));
+					InitCommand=function(self) self:x(5*3):vertalign(bottom):zoomtowidth(4):zoomtoheight(21):diffusealpha(0) end;
+					OnCommand=function(self) self:sleep(.7):linear(.4):diffusealpha(1):diffuse(color("#77777777")) end;
 				};
 			};
 			Def.ActorFrame{
@@ -71,45 +71,45 @@ return Def.ActorFrame{
 				end;
 				Def.Quad{
 					Name="Diff1";
-					InitCommand=cmd(x,-5*3;vertalign,bottom;zoomtowidth,4;zoomtoheight,3;diffusealpha,0;);
-					OnCommand=cmd(sleep,.7;linear,.4;diffusealpha,1;diffuse,color("#000000"));
+					InitCommand=function(self) self:x(-5*3):vertalign(bottom):zoomtowidth(4):zoomtoheight(3):diffusealpha(0) end;
+					OnCommand=function(self) self:sleep(.7):linear(.4):diffusealpha(1):diffuse(color("#000000")) end;
 				};
 				Def.Quad{
 					Name="Diff2";
-					InitCommand=cmd(x,-5*2;vertalign,bottom;zoomtowidth,4;zoomtoheight,6;diffusealpha,0;);
-					OnCommand=cmd(sleep,.7;linear,.4;diffusealpha,1;diffuse,color("#000000"));
+					InitCommand=function(self) self:x(-5*2):vertalign(bottom):zoomtowidth(4):zoomtoheight(6):diffusealpha(0) end;
+					OnCommand=function(self) self:sleep(.7):linear(.4):diffusealpha(1):diffuse(color("#000000")) end;
 				};
 				Def.Quad{
 					Name="Diff3";
-					InitCommand=cmd(x,-5*1;vertalign,bottom;zoomtowidth,4;zoomtoheight,9;diffusealpha,0;);
-					OnCommand=cmd(sleep,.7;linear,.4;diffusealpha,1;diffuse,color("#000000"));
+					InitCommand=function(self) self:x(-5*1):vertalign(bottom):zoomtowidth(4):zoomtoheight(9):diffusealpha(0) end;
+					OnCommand=function(self) self:sleep(.7):linear(.4):diffusealpha(1):diffuse(color("#000000")) end;
 				};
 				Def.Quad{
 					Name="Diff4";
-					InitCommand=cmd(x,0;vertalign,bottom;zoomtowidth,4;zoomtoheight,12;diffusealpha,0;);
-					OnCommand=cmd(sleep,.7;linear,.4;diffusealpha,1;diffuse,color("#000000"));
+					InitCommand=function(self) self:x(0):vertalign(bottom):zoomtowidth(4):zoomtoheight(12):diffusealpha(0) end;
+					OnCommand=function(self) self:sleep(.7):linear(.4):diffusealpha(1):diffuse(color("#000000")) end;
 				};
 				Def.Quad{
 					Name="Diff5";
-					InitCommand=cmd(x,5*1;vertalign,bottom;zoomtowidth,4;zoomtoheight,15;diffusealpha,0;);
-					OnCommand=cmd(sleep,.7;linear,.4;diffusealpha,1;diffuse,color("#000000"));
+					InitCommand=function(self) self:x(5*1):vertalign(bottom):zoomtowidth(4):zoomtoheight(15):diffusealpha(0) end;
+					OnCommand=function(self) self:sleep(.7):linear(.4):diffusealpha(1):diffuse(color("#000000")) end;
 				};
 				Def.Quad{
 					Name="Diff6";
-					InitCommand=cmd(x,5*2;vertalign,bottom;zoomtowidth,4;zoomtoheight,18;diffusealpha,0;);
-					OnCommand=cmd(sleep,.7;linear,.4;diffusealpha,1;diffuse,color("#000000"));
+					InitCommand=function(self) self:x(5*2):vertalign(bottom):zoomtowidth(4):zoomtoheight(18):diffusealpha(0) end;
+					OnCommand=function(self) self:sleep(.7):linear(.4):diffusealpha(1):diffuse(color("#000000")) end;
 				};
 				Def.Quad{
 					Name="Diff7";
-					InitCommand=cmd(x,5*3;vertalign,bottom;zoomtowidth,4;zoomtoheight,21;diffusealpha,0;);
-					OnCommand=cmd(sleep,.7;linear,.4;diffusealpha,1;diffuse,color("#000000"));
+					InitCommand=function(self) self:x(5*3):vertalign(bottom):zoomtowidth(4):zoomtoheight(21):diffusealpha(0) end;
+					OnCommand=function(self) self:sleep(.7):linear(.4):diffusealpha(1):diffuse(color("#000000")) end;
 				};
 			};
 
 			LoadFont("_v 26px bold black")..{
 				Text="LEVEL";
-				InitCommand=cmd(y,6;zoom,0.4;);
-				OnCommand=cmd(diffusealpha,0;sleep,.7;linear,.4;diffusealpha,1);
+				InitCommand=function(self) self:y(6):zoom(0.4) end;
+				OnCommand=function(self) self:diffusealpha(0):sleep(.7):linear(.4):diffusealpha(1) end;
 			};
 		};
 	};
@@ -136,36 +136,36 @@ return Def.ActorFrame{
 			end
 		end;
 		LoadActor("_icon")..{
-			InitCommand=cmd(x,SCREEN_RIGHT-200+53*2;y,SCREEN_TOP-2+34;);
-			OnCommand=cmd(diffusealpha,0;sleep,.7;linear,.4;diffusealpha,1);
+			InitCommand=function(self) self:x(SCREEN_RIGHT-200+53*2):y(SCREEN_TOP-2+34) end;
+			OnCommand=function(self) self:diffusealpha(0):sleep(.7):linear(.4):diffusealpha(1) end;
 		};
 		LoadFont("_v 26px bold black")..{
 			Name="Line1";
-			InitCommand=cmd(x,SCREEN_RIGHT-199+53*2;y,SCREEN_TOP-2+28;);
-			OnCommand=cmd(diffusealpha,0;sleep,.7;linear,.4;diffusealpha,1);
+			InitCommand=function(self) self:x(SCREEN_RIGHT-199+53*2):y(SCREEN_TOP-2+28) end;
+			OnCommand=function(self) self:diffusealpha(0):sleep(.7):linear(.4):diffusealpha(1) end;
 		};
 		LoadFont("_v 26px bold black")..{
 			Name="Line2";
-			InitCommand=cmd(x,SCREEN_RIGHT-199+53*2;y,SCREEN_TOP-2+40;);
-			OnCommand=cmd(diffusealpha,0;sleep,.7;linear,.4;diffusealpha,1);
+			InitCommand=function(self) self:x(SCREEN_RIGHT-199+53*2):y(SCREEN_TOP-2+40) end;
+			OnCommand=function(self) self:diffusealpha(0):sleep(.7):linear(.4):diffusealpha(1) end;
 		};
 	};
 	Def.ActorFrame{
 		Name="USBSongs";
-		InitCommand=cmd(visible,false);
+		InitCommand=function(self) self:visible(false) end;
 		LoadActor("_icon")..{
-			InitCommand=cmd(x,SCREEN_RIGHT-200+53*3;y,SCREEN_TOP-2+34;);
-			OnCommand=cmd(diffusealpha,0;sleep,.7;linear,.4;diffusealpha,1);
+			InitCommand=function(self) self:x(SCREEN_RIGHT-200+53*3):y(SCREEN_TOP-2+34) end;
+			OnCommand=function(self) self:diffusealpha(0):sleep(.7):linear(.4):diffusealpha(1) end;
 		};
 		LoadFont("_v 26px bold black")..{
 			Text="USB";
-			InitCommand=cmd(x,SCREEN_RIGHT-200+53*3;y,SCREEN_TOP-2+29;horizalign,center;zoom,.6;);
-			OnCommand=cmd(diffusealpha,0;sleep,.7;linear,.4;diffusealpha,1);
+			InitCommand=function(self) self:x(SCREEN_RIGHT-200+53*3):y(SCREEN_TOP-2+29):horizalign(center):zoom(.6) end;
+			OnCommand=function(self) self:diffusealpha(0):sleep(.7):linear(.4):diffusealpha(1) end;
 		};
 		LoadFont("_v 26px bold black")..{
 			Text="SONGS";
-			InitCommand=cmd(x,SCREEN_RIGHT-200+53*3;y,SCREEN_TOP-2+42;zoom,0.4;);
-			OnCommand=cmd(diffusealpha,0;sleep,.7;linear,.4;diffusealpha,1);
+			InitCommand=function(self) self:x(SCREEN_RIGHT-200+53*3):y(SCREEN_TOP-2+42):zoom(0.4) end;
+			OnCommand=function(self) self:diffusealpha(0):sleep(.7):linear(.4):diffusealpha(1) end;
 		};
 	};
 };

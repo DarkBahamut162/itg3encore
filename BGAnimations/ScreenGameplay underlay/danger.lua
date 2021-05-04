@@ -19,24 +19,24 @@ return Def.ActorFrame{
 				end
 			end;
 			LoadActor(THEME:GetPathB("_shared","danger/single"))..{
-				InitCommand=cmd(faderight,.1;fadeleft,.1;fadetop,.1;fadebottom,.1;stretchto,SCREEN_LEFT,SCREEN_TOP,SCREEN_CENTER_X,SCREEN_BOTTOM;diffusealpha,0;);
-				ShowCommand=cmd(linear,.3;diffusealpha,1;diffuseshift;effectcolor1,color("1,0,0,0.3");effectcolor2,color("1,0,0,0.8"));
-				HideCommand=cmd(stopeffect;stoptweening;linear,.5;diffusealpha,0);
+				InitCommand=function(self) self:faderight(.1):fadeleft(.1):fadetop(.1):fadebottom(.1):stretchto(SCREEN_LEFT,SCREEN_TOP,SCREEN_CENTER_X,SCREEN_BOTTOM):diffusealpha(0) end;
+				ShowCommand=function(self) self:linear(.3):diffusealpha(1):diffuseshift():effectcolor1(color("1,0,0,0.3")):effectcolor2(color("1,0,0,0.8")) end;
+				HideCommand=function(self) self:stopeffect():stoptweening():linear(.5):diffusealpha(0) end;
 			};
 			Def.Quad{
-				InitCommand=cmd(faderight,.1;stretchto,SCREEN_LEFT,SCREEN_TOP,SCREEN_CENTER_X,SCREEN_BOTTOM;diffusealpha,0;);
-				ShowCommand=cmd(linear,.3;diffusealpha,1;diffuseshift;effectcolor1,color("1,0,0,0.3");effectcolor2,color("1,0,0,0.8"));
-				HideCommand=cmd(stopeffect;stoptweening;linear,.5;diffusealpha,0);
+				InitCommand=function(self) self:faderight(.1):stretchto(SCREEN_LEFT,SCREEN_TOP,SCREEN_CENTER_X,SCREEN_BOTTOM):diffusealpha(0) end;
+				ShowCommand=function(self) self:linear(.3):diffusealpha(1):diffuseshift():effectcolor1(color("1,0,0,0.3")):effectcolor2(color("1,0,0,0.8")) end;
+				HideCommand=function(self) self:stopeffect():stoptweening():linear(.5):diffusealpha(0) end;
 			};
 			LoadActor(THEME:GetPathB("_shared","danger/_danger text"))..{
-				InitCommand=cmd(x,SCREEN_CENTER_X-SCREEN_WIDTH/4;y,SCREEN_CENTER_Y+140;diffusealpha,0;);
-				ShowCommand=cmd(linear,.3;diffusealpha,1;);
-				HideCommand=cmd(stopeffect;stoptweening;linear,.5;diffusealpha,0);
+				InitCommand=function(self) self:x(SCREEN_CENTER_X-SCREEN_WIDTH/4):y(SCREEN_CENTER_Y+140):diffusealpha(0) end;
+				ShowCommand=function(self) self:linear(0.3):diffusealpha(1) end;
+				HideCommand=function(self) self:stopeffect():stoptweening():linear(.5):diffusealpha(0) end;
 			};
 			LoadActor(THEME:GetPathB("_shared","danger/_danger glow"))..{
-				InitCommand=cmd(x,SCREEN_CENTER_X-SCREEN_WIDTH/4;y,SCREEN_CENTER_Y+140;cropleft,-0.3;cropright,1;faderight,.1;fadeleft,.1;);
-				ShowCommand=cmd(sleep,0.5;linear,0.7;cropleft,1;cropright,-0.3;sleep,0.8;queuecommand,"Show");
-				HideCommand=cmd(stopeffect;stoptweening;linear,.5;diffusealpha,0);
+				InitCommand=function(self) self:x(SCREEN_CENTER_X-SCREEN_WIDTH/4):y(SCREEN_CENTER_Y+140):cropleft(-0.3):cropright(1):faderight(.1):fadeleft(.1) end;
+				ShowCommand=function(self) self:sleep(0.5):linear(0.7):cropleft(1):cropright(-0.3):sleep(0.8):queuecommand("Show") end;
+				HideCommand=function(self) self:stopeffect():stoptweening():linear(.5):diffusealpha(0) end;
 			};
 		};
 		--[[
@@ -49,16 +49,16 @@ return Def.ActorFrame{
 				self:visible(bDoubles)
 			end;
 			LoadActor(THEME:GetPathB("_shared","danger/double"))..{
-				InitCommand=cmd();
+				InitCommand=function(self) end;
 			};
 			Def.Quad{
-				InitCommand=cmd();
+				InitCommand=function(self) end;
 			};
 			LoadActor(THEME:GetPathB("_shared","danger/_danger text"))..{
-				InitCommand=cmd();
+				InitCommand=function(self) end;
 			};
 			LoadActor(THEME:GetPathB("_shared","danger/_danger glow"))..{
-				InitCommand=cmd();
+				InitCommand=function(self) end;
 			};
 		};
 		--]]
@@ -83,24 +83,24 @@ return Def.ActorFrame{
 				end
 			end;
 			LoadActor(THEME:GetPathB("_shared","danger/single"))..{
-				InitCommand=cmd(faderight,.1;fadeleft,.1;fadetop,.1;fadebottom,.1;stretchto,SCREEN_CENTER_X,SCREEN_TOP,SCREEN_RIGHT,SCREEN_BOTTOM;diffusealpha,0;);
-				ShowCommand=cmd(linear,.3;diffusealpha,1;diffuseshift;effectcolor1,color("1,0,0,0.3");effectcolor2,color("1,0,0,0.8"));
-				HideCommand=cmd(stopeffect;stoptweening;linear,.5;diffusealpha,0);
+				InitCommand=function(self) self:faderight(.1):fadeleft(.1):fadetop(.1):fadebottom(.1):stretchto(SCREEN_CENTER_X,SCREEN_TOP,SCREEN_RIGHT,SCREEN_BOTTOM):diffusealpha(0) end;
+				ShowCommand=function(self) self:linear(.3):diffusealpha(1):diffuseshift():effectcolor1(color("1,0,0,0.3")):effectcolor2(color("1,0,0,0.8")) end;
+				HideCommand=function(self) self:stopeffect():stoptweening():linear(.5):diffusealpha(0) end;
 			};
 			Def.Quad{
-				InitCommand=cmd(faderight,.1;stretchto,SCREEN_CENTER_X,SCREEN_TOP,SCREEN_RIGHT,SCREEN_BOTTOM;diffusealpha,0;);
-				ShowCommand=cmd(linear,.3;diffusealpha,1;diffuseshift;effectcolor1,color("1,0,0,0.3");effectcolor2,color("1,0,0,0.8"));
-				HideCommand=cmd(stopeffect;stoptweening;linear,.5;diffusealpha,0);
+				InitCommand=function(self) self:faderight(.1):stretchto(SCREEN_CENTER_X,SCREEN_TOP,SCREEN_RIGHT,SCREEN_BOTTOM):diffusealpha(0) end;
+				ShowCommand=function(self) self:linear(.3):diffusealpha(1):diffuseshift():effectcolor1(color("1,0,0,0.3")):effectcolor2(color("1,0,0,0.8")) end;
+				HideCommand=function(self) self:stopeffect():stoptweening():linear(.5):diffusealpha(0) end;
 			};
 			LoadActor(THEME:GetPathB("_shared","danger/_danger text"))..{
-				InitCommand=cmd(x,SCREEN_CENTER_X+SCREEN_WIDTH/4;y,SCREEN_CENTER_Y+140;diffusealpha,0;);
-				ShowCommand=cmd(linear,.3;diffusealpha,1;);
-				HideCommand=cmd(stopeffect;stoptweening;linear,.5;diffusealpha,0);
+				InitCommand=function(self) self:x(SCREEN_CENTER_X+SCREEN_WIDTH/4):y(SCREEN_CENTER_Y+140):diffusealpha(0) end;
+				ShowCommand=function(self) self:linear(0.3):diffusealpha(1) end;
+				HideCommand=function(self) self:stopeffect():stoptweening():linear(.5):diffusealpha(0) end;
 			};
 			LoadActor(THEME:GetPathB("_shared","danger/_danger glow"))..{
-				InitCommand=cmd(x,SCREEN_CENTER_X+SCREEN_WIDTH/4;y,SCREEN_CENTER_Y+140;cropleft,-0.3;cropright,1;faderight,.1;fadeleft,.1;);
-				ShowCommand=cmd(sleep,0.5;linear,0.7;cropleft,1;cropright,-0.3;sleep,0.8;queuecommand,"Show");
-				HideCommand=cmd(stopeffect;stoptweening;linear,.5;diffusealpha,0);
+				InitCommand=function(self) self:x(SCREEN_CENTER_X+SCREEN_WIDTH/4):y(SCREEN_CENTER_Y+140):cropleft(-0.3):cropright(1):faderight(.1):fadeleft(.1) end;
+				ShowCommand=function(self) self:sleep(0.5):linear(0.7):cropleft(1):cropright(-0.3):sleep(0.8):queuecommand("Show") end;
+				HideCommand=function(self) self:stopeffect():stoptweening():linear(.5):diffusealpha(0) end;
 			};
 		};
 	};

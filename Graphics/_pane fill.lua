@@ -4,9 +4,9 @@ assert(player,"[Graphics/_pane fill] player required")
 return Def.ActorFrame{
 	Def.Quad{
 		Name="Jumps";
-		InitCommand=cmd(x,-127+100;y,125+17;valign,1;zoomto,24,0;diffusealpha,0;blend,Blend.Add;);
-		BeginCommand=cmd(playcommand,"Set");
-		OnCommand=cmd(sleep,0.3;decelerate,0.1;diffusealpha,0.5);
+		InitCommand=function(self) self:x(-127+100):y(125+17):valign(1):zoomto(24,0):diffusealpha(0):blend(Blend.Add) end;
+		BeginCommand=function(self) self:playcommand("Set") end;
+		OnCommand=function(self) self:sleep(0.3):decelerate(0.1):diffusealpha(0.5) end;
 		SetCommand=function(self)
 			local yZoom = 0
 			if GAMESTATE:IsCourseMode() then
@@ -35,20 +35,20 @@ return Def.ActorFrame{
 			self:decelerate(0.1)
 			self:zoomy(yZoom)
 		end;
-		CurrentSongChangedMessageCommand=cmd(playcommand,"Set");
+		CurrentSongChangedMessageCommand=function(self) self:playcommand("Set") end;
 		CurrentStepsP1ChangedMessageCommand=function(self)
 			if player == PLAYER_1 then self:playcommand("Set"); end
 		end;
 		CurrentStepsP2ChangedMessageCommand=function(self)
 			if player == PLAYER_2 then self:playcommand("Set"); end
 		end;
-		OffCommand=cmd(accelerate,0.2;diffusealpha,0);
+		OffCommand=function(self) self:accelerate(0.2):diffusealpha(0) end;
 	};
 	Def.Quad{
 		Name="Holds";
-		InitCommand=cmd(x,-102+100;y,125+17;valign,1;zoomto,24,0;diffusealpha,0;blend,Blend.Add;);
-		BeginCommand=cmd(playcommand,"Set");
-		OnCommand=cmd(sleep,0.3;decelerate,0.1;diffusealpha,0.5);
+		InitCommand=function(self) self:x(-102+100):y(125+17):valign(1):zoomto(24,0):diffusealpha(0):blend(Blend.Add) end;
+		BeginCommand=function(self) self:playcommand("Set") end;
+		OnCommand=function(self) self:sleep(0.3):decelerate(0.1):diffusealpha(0.5) end;
 		SetCommand=function(self)
 			local yZoom = 0
 			if GAMESTATE:IsCourseMode() then
@@ -77,20 +77,20 @@ return Def.ActorFrame{
 			self:decelerate(0.1)
 			self:zoomy(yZoom)
 		end;
-		CurrentSongChangedMessageCommand=cmd(playcommand,"Set");
+		CurrentSongChangedMessageCommand=function(self) self:playcommand("Set") end;
 		CurrentStepsP1ChangedMessageCommand=function(self)
 			if player == PLAYER_1 then self:playcommand("Set"); end
 		end;
 		CurrentStepsP2ChangedMessageCommand=function(self)
 			if player == PLAYER_2 then self:playcommand("Set"); end
 		end;
-		OffCommand=cmd(accelerate,0.2;diffusealpha,0);
+		OffCommand=function(self) self:accelerate(0.2):diffusealpha(0) end;
 	};
 	Def.Quad{
 		Name="Mines";
-		InitCommand=cmd(x,-77+100;y,125+17;valign,1;zoomto,24,0;diffusealpha,0;blend,Blend.Add;);
-		BeginCommand=cmd(playcommand,"Set");
-		OnCommand=cmd(sleep,0.3;decelerate,0.1;diffusealpha,0.5);
+		InitCommand=function(self) self:x(-77+100):y(125+17):valign(1):zoomto(24,0):diffusealpha(0):blend(Blend.Add) end;
+		BeginCommand=function(self) self:playcommand("Set") end;
+		OnCommand=function(self) self:sleep(0.3):decelerate(0.1):diffusealpha(0.5) end;
 		SetCommand=function(self)
 			local yZoom = 0
 			if GAMESTATE:IsCourseMode() then
@@ -119,20 +119,20 @@ return Def.ActorFrame{
 			self:decelerate(0.1)
 			self:zoomy(yZoom)
 		end;
-		CurrentSongChangedMessageCommand=cmd(playcommand,"Set");
+		CurrentSongChangedMessageCommand=function(self) self:playcommand("Set") end;
 		CurrentStepsP1ChangedMessageCommand=function(self)
 			if player == PLAYER_1 then self:playcommand("Set"); end
 		end;
 		CurrentStepsP2ChangedMessageCommand=function(self)
 			if player == PLAYER_2 then self:playcommand("Set"); end
 		end;
-		OffCommand=cmd(accelerate,0.2;diffusealpha,0);
+		OffCommand=function(self) self:accelerate(0.2):diffusealpha(0) end;
 	};
 	Def.Quad{
 		Name="Hands";
-		InitCommand=cmd(x,-52+100;y,125+17;valign,1;zoomto,24,0;diffusealpha,0;blend,Blend.Add;);
-		BeginCommand=cmd(playcommand,"Set");
-		OnCommand=cmd(sleep,0.3;decelerate,0.1;diffusealpha,0.5);
+		InitCommand=function(self) self:x(-52+100):y(125+17):valign(1):zoomto(24,0):diffusealpha(0):blend(Blend.Add) end;
+		BeginCommand=function(self) self:playcommand("Set") end;
+		OnCommand=function(self) self:sleep(0.3):decelerate(0.1):diffusealpha(0.5) end;
 		SetCommand=function(self)
 			local yZoom = 0
 			if GAMESTATE:IsCourseMode() then
@@ -161,20 +161,20 @@ return Def.ActorFrame{
 			self:decelerate(0.1)
 			self:zoomy(yZoom)
 		end;
-		CurrentSongChangedMessageCommand=cmd(playcommand,"Set");
+		CurrentSongChangedMessageCommand=function(self) self:playcommand("Set") end;
 		CurrentStepsP1ChangedMessageCommand=function(self)
 			if player == PLAYER_1 then self:playcommand("Set"); end
 		end;
 		CurrentStepsP2ChangedMessageCommand=function(self)
 			if player == PLAYER_2 then self:playcommand("Set"); end
 		end;
-		OffCommand=cmd(accelerate,0.2;diffusealpha,0);
+		OffCommand=function(self) self:accelerate(0.2):diffusealpha(0) end;
 	};
 	Def.Quad{
 		Name="Rolls";
-		InitCommand=cmd(x,-27+100;y,125+17;valign,1;zoomto,24,0;diffusealpha,0;blend,Blend.Add;);
-		BeginCommand=cmd(playcommand,"Set");
-		OnCommand=cmd(sleep,0.3;decelerate,0.1;diffusealpha,0.5);
+		InitCommand=function(self) self:x(-27+100):y(125+17):valign(1):zoomto(24,0):diffusealpha(0):blend(Blend.Add) end;
+		BeginCommand=function(self) self:playcommand("Set") end;
+		OnCommand=function(self) self:sleep(0.3):decelerate(0.1):diffusealpha(0.5) end;
 		SetCommand=function(self)
 			local yZoom = 0
 			if GAMESTATE:IsCourseMode() then
@@ -203,13 +203,13 @@ return Def.ActorFrame{
 			self:decelerate(0.1)
 			self:zoomy(yZoom)
 		end;
-		CurrentSongChangedMessageCommand=cmd(playcommand,"Set");
+		CurrentSongChangedMessageCommand=function(self) self:playcommand("Set") end;
 		CurrentStepsP1ChangedMessageCommand=function(self)
 			if player == PLAYER_1 then self:playcommand("Set"); end
 		end;
 		CurrentStepsP2ChangedMessageCommand=function(self)
 			if player == PLAYER_2 then self:playcommand("Set"); end
 		end;
-		OffCommand=cmd(accelerate,0.2;diffusealpha,0);
+		OffCommand=function(self) self:accelerate(0.2):diffusealpha(0) end;
 	};
 };

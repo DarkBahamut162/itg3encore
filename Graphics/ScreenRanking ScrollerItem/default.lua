@@ -1,9 +1,9 @@
 local t = Def.ActorFrame{
-	InitCommand=cmd(runcommandsonleaves,cmd(ztest,true));
+	InitCommand=function(self) self:runcommandsonleaves(cmd(ztest,true)) end;
 	LoadActor("_song frame");
 
 	Def.Banner{
-		InitCommand=cmd(x,-276;halign,0;scaletoclipped,128,40;diffusealpha,0.5;fadeleft,0.25;faderight,0.25);
+		InitCommand=function(self) self:x(-276):halign(0):scaletoclipped(128,40):diffusealpha(0.5):fadeleft(0.25):faderight(0.25) end;
 		SetCommand=function(self, params)
 			if params.Song then
 				self:LoadFromSong( params.Song );
@@ -12,7 +12,7 @@ local t = Def.ActorFrame{
 	};
 	LoadFont("_v 26px bold diffuse")..{
 		--maxwidth,264
-		InitCommand=cmd(x,-292;halign,0;zoom,0.6;shadowlength,1;wrapwidthpixels,264;maxheight,58);
+		InitCommand=function(self) self:x(-292):halign(0):zoom(0.6):shadowlength(1):wrapwidthpixels(264):maxheight(58) end;
 		SetCommand=function(self, params)
 			if params.Song then
 				self:settext( params.Song:GetDisplayFullTitle() );
@@ -29,11 +29,11 @@ local Scores = Def.ActorFrame{
 for i=1,4 do
 	Scores[#Scores+1] = LoadFont("_v 26px bold black")..{
 		Name="Name"..i;
-		InitCommand=cmd(x,scale(i,1,4,-48,240);y,-8;zoom,0.625);
+		InitCommand=function(self) self:x(scale(i,1,4,-48,240)):y(-8):zoomx(0.875):zoomy(0.625) end;
 	};
 	Scores[#Scores+1] = LoadFont("_futurist numbers metallic")..{
 		Name="Score"..i;
-		InitCommand=cmd(x,scale(i,1,4,-48,240);y,12;zoom,0.5);
+		InitCommand=function(self) self:x(scale(i,1,4,-48,240)):y(12):zoomx(0.5):zoomy(0.75) end;
 	};
 end
 

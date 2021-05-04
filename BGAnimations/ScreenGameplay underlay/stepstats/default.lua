@@ -1,6 +1,6 @@
 local numPlayers = GAMESTATE:GetNumPlayersEnabled()
 
-local statObject
+local statObject = "single";
 if numPlayers == 1 then
 	-- check for doubles
 	local style = GAMESTATE:GetCurrentStyle()
@@ -15,6 +15,6 @@ end
 
 return Def.ActorFrame{
 	LoadActor(statObject)..{
-		InitCommand=cmd(visible,not GAMESTATE:IsDemonstration() and not GAMESTATE:IsCourseMode());
+		InitCommand=function(self) self:visible(not GAMESTATE:IsDemonstration() and not GAMESTATE:IsCourseMode()) end;
 	};
 };

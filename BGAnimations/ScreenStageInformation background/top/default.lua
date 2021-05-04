@@ -1,6 +1,6 @@
 local t = Def.ActorFrame{
 	LoadActor("_top")..{
-		InitCommand=cmd(Center;FullScreen;diffusealpha,0;);
+		InitCommand=function(self) self:Center():FullScreen():diffusealpha(0) end;
 		OnCommand=cmd(accelerate,0.3;diffusealpha,1);
 	};
 	LoadActor("_shadow")..{
@@ -33,7 +33,7 @@ local t = Def.ActorFrame{
 		LoadActor("_banner glass");
 	};
 	LoadActor(THEME:GetPathB("ScreenStageInformation","background/_flares"))..{
-		InitCommand=cmd(Center);
+		InitCommand=function(self) self:Center() end;
 		OnCommand=cmd(diffusealpha,1;zoom,1;linear,1;rotationz,250;diffusealpha,0);
 	};
 };

@@ -1,10 +1,10 @@
 return Def.ActorFrame{
 	LoadFont("_r bold shadow 30px")..{
 		InitCommand=cmd(zoom,0.66;maxwidth,360;halign,0);
-		CurrentSongChangedMessageCommand=cmd(playcommand,"Set");
-		CurrentCourseChangedMessageCommand=cmd(playcommand,"Set");
-		CurrentTrailP1ChangedMessageCommand=cmd(playcommand,"Set");
-		CurrentTrailP2ChangedMessageCommand=cmd(playcommand,"Set");
+		CurrentSongChangedMessageCommand=function(self) self:playcommand("Set") end;
+		CurrentCourseChangedMessageCommand=function(self) self:playcommand("Set") end;
+		CurrentTrailP1ChangedMessageCommand=function(self) self:playcommand("Set") end;
+		CurrentTrailP2ChangedMessageCommand=function(self) self:playcommand("Set") end;
 		SetCommand=function(self) 
 			local song = GAMESTATE:GetCurrentSong(); 
 			local course = GAMESTATE:GetCurrentCourse()

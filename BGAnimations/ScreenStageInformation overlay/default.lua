@@ -18,25 +18,25 @@ local t = Def.ActorFrame{
 
 	Def.ActorFrame{
 		Name="StageText";
-		InitCommand=cmd(CenterX);
+		InitCommand=function(self) self:CenterX() end;
 		Def.ActorFrame{
 			Name="Main";
-			InitCommand=cmd(y,SCREEN_CENTER_Y+60;);
+			InitCommand=function(self) self:y(SCREEN_CENTER_Y+60) end;
 			LoadActor(THEME:GetPathG("_gameplay","stage "..curStage))..{
-				InitCommand=cmd(horizalign,center;cropright,1.3;);
-				OnCommand=cmd(sleep,.22;linear,1;cropright,-0.3);
+				InitCommand=function(self) self:horizalign(center):cropright(1.3) end;
+				OnCommand=function(self) self:sleep(.22):linear(1):cropright(-0.3) end;
 			};
 			LoadActor(THEME:GetPathG("_white","gameplay stage "..curStage))..{
-				InitCommand=cmd(horizalign,center;cropleft,-0.3;cropright,1;faderight,.1;fadeleft,.1;);
-				OnCommand=cmd(sleep,.22;linear,1;cropleft,1;cropright,-0.3);
+				InitCommand=function(self) self:horizalign(center):cropleft(-0.3):cropright(1):faderight(.1):fadeleft(.1) end;
+				OnCommand=function(self) self:sleep(.22):linear(1):cropleft(1):cropright(-0.3) end;
 			};
 		};
 		Def.ActorFrame{
 			Name="Reflect";
-			InitCommand=cmd(y,SCREEN_CENTER_Y+86;);
+			InitCommand=function(self) self:y(SCREEN_CENTER_Y+86) end;
 			LoadActor(THEME:GetPathG("_gameplay","stage "..curStage))..{
-				InitCommand=cmd(horizalign,center;rotationz,180;zoomx,-1;diffusealpha,0.6;fadetop,2;cropright,1.3;);
-				OnCommand=cmd(linear,1.225;cropright,-0.3);
+				InitCommand=function(self) self:horizalign(center):rotationz(180):zoomx(-1):diffusealpha(0.6):fadetop(2):cropright(1.3) end;
+				OnCommand=function(self) self:linear(1.225):cropright(-0.3) end;
 			};
 		};
 	};
@@ -45,12 +45,12 @@ local t = Def.ActorFrame{
 
 	-- courses
 
-	LoadActor("blueflare")..{
-		InitCommand=cmd(CenterX;y,SCREEN_CENTER_Y+12.5;blend,Blend.Add;draworder,115);
-		OnCommand=cmd(zoomx,15;zoomtoheight,SCREEN_HEIGHT+SCREEN_HEIGHT/4;linear,1;zoomtoheight,0;diffusealpha,.0);
+	LoadActor("blueflare.png")..{
+		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+12.5):blend(Blend.Add):draworder(115) end;
+		OnCommand=function(self) self:zoomx(15):zoomtoheight(SCREEN_HEIGHT+SCREEN_HEIGHT/4):linear(1):zoomtoheight(0):diffusealpha(.0) end;
 	};
 	LoadActor(THEME:GetPathS("","_ok"))..{
-		OnCommand=cmd(play);
+		OnCommand=function(self) self:play() end;
 	};
 };
 

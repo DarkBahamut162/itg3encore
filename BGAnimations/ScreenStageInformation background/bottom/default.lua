@@ -1,10 +1,10 @@
 local t = Def.ActorFrame{
 	LoadActor("_bottom")..{
-		InitCommand=cmd(Center;FullScreen;diffusealpha,0;);
+		InitCommand=function(self) self:Center():FullScreen():diffusealpha(0) end;
 		OnCommand=cmd(accelerate,0.3;diffusealpha,1);
 	};
 	LoadActor("lines")..{
-		InitCommand=cmd(Center;FullScreen;diffusealpha,0;);
+		InitCommand=function(self) self:Center():FullScreen():diffusealpha(0) end;
 		OnCommand=cmd(accelerate,0.3;diffusealpha,1);
 	};
 	Def.Banner{

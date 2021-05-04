@@ -38,7 +38,7 @@ local t = Def.ActorFrame{
 				end
 				self:settext(text)
 			end;
-			OnCommand=cmd(playcommand,"Set");
+			OnCommand=function(self) self:playcommand("Set") end;
 		};
 		LoadFont("_r bold 30px")..{
 			Name="PlayerName";
@@ -46,7 +46,7 @@ local t = Def.ActorFrame{
 			SetCommand=function(self)
 				self:settext( PROFILEMAN:GetPlayerName(PLAYER_1) )
 			end;
-			OnCommand=cmd(playcommand,"Set");
+			OnCommand=function(self) self:playcommand("Set") end;
 		};
 	};
 	Def.ActorFrame{
@@ -81,7 +81,7 @@ local t = Def.ActorFrame{
 				end
 				self:settext(text)
 			end;
-			OnCommand=cmd(playcommand,"Set");
+			OnCommand=function(self) self:playcommand("Set") end;
 		};
 		LoadFont("_r bold 30px")..{
 			Name="PlayerName";
@@ -89,7 +89,7 @@ local t = Def.ActorFrame{
 			SetCommand=function(self)
 				self:settext( PROFILEMAN:GetPlayerName(PLAYER_2) )
 			end;
-			OnCommand=cmd(playcommand,"Set");
+			OnCommand=function(self) self:playcommand("Set") end;
 		};
 	};
 };

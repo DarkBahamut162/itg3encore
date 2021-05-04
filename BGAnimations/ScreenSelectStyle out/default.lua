@@ -16,7 +16,7 @@ return Def.ActorFrame{
 
 	-- lolhi (no card) vs. profile (card)
 	Def.Sprite{
-		InitCommand=cmd(Center;zoomx,SCREEN_WIDTH;zoomy,0;);
+		InitCommand=function(self) self:Center():zoomx(SCREEN_WIDTH):zoomy(0) end;
 		BeginCommand=function(self)
 			self:Load(THEME:GetPathB("","lolhi"))
 		end;

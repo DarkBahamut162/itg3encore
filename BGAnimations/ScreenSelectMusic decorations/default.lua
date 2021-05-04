@@ -42,6 +42,7 @@ t[#t+1] = Def.ActorFrame{
 	LoadActor(THEME:GetPathG('ScreenSelectMusic','BannerFrame'));
 	StandardDecorationFromFile("ArtistDisplay","ArtistDisplay");
 	StandardDecorationFromFile("BPMDisplay","BPMDisplay");
+	StandardDecorationFromFileOptional("SongTime","SongTime");
 	StandardDecorationFromFileOptional("StepsDisplayList","StepsDisplayList");
 	StandardDecorationFromFileOptional("CourseContentsList","CourseContentsList");
 };

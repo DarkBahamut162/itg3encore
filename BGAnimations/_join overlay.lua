@@ -1,23 +1,23 @@
 -- so much crap
 local t = Def.ActorFrame{
 	LoadFont("_v 26px bold black")..{
-		InitCommand=cmd(CenterX;y,SCREEN_BOTTOM-14;shadowlength,0;zoom,.6;diffusealpha,0;sleep,.5;linear,.2;diffusealpha,1;draworder,9999);
-		OnCommand=cmd(diffuseshift;effectcolor1,color("#FFFFFF");effectcolor2,color("#FFFFFF");playcommand,"Refresh");
-		OffCommand=cmd(stoptweening;linear,.2;diffusealpha,0);
+		InitCommand=function(self) self:CenterX():y(SCREEN_BOTTOM-14):shadowlength(0):zoom(.6):diffusealpha(0):sleep(.5):linear(.2):diffusealpha(1):draworder(9999) end;
+		OnCommand=function(self) self:diffuseshift():effectcolor1(color("#FFFFFF")):effectcolor2(color("#FFFFFF")):playcommand("Refresh") end;
+		OffCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(0) end;
 		RefreshCommand=function(self)
 			self:settext(Get2PlayerJoinMessage())
 		end;
-		JoinedCommand=cmd(linear,.2;diffusealpha,0);
-		PlayerJoinedMessageCommand=cmd(playcommand,"Joined");
-		CurrentStyleChangedMessageCommand=cmd(playcommand,"Refresh");
-		CoinInsertedMessageCommand=cmd(playcommand,"Refresh");
-		CoinModeChangedMessageCommand=cmd(playcommand,"Refresh");
+		JoinedCommand=function(self) self:linear(.2):diffusealpha(0) end;
+		PlayerJoinedMessageCommand=function(self) self:playcommand("Joined") end;
+		CurrentStyleChangedMessageCommand=function(self) self:playcommand("Refresh") end;
+		CoinInsertedMessageCommand=function(self) self:playcommand("Refresh") end;
+		CoinModeChangedMessageCommand=function(self) self:playcommand("Refresh") end;
 	};
 
 	-- P1
 	Def.ActorFrame{
 		Name="PressStartP1";
-		InitCommand=cmd(x,SCREEN_LEFT+90;y,SCREEN_BOTTOM-44;playcommand,"Refresh");
+		InitCommand=function(self) self:x(SCREEN_LEFT+90):y(SCREEN_BOTTOM-44):playcommand("Refresh") end;
 		RefreshCommand=function(self)
 			if GAMESTATE:IsPlayerEnabled(PLAYER_1) then self:visible(false); return end
 			if GAMESTATE:GetCoinMode() == 'CoinMode_Home' then self:visible(true) return end;
@@ -36,32 +36,32 @@ local t = Def.ActorFrame{
 			end
 		end;
 
-		CoinModeChangedMessageCommand=cmd(playcommand,"Refresh");
-		CoinInsertedMessageCommand=cmd(playcommand,"Refresh");
-		InsertCoinCommand=cmd(visible,false);
-		PressStartCommand=cmd(visible,true);
+		CoinModeChangedMessageCommand=function(self) self:playcommand("Refresh") end;
+		CoinInsertedMessageCommand=function(self) self:playcommand("Refresh") end;
+		InsertCoinCommand=function(self) self:visible(false) end;
+		PressStartCommand=function(self) self:visible(true) end;
 
 		LoadActor(THEME:GetPathB("","_overlay/joinin"))..{
-			InitCommand=cmd(x,-10;zoom,-.6);
-			JoinedCommand=cmd(linear,.2;diffusealpha,0);
+			InitCommand=function(self) self:x(-10):zoom(-.6) end;
+			JoinedCommand=function(self) self:linear(.2):diffusealpha(0) end;
 		};
 		LoadFont("_v 26px bold diffuse")..{
-			InitCommand=cmd(settext,"PRESS";shadowlength,2;zoom,0.6);
-			JoinedCommand=cmd(linear,.2;diffusealpha,0);
+			InitCommand=function(self) self:settext("PRESS"):shadowlength(2):zoom(0.6) end;
+			JoinedCommand=function(self) self:linear(.2):diffusealpha(0) end;
 		};
 		LoadActor(THEME:GetPathG("_common","base start button"))..{
-			InitCommand=cmd(addx,45;shadowlength,0;zoom,0.5);
-			JoinedCommand=cmd(linear,.2;diffusealpha,0);
+			InitCommand=function(self) self:addx(45):shadowlength(0):zoom(0.5) end;
+			JoinedCommand=function(self) self:linear(.2):diffusealpha(0) end;
 		};
 		LoadActor(THEME:GetPathG("_common","start button"))..{
-			InitCommand=cmd(addx,45;zoom,0.5;);
-			OnCommand=cmd(diffuseshift;effectcolor1,color("#FFFFFF");effectcolor2,color("#858585");effectclock,"beat");
-			JoinedCommand=cmd(linear,.2;diffusealpha,0);
+			InitCommand=function(self) self:addx(45):zoom(0.5) end;
+			OnCommand=function(self) self:diffuseshift():effectcolor1(color("#FFFFFF")):effectcolor2(color("#858585")):effectclock("beat") end;
+			JoinedCommand=function(self) self:linear(.2):diffusealpha(0) end;
 		};
 		LoadActor(THEME:GetPathG("_common","glow start button"))..{
-			InitCommand=cmd(addx,45;zoom,0.5;blend,Blend.Add;);
-			OnCommand=cmd(diffuseshift;effectcolor1,color("#6BFF75");effectcolor2,color("#FFFFFF00");effectclock,"beat");
-			JoinedCommand=cmd(linear,.2;diffusealpha,0);
+			InitCommand=function(self) self:addx(45):zoom(0.5):blend(Blend.Add) end;
+			OnCommand=function(self) self:diffuseshift():effectcolor1(color("#6BFF75")):effectcolor2(color("#FFFFFF00")):effectclock("beat") end;
+			JoinedCommand=function(self) self:linear(.2):diffusealpha(0) end;
 		};
 	};
 	Def.ActorFrame{
@@ -71,7 +71,7 @@ local t = Def.ActorFrame{
 	-- P2
 	Def.ActorFrame{
 		Name="PressStartP2";
-		InitCommand=cmd(x,SCREEN_RIGHT-90;y,SCREEN_BOTTOM-44;playcommand,"Refresh");
+		InitCommand=function(self) self:x(SCREEN_RIGHT-90):y(SCREEN_BOTTOM-44):playcommand("Refresh") end;
 		RefreshCommand=function(self)
 			if GAMESTATE:IsPlayerEnabled(PLAYER_2) then self:visible(false); return end
 			if GAMESTATE:GetCoinMode() == 'CoinMode_Home' then self:visible(true) return end;
@@ -90,32 +90,32 @@ local t = Def.ActorFrame{
 			end
 		end;
 
-		CoinModeChangedMessageCommand=cmd(playcommand,"Refresh");
-		CoinInsertedMessageCommand=cmd(playcommand,"Refresh");
-		InsertCoinCommand=cmd(visible,false);
-		PressStartCommand=cmd(visible,true);
+		CoinModeChangedMessageCommand=function(self) self:playcommand("Refresh") end;
+		CoinInsertedMessageCommand=function(self) self:playcommand("Refresh") end;
+		InsertCoinCommand=function(self) self:visible(false) end;
+		PressStartCommand=function(self) self:visible(true) end;
 
 		LoadActor(THEME:GetPathB("","_overlay/joinin"))..{
-			InitCommand=cmd(x,10;zoom,.6);
-			JoinedCommand=cmd(linear,.2;diffusealpha,0);
+			InitCommand=function(self) self:x(10):zoom(.6) end;
+			JoinedCommand=function(self) self:linear(.2):diffusealpha(0) end;
 		};
 		LoadFont("_v 26px bold diffuse")..{
-			InitCommand=cmd(settext,"PRESS";x,-33;shadowlength,2;zoom,0.6);
-			JoinedCommand=cmd(linear,.2;diffusealpha,0);
+			InitCommand=function(self) self:settext("PRESS"):x(-33):shadowlength(2):zoom(0.6) end;
+			JoinedCommand=function(self) self:linear(.2):diffusealpha(0) end;
 		};
 		LoadActor(THEME:GetPathG("_common","base start button"))..{
-			InitCommand=cmd(addx,11;shadowlength,0;zoom,0.5);
-			JoinedCommand=cmd(linear,.2;diffusealpha,0);
+			InitCommand=function(self) self:addx(11):shadowlength(0):zoom(0.5) end;
+			JoinedCommand=function(self) self:linear(.2):diffusealpha(0) end;
 		};
 		LoadActor(THEME:GetPathG("_common","start button"))..{
-			InitCommand=cmd(addx,11;zoom,0.5;);
-			OnCommand=cmd(diffuseshift;effectcolor1,color("#FFFFFF");effectcolor2,color("#858585");effectclock,"beat");
-			JoinedCommand=cmd(linear,.2;diffusealpha,0);
+			InitCommand=function(self) self:addx(11):zoom(0.5) end;
+			OnCommand=function(self) self:diffuseshift():effectcolor1(color("#FFFFFF")):effectcolor2(color("#858585")):effectoffset(-0.05):effectclock("beat"):effectperiod(1/177.38*120) end;
+			JoinedCommand=function(self) self:linear(.2):diffusealpha(0) end;
 		};
 		LoadActor(THEME:GetPathG("_common","glow start button"))..{
-			InitCommand=cmd(addx,11;zoom,0.5;blend,Blend.Add;);
-			OnCommand=cmd(diffuseshift;effectcolor1,color("#6BFF75");effectcolor2,color("#FFFFFF00");effectclock,"beat");
-			JoinedCommand=cmd(linear,.2;diffusealpha,0);
+			InitCommand=function(self) self:addx(11):zoom(0.5):blend(Blend.Add) end;
+			OnCommand=function(self) self:diffuseshift():effectcolor1(color("#6BFF75")):effectcolor2(color("#FFFFFF00")):effectoffset(-0.05):effectclock("beat"):effectperiod(1/177.38*120) end;
+			JoinedCommand=function(self) self:linear(.2):diffusealpha(0) end;
 		};
 	};
 	Def.ActorFrame{

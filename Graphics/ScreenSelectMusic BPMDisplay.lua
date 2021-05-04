@@ -4,8 +4,8 @@ local t = Def.ActorFrame{
 		Font="BPMDisplay bpm";
 		InitCommand=cmd(halign,1;zoom,0.66);
 		SetCommand=function(self) self:SetFromGameState(); end;
-		CurrentSongChangedMessageCommand=cmd(playcommand,'Set');
-		CurrentCourseChangedMessageCommand=cmd(playcommand,'Set');
+		CurrentSongChangedMessageCommand=function(self) self:playcommand("Set") end;
+		CurrentCourseChangedMessageCommand=function(self) self:playcommand("Set") end;
 	};
 };
 

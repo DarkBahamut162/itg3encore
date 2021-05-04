@@ -30,6 +30,6 @@ return Def.FadingBanner{
 		end
 		self:scaletoclipped(320,120)
 	end;
-	CurrentSongChangedMessageCommand=cmd(playcommand,"Set");
-	WheelMovingMessageCommand=cmd(queuecommand,"Set");
+	CurrentSongChangedMessageCommand=function(self) self:playcommand("Set") end;
+	WheelMovingMessageCommand=function(self) self:queuecommand("Set") end;
 };

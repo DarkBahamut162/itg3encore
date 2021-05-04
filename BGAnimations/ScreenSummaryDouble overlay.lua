@@ -1,23 +1,23 @@
 local t = Def.ActorFrame{
 	Def.ActorFrame{
-		InitCommand=cmd(x,-30;y,scale(1,1,7,SCREEN_CENTER_Y-150,SCREEN_CENTER_Y+10););
+		InitCommand=function(self) self:x(-30):y(scale(1,1,7,SCREEN_CENTER_Y-150,SCREEN_CENTER_Y+10)) end;
 
 		LoadFont("_eurostile normal")..{
 			Text="Actual";
-			InitCommand=cmd(x,scale(1,1,3,SCREEN_LEFT+300,SCREEN_RIGHT-100);zoom,.5;);
+			InitCommand=function(self) self:x(scale(1,1,3,SCREEN_LEFT+300,SCREEN_RIGHT-100)):zoom(.5) end;
 		};
 		LoadFont("_eurostile normal")..{
 			Text="Possible";
-			InitCommand=cmd(x,scale(2,1,3,SCREEN_LEFT+300,SCREEN_RIGHT-100);zoom,.5;);
+			InitCommand=function(self) self:x(scale(2,1,3,SCREEN_LEFT+300,SCREEN_RIGHT-100)):zoom(.5) end;
 		};
 		LoadFont("_eurostile normal")..{
 			Text="Star Complete";
-			InitCommand=cmd(x,scale(3,1,3,SCREEN_LEFT+300,SCREEN_RIGHT-100);zoom,.5;);
+			InitCommand=function(self) self:x(scale(3,1,3,SCREEN_LEFT+300,SCREEN_RIGHT-100)):zoom(.5) end;
 		};
 	};
 
 	LoadActor(THEME:GetPathB("_summary","difficulties"))..{
-		InitCommand=cmd(x,SCREEN_LEFT+110);
+		InitCommand=function(self) self:x(SCREEN_LEFT+110) end;
 	};
 };
 
@@ -26,12 +26,12 @@ local prof = PROFILEMAN:GetMachineProfile()
 local diffs = { nil, 'Difficulty_Easy', 'Difficulty_Medium', 'Difficulty_Hard', 'Difficulty_Challenge', 'Difficulty_Medium', 'Difficulty_Hard', }
 for i=1,3 do
 	local thing = Def.ActorFrame{
-		InitCommand=cmd(x,scale(i,1,3,SCREEN_LEFT+300,SCREEN_RIGHT-100));
+		InitCommand=function(self) self:x(scale(i,1,3,SCREEN_LEFT+300,SCREEN_RIGHT-100)) end;
 	};
 	for n=2,7 do
 		local diff
 		local num = LoadFont("_eurostile normal")..{
-			InitCommand=cmd(y,scale(n,1,7,SCREEN_CENTER_Y-150,SCREEN_CENTER_Y+10);zoom,.6;halign,1;);
+			InitCommand=function(self) self:y(scale(n,1,7,SCREEN_CENTER_Y-150,SCREEN_CENTER_Y+10)):zoom(.6):halign(1) end;
 			BeginCommand=function(self)
 				--set real numbers here
 				local val, text
@@ -69,13 +69,13 @@ local shortGrade = ToEnumShortString( GetGradeFromPercent(GetTotalPercentComplet
 
 local totals = Def.ActorFrame{
 	Def.ActorFrame{
-		InitCommand=cmd(y,SCREEN_CENTER_Y+70);
+		InitCommand=function(self) self:y(SCREEN_CENTER_Y+70) end;
 		LoadFont("_eurostile normal")..{
 			Text="Total Actual";
-			InitCommand=cmd(x,SCREEN_CENTER_X-260;y,-24;horizalign,left;zoom,0.6);
+			InitCommand=function(self) self:x(SCREEN_CENTER_X-260):y(-24):horizalign(left):zoom(0.6) end;
 		};
 		LoadFont("_r bold numbers")..{
-			InitCommand=cmd(x,SCREEN_CENTER_X+106;y,-24;horizalign,right;zoom,0.7);
+			InitCommand=function(self) self:x(SCREEN_CENTER_X+106):y(-24):horizalign(right):zoom(0.7) end;
 			BeginCommand=function(self)
 				local val = 0
 				for i=1,6 do
@@ -91,10 +91,10 @@ local totals = Def.ActorFrame{
 
 		LoadFont("_eurostile normal")..{
 			Text="Total Possible";
-			InitCommand=cmd(x,SCREEN_CENTER_X-260;y,-4;horizalign,left;zoom,0.6);
+			InitCommand=function(self) self:x(SCREEN_CENTER_X-260):y(-4):horizalign(left):zoom(0.6) end;
 		};
 		LoadFont("_r bold numbers")..{
-			InitCommand=cmd(x,SCREEN_CENTER_X+106;y,-4;horizalign,right;zoom,0.7);
+			InitCommand=function(self) self:x(SCREEN_CENTER_X+106):y(-4):horizalign(right):zoom(0.7) end;
 			BeginCommand=function(self)
 				local val = 0
 				for i=1,6 do
@@ -110,10 +110,10 @@ local totals = Def.ActorFrame{
 
 		LoadFont("_eurostile normal")..{
 			Text="Star Complete";
-			InitCommand=cmd(x,SCREEN_CENTER_X-260;y,20;horizalign,left;zoom,0.8);
+			InitCommand=function(self) self:x(SCREEN_CENTER_X-260):y(20):horizalign(left):zoom(0.8) end;
 		};
 		LoadFont("_r bold numbers")..{
-			InitCommand=cmd(x,SCREEN_CENTER_X+136;y,20;horizalign,right;);
+			InitCommand=function(self) self:x(SCREEN_CENTER_X+136):y(20):horizalign(right) end;
 			BeginCommand=function(self)
 				local val = GetTotalPercentComplete('StepsType_Dance_Double')
 				self:settext(FormatPercentScore(val))
@@ -125,7 +125,7 @@ local totals = Def.ActorFrame{
 			end;
 		};
 		LoadActor( THEME:GetPathG("GradeDisplayEval",shortGrade) )..{
-			InitCommand=cmd(x,SCREEN_CENTER_X+200;y,0;zoom,0.9);
+			InitCommand=function(self) self:x(SCREEN_CENTER_X+200):y(0):zoom(0.9) end;
 		};
 	};
 };

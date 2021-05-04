@@ -4,8 +4,8 @@ assert(player,"[Graphics/ScreenSelectMusic PaneNumbers] player required")
 return Def.ActorFrame{
 	LoadFont("smallnumbers")..{
 		Name="Jumps";
-		InitCommand=cmd(x,-127+101;diffusealpha,0;horizalign,center;);
-		CurrentSongChangedMessageCommand=cmd(playcommand,"Set");
+		InitCommand=function(self) self:x(-127+100):diffusealpha(0):horizalign(center):maxwidth(22) end;
+		CurrentSongChangedMessageCommand=function(self) self:playcommand("Set") end;
 		CurrentStepsP1ChangedMessageCommand=function(self)
 			if player == PLAYER_1 then self:playcommand("Set") end
 		end;
@@ -42,14 +42,14 @@ return Def.ActorFrame{
 				self:visible(false)
 			end
 		end;
-		SelectMenuOpenedMessageCommand=cmd(stoptweening;playcommand,"Set";linear,0.2;diffusealpha,1);
-		SelectMenuClosedMessageCommand=cmd(stoptweening;linear,0.2;diffusealpha,0);
-		OffCommand=cmd(stoptweening;linear,.12;diffusealpha,0;);
+		SelectMenuOpenedMessageCommand=function(self) self:stoptweening():playcommand("Set"):linear(0.2):diffusealpha(1) end;
+		SelectMenuClosedMessageCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(0) end;
+		OffCommand=function(self) self:stoptweening():linear(.12):diffusealpha(0) end;
 	};
 	LoadFont("smallnumbers")..{
 		Name="Holds";
-		InitCommand=cmd(x,-102+101;diffusealpha,0;horizalign,center;);
-		CurrentSongChangedMessageCommand=cmd(playcommand,"Set");
+		InitCommand=function(self) self:x(-102+100):diffusealpha(0):horizalign(center):maxwidth(22) end;
+		CurrentSongChangedMessageCommand=function(self) self:playcommand("Set") end;
 		CurrentStepsP1ChangedMessageCommand=function(self)
 			if player == PLAYER_1 then self:playcommand("Set") end
 		end;
@@ -86,14 +86,14 @@ return Def.ActorFrame{
 				self:visible(false)
 			end
 		end;
-		SelectMenuOpenedMessageCommand=cmd(stoptweening;playcommand,"Set";linear,0.2;diffusealpha,1);
-		SelectMenuClosedMessageCommand=cmd(stoptweening;linear,0.2;diffusealpha,0);
-		OffCommand=cmd(stoptweening;linear,.12;diffusealpha,0;);
+		SelectMenuOpenedMessageCommand=function(self) self:stoptweening():playcommand("Set"):linear(0.2):diffusealpha(1) end;
+		SelectMenuClosedMessageCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(0) end;
+		OffCommand=function(self) self:stoptweening():linear(.12):diffusealpha(0) end;
 	};
 	LoadFont("smallnumbers")..{
 		Name="Mines";
-		InitCommand=cmd(x,-77+101;diffusealpha,0;horizalign,center;);
-		CurrentSongChangedMessageCommand=cmd(playcommand,"Set");
+		InitCommand=function(self) self:x(-77+100):diffusealpha(0):horizalign(center):maxwidth(22) end;
+		CurrentSongChangedMessageCommand=function(self) self:playcommand("Set") end;
 		CurrentStepsP1ChangedMessageCommand=function(self)
 			if player == PLAYER_1 then self:playcommand("Set") end
 		end;
@@ -130,14 +130,14 @@ return Def.ActorFrame{
 				self:visible(false)
 			end
 		end;
-		SelectMenuOpenedMessageCommand=cmd(stoptweening;playcommand,"Set";linear,0.2;diffusealpha,1);
-		SelectMenuClosedMessageCommand=cmd(stoptweening;linear,0.2;diffusealpha,0);
-		OffCommand=cmd(stoptweening;linear,.12;diffusealpha,0;);
+		SelectMenuOpenedMessageCommand=function(self) self:stoptweening():playcommand("Set"):linear(0.2):diffusealpha(1) end;
+		SelectMenuClosedMessageCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(0) end;
+		OffCommand=function(self) self:stoptweening():linear(.12):diffusealpha(0) end;
 	};
 	LoadFont("smallnumbers")..{
 		Name="Hands";
-		InitCommand=cmd(x,-52+101;diffusealpha,0;horizalign,center;);
-		CurrentSongChangedMessageCommand=cmd(playcommand,"Set");
+		InitCommand=function(self) self:x(-52+100):diffusealpha(0):horizalign(center):maxwidth(22) end;
+		CurrentSongChangedMessageCommand=function(self) self:playcommand("Set") end;
 		CurrentStepsP1ChangedMessageCommand=function(self)
 			if player == PLAYER_1 then self:playcommand("Set") end
 		end;
@@ -174,14 +174,14 @@ return Def.ActorFrame{
 				self:visible(false)
 			end
 		end;
-		SelectMenuOpenedMessageCommand=cmd(stoptweening;playcommand,"Set";linear,0.2;diffusealpha,1);
-		SelectMenuClosedMessageCommand=cmd(stoptweening;linear,0.2;diffusealpha,0);
-		OffCommand=cmd(stoptweening;linear,.12;diffusealpha,0;);
+		SelectMenuOpenedMessageCommand=function(self) self:stoptweening():playcommand("Set"):linear(0.2):diffusealpha(1) end;
+		SelectMenuClosedMessageCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(0) end;
+		OffCommand=function(self) self:stoptweening():linear(.12):diffusealpha(0) end;
 	};
 	LoadFont("smallnumbers")..{
 		Name="Rolls";
-		InitCommand=cmd(x,-27+101;diffusealpha,0;horizalign,center;);
-		CurrentSongChangedMessageCommand=cmd(playcommand,"Set");
+		InitCommand=function(self) self:x(-27+100):diffusealpha(0):horizalign(center):maxwidth(22) end;
+		CurrentSongChangedMessageCommand=function(self) self:playcommand("Set") end;
 		CurrentStepsP1ChangedMessageCommand=function(self)
 			if player == PLAYER_1 then self:playcommand("Set") end
 		end;
@@ -201,7 +201,7 @@ return Def.ActorFrame{
 			local sel = GAMESTATE:GetCurrentSteps(player)
 			if sel then
 				self:visible(true)
-				local num = sel:GetRadarValues(player):GetValue('RadarCategory_Mines')
+				local num = sel:GetRadarValues(player):GetValue('RadarCategory_Rolls')
 				-- coloring
 				local itemColor = color(".4,.4,.4,1")
 				if num == 0 then itemColor = color(".4,.4,.4,1")
@@ -218,8 +218,8 @@ return Def.ActorFrame{
 				self:visible(false)
 			end
 		end;
-		SelectMenuOpenedMessageCommand=cmd(stoptweening;playcommand,"Set";linear,0.2;diffusealpha,1);
-		SelectMenuClosedMessageCommand=cmd(stoptweening;linear,0.2;diffusealpha,0);
-		OffCommand=cmd(stoptweening;linear,.12;diffusealpha,0;);
+		SelectMenuOpenedMessageCommand=function(self) self:stoptweening():playcommand("Set"):linear(0.2):diffusealpha(1) end;
+		SelectMenuClosedMessageCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(0) end;
+		OffCommand=function(self) self:stoptweening():linear(.12):diffusealpha(0) end;
 	};
 };

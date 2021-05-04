@@ -1,7 +1,7 @@
 return Def.ActorFrame{
 	LoadFont("_v 26px bold black")..{
-		InitCommand=cmd(CenterX;y,SCREEN_BOTTOM-16;diffusealpha,0;horizalign,center;shadowlength,0;zoom,.5;);
-		OnCommand=cmd(linear,.4;diffusealpha,1;playcommand,"Refresh");
+		InitCommand=function(self) self:CenterX():y(SCREEN_BOTTOM-16):diffusealpha(0):horizalign(center):shadowlength(0):zoom(.5) end;
+		OnCommand=function(self) self:linear(.4):diffusealpha(1):playcommand("Refresh") end;
 		RefreshCommand=function(self)
 			if GAMESTATE:IsEventMode() then self:settext('EVENT MODE') return end
 			if GAMESTATE:GetCoinMode()=='CoinMode_Free' then self:settext('FREE PLAY') return end
@@ -16,12 +16,12 @@ return Def.ActorFrame{
 			s=s..remainder..'/'..coinsPerCredit
 			self:settext(s)
 		end;
-		SelectMenuOpenedMessageCommand=cmd(stoptweening;bounceend,0.2;diffusealpha,0;);
-		SelectMenuClosedMessageCommand=cmd(stoptweening;linear,0.2;diffusealpha,1;);
+		SelectMenuOpenedMessageCommand=function(self) self:stoptweening():bounceend(0.2):diffusealpha(0) end;
+		SelectMenuClosedMessageCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(1) end;
 	};
 	LoadActor("updatecoin")..{
-		InitCommand=cmd(CenterX;y,SCREEN_BOTTOM-16;diffusealpha,0;horizalign,center;shadowlength,2;zoom,0.5;);
-		OnCommand=cmd(playcommand,"Refresh");
+		InitCommand=function(self) self:CenterX():y(SCREEN_BOTTOM-16):diffusealpha(0):horizalign(center):shadowlength(2):zoom(0.5) end;
+		OnCommand=function(self) self:playcommand("Refresh") end;
 		RefreshCommand=function(self)
 			self:diffusealpha(0);
 			self:zoom(0);
@@ -32,6 +32,6 @@ return Def.ActorFrame{
 			self:linear(0.1);
 			self:diffusealpha(0)
 		end;
-		CoinInsertedMessageCommand=cmd(stoptweening;playcommand,"Refresh");
+		CoinInsertedMessageCommand=function(self) self:stoptweening():playcommand("Refresh") end;
 	};
 };

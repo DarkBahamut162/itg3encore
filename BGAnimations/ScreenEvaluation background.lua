@@ -1,8 +1,17 @@
 return Def.ActorFrame{
-	LoadActor(THEME:GetPathB("ScreenSelectMusic","background/_fallback"))..{
-		InitCommand=cmd(Center);
-	};
 	LoadActor(THEME:GetPathB("ScreenSelectMusic","background/CJ126"))..{
-		InitCommand=cmd(Center;zoomtowidth,SCREEN_WIDTH;zoomtoheight,SCREEN_WIDTH/4*3);
+		InitCommand=function(self) self:Center():zoomtowidth(SCREEN_WIDTH):zoomtoheight(SCREEN_WIDTH/4*3) end;
+	};
+	Def.Sprite{
+		BeginCommand=function(self)
+			self:visible( not GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentSong():GetBannerPath() )
+		end;
+		InitCommand=function(self)
+			self:LoadFromSongBackground(GAMESTATE:GetCurrentSong())
+			self:FullScreen()
+			self:blend("BlendMode_Add")
+			self:diffusealpha(0.25)
+		end;
+		OnCommand=function(self) self:fadeleft(.2):faderight(.2):x(SCREEN_CENTER_X):y(SCREEN_CENTER_Y):zoomtowidth(SCREEN_WIDTH):zoomtoheight(SCREEN_WIDTH/16*10) end;
 	};
 }

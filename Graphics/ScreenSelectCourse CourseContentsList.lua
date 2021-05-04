@@ -11,8 +11,8 @@ return Def.CourseContentsList {
 		self:SetLoop(false);
 		self:SetMask(270,0);
 	end;
-	CurrentTrailP1ChangedMessageCommand=cmd(playcommand,"Set");
-	CurrentTrailP2ChangedMessageCommand=cmd(playcommand,"Set");
+	CurrentTrailP1ChangedMessageCommand=function(self) self:playcommand("Set") end;
+	CurrentTrailP2ChangedMessageCommand=function(self) self:playcommand("Set") end;
 
 	Display = Def.ActorFrame { 
 		--InitCommand=cmd(setsize,270,44);

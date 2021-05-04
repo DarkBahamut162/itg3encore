@@ -1,7 +1,7 @@
 -- ScreenSelectPlayMode Scroll Choice2
 return Def.ActorFrame{
-	MadeChoiceP1MessageCommand=cmd(playcommand,"GoOff");
-	MadeChoiceP2MessageCommand=cmd(playcommand,"GoOff");
+	MadeChoiceP1MessageCommand=function(self) self:playcommand("GoOff") end;
+	MadeChoiceP2MessageCommand=function(self) self:playcommand("GoOff") end;
 	GoOffCommand=function(self)
 		self:linear(0.5);
 		local bHasFocus=math.abs(self:GetZoomZ()-1.1)<0.01;
@@ -18,30 +18,30 @@ return Def.ActorFrame{
 		end
 		self:sleep(5)
 	end;
-	GainFocusCommand=cmd(zoom,1.0);
-	LoseFocusCommand=cmd(zoom,0.6);
+	GainFocusCommand=function(self) self:zoom(1.0) end;
+	LoseFocusCommand=function(self) self:zoom(0.6) end;
 
-	Def.ActorFrame{
-		InitCommand=cmd(x,-224;y,-70;zoom,.7);
-		--effectdelay,.5;
-		GainFocusCommand=cmd(pulse;effectmagnitude,1.2,1,0;effectclock,'beat';effectperiod,.5;effectoffset,0.6);
-		LoseFocusCommand=cmd(stopeffect);
-
-		LoadActor("fist")..{InitCommand=cmd(zbuffer,true);};
-	};
 	LoadActor("title")..{
-		InitCommand=cmd(x,-90;y,-70;zbuffer,true);
+		InitCommand=function(self) self:zoom(0):x(-100-1):y(-80-37) end;
+		GainFocusCommand=function(self) self:zoom(0):bounceend(0.1):zoom(0.885) end;
+		LoseFocusCommand=function(self) self:bouncebegin(0.1):zoom(0) end;
 	};
-	LoadActor(THEME:GetPathG("","blueflare"))..{
-		InitCommand=cmd(x,-82;y,-70;blend,Blend.Add;diffusealpha,0);
-		GainFocusCommand=cmd(finishtweening;zoom,0;diffusealpha,0;zoomx,7;zoomy,4;diffusealpha,1;linear,.2;zoomy,0;diffusealpha,0);
-		LoseFocusCommand=cmd(diffusealpha,0);
-		OffCommand=cmd(diffusealpha,0);
+	LoadActor("frame")..{
+		InitCommand=function(self) self:zoom(0):x(-100):y(-80) end;
+		GainFocusCommand=function(self) self:zoom(0):bounceend(0.1):zoom(1.1) end;
+		LoseFocusCommand=function(self) self:bouncebegin(0.1):zoom(0) end;
 	};
-	LoadActor(THEME:GetPathG("","blueflare"))..{
-		InitCommand=cmd(x,-82;y,-70;blend,Blend.Add;diffusealpha,0);
-		GainFocusCommand=cmd(finishtweening;zoom,0;diffusealpha,0;zoomx,7;zoomy,4;diffusealpha,1;linear,.4;zoomy,0;diffusealpha,0);
-		LoseFocusCommand=cmd(diffusealpha,0);
-		OffCommand=cmd(diffusealpha,0);
+
+	LoadActor(THEME:GetPathG("","blueflarerojo.png"))..{
+		InitCommand=function(self) self:x(-82):y(-70):blend(Blend.Add):diffusealpha(0) end;
+		GainFocusCommand=function(self) self:finishtweening():zoom(0):diffusealpha(0):zoomx(7):zoomy(4):diffusealpha(1):linear(.2):zoomy(0):diffusealpha(0) end;
+		LoseFocusCommand=function(self) self:diffusealpha(0) end;
+		OffCommand=function(self) self:diffusealpha(0) end;
+	};
+	LoadActor(THEME:GetPathG("","blueflarerojo.png"))..{
+		InitCommand=function(self) self:x(-82):y(-70):blend(Blend.Add):diffusealpha(0) end;
+		GainFocusCommand=function(self) self:finishtweening():zoom(0):diffusealpha(0):zoomx(7):zoomy(4):diffusealpha(1):linear(.4):zoomy(0):diffusealpha(0) end;
+		LoseFocusCommand=function(self) self:diffusealpha(0) end;
+		OffCommand=function(self) self:diffusealpha(0) end;
 	};
 };

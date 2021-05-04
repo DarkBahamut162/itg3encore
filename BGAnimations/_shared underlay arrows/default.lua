@@ -1,56 +1,56 @@
 return Def.ActorFrame{
 	Def.ActorFrame{
 		Name="LeftArrow";
-		InitCommand=cmd(x,SCREEN_CENTER_X-278;CenterY);
-		OnCommand=cmd(queuecommand,"Bob");
-		BobCommand=cmd(accelerate,.75;addx,-2;decelerate,.75;addx,-2;accelerate,.75;addx,2;decelerate,.75;addx,2;queuecommand,"Bob");
+		InitCommand=function(self) self:x(SCREEN_CENTER_X-278):CenterY() end;
+		OnCommand=function(self) self:queuecommand("Bob") end;
+		BobCommand=function(self) self:accelerate(.75):addx(-2):decelerate(.75):addx(-2):accelerate(.75):addx(2):decelerate(.75):addx(2):queuecommand("Bob") end;
 
 		LoadActor("arrow")..{
-			InitCommand=cmd(zoom,0.8;addx,-200;);
-			OnCommand=cmd(decelerate,0.5;addx,200);
-			OffCommand=cmd(zbuffer,true;accelerate,0.5;addx,-300);
-			BlinkCommand=cmd(finishtweening;zoom,1.2;glow,color("1,1,1,1");linear,0.2;glow,color("1,1,1,0");zoom,0.8);
-			MenuLeftP1MessageCommand=cmd(playcommand,"Blink");
-			MenuLeftP2MessageCommand=cmd(playcommand,"Blink");
-			MadeChoiceP1MessageCommand=cmd(playcommand,"Off");
-			MadeChoiceP2MessageCommand=cmd(playcommand,"Off");
+			InitCommand=function(self) self:zoom(0.8):addx(-200) end;
+			OnCommand=function(self) self:decelerate(0.5):addx(200) end;
+			OffCommand=function(self) self:zbuffer(true):accelerate(0.5):addx(-300) end;
+			BlinkCommand=function(self) self:finishtweening():zoom(1.2):glow(color("1,1,1,1")):linear(0.2):glow(color("1,1,1,0")):zoom(0.8) end;
+			MenuLeftP1MessageCommand=function(self) self:playcommand("Blink") end;
+			MenuLeftP2MessageCommand=function(self) self:playcommand("Blink") end;
+			MadeChoiceP1MessageCommand=function(self) self:playcommand("Off") end;
+			MadeChoiceP2MessageCommand=function(self) self:playcommand("Off") end;
 		};
 		LoadActor("glow")..{
-			InitCommand=cmd(diffusealpha,0;zoom,0.8;addx,-200;blend,Blend.Add);
-			OnCommand=cmd(decelerate,0.5;addx,200);
-			OffCommand=cmd(zbuffer,true;accelerate,0.5;addx,-300);
-			BlinkCommand=cmd(finishtweening;zoom,1.2;diffusealpha,1;linear,0.4;diffusealpha,0;zoom,0.8);
-			MenuLeftP1MessageCommand=cmd(playcommand,"Blink");
-			MenuLeftP2MessageCommand=cmd(playcommand,"Blink");
-			MadeChoiceP1MessageCommand=cmd(playcommand,"Off");
-			MadeChoiceP2MessageCommand=cmd(playcommand,"Off");
+			InitCommand=function(self) self:diffusealpha(0):zoom(0.8):addx(-200):blend(Blend.Add) end;
+			OnCommand=function(self) self:decelerate(0.5):addx(200) end;
+			OffCommand=function(self) self:zbuffer(true):accelerate(0.5):addx(-300) end;
+			BlinkCommand=function(self) self:finishtweening():zoom(1.2):diffusealpha(1):linear(0.4):diffusealpha(0):zoom(0.8) end;
+			MenuLeftP1MessageCommand=function(self) self:playcommand("Blink") end;
+			MenuLeftP2MessageCommand=function(self) self:playcommand("Blink") end;
+			MadeChoiceP1MessageCommand=function(self) self:playcommand("Off") end;
+			MadeChoiceP2MessageCommand=function(self) self:playcommand("Off") end;
 		};
 	};
 	Def.ActorFrame{
 		Name="RightArrow";
-		InitCommand=cmd(x,SCREEN_CENTER_X+102;CenterY);
-		OnCommand=cmd(queuecommand,"Bob");
-		BobCommand=cmd(accelerate,.75;addx,-2;decelerate,.75;addx,-2;accelerate,.75;addx,2;decelerate,.75;addx,2;queuecommand,"Bob");
+		InitCommand=function(self) self:x(SCREEN_CENTER_X+102):CenterY() end;
+		OnCommand=function(self) self:queuecommand("Bob") end;
+		BobCommand=function(self) self:accelerate(.75):addx(-2):decelerate(.75):addx(-2):accelerate(.75):addx(2):decelerate(.75):addx(2):queuecommand("Bob") end;
 
 		LoadActor("arrow")..{
-			InitCommand=cmd(rotationz,180;zoom,0.8;addx,200;);
-			OnCommand=cmd(decelerate,0.5;addx,-200);
-			OffCommand=cmd(zbuffer,true;accelerate,0.5;addx,300);
-			BlinkCommand=cmd(finishtweening;zoom,1.2;glow,color("1,1,1,1");linear,0.2;glow,color("1,1,1,0");zoom,0.8);
-			MenuRightP1MessageCommand=cmd(playcommand,"Blink");
-			MenuRightP2MessageCommand=cmd(playcommand,"Blink");
-			MadeChoiceP1MessageCommand=cmd(playcommand,"Off");
-			MadeChoiceP2MessageCommand=cmd(playcommand,"Off");
+			InitCommand=function(self) self:rotationz(180):zoom(0.8):addx(200) end;
+			OnCommand=function(self) self:decelerate(0.5):addx(-200) end;
+			OffCommand=function(self) self:zbuffer(true):accelerate(0.5):addx(300) end;
+			BlinkCommand=function(self) self:finishtweening():zoom(1.2):glow(color("1,1,1,1")):linear(0.2):glow(color("1,1,1,0")):zoom(0.8) end;
+			MenuRightP1MessageCommand=function(self) self:playcommand("Blink") end;
+			MenuRightP2MessageCommand=function(self) self:playcommand("Blink") end;
+			MadeChoiceP1MessageCommand=function(self) self:playcommand("Off") end;
+			MadeChoiceP2MessageCommand=function(self) self:playcommand("Off") end;
 		};
 		LoadActor("glow")..{
-			InitCommand=cmd(rotationz,180;diffusealpha,0;zoom,0.8;addx,200;blend,Blend.Add);
-			OnCommand=cmd(decelerate,0.5;addx,-200);
-			OffCommand=cmd(zbuffer,true;accelerate,0.5;addx,300);
-			BlinkCommand=cmd(finishtweening;zoom,1.2;diffusealpha,1;linear,0.4;diffusealpha,0;zoom,0.8);
-			MenuRightP1MessageCommand=cmd(playcommand,"Blink");
-			MenuRightP2MessageCommand=cmd(playcommand,"Blink");
-			MadeChoiceP1MessageCommand=cmd(playcommand,"Off");
-			MadeChoiceP2MessageCommand=cmd(playcommand,"Off");
+			InitCommand=function(self) self:rotationz(180):diffusealpha(0):zoom(0.8):addx(200):blend(Blend.Add) end;
+			OnCommand=function(self) self:decelerate(0.5):addx(-200) end;
+			OffCommand=function(self) self:zbuffer(true):accelerate(0.5):addx(300) end;
+			BlinkCommand=function(self) self:finishtweening():zoom(1.2):diffusealpha(1):linear(0.4):diffusealpha(0):zoom(0.8) end;
+			MenuRightP1MessageCommand=function(self) self:playcommand("Blink") end;
+			MenuRightP2MessageCommand=function(self) self:playcommand("Blink") end;
+			MadeChoiceP1MessageCommand=function(self) self:playcommand("Off") end;
+			MadeChoiceP2MessageCommand=function(self) self:playcommand("Off") end;
 		};
 	};
 };

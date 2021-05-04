@@ -9,13 +9,13 @@ return Def.ActorFrame{
 
 	Def.ActorFrame{
 		Name="Player";
-		InitCommand=cmd(x,xPos;addx,100);
-		BeginCommand=cmd(visible,GAMESTATE:IsHumanPlayer(pn));
-		OnCommand=cmd(sleep,0.5;decelerate,0.8;addx,-100);
+		InitCommand=function(self) self:x(xPos):addx(100) end;
+		BeginCommand=function(self) self:visible(GAMESTATE:IsHumanPlayer(pn)) end;
+		OnCommand=function(self) self:sleep(0.5):decelerate(0.8):addx(-100) end;
 
 		LoadActor("d_bg");
 		LoadActor("d_bar_fantastic")..{
-			InitCommand=cmd(vertalign,bottom;x,-4;y,164;zoomx,4.66/14;zoomy,0;);
+			InitCommand=function(self) self:vertalign(bottom):x(-4):y(164):zoomx(4.66/14):zoomy(0) end;
 			StepMessageCommand=function(self,p)
 				if p.PlayerNumber == pn then self:playcommand("Update") end
 			end;
@@ -30,7 +30,7 @@ return Def.ActorFrame{
 			end;
 		};
 		LoadActor("d_bar_excellent")..{
-			InitCommand=cmd(vertalign,bottom;y,164;zoomx,4.66/14;zoomy,0;);
+			InitCommand=function(self) self:vertalign(bottom):y(164):zoomx(4.66/14):zoomy(0) end;
 			StepMessageCommand=function(self,p)
 				if p.PlayerNumber == pn then self:playcommand("Update") end
 			end;
@@ -45,7 +45,7 @@ return Def.ActorFrame{
 			end;
 		};
 		LoadActor("d_bar_other")..{
-			InitCommand=cmd(vertalign,bottom;x,4;y,164;zoomx,4.66/14;zoomy,0;);
+			InitCommand=function(self) self:vertalign(bottom):x(4):y(164):zoomx(4.66/14):zoomy(0) end;
 			StepMessageCommand=function(self,p)
 				if p.PlayerNumber == pn then self:playcommand("Update") end
 			end;
@@ -65,13 +65,13 @@ return Def.ActorFrame{
 		Def.ActorFrame{
 			Name="Labels";
 			LoadFont("ScreenGameplay judgment")..{
-				InitCommand=cmd(x,-4;y,-204+15*0;zoom,0.5;horizalign,left;diffuse,color("#b2f9ff");settext,"F");
+				InitCommand=function(self) self:x(-4):y(-204+15*0):zoom(0.5):horizalign(left):diffuse(color("#b2f9ff")):settext("F") end;
 			};
 			LoadFont("ScreenGameplay judgment")..{
-				InitCommand=cmd(x,-4;y,-204+15*1;zoom,0.5;horizalign,left;diffuse,color("#ffe2bd");settext,"E");
+				InitCommand=function(self) self:x(-4):y(-204+15*1):zoom(0.5):horizalign(left):diffuse(color("#ffe2bd")):settext("E") end;
 			};
 			LoadFont("ScreenGameplay judgment")..{
-				InitCommand=cmd(x,-4;y,-204+15*2;zoom,0.5;horizalign,left;diffuse,color("#c9fb9f");settext,"D");
+				InitCommand=function(self) self:x(-4):y(-204+15*2):zoom(0.5):horizalign(left):diffuse(color("#c9fb9f")):settext("D") end;
 			};
 		};
 		Def.ActorFrame{
@@ -82,7 +82,7 @@ return Def.ActorFrame{
 				end
 			end;
 			LoadFont("ScreenGameplay judgment")..{
-				InitCommand=cmd(x,-10;y,-204+15*0;zoom,0.5;horizalign,right;settext,"0");
+				InitCommand=function(self) self:x(-10):y(-204+15*0):zoom(0.5):horizalign(right):settext("0") end;
 				UpdateCommand=function(self)
 					local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn)
 					local w1Notes = pss:GetTapNoteScores('TapNoteScore_W1')
@@ -90,7 +90,7 @@ return Def.ActorFrame{
 				end;
 			};
 			LoadFont("ScreenGameplay judgment")..{
-				InitCommand=cmd(x,-10;y,-204+15*1;zoom,0.5;horizalign,right;settext,"0");
+				InitCommand=function(self) self:x(-10):y(-204+15*1):zoom(0.5):horizalign(right):settext("0") end;
 				UpdateCommand=function(self)
 					local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn)
 					local w2Notes = pss:GetTapNoteScores('TapNoteScore_W2')
@@ -98,7 +98,7 @@ return Def.ActorFrame{
 				end;
 			};
 			LoadFont("ScreenGameplay judgment")..{
-				InitCommand=cmd(x,-10;y,-204+15*2;zoom,0.5;horizalign,right;settext,"0");
+				InitCommand=function(self) self:x(-10):y(-204+15*2):zoom(0.5):horizalign(right):settext("0") end;
 				UpdateCommand=function(self)
 					local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn)
 					local otherNotes = pss:GetTapNoteScores('TapNoteScore_W3')

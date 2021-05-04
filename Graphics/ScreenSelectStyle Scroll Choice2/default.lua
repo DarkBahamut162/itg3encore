@@ -1,7 +1,7 @@
 -- ScreenSelectStyle Scroll Choice2
 return Def.ActorFrame{
-	MadeChoiceP1MessageCommand=cmd(playcommand,"GoOff");
-	MadeChoiceP2MessageCommand=cmd(playcommand,"GoOff");
+	MadeChoiceP1MessageCommand=function(self) self:playcommand("GoOff") end;
+	MadeChoiceP2MessageCommand=function(self) self:playcommand("GoOff") end;
 	GoOffCommand=function(self)
 		self:linear(0.5);
 		local bHasFocus=math.abs(self:GetZoomZ()-1.1)<0.01;
@@ -19,39 +19,39 @@ return Def.ActorFrame{
 		end
 		self:sleep(5)
 	end;
-	GainFocusCommand=cmd(zoom,1);
-	LoseFocusCommand=cmd(zoom,0.6);
+	GainFocusCommand=function(self) self:zoom(1) end;
+	LoseFocusCommand=function(self) self:zoom(0.6) end;
 	Def.ActorFrame{
-		InitCommand=cmd(x,-30;y,-50);
-		GainFocusCommand=cmd(wag;effectmagnitude,0,10,0);
-		LoseFocusCommand=cmd(stopeffect);
+		InitCommand=function(self) self:x(-30):y(-50) end;
+		GainFocusCommand=function(self) self:wag():effectmagnitude(0,10,0) end;
+		LoseFocusCommand=function(self) self:stopeffect() end;
 		LoadActor(THEME:GetPathG("_platform","home single"))..{
-			InitCommand=cmd(zoom,1.2;rotationx,30);
+			InitCommand=function(self) self:zoom(1.2):rotationx(30) end;
 		};
 	};
 	Def.ActorFrame{
-		InitCommand=cmd(x,150;y,-50);
-		GainFocusCommand=cmd(wag;effectmagnitude,0,10,0);
-		LoseFocusCommand=cmd(stopeffect);
+		InitCommand=function(self) self:x(150):y(-50) end;
+		GainFocusCommand=function(self) self:wag():effectmagnitude(0,10,0) end;
+		LoseFocusCommand=function(self) self:stopeffect() end;
 		LoadActor(THEME:GetPathG("_platform","home single"))..{
-			InitCommand=cmd(zoom,1.2;rotationx,30);
+			InitCommand=function(self) self:zoom(1.2):rotationx(30) end;
 		};
 	};
 	LoadActor("title")..{
-		InitCommand=cmd(x,60;y,-120;shadowlength,4);
-		EnabledCommand=cmd(stopeffect);
-		DisabledCommand=cmd(diffuseshift;effectcolor1,color("0,0,0,1");effectcolor2,color("0,0,0,1"));
+		InitCommand=function(self) self:x(60):y(-120):shadowlength(4) end;
+		EnabledCommand=function(self) self:stopeffect() end;
+		DisabledCommand=function(self) self:diffuseshift():effectcolor1(color("0,0,0,1")):effectcolor2(color("0,0,0,1")) end;
 	};
-	LoadActor(THEME:GetPathG("","blueflare"))..{
-		InitCommand=cmd(x,60;y,-120;blend,Blend.Add;diffusealpha,0);
-		GainFocusCommand=cmd(finishtweening;zoom,0;diffusealpha,0;zoomx,7;zoomy,4;diffusealpha,1;linear,.2;zoomy,0;diffusealpha,0);
-		LoseFocusCommand=cmd(diffusealpha,0);
-		OffCommand=cmd(diffusealpha,0);
+	LoadActor(THEME:GetPathG("","blueflareverde"))..{
+		InitCommand=function(self) self:x(60):y(-120):blend(Blend.Add):diffusealpha(0) end;
+		GainFocusCommand=function(self) self:finishtweening():zoom(0):diffusealpha(0):zoomx(7):zoomy(4):diffusealpha(1):linear(.2):zoomy(0):diffusealpha(0) end;
+		LoseFocusCommand=function(self) self:diffusealpha(0) end;
+		OffCommand=function(self) self:diffusealpha(0) end;
 	};
-	LoadActor(THEME:GetPathG("","blueflare"))..{
-		InitCommand=cmd(x,60;y,-120;blend,Blend.Add;diffusealpha,0);
-		GainFocusCommand=cmd(finishtweening;zoom,0;diffusealpha,0;zoomx,7;zoomy,4;diffusealpha,1;linear,.4;zoomy,0;diffusealpha,0);
-		LoseFocusCommand=cmd(diffusealpha,0);
-		OffCommand=cmd(diffusealpha,0);
+	LoadActor(THEME:GetPathG("","blueflareverde"))..{
+		InitCommand=function(self) self:x(60):y(-120):blend(Blend.Add):diffusealpha(0) end;
+		GainFocusCommand=function(self) self:finishtweening():zoom(0):diffusealpha(0):zoomx(7):zoomy(4):diffusealpha(1):linear(.4):zoomy(0):diffusealpha(0) end;
+		LoseFocusCommand=function(self) self:diffusealpha(0) end;
+		OffCommand=function(self) self:diffusealpha(0) end;
 	};
 };
