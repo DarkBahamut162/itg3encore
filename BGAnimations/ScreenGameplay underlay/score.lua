@@ -7,7 +7,7 @@ return Def.BitmapText{
     Name=ToEnumShortString(player).."Score",
     InitCommand=function(self)
         self:valign(1):halign(1)
-
+        self:diffuse(PlayerColor(player));
         self:zoom(1.1):x( _screen.cx - _screen.w/8 ):y(80)
         if player == PLAYER_2 then
             self:x( _screen.cx + _screen.w/3.4 )
