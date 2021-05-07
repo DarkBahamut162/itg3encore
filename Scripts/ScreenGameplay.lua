@@ -92,3 +92,21 @@ function songfail(bVertex)
 
 	return not bVertex
 end
+
+function PlayerFullComboed(pn)
+	if GAMESTATE:IsPlayerEnabled(pn) then
+		local fct = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn)
+		if fct:FullComboOfScore('TapNoteScore_W1') == true or
+			fct:FullComboOfScore('TapNoteScore_W2') == true or
+			fct:FullComboOfScore('TapNoteScore_W3') == true then
+			return true;
+		end
+	end	
+	return false
+end
+
+function AnyPlayerFullComboed(self)
+	if PlayerFullComboed(PLAYER_1) or PlayerFullComboed(PLAYER_2) then 
+		return true
+	end
+end

@@ -63,14 +63,14 @@ local t = Def.ActorFrame{
 	};
 	-- custom mods p1/p2
 	LoadFont("_v 26px bold shadow")..{
-		Text="DisplayCustomModifiersText(PLAYER_1)";
-		InitCommand=function(self) self:settext(DisplayCustomModifiersText(PLAYER_1)):maxwidth(350):zoom(.5):x(SCREEN_CENTER_X-9-2):y(SCREEN_CENTER_Y+9):horizalign(right):shadowlength(0):diffusebottomedge(#BBB9FB) end;
+		Text="";
+		InitCommand=function(self) if GAMESTATE:IsPlayerEnabled(PLAYER_1) then self:settext(DisplayCustomModifiersText(PLAYER_1)) end self:maxwidth(350):zoom(.5):x(SCREEN_CENTER_X-9-2):y(SCREEN_CENTER_Y+9):horizalign(right):shadowlength(0):diffusebottomedge(#BBB9FB) end;
 		OnCommand=function(self) self:diffusealpha(0):sleep(3):linear(0.8):diffusealpha(1) end;
 		OffCommand=function(self) self:linear(0.2):diffusealpha(0) end;
 	};
 	LoadFont("_v 26px bold shadow")..{
-		Text="DisplayCustomModifiersText(PLAYER_2)";
-		InitCommand=function(self) self:settext(DisplayCustomModifiersText(PLAYER_2)):maxwidth(350):zoom(.5):x(SCREEN_CENTER_X+10-2):y(SCREEN_CENTER_Y+9):horizalign(left):shadowlength(0):diffusebottomedge(#BBB9FB) end;
+		Text="";
+		InitCommand=function(self) if GAMESTATE:IsPlayerEnabled(PLAYER_2) then self:settext(DisplayCustomModifiersText(PLAYER_2)) end self:maxwidth(350):zoom(.5):x(SCREEN_CENTER_X+10-2):y(SCREEN_CENTER_Y+9):horizalign(left):shadowlength(0):diffusebottomedge(#BBB9FB) end;
 		OnCommand=function(self) self:diffusealpha(0):sleep(3):linear(0.8):diffusealpha(1) end;
 		OffCommand=function(self) self:linear(0.2):diffusealpha(0) end;
 	};
