@@ -19,27 +19,14 @@ local TNSFrames = {
 	TapNoteScore_Miss = 5;
 };
 
--- todo: rotation based on even/odd
---[[
-W1EvenCommand=rotationz,0
-W1OddCommand=rotationz,0
-
-W2EvenCommand=rotationz,0
-W2OddCommand=rotationz,0
-
-W3EvenCommand=rotationz,-3
-W3OddCommand=rotationz,3
-
-W4EvenCommand=rotationz,-5
-W4OddCommand=rotationz,5
-
-W5EvenCommand=rotationz,-10
-W5OddCommand=rotationz,10
-
-MissEvenCommand=rotationz,-30
-MissOddCommand=rotationz,30
---]]
-local rotations = { W3 = 3, W4 = 5, W5 = 10, Miss = 30 }
+local TNSRotationZ = {
+	TapNoteScore_W1 = 0;
+	TapNoteScore_W2 = 0;
+	TapNoteScore_W3 = 3;
+	TapNoteScore_W4 = 5;
+	TapNoteScore_W5 = 10;
+	TapNoteScore_Miss = 30;
+};
 
 return Def.ActorFrame {
 	LoadActor("_judgments") .. {
@@ -75,8 +62,7 @@ return Def.ActorFrame {
 		if tns == 'TapNoteScore_W1' or tns == 'TapNoteScore_W2' then
 			c.Judgment:rotationz(0)
 		else
-			-- determine if we should use even or odd.
-			
+			c.Judgment:rotationz( TNSRotationZ[tns] * StepEvenOdd() );
 		end
 	end;
 };

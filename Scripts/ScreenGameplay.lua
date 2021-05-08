@@ -110,3 +110,25 @@ function AnyPlayerFullComboed(self)
 		return true
 	end
 end
+
+-- Needed for judgment rotation
+local StepCount = 0;
+function StepEvenOdd()
+	StepCount=StepCount+1;
+	if StepCount % 2 == 0 then
+		return 1
+	else
+		return -1
+	end
+end
+
+-- Needed for hold rotation
+local HoldCount = 0;
+function HoldEvenOdd()
+	HoldCount=HoldCount+1;
+	if HoldCount % 2 == 0 then
+		return 1
+	else
+		return -1
+	end
+end
