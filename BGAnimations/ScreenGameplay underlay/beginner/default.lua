@@ -1,6 +1,6 @@
 return Def.ActorFrame{
 	Def.ActorFrame{
-		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y-30) end;
+		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+15) end;
 		Def.ActorFrame{
 			LoadActor("light_frame");
 
