@@ -5,7 +5,7 @@ local machineProfile = PROFILEMAN:GetMachineProfile()
 
 -- something about making scroller items
 local wheelItemFont = "_r bold 30px"
-local wheelItemFocus = cmd(diffuseshift;effectcolor1,color("1,1,0,1");effectcolor2,color("0,1,1,1"))
+local wheelItemFocus = function(self) self:diffuseshift():effectcolor1(color("1,1,0,1")):effectcolor2(color("0,1,1,1")) end
 
 local function MakeHighScoreWheelItem(index)
 	return Def.ActorFrame{
@@ -53,22 +53,22 @@ local function MakeHighScoreWheelItem(index)
 			LoadFont(wheelItemFont)..{
 				Name="Rank",
 				Text=index+1,
-				InitCommand=cmd(x,-158;shadowlength,2),
+				InitCommand=function(self) self:x(-158):shadowlength(2) end;
 				FocusCommand=wheelItemFocus,
 			},
 			LoadFont(wheelItemFont)..{
 				Name="Name",
-				InitCommand=cmd(x,-89;maxwidth,80;shadowlength,2),
+				InitCommand=function(self) self:x(-89):maxwidth(80):shadowlength(2) end;
 				FocusCommand=wheelItemFocus,
 			},
 			LoadFont(wheelItemFont)..{
 				Name="Score",
-				InitCommand=cmd(x,87;halign,1;maxwidth,120;shadowlength,2),
+				InitCommand=function(self) self:x(87):halign(1):maxwidth(120):shadowlength(2) end;
 				FocusCommand=wheelItemFocus,
 			},
 			LoadFont(wheelItemFont)..{
 				Name="Date",
-				InitCommand=cmd(x,134;maxwidth,60;shadowlength,2),
+				InitCommand=function(self) self:x(134):maxwidth(60):shadowlength(2) end;
 				FocusCommand=wheelItemFocus,
 			}
 		}
@@ -86,7 +86,7 @@ float HighScoreWheel::Scroll()
 --]]
 
 return Def.ActorFrame{
-	InitCommand=cmd(fov,15),
+	InitCommand=function(self) self:fov(15) end;
 
 	Def.ActorScroller{
 		SecondsPerItem=0.2,
@@ -98,7 +98,7 @@ return Def.ActorFrame{
 			self:y(math.sin(radians)*90)
 			self:z(math.cos(radians)*90)
 		end,
-		OffCommand=cmd(stoptweening),
+		OffCommand=function(self) self:stoptweening() end;
 
 		ChangeDisplayedFeatMessageCommand=function(self,param)
 			if param.Player == Player then

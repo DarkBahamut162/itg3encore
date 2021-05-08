@@ -35,7 +35,7 @@ return Def.ActorFrame{
 		end;
 		HealthStateChangedMessageCommand=function(self, param)
 			if param.HealthState == "HealthState_Dead" then
-				self:RunCommandsOnChildren(cmd(playcommand,"Show"))
+				self:RunCommandsOnChildren(self:playcommand("Show"))
 			end
 		end;
 		Def.Quad{

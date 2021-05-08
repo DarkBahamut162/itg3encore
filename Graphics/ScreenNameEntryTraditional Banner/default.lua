@@ -3,7 +3,7 @@
 return Def.ActorFrame{
 	-- banner, which is meant to fade between multiple banners... great.
 	Def.Banner{
-		InitCommand=cmd(ztest,true;scaletoclipped,174,68),
+		InitCommand=function(self) self:ztest(true):scaletoclipped(174,68) end;
 
 		ChangeDisplayedFeatMessageCommand=function(self,param)
 			if GAMESTATE:IsCourseMode() then

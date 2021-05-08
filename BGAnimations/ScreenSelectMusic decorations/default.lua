@@ -8,7 +8,7 @@ local function StepsDisplay(pn)
 	local function set(self, player) self:SetFromGameState(player); end
 
 	local t = Def.StepsDisplay {
-		InitCommand=cmd(player,pn;Load,"StepsDisplay",GAMESTATE:GetPlayerState(pn););
+		InitCommand=function(self) self:player(pn):Load("StepsDisplay",GAMESTATE:GetPlayerState(pn)) end;
 		CurrentSongChangedMessageCommand=function(self)
 			local song = GAMESTATE:GetCurrentSong()
 			self:visible(song ~= nil)

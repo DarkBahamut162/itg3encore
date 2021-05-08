@@ -7,7 +7,7 @@ return Def.ActorFrame{
 	};
 
 	LoadActor("explanation frame")..{
-		InitCommand=cmd(x,SCREEN_CENTER_X-55-34;y,SCREEN_CENTER_Y+120;diffusealpha,0;);
+		InitCommand=function(self) self:x(SCREEN_CENTER_X-55-34):y(SCREEN_CENTER_Y+120):diffusealpha(0) end;
 		OnCommand=function(self) self:linear(0.5):diffusealpha(1.0) end;
 		MadeChoiceP1MessageCommand=function(self) self:playcommand("GoOff") end;
 		MadeChoiceP2MessageCommand=function(self) self:playcommand("GoOff") end;

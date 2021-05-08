@@ -18,7 +18,7 @@ local function CreateScrollerItem(char,altName)
 		Name="Character_"..altName;
 		LoadFont("ScreenNameEntryTraditional entry")..{
 			Text=char,
-			BeginCommand=cmd(zoom,textZoom;shadowlength,4),
+			BeginCommand=function(self) self:zoom(textZoom):shadowlength(4) end;
 		}
 	}
 end
@@ -113,7 +113,7 @@ local t = Def.ActorFrame{
 		Name="KeyScroller",
 		SecondsPerItem=0.2,
 		NumItemsToDraw=5,
-		InitCommand=cmd(SetLoop,true),
+		InitCommand=function(self) self:SetLoop(true) end;
 		TransformFunction=function(self,offset,itemIndex,numItems)
 			self:x(offset*40)
 		end,

@@ -1,15 +1,15 @@
 local t = Def.ActorFrame{
 	LoadActor("_bottom")..{
 		InitCommand=function(self) self:Center():FullScreen():diffusealpha(0) end;
-		OnCommand=cmd(accelerate,0.3;diffusealpha,1);
+		OnCommand=function(self) self:accelerate(0.3):diffusealpha(1) end;
 	};
 	LoadActor("lines")..{
 		InitCommand=function(self) self:Center():FullScreen():diffusealpha(0) end;
-		OnCommand=cmd(accelerate,0.3;diffusealpha,1);
+		OnCommand=function(self) self:accelerate(0.3):diffusealpha(1) end;
 	};
 	Def.Banner{
-		InitCommand=cmd(CenterX;y,SCREEN_CENTER_Y+103;blend,Blend.Add;fadetop,.3;croptop,.3;diffusetopedge,color("#FFFFFF00");ztest,true;);
-		OnCommand=cmd(playcommand,"Set";rotationz,180;zoomx,-1;linear,1;y,SCREEN_CENTER_Y+70;diffusealpha,0.2);
+		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+103):blend(Blend.Add):fadetop(.3):croptop(.3):diffusetopedge(color("#FFFFFF00")):ztest(true) end;
+		OnCommand=function(self) self:playcommand("Set"):rotationz(180):zoomx(-1):linear(1):y(SCREEN_CENTER_Y+70):diffusealpha(0.2) end;
 		SetCommand=function(self)
 			local sel
 			if GAMESTATE:IsCourseMode() then
@@ -23,18 +23,18 @@ local t = Def.ActorFrame{
 		end;
 	};
 	LoadActor("_flaremask")..{
-		InitCommand=cmd(Center;FullScreen;zbuffer,true;blend,'BlendMode_NoEffect');
+		InitCommand=function(self) self:Center():FullScreen():zbuffer(true):blend('BlendMode_NoEffect') end;
 	};
 	LoadActor(THEME:GetPathB("ScreenStageInformation","background/_flares"))..{
-		InitCommand=cmd(Center;ztest,true;diffusealpha,1;zoom,1);
-		OnCommand=cmd(linear,1;rotationz,-250;diffusealpha,0);
+		InitCommand=function(self) self:Center():ztest(true):diffusealpha(1):zoom(1) end;
+		OnCommand=function(self) self:linear(1):rotationz(-250):diffusealpha(0) end;
 	};
 	LoadActor("bar")..{
-		InitCommand=cmd(CenterX;y,SCREEN_CENTER_Y+156;visible,not GAMESTATE:IsCourseMode();zoomtowidth,SCREEN_WIDTH;faderight,.8;fadeleft,.8;cropright,1;);
-		OnCommand=cmd(linear,.7;cropright,0);
+		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+156):visible(not GAMESTATE:IsCourseMode()):zoomtowidth(SCREEN_WIDTH):faderight(.8):fadeleft(.8):cropright(1) end;
+		OnCommand=function(self) self:linear(.7):cropright(0) end;
 	};
 	LoadFont("_r bold 30px")..{
-		InitCommand=cmd(CenterX;y,SCREEN_CENTER_Y+147;maxwidth,SCREEN_WIDTH/8*7;shadowlength,2;horizalign,center;zoom,.5;diffusealpha,0;);
+		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+147):maxwidth(SCREEN_WIDTH/8*7):shadowlength(2):horizalign(center):zoom(.5):diffusealpha(0) end;
 		SetCommand=function(self)
 			local song = GAMESTATE:GetCurrentSong()
 			local text
@@ -45,10 +45,10 @@ local t = Def.ActorFrame{
 			end
 			self:settext(text)
 		end;
-		OnCommand=cmd(playcommand,"Set";sleep,.1;linear,.3;diffusealpha,1;);
+		OnCommand=function(self) self:playcommand("Set"):sleep(.1):linear(.3):diffusealpha(1) end;
 	};
 	LoadFont("_r bold 30px")..{
-		InitCommand=cmd(CenterX;y,SCREEN_CENTER_Y+167;maxwidth,SCREEN_WIDTH/8*6.8;shadowlength,2;horizalign,center;zoom,.4;diffusealpha,0;);
+		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+167):maxwidth(SCREEN_WIDTH/8*6.8):shadowlength(2):horizalign(center):zoom(.4):diffusealpha(0) end;
 		SetCommand=function(self)
 			local song = GAMESTATE:GetCurrentSong()
 			local text
@@ -59,7 +59,7 @@ local t = Def.ActorFrame{
 			end
 			self:settext(text)
 		end;
-		OnCommand=cmd(playcommand,"Set";sleep,.1;linear,.3;diffusealpha,1;);
+		OnCommand=function(self) self:playcommand("Set"):sleep(.1):linear(.3):diffusealpha(1) end;
 	};
 };
 

@@ -10,9 +10,9 @@ local stageRemap = {
 
 return Def.ActorFrame{
 	LoadFont("_z bold 19px")..{
-		InitCommand=cmd(shadowlength,1);
+		InitCommand=function(self) self:shadowlength(1) end;
 		BeginCommand=function(self) self:playcommand("Set") end;
-		CurrentSongChangedMessageCommand=cmd(finishtweening;playcommand,"Set";);
+		CurrentSongChangedMessageCommand=function(self) self:finishtweening():playcommand("Set") end;
 		SetCommand=function(self)
 			local Stage = GAMESTATE:GetCurrentStage();
 			local StageIdx = GAMESTATE:GetCurrentStageIndex();

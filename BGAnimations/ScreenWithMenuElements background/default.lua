@@ -3,5 +3,5 @@ return Def.ActorFrame{
 		InitCommand=function(self) self:Center():FullScreen() end;
 	};
 	-- clear the zbuffer so that screens can draw without having to clear it
-	Def.Actor{ InitCommand=cmd(clearzbuffer,true); };
+	Def.Actor{ InitCommand=function(self) self:clearzbuffer(true) end; };
 }

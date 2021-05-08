@@ -12,9 +12,9 @@ return Def.ActorFrame{
 			HealthStateChangedMessageCommand=function(self, param)
 				if param.PlayerNumber == PLAYER_1 then
 					if param.HealthState == "HealthState_Danger" then
-						self:RunCommandsOnChildren(cmd(playcommand,"Show"))
+						self:RunCommandsOnChildren(self:playcommand("Show"))
 					else
-						self:RunCommandsOnChildren(cmd(playcommand,"Hide"))
+						self:RunCommandsOnChildren(self:playcommand("Hide"))
 					end
 				end
 			end;
@@ -76,9 +76,9 @@ return Def.ActorFrame{
 			HealthStateChangedMessageCommand=function(self, param)
 				if param.PlayerNumber == PLAYER_2 then
 					if param.HealthState == "HealthState_Danger" then
-						self:RunCommandsOnChildren(cmd(playcommand,"Show"))
+						self:RunCommandsOnChildren(self:playcommand("Show"))
 					else
-						self:RunCommandsOnChildren(cmd(playcommand,"Hide"))
+						self:RunCommandsOnChildren(self:playcommand("Hide"))
 					end
 				end
 			end;

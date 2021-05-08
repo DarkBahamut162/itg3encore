@@ -44,8 +44,8 @@ local rotations = { W3 = 3, W4 = 5, W5 = 10, Miss = 30 }
 return Def.ActorFrame {
 	LoadActor("_judgments") .. {
 		Name="Judgment";
-		InitCommand=cmd(pause;visible,false);
-		ResetCommand=cmd(finishtweening;x,0;y,0;stopeffect;visible,false);
+		InitCommand=function(self) self:pause():visible(false) end;
+		ResetCommand=function(self) self:finishtweening():x(0):y(0):stopeffect():visible(false) end;
 	};
 	InitCommand = function(self)
 		c = self:GetChildren();

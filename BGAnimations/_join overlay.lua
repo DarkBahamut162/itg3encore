@@ -32,7 +32,7 @@ local t = Def.ActorFrame{
 		end;
 		PlayerJoinedMessageCommand=function(self,param)
 			if param.Player == PLAYER_1 then
-				self:RunCommandsOnChildren(cmd(playcommand,"Joined"))
+				self:RunCommandsOnChildren(self:playcommand("Joined"))
 			end
 		end;
 
@@ -86,7 +86,7 @@ local t = Def.ActorFrame{
 		end;
 		PlayerJoinedMessageCommand=function(self,param)
 			if param.Player == PLAYER_2 then
-				self:RunCommandsOnChildren(cmd(playcommand,"Joined"))
+				self:RunCommandsOnChildren(self:playcommand("Joined"))
 			end
 		end;
 

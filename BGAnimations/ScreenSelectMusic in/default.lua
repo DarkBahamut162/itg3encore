@@ -4,7 +4,7 @@ local t = Def.ActorFrame{
 		OnCommand=function(self) self:sleep(0.8) end;
 	};
 	LoadActor(THEME:GetPathB("_statsout","musicwheel"))..{
-		InitCommand=cmd(visible,GAMESTATE:IsAnyHumanPlayerUsingMemoryCard());
+		InitCommand=function(self) self:visible(GAMESTATE:IsAnyHumanPlayerUsingMemoryCard()) end;
 	};
 	LoadActor("open.ogg")..{
 		OnCommand=function(self) self:play() end;

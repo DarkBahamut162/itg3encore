@@ -1,6 +1,6 @@
 return Def.ActorFrame{
 	LoadFont("_r bold shadow 30px")..{
-		InitCommand=cmd(zoom,0.66;maxwidth,360;halign,0);
+		InitCommand=function(self) self:zoom(0.66):maxwidth(360):halign(0) end;
 		CurrentSongChangedMessageCommand=function(self) self:playcommand("Set") end;
 		CurrentCourseChangedMessageCommand=function(self) self:playcommand("Set") end;
 		CurrentTrailP1ChangedMessageCommand=function(self) self:playcommand("Set") end;

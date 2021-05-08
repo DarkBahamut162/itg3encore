@@ -1,6 +1,6 @@
 return Def.FadingBanner{
-	InitCommand=cmd(playcommand,"Set";ztest,true;vertalign,bottom;zoomy,-1);
-	BeginCommand=cmd(visible,not GAMESTATE:IsCourseMode());
+	InitCommand=function(self) self:playcommand("Set"):ztest(true):vertalign(bottom):zoomy(-1) end;
+	BeginCommand=function(self) self:visible(not GAMESTATE:IsCourseMode()) end;
 	SetCommand=function(self)
 		local song = GAMESTATE:GetCurrentSong()
 		local sortOrder = GAMESTATE:GetSortOrder()

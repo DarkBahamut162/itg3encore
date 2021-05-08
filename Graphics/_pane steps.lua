@@ -4,11 +4,11 @@ assert(player,"[Graphics/_pane steps] player required")
 return Def.ActorFrame{
 	LoadFont("_z 36px shadowx")..{
 		Name="StepCount";
-		InitCommand=cmd(x,-67;y,120+4;horizalign,center;zoom,.35;diffusealpha,0;);
-		OnCommand=cmd(sleep,.4;linear,0.2;diffusealpha,1;shadowlength,2);
+		InitCommand=function(self) self:x(-67):y(120+4):horizalign(center):zoom(.35):diffusealpha(0) end;
+		OnCommand=function(self) self:sleep(.4):linear(0.2):diffusealpha(1):shadowlength(2) end;
 		OffCommand=function(self) self:linear(0.4):diffusealpha(0) end;
 		--[[
-		SongNumStepsTextGainFocusCommand=cmd(stoptweening;sleep,.15;linear,.2;diffusealpha,1);
+		SongNumStepsTextGainFocusCommand=function(self) self:stoptweening():sleep(.15):linear(.2):diffusealpha(1) end;
 		SongNumStepsTextLoseFocusCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(0) end;
 		--]]
 		SetCommand=function(self)
@@ -69,8 +69,8 @@ return Def.ActorFrame{
 	};
 	LoadFont("_v 26px bold diffuse")..{
 		Name="Label";
-		InitCommand=cmd(x,-67;y,120+17;settext,"STEPS";shadowlength,2;zoomx,.45;zoomy,.4;horizalign,center;diffusealpha,0;);
-		OnCommand=cmd(sleep,.85;linear,0.2;diffusebottomedge,color("#8F8F8F");diffusealpha,1);
+		InitCommand=function(self) self:x(-67):y(120+17):settext("STEPS"):shadowlength(2):zoomx(.45):zoomy(.4):horizalign(center):diffusealpha(0) end;
+		OnCommand=function(self) self:sleep(.85):linear(0.2):diffusebottomedge(color("#8F8F8F")):diffusealpha(1) end;
 		OffCommand=function(self) self:linear(0.4):diffusealpha(0) end;
 	};
 };

@@ -1,5 +1,5 @@
 local t = Def.ActorFrame{
-	InitCommand=function(self) self:runcommandsonleaves(cmd(ztest,true)) end;
+	InitCommand=function(self) self:runcommandsonleaves(self:ztest(true)) end;
 	LoadActor("_song frame");
 
 	Def.Banner{

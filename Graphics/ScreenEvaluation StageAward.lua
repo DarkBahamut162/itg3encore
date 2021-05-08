@@ -20,11 +20,11 @@ return Def.ActorFrame{
 	--[[
 	LoadActor()..{
 		Name="Trophy";
-		InitCommand=cmd(zoom,0.7;x,-60;y,-80;rotationy,-15);
+		InitCommand=function(self) self:zoom(0.7):x(-60):y(-80):rotationy(-15) end;
 	};
 	--]]
 	LoadFont("_eurostile normal")..{
 		Name="Text";
-		InitCommand=cmd(halign,1;shadowlength,2;maxwidth,250;settext,"stage");
+		InitCommand=function(self) self:halign(1):shadowlength(2):maxwidth(250):settext("stage") end;
 	};
 };

@@ -3,7 +3,7 @@ if not Player then error("[ScreenNameEntryTraditional Selection] needs Player") 
 
 return Def.ActorFrame{
 	LoadFont("ScreenNameEntryTraditional entry")..{
-		InitCommand=cmd(halign,0;zoom,1.1),
+		InitCommand=function(self) self:halign(0):zoom(1.1) end;
 		EntryChangedMessageCommand=function(self,param)
 			if param.PlayerNumber == Player then
 				self:settext(param.Text)

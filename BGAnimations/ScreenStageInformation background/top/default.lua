@@ -1,23 +1,23 @@
 local t = Def.ActorFrame{
 	LoadActor("_top")..{
 		InitCommand=function(self) self:Center():FullScreen():diffusealpha(0) end;
-		OnCommand=cmd(accelerate,0.3;diffusealpha,1);
+		OnCommand=function(self) self:accelerate(0.3):diffusealpha(1) end;
 	};
 	LoadActor("_shadow")..{
-		InitCommand=cmd(CenterX;y,SCREEN_CENTER_Y-94;);
-		OnCommand=cmd(linear,1;y,SCREEN_CENTER_Y-61);
+		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y-94) end;
+		OnCommand=function(self) self:linear(1):y(SCREEN_CENTER_Y-61) end;
 	};
 	Def.ActorFrame{
 		Name="BannerSection";
-		InitCommand=cmd(CenterX;y,SCREEN_CENTER_Y-77;);
-		OnCommand=cmd(linear,1;y,SCREEN_CENTER_Y-44);
+		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y-77) end;
+		OnCommand=function(self) self:linear(1):y(SCREEN_CENTER_Y-44) end;
 
 		LoadActor("_banner mask")..{
-			InitCommand=cmd(zbuffer,true;blend,'BlendMode_NoEffect');
+			InitCommand=function(self) self:zbuffer(true):blend('BlendMode_NoEffect') end;
 		};
 		Def.Banner{
-			InitCommand=cmd(diffusealpha,0;ztest,true);
-			OnCommand=cmd(playcommand,"Set";linear,1;diffusealpha,1;);
+			InitCommand=function(self) self:diffusealpha(0):ztest(true) end;
+			OnCommand=function(self) self:playcommand("Set"):linear(1):diffusealpha(1) end;
 			SetCommand=function(self)
 				local sel
 				if GAMESTATE:IsCourseMode() then
@@ -34,7 +34,7 @@ local t = Def.ActorFrame{
 	};
 	LoadActor(THEME:GetPathB("ScreenStageInformation","background/_flares"))..{
 		InitCommand=function(self) self:Center() end;
-		OnCommand=cmd(diffusealpha,1;zoom,1;linear,1;rotationz,250;diffusealpha,0);
+		OnCommand=function(self) self:diffusealpha(1):zoom(1):linear(1):rotationz(250):diffusealpha(0) end;
 	};
 };
 

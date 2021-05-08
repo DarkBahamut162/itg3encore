@@ -1,6 +1,6 @@
 return LoadFont("_r bold bevel numbers")..{
-    InitCommand=cmd(x,SCREEN_CENTER_X+177+71;y,SCREEN_CENTER_Y-43);
-    OnCommand=cmd(diffusealpha,1;shadowlength,2.5;zoom,.5;addx,SCREEN_WIDTH;decelerate,0.75;addx,-SCREEN_WIDTH);
+    InitCommand=function(self) self:x(SCREEN_CENTER_X+177+71):y(SCREEN_CENTER_Y-43) end;
+    OnCommand=function(self) self:diffusealpha(1):shadowlength(2.5):zoom(.5):addx(SCREEN_WIDTH):decelerate(0.75):addx(-SCREEN_WIDTH) end;
     OffCommand=function(self) self:accelerate(0.75):addx(SCREEN_WIDTH) end;
     SetCommand=function(self)
 		local curSelection = nil;

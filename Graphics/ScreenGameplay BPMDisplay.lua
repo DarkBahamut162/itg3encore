@@ -14,10 +14,10 @@ return Def.ActorFrame{
 	-- manual bpm display
 	LoadFont("_eurostile normal")..{
 		Text="BPM",
-		InitCommand=cmd(shadowlength,1;zoomx,0;zoomy,0;sleep,1.2;accelerate,0.3;zoomx,0.6;zoomy,0.6;sleep,1;decelerate,0.3;zoomx,0;zoomy,3);
+		InitCommand=function(self) self:shadowlength(1):zoomx(0):zoomy(0):sleep(1.2):accelerate(0.3):zoomx(0.6):zoomy(0.6):sleep(1):decelerate(0.3):zoomx(0):zoomy(3) end;
 	};
 	LoadFont("_eurostile normal")..{
 		Name="BPMDisplay",
-		InitCommand=cmd(maxwidth,60;shadowlength,1;zoom,0.6;diffusealpha,0;sleep,3;accelerate,0.3;diffusealpha,1);
+		InitCommand=function(self) self:maxwidth(60):shadowlength(1):zoom(0.6):diffusealpha(0):sleep(3):accelerate(0.3):diffusealpha(1) end;
 	};
 }

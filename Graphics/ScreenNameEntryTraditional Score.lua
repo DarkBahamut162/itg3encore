@@ -5,7 +5,7 @@ local machineProfile = PROFILEMAN:GetMachineProfile()
 
 -- xxx: this is a PercentageDisplay in the hardcoded version
 return LoadFont("_r bold numbers")..{
-	BeginCommand=cmd(diffuse,PlayerColor(Player)),
+	BeginCommand=function(self) self:diffuse(PlayerColor(Player)) end;
 	ChangeDisplayedFeatMessageCommand=function(self,param)
 		if param.Player == Player then
 			local playedSS,playerSS

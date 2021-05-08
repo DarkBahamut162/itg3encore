@@ -44,11 +44,11 @@ return Def.ActorFrame{
 	--[[
 	LoadActor(awardRef[award].File,awardRef[award].Color)..{
 		Name="Trophy";
-		InitCommand=cmd(zoom,0.7;x,60;y,-80;rotationy,-15);
+		InitCommand=function(self) self:zoom(0.7):x(60):y(-80):rotationy(-15) end;
 	};
 	--]]
 	LoadFont("_eurostile normal")..{
 		Name="Combo";
-		InitCommand=cmd(halign,0;shadowlength,2;maxwidth,250;);
+		InitCommand=function(self) self:halign(0):shadowlength(2):maxwidth(250) end;
 	};
 };
