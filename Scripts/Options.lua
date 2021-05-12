@@ -100,18 +100,16 @@ function OptionTournamentOptions()
 		ExportOnChange = false,
 		Choices = { "Hide Score", "Hide Combo", "Hide Lifebar" },
 		LoadSelections = function(self, list, pn)
-			local pNum = (pn == PLAYER_2 and 2 or 1)
-			pNum = string.format("P%i",pNum)
-			list[1] = getenv("HideScore"..pNum)
-			list[2] = getenv("HideCombo"..pNum)
-			list[3] = getenv("HideLife"..pNum)
+			local pX = pname(pn);
+			list[1] = getenv("HideScore"..pX)
+			list[2] = getenv("HideCombo"..pX)
+			list[3] = getenv("HideLife"..pX)
 		end,
 		SaveSelections = function(self, list, pn)
-			local pNum = (pn == PLAYER_2 and 2 or 1)
-			pNum = string.format("P%i",pNum)
-			setenv("HideScore"..pNum,list[1])
-			setenv("HideCombo"..pNum,list[2])
-			setenv("HideLife"..pNum,list[3])
+			local pX = pname(pn);
+			setenv("HideScore"..pX,list[1])
+			setenv("HideCombo"..pX,list[2])
+			setenv("HideLife"..pX,list[3])
 		end,
 	}
 	setmetatable(t, t)
@@ -128,14 +126,12 @@ function OptionShowStats()
 		ExportOnChange = false,
 		Choices = { "Show In-game Statistics" },
 		LoadSelections = function(self, list, pn)
-			local pNum = (pn == PLAYER_2 and 2 or 1)
-			local optName = string.format("StatsDisplayP%i",pNum)
-			list[1] = getenv(optName)
+			local pX = pname(pn);
+			list[1] = getenv("StatsDisplay"..pX)
 		end,
 		SaveSelections = function(self, list, pn)
-			local pNum = (pn == PLAYER_2 and 2 or 1)
-			local optName = string.format("StatsDisplayP%i",pNum)
-			setenv(optName,list[1])
+			local pX = pname(pn);
+			setenv("StatsDisplay"..pX,list[1])
 		end
 	}
 	setmetatable(t, t)
@@ -152,14 +148,12 @@ function OptionShowModifiers()
 		ExportOnChange = false,
 		Choices = { "Show Active Modifiers" },
 		LoadSelections = function(self, list, pn)
-			local pNum = (pn == PLAYER_2 and 2 or 1)
-			local optName = string.format("ShowModsP%i",pNum)
-			list[1] = getenv(optName)
+			local pX = pname(pn);
+			list[1] = getenv("ShowMods"..pX)
 		end,
 		SaveSelections = function(self, list, pn)
-			local pNum = (pn == PLAYER_2 and 2 or 1)
-			local optName = string.format("ShowModsP%i",pNum)
-			setenv(optName,list[1])
+			local pX = pname(pn);
+			setenv("ShowMods"..pX,list[1])
 		end
 	}
 	setmetatable(t, t)
@@ -184,22 +178,20 @@ function OptionOrientation()
 		-- xxx: dumb shit
 		Choices = { AvailableArrowDirections() },
 		LoadSelections = function(self, list, pn)
-			local pNum = (pn == PLAYER_2 and 2 or 1)
-			pNum = string.format("P%i",pNum)
-			list[1] = getenv("RotationNormal"..pNum)
-			list[2] = getenv("RotationLeft"..pNum)
-			list[3] = getenv("RotationRight"..pNum)
-			list[4] = getenv("RotationUpsideDown"..pNum)
-			if GAMESTATE:GetNumPlayersEnabled() == 1 then list[5] = getenv("RotationSolo"..pNum) end
+			local pX = pname(pn);
+			list[1] = getenv("RotationNormal"..pX)
+			list[2] = getenv("RotationLeft"..pX)
+			list[3] = getenv("RotationRight"..pX)
+			list[4] = getenv("RotationUpsideDown"..pX)
+			if GAMESTATE:GetNumPlayersEnabled() == 1 then list[5] = getenv("RotationSolo"..pX) end
 		end;
 		SaveSelections = function(self, list, pn)
-			local pNum = (pn == PLAYER_2 and 2 or 1)
-			pNum = string.format("P%i",pNum)
-			setenv("RotationNormal"..pNum,list[1])
-			setenv("RotationLeft"..pNum,list[2])
-			setenv("RotationRight"..pNum,list[3])
-			setenv("RotationUpsideDown"..pNum,list[4])
-			if GAMESTATE:GetNumPlayersEnabled() == 1 then setenv("RotationSolo"..pNum,list[5]) end
+			local pX = pname(pn);
+			setenv("RotationNormal"..pX,list[1])
+			setenv("RotationLeft"..pX,list[2])
+			setenv("RotationRight"..pX,list[3])
+			setenv("RotationUpsideDown"..pX,list[4])
+			if GAMESTATE:GetNumPlayersEnabled() == 1 then setenv("RotationSolo"..pX,list[5]) end
 		end;
 	};
 	setmetatable(t, t)
@@ -215,22 +207,22 @@ function OptionPlayfield()
 		ExportOnChange = false,
 		Choices = { "Vibrate", "Spin Right", "Spin Left", "Bob", "Pulse", "Wag" },
 		LoadSelections = function(self, list, pn)
-			list[1] = getenv("EffectVibrate"..pNum)
-			list[2] = getenv("EffectSpin"..pNum)
-			list[3] = getenv("EffectSpinReverse"..pNum)
-			list[4] = getenv("EffectBob"..pNum)
-			list[5] = getenv("EffectPulse"..pNum)
-			list[6] = getenv("EffectWag"..pNum)
+			local pX = pname(pn);
+			list[1] = getenv("EffectVibrate"..pX)
+			list[2] = getenv("EffectSpin"..pX)
+			list[3] = getenv("EffectSpinReverse"..pX)
+			list[4] = getenv("EffectBounce"..pX)
+			list[5] = getenv("EffectPulse"..pX)
+			list[6] = getenv("EffectWag"..pX)
 		end;
 		SaveSelections = function(self, list, pn)
-			local pNum = (pn == PLAYER_2 and 2 or 1)
-			pNum = string.format("P%i",pNum)
-			setenv("EffectVibrate"..pNum,list[1])
-			setenv("EffectSpin"..pNum,list[2])
-			setenv("EffectSpinReverse"..pNum,list[3])
-			setenv("EffectBob"..pNum,list[4])
-			setenv("EffectPulse"..pNum,list[5])
-			setenv("EffectWag"..pNum,list[6])
+			local pX = pname(pn);
+			setenv("EffectVibrate"..pX,list[1])
+			setenv("EffectSpin"..pX,list[2])
+			setenv("EffectSpinReverse"..pX,list[3])
+			setenv("EffectBounce"..pX,list[4])
+			setenv("EffectPulse"..pX,list[5])
+			setenv("EffectWag"..pX,list[6])
 		end;
 	};
 	setmetatable(t, t)

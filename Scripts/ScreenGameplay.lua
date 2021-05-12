@@ -1,14 +1,12 @@
 -- ScreenGameplay-related stuff
 
 function OffsetLifebarHeight(pn)
-	--[[
-	if CustomMods[pn].left or CustomMods[pn].right then
+	local pX = pname(pn);
+	if getenv("RotationLeft"..pX) or getenv("RotationRight"..pX) then
 		return SCREEN_CENTER_Y
 	else
 		return SCREEN_CENTER_Y+30
 	end
-	--]]
-	return SCREEN_CENTER_Y+30
 end
 
 -- To be called wherever the lifebars are positioned
@@ -20,12 +18,6 @@ function GetLifebarAdjustment()
 	return lifetype
 	--]]
 	return "0"
-end
-
--- Returns true if life is hidden, false otherwise; (for use in metrics.ini)
-function HideLife(pn)
-	--return CustomMods[pn].hidelife or false
-	return false
 end
 
 local diffState = {
@@ -131,4 +123,74 @@ function HoldEvenOdd()
 	else
 		return -1
 	end
+end
+
+function Field(pn)
+	local pX = pname(pn);
+
+	-- Local Variables for Easier Editing.
+	local s = "y,SCREEN_TOP+240;"
+	local left = "rotationz,270;"
+	local right = "rotationz,90;"
+	local upsidedown = "rotationz,180;addy,20;"
+	local solo = "x,SCREEN_CENTER_X;"
+	local vibrate = "vibrate;effectmagnitude,20,20,20;"
+	local spin = "spin;effectclock,beat;effectmagnitude,0,0,45;"
+	local bob = "bob;effectclock,beat;effectmagnitude,30,30,30;"
+	local pulse = "pulse;effectclock,beat;"
+	local wag = "wag;effectclock,beat;"
+	local spinreverse = "spin;effectclock,beat;effectmagnitude,0,0,-45;"
+	local leftsideoffset = "x,SCREEN_LEFT+190+" .. GetLifebarAdjustment() ..";"
+	local rightsideoffset = "x,SCREEN_RIGHT-190-" .. GetLifebarAdjustment() ..";"
+	local player1centeroffset = "x,SCREEN_CENTER_X-160-".. GetLifebarAdjustment() .. ";"
+	local player2centeroffset = "x,SCREEN_CENTER_X+160+" .. GetLifebarAdjustment() ..";"
+	local right1poffset = "addx,SCREEN_WIDTH/2;"
+	local left1poffset = "addx,-SCREEN_WIDTH/2;"
+
+	if getenv("RotationLeft"..pX) == true then 
+		s = left
+			if pn == PLAYER_1 then
+				s = s .. leftsideoffset
+			else
+				s = s .. player2centeroffset
+			end		
+		if GAMESTATE:IsPlayerEnabled(PLAYER_2) and not GAMESTATE:IsPlayerEnabled(PLAYER_1) then
+			s = s .. left1poffset end
+	elseif getenv("RotationRight"..pX) == true then 
+		s = right
+			if pn == PLAYER_2 then
+				s = s .. rightsideoffset
+			else
+				s = s .. player1centeroffset
+			end	
+		if GAMESTATE:IsPlayerEnabled(PLAYER_1) and not GAMESTATE:IsPlayerEnabled(PLAYER_2) then
+			s = s .. right1poffset end
+	elseif getenv("RotationUpsideDown"..pX) == true then
+		s = upsidedown
+	elseif getenv("RotationSolo"..pX) == true then
+		s = solo
+	else
+		s = s
+	end
+	
+	if getenv("EffectSpin"..pX) == true then
+		s = s .. spin end
+		
+	if getenv("EffectSpinReverse"..pX) == true then
+		s = s .. spinreverse end
+	
+	if getenv("EffectVibrate"..pX) == true then
+		s = s .. vibrate end
+		
+	if getenv("EffectBounce"..pX) == true then
+		s = s .. bob end
+		
+	if getenv("EffectPulse"..pX) == true then
+		s = s .. pulse end
+		
+	if getenv("EffectWag"..pX) == true then
+		s = s .. wag end
+	
+	return s	
+	
 end
