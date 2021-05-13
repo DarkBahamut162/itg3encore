@@ -19,12 +19,15 @@ function SongMods()
 	-- differences
 	if pm == 'PlayMode_Regular' then
 		if doubles then
-			options = options .. "23,10,11,"
+ 			--23,
+			options = options .. "10,11,"
 		else
-			options = options .. "22,23,10,11,"
+			--22,23,
+			options = options .. "10,11,"
 		end
 	elseif pm == 'PlayMode_Nonstop' then
-		options = options .. "22,23,"
+		--22,23,
+		options = options .. ""
 	else
 		-- survival/fallback
 		options = options .. "10,11,"
