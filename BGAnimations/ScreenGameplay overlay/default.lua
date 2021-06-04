@@ -35,7 +35,7 @@ local t = Def.ActorFrame{
 		Name="ScreenStageHoldovers";
 		InitCommand=function(self) self:visible(not GAMESTATE:IsDemonstration() and not GAMESTATE:IsCourseMode()) end;
 
-		LoadActor(THEME:GetPathB("ScreenStageInformation","background/bottom/bar"))..{
+		LoadActor(THEME:GetPathB("ScreenStageInformation","in/bottom/bar"))..{
 			InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+156):zoomtowidth(SCREEN_WIDTH):faderight(.8):fadeleft(.8) end;
 			OnCommand=function(self) self:sleep(2.25):cropright(0):linear(.6):cropleft(1) end;
 		};
@@ -43,12 +43,12 @@ local t = Def.ActorFrame{
 			Name="InfoP1";
 			InitCommand=function(self) self:visible(GAMESTATE:IsPlayerEnabled(PLAYER_1)) end;
 			-- stage background left gradient
-			LoadActor(THEME:GetPathB("ScreenStageInformation","background/_left gradient"))..{
+			LoadActor(THEME:GetPathB("ScreenStageInformation","in/_left gradient"))..{
 				InitCommand=function(self) self:x(SCREEN_LEFT):y(SCREEN_CENTER_Y+150):horizalign(left) end;
 				OnCommand=function(self) self:sleep(1):linear(1):diffusealpha(0) end;
 			};
 			-- stage background p1
-			LoadActor(THEME:GetPathB("ScreenStageInformation","background/_p1"))..{
+			LoadActor(THEME:GetPathB("ScreenStageInformation","in/_p1"))..{
 				InitCommand=function(self) self:x(SCREEN_LEFT):y(SCREEN_CENTER_Y+150):horizalign(left) end;
 				OnCommand=function(self) self:sleep(1):linear(1):diffusealpha(0) end;
 			};
@@ -98,12 +98,12 @@ local t = Def.ActorFrame{
 			Name="InfoP2";
 			InitCommand=function(self) self:visible(GAMESTATE:IsPlayerEnabled(PLAYER_2)) end;
 			-- stage background right gradient
-			LoadActor(THEME:GetPathB("ScreenStageInformation","background/_right gradient"))..{
+			LoadActor(THEME:GetPathB("ScreenStageInformation","in/_right gradient"))..{
 				InitCommand=function(self) self:x(SCREEN_RIGHT):y(SCREEN_CENTER_Y+150):horizalign(right) end;
 				OnCommand=function(self) self:sleep(1):linear(1):diffusealpha(0) end;
 			};
 			-- stage background p2
-			LoadActor(THEME:GetPathB("ScreenStageInformation","background/_p2"))..{
+			LoadActor(THEME:GetPathB("ScreenStageInformation","in/_p2"))..{
 				InitCommand=function(self) self:x(SCREEN_RIGHT):y(SCREEN_CENTER_Y+150):horizalign(right) end;
 				OnCommand=function(self) self:sleep(1):linear(1):diffusealpha(0) end;
 			};

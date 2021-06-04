@@ -25,7 +25,7 @@ local t = Def.ActorFrame{
 	LoadActor("_flaremask")..{
 		InitCommand=function(self) self:Center():FullScreen():zbuffer(true):blend('BlendMode_NoEffect') end;
 	};
-	LoadActor(THEME:GetPathB("ScreenStageInformation","background/_flares"))..{
+	LoadActor(THEME:GetPathB("ScreenStageInformation","in/_flares"))..{
 		InitCommand=function(self) self:Center():ztest(true):diffusealpha(1):zoom(1) end;
 		OnCommand=function(self) self:linear(1):rotationz(-250):diffusealpha(0) end;
 	};

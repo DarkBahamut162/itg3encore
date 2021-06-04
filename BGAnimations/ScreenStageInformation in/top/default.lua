@@ -32,7 +32,7 @@ local t = Def.ActorFrame{
 		};
 		LoadActor("_banner glass");
 	};
-	LoadActor(THEME:GetPathB("ScreenStageInformation","background/_flares"))..{
+	LoadActor(THEME:GetPathB("ScreenStageInformation","in/_flares"))..{
 		InitCommand=function(self) self:Center() end;
 		OnCommand=function(self) self:diffusealpha(1):zoom(1):linear(1):rotationz(250):diffusealpha(0) end;
 	};

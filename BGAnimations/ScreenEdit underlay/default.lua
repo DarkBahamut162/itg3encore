@@ -8,10 +8,10 @@ return Def.ActorFrame{
 				self:FullScreen()
 			end;
 		};
-		LoadActor(THEME:GetPathB("ScreenStageInformation","background/rear"))..{
+		LoadActor(THEME:GetPathB("ScreenStageInformation","in/rear"))..{
 			InitCommand=function(self) self:diffusealpha(.98):FullScreen() end;
 		};
-		LoadActor(THEME:GetPathB("ScreenStageInformation","background/bottom/lines"))..{
+		LoadActor(THEME:GetPathB("ScreenStageInformation","in/bottom/lines"))..{
 			InitCommand=function(self) self:FullScreen():diffusealpha(0) end;
 			OnCommand=function(self) self:accelerate(0.3):diffusealpha(1) end;
 		};
