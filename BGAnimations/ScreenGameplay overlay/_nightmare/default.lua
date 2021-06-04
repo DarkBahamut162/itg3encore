@@ -49,22 +49,18 @@ local t = Def.ActorFrame{
 		LoadActor("base")..{ InitCommand=function(self) self:CenterX():y(SCREEN_TOP-2+41) end; };
 		LoadActor("_neons")..{
 			InitCommand=function(self) self:CenterX():y(SCREEN_TOP-2+24):blend(Blend.Add) end;
-			--effectdelay,0.5;
 			OnCommand=function(self) self:effectclock('beat'):diffuseramp():effectcolor1(color("#680303")):effectcolor2(color("#f11e1e")):effectperiod(1):effectoffset(0.05):diffusealpha(0):linear(.4):diffusealpha(1) end;
 		};
 		LoadActor("_neons")..{
 			InitCommand=function(self) self:x(SCREEN_CENTER_X):y(SCREEN_TOP-2+24) end;
-			--effectdelay,0.5;
 			OnCommand=function(self) self:effectclock('beat'):diffuseramp():effectcolor1(color("#973636")):effectcolor2(color("#f11e1e")):effectperiod(1):effectoffset(0.05):diffusealpha(0):linear(.4):diffusealpha(1) end;
 		};
 		LoadActor("_neon2")..{
 			InitCommand=function(self) self:CenterX():y(SCREEN_TOP-2+41):blend(Blend.Add) end;
-			--effectdelay,0.5;
 			OnCommand=function(self) self:effectclock('beat'):diffuseramp():effectcolor1(color("#680303")):effectcolor2(color("#f11e1e")):effectperiod(1):effectoffset(0.05):diffusealpha(0):linear(.4):diffusealpha(1) end;
 		};
 		LoadActor("_neon2")..{
 			InitCommand=function(self) self:x(SCREEN_CENTER_X):y(SCREEN_TOP-2+41) end;
-			--effectdelay,0.5;
 			OnCommand=function(self) self:effectclock('beat'):diffuseramp():effectcolor1(color("#973636")):effectcolor2(color("#f11e1e")):effectperiod(1):effectoffset(0.05):diffusealpha(0):linear(.4):diffusealpha(1) end;
 		};
 		LoadFont("_r bold 30px")..{

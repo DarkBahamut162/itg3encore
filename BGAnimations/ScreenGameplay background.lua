@@ -8,7 +8,6 @@
 local background = Def.ActorFrame {
 	Name="YOU_WISH_YOU_WERE_PLAYING_BEATMANIA_RIGHT_NOW",
 	OnCommand=function()
-		--- CustomMod functionality moved to here ---
 		for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
 			local pX = pname(pn);
 			if SCREENMAN:GetTopScreen():GetChild("Player"..pX) and SCREENMAN:GetTopScreen():GetChild("Player"..pX):GetChild("NoteField") then

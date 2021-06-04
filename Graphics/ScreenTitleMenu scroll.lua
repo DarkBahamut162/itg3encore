@@ -13,7 +13,6 @@ local itemColor = itemColors[gc:GetName()] or itemColors.default
 return Def.ActorFrame{
 	LoadFont("_ScreenTitleMenu choices")..{
 		InitCommand=function(self) self:settext(gc:GetText()):halign(1) end;
-		--effectperiod,2;effectcolor2,color("1,1,1,0")
 		GainFocusCommand=function(self) self:diffuseshift():effectperiod(0.5):effectcolor1(itemColor):effectcolor2(Alpha(itemColor,0.5)):effectclock("timer"):zoom(0.8) end;
 		LoseFocusCommand=function(self) self:stoptweening():stopeffect():zoom(0.7) end;
 		DisabledCommand=function(self) self:diffuse(color("0.5,0.5,0.5,1")) end;

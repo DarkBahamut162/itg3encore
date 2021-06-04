@@ -36,12 +36,10 @@ local t = Def.ActorFrame{
 		LoadActor("base")..{ InitCommand=function(self) self:CenterX():y(SCREEN_TOP+24) end; };
 		LoadActor("_neons")..{
 			InitCommand=function(self) self:CenterX():y(SCREEN_TOP+24):blend(Blend.Add) end;
-			--effectdelay,0.5;
 			OnCommand=function(self) self:effectclock('beat'):diffuseramp():effectcolor1(color("#007892")):effectcolor2(color("#00EAFF")):effectperiod(0.5):effectoffset(0.05):diffusealpha(0):linear(.4):diffusealpha(1) end;
 		};
 		LoadActor("_neons")..{
 			InitCommand=function(self) self:x(SCREEN_CENTER_X):y(SCREEN_TOP+24) end;
-			--effectdelay,0.5;
 			OnCommand=function(self) self:effectclock('beat'):diffuseramp():effectcolor1(color("#FFFFFF00")):effectcolor2(color("#00EAFF")):effectperiod(0.5):effectoffset(0.05):diffusealpha(0):linear(.4):diffusealpha(1) end;
 		};
 		LoadFont("_serpentine outline")..{
