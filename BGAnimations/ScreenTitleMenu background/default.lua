@@ -105,6 +105,71 @@ local t = Def.ActorFrame{
 		OnCommand=function(self) self:horizalign(center):cropleft(-0.3):cropright(1):faderight(.1):fadeleft(.1):sleep(0.7):linear(1):cropleft(1):cropright(-0.3) end;
 	};
 
+	-- ENCORE FOLDER ADD
+	Def.ActorFrame{
+
+		-- ITG3 ADDONS
+		LoadActor("../_overlay/joinin")..{
+			InitCommand=function(self) self:x(SCREEN_RIGHT+20):y(SCREEN_CENTER_Y+60+27.5*0):zoom(0.475):addy((IsHome() == true) and -172.5 or 0) end;
+			OnCommand=function(self) self:horizalign(right):addx(200):sleep(0.9):decelerate(0.25):addx(-200):playcommand("Fade") end;
+			FadeCommand=function(self) self:glow(1,1,1,0):sleep(2):linear(0.3):glow(1,1,1,0.25):sleep(0.05):glow(1,1,1,0):sleep(1):queuecommand("Fade") end;
+			CoinModeChangedMessageCommand=function(self) self:stoptweening():playcommand("Init"):playcommand("On") end;
+		};
+		LoadFont("_v profile")..{
+			InitCommand=function(self) self:settext("ITG3 ADDONS"):shadowlength(1):x(SCREEN_RIGHT-106):y(SCREEN_CENTER_Y+60+27.5*0):addy((IsHome() == true) and -172.5 or 0) end;
+			OnCommand=function(self) self:horizalign(left):addx(200):sleep(0.9):decelerate(0.25):addx(-200):zoom(0.7) end;
+			CoinModeChangedMessageCommand=function(self) self:stoptweening():playcommand("Init"):playcommand("On") end;
+		};
+		-- ITG3 UNLOCKS
+		LoadActor("../_overlay/joinin")..{
+			InitCommand=function(self) self:x(SCREEN_RIGHT+20):y(SCREEN_CENTER_Y+60+27.5*1):zoom(0.475):addy((IsHome() == true) and -172.5 or 0) end;
+			OnCommand=function(self) self:horizalign(right):addx(200):sleep(0.9):decelerate(0.25):addx(-200):playcommand("Fade") end;
+			FadeCommand=function(self) self:glow(1,1,1,0):sleep(2):linear(0.3):glow(1,1,1,0.25):sleep(0.05):glow(1,1,1,0):sleep(1):queuecommand("Fade") end;
+			CoinModeChangedMessageCommand=function(self) self:stoptweening():playcommand("Init"):playcommand("On") end;
+		};
+		LoadFont("_v profile")..{
+			InitCommand=function(self) self:settext("ITG3 UNLOCKS"):shadowlength(1):x(SCREEN_RIGHT-106):y(SCREEN_CENTER_Y+60+27.5*1):addy((IsHome() == true) and -172.5 or 0) end;
+			OnCommand=function(self) self:horizalign(left):addx(200):sleep(0.9):decelerate(0.25):addx(-200):zoom(0.7) end;
+			CoinModeChangedMessageCommand=function(self) self:stoptweening():playcommand("Init"):playcommand("On") end;
+		};
+		-- REBIRTH
+		LoadActor("../_overlay/joinin")..{
+			InitCommand=function(self) self:x(SCREEN_RIGHT+20):y(SCREEN_CENTER_Y+60+27.5*2):zoom(0.475):addy((IsHome() == true) and -172.5 or 0) end;
+			OnCommand=function(self) self:horizalign(right):addx(200):sleep(0.9):decelerate(0.25):addx(-200):playcommand("Fade") end;
+			FadeCommand=function(self) self:glow(1,1,1,0):sleep(2):linear(0.3):glow(1,1,1,0.25):sleep(0.05):glow(1,1,1,0):sleep(1):queuecommand("Fade") end;
+			CoinModeChangedMessageCommand=function(self) self:stoptweening():playcommand("Init"):playcommand("On") end;
+		};
+		LoadFont("_v profile")..{
+			InitCommand=function(self) self:settext("REBIRTH"):shadowlength(1):x(SCREEN_RIGHT-106):y(SCREEN_CENTER_Y+60+27.5*2):addy((IsHome() == true) and -172.5 or 0) end;
+			OnCommand=function(self) self:horizalign(left):addx(200):sleep(0.9):decelerate(0.25):addx(-200):zoom(0.7) end;
+			CoinModeChangedMessageCommand=function(self) self:stoptweening():playcommand("Init"):playcommand("On") end;
+		};
+		-- REBIRTH +
+		LoadActor("../_overlay/joinin")..{
+			InitCommand=function(self) self:x(SCREEN_RIGHT+20):y(SCREEN_CENTER_Y+60+27.5*3):zoom(0.475):addy((IsHome() == true) and -172.5 or 0) end;
+			OnCommand=function(self) self:horizalign(right):addx(200):sleep(0.9):decelerate(0.25):addx(-200):playcommand("Fade") end;
+			FadeCommand=function(self) self:glow(1,1,1,0):sleep(2):linear(0.3):glow(1,1,1,0.25):sleep(0.05):glow(1,1,1,0):sleep(1):queuecommand("Fade") end;
+			CoinModeChangedMessageCommand=function(self) self:stoptweening():playcommand("Init"):playcommand("On") end;
+		};
+		LoadFont("_v profile")..{
+			InitCommand=function(self) self:settext("REBIRTH +"):shadowlength(1):x(SCREEN_RIGHT-106):y(SCREEN_CENTER_Y+60+27.5*3):addy((IsHome() == true) and -172.5 or 0) end;
+			OnCommand=function(self) self:horizalign(left):addx(200):sleep(0.9):decelerate(0.25):addx(-200):zoom(0.7) end;
+			CoinModeChangedMessageCommand=function(self) self:stoptweening():playcommand("Init"):playcommand("On") end;
+		};
+		-- REBIRTH 2
+		LoadActor("../_overlay/joinin")..{
+			InitCommand=function(self) self:x(SCREEN_RIGHT+20):y(SCREEN_CENTER_Y+60+27.5*4):zoom(0.475):addy((IsHome() == true) and -172.5 or 0) end;
+			OnCommand=function(self) self:horizalign(right):addx(200):sleep(0.9):decelerate(0.25):addx(-200):playcommand("Fade") end;
+			FadeCommand=function(self) self:glow(1,1,1,0):sleep(2):linear(0.3):glow(1,1,1,0.25):sleep(0.05):glow(1,1,1,0):sleep(1):queuecommand("Fade") end;
+			CoinModeChangedMessageCommand=function(self) self:stoptweening():playcommand("Init"):playcommand("On") end;
+		};
+		LoadFont("_v profile")..{
+			InitCommand=function(self) self:settext("REBIRTH 2"):shadowlength(1):x(SCREEN_RIGHT-106):y(SCREEN_CENTER_Y+60+27.5*4):addy((IsHome() == true) and -172.5 or 0) end;
+			OnCommand=function(self) self:horizalign(left):addx(200):sleep(0.9):decelerate(0.25):addx(-200):zoom(0.7) end;
+			CoinModeChangedMessageCommand=function(self) self:stoptweening():playcommand("Init"):playcommand("On") end;
+		};
+	};
+
 	Def.ActorFrame{
 		LoadActor("_lside")..{
 			InitCommand=function(self) self:x(SCREEN_LEFT):y(SCREEN_BOTTOM+100):halign(0):valign(1) end;
