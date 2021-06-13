@@ -14,12 +14,12 @@ return Def.ActorFrame{
 		Name="Triangles";
 		InitCommand=function(self) self:CenterX():y(6) end;
 		LoadActor(THEME:GetPathG("ScreenOptions","more/_triangle"))..{
-			InitCommand=function(self) self:blend(Blend.Add):x(-38):diffuseblink():effectcolor1(color("0.6,0.6,0.6,1")):effectperiod(0.4):effectoffset(0.2):effectclock("beat") end;
+			InitCommand=function(self) self:blend(Blend.Add):x(-38):diffuseblink():effectcolor1(color("0.6,0.6,0.6,1")):effectperiod(1):effectoffset(0):effectclock("beat") end;
 			GainFocusCommand=function(self) self:stoptweening():linear(.15):rotationz(-90) end;
 			LoseFocusCommand=function(self) self:stoptweening():linear(.15):rotationz(0) end;
 		};
 		LoadActor(THEME:GetPathG("ScreenOptions","more/_triangle"))..{
-			InitCommand=function(self) self:blend(Blend.Add):x(38):diffuseblink():effectcolor1(color("0.6,0.6,0.6,1")):effectperiod(0.4):effectoffset(0.2):effectclock("beat") end;
+			InitCommand=function(self) self:blend(Blend.Add):x(38):diffuseblink():effectcolor1(color("0.6,0.6,0.6,1")):effectperiod(1):effectoffset(0):effectclock("beat") end;
 			GainFocusCommand=function(self) self:stoptweening():linear(.15):rotationz(90) end;
 			LoseFocusCommand=function(self) self:stoptweening():linear(.15):rotationz(0) end;
 		};
