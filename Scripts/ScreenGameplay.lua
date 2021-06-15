@@ -104,10 +104,11 @@ function AnyPlayerFullComboed(self)
 end
 
 -- Needed for judgment rotation
-local StepCount = 0;
-function StepEvenOdd()
-	StepCount=StepCount+1;
-	if StepCount % 2 == 0 then
+local StepCount = {0,0};
+function StepEvenOdd(player)
+	local PX = (player == PLAYER_1) and 1 or 2;
+	StepCount[PX]=StepCount[PX]+1;
+	if StepCount[PX] % 2 == 0 then
 		return 1
 	else
 		return -1
@@ -115,10 +116,11 @@ function StepEvenOdd()
 end
 
 -- Needed for hold rotation
-local HoldCount = 0;
-function HoldEvenOdd()
-	HoldCount=HoldCount+1;
-	if HoldCount % 2 == 0 then
+local HoldCount = {0,0};
+function HoldEvenOdd(player)
+	local PX = (player == PLAYER_1) and 1 or 2;
+	HoldCount[PX]=HoldCount[PX]+1;
+	if HoldCount[PX] % 2 == 0 then
 		return 1
 	else
 		return -1

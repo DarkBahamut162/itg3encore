@@ -62,7 +62,7 @@ return Def.ActorFrame {
 		if tns == 'TapNoteScore_W1' or tns == 'TapNoteScore_W2' then
 			c.Judgment:rotationz(0)
 		else
-			c.Judgment:rotationz( TNSRotationZ[tns] * StepEvenOdd() );
+			c.Judgment:rotationz( TNSRotationZ[tns] * StepEvenOdd(param.Player) );
 		end
 	end;
 };
