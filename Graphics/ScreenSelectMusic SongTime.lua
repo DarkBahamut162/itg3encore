@@ -8,7 +8,14 @@ return LoadFont("_r bold bevel numbers")..{
 		if GAMESTATE:IsCourseMode() then
 			curSelection = GAMESTATE:GetCurrentCourse();
 			if curSelection then
-				self:settext("");
+				local trail = GAMESTATE:GetCurrentTrail(GAMESTATE:GetMasterPlayerNumber());
+				if trail then
+					length = TrailUtil.GetTotalSeconds(trail);
+				else
+					length = 0.0;
+				end;
+			else
+				length = 0.0;
 			end;
 		else
 			curSelection = GAMESTATE:GetCurrentSong();
@@ -17,8 +24,8 @@ return LoadFont("_r bold bevel numbers")..{
 			else
 				length = 0.0;
 			end;
-			self:settext( SecondsToMMSSMsMs(length) );
 		end;
+		self:settext( SecondsToMMSSMsMs(length) );
 	end;
 	CurrentSongChangedMessageCommand=function(self) self:queuecommand("Set") end;
 	CurrentCourseChangedMessageCommand=function(self) self:queuecommand("Set") end;

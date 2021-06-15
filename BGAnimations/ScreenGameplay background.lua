@@ -4,7 +4,7 @@
 	in StepMania are flipped, and set the Z position depending on Aspect Ratio because
 	the z field changes on the current Aspect Ratio, so correct that.
 ]]
--- THE ONLY WAY ON MAKING CUSTOMMODS WORK... I think... - DARKBAHAMUT162
+--the only way on making custommods work... Iithink... ~DarkBahamut162
 local background = Def.ActorFrame {
 	Name="YOU_WISH_YOU_WERE_PLAYING_BEATMANIA_RIGHT_NOW",
 	OnCommand=function()
