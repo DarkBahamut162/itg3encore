@@ -13,11 +13,6 @@ local background = Def.ActorFrame {
 			if SCREENMAN:GetTopScreen():GetChild("Player"..pX) and SCREENMAN:GetTopScreen():GetChild("Player"..pX):GetChild("NoteField") then
 				if getenv("RotationLeft"..pX) == true then
 					SCREENMAN:GetTopScreen():GetChild("Player"..pX):GetChild("NoteField"):rotationz(270);
-					if pn == PLAYER_1 then
-						SCREENMAN:GetTopScreen():GetChild("Player"..pX):GetChild("NoteField"):x(SCREEN_LEFT+190+GetLifebarAdjustment());
-					else
-						SCREENMAN:GetTopScreen():GetChild("Player"..pX):GetChild("NoteField"):x(SCREEN_CENTER_X+160+GetLifebarAdjustment());
-					end		
 					if GAMESTATE:IsPlayerEnabled(PLAYER_2) and not GAMESTATE:IsPlayerEnabled(PLAYER_1) then
 						SCREENMAN:GetTopScreen():GetChild("Player"..pX):GetChild("NoteField"):addx(-SCREEN_WIDTH/2);
 					end
@@ -33,8 +28,6 @@ local background = Def.ActorFrame {
 					end
 				elseif getenv("RotationUpsideDown"..pX) == true then
 					SCREENMAN:GetTopScreen():GetChild("Player"..pX):GetChild("NoteField"):rotationz(180):addy(20);
-				elseif getenv("RotationSolo"..pX) == true then
-					SCREENMAN:GetTopScreen():GetChild("Player"..pX):GetChild("NoteField"):x(SCREEN_CENTER_X);
 				end
 
 				if getenv("EffectSpin"..pX) == true then
