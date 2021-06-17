@@ -250,7 +250,7 @@ local t = Def.ActorFrame{
 		OnCommand=function(self) self:decelerate(0.4):addy(-100):diffusealpha(1):playcommand("Refresh") end;
 		OffCommand=function(self) self:accelerate(0.5):addy(100):diffusealpha(0) end;
 		RefreshCommand=function(self)
-			self:settext("In The Groove 3 Encore r35")
+			self:settext("In The Groove 3 Encore r35?")
 		end;
 	};
 

@@ -4,7 +4,7 @@ local t = Def.ActorFrame{
 		OnCommand=function(self) self:sleep(0.5):queuecommand("TweenOn") end;
 		OffCommand=function(self) self:queuecommand("TweenOff") end;
 		TweenOnCommand=function(self) self:decelerate(0.8):addy(100) end;
-		TweenOffCommand=function(self) if AnyPlayerFullComboed() then self:sleep(3) end; self:accelerate(0.8):addy(-100) end;
+		TweenOffCommand=function(self) if AnyPlayerFullComboed() then self:sleep(1) end; self:accelerate(0.8):addy(-100) end;
 		Def.SongMeterDisplay{
 			InitCommand=function(self) self:SetStreamWidth(292):blend(Blend.Add) end;
 			Stream=LoadActor("meter stream");
@@ -20,7 +20,7 @@ local t = Def.ActorFrame{
 		OnCommand=function(self) self:addy(-100):sleep(0.5):queuecommand("TweenOn") end;
 		OffCommand=function(self) self:queuecommand("TweenOff") end;
 		TweenOnCommand=function(self) self:decelerate(0.8):addy(100) end;
-		TweenOffCommand=function(self) if AnyPlayerFullComboed() then self:sleep(3) end; self:accelerate(0.8):addy(-100) end;
+		TweenOffCommand=function(self) if AnyPlayerFullComboed() then self:sleep(1) end; self:accelerate(0.8):addy(-100) end;
 
 		LoadActor("_uplight")..{
 			InitCommand=function(self) self:x(SCREEN_CENTER_X):y(SCREEN_TOP-2+24):blend(Blend.Add) end;
@@ -89,7 +89,7 @@ local t = Def.ActorFrame{
 		ShowGameplayTopFrameMessageCommand=function(self) self:playcommand("TweenOn") end;
 		HideGameplayTopFrameMessageCommand=function(self) self:queuecommand("Hide") end;
 		HideCommand=function(self)
-			if AnyPlayerFullComboed() then self:sleep(3) end;
+			if AnyPlayerFullComboed() then self:sleep(1) end;
 			self:queuecommand('TweenOff')
 		end;
 
