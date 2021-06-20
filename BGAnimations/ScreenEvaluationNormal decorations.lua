@@ -8,8 +8,11 @@ if ShowStandardDecoration("StepsDisplay") then
 			LoadActor(THEME:GetPathG("_difficulty","icons"))..{
 				InitCommand=function(self) self:zoomy(.8):animate(0):zoomx((pn==PLAYER_2) and -0.8 or 0.8):playcommand("Update") end;
 				UpdateCommand=function(self)
+					local course = GAMESTATE:GetCurrentTrail(pn)
 					local steps = GAMESTATE:GetCurrentSteps(pn)
-					if steps then
+					if course then
+						self:setstate(DifficultyToState(course:GetDifficulty()))
+					elseif steps then
 						self:setstate(DifficultyToState(steps:GetDifficulty()))
 					end
 				end;
@@ -93,7 +96,6 @@ if ShowStandardDecoration("ComboGraph") then
 end;
 
 -- awards
---[[
 local function StageAward( pn )
 	local MetricsName = "StageAward"..ToEnumShortString(pn);
 	return Def.ActorFrame{
@@ -114,14 +116,12 @@ end;
 
 local function PeakComboAward( pn )
 	local MetricsName = "PeakComboAward"..ToEnumShortString(pn);
-	return Def.ActorFrame{
-		LoadActor(THEME:GetPathG("ScreenEvaluation", "PeakComboAward"), pn)..{
-			InitCommand=function(self) 
-				self:player(pn); 
-				self:name(MetricsName); 
-				ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen"); 
-			end;
-		};
+	return LoadActor( THEME:GetPathG(Var "LoadingScreen", "PeakComboAward"), pn ) .. {
+		InitCommand=function(self) 
+			self:player(pn); 
+			self:name(MetricsName); 
+			ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen"); 
+		end;
 	};
 end
 if ShowStandardDecoration("PeakComboAward") then
@@ -129,6 +129,5 @@ if ShowStandardDecoration("PeakComboAward") then
 		t[#t+1] = StandardDecorationFromTable("PeakComboAward"..ToEnumShortString(pn), PeakComboAward(pn));
 	end;
 end;
---]]
 
 return t;

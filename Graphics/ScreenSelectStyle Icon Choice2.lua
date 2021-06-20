@@ -8,7 +8,7 @@ return Def.ActorFrame{
 		OffCommand=function(self) self:linear(0.3):diffusealpha(0) end;
 	};
 	Def.ActorFrame{
-		InitCommand=function(self) self:x(SCREEN_LEFT+65):y(SCREEN_CENTER_Y-95+120):horizalign(left):ZoomToWidth(150):ZoomToHeight(110) end;
+		InitCommand=function(self) self:x(SCREEN_LEFT+65):y(SCREEN_CENTER_Y-95+120):horizalign(left) end;
 		LoadActor(THEME:GetPathG("_join","icons/choice2"))..{
 			OnCommand=function(self) self:y(-2):zoomto(150,110) end;
 			GainFocusCommand=function(self) self:accelerate(0.1):diffuse(color("#FFFFFF")):x(52+19) end;

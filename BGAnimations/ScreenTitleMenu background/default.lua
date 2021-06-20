@@ -1,9 +1,7 @@
 local t = Def.ActorFrame{
-	--[[
 	OnCommand=function(self)
-		ResetCustomMods()
+		InitOptions()
 	end;
-	--]]
 	LoadActor(THEME:GetPathB("ScreenSelectMusic","background/_fallback"))..{
 		InitCommand=function(self) self:Center():diffusealpha(0) end;
 		OnCommand=function(self) self:linear(1.5):diffusealpha(1) end;

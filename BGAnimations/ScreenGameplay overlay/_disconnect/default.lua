@@ -96,7 +96,11 @@ local t = Def.ActorFrame{
 				InitCommand=function(self) self:pause():playcommand("Update") end;
 				UpdateCommand=function(self)
 					local steps = GAMESTATE:GetCurrentSteps(PLAYER_1)
-					if steps then
+					local course = GAMESTATE:GetCurrentTrail(PLAYER_1)
+					if course then
+						self:visible(true)
+						self:setstate(DifficultyToState(course:GetDifficulty()))
+					elseif steps then
 						self:visible(true)
 						self:setstate(DifficultyToState(steps:GetDifficulty()))
 					else

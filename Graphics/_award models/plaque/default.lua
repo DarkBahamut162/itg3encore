@@ -1,5 +1,5 @@
 local itemColor = ... -- "gold", "silver", "bronze", "green"
-assert(itemcolor,"[_award models/plaque/] requires item color")
+assert(itemColor,"[_award models/plaque/] requires itemColor")
 
 return Def.ActorFrame{
 	Def.Model{

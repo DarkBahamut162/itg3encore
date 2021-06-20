@@ -1,15 +1,5 @@
 local player = ...
 assert(player,"[ScreenEvaluation PeakComboAward] requires player")
---[[
-local award
-local combo = "combo"
-if topScreen then
-	stageStats = topScreen:GetStageStats()
-	playerStageStats = stageStats:GetPlayerStageStats(player)
-	award = playerStageStats:GetPeakComboAward()
-	combo = ToEnumShortString(award)
-end
-combo = "fuck"
 
 local awardRef = {
 	PeakComboAward_1000  = { File = THEME:GetPathG("_award","models/ribbon"), Color = "purple" },
@@ -23,32 +13,23 @@ local awardRef = {
 	PeakComboAward_9000  = { File = THEME:GetPathG("_award","models/itg"), Color = "gold" },
 	PeakComboAward_10000 = { File = THEME:GetPathG("_award","models/itg"), Color = "blue" },
 };
---]]
 
-return Def.ActorFrame{
-	InitCommand=function(self)
-		local comboText = self:GetChild("Combo")
+local combo = PlayerMaxCombo(player)
+local combo_ = math.floor(combo/1000)*1000;
+if combo_ > 10000 then combo_ = 10000 end;
+local award = "PeakComboAward_"..combo_;
 
-		local topScreen = SCREENMAN:GetTopScreen()
-		local stageStats,playerStageStats
-		local award, comboNum
-		if topScreen then
-			stageStats = topScreen:GetStageStats()
-			playerStageStats = stageStats:GetPlayerStageStats(player)
-			award = playerStageStats:GetPeakComboAward()
-			comboNum = ToEnumShortString(award)
-		end
+local t = Def.ActorFrame{};
 
-		comboText:settext(comboNum)
-	end;
-	--[[
-	LoadActor(awardRef[award].File,awardRef[award].Color)..{
+if combo_ > 0 then
+	t[#t+1] = LoadActor(awardRef[award].File,awardRef[award].Color)..{
 		Name="Trophy";
 		InitCommand=function(self) self:zoom(0.7):x(60):y(-80):rotationy(-15) end;
 	};
-	--]]
-	LoadFont("_eurostile normal")..{
+	t[#t+1] = LoadFont("_eurostile normal")..{
 		Name="Combo";
-		InitCommand=function(self) self:halign(0):shadowlength(2):maxwidth(250) end;
+		InitCommand=function(self) self:halign(0):shadowlength(2):maxwidth(250):settext(THEME:GetString( "PeakComboAward", combo_ ) ) end;
 	};
-};
+end
+
+return t

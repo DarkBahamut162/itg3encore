@@ -78,7 +78,7 @@ return Def.ActorFrame{
 			Name="Numbers";
 			StepMessageCommand=function(self,p)
 				if p.PlayerNumber == pn then
-					self:RunCommandsOnChildren(self:playcommand("Update"))
+					self:RunCommandsOnChildren(function(self) self:playcommand("Update") end);
 				end
 			end;
 			LoadFont("ScreenGameplay judgment")..{

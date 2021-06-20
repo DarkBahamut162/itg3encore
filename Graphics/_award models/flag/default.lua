@@ -1,5 +1,5 @@
 local itemColor = ... -- "green", "orange"
-assert(itemcolor,"[_award models/flag/] requires item color")
+assert(itemColor,"[_award models/flag/] requires itemColor")
 
 return Def.ActorFrame{
 	Def.Model{
