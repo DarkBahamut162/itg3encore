@@ -140,8 +140,12 @@ local t = Def.ActorFrame{
 			LoadActor(THEME:GetPathG("_difficulty","icons"))..{
 				InitCommand=function(self) self:pause():zoomx(-1):playcommand("Update") end;
 				UpdateCommand=function(self)
-					local steps = GAMESTATE:GetCurrentSteps(PLAYER_2) or GAMESTATE:GetCurrentTrail(PLAYER_2)
-					if steps then
+					local steps = GAMESTATE:GetCurrentSteps(PLAYER_2)
+					local course = GAMESTATE:GetCurrentTrail(PLAYER_2)
+					if course then
+						self:visible(true)
+						self:setstate(DifficultyToState(course:GetDifficulty()))
+					elseif steps then
 						self:visible(true)
 						self:setstate(DifficultyToState(steps:GetDifficulty()))
 					else
