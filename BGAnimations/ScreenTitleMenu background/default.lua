@@ -1,3 +1,20 @@
+local groups = SONGMAN:GetSongGroupNames();
+local ITG3ADDONS, ITG3UNLOCKS, REBIRTH, REBIRTHPLUS, REBIRTHTWO = false, false, false, false, false;
+
+for group in ivalues(groups) do
+	if string.find(group,"In The Groove 3 Unlocks") then
+		ITG3UNLOCKS = true;
+	elseif string.find(group,"In The Groove 3 +") then
+		ITG3ADDONS = true;
+	elseif string.find(group,"In The Groove Rebirth 2") then
+		REBIRTHTWO = true;
+	elseif string.find(group,"In The Groove Rebirth +") then
+		REBIRTHPLUS = true;
+	elseif string.find(group,"In The Groove Rebirth") then
+		REBIRTH = true;
+	end
+end
+
 local t = Def.ActorFrame{
 	OnCommand=function(self)
 		InitOptions()
@@ -112,11 +129,13 @@ local t = Def.ActorFrame{
 			OnCommand=function(self) self:horizalign(right):addx(200):sleep(0.9):decelerate(0.25):addx(-200):playcommand("Fade") end;
 			FadeCommand=function(self) self:glow(1,1,1,0):sleep(2):linear(0.3):glow(1,1,1,0.25):sleep(0.05):glow(1,1,1,0):sleep(1):queuecommand("Fade") end;
 			CoinModeChangedMessageCommand=function(self) self:stoptweening():playcommand("Init"):playcommand("On") end;
+			Condition=ITG3ADDONS;
 		};
 		LoadFont("_v profile")..{
 			InitCommand=function(self) self:settext("ITG3 ADDONS"):shadowlength(1):x(SCREEN_RIGHT-106):y(SCREEN_CENTER_Y+60+27.5*0):addy((IsHome() == true) and -172.5 or 0) end;
 			OnCommand=function(self) self:horizalign(left):addx(200):sleep(0.9):decelerate(0.25):addx(-200):zoom(0.7) end;
 			CoinModeChangedMessageCommand=function(self) self:stoptweening():playcommand("Init"):playcommand("On") end;
+			Condition=ITG3ADDONS;
 		};
 		-- ITG3 UNLOCKS
 		LoadActor("../_overlay/joinin")..{
@@ -124,11 +143,13 @@ local t = Def.ActorFrame{
 			OnCommand=function(self) self:horizalign(right):addx(200):sleep(0.9):decelerate(0.25):addx(-200):playcommand("Fade") end;
 			FadeCommand=function(self) self:glow(1,1,1,0):sleep(2):linear(0.3):glow(1,1,1,0.25):sleep(0.05):glow(1,1,1,0):sleep(1):queuecommand("Fade") end;
 			CoinModeChangedMessageCommand=function(self) self:stoptweening():playcommand("Init"):playcommand("On") end;
+			Condition=ITG3UNLOCKS;
 		};
 		LoadFont("_v profile")..{
 			InitCommand=function(self) self:settext("ITG3 UNLOCKS"):shadowlength(1):x(SCREEN_RIGHT-106):y(SCREEN_CENTER_Y+60+27.5*1):addy((IsHome() == true) and -172.5 or 0) end;
 			OnCommand=function(self) self:horizalign(left):addx(200):sleep(0.9):decelerate(0.25):addx(-200):zoom(0.7) end;
 			CoinModeChangedMessageCommand=function(self) self:stoptweening():playcommand("Init"):playcommand("On") end;
+			Condition=ITG3UNLOCKS;
 		};
 		-- REBIRTH
 		LoadActor("../_overlay/joinin")..{
@@ -136,11 +157,13 @@ local t = Def.ActorFrame{
 			OnCommand=function(self) self:horizalign(right):addx(200):sleep(0.9):decelerate(0.25):addx(-200):playcommand("Fade") end;
 			FadeCommand=function(self) self:glow(1,1,1,0):sleep(2):linear(0.3):glow(1,1,1,0.25):sleep(0.05):glow(1,1,1,0):sleep(1):queuecommand("Fade") end;
 			CoinModeChangedMessageCommand=function(self) self:stoptweening():playcommand("Init"):playcommand("On") end;
+			Condition=REBIRTH;
 		};
 		LoadFont("_v profile")..{
 			InitCommand=function(self) self:settext("REBIRTH"):shadowlength(1):x(SCREEN_RIGHT-106):y(SCREEN_CENTER_Y+60+27.5*2):addy((IsHome() == true) and -172.5 or 0) end;
 			OnCommand=function(self) self:horizalign(left):addx(200):sleep(0.9):decelerate(0.25):addx(-200):zoom(0.7) end;
 			CoinModeChangedMessageCommand=function(self) self:stoptweening():playcommand("Init"):playcommand("On") end;
+			Condition=REBIRTH;
 		};
 		-- REBIRTH +
 		LoadActor("../_overlay/joinin")..{
@@ -148,11 +171,13 @@ local t = Def.ActorFrame{
 			OnCommand=function(self) self:horizalign(right):addx(200):sleep(0.9):decelerate(0.25):addx(-200):playcommand("Fade") end;
 			FadeCommand=function(self) self:glow(1,1,1,0):sleep(2):linear(0.3):glow(1,1,1,0.25):sleep(0.05):glow(1,1,1,0):sleep(1):queuecommand("Fade") end;
 			CoinModeChangedMessageCommand=function(self) self:stoptweening():playcommand("Init"):playcommand("On") end;
+			Condition=REBIRTHPLUS;
 		};
 		LoadFont("_v profile")..{
 			InitCommand=function(self) self:settext("REBIRTH +"):shadowlength(1):x(SCREEN_RIGHT-106):y(SCREEN_CENTER_Y+60+27.5*3):addy((IsHome() == true) and -172.5 or 0) end;
 			OnCommand=function(self) self:horizalign(left):addx(200):sleep(0.9):decelerate(0.25):addx(-200):zoom(0.7) end;
 			CoinModeChangedMessageCommand=function(self) self:stoptweening():playcommand("Init"):playcommand("On") end;
+			Condition=REBIRTHPLUS;
 		};
 		-- REBIRTH 2
 		LoadActor("../_overlay/joinin")..{
@@ -160,11 +185,13 @@ local t = Def.ActorFrame{
 			OnCommand=function(self) self:horizalign(right):addx(200):sleep(0.9):decelerate(0.25):addx(-200):playcommand("Fade") end;
 			FadeCommand=function(self) self:glow(1,1,1,0):sleep(2):linear(0.3):glow(1,1,1,0.25):sleep(0.05):glow(1,1,1,0):sleep(1):queuecommand("Fade") end;
 			CoinModeChangedMessageCommand=function(self) self:stoptweening():playcommand("Init"):playcommand("On") end;
+			Condition=REBIRTHTWO;
 		};
 		LoadFont("_v profile")..{
 			InitCommand=function(self) self:settext("REBIRTH 2"):shadowlength(1):x(SCREEN_RIGHT-106):y(SCREEN_CENTER_Y+60+27.5*4):addy((IsHome() == true) and -172.5 or 0) end;
 			OnCommand=function(self) self:horizalign(left):addx(200):sleep(0.9):decelerate(0.25):addx(-200):zoom(0.7) end;
 			CoinModeChangedMessageCommand=function(self) self:stoptweening():playcommand("Init"):playcommand("On") end;
+			Condition=REBIRTHTWO;
 		};
 	};
 
@@ -226,7 +253,6 @@ local t = Def.ActorFrame{
 	};
 
 	LoadActor("icon")..{ OffCommand=function(self) self:accelerate(0.5):addy(-100) end; };
-	-- addon OffCommand=function(self) self:accelerate(0.3):addx(100) end;
 
 	Def.Quad{
 		InitCommand=function(self) self:Center():FullScreen() end;
