@@ -219,14 +219,11 @@ local t = Def.ActorFrame{
 		OnCommand=function(self) self:sleep(0.5):linear(0.5):diffusealpha(1) end;
 		OffCommand=function(self) self:accelerate(.5):addy(-100) end;
 	};
-	-- only works in 16:9 (need to fix that)
-	--[[
-	LoadActor(THEME:GetPathB("","_thanks/_ssc"))..{
+	LoadActor(THEME:GetPathB("","_thanks/_outfox"))..{
 		InitCommand=function(self) self:x(SCREEN_LEFT+360):y(SCREEN_TOP+16):valign(1):addy(-100) end;
 		OnCommand=function(self) self:sleep(0.4):linear(0.25):addy(100) end;
 		OffCommand=function(self) self:accelerate(.5):addy(-100) end;
 	};
-	--]]
 
 	LoadActor("icon")..{ OffCommand=function(self) self:accelerate(0.5):addy(-100) end; };
 	-- addon OffCommand=function(self) self:accelerate(0.3):addx(100) end;

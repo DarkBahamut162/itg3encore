@@ -9,27 +9,30 @@ return Def.ActorFrame{
 		OnCommand=function(self) self:sleep(0.3):decelerate(0.1):diffusealpha(0.5) end;
 		SetCommand=function(self)
 			local yZoom = 0
-			if GAMESTATE:IsCourseMode() then
+			local numSongs = 1;
+			local song = GAMESTATE:GetCurrentSong()
+			local course = GAMESTATE:GetCurrentCourse()
+			local steps
+			if song then
+				steps = GAMESTATE:GetCurrentSteps(player)
+			elseif course then
+				steps = GAMESTATE:GetCurrentTrail(GAMESTATE:GetMasterPlayerNumber())
+				numSongs = TrailUtil.GetNumSongs(steps);
 			else
-				local song = GAMESTATE:GetCurrentSong()
-				if song then
-					local steps = GAMESTATE:GetCurrentSteps(player)
-					if steps then
-						local rv = steps:GetRadarValues(player)
-						local val = rv:GetValue('RadarCategory_Jumps')
-						if val == 0 then self:diffusecolor( color(".4,.4,.4,1") ) yZoom = 0
-						elseif val <= 24 then self:diffusecolor( color("#00FF00FF") ) yZoom = 0.2*24
-						elseif val <= 49 then self:diffusecolor( color("#FFFF00FF") ) yZoom = 0.4*24
-						elseif val <= 99 then self:diffusecolor( color("#FF8800FF") ) yZoom = 0.6*24
-						elseif val <= 199 then self:diffusecolor( color("#FF0000FF") ) yZoom = 0.8*24
-						else self:diffusecolor( color("#00C0FFFF") ) yZoom = 24
-						end
-					else
-						yZoom = 0
-					end
-				else
-					yZoom = 0
+				yZoom = 0
+			end
+			if steps then
+				local rv = steps:GetRadarValues(player)
+				local val = rv:GetValue('RadarCategory_Jumps')
+				if val == 0 then self:diffusecolor( color(".4,.4,.4,1") ) yZoom = 0
+				elseif val <= 24 * numSongs then self:diffusecolor( color("#00FF00FF") ) yZoom = 0.2*24
+				elseif val <= 49 * numSongs then self:diffusecolor( color("#FFFF00FF") ) yZoom = 0.4*24
+				elseif val <= 99 * numSongs then self:diffusecolor( color("#FF8800FF") ) yZoom = 0.6*24
+				elseif val <= 199 * numSongs then self:diffusecolor( color("#FF0000FF") ) yZoom = 0.8*24
+				else self:diffusecolor( color("#00C0FFFF") ) yZoom = 24
 				end
+			else
+				yZoom = 0
 			end
 			self:finishtweening()
 			self:decelerate(0.1)
@@ -37,10 +40,16 @@ return Def.ActorFrame{
 		end;
 		CurrentSongChangedMessageCommand=function(self) self:playcommand("Set") end;
 		CurrentStepsP1ChangedMessageCommand=function(self)
-			if player == PLAYER_1 then self:playcommand("Set"); end
+			if player == PLAYER_1 then self:playcommand("Set") end
+		end;
+		CurrentTrailP1ChangedMessageCommand=function(self)
+			if player == PLAYER_1 then self:playcommand("Set") end
 		end;
 		CurrentStepsP2ChangedMessageCommand=function(self)
-			if player == PLAYER_2 then self:playcommand("Set"); end
+			if player == PLAYER_2 then self:playcommand("Set") end
+		end;
+		CurrentTrailP2ChangedMessageCommand=function(self)
+			if player == PLAYER_2 then self:playcommand("Set") end
 		end;
 		OffCommand=function(self) self:accelerate(0.2):diffusealpha(0) end;
 	};
@@ -51,27 +60,30 @@ return Def.ActorFrame{
 		OnCommand=function(self) self:sleep(0.3):decelerate(0.1):diffusealpha(0.5) end;
 		SetCommand=function(self)
 			local yZoom = 0
-			if GAMESTATE:IsCourseMode() then
+			local numSongs = 1;
+			local song = GAMESTATE:GetCurrentSong()
+			local course = GAMESTATE:GetCurrentCourse()
+			local steps
+			if song then
+				steps = GAMESTATE:GetCurrentSteps(player)
+			elseif course then
+				steps = GAMESTATE:GetCurrentTrail(GAMESTATE:GetMasterPlayerNumber())
+				numSongs = TrailUtil.GetNumSongs(steps);
 			else
-				local song = GAMESTATE:GetCurrentSong()
-				if song then
-					local steps = GAMESTATE:GetCurrentSteps(player)
-					if steps then
-						local rv = steps:GetRadarValues(player)
-						local val = rv:GetValue('RadarCategory_Holds')
-						if val == 0 then self:diffusecolor( color(".4,.4,.4,1") ) yZoom = 0
-						elseif val <= 24 then self:diffusecolor( color("#00FF00FF") ) yZoom = 0.2*24
-						elseif val <= 49 then self:diffusecolor( color("#FFFF00FF") ) yZoom = 0.4*24
-						elseif val <= 99 then self:diffusecolor( color("#FF8800FF") ) yZoom = 0.6*24
-						elseif val <= 150 then self:diffusecolor( color("#FF0000FF") ) yZoom = 0.8*24
-						else self:diffusecolor( color("#00C0FFFF") ) yZoom = 24
-						end
-					else
-						yZoom = 0
-					end
-				else
-					yZoom = 0
+				yZoom = 0
+			end
+			if steps then
+				local rv = steps:GetRadarValues(player)
+				local val = rv:GetValue('RadarCategory_Holds')
+				if val == 0 then self:diffusecolor( color(".4,.4,.4,1") ) yZoom = 0
+				elseif val <= 24 * numSongs then self:diffusecolor( color("#00FF00FF") ) yZoom = 0.2*24
+				elseif val <= 49 * numSongs then self:diffusecolor( color("#FFFF00FF") ) yZoom = 0.4*24
+				elseif val <= 99 * numSongs then self:diffusecolor( color("#FF8800FF") ) yZoom = 0.6*24
+				elseif val <= 150 * numSongs then self:diffusecolor( color("#FF0000FF") ) yZoom = 0.8*24
+				else self:diffusecolor( color("#00C0FFFF") ) yZoom = 24
 				end
+			else
+				yZoom = 0
 			end
 			self:finishtweening()
 			self:decelerate(0.1)
@@ -79,10 +91,16 @@ return Def.ActorFrame{
 		end;
 		CurrentSongChangedMessageCommand=function(self) self:playcommand("Set") end;
 		CurrentStepsP1ChangedMessageCommand=function(self)
-			if player == PLAYER_1 then self:playcommand("Set"); end
+			if player == PLAYER_1 then self:playcommand("Set") end
+		end;
+		CurrentTrailP1ChangedMessageCommand=function(self)
+			if player == PLAYER_1 then self:playcommand("Set") end
 		end;
 		CurrentStepsP2ChangedMessageCommand=function(self)
-			if player == PLAYER_2 then self:playcommand("Set"); end
+			if player == PLAYER_2 then self:playcommand("Set") end
+		end;
+		CurrentTrailP2ChangedMessageCommand=function(self)
+			if player == PLAYER_2 then self:playcommand("Set") end
 		end;
 		OffCommand=function(self) self:accelerate(0.2):diffusealpha(0) end;
 	};
@@ -93,27 +111,30 @@ return Def.ActorFrame{
 		OnCommand=function(self) self:sleep(0.3):decelerate(0.1):diffusealpha(0.5) end;
 		SetCommand=function(self)
 			local yZoom = 0
-			if GAMESTATE:IsCourseMode() then
+			local numSongs = 1;
+			local song = GAMESTATE:GetCurrentSong()
+			local course = GAMESTATE:GetCurrentCourse()
+			local steps
+			if song then
+				steps = GAMESTATE:GetCurrentSteps(player)
+			elseif course then
+				steps = GAMESTATE:GetCurrentTrail(GAMESTATE:GetMasterPlayerNumber())
+				numSongs = TrailUtil.GetNumSongs(steps);
 			else
-				local song = GAMESTATE:GetCurrentSong()
-				if song then
-					local steps = GAMESTATE:GetCurrentSteps(player)
-					if steps then
-						local rv = steps:GetRadarValues(player)
-						local val = rv:GetValue('RadarCategory_Mines')
-						if val == 0 then self:diffusecolor( color(".4,.4,.4,1") ) yZoom = 0
-						elseif val <= 24 then self:diffusecolor( color("#00FF00FF") ) yZoom = 0.2*24
-						elseif val <= 49 then self:diffusecolor( color("#FFFF00FF") ) yZoom = 0.4*24
-						elseif val <= 89 then self:diffusecolor( color("#FF8800FF") ) yZoom = 0.6*24
-						elseif val <= 139 then self:diffusecolor( color("#FF0000FF") ) yZoom = 0.8*24
-						else self:diffusecolor( color("#00C0FFFF") ) yZoom = 24
-						end
-					else
-						yZoom = 0
-					end
-				else
-					yZoom = 0
+				yZoom = 0
+			end
+			if steps then
+				local rv = steps:GetRadarValues(player)
+				local val = rv:GetValue('RadarCategory_Mines')
+				if val == 0 then self:diffusecolor( color(".4,.4,.4,1") ) yZoom = 0
+				elseif val <= 24 * numSongs then self:diffusecolor( color("#00FF00FF") ) yZoom = 0.2*24
+				elseif val <= 49 * numSongs then self:diffusecolor( color("#FFFF00FF") ) yZoom = 0.4*24
+				elseif val <= 89 * numSongs then self:diffusecolor( color("#FF8800FF") ) yZoom = 0.6*24
+				elseif val <= 139 * numSongs then self:diffusecolor( color("#FF0000FF") ) yZoom = 0.8*24
+				else self:diffusecolor( color("#00C0FFFF") ) yZoom = 24
 				end
+			else
+				yZoom = 0
 			end
 			self:finishtweening()
 			self:decelerate(0.1)
@@ -121,10 +142,16 @@ return Def.ActorFrame{
 		end;
 		CurrentSongChangedMessageCommand=function(self) self:playcommand("Set") end;
 		CurrentStepsP1ChangedMessageCommand=function(self)
-			if player == PLAYER_1 then self:playcommand("Set"); end
+			if player == PLAYER_1 then self:playcommand("Set") end
+		end;
+		CurrentTrailP1ChangedMessageCommand=function(self)
+			if player == PLAYER_1 then self:playcommand("Set") end
 		end;
 		CurrentStepsP2ChangedMessageCommand=function(self)
-			if player == PLAYER_2 then self:playcommand("Set"); end
+			if player == PLAYER_2 then self:playcommand("Set") end
+		end;
+		CurrentTrailP2ChangedMessageCommand=function(self)
+			if player == PLAYER_2 then self:playcommand("Set") end
 		end;
 		OffCommand=function(self) self:accelerate(0.2):diffusealpha(0) end;
 	};
@@ -135,27 +162,30 @@ return Def.ActorFrame{
 		OnCommand=function(self) self:sleep(0.3):decelerate(0.1):diffusealpha(0.5) end;
 		SetCommand=function(self)
 			local yZoom = 0
-			if GAMESTATE:IsCourseMode() then
+			local numSongs = 1;
+			local song = GAMESTATE:GetCurrentSong()
+			local course = GAMESTATE:GetCurrentCourse()
+			local steps
+			if song then
+				steps = GAMESTATE:GetCurrentSteps(player)
+			elseif course then
+				steps = GAMESTATE:GetCurrentTrail(GAMESTATE:GetMasterPlayerNumber())
+				numSongs = TrailUtil.GetNumSongs(steps);
 			else
-				local song = GAMESTATE:GetCurrentSong()
-				if song then
-					local steps = GAMESTATE:GetCurrentSteps(player)
-					if steps then
-						local rv = steps:GetRadarValues(player)
-						local val = rv:GetValue('RadarCategory_Hands')
-						if val == 0 then self:diffusecolor( color(".4,.4,.4,1") ) yZoom = 0
-						elseif val <= 14 then self:diffusecolor( color("#00FF00FF") ) yZoom = 0.2*24
-						elseif val <= 29 then self:diffusecolor( color("#FFFF00FF") ) yZoom = 0.4*24
-						elseif val <= 39 then self:diffusecolor( color("#FF8800FF") ) yZoom = 0.6*24
-						elseif val <= 51 then self:diffusecolor( color("#FF0000FF") ) yZoom = 0.8*24
-						else self:diffusecolor( color("#00C0FFFF") ) yZoom = 24
-						end
-					else
-						yZoom = 0
-					end
-				else
-					yZoom = 0
+				yZoom = 0
+			end
+			if steps then
+				local rv = steps:GetRadarValues(player)
+				local val = rv:GetValue('RadarCategory_Hands')
+				if val == 0 then self:diffusecolor( color(".4,.4,.4,1") ) yZoom = 0
+				elseif val <= 14 * numSongs then self:diffusecolor( color("#00FF00FF") ) yZoom = 0.2*24
+				elseif val <= 29 * numSongs then self:diffusecolor( color("#FFFF00FF") ) yZoom = 0.4*24
+				elseif val <= 39 * numSongs then self:diffusecolor( color("#FF8800FF") ) yZoom = 0.6*24
+				elseif val <= 51 * numSongs then self:diffusecolor( color("#FF0000FF") ) yZoom = 0.8*24
+				else self:diffusecolor( color("#00C0FFFF") ) yZoom = 24
 				end
+			else
+				yZoom = 0
 			end
 			self:finishtweening()
 			self:decelerate(0.1)
@@ -163,10 +193,16 @@ return Def.ActorFrame{
 		end;
 		CurrentSongChangedMessageCommand=function(self) self:playcommand("Set") end;
 		CurrentStepsP1ChangedMessageCommand=function(self)
-			if player == PLAYER_1 then self:playcommand("Set"); end
+			if player == PLAYER_1 then self:playcommand("Set") end
+		end;
+		CurrentTrailP1ChangedMessageCommand=function(self)
+			if player == PLAYER_1 then self:playcommand("Set") end
 		end;
 		CurrentStepsP2ChangedMessageCommand=function(self)
-			if player == PLAYER_2 then self:playcommand("Set"); end
+			if player == PLAYER_2 then self:playcommand("Set") end
+		end;
+		CurrentTrailP2ChangedMessageCommand=function(self)
+			if player == PLAYER_2 then self:playcommand("Set") end
 		end;
 		OffCommand=function(self) self:accelerate(0.2):diffusealpha(0) end;
 	};
@@ -177,27 +213,30 @@ return Def.ActorFrame{
 		OnCommand=function(self) self:sleep(0.3):decelerate(0.1):diffusealpha(0.5) end;
 		SetCommand=function(self)
 			local yZoom = 0
-			if GAMESTATE:IsCourseMode() then
+			local numSongs = 1;
+			local song = GAMESTATE:GetCurrentSong()
+			local course = GAMESTATE:GetCurrentCourse()
+			local steps
+			if song then
+				steps = GAMESTATE:GetCurrentSteps(player)
+			elseif course then
+				steps = GAMESTATE:GetCurrentTrail(GAMESTATE:GetMasterPlayerNumber())
+				numSongs = TrailUtil.GetNumSongs(steps);
 			else
-				local song = GAMESTATE:GetCurrentSong()
-				if song then
-					local steps = GAMESTATE:GetCurrentSteps(player)
-					if steps then
-						local rv = steps:GetRadarValues(player)
-						local val = rv:GetValue('RadarCategory_Rolls')
-						if val == 0 then self:diffusecolor( color(".4,.4,.4,1") ) yZoom = 0
-						elseif val <=  9 then self:diffusecolor( color("#00FF00FF") ) yZoom = 0.2*24
-						elseif val <= 19 then self:diffusecolor( color("#FFFF00FF") ) yZoom = 0.4*24
-						elseif val <= 29 then self:diffusecolor( color("#FF8800FF") ) yZoom = 0.6*24
-						elseif val <= 39 then self:diffusecolor( color("#FF0000FF") ) yZoom = 0.8*24
-						else self:diffusecolor( color("#00C0FFFF") ) yZoom = 24
-						end
-					else
-						yZoom = 0
-					end
-				else
-					yZoom = 0
+				yZoom = 0
+			end
+			if steps then
+				local rv = steps:GetRadarValues(player)
+				local val = rv:GetValue('RadarCategory_Rolls')
+				if val == 0 then self:diffusecolor( color(".4,.4,.4,1") ) yZoom = 0
+				elseif val <=  9 * numSongs then self:diffusecolor( color("#00FF00FF") ) yZoom = 0.2*24
+				elseif val <= 19 * numSongs then self:diffusecolor( color("#FFFF00FF") ) yZoom = 0.4*24
+				elseif val <= 29 * numSongs then self:diffusecolor( color("#FF8800FF") ) yZoom = 0.6*24
+				elseif val <= 39 * numSongs then self:diffusecolor( color("#FF0000FF") ) yZoom = 0.8*24
+				else self:diffusecolor( color("#00C0FFFF") ) yZoom = 24
 				end
+			else
+				yZoom = 0
 			end
 			self:finishtweening()
 			self:decelerate(0.1)
@@ -205,10 +244,16 @@ return Def.ActorFrame{
 		end;
 		CurrentSongChangedMessageCommand=function(self) self:playcommand("Set") end;
 		CurrentStepsP1ChangedMessageCommand=function(self)
-			if player == PLAYER_1 then self:playcommand("Set"); end
+			if player == PLAYER_1 then self:playcommand("Set") end
+		end;
+		CurrentTrailP1ChangedMessageCommand=function(self)
+			if player == PLAYER_1 then self:playcommand("Set") end
 		end;
 		CurrentStepsP2ChangedMessageCommand=function(self)
-			if player == PLAYER_2 then self:playcommand("Set"); end
+			if player == PLAYER_2 then self:playcommand("Set") end
+		end;
+		CurrentTrailP2ChangedMessageCommand=function(self)
+			if player == PLAYER_2 then self:playcommand("Set") end
 		end;
 		OffCommand=function(self) self:accelerate(0.2):diffusealpha(0) end;
 	};

@@ -9,8 +9,6 @@ local IsUsingSoloSingles = PREFSMAN:GetPreference('Center1Player');
 local NumPlayers = GAMESTATE:GetNumPlayersEnabled();
 local NumSides = GAMESTATE:GetNumSidesJoined();
 
-local pStats = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn);
-
 local function GetPosition(pn)
 	if IsUsingSoloSingles and NumPlayers == 1 and NumSides == 1 then return SCREEN_CENTER_X; end;
 	

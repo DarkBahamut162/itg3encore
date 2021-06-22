@@ -14,6 +14,7 @@ return Def.ActorFrame{
 		SetCommand=function(self)
 			local val = 0
 			local song = GAMESTATE:GetCurrentSong()
+			local course = GAMESTATE:GetCurrentCourse()
 			if song then
 				local steps = GAMESTATE:GetCurrentSteps(player)
 				if steps then
@@ -53,6 +54,43 @@ return Def.ActorFrame{
 				else
 					val = 0
 				end
+			elseif course then
+				local trail = GAMESTATE:GetCurrentTrail(GAMESTATE:GetMasterPlayerNumber())
+				if trail then
+					val = trail:GetRadarValues(player):GetValue('RadarCategory_TapsAndHolds');
+				end
+				local numSongs = TrailUtil.GetNumSongs(trail);
+				if val == 0 then
+					self:diffusetopedge(color("#FFFFFF"))
+					self:diffusebottomedge(color("#e2e2e2"))
+				elseif val <= 249 * numSongs then
+					self:diffusetopedge(color("#00FF00"))
+					self:diffusebottomedge(color("#58ff58"))
+				elseif val <= 374 * numSongs then
+					self:diffusetopedge(color("#C0FF00"))
+					self:diffusebottomedge(color("#d5ff53"))
+				elseif val <= 499 * numSongs then
+					self:diffusetopedge(color("#FFFF00"))
+					self:diffusebottomedge(color("#ffff60"))
+				elseif val <= 624 * numSongs then
+					self:diffusetopedge(color("#FF8800"))
+					self:diffusebottomedge(color("#ffa53f"))
+				elseif val <= 749 * numSongs then
+					self:diffusetopedge(color("#FF6600"))
+					self:diffusebottomedge(color("#ff944d"))
+				elseif val <= 874 * numSongs then
+					self:diffusetopedge(color("#00C0FF"))
+					self:diffusebottomedge(color("#61d8ff"))
+				elseif val <= 999 * numSongs then
+					self:diffusetopedge(color("#a800ff"))
+					self:diffusebottomedge(color("#c34eff"))
+				elseif val <= 1199 * numSongs then
+					self:diffusetopedge(color("#FF0000"))
+					self:diffusebottomedge(color("#ff5353"))
+				else
+					self:diffusetopedge(color("#fd49ff"))
+					self:diffusebottomedge(color("#ffffff"))
+				end
 			else
 				val = "?"
 			end
@@ -61,10 +99,16 @@ return Def.ActorFrame{
 		end;
 		CurrentSongChangedMessageCommand=function(self) self:playcommand("Set") end;
 		CurrentStepsP1ChangedMessageCommand=function(self)
-			if player == PLAYER_1 then self:playcommand("Set"); end
+			if player == PLAYER_1 then self:playcommand("Set") end
+		end;
+		CurrentTrailP1ChangedMessageCommand=function(self)
+			if player == PLAYER_1 then self:playcommand("Set") end
 		end;
 		CurrentStepsP2ChangedMessageCommand=function(self)
-			if player == PLAYER_2 then self:playcommand("Set"); end
+			if player == PLAYER_2 then self:playcommand("Set") end
+		end;
+		CurrentTrailP2ChangedMessageCommand=function(self)
+			if player == PLAYER_2 then self:playcommand("Set") end
 		end;
 	};
 	LoadFont("_v 26px bold diffuse")..{
