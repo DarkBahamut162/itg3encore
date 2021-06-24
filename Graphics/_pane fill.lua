@@ -16,7 +16,7 @@ return Def.ActorFrame{
 			if song then
 				steps = GAMESTATE:GetCurrentSteps(player)
 			elseif course then
-				steps = GAMESTATE:GetCurrentTrail(GAMESTATE:GetMasterPlayerNumber())
+				steps = GAMESTATE:GetCurrentTrail(player)
 				numSongs = TrailUtil.GetNumSongs(steps);
 			else
 				yZoom = 0
@@ -67,7 +67,7 @@ return Def.ActorFrame{
 			if song then
 				steps = GAMESTATE:GetCurrentSteps(player)
 			elseif course then
-				steps = GAMESTATE:GetCurrentTrail(GAMESTATE:GetMasterPlayerNumber())
+				steps = GAMESTATE:GetCurrentTrail(player)
 				numSongs = TrailUtil.GetNumSongs(steps);
 			else
 				yZoom = 0
@@ -118,7 +118,7 @@ return Def.ActorFrame{
 			if song then
 				steps = GAMESTATE:GetCurrentSteps(player)
 			elseif course then
-				steps = GAMESTATE:GetCurrentTrail(GAMESTATE:GetMasterPlayerNumber())
+				steps = GAMESTATE:GetCurrentTrail(player)
 				numSongs = TrailUtil.GetNumSongs(steps);
 			else
 				yZoom = 0
@@ -169,7 +169,7 @@ return Def.ActorFrame{
 			if song then
 				steps = GAMESTATE:GetCurrentSteps(player)
 			elseif course then
-				steps = GAMESTATE:GetCurrentTrail(GAMESTATE:GetMasterPlayerNumber())
+				steps = GAMESTATE:GetCurrentTrail(player)
 				numSongs = TrailUtil.GetNumSongs(steps);
 			else
 				yZoom = 0
@@ -220,7 +220,7 @@ return Def.ActorFrame{
 			if song then
 				steps = GAMESTATE:GetCurrentSteps(player)
 			elseif course then
-				steps = GAMESTATE:GetCurrentTrail(GAMESTATE:GetMasterPlayerNumber())
+				steps = GAMESTATE:GetCurrentTrail(player)
 				numSongs = TrailUtil.GetNumSongs(steps);
 			else
 				yZoom = 0

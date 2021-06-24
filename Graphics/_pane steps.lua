@@ -15,51 +15,25 @@ return Def.ActorFrame{
 			local val = 0
 			local song = GAMESTATE:GetCurrentSong()
 			local course = GAMESTATE:GetCurrentCourse()
-			if song then
-				local steps = GAMESTATE:GetCurrentSteps(player)
-				if steps then
-					local rv = steps:GetRadarValues(player)
-					val = rv:GetValue('RadarCategory_TapsAndHolds')
-					if val == 0 then
-						self:diffusetopedge(color("#FFFFFF"))
-						self:diffusebottomedge(color("#e2e2e2"))
-					elseif val <= 249 then
-						self:diffusetopedge(color("#00FF00"))
-						self:diffusebottomedge(color("#58ff58"))
-					elseif val <= 374 then
-						self:diffusetopedge(color("#C0FF00"))
-						self:diffusebottomedge(color("#d5ff53"))
-					elseif val <= 499 then
-						self:diffusetopedge(color("#FFFF00"))
-						self:diffusebottomedge(color("#ffff60"))
-					elseif val <= 624 then
-						self:diffusetopedge(color("#FF8800"))
-						self:diffusebottomedge(color("#ffa53f"))
-					elseif val <= 749 then
-						self:diffusetopedge(color("#FF6600"))
-						self:diffusebottomedge(color("#ff944d"))
-					elseif val <= 874 then
-						self:diffusetopedge(color("#00C0FF"))
-						self:diffusebottomedge(color("#61d8ff"))
-					elseif val <= 999 then
-						self:diffusetopedge(color("#a800ff"))
-						self:diffusebottomedge(color("#c34eff"))
-					elseif val <= 1199 then
-						self:diffusetopedge(color("#FF0000"))
-						self:diffusebottomedge(color("#ff5353"))
+			local numSongs = 1
+			if song or course then
+				if song then
+					local steps = GAMESTATE:GetCurrentSteps(player)
+					if steps then
+						local rv = steps:GetRadarValues(player)
+						val = rv:GetValue('RadarCategory_TapsAndHolds')
 					else
-						self:diffusetopedge(color("#fd49ff"))
-						self:diffusebottomedge(color("#ffffff"))
+						val = 0
 					end
-				else
-					val = 0
+				elseif course then
+					local trail = GAMESTATE:GetCurrentTrail(player)
+					if trail then
+						val = trail:GetRadarValues(player):GetValue('RadarCategory_TapsAndHolds');
+						numSongs = TrailUtil.GetNumSongs(trail);
+					else
+						val = 0
+					end
 				end
-			elseif course then
-				local trail = GAMESTATE:GetCurrentTrail(GAMESTATE:GetMasterPlayerNumber())
-				if trail then
-					val = trail:GetRadarValues(player):GetValue('RadarCategory_TapsAndHolds');
-				end
-				local numSongs = TrailUtil.GetNumSongs(trail);
 				if val == 0 then
 					self:diffusetopedge(color("#FFFFFF"))
 					self:diffusebottomedge(color("#e2e2e2"))

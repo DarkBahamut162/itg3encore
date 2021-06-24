@@ -20,19 +20,34 @@ return Def.ActorFrame{
 		end;
 		SetCommand=function(self)
 			local song = GAMESTATE:GetCurrentSong()
-			if not song then self:visible(false) return end
-
-			local sel = GAMESTATE:GetCurrentSteps(player)
-			if sel then
+			local course = GAMESTATE:GetCurrentCourse()
+			local num, numSongs = 1
+			if song then
+				local steps = GAMESTATE:GetCurrentSteps(player)
+				if steps then
+					local rv = steps:GetRadarValues(player)
+					num = rv:GetValue('RadarCategory_Jumps')
+				else
+					num = 0
+				end
+			elseif course then
+				local trail = GAMESTATE:GetCurrentTrail(player)
+				if trail then
+					num = trail:GetRadarValues(player):GetValue('RadarCategory_Jumps');
+					numSongs = TrailUtil.GetNumSongs(trail);
+				else
+					num = 0
+				end
+			end
+			if song or course then
 				self:visible(true)
-				local num = sel:GetRadarValues(player):GetValue('RadarCategory_Jumps')
 				-- coloring
 				local itemColor = color(".4,.4,.4,1")
 				if num == 0 then itemColor = color(".4,.4,.4,1")
-				elseif num <= 24 then itemColor = color("0,1,0,1")
-				elseif num <= 49 then itemColor = color("1,1,0,1")
-				elseif num <= 99 then itemColor = color("1,.53,0,1")
-				elseif num <= 199 then itemColor = color("1,0,0,1")
+				elseif num <= 24 * numSongs then itemColor = color("0,1,0,1")
+				elseif num <= 49 * numSongs then itemColor = color("1,1,0,1")
+				elseif num <= 99 * numSongs then itemColor = color("1,.53,0,1")
+				elseif num <= 199 * numSongs then itemColor = color("1,0,0,1")
 				else itemColor = color("0,.75,1,1")
 				end
 				num = string.format("%03i",num)
@@ -64,19 +79,34 @@ return Def.ActorFrame{
 		end;
 		SetCommand=function(self)
 			local song = GAMESTATE:GetCurrentSong()
-			if not song then self:visible(false) return end
-
-			local sel = GAMESTATE:GetCurrentSteps(player)
-			if sel then
+			local course = GAMESTATE:GetCurrentCourse()
+			local num, numSongs = 1
+			if song then
+				local steps = GAMESTATE:GetCurrentSteps(player)
+				if steps then
+					local rv = steps:GetRadarValues(player)
+					num = rv:GetValue('RadarCategory_Holds')
+				else
+					num = 0
+				end
+			elseif course then
+				local trail = GAMESTATE:GetCurrentTrail(player)
+				if trail then
+					num = trail:GetRadarValues(player):GetValue('RadarCategory_Holds');
+					numSongs = TrailUtil.GetNumSongs(trail);
+				else
+					num = 0
+				end
+			end
+			if song or course then
 				self:visible(true)
-				local num = sel:GetRadarValues(player):GetValue('RadarCategory_Holds')
 				-- coloring
 				local itemColor = color(".4,.4,.4,1")
 				if num == 0 then itemColor = color(".4,.4,.4,1")
-				elseif num <= 24 then itemColor = color("0,1,0,1")
-				elseif num <= 49 then itemColor = color("1,1,0,1")
-				elseif num <= 99 then itemColor = color("1,.53,0,1")
-				elseif num <= 150 then itemColor = color("1,0,0,1")
+				elseif num <= 24 * numSongs then itemColor = color("0,1,0,1")
+				elseif num <= 49 * numSongs then itemColor = color("1,1,0,1")
+				elseif num <= 99 * numSongs then itemColor = color("1,.53,0,1")
+				elseif num <= 150 * numSongs then itemColor = color("1,0,0,1")
 				else itemColor = color("0,.75,1,1")
 				end
 				num = string.format("%03i",num)
@@ -108,19 +138,34 @@ return Def.ActorFrame{
 		end;
 		SetCommand=function(self)
 			local song = GAMESTATE:GetCurrentSong()
-			if not song then self:visible(false) return end
-
-			local sel = GAMESTATE:GetCurrentSteps(player)
-			if sel then
+			local course = GAMESTATE:GetCurrentCourse()
+			local num, numSongs = 1
+			if song then
+				local steps = GAMESTATE:GetCurrentSteps(player)
+				if steps then
+					local rv = steps:GetRadarValues(player)
+					num = rv:GetValue('RadarCategory_Mines')
+				else
+					num = 0
+				end
+			elseif course then
+				local trail = GAMESTATE:GetCurrentTrail(player)
+				if trail then
+					num = trail:GetRadarValues(player):GetValue('RadarCategory_Mines');
+					numSongs = TrailUtil.GetNumSongs(trail);
+				else
+					num = 0
+				end
+			end
+			if song or course then
 				self:visible(true)
-				local num = sel:GetRadarValues(player):GetValue('RadarCategory_Mines')
 				-- coloring
 				local itemColor = color(".4,.4,.4,1")
 				if num == 0 then itemColor = color(".4,.4,.4,1")
-				elseif num <= 24 then itemColor = color("0,1,0,1")
-				elseif num <= 49 then itemColor = color("1,1,0,1")
-				elseif num <= 89 then itemColor = color("1,.53,0,1")
-				elseif num <= 139 then itemColor = color("1,0,0,1")
+				elseif num <= 24 * numSongs then itemColor = color("0,1,0,1")
+				elseif num <= 49 * numSongs then itemColor = color("1,1,0,1")
+				elseif num <= 89 * numSongs then itemColor = color("1,.53,0,1")
+				elseif num <= 139 * numSongs then itemColor = color("1,0,0,1")
 				else itemColor = color("0,.75,1,1")
 				end
 				num = string.format("%03i",num)
@@ -152,19 +197,34 @@ return Def.ActorFrame{
 		end;
 		SetCommand=function(self)
 			local song = GAMESTATE:GetCurrentSong()
-			if not song then self:visible(false) return end
-
-			local sel = GAMESTATE:GetCurrentSteps(player)
-			if sel then
+			local course = GAMESTATE:GetCurrentCourse()
+			local num, numSongs = 1
+			if song then
+				local steps = GAMESTATE:GetCurrentSteps(player)
+				if steps then
+					local rv = steps:GetRadarValues(player)
+					num = rv:GetValue('RadarCategory_Hands')
+				else
+					num = 0
+				end
+			elseif course then
+				local trail = GAMESTATE:GetCurrentTrail(player)
+				if trail then
+					num = trail:GetRadarValues(player):GetValue('RadarCategory_Hands');
+					numSongs = TrailUtil.GetNumSongs(trail);
+				else
+					num = 0
+				end
+			end
+			if song or course then
 				self:visible(true)
-				local num = sel:GetRadarValues(player):GetValue('RadarCategory_Hands')
 				-- coloring
 				local itemColor = color(".4,.4,.4,1")
 				if num == 0 then itemColor = color(".4,.4,.4,1")
-				elseif num <= 14 then itemColor = color("0,1,0,1")
-				elseif num <= 29 then itemColor = color("1,1,0,1")
-				elseif num <= 39 then itemColor = color("1,.53,0,1")
-				elseif num <= 51 then itemColor = color("1,0,0,1")
+				elseif num <= 14 * numSongs then itemColor = color("0,1,0,1")
+				elseif num <= 29 * numSongs then itemColor = color("1,1,0,1")
+				elseif num <= 39 * numSongs then itemColor = color("1,.53,0,1")
+				elseif num <= 51 * numSongs then itemColor = color("1,0,0,1")
 				else itemColor = color("0,.75,1,1")
 				end
 				num = string.format("%03i",num)
@@ -196,19 +256,34 @@ return Def.ActorFrame{
 		end;
 		SetCommand=function(self)
 			local song = GAMESTATE:GetCurrentSong()
-			if not song then self:visible(false) return end
-
-			local sel = GAMESTATE:GetCurrentSteps(player)
-			if sel then
+			local course = GAMESTATE:GetCurrentCourse()
+			local num, numSongs = 1
+			if song then
+				local steps = GAMESTATE:GetCurrentSteps(player)
+				if steps then
+					local rv = steps:GetRadarValues(player)
+					num = rv:GetValue('RadarCategory_Rolls')
+				else
+					num = 0
+				end
+			elseif course then
+				local trail = GAMESTATE:GetCurrentTrail(player)
+				if trail then
+					num = trail:GetRadarValues(player):GetValue('RadarCategory_Rolls');
+					numSongs = TrailUtil.GetNumSongs(trail);
+				else
+					num = 0
+				end
+			end
+			if song or course then
 				self:visible(true)
-				local num = sel:GetRadarValues(player):GetValue('RadarCategory_Rolls')
 				-- coloring
 				local itemColor = color(".4,.4,.4,1")
 				if num == 0 then itemColor = color(".4,.4,.4,1")
-				elseif num <= 9 then itemColor = color("0,1,0,1")
-				elseif num <= 19 then itemColor = color("1,1,0,1")
-				elseif num <= 29 then itemColor = color("1,.53,0,1")
-				elseif num <= 39 then itemColor = color("1,0,0,1")
+				elseif num <= 9 * numSongs then itemColor = color("0,1,0,1")
+				elseif num <= 19 * numSongs then itemColor = color("1,1,0,1")
+				elseif num <= 29 * numSongs then itemColor = color("1,.53,0,1")
+				elseif num <= 39 * numSongs then itemColor = color("1,0,0,1")
 				else itemColor = color("0,.75,1,1")
 				end
 				num = string.format("%03i",num)

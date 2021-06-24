@@ -136,7 +136,7 @@ local t = Def.ActorFrame{
 		ShowCommand=function(self) self:stoptweening():decelerate(.3):y(SCREEN_BOTTOM-127) end;
 		HideCommand=function(self) self:stoptweening():decelerate(.3):y(SCREEN_BOTTOM-109) end;
 		SelectMenuOpenedMessageCommand=function(self)
-			self:playcommand(GAMESTATE:GetCurrentSong() and "Show" or "Hide")
+			self:playcommand((GAMESTATE:GetCurrentSong() or GAMESTATE:GetCurrentCourse()) and "Show" or "Hide")
 		end;
 		SelectMenuClosedMessageCommand=function(self) self:playcommand("Hide") end;
 
@@ -145,29 +145,47 @@ local t = Def.ActorFrame{
 		};
 		LoadFont("_v 26px bold diffuse")..{
 			InitCommand=function(self) self:maxwidth(350):horizalign(left):x(20):y(2):shadowlength(0.5):zoom(.5) end;
-			CurrentStepsP1ChangedMessageCommand=function(self) self:playcommand("Update") end;
 			CurrentSongChangedMessageCommand=function(self) self:playcommand("Update") end;
+			CurrentCourseChangedMessageCommand=function(self) self:playcommand("Update") end;
+			CurrentStepsP1ChangedMessageCommand=function(self) self:playcommand("Update") end;
+			CurrentTrailP1ChangedMessageCommand=function(self) self:playcommand("Update") end;
 			UpdateCommand=function(self)
 				local song = GAMESTATE:GetCurrentSong();
 				local course = GAMESTATE:GetCurrentCourse();
 				local artist = ""
-				local steps = GAMESTATE:GetCurrentSteps(PLAYER_1)
-				if steps ~= nil then
-					artist = steps:GetAuthorCredit()
-				else
-					artist = ""
-				end
 				local result = ""
 				if song then
-					if artist == "" then
-						result = "Stepartist: Unknown"
+					local steps = GAMESTATE:GetCurrentSteps(PLAYER_1)
+					if steps ~= nil then
+						result = "Stepartist: " .. steps:GetAuthorCredit()
 					else
-						result = "Stepartist: " .. artist
+						result = "Stepartist: Unknown"
+					end
+				elseif course then
+					local trail = GAMESTATE:GetCurrentTrail(PLAYER_1)
+					if trail then
+						local entries = trail:GetTrailEntries()
+						for i=1,#entries do
+							--prevent duplicates ~DarkBahamut162
+							if not string.find(artist,entries[i]:GetSteps():GetAuthorCredit()) then
+								if i == 1 then
+									artist = entries[i]:GetSteps():GetAuthorCredit()
+								elseif i < #entries then
+									artist = artist .. ", " .. entries[i]:GetSteps():GetAuthorCredit()
+								end
+							end
+						end
+						if artist then
+							result = "Stepartist: " .. artist
+						else
+							result = "Stepartist: Unknown"
+						end
+					else
+						result = "Stepartist: Unknown"
 					end
 				else
 					self:playcommand("SelectMenuClosedMessageCommand")
 				end
-				if course then result = "" end
 
 				if string.find(artist, "C. Foy") or string.find(artist, "Foy") then
 					self:diffuseshift()
@@ -190,7 +208,7 @@ local t = Def.ActorFrame{
 		ShowCommand=function(self) self:stoptweening():decelerate(.3):y(SCREEN_BOTTOM-127) end;
 		HideCommand=function(self) self:stoptweening():decelerate(.3):y(SCREEN_BOTTOM-109) end;
 		SelectMenuOpenedMessageCommand=function(self)
-			self:playcommand(GAMESTATE:GetCurrentSong() and "Show" or "Hide")
+			self:playcommand((GAMESTATE:GetCurrentSong() or GAMESTATE:GetCurrentCourse()) and "Show" or "Hide")
 		end;
 		SelectMenuClosedMessageCommand=function(self) self:playcommand("Hide") end;
 
@@ -199,29 +217,47 @@ local t = Def.ActorFrame{
 		};
 		LoadFont("_v 26px bold diffuse")..{
 			InitCommand=function(self) self:maxwidth(350):horizalign(right):x(-20):y(2):shadowlength(0.5):zoom(.5) end;
-			CurrentStepsP2ChangedMessageCommand=function(self) self:playcommand("Update") end;
 			CurrentSongChangedMessageCommand=function(self) self:playcommand("Update") end;
+			CurrentCourseChangedMessageCommand=function(self) self:playcommand("Update") end;
+			CurrentStepsP2ChangedMessageCommand=function(self) self:playcommand("Update") end;
+			CurrentTrailP2ChangedMessageCommand=function(self) self:playcommand("Update") end;
 			UpdateCommand=function(self)
 				local song = GAMESTATE:GetCurrentSong();
 				local course = GAMESTATE:GetCurrentCourse();
 				local artist = ""
-				local steps = GAMESTATE:GetCurrentSteps(PLAYER_2)
-				if steps ~= nil then
-					artist = steps:GetAuthorCredit()
-				else
-					artist = ""
-				end
 				local result = ""
 				if song then
-					if artist == "" then
-						result = "Stepartist: Unknown"
+					local steps = GAMESTATE:GetCurrentSteps(PLAYER_2)
+					if steps ~= nil then
+						result = "Stepartist: " .. steps:GetAuthorCredit()
 					else
-						result = "Stepartist: " .. artist
+						result = "Stepartist: Unknown"
+					end
+				elseif course then
+					local trail = GAMESTATE:GetCurrentTrail(PLAYER_2)
+					if trail then
+						local entries = trail:GetTrailEntries()
+						for i=1,#entries do
+							--prevent duplicates ~DarkBahamut162
+							if not string.find(artist,entries[i]:GetSteps():GetAuthorCredit()) then
+								if i == 1 then
+									artist = entries[i]:GetSteps():GetAuthorCredit()
+								elseif i < #entries then
+									artist = artist .. ", " .. entries[i]:GetSteps():GetAuthorCredit()
+								end
+							end
+						end
+						if artist then
+							result = "Stepartist: " .. artist
+						else
+							result = "Stepartist: Unknown"
+						end
+					else
+						result = "Stepartist: Unknown"
 					end
 				else
 					self:playcommand("SelectMenuClosedMessageCommand")
 				end
-				if course then result = "" end
 
 				if string.find(artist, "C. Foy") or string.find(artist, "Foy") then
 					self:diffuseshift()
