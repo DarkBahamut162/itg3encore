@@ -1,4 +1,4 @@
-local t = Def.ActorFrame{
+return Def.ActorFrame{
 	Def.StepsDisplayList{
 		Name="StepsDisplayList";
 		SetCommand=function(self)
@@ -24,5 +24,3 @@ local t = Def.ActorFrame{
 		};
 	};
 };
-
-return t;

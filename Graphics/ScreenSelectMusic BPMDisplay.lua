@@ -1,4 +1,4 @@
-local t = Def.ActorFrame{
+return Def.ActorFrame{
 	Def.BPMDisplay{
 		Name="BPMDisplay";
 		Font="BPMDisplay bpm";
@@ -8,5 +8,3 @@ local t = Def.ActorFrame{
 		CurrentCourseChangedMessageCommand=function(self) self:playcommand("Set") end;
 	};
 };
-
-return t;

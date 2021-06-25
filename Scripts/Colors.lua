@@ -35,7 +35,7 @@ function DifficultyToColor( dc )
 	if dc == 'Difficulty_Easy'		then return CustomDifficultyToColor("Easy") end
 	if dc == 'Difficulty_Medium'	then return CustomDifficultyToColor("Medium") end
 	if dc == 'Difficulty_Hard'		then return CustomDifficultyToColor("Hard") end
-	if dc == 'Difficulty_Expert'	then return CustomDifficultyToColor("Expert") end
+	if dc == 'Difficulty_Challenge'	then return CustomDifficultyToColor("Challenge") end
 	if dc == 'Difficulty_Edit'		then return CustomDifficultyToColor("Edit") end
 	return color("1,1,1,1")
 end

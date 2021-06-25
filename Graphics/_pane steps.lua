@@ -66,6 +66,8 @@ return Def.ActorFrame{
 					self:diffusebottomedge(color("#ffffff"))
 				end
 			else
+				self:diffusetopedge(color("#ffffff"))
+				self:diffusebottomedge(color("#ffffff"))
 				val = "?"
 			end
 			self:settext(val)

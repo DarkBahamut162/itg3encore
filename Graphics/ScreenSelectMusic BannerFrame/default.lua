@@ -7,6 +7,14 @@ local t = Def.ActorFrame{
 			OnCommand=function(self) self:addx(SCREEN_WIDTH):decelerate(0.75):addx(-SCREEN_WIDTH) end;
 			OffCommand=function(self) self:accelerate(0.75):addx(SCREEN_WIDTH) end;
 		};
+		LoadActor("flare")..{
+			InitCommand=function(self) self:x(SCREEN_CENTER_X+140):y(SCREEN_CENTER_Y-20):blend(Blend.Add) end;
+			OnCommand=function(self) self:playcommand("Refresh") end;
+			RefreshCommand=function(self)
+				self:stoptweening(5):zoom(1):diffusealpha(1):sleep(0.1):accelerate(0.2):zoom(1.2):diffusealpha(0)
+			end;
+			CurrentSongChangedMessageCommand=function(self) self:playcommand("Refresh") end;
+		};
 		LoadFont("titlemenu")..{
 			Text="Time:";
 			InitCommand=function(self) self:x(SCREEN_CENTER_X+177):y(SCREEN_CENTER_Y-43) end;

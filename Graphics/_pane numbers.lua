@@ -21,22 +21,18 @@ return Def.ActorFrame{
 		SetCommand=function(self)
 			local song = GAMESTATE:GetCurrentSong()
 			local course = GAMESTATE:GetCurrentCourse()
-			local num, numSongs = 1
+			local num, numSongs = 0, 1
 			if song then
 				local steps = GAMESTATE:GetCurrentSteps(player)
 				if steps then
 					local rv = steps:GetRadarValues(player)
 					num = rv:GetValue('RadarCategory_Jumps')
-				else
-					num = 0
 				end
 			elseif course then
 				local trail = GAMESTATE:GetCurrentTrail(player)
 				if trail then
 					num = trail:GetRadarValues(player):GetValue('RadarCategory_Jumps');
 					numSongs = TrailUtil.GetNumSongs(trail);
-				else
-					num = 0
 				end
 			end
 			if song or course then
@@ -80,22 +76,18 @@ return Def.ActorFrame{
 		SetCommand=function(self)
 			local song = GAMESTATE:GetCurrentSong()
 			local course = GAMESTATE:GetCurrentCourse()
-			local num, numSongs = 1
+			local num, numSongs = 0, 1
 			if song then
 				local steps = GAMESTATE:GetCurrentSteps(player)
 				if steps then
 					local rv = steps:GetRadarValues(player)
 					num = rv:GetValue('RadarCategory_Holds')
-				else
-					num = 0
 				end
 			elseif course then
 				local trail = GAMESTATE:GetCurrentTrail(player)
 				if trail then
 					num = trail:GetRadarValues(player):GetValue('RadarCategory_Holds');
 					numSongs = TrailUtil.GetNumSongs(trail);
-				else
-					num = 0
 				end
 			end
 			if song or course then
@@ -139,22 +131,18 @@ return Def.ActorFrame{
 		SetCommand=function(self)
 			local song = GAMESTATE:GetCurrentSong()
 			local course = GAMESTATE:GetCurrentCourse()
-			local num, numSongs = 1
+			local num, numSongs = 0, 1
 			if song then
 				local steps = GAMESTATE:GetCurrentSteps(player)
 				if steps then
 					local rv = steps:GetRadarValues(player)
 					num = rv:GetValue('RadarCategory_Mines')
-				else
-					num = 0
 				end
 			elseif course then
 				local trail = GAMESTATE:GetCurrentTrail(player)
 				if trail then
 					num = trail:GetRadarValues(player):GetValue('RadarCategory_Mines');
 					numSongs = TrailUtil.GetNumSongs(trail);
-				else
-					num = 0
 				end
 			end
 			if song or course then
@@ -198,22 +186,18 @@ return Def.ActorFrame{
 		SetCommand=function(self)
 			local song = GAMESTATE:GetCurrentSong()
 			local course = GAMESTATE:GetCurrentCourse()
-			local num, numSongs = 1
+			local num, numSongs = 0, 1
 			if song then
 				local steps = GAMESTATE:GetCurrentSteps(player)
 				if steps then
 					local rv = steps:GetRadarValues(player)
 					num = rv:GetValue('RadarCategory_Hands')
-				else
-					num = 0
 				end
 			elseif course then
 				local trail = GAMESTATE:GetCurrentTrail(player)
 				if trail then
 					num = trail:GetRadarValues(player):GetValue('RadarCategory_Hands');
 					numSongs = TrailUtil.GetNumSongs(trail);
-				else
-					num = 0
 				end
 			end
 			if song or course then
@@ -257,22 +241,18 @@ return Def.ActorFrame{
 		SetCommand=function(self)
 			local song = GAMESTATE:GetCurrentSong()
 			local course = GAMESTATE:GetCurrentCourse()
-			local num, numSongs = 1
+			local num, numSongs = 0, 1
 			if song then
 				local steps = GAMESTATE:GetCurrentSteps(player)
 				if steps then
 					local rv = steps:GetRadarValues(player)
 					num = rv:GetValue('RadarCategory_Rolls')
-				else
-					num = 0
 				end
 			elseif course then
 				local trail = GAMESTATE:GetCurrentTrail(player)
 				if trail then
 					num = trail:GetRadarValues(player):GetValue('RadarCategory_Rolls');
 					numSongs = TrailUtil.GetNumSongs(trail);
-				else
-					num = 0
 				end
 			end
 			if song or course then
