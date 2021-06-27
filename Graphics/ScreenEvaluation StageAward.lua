@@ -3,16 +3,16 @@ assert(player,"[ScreenEvaluation StageAward] requires player")
 local award;
 
 local awardRef = {
-	Great80PercentW3  = { File = THEME:GetPathG("_award","models/ribbon"), Color = "green" },
-	Great90PercentW3  = { File = THEME:GetPathG("_award","models/plaque"), Color = "green" },
-	Great100PercentW3 = { File = THEME:GetPathG("_award","models/trophy"), Color = "green" },
-	SingleDigitW3     = { File = THEME:GetPathG("_award","models/ribbon"), Color = "pink" },
-	OneW3             = { File = THEME:GetPathG("_award","models/flag"), Color = "green" },
-	FullComboW3       = { File = THEME:GetPathG("_award","models/ribbon"), Color = "blue" },
-	SingleDigitW2     = { File = THEME:GetPathG("_award","models/plaque"), Color = "silver" },
-	OneW2             = { File = THEME:GetPathG("_award","models/flag"), Color = "orange" },
-	FullComboW2       = { File = THEME:GetPathG("_award","models/plaque"), Color = "bronze" },
-	FullComboW1       = { File = THEME:GetPathG("_award","models/trophy"), Color = "bronze" },
+	["80PercentW3"]       = { File = THEME:GetPathG("_award","models/ribbon"), Color = "green" },
+	["90PercentW3"]       = { File = THEME:GetPathG("_award","models/plaque"), Color = "green" },
+	["100PercentW3"]      = { File = THEME:GetPathG("_award","models/trophy"), Color = "green" },
+	["SingleDigitW3"]     = { File = THEME:GetPathG("_award","models/ribbon"), Color = "pink" },
+	["OneW3"]             = { File = THEME:GetPathG("_award","models/flag"), Color = "green" },
+	["FullComboW3"]       = { File = THEME:GetPathG("_award","models/ribbon"), Color = "blue" },
+	["SingleDigitW2"]     = { File = THEME:GetPathG("_award","models/plaque"), Color = "silver" },
+	["OneW2"]             = { File = THEME:GetPathG("_award","models/flag"), Color = "orange" },
+	["FullComboW2"]       = { File = THEME:GetPathG("_award","models/plaque"), Color = "bronze" },
+	["FullComboW1"]       = { File = THEME:GetPathG("_award","models/trophy"), Color = "bronze" },
 };
 
 local steps = GetRadarData(player,"RadarCategory_TapsAndHolds");
@@ -27,11 +27,11 @@ local percent = W3 / steps;
 
 if percent >= 0.8 then
 	if percent >= 0.8 and percent < 0.9 then
-		award = "Great80PercentW3";
+		award = "80PercentW3";
 	elseif percent >= 0.9 and percent < 1 then
-		award = "Great90PercentW3";
+		award = "90PercentW3";
 	elseif percent == 1 then
-		award = "Great100PercentW3";
+		award = "100PercentW3";
 	end
 elseif W3FC then
 	if W3 > 1 and W3 < 10 then

@@ -1,13 +1,13 @@
 return Def.ActorFrame{
-	LoadActor("Intro by Angel")..{ InitCommand=function(self) self:Center():FullScreen():rate(.92):sleep(35):diffusealpha(0) end; };
-
+	LoadActor("Intro by Angel")..{ InitCommand=function(self) self:Center():FullScreen():zoomy(1.2):rate(.92):sleep(35):diffusealpha(0) end; };
+--[[
 	Def.Quad{
 		InitCommand=function(self) self:CenterX():y(SCREEN_TOP):vertalign(top):zoomto(SCREEN_WIDTH,(SCREEN_WIDTH/4*.35)/2):diffuse(color("0,0,0,1")) end;
 	};
 	Def.Quad{
 		InitCommand=function(self) self:CenterX():y(SCREEN_BOTTOM):vertalign(bottom):zoomto(SCREEN_WIDTH,(SCREEN_WIDTH/4*.35)/2):diffuse(color("0,0,0,1")) end;
 	};
-
+]]--
 	Def.ActorFrame{
 		InitCommand=function(self) self:Center() end;
 		LoadActor("swoosh")..{

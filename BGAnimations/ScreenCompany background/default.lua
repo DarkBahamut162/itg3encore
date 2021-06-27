@@ -1,5 +1,5 @@
 return Def.ActorFrame{
 	LoadActor("roxor logo.avi")..{
-		InitCommand=function(self) self:Center():zoom(4/3*4/3) end;
+		InitCommand=function(self) self:Center():zoom(4/3) end;
 	};
 };
