@@ -112,7 +112,6 @@ local function StageAward( pn )
 		InitCommand=function(self) 
 			self:player(pn); 
 			self:name(MetricsName); 
-			ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen"); 
 		end;
 	};
 end
@@ -130,7 +129,6 @@ local function PeakComboAward( pn )
 		InitCommand=function(self) 
 			self:player(pn); 
 			self:name(MetricsName); 
-			ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen"); 
 		end;
 	};
 end
