@@ -1,5 +1,7 @@
 local Players = GAMESTATE:GetHumanPlayers()
-local t = Def.ActorFrame{ Name="GameplayUnderlay" }
+local t = Def.ActorFrame{ 
+	Name="GameplayUnderlay",
+}
 
 t[#t+1] = Def.ActorFrame{
 	LoadActor("ScreenFilter");
@@ -14,7 +16,15 @@ t[#t+1] = Def.ActorFrame{
 };
 
 for player in ivalues(Players) do
-	t[#t+1] = LoadActor("score", player)
+	t[#t+1] = LoadActor("Score", player)..{
+		Condition=GAMESTATE:GetPlayMode() ~= "PlayMode_Oni"
+	}
+	t[#t+1] = LoadActor("RemainingTime", player)..{
+		Condition=GAMESTATE:GetPlayMode() == "PlayMode_Oni",
+	}
+	t[#t+1] = LoadActor("DeltaSeconds", player)..{
+		Condition=GAMESTATE:GetPlayMode() == "PlayMode_Oni",
+	}
 end
 
 return t;

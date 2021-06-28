@@ -138,7 +138,7 @@ local t = Def.ActorFrame{
 				text = song:GetDisplayFullTitle()
 			end
 			if course then
-				text = course:GetDisplayFullTitle() .. " - " .. text;
+				text = course:GetDisplayFullTitle();
 			end
 		
 			self:settext( text )

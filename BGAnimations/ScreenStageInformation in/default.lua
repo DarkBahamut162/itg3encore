@@ -11,6 +11,14 @@ if GAMESTATE:IsEventMode() then curStage = 'Stage_Event' end
 
 curStage = ToEnumShortString(curStage)
 
+-- Force noteskin to be applied here ~DarkBahamut162
+if GAMESTATE:GetPlayMode() == "PlayMode_Oni" then
+	for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
+		local noteskin = GAMESTATE:GetPlayerState(pn):GetPlayerOptions("ModsLevel_Preferred"):NoteSkin();
+		GAMESTATE:ApplyGameCommand('mod,'..noteskin,pn);
+	end
+end
+
 local t = Def.ActorFrame{
 	Def.Quad{
 		OnCommand=function(self) self:FullScreen():diffusecolor(Color.Black) end;

@@ -10,6 +10,17 @@ return Def.ActorFrame{
 				if curSelection then
 					if curSelection:HasMods() then
 						text = "HAS MODS"
+					else
+						local trail = GAMESTATE:GetCurrentTrail(GAMESTATE:GetMasterPlayerNumber())
+						if trail then
+							local entries = trail:GetTrailEntries()
+							for i=1,#entries do
+								if entries[i]:GetNormalModifiers() ~= "" then
+									text = "HAS MODS"
+									break
+								end
+							end
+						end
 					end
 				end;
 			end;

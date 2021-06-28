@@ -4,9 +4,16 @@ function DifficultyChangingAvailable()
 	return pm ~= 'PlayMode_Endless' and pm ~= 'PlayMode_Oni' and so ~= 'SortOrder_ModeMenu'
 end
 
+function SelectMenuAvailable()
+	local pm = GAMESTATE:GetPlayMode()
+	local so = GAMESTATE:GetSortOrder()
+	return pm ~= 'PlayMode_Endless' and so ~= 'SortOrder_ModeMenu'
+end
+
 function ModeMenuAvailable()
+	local courseMode = GAMESTATE:IsCourseMode()
 	local sortOrder = GAMESTATE:GetSortOrder()
-	return sortOrder ~= 'SortOrder_ModeMenu'
+	return (not courseMode) and (sortOrder ~= 'SortOrder_ModeMenu')
 end
 
 function TextBannerAfterSet(self,param)
@@ -45,11 +52,11 @@ function GetScreenSelectMusicHelpText()
 
 	if  SelectButtonAvailable() then
 		-- Show the help text if it's available.  This should match ScreenSelectMusic::SelectMenuAvailable.
-		if DifficultyChangingIsAvailable() or ModeMenuAvailable() then
+		if DifficultyChangingAvailable() or ModeMenuAvailable() then
 			ret = ret .. "::" .. THEME:GetString( "ScreenSelectMusic", "SelectButtonAvailableHelpTextAppend" )
 		end
 	else
-		if DifficultyChangingIsAvailable() then
+		if DifficultyChangingAvailable() then
 			ret = ret .. "::" .. THEME:GetString( "ScreenSelectMusic", "DifficultyChangingAvailableHelpTextAppend" )
 		end
 

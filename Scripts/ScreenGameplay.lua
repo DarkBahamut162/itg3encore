@@ -34,9 +34,8 @@ end
 
 -- used for gameplay overlay and life meter
 function GetSongFrame()
+	if GAMESTATE:IsCourseMode() then return "_normal" end
 	local song = GAMESTATE:GetCurrentSong()
-	-- fuck courses.
-	if not song then return "_normal" end
 
 	local songTitle = song:GetDisplayFullTitle()
 	local songArtist = song:GetDisplayArtist()

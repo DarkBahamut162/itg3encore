@@ -1,4 +1,5 @@
 local player = ...
+assert( player )
 
 return Def.BitmapText{
     Font="_r bold numbers",
@@ -19,7 +20,7 @@ return Def.BitmapText{
         elseif player==PLAYER_2 then
             self:visible(not getenv("HideScoreP2"));
         end
-        self:diffuse(PlayerColor(PLAYER_1)):addy(-100):sleep(0.5):decelerate(0.8):addy(100) end;
+        self:diffuse(PlayerColor(player)):addy(-100):sleep(0.5):decelerate(0.8):addy(100) end;
     OffCommand=function(self) if AnyPlayerFullComboed() then self:sleep(1); end self:accelerate(0.8); self:addy(-100); end;
     JudgmentMessageCommand=function(self) self:queuecommand("RedrawScore") end,
     RedrawScoreCommand=function(self)

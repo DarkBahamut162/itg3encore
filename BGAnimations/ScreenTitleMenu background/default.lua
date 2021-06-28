@@ -101,11 +101,11 @@ local t = Def.ActorFrame{
 			};
 			LoadActor("light")..{
 				InitCommand=function(self) self:zoom(1):blend(Blend.Add):diffusealpha(0) end;
-				GoodEndingMessageCommand=function(self) self:stoptweening():diffuse(#ffc600):linear(.3):diffusealpha(1):sleep(.25):linear(1):diffusealpha(0) end;
+				GoodEndingMessageCommand=function(self) self:stoptweening():diffuse(color("#ffc600")):linear(.3):diffusealpha(1):sleep(.25):linear(1):diffusealpha(0) end;
 			};
 			LoadActor("light")..{
 				InitCommand=function(self) self:zoom(1):blend(Blend.Add):diffusealpha(0) end;
-				GoodEndingMessageCommand=function(self) self:stoptweening():diffuse(#ffc600):linear(.3):diffusealpha(1):sleep(.25):linear(1):diffusealpha(0) end;
+				GoodEndingMessageCommand=function(self) self:stoptweening():diffuse(color("#ffc600")):linear(.3):diffusealpha(1):sleep(.25):linear(1):diffusealpha(0) end;
 			};
 		};
 	};

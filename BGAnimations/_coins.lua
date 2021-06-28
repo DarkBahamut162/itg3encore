@@ -16,8 +16,16 @@ return Def.ActorFrame{
 			s=s..remainder..'/'..coinsPerCredit
 			self:settext(s)
 		end;
-		SelectMenuOpenedMessageCommand=function(self) self:stoptweening():bounceend(0.2):diffusealpha(0) end;
-		SelectMenuClosedMessageCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(1) end;
+		SelectMenuOpenedMessageCommand=function(self)
+			if DifficultyChangingAvailable() then
+				self:stoptweening():bounceend(0.2):diffusealpha(0)
+			end
+		end;
+		SelectMenuClosedMessageCommand=function(self)
+			if DifficultyChangingAvailable() then
+				self:stoptweening():linear(0.2):diffusealpha(1)
+			end
+		end;
 	};
 	LoadActor("updatecoin")..{
 		InitCommand=function(self) self:CenterX():y(SCREEN_BOTTOM-16):diffusealpha(0):horizalign(center):shadowlength(2):zoom(0.5) end;

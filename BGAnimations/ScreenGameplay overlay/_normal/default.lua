@@ -110,13 +110,18 @@ local t = Def.ActorFrame{
 
 			LoadActor(THEME:GetPathG("_difficulty","icons"))..{
 				InitCommand=function(self) self:pause():playcommand("Update") end;
+				CurrentSongChangedMessageCommand=function(self) self:playcommand("Update") end;
 				UpdateCommand=function(self)
 					local steps = GAMESTATE:GetCurrentSteps(PLAYER_1)
-					local course = GAMESTATE:GetCurrentTrail(PLAYER_1)
-					if course then
-						self:visible(true)
-						self:setstate(DifficultyToState(course:GetDifficulty()))
-					elseif steps then
+					local entries = GAMESTATE:GetCurrentTrail(PLAYER_1):GetTrailEntries()
+					if entries then
+						local entry = entries[GAMESTATE:GetCourseSongIndex()+1]
+						if entry then
+							steps = entry:GetSteps()
+						end
+					end
+					
+					if steps then
 						self:visible(true)
 						self:setstate(DifficultyToState(steps:GetDifficulty()))
 					else
