@@ -2,6 +2,8 @@ return Def.ActorFrame{
 	LoadFont("_r bold stroke")..{
 		CurrentSongChangedMessageCommand=function(self) self:playcommand("Set") end;
 		CurrentCourseChangedMessageCommand=function(self) self:playcommand("Set") end;
+		CurrentTrailP1ChangedMessageCommand=function(self) self:playcommand("Set") end;
+		CurrentTrailP2ChangedMessageCommand=function(self) self:playcommand("Set") end;
 		SetCommand=function(self)
 			local curSelection = nil;
 			local text = "";

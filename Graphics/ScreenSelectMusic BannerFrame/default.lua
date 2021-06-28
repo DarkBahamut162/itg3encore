@@ -1,3 +1,6 @@
+-- This is because the "CurrentSongChangedMessageCommand" triggers upon loading the SelectScreen
+local InitialLoad = false;
+
 local t = Def.ActorFrame{
 
 	Def.ActorFrame{
@@ -9,11 +12,17 @@ local t = Def.ActorFrame{
 		};
 		LoadActor("flare")..{
 			InitCommand=function(self) self:x(SCREEN_CENTER_X+140):y(SCREEN_CENTER_Y-20):blend(Blend.Add) end;
-			OnCommand=function(self) self:playcommand("Refresh") end;
+			OnCommand=function(self) self:diffusealpha(0) end;
 			RefreshCommand=function(self)
 				self:stoptweening(5):zoom(1):diffusealpha(1):sleep(0.1):accelerate(0.2):zoom(1.2):diffusealpha(0)
 			end;
-			CurrentSongChangedMessageCommand=function(self) self:playcommand("Refresh") end;
+			CurrentSongChangedMessageCommand=function(self)
+				if InitialLoad then
+					self:playcommand("Refresh")
+				else
+					InitialLoad = true
+				end
+			end;
 		};
 		LoadFont("titlemenu")..{
 			Text="Time:";
