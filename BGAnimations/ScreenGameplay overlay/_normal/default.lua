@@ -83,7 +83,7 @@ local t = Def.ActorFrame{
 				if song then
 					text = song:GetDisplayFullTitle()
 				end
-				if course then
+				if course and GAMESTATE:IsCourseMode() then
 					text = course:GetDisplayFullTitle() .. " - " .. text;
 				end
 				self:settext(text);
@@ -113,11 +113,13 @@ local t = Def.ActorFrame{
 				CurrentSongChangedMessageCommand=function(self) self:playcommand("Update") end;
 				UpdateCommand=function(self)
 					local steps = GAMESTATE:GetCurrentSteps(PLAYER_1)
-					local entries = GAMESTATE:GetCurrentTrail(PLAYER_1):GetTrailEntries()
-					if entries then
-						local entry = entries[GAMESTATE:GetCourseSongIndex()+1]
-						if entry then
-							steps = entry:GetSteps()
+					if GAMESTATE:IsCourseMode() then
+						local entries = GAMESTATE:GetCurrentTrail(PLAYER_1):GetTrailEntries()
+						if entries then
+							local entry = entries[GAMESTATE:GetCourseSongIndex()+1]
+							if entry then
+								steps = entry:GetSteps()
+							end
 						end
 					end
 					
@@ -146,11 +148,17 @@ local t = Def.ActorFrame{
 				InitCommand=function(self) self:pause():zoomx(-1):playcommand("Update") end;
 				UpdateCommand=function(self)
 					local steps = GAMESTATE:GetCurrentSteps(PLAYER_2)
-					local course = GAMESTATE:GetCurrentTrail(PLAYER_2)
-					if course then
-						self:visible(true)
-						self:setstate(DifficultyToState(course:GetDifficulty()))
-					elseif steps then
+					if GAMESTATE:IsCourseMode() then
+						local entries = GAMESTATE:GetCurrentTrail(PLAYER_2):GetTrailEntries()
+						if entries then
+							local entry = entries[GAMESTATE:GetCourseSongIndex()+1]
+							if entry then
+								steps = entry:GetSteps()
+							end
+						end
+					end
+
+					if steps then
 						self:visible(true)
 						self:setstate(DifficultyToState(steps:GetDifficulty()))
 					else
