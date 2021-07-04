@@ -114,11 +114,14 @@ local t = Def.ActorFrame{
 				UpdateCommand=function(self)
 					local steps = GAMESTATE:GetCurrentSteps(PLAYER_1)
 					if GAMESTATE:IsCourseMode() then
-						local entries = GAMESTATE:GetCurrentTrail(PLAYER_1):GetTrailEntries()
-						if entries then
-							local entry = entries[GAMESTATE:GetCourseSongIndex()+1]
-							if entry then
-								steps = entry:GetSteps()
+						local trail = GAMESTATE:GetCurrentTrail(PLAYER_1)
+						if trail then
+							local entries = trail:GetTrailEntries()
+							if entries then
+								local entry = entries[GAMESTATE:GetCourseSongIndex()+1]
+								if entry then
+									steps = entry:GetSteps()
+								end
 							end
 						end
 					end
@@ -149,11 +152,14 @@ local t = Def.ActorFrame{
 				UpdateCommand=function(self)
 					local steps = GAMESTATE:GetCurrentSteps(PLAYER_2)
 					if GAMESTATE:IsCourseMode() then
-						local entries = GAMESTATE:GetCurrentTrail(PLAYER_2):GetTrailEntries()
-						if entries then
-							local entry = entries[GAMESTATE:GetCourseSongIndex()+1]
-							if entry then
-								steps = entry:GetSteps()
+						local trail = GAMESTATE:GetCurrentTrail(PLAYER_2)
+						if trail then
+							local entries = trail:GetTrailEntries()
+							if entries then
+								local entry = entries[GAMESTATE:GetCourseSongIndex()+1]
+								if entry then
+									steps = entry:GetSteps()
+								end
 							end
 						end
 					end

@@ -5,11 +5,14 @@ local stageRemap = {
 
 return Def.ActorFrame{
 	Def.Sprite{
-		InitCommand=function(self) self:playcommand("Set") end;
+		CurrentSongChangedMessageCommand=function(self) self:playcommand("Set") end;
 		SetCommand=function(self)
 			local curStage = GAMESTATE:GetCurrentStage()
 
 			if GAMESTATE:IsCourseMode() then
+				if GAMESTATE:GetCourseSongIndex()+1 <= 5 then
+					self:Load(THEME:GetPathG("_gameplay","course song " .. GAMESTATE:GetCourseSongIndex()+1))
+				end
 				-- xxx: needs to handle course mode (song 1, song 2, etc.)
 				-- and how to handle courses with more than 5 songs?
 			else

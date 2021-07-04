@@ -119,6 +119,7 @@ local t = Def.ActorFrame{
 
 	Def.ActorFrame{
 		Name="StageText";
+		Condition=not GAMESTATE:IsCourseMode() and not (GAMESTATE:GetCurrentSong() == SONGMAN:FindSong('In The Groove/Training1/'));
 		InitCommand=function(self) self:CenterX() end;
 		Def.ActorFrame{
 			Name="Main";
@@ -143,12 +144,54 @@ local t = Def.ActorFrame{
 	};
 
 	-- tutorial
+		Def.ActorFrame{
+			Name="Tutorial";
+			InitCommand=function(self) self:CenterX() end;
+			Condition=not GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentSong() == SONGMAN:FindSong('In The Groove/Training1/');
+			LoadFont("_big blue glow")..{
+				Text="Welcome to the::tutorial program";
+				OnCommand=function(self) self:y(SCREEN_CENTER_Y-112):diffusealpha(0):zoom(4):sleep(0.0):linear(0.3):diffusealpha(1):zoom(1) end;
+			};
+		};
 
 	-- courses
+	Def.ActorFrame{
+		Name="CourseText";
+		Condition=GAMESTATE:IsCourseMode();
+		InitCommand=function(self) self:CenterX() end;
+		Def.ActorFrame{
+			Name="Main";
+			InitCommand=function(self) self:y(SCREEN_CENTER_Y+60) end;
+			LoadActor(THEME:GetPathG("_gameplay","course song 1"))..{
+				InitCommand=function(self) self:horizalign(center):cropright(1.3) end;
+				OnCommand=function(self) self:sleep(.07):linear(1):cropright(-0.3) end;
+			};
+			LoadActor(THEME:GetPathG("_white","gameplay course song 1"))..{
+				InitCommand=function(self) self:horizalign(center):cropleft(-0.3):cropright(1):faderight(.1):fadeleft(.1) end;
+				OnCommand=function(self) self:sleep(.07):linear(1):cropleft(1):cropright(-0.3) end;
+			};
+		};
+		Def.ActorFrame{
+			Name="Reflect";
+			InitCommand=function(self) self:y(SCREEN_CENTER_Y+86) end;
+			LoadActor(THEME:GetPathG("_gameplay","stage "..curStage))..{
+				InitCommand=function(self) self:horizalign(center):rotationz(180):zoomx(-1):diffusealpha(0.6):fadetop(2):cropright(1.3) end;
+				OnCommand=function(self) self:linear(1.225):cropright(-0.3) end;
+			};
+		};
+	};
 
-	LoadActor("blueflare.png")..{
+	LoadActor("blueflare")..{
 		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+12.5):blend(Blend.Add):draworder(115) end;
 		OnCommand=function(self) self:zoomx(15):zoomtoheight(SCREEN_HEIGHT+SCREEN_HEIGHT/4):linear(1):zoomtoheight(0):diffusealpha(.0) end;
+	};
+	LoadActor("shot")..{
+		InitCommand=function(self) self:diffusealpha(0):blend(Blend.Add) end;
+		OnCommand=function(self) self:y(SCREEN_CENTER_Y):zoomx(-2):zoomy(4):diffusealpha(1):x(SCREEN_CENTER_X):linear(0.9):diffusealpha(0):zoomy(0):x(SCREEN_CENTER_X-250) end;
+	};
+	LoadActor("shot")..{
+		InitCommand=function(self) self:diffusealpha(0):blend(Blend.Add) end;
+		OnCommand=function(self) self:y(SCREEN_CENTER_Y):zoomx(2):zoomy(4):diffusealpha(1):x(SCREEN_CENTER_X):linear(0.9):diffusealpha(0):zoomy(0):x(SCREEN_CENTER_X+250) end;
 	};
 	LoadActor(THEME:GetPathS("","_ok"))..{
 		OnCommand=function(self) self:play() end;
