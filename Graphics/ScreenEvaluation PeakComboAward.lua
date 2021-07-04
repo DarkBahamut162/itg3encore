@@ -1,5 +1,6 @@
 local player = ...
 assert(player,"[ScreenEvaluation PeakComboAward] requires player")
+local failed = STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetFailed()
 
 local awardRef = {
 	PeakComboAward_1000  = { File = THEME:GetPathG("_award","models/ribbon"), Color = "purple" },
@@ -21,7 +22,7 @@ local award = "PeakComboAward_"..combo_;
 
 local t = Def.ActorFrame{};
 
-if combo_ > 0 then
+if combo_ > 0 and not failed then
 	t[#t+1] = LoadActor(awardRef[award].File,awardRef[award].Color)..{
 		Name="Trophy";
 		InitCommand=function(self) self:zoom(0.7):x(60):y(-80):rotationy(-15) end;
