@@ -9,7 +9,7 @@ local t = Def.ActorFrame{
 		OffCommand=function(self) self:accelerate(0.8):addy(-100) end;
 
 		LoadFont("_v 26px bold black")..{
-			InitCommand=function(self) self:x(-254):zoom(.55):shadowlength(0):maxwidth(180) end;
+			InitCommand=function(self) self:x(-254):zoom(.55):shadowlength(0):maxwidth(160) end;
 			BeginCommand=function(self)
 				if GAMESTATE:IsHumanPlayer(PLAYER_1) then
 					self:settext(GAMESTATE:GetPlayerDisplayName(PLAYER_1));
@@ -17,7 +17,7 @@ local t = Def.ActorFrame{
 			end;
 		};
 		LoadFont("_v 26px bold black")..{
-			InitCommand=function(self) self:x(254):zoom(.55):shadowlength(0):maxwidth(180) end;
+			InitCommand=function(self) self:x(254):zoom(.55):shadowlength(0):maxwidth(160) end;
 			BeginCommand=function(self)
 				if GAMESTATE:IsHumanPlayer(PLAYER_2) then
 					self:settext(GAMESTATE:GetPlayerDisplayName(PLAYER_2));

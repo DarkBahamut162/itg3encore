@@ -17,7 +17,7 @@ t[#t+1] = Def.ActorFrame{
 
 for player in ivalues(Players) do
 	t[#t+1] = LoadActor("Score", player)..{
-		Condition=GAMESTATE:GetPlayMode() ~= "PlayMode_Oni"
+		Condition=GAMESTATE:GetPlayMode() ~= "PlayMode_Oni" and GAMESTATE:GetPlayMode() ~= 'PlayMode_Rave',
 	}
 	t[#t+1] = LoadActor("RemainingTime", player)..{
 		Condition=GAMESTATE:GetPlayMode() == "PlayMode_Oni",
