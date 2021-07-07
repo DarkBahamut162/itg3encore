@@ -212,7 +212,7 @@ local t = Def.ActorFrame{
 			OffCommand=function(self) self:accelerate(0.5):addy(100) end;
 		};
 		LoadActor("base")..{
-			InitCommand=function(self) self:x(SCREEN_CENTER_X):y(SCREEN_BOTTOM+100):valign(1) end;
+			InitCommand=function(self) self:CenterX():y(SCREEN_BOTTOM+100):valign(1) end;
 			OnCommand=function(self) self:decelerate(0.4):y(SCREEN_BOTTOM) end;
 			OffCommand=function(self) self:accelerate(0.5):addy(100) end;
 		};

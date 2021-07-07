@@ -4,11 +4,11 @@ return Def.ActorFrame{
 		OnCommand=function(self) self:decelerate(0.30):zoomx(1):diffusealpha(1) end;
 	};
 	LoadActor("horiz-line")..{
-		InitCommand=function(self) self:x(SCREEN_CENTER_X):y(SCREEN_BOTTOM-34):diffusealpha(0):zoomtowidth(0) end;
+		InitCommand=function(self) self:CenterX():y(SCREEN_BOTTOM-34):diffusealpha(0):zoomtowidth(0) end;
 		OnCommand=function(self) self:sleep(.2):decelerate(0.30):zoomx(.99):diffusealpha(1) end;
 	};
 	LoadActor("mask")..{
-		InitCommand=function(self) self:x(SCREEN_CENTER_X):y(SCREEN_BOTTOM+2):zwrite(true):blend('BlendMode_NoEffect'):vertalign(bottom) end;
+		InitCommand=function(self) self:CenterX():y(SCREEN_BOTTOM+2):zwrite(true):blend('BlendMode_NoEffect'):vertalign(bottom) end;
 	};
 	Def.Quad{
 		InitCommand=function(self) self:CenterX():y(SCREEN_TOP):valign(0):zoomto(SCREEN_WIDTH,78):zwrite(true):blend('BlendMode_NoEffect') end;

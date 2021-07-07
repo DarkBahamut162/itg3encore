@@ -14,6 +14,7 @@ local t = Def.ActorFrame{
 		};
 	};
 	Def.ActorFrame{
+		OnCommand=function(self) self:visible(GAMESTATE:GetPlayMode() ~= 'PlayMode_Rave') end;
 		StandardDecorationFromFile("BPMDisplay","BPMDisplay");
 	};
 	Def.ActorFrame{
@@ -23,11 +24,11 @@ local t = Def.ActorFrame{
 		TweenOffCommand=function(self) if AnyPlayerFullComboed() then self:sleep(1) end; self:accelerate(0.8):addy(-100) end;
 
 		LoadActor("_uplight")..{
-			InitCommand=function(self) self:x(SCREEN_CENTER_X):y(SCREEN_TOP-2+24):blend(Blend.Add) end;
+			InitCommand=function(self) self:CenterX():y(SCREEN_TOP-2+24):blend(Blend.Add) end;
 			OnCommand=function(self) self:effectclock('beat'):diffuseramp():effectcolor1(color("#007892")):effectcolor2(color("#00EAFF")):effectperiod(1):effectoffset(0):diffusealpha(0):linear(.4):diffusealpha(1) end;
 		};
 		LoadActor("_uplight")..{
-			InitCommand=function(self) self:x(SCREEN_CENTER_X):y(SCREEN_TOP-2+24) end;
+			InitCommand=function(self) self:CenterX():y(SCREEN_TOP-2+24) end;
 			OnCommand=function(self) self:effectclock('beat'):diffuseramp():effectcolor1(color("#FFFFFF00")):effectcolor2(color("#00EAFF")):effectperiod(1):effectoffset(0):diffusealpha(0):linear(.4):diffusealpha(1) end;
 		};
 		LoadActor("width")..{
@@ -46,21 +47,22 @@ local t = Def.ActorFrame{
 			InitCommand=function(self) self:x(SCREEN_CENTER_X+193):y(SCREEN_TOP-2+24):halign(1):zoomx(-1) end;
 			OnCommand=function(self) self:sleep(1.5):linear(.1):x(SCREEN_RIGHT-16) end;
 		};
-		LoadActor("base")..{ InitCommand=function(self) self:x(SCREEN_CENTER_X):y(SCREEN_TOP-2+41) end; };
+		LoadActor("bpmbasea")..{ InitCommand=function(self) self:CenterX():y(SCREEN_TOP-2+64-3):visible(GAMESTATE:GetPlayMode() ~= 'PlayMode_Rave') end; };
+		LoadActor("base")..{ InitCommand=function(self) self:CenterX():y(SCREEN_TOP-2+24-2) end; };
 		LoadActor("_neons")..{
-			InitCommand=function(self) self:x(SCREEN_CENTER_X):y(SCREEN_TOP-2+24):blend(Blend.Add) end;
+			InitCommand=function(self) self:CenterX():y(SCREEN_TOP-2+24):blend(Blend.Add) end;
 			OnCommand=function(self) self:effectclock('beat'):diffuseramp():effectcolor1(color("#927f00")):effectcolor2(color("#fcff00")):effectperiod(1):effectoffset(0.05):diffusealpha(0):linear(.4):diffusealpha(1) end;
 		};
 		LoadActor("_neons")..{
-			InitCommand=function(self) self:x(SCREEN_CENTER_X):y(SCREEN_TOP-2+24) end;
+			InitCommand=function(self) self:CenterX():y(SCREEN_TOP-2+24) end;
 			OnCommand=function(self) self:effectclock('beat'):diffuseramp():effectcolor1(color("#FFFFFF00")):effectcolor2(color("#fcff00")):effectperiod(1):effectoffset(0.05):diffusealpha(0):linear(.4):diffusealpha(1) end;
 		};
 		LoadActor("_neon2")..{
-			InitCommand=function(self) self:x(SCREEN_CENTER_X):y(SCREEN_TOP-2+41):blend(Blend.Add) end;
+			InitCommand=function(self) self:CenterX():y(SCREEN_TOP-2+41-1):blend(Blend.Add):visible(GAMESTATE:GetPlayMode() ~= 'PlayMode_Rave') end;
 			OnCommand=function(self) self:effectclock('beat'):diffuseramp():effectcolor1(color("#927f00")):effectcolor2(color("#fcff00")):effectperiod(1):effectoffset(0.05):diffusealpha(0):linear(.4):diffusealpha(1) end;
 		};
 		LoadActor("_neon2")..{
-			InitCommand=function(self) self:x(SCREEN_CENTER_X):y(SCREEN_TOP-2+41) end;
+			InitCommand=function(self) self:CenterX():y(SCREEN_TOP-2+41-1):visible(GAMESTATE:GetPlayMode() ~= 'PlayMode_Rave') end;
 			OnCommand=function(self) self:effectclock('beat'):diffuseramp():effectcolor1(color("#FFFFFF00")):effectcolor2(color("#fcff00")):effectperiod(1):effectoffset(0.05):diffusealpha(0):linear(.4):diffusealpha(1) end;
 		};
 		LoadFont("_r bold 30px")..{

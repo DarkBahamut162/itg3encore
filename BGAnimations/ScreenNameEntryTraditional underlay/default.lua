@@ -49,7 +49,7 @@ local t = Def.ActorFrame{
 	},
 
 	LoadActor("light")..{
-		InitCommand=function(self) self:x(SCREEN_CENTER_X):y(SCREEN_CENTER_Y+4.5):zoomy(0.815):diffusealpha(0) end;
+		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+4.5):zoomy(0.815):diffusealpha(0) end;
 		OnCommand=function(self) self:sleep(1):linear(0.4):diffusealpha(1):diffuseramp():effectperiod(1):effectoffset(0.20):effectclock("beat"):diffuseramp():effectcolor1(color("#FFFFFF00")):effectcolor2(color("#FFFFFFFF") end;effectperiod,2;),
 		OffCommand=function(self) self:linear(0.2):diffusealpha(0) end;
 	}

@@ -5,7 +5,7 @@ return Def.ActorFrame{
 	InitCommand=function(self)
 		local x = SCREEN_CENTER_X
 		self:x(x)
-		self:y(SCREEN_CENTER_Y)
+		self:CenterY()
 	end;
 	Def.ActorFrame{
 		Name="JudgePane";
