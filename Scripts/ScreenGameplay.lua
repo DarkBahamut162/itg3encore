@@ -86,13 +86,8 @@ end
 
 function PlayerFullComboed(pn)
 	if GAMESTATE:IsPlayerEnabled(pn) then
-		local fct = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn)
-		if fct:FullComboOfScore('TapNoteScore_W1') == true or
-			fct:FullComboOfScore('TapNoteScore_W2') == true or
-			fct:FullComboOfScore('TapNoteScore_W3') == true then
-			return true;
-		end
-	end	
+		return STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):FullCombo();
+	end
 	return false
 end
 

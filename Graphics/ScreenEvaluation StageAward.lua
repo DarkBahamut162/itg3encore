@@ -1,7 +1,7 @@
 local player = ...
 assert(player,"[ScreenEvaluation StageAward] requires player")
 local award;
-local checkFC = STATSMAN:GetCurStageStats():GetPlayerStageStats(player):FullCombo()
+local failed = STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetFailed()
 
 local awardRef = {
 	["80PercentW3"]       = { File = THEME:GetPathG("_award","models/ribbon"), Color = "green" },
@@ -56,7 +56,7 @@ end
 
 local t = Def.ActorFrame{};
 
-if award ~= nil and checkFC then
+if award ~= nil and not failed then
 	t[#t+1] = LoadActor(awardRef[award].File,awardRef[award].Color)..{
 		Name="Trophy";
 		InitCommand=function(self) self:zoom(0.7):x(-60):y(-80):rotationy(-15) end;

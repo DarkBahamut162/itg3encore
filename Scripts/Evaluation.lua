@@ -35,11 +35,11 @@ function GetRadarData( pnPlayer, rcRadarCategory )
 	local tRadarValues;
 	local StepsOrTrail;
 	local fDesiredValue = 0;
-	if GAMESTATE:GetCurrentSteps( pnPlayer ) then
-		StepsOrTrail = GAMESTATE:GetCurrentSteps( pnPlayer );
-		fDesiredValue = StepsOrTrail:GetRadarValues( pnPlayer ):GetValue( rcRadarCategory );
-	elseif GAMESTATE:GetCurrentTrail( pnPlayer ) then
+	if GAMESTATE:GetCurrentTrail( pnPlayer ) then
 		StepsOrTrail = GAMESTATE:GetCurrentTrail( pnPlayer );
+		fDesiredValue = StepsOrTrail:GetRadarValues( pnPlayer ):GetValue( rcRadarCategory );
+	elseif GAMESTATE:GetCurrentSteps( pnPlayer ) then
+		StepsOrTrail = GAMESTATE:GetCurrentSteps( pnPlayer );
 		fDesiredValue = StepsOrTrail:GetRadarValues( pnPlayer ):GetValue( rcRadarCategory );
 	else
 		StepsOrTrail = nil;
