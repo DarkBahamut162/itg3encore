@@ -36,11 +36,11 @@ function CourseTextBannerAfterSet(self,param)
 
 	if Subtitle:GetText() == "" then 
 		Title:y(0)
-		Title:zoom(.773)
+		Title:zoom(0.773)
 		Subtitle:visible(false)
 	else
 		Title:y(-6)
-		Title:zoom(.6)
+		Title:zoom(0.6)
 		Subtitle:visible(true)
 		Subtitle:y(8)
 	end

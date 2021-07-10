@@ -5,7 +5,7 @@ return Def.ActorFrame{
 	};
 	LoadActor("horiz-line")..{
 		InitCommand=function(self) self:CenterX():y(SCREEN_BOTTOM-34):diffusealpha(0):zoomtowidth(0) end;
-		OnCommand=function(self) self:sleep(.2):decelerate(0.30):zoomx(.99):diffusealpha(1) end;
+		OnCommand=function(self) self:sleep(0.2):decelerate(0.30):zoomx(0.99):diffusealpha(1) end;
 	};
 	LoadActor("mask")..{
 		InitCommand=function(self) self:CenterX():y(SCREEN_BOTTOM+2):zwrite(true):blend('BlendMode_NoEffect'):vertalign(bottom) end;

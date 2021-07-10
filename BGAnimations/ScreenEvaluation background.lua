@@ -12,6 +12,6 @@ return Def.ActorFrame{
 			self:blend("BlendMode_Add")
 			self:diffusealpha(0.25)
 		end;
-		OnCommand=function(self) self:fadeleft(.2):faderight(.2):CenterX():CenterY():zoomtowidth(SCREEN_WIDTH):zoomtoheight(SCREEN_WIDTH/16*10) end;
+		OnCommand=function(self) self:fadeleft(0.2):faderight(0.2):CenterX():CenterY():zoomtowidth(SCREEN_WIDTH):zoomtoheight(SCREEN_WIDTH/16*10) end;
 	};
 }

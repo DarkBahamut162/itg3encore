@@ -18,7 +18,7 @@ local t = Def.ActorFrame{
 	};
 	LoadActor("glow2")..{
 		InitCommand=function(self) self:blend(Blend.Add):addx(-5):diffusealpha(0) end;
-		OnCommand=function(self) self:sleep(1.8):decelerate(0.3):diffusealpha(1):sleep(.2):accelerate(0.6):diffusealpha(0):queuecommand("Destroy") end;
+		OnCommand=function(self) self:sleep(1.8):decelerate(0.3):diffusealpha(1):sleep(0.2):accelerate(0.6):diffusealpha(0):queuecommand("Destroy") end;
 		DestroyCommand=function(self) self:visible(false) end;
 	};
 };

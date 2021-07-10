@@ -9,10 +9,10 @@ local t = Def.ActorFrame{
 		Font="_z bold gray 36px",
 		Text=THEME:GetString( Var "LoadingScreen" , "HeaderText" ),
 		InitCommand=function(self)
-			self:xy(SCREEN_RIGHT-20,28):shadowlength(2):halign(1):zoom(.5):cropright(1.3):faderight(0.1)
+			self:xy(SCREEN_RIGHT-20,28):shadowlength(2):halign(1):zoom(0.5):cropright(1.3):faderight(0.1)
 		end,
 		OnCommand=function(self)
-			self:sleep(.2):linear(0.8):cropright(-0.3)
+			self:sleep(0.2):linear(0.8):cropright(-0.3)
 		end
 	}
 }

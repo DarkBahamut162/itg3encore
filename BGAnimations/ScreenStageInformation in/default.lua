@@ -37,7 +37,7 @@ local t = Def.ActorFrame{
 		LoadActor("_p1")..{ InitCommand=function(self) self:x(SCREEN_LEFT):y(SCREEN_CENTER_Y+150):halign(0) end; };
 		LoadFont("_r bold 30px")..{
 			Text="Step Artist:";
-			InitCommand=function(self) self:x(SCREEN_LEFT+5):y(SCREEN_CENTER_Y+172):zoom(.6):halign(0):shadowlength(2) end;
+			InitCommand=function(self) self:x(SCREEN_LEFT+5):y(SCREEN_CENTER_Y+172):zoom(0.6):halign(0):shadowlength(2) end;
 			BeginCommand=function(self)
 				local pm = GAMESTATE:GetPlayMode()
 				local show = (pm == 'PlayMode_Regular' or pm == 'PlayMode_Rave')
@@ -46,7 +46,7 @@ local t = Def.ActorFrame{
 		};
 		LoadFont("_r bold 30px")..{
 			Name="AuthorText";
-			InitCommand=function(self) self:x(SCREEN_LEFT+100):y(SCREEN_CENTER_Y+172):shadowlength(2):halign(0):zoom(.6) end;
+			InitCommand=function(self) self:x(SCREEN_LEFT+100):y(SCREEN_CENTER_Y+172):shadowlength(2):halign(0):zoom(0.6) end;
 			SetCommand=function(self)
 				local song = GAMESTATE:GetCurrentSong()
 				local text
@@ -66,7 +66,7 @@ local t = Def.ActorFrame{
 		};
 		LoadFont("_r bold 30px")..{
 			Name="PlayerName";
-			InitCommand=function(self) self:x(SCREEN_LEFT+44):y(SCREEN_CENTER_Y+142):shadowlength(2):halign(0):zoom(.8) end;
+			InitCommand=function(self) self:x(SCREEN_LEFT+44):y(SCREEN_CENTER_Y+142):shadowlength(2):halign(0):zoom(0.8) end;
 			SetCommand=function(self)
 				self:settext( PROFILEMAN:GetPlayerName(PLAYER_1) )
 			end;
@@ -80,7 +80,7 @@ local t = Def.ActorFrame{
 		LoadActor("_p2")..{ InitCommand=function(self) self:x(SCREEN_RIGHT):y(SCREEN_CENTER_Y+150):halign(1) end; };
 		LoadFont("_r bold 30px")..{
 			Text=":Step Artist";
-			InitCommand=function(self) self:x(SCREEN_RIGHT-5):y(SCREEN_CENTER_Y+172):zoom(.6):halign(1):shadowlength(2) end;
+			InitCommand=function(self) self:x(SCREEN_RIGHT-5):y(SCREEN_CENTER_Y+172):zoom(0.6):halign(1):shadowlength(2) end;
 			BeginCommand=function(self)
 				local pm = GAMESTATE:GetPlayMode()
 				local show = (pm == 'PlayMode_Regular' or pm == 'PlayMode_Rave')
@@ -89,7 +89,7 @@ local t = Def.ActorFrame{
 		};
 		LoadFont("_r bold 30px")..{
 			Name="AuthorText";
-			InitCommand=function(self) self:x(SCREEN_RIGHT-100):y(SCREEN_CENTER_Y+172):shadowlength(2):halign(1):zoom(.6) end;
+			InitCommand=function(self) self:x(SCREEN_RIGHT-100):y(SCREEN_CENTER_Y+172):shadowlength(2):halign(1):zoom(0.6) end;
 			SetCommand=function(self)
 				local song = GAMESTATE:GetCurrentSong()
 				local text
@@ -109,7 +109,7 @@ local t = Def.ActorFrame{
 		};
 		LoadFont("_r bold 30px")..{
 			Name="PlayerName";
-			InitCommand=function(self) self:x(SCREEN_RIGHT-44):y(SCREEN_CENTER_Y+142):shadowlength(2):halign(1):zoom(.8) end;
+			InitCommand=function(self) self:x(SCREEN_RIGHT-44):y(SCREEN_CENTER_Y+142):shadowlength(2):halign(1):zoom(0.8) end;
 			SetCommand=function(self)
 				self:settext( PROFILEMAN:GetPlayerName(PLAYER_2) )
 			end;
@@ -126,11 +126,11 @@ local t = Def.ActorFrame{
 			InitCommand=function(self) self:y(SCREEN_CENTER_Y+60) end;
 			LoadActor(THEME:GetPathG("_gameplay","stage "..curStage))..{
 				InitCommand=function(self) self:horizalign(center):cropright(1.3) end;
-				OnCommand=function(self) self:sleep(.22):linear(1):cropright(-0.3) end;
+				OnCommand=function(self) self:sleep(0.22):linear(1):cropright(-0.3) end;
 			};
 			LoadActor(THEME:GetPathG("_white","gameplay stage "..curStage))..{
-				InitCommand=function(self) self:horizalign(center):cropleft(-0.3):cropright(1):faderight(.1):fadeleft(.1) end;
-				OnCommand=function(self) self:sleep(.22):linear(1):cropleft(1):cropright(-0.3) end;
+				InitCommand=function(self) self:horizalign(center):cropleft(-0.3):cropright(1):faderight(0.1):fadeleft(0.1) end;
+				OnCommand=function(self) self:sleep(0.22):linear(1):cropleft(1):cropright(-0.3) end;
 			};
 		};
 		Def.ActorFrame{
@@ -164,11 +164,11 @@ local t = Def.ActorFrame{
 			InitCommand=function(self) self:y(SCREEN_CENTER_Y+60) end;
 			LoadActor(THEME:GetPathG("_gameplay","course song 1"))..{
 				InitCommand=function(self) self:horizalign(center):cropright(1.3) end;
-				OnCommand=function(self) self:sleep(.07):linear(1):cropright(-0.3) end;
+				OnCommand=function(self) self:sleep(0.07):linear(1):cropright(-0.3) end;
 			};
 			LoadActor(THEME:GetPathG("_white","gameplay course song 1"))..{
-				InitCommand=function(self) self:horizalign(center):cropleft(-0.3):cropright(1):faderight(.1):fadeleft(.1) end;
-				OnCommand=function(self) self:sleep(.07):linear(1):cropleft(1):cropright(-0.3) end;
+				InitCommand=function(self) self:horizalign(center):cropleft(-0.3):cropright(1):faderight(0.1):fadeleft(0.1) end;
+				OnCommand=function(self) self:sleep(0.07):linear(1):cropleft(1):cropright(-0.3) end;
 			};
 		};
 		Def.ActorFrame{
@@ -183,7 +183,7 @@ local t = Def.ActorFrame{
 
 	LoadActor("blueflare")..{
 		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+12.5):blend(Blend.Add):draworder(115) end;
-		OnCommand=function(self) self:zoomx(15):zoomtoheight(SCREEN_HEIGHT+SCREEN_HEIGHT/4):linear(1):zoomtoheight(0):diffusealpha(.0) end;
+		OnCommand=function(self) self:zoomx(15):zoomtoheight(SCREEN_HEIGHT+SCREEN_HEIGHT/4):linear(1):zoomtoheight(0):diffusealpha(0.0) end;
 	};
 	LoadActor("shot")..{
 		InitCommand=function(self) self:diffusealpha(0):blend(Blend.Add) end;

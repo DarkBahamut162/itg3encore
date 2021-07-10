@@ -4,15 +4,15 @@ local t = Def.ActorFrame{
 
 		LoadFont("_eurostile normal")..{
 			Text="Actual";
-			InitCommand=function(self) self:x(scale(1,1,3,SCREEN_LEFT+300,SCREEN_RIGHT-100)):zoom(.5) end;
+			InitCommand=function(self) self:x(scale(1,1,3,SCREEN_LEFT+300,SCREEN_RIGHT-100)):zoom(0.5) end;
 		};
 		LoadFont("_eurostile normal")..{
 			Text="Possible";
-			InitCommand=function(self) self:x(scale(2,1,3,SCREEN_LEFT+300,SCREEN_RIGHT-100)):zoom(.5) end;
+			InitCommand=function(self) self:x(scale(2,1,3,SCREEN_LEFT+300,SCREEN_RIGHT-100)):zoom(0.5) end;
 		};
 		LoadFont("_eurostile normal")..{
 			Text="Star Complete";
-			InitCommand=function(self) self:x(scale(3,1,3,SCREEN_LEFT+300,SCREEN_RIGHT-100)):zoom(.5) end;
+			InitCommand=function(self) self:x(scale(3,1,3,SCREEN_LEFT+300,SCREEN_RIGHT-100)):zoom(0.5) end;
 		};
 	};
 
@@ -31,7 +31,7 @@ for i=1,3 do
 	for n=2,7 do
 		local diff
 		local num = LoadFont("_eurostile normal")..{
-			InitCommand=function(self) self:y(scale(n,1,7,SCREEN_CENTER_Y-150,SCREEN_CENTER_Y+10)):zoom(.6):halign(1) end;
+			InitCommand=function(self) self:y(scale(n,1,7,SCREEN_CENTER_Y-150,SCREEN_CENTER_Y+10)):zoom(0.6):halign(1) end;
 			BeginCommand=function(self)
 				--set real numbers here
 				local val, text

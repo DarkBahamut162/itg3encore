@@ -55,7 +55,7 @@ return Def.ActorFrame{
 		end;
 		SelectMenuOpenedMessageCommand=function(self) self:stoptweening():playcommand("Set"):linear(0.2):diffusealpha(1) end;
 		SelectMenuClosedMessageCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(0) end;
-		OffCommand=function(self) self:stoptweening():linear(.12):diffusealpha(0) end;
+		OffCommand=function(self) self:stoptweening():linear(0.12):diffusealpha(0) end;
 	};
 	LoadFont("smallnumbers")..{
 		Name="Holds";
@@ -110,7 +110,7 @@ return Def.ActorFrame{
 		end;
 		SelectMenuOpenedMessageCommand=function(self) self:stoptweening():playcommand("Set"):linear(0.2):diffusealpha(1) end;
 		SelectMenuClosedMessageCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(0) end;
-		OffCommand=function(self) self:stoptweening():linear(.12):diffusealpha(0) end;
+		OffCommand=function(self) self:stoptweening():linear(0.12):diffusealpha(0) end;
 	};
 	LoadFont("smallnumbers")..{
 		Name="Mines";
@@ -165,7 +165,7 @@ return Def.ActorFrame{
 		end;
 		SelectMenuOpenedMessageCommand=function(self) self:stoptweening():playcommand("Set"):linear(0.2):diffusealpha(1) end;
 		SelectMenuClosedMessageCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(0) end;
-		OffCommand=function(self) self:stoptweening():linear(.12):diffusealpha(0) end;
+		OffCommand=function(self) self:stoptweening():linear(0.12):diffusealpha(0) end;
 	};
 	LoadFont("smallnumbers")..{
 		Name="Hands";
@@ -220,7 +220,7 @@ return Def.ActorFrame{
 		end;
 		SelectMenuOpenedMessageCommand=function(self) self:stoptweening():playcommand("Set"):linear(0.2):diffusealpha(1) end;
 		SelectMenuClosedMessageCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(0) end;
-		OffCommand=function(self) self:stoptweening():linear(.12):diffusealpha(0) end;
+		OffCommand=function(self) self:stoptweening():linear(0.12):diffusealpha(0) end;
 	};
 	LoadFont("smallnumbers")..{
 		Name="Rolls";
@@ -275,6 +275,6 @@ return Def.ActorFrame{
 		end;
 		SelectMenuOpenedMessageCommand=function(self) self:stoptweening():playcommand("Set"):linear(0.2):diffusealpha(1) end;
 		SelectMenuClosedMessageCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(0) end;
-		OffCommand=function(self) self:stoptweening():linear(.12):diffusealpha(0) end;
+		OffCommand=function(self) self:stoptweening():linear(0.12):diffusealpha(0) end;
 	};
 };

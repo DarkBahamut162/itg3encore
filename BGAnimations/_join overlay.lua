@@ -1,13 +1,13 @@
 -- so much crap
 local t = Def.ActorFrame{
 	LoadFont("_v 26px bold black")..{
-		InitCommand=function(self) self:CenterX():y(SCREEN_BOTTOM-14):shadowlength(0):zoom(.6):diffusealpha(0):sleep(.5):linear(.2):diffusealpha(1):draworder(9999) end;
+		InitCommand=function(self) self:CenterX():y(SCREEN_BOTTOM-14):shadowlength(0):zoom(0.6):diffusealpha(0):sleep(0.5):linear(0.2):diffusealpha(1):draworder(9999) end;
 		OnCommand=function(self) self:diffuseshift():effectcolor1(color("#FFFFFF")):effectcolor2(color("#FFFFFF")):playcommand("Refresh") end;
 		OffCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(0) end;
 		RefreshCommand=function(self)
 			self:settext(Get2PlayerJoinMessage())
 		end;
-		JoinedCommand=function(self) self:linear(.2):diffusealpha(0) end;
+		JoinedCommand=function(self) self:linear(0.2):diffusealpha(0) end;
 		PlayerJoinedMessageCommand=function(self) self:playcommand("Joined") end;
 		CurrentStyleChangedMessageCommand=function(self) self:playcommand("Refresh") end;
 		CoinInsertedMessageCommand=function(self) self:playcommand("Refresh") end;
@@ -43,25 +43,25 @@ local t = Def.ActorFrame{
 
 		LoadActor(THEME:GetPathB("","_overlay/joinin"))..{
 			InitCommand=function(self) self:x(-10):zoom(-.6) end;
-			JoinedCommand=function(self) self:linear(.2):diffusealpha(0) end;
+			JoinedCommand=function(self) self:linear(0.2):diffusealpha(0) end;
 		};
 		LoadFont("_v 26px bold diffuse")..{
 			InitCommand=function(self) self:settext("PRESS"):shadowlength(2):zoom(0.6) end;
-			JoinedCommand=function(self) self:linear(.2):diffusealpha(0) end;
+			JoinedCommand=function(self) self:linear(0.2):diffusealpha(0) end;
 		};
 		LoadActor(THEME:GetPathG("_common","base start button"))..{
 			InitCommand=function(self) self:addx(45):shadowlength(0):zoom(0.5) end;
-			JoinedCommand=function(self) self:linear(.2):diffusealpha(0) end;
+			JoinedCommand=function(self) self:linear(0.2):diffusealpha(0) end;
 		};
 		LoadActor(THEME:GetPathG("_common","start button"))..{
 			InitCommand=function(self) self:addx(45):zoom(0.5) end;
 			OnCommand=function(self) self:diffuseshift():effectcolor1(color("#FFFFFF")):effectcolor2(color("#858585")):effectclock("beat") end;
-			JoinedCommand=function(self) self:linear(.2):diffusealpha(0) end;
+			JoinedCommand=function(self) self:linear(0.2):diffusealpha(0) end;
 		};
 		LoadActor(THEME:GetPathG("_common","glow start button"))..{
 			InitCommand=function(self) self:addx(45):zoom(0.5):blend(Blend.Add) end;
 			OnCommand=function(self) self:diffuseshift():effectcolor1(color("#6BFF75")):effectcolor2(color("#FFFFFF00")):effectclock("beat") end;
-			JoinedCommand=function(self) self:linear(.2):diffusealpha(0) end;
+			JoinedCommand=function(self) self:linear(0.2):diffusealpha(0) end;
 		};
 	};
 	Def.ActorFrame{
@@ -96,26 +96,26 @@ local t = Def.ActorFrame{
 		PressStartCommand=function(self) self:visible(true) end;
 
 		LoadActor(THEME:GetPathB("","_overlay/joinin"))..{
-			InitCommand=function(self) self:x(10):zoom(.6) end;
-			JoinedCommand=function(self) self:linear(.2):diffusealpha(0) end;
+			InitCommand=function(self) self:x(10):zoom(0.6) end;
+			JoinedCommand=function(self) self:linear(0.2):diffusealpha(0) end;
 		};
 		LoadFont("_v 26px bold diffuse")..{
 			InitCommand=function(self) self:settext("PRESS"):x(-33):shadowlength(2):zoom(0.6) end;
-			JoinedCommand=function(self) self:linear(.2):diffusealpha(0) end;
+			JoinedCommand=function(self) self:linear(0.2):diffusealpha(0) end;
 		};
 		LoadActor(THEME:GetPathG("_common","base start button"))..{
 			InitCommand=function(self) self:addx(11):shadowlength(0):zoom(0.5) end;
-			JoinedCommand=function(self) self:linear(.2):diffusealpha(0) end;
+			JoinedCommand=function(self) self:linear(0.2):diffusealpha(0) end;
 		};
 		LoadActor(THEME:GetPathG("_common","start button"))..{
 			InitCommand=function(self) self:addx(11):zoom(0.5) end;
 			OnCommand=function(self) self:diffuseshift():effectcolor1(color("#FFFFFF")):effectcolor2(color("#858585")):effectoffset(-0.05):effectclock("beat"):effectperiod(1/177.38*120) end;
-			JoinedCommand=function(self) self:linear(.2):diffusealpha(0) end;
+			JoinedCommand=function(self) self:linear(0.2):diffusealpha(0) end;
 		};
 		LoadActor(THEME:GetPathG("_common","glow start button"))..{
 			InitCommand=function(self) self:addx(11):zoom(0.5):blend(Blend.Add) end;
 			OnCommand=function(self) self:diffuseshift():effectcolor1(color("#6BFF75")):effectcolor2(color("#FFFFFF00")):effectoffset(-0.05):effectclock("beat"):effectperiod(1/177.38*120) end;
-			JoinedCommand=function(self) self:linear(.2):diffusealpha(0) end;
+			JoinedCommand=function(self) self:linear(0.2):diffusealpha(0) end;
 		};
 	};
 	Def.ActorFrame{

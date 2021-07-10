@@ -64,13 +64,13 @@ local t = Def.ActorFrame{
 	-- custom mods p1/p2
 	LoadFont("_v 26px bold shadow")..{
 		Text="";
-		InitCommand=function(self) if GAMESTATE:IsPlayerEnabled(PLAYER_1) then self:settext(DisplayCustomModifiersText(PLAYER_1)) end self:maxwidth(350):zoom(.5):x(SCREEN_CENTER_X-9-2):y(SCREEN_CENTER_Y+9):horizalign(right):shadowlength(0):diffusebottomedge(color("#BBB9FB")) end;
+		InitCommand=function(self) if GAMESTATE:IsPlayerEnabled(PLAYER_1) then self:settext(DisplayCustomModifiersText(PLAYER_1)) end self:maxwidth(350):zoom(0.5):x(SCREEN_CENTER_X-9-2):y(SCREEN_CENTER_Y+9):horizalign(right):shadowlength(0):diffusebottomedge(color("#BBB9FB")) end;
 		OnCommand=function(self) self:diffusealpha(0):sleep(3):linear(0.8):diffusealpha(1) end;
 		OffCommand=function(self) self:linear(0.2):diffusealpha(0) end;
 	};
 	LoadFont("_v 26px bold shadow")..{
 		Text="";
-		InitCommand=function(self) if GAMESTATE:IsPlayerEnabled(PLAYER_2) then self:settext(DisplayCustomModifiersText(PLAYER_2)) end self:maxwidth(350):zoom(.5):x(SCREEN_CENTER_X+10-2):y(SCREEN_CENTER_Y+9):horizalign(left):shadowlength(0):diffusebottomedge(color("#BBB9FB")) end;
+		InitCommand=function(self) if GAMESTATE:IsPlayerEnabled(PLAYER_2) then self:settext(DisplayCustomModifiersText(PLAYER_2)) end self:maxwidth(350):zoom(0.5):x(SCREEN_CENTER_X+10-2):y(SCREEN_CENTER_Y+9):horizalign(left):shadowlength(0):diffusebottomedge(color("#BBB9FB")) end;
 		OnCommand=function(self) self:diffusealpha(0):sleep(3):linear(0.8):diffusealpha(1) end;
 		OffCommand=function(self) self:linear(0.2):diffusealpha(0) end;
 	};
@@ -127,7 +127,7 @@ local t = Def.ActorFrame{
 
 	LoadFont("_angel glow")..{
 		Text="Song Title";
-		InitCommand=function(self) self:x(SCREEN_CENTER_X-300):halign(0):y(SCREEN_TOP+76,animate,0):maxwidth(545):zoom(.6):shadowlength(0):playcommand("Update") end;
+		InitCommand=function(self) self:x(SCREEN_CENTER_X-300):halign(0):y(SCREEN_TOP+76,animate,0):maxwidth(545):zoom(0.6):shadowlength(0):playcommand("Update") end;
 		OnCommand=function(self) self:diffusealpha(0):sleep(3):linear(0.3):diffusealpha(1) end;
 		OffCommand=function(self) self:linear(0.2):diffusealpha(0) end;
 		UpdateCommand=function(self) 

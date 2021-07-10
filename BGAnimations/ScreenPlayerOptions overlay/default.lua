@@ -15,11 +15,11 @@ local t = Def.ActorFrame{
 
 	LoadActor(THEME:GetPathB("ScreenOptions","overlay/_frame"))..{
 		InitCommand=function(self) self:Center() end;
-		OnCommand=function(self) self:diffusealpha(0):zoom(.7):bounceend(0.3):diffusealpha(.7):zoom(1) end;
+		OnCommand=function(self) self:diffusealpha(0):zoom(0.7):bounceend(0.3):diffusealpha(0.7):zoom(1) end;
 	};
 	LoadActor(THEME:GetPathB("ScreenOptions","overlay/_frame"))..{
 		InitCommand=function(self) self:Center():blend(Blend.Add) end;
-		OnCommand=function(self) self:diffuseblink():effectcolor1(color("0.8,0.8,0.8,.85")):effectperiod(1):effectoffset(0):effectclock('beat'):diffusealpha(0):zoom(.7):bounceend(0.3):diffusealpha(1):zoom(1) end;
+		OnCommand=function(self) self:diffuseblink():effectcolor1(color("0.8,0.8,0.8,.85")):effectperiod(1):effectoffset(0):effectclock('beat'):diffusealpha(0):zoom(0.7):bounceend(0.3):diffusealpha(1):zoom(1) end;
 		OffCommand=function(self) self:diffusealpha(1):accelerate(0.3):diffusealpha(0) end;
 	};
 
@@ -29,7 +29,7 @@ local t = Def.ActorFrame{
 	};
 	Def.Quad{
 		InitCommand=function(self) self:FullScreen() end;
-		OnCommand=function(self) self:diffusealpha(1):sleep(.2):linear(0.4):diffusealpha(0) end;
+		OnCommand=function(self) self:diffusealpha(1):sleep(0.2):linear(0.4):diffusealpha(0) end;
 		OffCommand=function(self) self:visible(false) end;
 	};
 	LoadActor(THEME:GetPathB("","_coins"));

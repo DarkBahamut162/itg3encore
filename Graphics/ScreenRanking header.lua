@@ -5,7 +5,7 @@ return Def.ActorFrame{
 			local highScoresType = THEME:GetMetric(Var "LoadingScreen","HighScoresType")
 			self:settext( THEME:GetString("HighScoresType",ToEnumShortString(highScoresType)) )
 		end;
-		OnCommand=function(self) self:linear(.5):diffusealpha(1) end;
-		OffCommand=function(self) self:sleep(.5):linear(.5):diffusealpha(0) end;
+		OnCommand=function(self) self:linear(0.5):diffusealpha(1) end;
+		OffCommand=function(self) self:sleep(0.5):linear(0.5):diffusealpha(0) end;
 	};
 };

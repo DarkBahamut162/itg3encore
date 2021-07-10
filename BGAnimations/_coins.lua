@@ -1,7 +1,7 @@
 return Def.ActorFrame{
 	LoadFont("_v 26px bold black")..{
-		InitCommand=function(self) self:CenterX():y(SCREEN_BOTTOM-16):diffusealpha(0):horizalign(center):shadowlength(0):zoom(.5) end;
-		OnCommand=function(self) self:linear(.4):diffusealpha(1):playcommand("Refresh") end;
+		InitCommand=function(self) self:CenterX():y(SCREEN_BOTTOM-16):diffusealpha(0):horizalign(center):shadowlength(0):zoom(0.5) end;
+		OnCommand=function(self) self:linear(0.4):diffusealpha(1):playcommand("Refresh") end;
 		RefreshCommand=function(self)
 			if GAMESTATE:IsEventMode() then self:settext('EVENT MODE') return end
 			if GAMESTATE:GetCoinMode()=='CoinMode_Free' then self:settext('FREE PLAY') return end

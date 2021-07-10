@@ -3,7 +3,7 @@ return Def.ActorFrame{
 		Name="LeftArrow";
 		InitCommand=function(self) self:x(SCREEN_CENTER_X-278):CenterY() end;
 		OnCommand=function(self) self:queuecommand("Bob") end;
-		BobCommand=function(self) self:accelerate(.75):addx(-2):decelerate(.75):addx(-2):accelerate(.75):addx(2):decelerate(.75):addx(2):queuecommand("Bob") end;
+		BobCommand=function(self) self:accelerate(0.75):addx(-2):decelerate(0.75):addx(-2):accelerate(0.75):addx(2):decelerate(0.75):addx(2):queuecommand("Bob") end;
 
 		LoadActor("arrow")..{
 			InitCommand=function(self) self:zoom(0.8):addx(-200) end;
@@ -30,7 +30,7 @@ return Def.ActorFrame{
 		Name="RightArrow";
 		InitCommand=function(self) self:x(SCREEN_CENTER_X+102):CenterY() end;
 		OnCommand=function(self) self:queuecommand("Bob") end;
-		BobCommand=function(self) self:accelerate(.75):addx(-2):decelerate(.75):addx(-2):accelerate(.75):addx(2):decelerate(.75):addx(2):queuecommand("Bob") end;
+		BobCommand=function(self) self:accelerate(0.75):addx(-2):decelerate(0.75):addx(-2):accelerate(0.75):addx(2):decelerate(0.75):addx(2):queuecommand("Bob") end;
 
 		LoadActor("arrow")..{
 			InitCommand=function(self) self:rotationz(180):zoom(0.8):addx(200) end;

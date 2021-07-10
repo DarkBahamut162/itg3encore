@@ -6,7 +6,7 @@ return Def.ActorFrame{
 		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y-158):diffuse(color("#000000FF")):zoomto(SCREEN_WIDTH,SCREEN_HEIGHT/2) end;
 	};
 	LoadActor("lolhi")..{
-		InitCommand=function(self) self:Center():zoomx(SCREEN_WIDTH):zoomy(.68) end;
+		InitCommand=function(self) self:Center():zoomx(SCREEN_WIDTH):zoomy(0.68) end;
 	};
 	LoadFont("_z 36px shadowx")..{
 		Text="SAVING PROFILES...";

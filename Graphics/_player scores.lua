@@ -72,15 +72,15 @@ return Def.ActorFrame{
 		LoadFont("_z 36px shadowx")..{
 			Name="ScoreName";
 			Text="MACH";
-			InitCommand=function(self) self:y(85):diffusealpha(0):zoom(.55):shadowlength(2):maxwidth(135) end;
-			OnCommand=function(self) self:sleep(.5):linear(0.2):diffusealpha(1) end;
+			InitCommand=function(self) self:y(85):diffusealpha(0):zoom(0.55):shadowlength(2):maxwidth(135) end;
+			OnCommand=function(self) self:sleep(0.5):linear(0.2):diffusealpha(1) end;
 			OffCommand=function(self) self:linear(0.4):diffusealpha(0) end;
 		};
 		LoadFont("_z 36px shadowx")..{
 			Name="ScorePercent";
 			Text="0.00%";
-			InitCommand=function(self) self:y(100):diffusealpha(0):zoom(.55):shadowlength(2):maxwidth(175):diffusebottomedge(color("#AAAAAA")) end;
-			OnCommand=function(self) self:sleep(.6):linear(0.2):diffusealpha(1) end;
+			InitCommand=function(self) self:y(100):diffusealpha(0):zoom(0.55):shadowlength(2):maxwidth(175):diffusebottomedge(color("#AAAAAA")) end;
+			OnCommand=function(self) self:sleep(0.6):linear(0.2):diffusealpha(1) end;
 			OffCommand=function(self) self:linear(0.4):diffusealpha(0) end;
 		};
 	};
@@ -150,15 +150,15 @@ return Def.ActorFrame{
 		LoadFont("_z 36px shadowx")..{
 			Name="ScoreName";
 			Text="CARD";
-			InitCommand=function(self) self:y(85):diffusealpha(0):zoom(.55):shadowlength(2):maxwidth(200) end;
-			OnCommand=function(self) self:sleep(.85):linear(0.2):diffusealpha(1) end;
+			InitCommand=function(self) self:y(85):diffusealpha(0):zoom(0.55):shadowlength(2):maxwidth(200) end;
+			OnCommand=function(self) self:sleep(0.85):linear(0.2):diffusealpha(1) end;
 			OffCommand=function(self) self:linear(0.4):diffusealpha(0) end;
 		};
 		LoadFont("_z 36px shadowx")..{
 			Name="ScorePercent";
 			Text="0.00%";
-			InitCommand=function(self) self:y(100):diffusealpha(0):zoom(.55):shadowlength(2):maxwidth(175):diffusebottomedge(PlayerColor(player)) end;
-			OnCommand=function(self) self:sleep(.6):linear(0.2):diffusealpha(1) end;
+			InitCommand=function(self) self:y(100):diffusealpha(0):zoom(0.55):shadowlength(2):maxwidth(175):diffusebottomedge(PlayerColor(player)) end;
+			OnCommand=function(self) self:sleep(0.6):linear(0.2):diffusealpha(1) end;
 			OffCommand=function(self) self:linear(0.4):diffusealpha(0) end;
 		};
 	};

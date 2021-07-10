@@ -15,12 +15,12 @@ return Def.ActorFrame{
 		end;
 		Def.Quad{
 			Name="DeadP1";
-			InitCommand=function(self) self:diffuse(color("0,0,0,0.5")):faderight(.3):stretchto(SCREEN_LEFT,SCREEN_TOP,SCREEN_CENTER_X,SCREEN_BOTTOM):diffusealpha(0):player(PLAYER_1) end;
+			InitCommand=function(self) self:diffuse(color("0,0,0,0.5")):faderight(0.3):stretchto(SCREEN_LEFT,SCREEN_TOP,SCREEN_CENTER_X,SCREEN_BOTTOM):diffusealpha(0):player(PLAYER_1) end;
 			ShowCommand=function(self) self:linear(0.2):diffusealpha(0.5) end;
 		};
 		Def.Quad{
 			Name="DeadP2";
-			InitCommand=function(self) self:diffuse(color("0,0,0,0.5")):faderight(.3):stretchto(SCREEN_CENTER_X,SCREEN_TOP,SCREEN_RIGHT,SCREEN_BOTTOM):diffusealpha(0):player(PLAYER_2) end;
+			InitCommand=function(self) self:diffuse(color("0,0,0,0.5")):faderight(0.3):stretchto(SCREEN_CENTER_X,SCREEN_TOP,SCREEN_RIGHT,SCREEN_BOTTOM):diffusealpha(0):player(PLAYER_2) end;
 			ShowCommand=function(self) self:linear(0.2):diffusealpha(0.5) end;
 		};
 	};
@@ -39,7 +39,7 @@ return Def.ActorFrame{
 			end
 		end;
 		Def.Quad{
-			InitCommand=function(self) self:diffuse(color("0,0,0,0.5")):fadeleft(.2):faderight(.2):FullScreen():diffusealpha(0) end;
+			InitCommand=function(self) self:diffuse(color("0,0,0,0.5")):fadeleft(0.2):faderight(0.2):FullScreen():diffusealpha(0) end;
 			ShowCommand=function(self) self:linear(0.2):diffusealpha(0.5) end;
 		};
 	};

@@ -19,32 +19,32 @@ local t = Def.ActorFrame{
 
 		LoadActor("width")..{
 			InitCommand=function(self) self:x(SCREEN_CENTER_X-190):y(SCREEN_TOP+23):halign(1) end;
-			OnCommand=function(self) self:sleep(1.5):linear(.1):zoomtowidth(SCREEN_WIDTH/2-200) end;
+			OnCommand=function(self) self:sleep(1.5):linear(0.1):zoomtowidth(SCREEN_WIDTH/2-200) end;
 		};
 		LoadActor("width")..{
 			InitCommand=function(self) self:x(SCREEN_CENTER_X+190):y(SCREEN_TOP+23):halign(0) end;
-			OnCommand=function(self) self:sleep(1.5):linear(.1):zoomtowidth(SCREEN_WIDTH/2-200) end;
+			OnCommand=function(self) self:sleep(1.5):linear(0.1):zoomtowidth(SCREEN_WIDTH/2-200) end;
 		};
 		LoadActor("left")..{
 			InitCommand=function(self) self:x(SCREEN_CENTER_X-193):y(SCREEN_TOP+23):halign(1) end;
-			OnCommand=function(self) self:sleep(1.5):linear(.1):x(SCREEN_LEFT+16) end;
+			OnCommand=function(self) self:sleep(1.5):linear(0.1):x(SCREEN_LEFT+16) end;
 		};
 		LoadActor("left")..{
 			InitCommand=function(self) self:x(SCREEN_CENTER_X+193):y(SCREEN_TOP+23):halign(1):zoomx(-1) end;
-			OnCommand=function(self) self:sleep(1.5):linear(.1):x(SCREEN_RIGHT-16) end;
+			OnCommand=function(self) self:sleep(1.5):linear(0.1):x(SCREEN_RIGHT-16) end;
 		};
 		LoadActor("base")..{ InitCommand=function(self) self:CenterX():y(SCREEN_TOP+24) end; };
 		LoadActor("_neons")..{
 			InitCommand=function(self) self:CenterX():y(SCREEN_TOP+24):blend(Blend.Add) end;
-			OnCommand=function(self) self:effectclock('beat'):diffuseramp():effectcolor1(color("#007892")):effectcolor2(color("#00EAFF")):effectperiod(0.5):effectoffset(0.05):diffusealpha(0):linear(.4):diffusealpha(1) end;
+			OnCommand=function(self) self:effectclock('beat'):diffuseramp():effectcolor1(color("#007892")):effectcolor2(color("#00EAFF")):effectperiod(0.5):effectoffset(0.05):diffusealpha(0):linear(0.4):diffusealpha(1) end;
 		};
 		LoadActor("_neons")..{
 			InitCommand=function(self) self:CenterX():y(SCREEN_TOP+24) end;
-			OnCommand=function(self) self:effectclock('beat'):diffuseramp():effectcolor1(color("#FFFFFF00")):effectcolor2(color("#00EAFF")):effectperiod(0.5):effectoffset(0.05):diffusealpha(0):linear(.4):diffusealpha(1) end;
+			OnCommand=function(self) self:effectclock('beat'):diffuseramp():effectcolor1(color("#FFFFFF00")):effectcolor2(color("#00EAFF")):effectperiod(0.5):effectoffset(0.05):diffusealpha(0):linear(0.4):diffusealpha(1) end;
 		};
 		LoadFont("_serpentine outline")..{
 			InitCommand=function(self) self:CenterX():y(SCREEN_TOP+23):maxwidth(540*0.6825):diffusebottomedge(color("#dedede")) end;
-			OnCommand=function(self) self:addy(3):zoom(.5):shadowlength(2):zoomy(0):sleep(2):decelerate(0.3):zoomy(.45):animate(0):playcommand("Update") end;
+			OnCommand=function(self) self:addy(3):zoom(0.5):shadowlength(2):zoomy(0):sleep(2):decelerate(0.3):zoomy(0.45):animate(0):playcommand("Update") end;
 			CurrentSongChangedMessageCommand=function(self) self:playcommand("Update") end;
 			UpdateCommand=function(self)
 				local text = ""

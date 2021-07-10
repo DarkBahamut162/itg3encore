@@ -9,11 +9,11 @@ return Def.ActorFrame{
 	};
 	LoadActor("lolhi")..{
 		InitCommand=function(self) self:Center():zoomx(SCREEN_WIDTH):zoomy(0) end;
-		OnCommand=function(self) self:linear(0.2):zoomy(.68) end;
+		OnCommand=function(self) self:linear(0.2):zoomy(0.68) end;
 	};
 	LoadFont("_z 36px shadowx")..{
 		Text="LOADING...";
-		InitCommand=function(self) self:x(SCREEN_CENTER_X+42):CenterY():cropright(1.3):faderight(0.1):zoom(.7) end;
+		InitCommand=function(self) self:x(SCREEN_CENTER_X+42):CenterY():cropright(1.3):faderight(0.1):zoom(0.7) end;
 		OnCommand=function(self) self:sleep(0.2):linear(0.5):cropright(-0.3) end;
 	};
 	LoadActor("_disk")..{

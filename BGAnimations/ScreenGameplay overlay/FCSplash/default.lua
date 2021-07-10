@@ -21,7 +21,7 @@ end;
 
 --Marvelous FullCombo
 t[#t+1] = LoadActor("bluebeam")..{
-	InitCommand=function(self) self:blend("BlendMode_Add"):x(GetPosition(pn)):y(SCREEN_CENTER_Y-SCREEN_HEIGHT/9+15):diffusealpha(0):zoom(.3):cropleft(.5):cropright(.5) end;
+	InitCommand=function(self) self:blend("BlendMode_Add"):x(GetPosition(pn)):y(SCREEN_CENTER_Y-SCREEN_HEIGHT/9+15):diffusealpha(0):zoom(0.3):cropleft(0.5):cropright(0.5) end;
 	OffCommand=function(self) self:queuecommand("CheckScore") end;
 	CheckScoreCommand=function(self)
 		local fct = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn);
@@ -30,8 +30,8 @@ t[#t+1] = LoadActor("bluebeam")..{
 			self:fadeleft(0.5)
 			self:faderight(0.5)
 			self:texcoordvelocity(0.5,0)
-			self:sleep(.2)
-			self:decelerate(.4)
+			self:sleep(0.2)
+			self:decelerate(0.4)
 			self:cropleft(0)
 			self:cropright(0)
 			self:zoom(1)
@@ -46,7 +46,7 @@ t[#t+1] = LoadActor("full combo text")..{
 	SetStatsCommand=function(self)
 		local fct = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn);
 		if fct:FullComboOfScore('TapNoteScore_W1') == true then
-			self:sleep(.4)
+			self:sleep(0.4)
 			self:diffusealpha(1)
 			self:diffuseshift()
 			self:effectcolor1(1,1,1,1)
@@ -64,10 +64,10 @@ t[#t+1] = LoadActor("full combo glow")..{
 		local fct = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn);
 		if fct:FullComboOfScore('TapNoteScore_W1') == true then
 			self:sleep(0.1)
-			self:linear(.3)
+			self:linear(0.3)
 			self:diffusealpha(1)
-			self:sleep(.5)
-			self:linear(.5)
+			self:sleep(0.5)
+			self:linear(0.5)
 			self:diffusealpha(0)
 		else
 			self:visible(false);
@@ -75,12 +75,12 @@ t[#t+1] = LoadActor("full combo glow")..{
 	end;	
 };
 t[#t+1] = LoadActor("_fan")..{
-	InitCommand=function(self) self:x(GetPosition(pn)):y(SCREEN_HEIGHT/2):zoomx(1.25):blend("BlendMode_Add"):cropleft(.5):cropright(.5):faderight(.5):fadeleft(.5):zoomtoheight(SCREEN_HEIGHT*1.5):diffusealpha(0) end;
+	InitCommand=function(self) self:x(GetPosition(pn)):y(SCREEN_HEIGHT/2):zoomx(1.25):blend("BlendMode_Add"):cropleft(0.5):cropright(0.5):faderight(0.5):fadeleft(0.5):zoomtoheight(SCREEN_HEIGHT*1.5):diffusealpha(0) end;
 	OffCommand=function(self) self:queuecommand("CheckScore") end;
 	CheckScoreCommand=function(self)
 		local fct = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn);
 		if fct:FullComboOfScore('TapNoteScore_W1') == true then
-			self:diffusealpha(.5)
+			self:diffusealpha(0.5)
 			self:linear(1/2)
 			self:faderight(0)
 			self:fadeleft(0)
@@ -96,7 +96,7 @@ t[#t+1] = LoadActor("_fan")..{
 	end;	
 };
 t[#t+1] = LoadActor("_fan")..{
-	InitCommand=function(self) self:x(GetPosition(pn)):y(SCREEN_HEIGHT/2):blend("BlendMode_Add"):fadetop(.1):fadebottom(.5):zoomtoheight(SCREEN_HEIGHT*2):diffusealpha(0) end;
+	InitCommand=function(self) self:x(GetPosition(pn)):y(SCREEN_HEIGHT/2):blend("BlendMode_Add"):fadetop(0.1):fadebottom(0.5):zoomtoheight(SCREEN_HEIGHT*2):diffusealpha(0) end;
 	OffCommand=function(self) self:queuecommand("CheckScore") end;
 	CheckScoreCommand=function(self)
 		local fct = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn);
@@ -112,13 +112,13 @@ t[#t+1] = LoadActor("_fan")..{
 	end;	
 };
 t[#t+1] = LoadActor("blueflare")..{
-	InitCommand=function(self) self:x(GetPosition(pn)):blend("BlendMode_Add"):y(SCREEN_CENTER_Y-SCREEN_HEIGHT/9+15):diffusealpha(0):zoom(.3) end;
+	InitCommand=function(self) self:x(GetPosition(pn)):blend("BlendMode_Add"):y(SCREEN_CENTER_Y-SCREEN_HEIGHT/9+15):diffusealpha(0):zoom(0.3) end;
 	OffCommand=function(self) self:queuecommand("CheckScore") end;
 	CheckScoreCommand=function(self)
 		local fct = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn);
 		if fct:FullComboOfScore('TapNoteScore_W1') == true then
-			self:sleep(.1)
-			self:accelerate(.4)
+			self:sleep(0.1)
+			self:accelerate(0.4)
 			self:diffusealpha(1)
 			self:zoom(5)
 			self:decelerate(3/2)
@@ -131,7 +131,7 @@ t[#t+1] = LoadActor("blueflare")..{
 
 --Perfect FullCombo
 t[#t+1] = LoadActor("orangebeam")..{
-	InitCommand=function(self) self:blend("BlendMode_Add"):x(GetPosition(pn)):y(SCREEN_CENTER_Y-SCREEN_HEIGHT/9+15):diffusealpha(0):zoom(.3):cropleft(.5):cropright(.5) end;
+	InitCommand=function(self) self:blend("BlendMode_Add"):x(GetPosition(pn)):y(SCREEN_CENTER_Y-SCREEN_HEIGHT/9+15):diffusealpha(0):zoom(0.3):cropleft(0.5):cropright(0.5) end;
 	OffCommand=function(self) self:queuecommand("CheckScore") end;
 	CheckScoreCommand=function(self)
 		local fct = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn);
@@ -140,8 +140,8 @@ t[#t+1] = LoadActor("orangebeam")..{
 			self:fadeleft(0.5)
 			self:faderight(0.5)
 			self:texcoordvelocity(0.5,0)
-			self:sleep(.2)
-			self:decelerate(.4)
+			self:sleep(0.2)
+			self:decelerate(0.4)
 			self:cropleft(0)
 			self:cropright(0)
 			self:zoom(1)
@@ -156,7 +156,7 @@ t[#t+1] = LoadActor("full combo text")..{
 	SetStatsCommand=function(self)
 		local fct = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn);
 		if fct:FullComboOfScore('TapNoteScore_W2') == true then
-			self:sleep(.4)
+			self:sleep(0.4)
 			self:diffusealpha(1)
 			self:diffuseshift()
 			self:effectcolor1(1,1,1,1)
@@ -174,10 +174,10 @@ t[#t+1] = LoadActor("full combo glow")..{
 		local fct = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn);
 		if fct:FullComboOfScore('TapNoteScore_W2') == true then
 			self:sleep(0.1)
-			self:linear(.3)
+			self:linear(0.3)
 			self:diffusealpha(1)
-			self:sleep(.5)
-			self:linear(.5)
+			self:sleep(0.5)
+			self:linear(0.5)
 			self:diffusealpha(0)
 		else
 			self:visible(false);
@@ -185,12 +185,12 @@ t[#t+1] = LoadActor("full combo glow")..{
 	end;	
 };
 t[#t+1] = LoadActor("_ex")..{
-	InitCommand=function(self) self:x(GetPosition(pn)):y(SCREEN_HEIGHT/2):zoomx(1.25):blend("BlendMode_Add"):cropleft(.5):cropright(.5):faderight(.5):fadeleft(.5):zoomtoheight(SCREEN_HEIGHT*1.5):diffusealpha(0) end;
+	InitCommand=function(self) self:x(GetPosition(pn)):y(SCREEN_HEIGHT/2):zoomx(1.25):blend("BlendMode_Add"):cropleft(0.5):cropright(0.5):faderight(0.5):fadeleft(0.5):zoomtoheight(SCREEN_HEIGHT*1.5):diffusealpha(0) end;
 	OffCommand=function(self) self:queuecommand("CheckScore") end;
 	CheckScoreCommand=function(self)
 		local fct = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn);
 		if fct:FullComboOfScore('TapNoteScore_W2') == true then
-			self:diffusealpha(.5)
+			self:diffusealpha(0.5)
 			self:linear(1/2)
 			self:faderight(0)
 			self:fadeleft(0)
@@ -206,7 +206,7 @@ t[#t+1] = LoadActor("_ex")..{
 	end;	
 };
 t[#t+1] = LoadActor("_ex")..{
-	InitCommand=function(self) self:x(GetPosition(pn)):y(SCREEN_HEIGHT/2):blend("BlendMode_Add"):fadetop(.1):fadebottom(.5):zoomtoheight(SCREEN_HEIGHT*2):diffusealpha(0) end;
+	InitCommand=function(self) self:x(GetPosition(pn)):y(SCREEN_HEIGHT/2):blend("BlendMode_Add"):fadetop(0.1):fadebottom(0.5):zoomtoheight(SCREEN_HEIGHT*2):diffusealpha(0) end;
 	OffCommand=function(self) self:queuecommand("CheckScore") end;
 	CheckScoreCommand=function(self)
 		local fct = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn);
@@ -222,13 +222,13 @@ t[#t+1] = LoadActor("_ex")..{
 	end;	
 };
 t[#t+1] = LoadActor("orangeflare")..{
-	InitCommand=function(self) self:x(GetPosition(pn)):blend("BlendMode_Add"):y(SCREEN_CENTER_Y-SCREEN_HEIGHT/9+15):diffusealpha(0):zoom(.3) end;
+	InitCommand=function(self) self:x(GetPosition(pn)):blend("BlendMode_Add"):y(SCREEN_CENTER_Y-SCREEN_HEIGHT/9+15):diffusealpha(0):zoom(0.3) end;
 	OffCommand=function(self) self:queuecommand("CheckScore") end;
 	CheckScoreCommand=function(self)
 		local fct = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn);
 		if fct:FullComboOfScore('TapNoteScore_W2') == true then
-			self:sleep(.1)
-			self:accelerate(.4)
+			self:sleep(0.1)
+			self:accelerate(0.4)
 			self:diffusealpha(1)
 			self:zoom(5)
 			self:decelerate(3/2)
@@ -241,7 +241,7 @@ t[#t+1] = LoadActor("orangeflare")..{
 
 --FullCombo
 t[#t+1] = LoadActor("greenbeam")..{
-	InitCommand=function(self) self:blend("BlendMode_Add"):x(GetPosition(pn)):y(SCREEN_CENTER_Y-SCREEN_HEIGHT/9+15):diffusealpha(0):zoom(.3):cropleft(.5):cropright(.5) end;
+	InitCommand=function(self) self:blend("BlendMode_Add"):x(GetPosition(pn)):y(SCREEN_CENTER_Y-SCREEN_HEIGHT/9+15):diffusealpha(0):zoom(0.3):cropleft(0.5):cropright(0.5) end;
 	OffCommand=function(self) self:queuecommand("CheckScore") end;
 	CheckScoreCommand=function(self)
 		local fct = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn);
@@ -250,8 +250,8 @@ t[#t+1] = LoadActor("greenbeam")..{
 			self:fadeleft(0.5)
 			self:faderight(0.5)
 			self:texcoordvelocity(0.5,0)
-			self:sleep(.2)
-			self:decelerate(.4)
+			self:sleep(0.2)
+			self:decelerate(0.4)
 			self:cropleft(0)
 			self:cropright(0)
 			self:zoom(1)
@@ -266,7 +266,7 @@ t[#t+1] = LoadActor("full combo text")..{
 	SetStatsCommand=function(self)
 		local fct = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn);
 		if fct:FullComboOfScore('TapNoteScore_W3') == true then
-			self:sleep(.4)
+			self:sleep(0.4)
 			self:diffusealpha(1)
 			self:diffuseshift()
 			self:effectcolor1(1,1,1,1)
@@ -284,10 +284,10 @@ t[#t+1] = LoadActor("full combo glow")..{
 		local fct = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn);
 		if fct:FullComboOfScore('TapNoteScore_W3') == true then
 			self:sleep(0.1)
-			self:linear(.3)
+			self:linear(0.3)
 			self:diffusealpha(1)
-			self:sleep(.5)
-			self:linear(.5)
+			self:sleep(0.5)
+			self:linear(0.5)
 			self:diffusealpha(0)
 		else
 			self:visible(false);
@@ -295,12 +295,12 @@ t[#t+1] = LoadActor("full combo glow")..{
 	end;	
 };
 t[#t+1] = LoadActor("_great")..{
-	InitCommand=function(self) self:x(GetPosition(pn)):y(SCREEN_HEIGHT/2):zoomx(1.25):blend("BlendMode_Add"):cropleft(.5):cropright(.5):faderight(.5):fadeleft(.5):zoomtoheight(SCREEN_HEIGHT*1.5):diffusealpha(0) end;
+	InitCommand=function(self) self:x(GetPosition(pn)):y(SCREEN_HEIGHT/2):zoomx(1.25):blend("BlendMode_Add"):cropleft(0.5):cropright(0.5):faderight(0.5):fadeleft(0.5):zoomtoheight(SCREEN_HEIGHT*1.5):diffusealpha(0) end;
 	OffCommand=function(self) self:queuecommand("CheckScore") end;
 	CheckScoreCommand=function(self)
 		local fct = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn);
 		if fct:FullComboOfScore('TapNoteScore_W3') == true then
-			self:diffusealpha(.5)
+			self:diffusealpha(0.5)
 			self:linear(1/2)
 			self:faderight(0)
 			self:fadeleft(0)
@@ -316,7 +316,7 @@ t[#t+1] = LoadActor("_great")..{
 	end;	
 };
 t[#t+1] = LoadActor("_great")..{
-	InitCommand=function(self) self:x(GetPosition(pn)):y(SCREEN_HEIGHT/2):blend("BlendMode_Add"):fadetop(.1):fadebottom(.5):zoomtoheight(SCREEN_HEIGHT*2):diffusealpha(0) end;
+	InitCommand=function(self) self:x(GetPosition(pn)):y(SCREEN_HEIGHT/2):blend("BlendMode_Add"):fadetop(0.1):fadebottom(0.5):zoomtoheight(SCREEN_HEIGHT*2):diffusealpha(0) end;
 	OffCommand=function(self) self:queuecommand("CheckScore") end;
 	CheckScoreCommand=function(self)
 		local fct = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn);
@@ -332,13 +332,13 @@ t[#t+1] = LoadActor("_great")..{
 	end;	
 };
 t[#t+1] = LoadActor("greenflare")..{
-	InitCommand=function(self) self:x(GetPosition(pn)):blend("BlendMode_Add"):y(SCREEN_CENTER_Y-SCREEN_HEIGHT/9+15):diffusealpha(0):zoom(.3) end;
+	InitCommand=function(self) self:x(GetPosition(pn)):blend("BlendMode_Add"):y(SCREEN_CENTER_Y-SCREEN_HEIGHT/9+15):diffusealpha(0):zoom(0.3) end;
 	OffCommand=function(self) self:queuecommand("CheckScore") end;
 	CheckScoreCommand=function(self)
 		local fct = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn);
 		if fct:FullComboOfScore('TapNoteScore_W3') == true then
-			self:sleep(.1)
-			self:accelerate(.4)
+			self:sleep(0.1)
+			self:accelerate(0.4)
 			self:diffusealpha(1)
 			self:zoom(5)
 			self:decelerate(3/2)

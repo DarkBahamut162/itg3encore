@@ -8,7 +8,7 @@ return Def.ActorFrame{
 			InitCommand=function(self) self:zoom(0.5):glow(color("1,1,1,0")):diffusealpha(0):linear(0.3):glow(color("1,1,1,1")):sleep(0.001):diffusealpha(1):linear(0.3):glow(color("1,1,1,0")) end;
 			MadeChoiceP1MessageCommand=function(self) self:playcommand("GoOff") end;
 			MadeChoiceP2MessageCommand=function(self) self:playcommand("GoOff") end;
-			GoOffCommand=function(self) self:sleep(.2):linear(0.3):diffusealpha(0) end;
+			GoOffCommand=function(self) self:sleep(0.2):linear(0.3):diffusealpha(0) end;
 		};
 	};
 
@@ -17,7 +17,7 @@ return Def.ActorFrame{
 		OnCommand=function(self) self:linear(0.5):diffusealpha(1.0) end;
 		MadeChoiceP1MessageCommand=function(self) self:playcommand("GoOff") end;
 		MadeChoiceP2MessageCommand=function(self) self:playcommand("GoOff") end;
-		GoOffCommand=function(self) self:sleep(.2):linear(0.3):diffusealpha(0) end;
+		GoOffCommand=function(self) self:sleep(0.2):linear(0.3):diffusealpha(0) end;
 	};
 	LoadActor(THEME:GetPathB("_shared","underlay arrows"))..{
 		InitCommand=function(self) self:x(184) end;

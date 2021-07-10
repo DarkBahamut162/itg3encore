@@ -83,7 +83,7 @@ return Def.ActorFrame{
 	};
 
 	LoadFont("_v profile")..{
-		InitCommand=function(self) self:x(SCREEN_RIGHT-113):y(SCREEN_BOTTOM-75):zoom(.7):maxwidth(300) end;
+		InitCommand=function(self) self:x(SCREEN_RIGHT-113):y(SCREEN_BOTTOM-75):zoom(0.7):maxwidth(300) end;
 		BeginCommand=function(self)
 			local song = GAMESTATE:GetCurrentSong()
 			local text
@@ -106,7 +106,7 @@ return Def.ActorFrame{
 			OnCommand=function(self) self:linear(1):cropright(-0.3):sleep(2):decelerate(0.5):zoom(0.7):y(SCREEN_TOP+40) end;
 		};
 		LoadActor("white instructions")..{
-			InitCommand=function(self) self:Center():cropleft(-0.3):cropright(1):faderight(.1):fadeleft(.1) end;
+			InitCommand=function(self) self:Center():cropleft(-0.3):cropright(1):faderight(0.1):fadeleft(0.1) end;
 			OnCommand=function(self) self:linear(1):cropleft(1):cropright(-0.3) end;
 		};
 	};

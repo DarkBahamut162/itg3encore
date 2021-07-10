@@ -63,7 +63,7 @@ return Def.ActorFrame{
 
 	LoadFont("_r bold shadow 30px")..{
 		Text="PRESS";
-		InitCommand=function(self) self:CenterX():y(SCREEN_BOTTOM-100):visible(false):zoomx(.8):zoomy(.7) end;
+		InitCommand=function(self) self:CenterX():y(SCREEN_BOTTOM-100):visible(false):zoomx(0.8):zoomy(0.7) end;
 		OnCommand=function(self) self:playcommand("Refresh") end;
 		CoinModeChangedMessageCommand=function(self) self:playcommand("Refresh") end;
 		RefreshCommand=function(self)
@@ -80,7 +80,7 @@ return Def.ActorFrame{
 		PressStartCommand=function(self) self:visible(true) end;
 	};
 	LoadActor(THEME:GetPathG("_common","base start button"))..{
-		InitCommand=function(self) self:CenterX():y(SCREEN_BOTTOM-75):zoom(.7) end;
+		InitCommand=function(self) self:CenterX():y(SCREEN_BOTTOM-75):zoom(0.7) end;
 		OnCommand=function(self) self:playcommand("Refresh") end;
 		CoinModeChangedMessageCommand=function(self) self:playcommand("Refresh") end;
 		RefreshCommand=function(self)
@@ -97,7 +97,7 @@ return Def.ActorFrame{
 		PressStartCommand=function(self) self:visible(true) end;
 	};
 	LoadActor(THEME:GetPathG("_common","start button"))..{
-		InitCommand=function(self) self:CenterX():y(SCREEN_BOTTOM-75):visible(false):diffuseshift():effectcolor1(color("#FFFFFF")):effectcolor2(color("#858585")):zoom(.7):effectclock("beat") end;
+		InitCommand=function(self) self:CenterX():y(SCREEN_BOTTOM-75):visible(false):diffuseshift():effectcolor1(color("#FFFFFF")):effectcolor2(color("#858585")):zoom(0.7):effectclock("beat") end;
 		OnCommand=function(self) self:playcommand("Refresh") end;
 		CoinModeChangedMessageCommand=function(self) self:playcommand("Refresh") end;
 		RefreshCommand=function(self)
@@ -114,7 +114,7 @@ return Def.ActorFrame{
 		PressStartCommand=function(self) self:visible(true) end;
 	};
 	LoadActor(THEME:GetPathG("_common","glow start button"))..{
-		InitCommand=function(self) self:CenterX():y(SCREEN_BOTTOM-75):zoom(.7):blend(Blend.Add):diffuseshift():effectcolor1(color("#6BFF75")):effectcolor2(color("#FFFFFF00")):effectclock("beat") end;
+		InitCommand=function(self) self:CenterX():y(SCREEN_BOTTOM-75):zoom(0.7):blend(Blend.Add):diffuseshift():effectcolor1(color("#6BFF75")):effectcolor2(color("#FFFFFF00")):effectclock("beat") end;
 		OnCommand=function(self) self:playcommand("Refresh") end;
 		CoinModeChangedMessageCommand=function(self) self:playcommand("Refresh") end;
 		RefreshCommand=function(self)

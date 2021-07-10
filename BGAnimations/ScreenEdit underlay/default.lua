@@ -9,7 +9,7 @@ return Def.ActorFrame{
 			end;
 		};
 		LoadActor(THEME:GetPathB("ScreenStageInformation","in/rear"))..{
-			InitCommand=function(self) self:diffusealpha(.98):FullScreen() end;
+			InitCommand=function(self) self:diffusealpha(0.98):FullScreen() end;
 		};
 		LoadActor(THEME:GetPathB("ScreenStageInformation","in/bottom/lines"))..{
 			InitCommand=function(self) self:FullScreen():diffusealpha(0) end;
@@ -32,7 +32,7 @@ return Def.ActorFrame{
 		InitCommand=function(self) self:x(SCREEN_LEFT+76):y(SCREEN_TOP+40):shadowlength(1):settext("EDITOR") end;
 	};
 	LoadActor("difficultyframe")..{
-		InitCommand=function(self) self:x(SCREEN_LEFT+76):y(SCREEN_CENTER_Y-20):pause():playcommand("Update"):zoom(.8):diffusealpha(0) end;
+		InitCommand=function(self) self:x(SCREEN_LEFT+76):y(SCREEN_CENTER_Y-20):pause():playcommand("Update"):zoom(0.8):diffusealpha(0) end;
 		OnCommand=function(self) self:linear(0.3):diffusealpha(1) end;
 		UpdateCommand=function(self)
 			local steps = GAMESTATE:GetCurrentSteps(GAMESTATE:GetMasterPlayerNumber())
@@ -42,7 +42,7 @@ return Def.ActorFrame{
 		CurrentStepsP1ChangedMessageCommand=function(self) self:playcommand("Update") end;
 	};
 	LoadFont("_r bold glow 30px")..{
-		InitCommand=function(self) self:x(SCREEN_LEFT+76):y(SCREEN_CENTER_Y-20):shadowlength(0):diffusealpha(0.8):zoom(.6):maxwidth(184):playcommand("Update") end;
+		InitCommand=function(self) self:x(SCREEN_LEFT+76):y(SCREEN_CENTER_Y-20):shadowlength(0):diffusealpha(0.8):zoom(0.6):maxwidth(184):playcommand("Update") end;
 		UpdateCommand=function(self)
 			local steps = GAMESTATE:GetCurrentSteps(GAMESTATE:GetMasterPlayerNumber())
 			self:settext( GetCustomDifficulty(steps:GetStepsType(),steps:GetDifficulty(),nil) );

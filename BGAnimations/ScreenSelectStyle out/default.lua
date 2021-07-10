@@ -20,17 +20,17 @@ return Def.ActorFrame{
 		BeginCommand=function(self)
 			self:Load(THEME:GetPathB("","lolhi"))
 		end;
-		OnCommand=function(self) self:linear(.5):zoomy(.68) end;
+		OnCommand=function(self) self:linear(0.5):zoomy(0.68) end;
 	};
 
 	LoadFont("_z 36px black")..{
 		Text="Loading Profiles...";
-		InitCommand=function(self) self:Center():zoom(.7):cropright(1.3):faderight(0.1):visible(false) end;
+		InitCommand=function(self) self:Center():zoom(0.7):cropright(1.3):faderight(0.1):visible(false) end;
 		OnCommand=function(self) self:sleep(0.25):linear(0.7):cropright(-0.3) end;
 	};
 	LoadFont("_z 36px shadowx")..{
 		Text="LOADING...";
-		InitCommand=function(self) self:Center():zoom(.7):cropright(1.3):faderight(0.1):visible(true) end;
+		InitCommand=function(self) self:Center():zoom(0.7):cropright(1.3):faderight(0.1):visible(true) end;
 		OnCommand=function(self) self:sleep(0.25):linear(0.7):cropright(-0.3) end;
 	};
 	-- disk (no card)

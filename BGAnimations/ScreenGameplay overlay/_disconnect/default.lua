@@ -26,41 +26,41 @@ local t = Def.ActorFrame{
 
 		LoadActor("width")..{
 			InitCommand=function(self) self:x(SCREEN_CENTER_X-190):y(SCREEN_TOP-2-2+24):halign(1):zoomtowidth(3) end;
-			OnCommand=function(self) self:sleep(1.5):linear(.1):zoomtowidth(SCREEN_WIDTH/2-200) end;
+			OnCommand=function(self) self:sleep(1.5):linear(0.1):zoomtowidth(SCREEN_WIDTH/2-200) end;
 		};
 		LoadActor("width")..{
 			InitCommand=function(self) self:x(SCREEN_CENTER_X+190):y(SCREEN_TOP-2-2+24):halign(0):zoomtowidth(3) end;
-			OnCommand=function(self) self:sleep(1.5):linear(.1):zoomtowidth(SCREEN_WIDTH/2-200) end;
+			OnCommand=function(self) self:sleep(1.5):linear(0.1):zoomtowidth(SCREEN_WIDTH/2-200) end;
 		};
 		LoadActor("left")..{
 			InitCommand=function(self) self:x(SCREEN_CENTER_X-193):y(SCREEN_TOP-2-2+24):halign(1) end;
-			OnCommand=function(self) self:sleep(1.5):linear(.1):x(SCREEN_LEFT+16) end;
+			OnCommand=function(self) self:sleep(1.5):linear(0.1):x(SCREEN_LEFT+16) end;
 		};
 		LoadActor("left")..{
 			InitCommand=function(self) self:x(SCREEN_CENTER_X+193):y(SCREEN_TOP-2-2+24):halign(1):zoomx(-1) end;
-			OnCommand=function(self) self:sleep(1.5):linear(.1):x(SCREEN_RIGHT-16) end;
+			OnCommand=function(self) self:sleep(1.5):linear(0.1):x(SCREEN_RIGHT-16) end;
 		};
 		LoadActor("base")..{ InitCommand=function(self) self:CenterX():y(SCREEN_TOP-2-2+24-1) end; };
 		LoadActor("bpmbasea")..{ InitCommand=function(self) self:CenterX():y(SCREEN_TOP-2-2+64-1):visible(GAMESTATE:GetPlayMode() ~= 'PlayMode_Rave') end; };
 		LoadActor("_neons")..{
 			InitCommand=function(self) self:CenterX():y(SCREEN_TOP-2-2+24):blend(Blend.Add) end;
-			OnCommand=function(self) self:effectclock('beat'):diffuseramp():effectcolor1(color("#007892")):effectcolor2(color("#00EAFF")):effectperiod(1):effectoffset(0.05):diffusealpha(0):linear(.4):diffusealpha(1) end;
+			OnCommand=function(self) self:effectclock('beat'):diffuseramp():effectcolor1(color("#007892")):effectcolor2(color("#00EAFF")):effectperiod(1):effectoffset(0.05):diffusealpha(0):linear(0.4):diffusealpha(1) end;
 		};
 		LoadActor("_neons")..{
 			InitCommand=function(self) self:CenterX():y(SCREEN_TOP-2-2+24) end;
-			OnCommand=function(self) self:effectclock('beat'):diffuseramp():effectcolor1(color("#FFFFFF00")):effectcolor2(color("#82f5ff")):effectperiod(1):effectoffset(0.05):diffusealpha(0):linear(.4):diffusealpha(1) end;
+			OnCommand=function(self) self:effectclock('beat'):diffuseramp():effectcolor1(color("#FFFFFF00")):effectcolor2(color("#82f5ff")):effectperiod(1):effectoffset(0.05):diffusealpha(0):linear(0.4):diffusealpha(1) end;
 		};
 		LoadActor("_neon2")..{
 			InitCommand=function(self) self:CenterX():y(SCREEN_TOP-2-2+43):blend(Blend.Add):visible(GAMESTATE:GetPlayMode() ~= 'PlayMode_Rave') end;
-			OnCommand=function(self) self:effectclock('beat'):diffuseramp():effectcolor1(color("#007892")):effectcolor2(color("#00EAFF")):effectperiod(1):effectoffset(0.05):diffusealpha(0):linear(.4):diffusealpha(1) end;
+			OnCommand=function(self) self:effectclock('beat'):diffuseramp():effectcolor1(color("#007892")):effectcolor2(color("#00EAFF")):effectperiod(1):effectoffset(0.05):diffusealpha(0):linear(0.4):diffusealpha(1) end;
 		};
 		LoadActor("_neon2")..{
 			InitCommand=function(self) self:CenterX():y(SCREEN_TOP-2-2+43):visible(GAMESTATE:GetPlayMode() ~= 'PlayMode_Rave') end;
-			OnCommand=function(self) self:effectclock('beat'):diffuseramp():effectcolor1(color("#FFFFFF00")):effectcolor2(color("#82f5ff")):effectperiod(1):effectoffset(0.05):diffusealpha(0):linear(.4):diffusealpha(1) end;
+			OnCommand=function(self) self:effectclock('beat'):diffuseramp():effectcolor1(color("#FFFFFF00")):effectcolor2(color("#82f5ff")):effectperiod(1):effectoffset(0.05):diffusealpha(0):linear(0.4):diffusealpha(1) end;
 		};
 		LoadFont("_r bold 30px")..{
 			InitCommand=function(self) self:CenterX():y(SCREEN_TOP-2-2+23):maxwidth(540):diffusebottomedge(color("#dedede")) end;
-			OnCommand=function(self) self:addy(3):zoom(.5):shadowlength(2):zoomy(0):sleep(2):decelerate(0.3):zoomy(.45):animate(0):playcommand("Update") end;
+			OnCommand=function(self) self:addy(3):zoom(0.5):shadowlength(2):zoomy(0):sleep(2):decelerate(0.3):zoomy(0.45):animate(0):playcommand("Update") end;
 			CurrentSongChangedMessageCommand=function(self) self:playcommand("Update") end;
 			UpdateCommand=function(self)
 				local text = ""
@@ -112,7 +112,7 @@ local t = Def.ActorFrame{
 			};
 			LoadActor("difficulty glow")..{
 				InitCommand=function(self) self:blend(Blend.Add):diffusealpha(0):draworder(110) end;
-				OnCommand=function(self) self:sleep(2.4):decelerate(.5):diffusealpha(1):sleep(.2):decelerate(.8):diffusealpha(0):sleep(0) end;
+				OnCommand=function(self) self:sleep(2.4):decelerate(0.5):diffusealpha(1):sleep(0.2):decelerate(0.8):diffusealpha(0):sleep(0) end;
 				OffCommand=function(self) self:stoptweening():decelerate(0.3):diffusealpha(0) end;
 			};
 		};
@@ -141,7 +141,7 @@ local t = Def.ActorFrame{
 			};
 			LoadActor("difficulty glow")..{
 				InitCommand=function(self) self:zoomx(-1):blend(Blend.Add):diffusealpha(0):draworder(110) end;
-				OnCommand=function(self) self:sleep(2.4):decelerate(.5):diffusealpha(1):sleep(.2):decelerate(.8):diffusealpha(0):sleep(0) end;
+				OnCommand=function(self) self:sleep(2.4):decelerate(0.5):diffusealpha(1):sleep(0.2):decelerate(0.8):diffusealpha(0):sleep(0) end;
 				OffCommand=function(self) self:stoptweening():decelerate(0.3):diffusealpha(0) end;
 			};
 		};

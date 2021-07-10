@@ -8,7 +8,7 @@ return Def.ActorFrame{
 			out = out .." ".. THEME:GetString("StepsType",ToEnumShortString(stepsType))
 			self:settext(out)
 		end;
-		OnCommand=function(self) self:linear(.5):diffusealpha(1) end;
-		OffCommand=function(self) self:sleep(.5):linear(.5):diffusealpha(0) end;
+		OnCommand=function(self) self:linear(0.5):diffusealpha(1) end;
+		OffCommand=function(self) self:sleep(0.5):linear(0.5):diffusealpha(0) end;
 	};
 };

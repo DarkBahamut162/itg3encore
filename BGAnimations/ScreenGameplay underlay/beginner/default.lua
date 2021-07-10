@@ -12,15 +12,15 @@ return Def.ActorFrame{
 				};
 				LoadActor("light_yellow")..{
 					InitCommand=function(self) self:y(-32):diffusealpha(0):rotationz(45):blend(Blend.Add) end;
-					NoteWillCrossIn400MsMessageCommand=function(self) self:finishtweening():diffusealpha(1):zoom(1.1):linear(0.2):zoom(.8):diffusealpha(0) end;
+					NoteWillCrossIn400MsMessageCommand=function(self) self:finishtweening():diffusealpha(1):zoom(1.1):linear(0.2):zoom(0.8):diffusealpha(0) end;
 				};
 				LoadActor("light_yellow")..{
 					InitCommand=function(self) self:y(31):diffusealpha(0):rotationz(90):blend(Blend.Add) end;
-					NoteWillCrossIn800MsMessageCommand=function(self) self:finishtweening():diffusealpha(1):zoom(1.1):linear(0.2):zoom(.8):diffusealpha(0) end;
+					NoteWillCrossIn800MsMessageCommand=function(self) self:finishtweening():diffusealpha(1):zoom(1.1):linear(0.2):zoom(0.8):diffusealpha(0) end;
 				};
 				LoadActor("light_red")..{
 					InitCommand=function(self) self:y(95):diffusealpha(0):rotationz(135):blend(Blend.Add) end;
-					NoteWillCrossIn1200MsMessageCommand=function(self) self:finishtweening():diffusealpha(1):zoom(1.1):linear(0.2):zoom(.8):diffusealpha(0) end;
+					NoteWillCrossIn1200MsMessageCommand=function(self) self:finishtweening():diffusealpha(1):zoom(1.1):linear(0.2):zoom(0.8):diffusealpha(0) end;
 				};
 			};
 

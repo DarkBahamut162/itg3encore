@@ -36,13 +36,13 @@ return Def.ActorFrame{
 	};
 	LoadActor(THEME:GetPathG("","blueflare.png"))..{
 		InitCommand=function(self) self:x(60):y(-116):blend(Blend.Add):diffusealpha(0) end;
-		GainFocusCommand=function(self) self:finishtweening():zoom(0):diffusealpha(0):zoomx(7):zoomy(4):diffusealpha(1):linear(.2):zoomy(0):diffusealpha(0) end;
+		GainFocusCommand=function(self) self:finishtweening():zoom(0):diffusealpha(0):zoomx(7):zoomy(4):diffusealpha(1):linear(0.2):zoomy(0):diffusealpha(0) end;
 		LoseFocusCommand=function(self) self:diffusealpha(0) end;
 		OffCommand=function(self) self:diffusealpha(0) end;
 	};
 	LoadActor(THEME:GetPathG("","blueflare.png"))..{
 		InitCommand=function(self) self:x(60):y(-116):blend(Blend.Add):diffusealpha(0) end;
-		GainFocusCommand=function(self) self:finishtweening():zoom(0):diffusealpha(0):zoomx(7):zoomy(4):diffusealpha(1):linear(.4):zoomy(0):diffusealpha(0) end;
+		GainFocusCommand=function(self) self:finishtweening():zoom(0):diffusealpha(0):zoomx(7):zoomy(4):diffusealpha(1):linear(0.4):zoomy(0):diffusealpha(0) end;
 		LoseFocusCommand=function(self) self:diffusealpha(0) end;
 		OffCommand=function(self) self:diffusealpha(0) end;
 	};

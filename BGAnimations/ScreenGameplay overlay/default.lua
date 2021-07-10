@@ -9,7 +9,7 @@ local t = Def.ActorFrame{
 		OffCommand=function(self) self:accelerate(0.8):addy(-100) end;
 
 		LoadFont("_v 26px bold black")..{
-			InitCommand=function(self) self:x(-254):zoom(.55):shadowlength(0):maxwidth(160) end;
+			InitCommand=function(self) self:x(-254):zoom(0.55):shadowlength(0):maxwidth(160) end;
 			BeginCommand=function(self)
 				if GAMESTATE:IsHumanPlayer(PLAYER_1) then
 					self:settext(GAMESTATE:GetPlayerDisplayName(PLAYER_1));
@@ -17,7 +17,7 @@ local t = Def.ActorFrame{
 			end;
 		};
 		LoadFont("_v 26px bold black")..{
-			InitCommand=function(self) self:x(254):zoom(.55):shadowlength(0):maxwidth(160) end;
+			InitCommand=function(self) self:x(254):zoom(0.55):shadowlength(0):maxwidth(160) end;
 			BeginCommand=function(self)
 				if GAMESTATE:IsHumanPlayer(PLAYER_2) then
 					self:settext(GAMESTATE:GetPlayerDisplayName(PLAYER_2));
@@ -36,8 +36,8 @@ local t = Def.ActorFrame{
 		InitCommand=function(self) self:visible(not GAMESTATE:IsDemonstration() and not GAMESTATE:IsCourseMode()) end;
 
 		LoadActor(THEME:GetPathB("ScreenStageInformation","in/bottom/bar"))..{
-			InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+156):zoomtowidth(SCREEN_WIDTH):faderight(.8):fadeleft(.8) end;
-			OnCommand=function(self) self:sleep(2.25):cropright(0):linear(.6):cropleft(1) end;
+			InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+156):zoomtowidth(SCREEN_WIDTH):faderight(0.8):fadeleft(0.8) end;
+			OnCommand=function(self) self:sleep(2.25):cropright(0):linear(0.6):cropleft(1) end;
 		};
 		Def.ActorFrame{
 			Name="InfoP1";
@@ -55,7 +55,7 @@ local t = Def.ActorFrame{
 			-- step artist p1
 			LoadFont("_r bold 30px")..{
 				Text="Step Artist:";
-				InitCommand=function(self) self:x(SCREEN_LEFT+5):y(SCREEN_CENTER_Y+172):zoom(.6):halign(0):shadowlength(2) end;
+				InitCommand=function(self) self:x(SCREEN_LEFT+5):y(SCREEN_CENTER_Y+172):zoom(0.6):halign(0):shadowlength(2) end;
 				BeginCommand=function(self)
 					local pm = GAMESTATE:GetPlayMode()
 					local show = (pm == 'PlayMode_Regular' or pm == 'PlayMode_Rave')
@@ -66,7 +66,7 @@ local t = Def.ActorFrame{
 			-- step desc p1
 			LoadFont("_r bold 30px")..{
 				Name="AuthorText";
-				InitCommand=function(self) self:x(SCREEN_LEFT+100):y(SCREEN_CENTER_Y+172):shadowlength(2):halign(0):zoom(.6) end;
+				InitCommand=function(self) self:x(SCREEN_LEFT+100):y(SCREEN_CENTER_Y+172):shadowlength(2):halign(0):zoom(0.6) end;
 				BeginCommand=function(self)
 					local song = GAMESTATE:GetCurrentSong()
 					local text
@@ -87,7 +87,7 @@ local t = Def.ActorFrame{
 			-- player name p1
 			LoadFont("_r bold 30px")..{
 			Name="PlayerName";
-			InitCommand=function(self) self:x(SCREEN_LEFT+44):y(SCREEN_CENTER_Y+142):shadowlength(2):halign(0):zoom(.8) end;
+			InitCommand=function(self) self:x(SCREEN_LEFT+44):y(SCREEN_CENTER_Y+142):shadowlength(2):halign(0):zoom(0.8) end;
 				BeginCommand=function(self)
 					self:settext( PROFILEMAN:GetPlayerName(PLAYER_1) )
 				end;
@@ -110,7 +110,7 @@ local t = Def.ActorFrame{
 			-- step artist p2
 			LoadFont("_r bold 30px")..{
 				Text=":Step Artist";
-				InitCommand=function(self) self:x(SCREEN_RIGHT-5):y(SCREEN_CENTER_Y+172):zoom(.6):halign(1):shadowlength(2) end;
+				InitCommand=function(self) self:x(SCREEN_RIGHT-5):y(SCREEN_CENTER_Y+172):zoom(0.6):halign(1):shadowlength(2) end;
 				BeginCommand=function(self)
 					local pm = GAMESTATE:GetPlayMode()
 					local show = (pm == 'PlayMode_Regular' or pm == 'PlayMode_Rave')
@@ -121,7 +121,7 @@ local t = Def.ActorFrame{
 			-- step desc p2
 			LoadFont("_r bold 30px")..{
 				Name="AuthorText";
-				InitCommand=function(self) self:x(SCREEN_RIGHT-100):y(SCREEN_CENTER_Y+172):shadowlength(2):halign(1):zoom(.6) end;
+				InitCommand=function(self) self:x(SCREEN_RIGHT-100):y(SCREEN_CENTER_Y+172):shadowlength(2):halign(1):zoom(0.6) end;
 				BeginCommand=function(self)
 					local song = GAMESTATE:GetCurrentSong()
 					local text
@@ -142,7 +142,7 @@ local t = Def.ActorFrame{
 			-- player name p2
 			LoadFont("_r bold 30px")..{
 				Name="PlayerName";
-				InitCommand=function(self) self:x(SCREEN_RIGHT-44):y(SCREEN_CENTER_Y+142):shadowlength(2):halign(1):zoom(.8) end;
+				InitCommand=function(self) self:x(SCREEN_RIGHT-44):y(SCREEN_CENTER_Y+142):shadowlength(2):halign(1):zoom(0.8) end;
 				BeginCommand=function(self)
 					self:settext( PROFILEMAN:GetPlayerName(PLAYER_2) )
 				end;
@@ -152,7 +152,7 @@ local t = Def.ActorFrame{
 	};
 
 	LoadFont("_r bold 30px")..{
-		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+147):maxwidth(SCREEN_WIDTH/8*7):shadowlength(2):horizalign(center):zoom(.5):diffusealpha(1) end;
+		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+147):maxwidth(SCREEN_WIDTH/8*7):shadowlength(2):horizalign(center):zoom(0.5):diffusealpha(1) end;
 		SetCommand=function(self)
 			local song = GAMESTATE:GetCurrentSong()
 			local text
@@ -166,7 +166,7 @@ local t = Def.ActorFrame{
 		OnCommand=function(self) self:playcommand("Set"):sleep(1.5):linear(1):diffusealpha(0) end;
 	};
 	LoadFont("_r bold 30px")..{
-		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+167):maxwidth(SCREEN_WIDTH/8*6.8):shadowlength(2):horizalign(center):zoom(.4):diffusealpha(1) end;
+		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+167):maxwidth(SCREEN_WIDTH/8*6.8):shadowlength(2):horizalign(center):zoom(0.4):diffusealpha(1) end;
 		SetCommand=function(self)
 			local song = GAMESTATE:GetCurrentSong()
 			local text
@@ -186,11 +186,11 @@ local t = Def.ActorFrame{
 		BeginCommand=function(self) self:visible(GAMESTATE:IsDemonstration() and SCREENMAN:GetTopScreen():GetName() ~= 'ScreenJukebox') end;
 		LoadActor(THEME:GetPathB("_metallic","streak"))..{
 			InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+43):zoomtowidth(SCREEN_WIDTH) end;
-			OnCommand=function(self) self:diffusealpha(.9):fadeleft(1):faderight(1) end;
+			OnCommand=function(self) self:diffusealpha(0.9):fadeleft(1):faderight(1) end;
 		};
 		LoadFont("_z 36px black")..{
 			Text="DEMO";
-			InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+43):zoom(.7) end;
+			InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+43):zoom(0.7) end;
 			OnCommand=function(self) self:pulse():effectmagnitude(1.0,0.95,0):effectclock('beat'):effectperiod(1) end;
 		};
 		LoadActor("demonstration gradient")..{

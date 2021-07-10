@@ -18,7 +18,7 @@ return Def.ActorFrame{
 			OnCommand=function(self) self:sleep(11):linear(0.5):fadeleft(0.3):faderight(0.3):x(50):linear(4):addx(-100):accelerate(0.5):addx(-SCREEN_WIDTH*2) end;
 		};
 		LoadActor("songs")..{
-			InitCommand=function(self) self:x(-100):zoom(.8):diffusealpha(0) end;
+			InitCommand=function(self) self:x(-100):zoom(0.8):diffusealpha(0) end;
 			OnCommand=function(self) self:sleep(11.5):linear(0.3):diffusealpha(1):sleep(4):linear(0.3):diffusealpha(0) end;
 		};
 	};

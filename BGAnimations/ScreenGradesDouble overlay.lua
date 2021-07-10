@@ -28,7 +28,7 @@ for i=diffs['Difficulty_Easy'],diffs['Difficulty_Challenge'] do
 	};
 	for s=tiers['Grade_Tier01'],tiers['Grade_Tier11'] do
 		local score = LoadFont("_futurist metalic")..{
-			InitCommand=function(self) self:x(scale(s,1,10,SCREEN_LEFT+160,SCREEN_RIGHT-50)):zoom(.7) end;
+			InitCommand=function(self) self:x(scale(s,1,10,SCREEN_LEFT+160,SCREEN_RIGHT-50)):zoom(0.7) end;
 			BeginCommand=function(self)
 				local tier = string.format('Grade_Tier%02i',s)
 				self:settext(prof:GetTotalStepsWithTopGrade('StepsType_Dance_Double',Difficulty[i],tier))
@@ -45,7 +45,7 @@ for i=diffs['Difficulty_Medium'],diffs['Difficulty_Hard'] do
 	};
 	for s=tiers['Grade_Tier01'],tiers['Grade_Tier11'] do
 		local score = LoadFont("_futurist metalic")..{
-			InitCommand=function(self) self:x(scale(s,1,10,SCREEN_LEFT+160,SCREEN_RIGHT-50)):zoom(.7) end;
+			InitCommand=function(self) self:x(scale(s,1,10,SCREEN_LEFT+160,SCREEN_RIGHT-50)):zoom(0.7) end;
 			BeginCommand=function(self)
 				local tier = string.format('Grade_Tier%02i',s)
 				self:settext(prof:GetTotalTrailsWithTopGrade('StepsType_Dance_Double',Difficulty[i],tier))

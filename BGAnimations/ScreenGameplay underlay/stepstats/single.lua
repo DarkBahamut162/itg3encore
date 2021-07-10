@@ -111,7 +111,7 @@ return Def.ActorFrame{
 			};
 			LoadFont("_v 26px bold black")..{
 				Text="Greats, Decents\nWay-Offs";
-				InitCommand=function(self) self:rotationz(-90):zoom(.8):addx(73*1):addy(-20):shadowlength(0):queuecommand("FadeOn") end;
+				InitCommand=function(self) self:rotationz(-90):zoom(0.8):addx(73*1):addy(-20):shadowlength(0):queuecommand("FadeOn") end;
 				FadeOnCommand=function(self) self:sleep(2.5):linear(1):diffusealpha(0) end;
 			};
 		};

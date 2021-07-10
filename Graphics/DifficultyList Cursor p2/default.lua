@@ -6,7 +6,7 @@ local t = Def.ActorFrame{
 	};
 	LoadActor("p2a")..{
 		InitCommand=function(self) self:x(158):diffusealpha(0) end;
-		OnCommand=function(self) self:linear(.4):diffusealpha(1):bounce():effectmagnitude(3,0,0):effectperiod(1.0):effectoffset(0.2):effectclock("beat") end;
+		OnCommand=function(self) self:linear(0.4):diffusealpha(1):bounce():effectmagnitude(3,0,0):effectperiod(1.0):effectoffset(0.2):effectclock("beat") end;
 	};
 };
 
