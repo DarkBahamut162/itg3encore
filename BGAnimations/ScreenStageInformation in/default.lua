@@ -174,7 +174,7 @@ local t = Def.ActorFrame{
 		Def.ActorFrame{
 			Name="Reflect";
 			InitCommand=function(self) self:y(SCREEN_CENTER_Y+86) end;
-			LoadActor(THEME:GetPathG("_gameplay","stage "..curStage))..{
+			LoadActor(THEME:GetPathG("_gameplay","course song 1"))..{
 				InitCommand=function(self) self:horizalign(center):rotationz(180):zoomx(-1):diffusealpha(0.6):fadetop(2):cropright(1.3) end;
 				OnCommand=function(self) self:linear(1.225):cropright(-0.3) end;
 			};
