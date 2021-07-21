@@ -34,14 +34,8 @@ if percent >= 0.8 then
 	elseif percent == 1 then
 		award = "100PercentW3";
 	end
-elseif W3FC then
-	if W3 > 1 and W3 < 10 then
-		award = "SingleDigitW3";
-	elseif W3 == 1 then
-		award = "OneW3";
-	elseif W3 == 0 then
-		award = "FullComboW3";
-	end 
+elseif W1FC then
+	award = "FullComboW1";
 elseif W2FC then
 	if W2 > 1 and W2 < 10 then
 		award = "SingleDigitW2";
@@ -50,8 +44,14 @@ elseif W2FC then
 	elseif W2 == 0 then
 		award = "FullComboW2";
 	end 
-elseif W1FC then
-	award = "FullComboW1";
+elseif W3FC then
+	if W3 > 1 and W3 < 10 then
+		award = "SingleDigitW3";
+	elseif W3 == 1 then
+		award = "OneW3";
+	elseif W3 == 0 then
+		award = "FullComboW3";
+	end 
 end
 
 local t = Def.ActorFrame{};
@@ -63,7 +63,7 @@ if award ~= nil and not failed then
 	};
 	t[#t+1] = LoadFont("_eurostile normal")..{
 		Name="Text";
-		InitCommand=function(self) self:halign(1):shadowlength(2):maxwidth(250):settext(THEME:GetString( "StageAward", award )) end;
+		InitCommand=function(self) self:halign(1):shadowlength(2):maxwidth(210):settext(THEME:GetString( "StageAward", award )) end;
 	};
 end
 
