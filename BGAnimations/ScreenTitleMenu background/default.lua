@@ -261,10 +261,6 @@ local t = Def.ActorFrame{
 	LoadActor(THEME:GetPathS("","_logo"))..{
 		OnCommand=function(self) self:play() end;
 	};
-	LoadActor(THEME:GetPathS("_Menu","music"))..{
-		OnCommand=function(self) self:play() end;
-		OffCommand=function(self) self:stop() end;
-	};
 
 	LoadFont("_v 26px bold black")..{
 		InitCommand=function(self) self:CenterX():y(SCREEN_BOTTOM-33+100):diffusealpha(0):horizalign(center):shadowlength(0):zoom(0.5) end;

@@ -13,7 +13,7 @@ t[#t+1] = LoadActor("updatecoin") .. {
 		OnCommand=function(self) self:zoom(0):diffusealpha(0):rotationz(20):linear(0.5):zoom(18):diffusealpha(1):rotationz(-70) end;
 	};
 if GAMESTATE:GetCoinMode() ~= 'CoinMode_Pay' then
-t[#t+1] = LoadActor(THEME:GetPathS("Common","coin")) .. {
+	t[#t+1] = LoadActor(THEME:GetPathS("Common","coin")) .. {
 		StartTransitioningCommand=function(self) self:play() end;
 	};
 end;
