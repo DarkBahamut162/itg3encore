@@ -1,6 +1,6 @@
 # In The Groove 3 Encore
 
-The following project has been inofficially taken over by me (DarkBahamut162).
+The following project has been in-officially taken over by me (DarkBahamut162).
 
 It's sources have being displayed down below.
 
@@ -37,7 +37,6 @@ I could have actually forked it from the SM5's github but I didn't. My reasoning
 What has been fixed so far:
 
 * All **cmd()** transformed to **function(self)**
-* Rotate **Judgements** & **Holds** during Gameplay
 * Removed **D-Pad** Modifier since it breaks other Modifiers (like SM5's new SpeedMod)
 * Better and sorted **ScreenPlayerOptions**
 * Actually fixed **Course Mode** (Battle, Marathon & Survival Mode)
@@ -50,6 +49,7 @@ What has been fixed so far:
 
 
 The following has been re-introduced from OpenITG's ITG3Encore Theme:
+* Added back rotation to **Judgements** & **Holds** during GamePlay
 * **BPM Display** *(Disabled in Battle Mode)*
 * **Full Combo Splash Animation**
 * **CustomMods** and **ScreenFilter**
@@ -58,6 +58,6 @@ The following has been re-introduced from OpenITG's ITG3Encore Theme:
 * Re-Added stuff in **Course Mode**
   * **Song Time** & **HAS MODS**
   * **RemainingTime** & **DeltaSeconds**
-  * Forced implementation of **Noteskin** via ApplyGameCommand
+  * Forced implementation of **NoteSkin** via ApplyGameCommand
 
 Stuff still needs to get fixed, even if the fixed and re-introduced list are quite long.
