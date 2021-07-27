@@ -32,13 +32,17 @@ function SongMods()
 	end
 
 	-- next shared
-	options = options .. "12,13,14,7,15,19,"
+	options = options .. "12,13,14,7,M,A,15,19,25,"
 
 	-- differences 2 (should be "27,24," but timingscale is not in sm5)
 	if pm == 'PlayMode_Regular' then
-		options = options .. "25,20,24,"
+		options = options .. "20,24,"
 	elseif pm == 'PlayMode_Nonstop' then
 		options = options .. "21,24,"
+	end
+
+	if pm == 'PlayMode_Rave' or pm == 'PlayMode_Oni' then
+		options = "3,21,"
 	end
 
 	-- ends on 16:
@@ -184,7 +188,7 @@ function OptionOrientation()
 			list[2] = getenv("RotationLeft"..pX)
 			list[3] = getenv("RotationRight"..pX)
 			list[4] = getenv("RotationUpsideDown"..pX)
-			--if GAMESTATE:GetNumPlayersEnabled() == 1 then list[5] = getenv("RotationSolo"..pX) end
+			if GAMESTATE:GetNumPlayersEnabled() == 1 then list[5] = getenv("RotationSolo"..pX) end
 		end;
 		SaveSelections = function(self, list, pn)
 			local pX = pname(pn);
@@ -192,7 +196,7 @@ function OptionOrientation()
 			setenv("RotationLeft"..pX,list[2])
 			setenv("RotationRight"..pX,list[3])
 			setenv("RotationUpsideDown"..pX,list[4])
-			--if GAMESTATE:GetNumPlayersEnabled() == 1 then setenv("RotationSolo"..pX,list[5]) end
+			if GAMESTATE:GetNumPlayersEnabled() == 1 then setenv("RotationSolo"..pX,list[5]) end
 		end;
 	};
 	setmetatable(t, t)
@@ -299,7 +303,7 @@ function DisplayCustomModifiersText(pn)	--gives me text of all custom modifiers 
 	if getenv("RotationLeft"..pName) then if t == "" then t = "Rotated Left" else t = t .. ", Rotated Left" end end
 	if getenv("RotationRight"..pName) then if t == "" then t = "Rotated Right" else t = t .. ", Rotated Right" end end
 	if getenv("RotationUpsideDown"..pName) then if t == "" then t = "Rotated Downward" else t = t .. ", Rotated Downward" end end
-	--if getenv("RotationSolo"..pName) then if t == "" then t = "Centered" else t = t .. ", Centered" end end
+	if getenv("RotationSolo"..pName) then if t == "" then t = "Centered" else t = t .. ", Centered" end end
 	
 	if getenv("EffectWag"..pName) then if t == "" then t = "Wag" else t = t .. ", Wag" end 
 	elseif getenv("EffectPulse"..pName) then if t == "" then t = "Pulse" else t = t .. ", Pulse" end 

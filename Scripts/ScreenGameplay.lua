@@ -84,6 +84,17 @@ function songfail(bVertex)
 	return not bVertex
 end
 
+-- AllowOptionsMenu()
+-- [en] returns if you are able to select options
+-- on ScreenSelectMusic.
+function AllowOptionsMenu()
+	if GAMESTATE:IsAnExtraStage() then
+		return false
+	else
+		return true
+	end
+end
+
 function PlayerFullComboed(pn)
 	if GAMESTATE:IsPlayerEnabled(pn) then
 		return STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):FullCombo();

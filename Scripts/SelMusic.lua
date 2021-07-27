@@ -65,9 +65,9 @@ function GetScreenSelectMusicHelpText()
 		end
 	end
 
-	--if GAMESTATE:GetEnv("Workout") and IsHomeMode() then
---		ret = ret .. "::" .. THEME:GetString( "ScreenSelectMusic", "WorkoutHelpTextAppend" )
---	end
+	if GAMESTATE:GetEnv("Workout") and IsHomeMode() then
+		ret = ret .. "::" .. THEME:GetString( "ScreenSelectMusic", "WorkoutHelpTextAppend" )
+	end
 
 	return ret
 end
