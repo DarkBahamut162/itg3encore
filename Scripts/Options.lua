@@ -32,7 +32,7 @@ function SongMods()
 	end
 
 	-- next shared
-	options = options .. "12,13,14,7,M,A,15,19,25,"
+	options = options .. "12,13,14,7,M,A,15,19,28,25,"
 
 	-- differences 2 (should be "27,24," but timingscale is not in sm5)
 	if pm == 'PlayMode_Regular' then
@@ -46,7 +46,7 @@ function SongMods()
 	end
 
 	if pm == 'PlayMode_Rave' or pm == 'PlayMode_Oni' then
-		options = "3,21,"
+		options = "3,28,21,"
 	end
 
 	-- ends on 16:
@@ -55,6 +55,13 @@ function SongMods()
 end
 
 function InitOptions()
+	-- underField
+	setenv("UnderComboP1",false)
+	setenv("UnderComboP2",false)
+	setenv("UnderTapJudgmentsP1",false)
+	setenv("UnderTapJudgmentsP2",false)
+	setenv("UnderHoldJudgmentsP1",false)
+	setenv("UnderHoldJudgmentsP2",false)
 	-- tournament
 	setenv("HideScoreP1",false)
 	setenv("HideScoreP2",false)
@@ -98,6 +105,36 @@ function InitOptions()
 end
 
 --[[ option rows ]]
+
+setenv("UnderComboP1",false)
+setenv("UnderTapJudgmentsP1",false)
+setenv("UnderHoldJudgmentsP1",false)
+
+-- underField options
+function OptionUnderFieldOptions()
+	local t = {
+		Name="UnderFieldOptions",
+		LayoutType = "ShowAllInRow",
+		SelectType = "SelectMultiple",
+		OneChoiceForAllPlayers = true,
+		ExportOnChange = false,
+		Choices = { "Combo", "Tap Judgments", "Hold Judgments" },
+		LoadSelections = function(self, list, pn)
+			local pX = pname(pn);
+			list[1] = getenv("UnderCombo"..pX)
+			list[2] = getenv("UnderTapJudgments"..pX)
+			list[3] = getenv("UnderHoldJudgments"..pX)
+		end,
+		SaveSelections = function(self, list, pn)
+			local pX = pname(pn);
+			setenv("UnderCombo"..pX,list[1])
+			setenv("UnderTapJudgments"..pX,list[2])
+			setenv("UnderHoldJudgments"..pX,list[3])
+		end,
+	}
+	setmetatable(t, t)
+	return t
+end
 
 -- tournament options
 function OptionTournamentOptions()
