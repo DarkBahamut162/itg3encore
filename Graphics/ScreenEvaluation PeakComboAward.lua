@@ -28,7 +28,7 @@ if combo_ > 0 then
 	};
 	t[#t+1] = LoadFont("_eurostile normal")..{
 		Name="Combo";
-		InitCommand=function(self) self:halign(0):shadowlength(2):maxwidth(210):settext(THEME:GetString( "PeakComboAward", combo_ ) ) end;
+		InitCommand=function(self) self:halign(0):shadowlength(2):maxwidth(220):settext(THEME:GetString( "PeakComboAward", combo_ ) ) end;
 	};
 end
 

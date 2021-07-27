@@ -63,7 +63,7 @@ if award ~= nil and not failed then
 	};
 	t[#t+1] = LoadFont("_eurostile normal")..{
 		Name="Text";
-		InitCommand=function(self) self:halign(1):shadowlength(2):maxwidth(210):settext(THEME:GetString( "StageAward", award )) end;
+		InitCommand=function(self) self:halign(1):shadowlength(2):maxwidth(220):settext(THEME:GetString( "StageAward", award )) end;
 	};
 end
 
