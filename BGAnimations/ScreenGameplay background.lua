@@ -4,12 +4,19 @@
 	in StepMania are flipped, and set the Z position depending on Aspect Ratio because
 	the z field changes on the current Aspect Ratio, so correct that.
 ]]
---the only way on making custommods work... Iithink... ~DarkBahamut162
+--The only way on making custommods work... I think... ~DarkBahamut162
 local background = Def.ActorFrame {
 	Name="YOU_WISH_YOU_WERE_PLAYING_BEATMANIA_RIGHT_NOW",
 	OnCommand=function()
 		for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
 			local pX = pname(pn);
+			if PREFSMAN:GetPreference("Center1Player") and GAMESTATE:GetNumPlayersEnabled() == 1 then
+				if pn == PLAYER_2 then
+					SCREENMAN:GetTopScreen():GetChild("Player"..pX):addx(SCREEN_WIDTH/4);
+				else
+					SCREENMAN:GetTopScreen():GetChild("Player"..pX):addx(-SCREEN_WIDTH/4);
+				end
+			end
 			if SCREENMAN:GetTopScreen():GetChild("Player"..pX) and SCREENMAN:GetTopScreen():GetChild("Player"..pX):GetChild("NoteField") then
 				if getenv("RotationLeft"..pX) == true then
 					SCREENMAN:GetTopScreen():GetChild("Player"..pX):GetChild("NoteField"):rotationz(270);
@@ -18,16 +25,17 @@ local background = Def.ActorFrame {
 					end
 				elseif getenv("RotationRight"..pX) == true then
 					SCREENMAN:GetTopScreen():GetChild("Player"..pX):GetChild("NoteField"):rotationz(90);
-					if pn == PLAYER_2 then
-						SCREENMAN:GetTopScreen():GetChild("Player"..pX):GetChild("NoteField"):x(SCREEN_RIGHT-190-GetLifebarAdjustment());
-					else
-						SCREENMAN:GetTopScreen():GetChild("Player"..pX):GetChild("NoteField"):x(SCREEN_CENTER_X-160-GetLifebarAdjustment());
-					end	
 					if GAMESTATE:IsPlayerEnabled(PLAYER_1) and not GAMESTATE:IsPlayerEnabled(PLAYER_2) then
 						SCREENMAN:GetTopScreen():GetChild("Player"..pX):GetChild("NoteField"):addx(SCREEN_WIDTH/2);
 					end
 				elseif getenv("RotationUpsideDown"..pX) == true then
 					SCREENMAN:GetTopScreen():GetChild("Player"..pX):GetChild("NoteField"):rotationz(180):addy(20);
+				elseif getenv("RotationSolo"..pX) == true then
+					if pn == PLAYER_2 then
+						SCREENMAN:GetTopScreen():GetChild("Player"..pX):addx(-SCREEN_WIDTH/4);
+					else
+						SCREENMAN:GetTopScreen():GetChild("Player"..pX):addx(SCREEN_WIDTH/4);
+					end
 				end
 
 				if getenv("EffectSpin"..pX) == true then

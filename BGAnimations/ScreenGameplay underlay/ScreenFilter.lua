@@ -1,6 +1,6 @@
 --[[ Screen Filter ]]
 local numPlayers = GAMESTATE:GetNumPlayersEnabled()
-local center1P = PREFSMAN:GetPreference("Center1Player")
+local center1P = getenv("RotationSoloP1") or getenv("RotationSoloP2");
 
 local padding = 8 -- 4px on each side
 local arrowWidth = 64 -- until noteskin metrics are implemented...
@@ -46,6 +46,13 @@ if numPlayers == 1 then
 				self:rotationz(90)
 			end
 			if getenv("RotationUpsideDownP"..pNum) then self:addy(20) end
+			if getenv("RotationSoloP"..pNum) then
+				if pNum == 1 then
+					self:addx(SCREEN_WIDTH/4)
+				elseif pNum == 2 then
+					self:addx(-SCREEN_WIDTH/4)
+				end
+			end
 			
 			--Effect
 			if getenv("EffectSpinP"..pNum) then 

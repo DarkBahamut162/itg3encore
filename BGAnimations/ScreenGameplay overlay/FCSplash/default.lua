@@ -5,7 +5,7 @@ assert(pn);
 
 local t = Def.ActorFrame{};
 
-local IsUsingSoloSingles = PREFSMAN:GetPreference('Center1Player');
+local IsUsingSoloSingles = getenv("RotationSoloP1") or getenv("RotationSoloP2");
 local NumPlayers = GAMESTATE:GetNumPlayersEnabled();
 local NumSides = GAMESTATE:GetNumSidesJoined();
 

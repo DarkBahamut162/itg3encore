@@ -3,17 +3,15 @@ local pn = GAMESTATE:GetMasterPlayerNumber()
 
 return Def.ActorFrame{
 	InitCommand=function(self)
-		local x = SCREEN_CENTER_X
-		self:x(x)
-		self:CenterY()
+		self:Center()
 	end;
 	Def.ActorFrame{
 		Name="JudgePane";
 		BeginCommand=function(self) self:visible(GAMESTATE:IsHumanPlayer(pn)) end;
 		OnCommand=function(self)
-			self:x(SCREEN_WIDTH/4+(PREFSMAN:GetPreference('Center1Player') and 64 or 0));
-			self:y(PREFSMAN:GetPreference('Center1Player') and 34 or 0);
-			self:zoom(PREFSMAN:GetPreference('Center1Player') and .75 or 1)
+			self:x(SCREEN_WIDTH/4+((getenv("RotationSoloP1") or getenv("RotationSoloP2")) and 64 or 0));
+			self:y((getenv("RotationSoloP1") or getenv("RotationSoloP2")) and 34 or 0);
+			self:zoom((getenv("RotationSoloP1") or getenv("RotationSoloP2")) and .75 or 1);
 			self:addx(SCREEN_WIDTH/2);
 			self:decelerate(1);
 			self:addx(-SCREEN_WIDTH/2);
