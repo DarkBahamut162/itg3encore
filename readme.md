@@ -46,8 +46,6 @@ What has been fixed so far:
   * Fixed **Rounds/Songs Display**
 * Fixed **PeakComboAward** & **StageAward**
 
-
-
 The following has been re-introduced from OpenITG's ITG3Encore Theme:
 * Added back rotation to **Judgements** & **Holds** during GamePlay
 * **BPM Display** *(Disabled in Battle Mode)*
@@ -57,6 +55,7 @@ The following has been re-introduced from OpenITG's ITG3Encore Theme:
 
 * Re-Added stuff in **Course Mode**
   * **Song Time** & **HAS MODS**
+    * Introduced **HAS LUA**
   * **RemainingTime** & **DeltaSeconds**
   * Forced implementation of **NoteSkin** via ApplyGameCommand
 

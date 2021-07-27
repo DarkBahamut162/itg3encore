@@ -71,3 +71,99 @@ function GetScreenSelectMusicHelpText()
 
 	return ret
 end
+
+--[ja] SMファイルで指定したパラメータの内容を読み取る
+--[en] Read the contents of the parameters specified in the SM file.
+function GetSMParameter(song,prm)
+	local st=song:GetAllSteps();
+	if #st<1 then
+		return "";
+	end;
+	local t;
+	t=st[1]:GetFilename();
+	if not FILEMAN:DoesFileExist(t) then
+		return "";
+	end;
+	--[ja] 形式ではじく
+	--[en] burst out in a formal manner
+	local lt=string.lower(t);
+	if not string.find(lt,".*%.sm") and not string.find(lt,".*%.ssc") then
+		return "";
+	end;
+	local f=RageFileUtil.CreateRageFile();
+	f:Open(t,1);
+	--[ja] 複数行を考慮していったん別変数に代入する
+	--[en] Assign to a separate variable once to account for multiple lines
+	local gl="";
+	local pl=string.lower(prm);
+	local l;
+	while true do
+		l=f:GetLine();
+		local ll=string.lower(l);
+		if string.find(ll,"#notes:.*") or f:AtEOF() then
+			break;
+		--[ja] BOM考慮して .* を頭につける
+		--[en] BOM considerations . * at the beginning
+		elseif (string.find(ll,"^.*#"..pl..":.*") and (not string.find(ll,"^%/%/.*"))) or gl~="" then
+			gl=gl..""..split("//",l)[1];
+			if string.find(ll,".*;") then
+				break;
+			end;
+		end;
+	end;
+	local tmp={};
+	if gl=="" then
+		tmp={""};
+	else
+		tmp=split(":",gl);
+		if tmp[2]==";" then
+			tmp[1]="";
+		else
+			if #tmp>2 then
+				tmp[1]=tmp[2];
+				for i=3,#tmp do
+					tmp[1]=tmp[1]..":"..split(";",tmp[i])[1];
+				end;
+			else
+				tmp[1]=split(";",tmp[2])[1];
+			end;
+		end;
+	end;
+	f:Close();
+	f:destroy();
+	return tmp[1];
+end;
+
+function HasLuaBG(song)
+	local var=GetSMParameter(song,"bgchanges");
+	local prm;
+	if var~="" then
+		local file_offset=0.0;
+		prm=split(",",var);
+		for i=1,#prm do
+			if string.find(prm[i],".",0,true) then else
+				return true;
+			end;
+		end;
+	end;
+	return false;
+end;
+
+function HasLuaFG(song)
+	local var=GetSMParameter(song,"fgchanges");
+	local prm;
+	if var~="" then
+		local file_offset=0.0;
+		prm=split(",",var);
+		for i=1,#prm do
+			if string.find(prm[i],".",0,true) then else
+				return true;
+			end;
+		end;
+	end;
+	return false;
+end;
+
+function HasLua(song)
+	return HasLuaBG(song) or HasLuaFG(song);
+end;
