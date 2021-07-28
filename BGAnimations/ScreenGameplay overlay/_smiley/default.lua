@@ -9,7 +9,7 @@ local t = Def.ActorFrame{
 			InitCommand=function(self) self:SetStreamWidth(292):blend(Blend.Add) end;
 			Stream=LoadActor("meter stream");
 			Tip=LoadActor("tip")..{
-				OnCommand=function(self) self:zoom(0):sleep(1.8):zoom(1):diffuseshift():effectcolor1(color("1,1,1,1")):effectcolor2(color("1,1,1,.5")):effectclock("beat"):effectperiod(4) end;
+				OnCommand=function(self) self:zoom(0):sleep(1.8):zoom(1):diffuseshift():effectcolor1(color("1,1,1,1")):effectcolor2(color("1,1,1,0.5")):effectclock("beat"):effectperiod(4) end;
 			};
 		};
 	};

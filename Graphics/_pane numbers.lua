@@ -38,13 +38,13 @@ return Def.ActorFrame{
 			if song or course then
 				self:visible(true)
 				-- coloring
-				local itemColor = color(".4,.4,.4,1")
-				if num == 0 then itemColor = color(".4,.4,.4,1")
+				local itemColor = color(".4,0.4,0.4,1")
+				if num == 0 then itemColor = color(".4,0.4,0.4,1")
 				elseif num <= 24 * numSongs then itemColor = color("0,1,0,1")
 				elseif num <= 49 * numSongs then itemColor = color("1,1,0,1")
-				elseif num <= 99 * numSongs then itemColor = color("1,.53,0,1")
+				elseif num <= 99 * numSongs then itemColor = color("1,0.53,0,1")
 				elseif num <= 199 * numSongs then itemColor = color("1,0,0,1")
-				else itemColor = color("0,.75,1,1")
+				else itemColor = color("0,0.75,1,1")
 				end
 				num = string.format("%03i",num)
 				self:settext(num)
@@ -93,13 +93,13 @@ return Def.ActorFrame{
 			if song or course then
 				self:visible(true)
 				-- coloring
-				local itemColor = color(".4,.4,.4,1")
-				if num == 0 then itemColor = color(".4,.4,.4,1")
+				local itemColor = color(".4,0.4,0.4,1")
+				if num == 0 then itemColor = color(".4,0.4,0.4,1")
 				elseif num <= 24 * numSongs then itemColor = color("0,1,0,1")
 				elseif num <= 49 * numSongs then itemColor = color("1,1,0,1")
-				elseif num <= 99 * numSongs then itemColor = color("1,.53,0,1")
+				elseif num <= 99 * numSongs then itemColor = color("1,0.53,0,1")
 				elseif num <= 150 * numSongs then itemColor = color("1,0,0,1")
-				else itemColor = color("0,.75,1,1")
+				else itemColor = color("0,0.75,1,1")
 				end
 				num = string.format("%03i",num)
 				self:settext(num)
@@ -148,13 +148,13 @@ return Def.ActorFrame{
 			if song or course then
 				self:visible(true)
 				-- coloring
-				local itemColor = color(".4,.4,.4,1")
-				if num == 0 then itemColor = color(".4,.4,.4,1")
+				local itemColor = color(".4,0.4,0.4,1")
+				if num == 0 then itemColor = color(".4,0.4,0.4,1")
 				elseif num <= 24 * numSongs then itemColor = color("0,1,0,1")
 				elseif num <= 49 * numSongs then itemColor = color("1,1,0,1")
-				elseif num <= 89 * numSongs then itemColor = color("1,.53,0,1")
+				elseif num <= 89 * numSongs then itemColor = color("1,0.53,0,1")
 				elseif num <= 139 * numSongs then itemColor = color("1,0,0,1")
-				else itemColor = color("0,.75,1,1")
+				else itemColor = color("0,0.75,1,1")
 				end
 				num = string.format("%03i",num)
 				self:settext(num)
@@ -203,13 +203,13 @@ return Def.ActorFrame{
 			if song or course then
 				self:visible(true)
 				-- coloring
-				local itemColor = color(".4,.4,.4,1")
-				if num == 0 then itemColor = color(".4,.4,.4,1")
+				local itemColor = color(".4,0.4,0.4,1")
+				if num == 0 then itemColor = color(".4,0.4,0.4,1")
 				elseif num <= 14 * numSongs then itemColor = color("0,1,0,1")
 				elseif num <= 29 * numSongs then itemColor = color("1,1,0,1")
-				elseif num <= 39 * numSongs then itemColor = color("1,.53,0,1")
+				elseif num <= 39 * numSongs then itemColor = color("1,0.53,0,1")
 				elseif num <= 51 * numSongs then itemColor = color("1,0,0,1")
-				else itemColor = color("0,.75,1,1")
+				else itemColor = color("0,0.75,1,1")
 				end
 				num = string.format("%03i",num)
 				self:settext(num)
@@ -258,13 +258,13 @@ return Def.ActorFrame{
 			if song or course then
 				self:visible(true)
 				-- coloring
-				local itemColor = color(".4,.4,.4,1")
-				if num == 0 then itemColor = color(".4,.4,.4,1")
+				local itemColor = color(".4,0.4,0.4,1")
+				if num == 0 then itemColor = color(".4,0.4,0.4,1")
 				elseif num <= 9 * numSongs then itemColor = color("0,1,0,1")
 				elseif num <= 19 * numSongs then itemColor = color("1,1,0,1")
-				elseif num <= 29 * numSongs then itemColor = color("1,.53,0,1")
+				elseif num <= 29 * numSongs then itemColor = color("1,0.53,0,1")
 				elseif num <= 39 * numSongs then itemColor = color("1,0,0,1")
-				else itemColor = color("0,.75,1,1")
+				else itemColor = color("0,0.75,1,1")
 				end
 				num = string.format("%03i",num)
 				self:settext(num)

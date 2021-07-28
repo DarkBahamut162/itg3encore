@@ -190,8 +190,8 @@ local t = Def.ActorFrame{
 				if string.find(artist, "C. Foy") or string.find(artist, "Foy") then
 					self:diffuseshift()
 					self:effectclock("beat")
-					self:effectcolor1(color("1,.9,.9,1"))
-					self:effectcolor2(color("1,.75,.75,1"))
+					self:effectcolor1(color("1,0.9,0.9,1"))
+					self:effectcolor2(color("1,0.75,0.75,1"))
 				else
 					self:stopeffect()
 				end
@@ -262,8 +262,8 @@ local t = Def.ActorFrame{
 				if string.find(artist, "C. Foy") or string.find(artist, "Foy") then
 					self:diffuseshift()
 					self:effectclock("beat")
-					self:effectcolor1(color("1,.9,.9,1"))
-					self:effectcolor2(color("1,.75,.75,1"))
+					self:effectcolor1(color("1,0.9,0.9,1"))
+					self:effectcolor2(color("1,0.75,0.75,1"))
 				else
 					self:stopeffect()
 				end

@@ -19,7 +19,7 @@ local t = Def.ActorFrame{
 	};
 	LoadActor(THEME:GetPathB("ScreenOptions","overlay/_frame"))..{
 		InitCommand=function(self) self:Center():blend(Blend.Add) end;
-		OnCommand=function(self) self:diffuseblink():effectcolor1(color("0.8,0.8,0.8,.85")):effectperiod(1):effectoffset(0):effectclock('beat'):diffusealpha(0):zoom(0.7):bounceend(0.3):diffusealpha(1):zoom(1) end;
+		OnCommand=function(self) self:diffuseblink():effectcolor1(color("0.8,0.8,0.8,0.85")):effectperiod(1):effectoffset(0):effectclock('beat'):diffusealpha(0):zoom(0.7):bounceend(0.3):diffusealpha(1):zoom(1) end;
 		OffCommand=function(self) self:diffusealpha(1):accelerate(0.3):diffusealpha(0) end;
 	};
 

@@ -24,7 +24,7 @@ return Def.ActorFrame{
 			if steps then
 				local rv = steps:GetRadarValues(player)
 				local val = rv:GetValue('RadarCategory_Jumps')
-				if val == 0 then self:diffusecolor( color(".4,.4,.4,1") ) yZoom = 0
+				if val == 0 then self:diffusecolor( color(".4,0.4,0.4,1") ) yZoom = 0
 				elseif val <= 24 * numSongs then self:diffusecolor( color("#00FF00FF") ) yZoom = 0.2*24
 				elseif val <= 49 * numSongs then self:diffusecolor( color("#FFFF00FF") ) yZoom = 0.4*24
 				elseif val <= 99 * numSongs then self:diffusecolor( color("#FF8800FF") ) yZoom = 0.6*24
@@ -75,7 +75,7 @@ return Def.ActorFrame{
 			if steps then
 				local rv = steps:GetRadarValues(player)
 				local val = rv:GetValue('RadarCategory_Holds')
-				if val == 0 then self:diffusecolor( color(".4,.4,.4,1") ) yZoom = 0
+				if val == 0 then self:diffusecolor( color(".4,0.4,0.4,1") ) yZoom = 0
 				elseif val <= 24 * numSongs then self:diffusecolor( color("#00FF00FF") ) yZoom = 0.2*24
 				elseif val <= 49 * numSongs then self:diffusecolor( color("#FFFF00FF") ) yZoom = 0.4*24
 				elseif val <= 99 * numSongs then self:diffusecolor( color("#FF8800FF") ) yZoom = 0.6*24
@@ -126,7 +126,7 @@ return Def.ActorFrame{
 			if steps then
 				local rv = steps:GetRadarValues(player)
 				local val = rv:GetValue('RadarCategory_Mines')
-				if val == 0 then self:diffusecolor( color(".4,.4,.4,1") ) yZoom = 0
+				if val == 0 then self:diffusecolor( color(".4,0.4,0.4,1") ) yZoom = 0
 				elseif val <= 24 * numSongs then self:diffusecolor( color("#00FF00FF") ) yZoom = 0.2*24
 				elseif val <= 49 * numSongs then self:diffusecolor( color("#FFFF00FF") ) yZoom = 0.4*24
 				elseif val <= 89 * numSongs then self:diffusecolor( color("#FF8800FF") ) yZoom = 0.6*24
@@ -177,7 +177,7 @@ return Def.ActorFrame{
 			if steps then
 				local rv = steps:GetRadarValues(player)
 				local val = rv:GetValue('RadarCategory_Hands')
-				if val == 0 then self:diffusecolor( color(".4,.4,.4,1") ) yZoom = 0
+				if val == 0 then self:diffusecolor( color(".4,0.4,0.4,1") ) yZoom = 0
 				elseif val <= 14 * numSongs then self:diffusecolor( color("#00FF00FF") ) yZoom = 0.2*24
 				elseif val <= 29 * numSongs then self:diffusecolor( color("#FFFF00FF") ) yZoom = 0.4*24
 				elseif val <= 39 * numSongs then self:diffusecolor( color("#FF8800FF") ) yZoom = 0.6*24
@@ -228,7 +228,7 @@ return Def.ActorFrame{
 			if steps then
 				local rv = steps:GetRadarValues(player)
 				local val = rv:GetValue('RadarCategory_Rolls')
-				if val == 0 then self:diffusecolor( color(".4,.4,.4,1") ) yZoom = 0
+				if val == 0 then self:diffusecolor( color(".4,0.4,0.4,1") ) yZoom = 0
 				elseif val <=  9 * numSongs then self:diffusecolor( color("#00FF00FF") ) yZoom = 0.2*24
 				elseif val <= 19 * numSongs then self:diffusecolor( color("#FFFF00FF") ) yZoom = 0.4*24
 				elseif val <= 29 * numSongs then self:diffusecolor( color("#FF8800FF") ) yZoom = 0.6*24

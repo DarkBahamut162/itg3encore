@@ -16,8 +16,8 @@ return Def.ActorFrame{
 				self:playcommand("InsertCoin");
 			end
 		end;
-		InsertCoinCommand=function(self) self:settext(GetCreditType()):diffuseshift():effectcolor1(color("0,0,0,.3")):effectcolor2(color("0,0,0,0")):effectperiod(2) end;
-		PressStartCommand=function(self) self:settext(''):diffuseblink():effectcolor1(color("0,0,0,.2")):effectcolor2(color("0,0,0,0")):effectperiod(GAMESTATE:GetCoinMode()=='CoinMode_Free' and 1.0 or 0.3) end;
+		InsertCoinCommand=function(self) self:settext(GetCreditType()):diffuseshift():effectcolor1(color("0,0,0,0.3")):effectcolor2(color("0,0,0,0")):effectperiod(2) end;
+		PressStartCommand=function(self) self:settext(''):diffuseblink():effectcolor1(color("0,0,0,0.2")):effectcolor2(color("0,0,0,0")):effectperiod(GAMESTATE:GetCoinMode()=='CoinMode_Free' and 1.0 or 0.3) end;
 	};
 	LoadFont("_r bold shadow 30px")..{
 		InitCommand=function(self) self:CenterX():y(SCREEN_BOTTOM-100):shadowlength(0):zoom(1) end;
@@ -36,8 +36,8 @@ return Def.ActorFrame{
 				self:playcommand("InsertCoin");
 			end
 		end;
-		InsertCoinCommand=function(self) self:settext(GetCreditType()):diffuseshift():effectcolor1(color("1,1,1,.2")):effectcolor2(color("1,1,1,1")):effectperiod(2) end;
-		PressStartCommand=function(self) self:settext(''):diffuseblink():effectcolor1(color("1,1,1,.2")):effectcolor2(color("1,1,1,1")):effectperiod(GAMESTATE:GetCoinMode()=='CoinMode_Free' and 1.0 or 0.3) end;
+		InsertCoinCommand=function(self) self:settext(GetCreditType()):diffuseshift():effectcolor1(color("1,1,1,0.2")):effectcolor2(color("1,1,1,1")):effectperiod(2) end;
+		PressStartCommand=function(self) self:settext(''):diffuseblink():effectcolor1(color("1,1,1,0.2")):effectcolor2(color("1,1,1,1")):effectperiod(GAMESTATE:GetCoinMode()=='CoinMode_Free' and 1.0 or 0.3) end;
 	};
 
 	LoadFont("_r bold shadow 30px")..{
