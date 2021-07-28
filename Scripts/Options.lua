@@ -42,11 +42,11 @@ function SongMods()
 			options = options .. "20,24,"
 		end
 	elseif pm == 'PlayMode_Nonstop' then
-		options = options .. "21,24,"
+		options = options .. "20,21,24,"
 	end
 
 	if pm == 'PlayMode_Rave' or pm == 'PlayMode_Oni' then
-		options = "3,28,21,"
+		options = "3,28,20,21,"
 	end
 
 	-- ends on 16:

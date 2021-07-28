@@ -14,7 +14,5 @@ elseif numPlayers == 2 then
 end
 
 return Def.ActorFrame{
-	LoadActor(statObject)..{
-		InitCommand=function(self) self:visible(not GAMESTATE:IsDemonstration() and not GAMESTATE:IsCourseMode()) end;
-	};
+	LoadActor(statObject);
 };

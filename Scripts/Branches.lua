@@ -43,8 +43,14 @@ Branch.PostProfileSave = function()
 end
 
 Branch.PlayerOptions = function()
+	local pm = GAMESTATE:GetPlayMode()
+	local restricted = { PlayMode_Oni= true }
+	local optionsScreen = "ScreenPlayerOptions"
+	if restricted[pm] then
+		optionsScreen = "ScreenPlayerOptionsRestricted"
+	end
 	if SCREENMAN:GetTopScreen():GetGoToOptions() then
-		return "ScreenPlayerOptions"
+		return optionsScreen
 	else
 		return "ScreenStageInformation"
 	end

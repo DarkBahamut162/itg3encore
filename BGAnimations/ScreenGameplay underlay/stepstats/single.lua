@@ -16,6 +16,7 @@ return Def.ActorFrame{
 			self:decelerate(1);
 			self:addx(-SCREEN_WIDTH/2);
 		end;
+		OffCommand=function(self) if AnyPlayerFullComboed() then self:sleep(1) end; self:accelerate(0.8):addx(SCREEN_WIDTH/2) end;
 		LoadActor("stats bg");
 
 		Def.ActorFrame{
@@ -53,7 +54,7 @@ return Def.ActorFrame{
 			InitCommand=function(self) self:settext("0"):zoom(0.75):addy(100):addx(73*-1):shadowlength(0) end;
 			StepMessageCommand=function(self,p)
 				if p.PlayerNumber == pn then
-					self:playcommand("Update")
+					self:queuecommand("Update")
 				end
 			end;
 			UpdateCommand=function(self)
@@ -67,7 +68,7 @@ return Def.ActorFrame{
 			InitCommand=function(self) self:settext("0"):zoom(0.75):addy(100):shadowlength(0) end;
 			StepMessageCommand=function(self,p)
 				if p.PlayerNumber == pn then
-					self:playcommand("Update")
+					self:queuecommand("Update")
 				end
 			end;
 			UpdateCommand=function(self)
@@ -81,7 +82,7 @@ return Def.ActorFrame{
 			InitCommand=function(self) self:settext("0"):zoom(0.75):addy(100):addx(73*1):shadowlength(0) end;
 			StepMessageCommand=function(self,p)
 				if p.PlayerNumber == pn then
-					self:playcommand("Update")
+					self:queuecommand("Update")
 				end
 			end;
 			UpdateCommand=function(self)
@@ -118,16 +119,28 @@ return Def.ActorFrame{
 			InitCommand=function(self) self:vertalign(bottom):addx(73*-1):addy(86):zoomy(0) end;
 			StepMessageCommand=function(self,p)
 				if p.PlayerNumber == pn then
-					self:playcommand("Update")
+					self:queuecommand("Update")
 				end
 			end;
 			UpdateCommand=function(self)
-				local steps = GAMESTATE:GetCurrentSteps(pn)
-				if steps then
-					local TotalSteps = steps:GetRadarValues(pn):GetValue('RadarCategory_TapsAndHolds')
-					local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn)
-					local w1Notes = pss:GetTapNoteScores('TapNoteScore_W1')
-					self:zoomy(w1Notes/TotalSteps)
+				local song = GAMESTATE:GetCurrentSong()
+				local course = GAMESTATE:GetCurrentCourse()
+				if course then
+					local trail = GAMESTATE:GetCurrentTrail(pn)
+					if trail then
+						local TotalSteps = trail:GetRadarValues(pn):GetValue('RadarCategory_TapsAndHolds');
+						local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn)
+						local w1Notes = pss:GetTapNoteScores('TapNoteScore_W1')
+						self:zoomy(w1Notes/TotalSteps)
+					end
+				elseif song then
+					local steps = GAMESTATE:GetCurrentSteps(pn)
+					if steps then
+						local TotalSteps = steps:GetRadarValues(pn):GetValue('RadarCategory_TapsAndHolds')
+						local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn)
+						local w1Notes = pss:GetTapNoteScores('TapNoteScore_W1')
+						self:zoomy(w1Notes/TotalSteps)
+					end
 				end
 			end;
 		};
@@ -135,16 +148,28 @@ return Def.ActorFrame{
 			InitCommand=function(self) self:vertalign(bottom):addy(86):zoomy(0) end;
 			StepMessageCommand=function(self,p)
 				if p.PlayerNumber == pn then
-					self:playcommand("Update")
+					self:queuecommand("Update")
 				end
 			end;
 			UpdateCommand=function(self)
-				local steps = GAMESTATE:GetCurrentSteps(pn)
-				if steps then
-					local TotalSteps = steps:GetRadarValues(pn):GetValue('RadarCategory_TapsAndHolds')
-					local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn)
-					local w2Notes = pss:GetTapNoteScores('TapNoteScore_W2')
-					self:zoomy(w2Notes/TotalSteps)
+				local song = GAMESTATE:GetCurrentSong()
+				local course = GAMESTATE:GetCurrentCourse()
+				if course then
+					local trail = GAMESTATE:GetCurrentTrail(pn)
+					if trail then
+						local TotalSteps = trail:GetRadarValues(pn):GetValue('RadarCategory_TapsAndHolds');
+						local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn)
+						local w2Notes = pss:GetTapNoteScores('TapNoteScore_W2')
+						self:zoomy(w2Notes/TotalSteps)
+					end
+				elseif song then
+					local steps = GAMESTATE:GetCurrentSteps(pn)
+					if steps then
+						local TotalSteps = steps:GetRadarValues(pn):GetValue('RadarCategory_TapsAndHolds')
+						local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn)
+						local w2Notes = pss:GetTapNoteScores('TapNoteScore_W2')
+						self:zoomy(w2Notes/TotalSteps)
+					end
 				end
 			end;
 		};
@@ -152,18 +177,32 @@ return Def.ActorFrame{
 			InitCommand=function(self) self:vertalign(bottom):addx(73*1):addy(86):zoomy(0) end;
 			StepMessageCommand=function(self,p)
 				if p.PlayerNumber == pn then
-					self:playcommand("Update")
+					self:queuecommand("Update")
 				end
 			end;
 			UpdateCommand=function(self)
-				local steps = GAMESTATE:GetCurrentSteps(pn)
-				if steps then
-					local TotalSteps = steps:GetRadarValues(pn):GetValue('RadarCategory_TapsAndHolds')
-					local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn)
-					local otherNotes = pss:GetTapNoteScores('TapNoteScore_W3')
-					otherNotes = otherNotes + pss:GetTapNoteScores('TapNoteScore_W4')
-					otherNotes = otherNotes + pss:GetTapNoteScores('TapNoteScore_W5')
-					self:zoomy(otherNotes/TotalSteps)
+				local song = GAMESTATE:GetCurrentSong()
+				local course = GAMESTATE:GetCurrentCourse()
+				if course then
+					local trail = GAMESTATE:GetCurrentTrail(pn)
+					if trail then
+						local TotalSteps = trail:GetRadarValues(pn):GetValue('RadarCategory_TapsAndHolds');
+						local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn)
+						local otherNotes = pss:GetTapNoteScores('TapNoteScore_W3')
+						otherNotes = otherNotes + pss:GetTapNoteScores('TapNoteScore_W4')
+						otherNotes = otherNotes + pss:GetTapNoteScores('TapNoteScore_W5')
+						self:zoomy(otherNotes/TotalSteps)
+					end
+				elseif song then
+					local steps = GAMESTATE:GetCurrentSteps(pn)
+					if steps then
+						local TotalSteps = steps:GetRadarValues(pn):GetValue('RadarCategory_TapsAndHolds')
+						local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn)
+						local otherNotes = pss:GetTapNoteScores('TapNoteScore_W3')
+						otherNotes = otherNotes + pss:GetTapNoteScores('TapNoteScore_W4')
+						otherNotes = otherNotes + pss:GetTapNoteScores('TapNoteScore_W5')
+						self:zoomy(otherNotes/TotalSteps)
+					end
 				end
 			end;
 		};
