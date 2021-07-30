@@ -47,7 +47,7 @@ What has been fixed so far:
 * Fixed **PeakComboAward** & **StageAward**
 
 The following has been re-introduced from OpenITG's ITG3Encore Theme:
-* Added back rotation to **Judgements** & **Holds** during GamePlay
+* Added back rotation to **Judgments** & **Holds** during GamePlay
 * **BPM Display** *(Disabled in Battle Mode)*
 * **Full Combo Splash Animation**
 * **CustomMods** and **ScreenFilter**
