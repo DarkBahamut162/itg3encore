@@ -15,7 +15,7 @@ It's sources have being displayed down below.
 
 ---
 
-[In The Groove 3 (Stepmania 5)](https://github.com/JoseVarelaP/itg3-sm5-revival)
+[In The Groove 3 (StepMania 5)](https://github.com/JoseVarelaP/itg3-sm5-revival)
 ---
 
 **Description:** A revival of the ITG3 theme for StepMania 5 
