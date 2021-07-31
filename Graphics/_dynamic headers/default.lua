@@ -4,9 +4,12 @@ local LabelName = ...
 local NameCase = setmetatable(
     {
         matches = {
-            -- ["ScreenSelectMusic"] = "ScreenSelectMusic.png",
+            ["ScreenSelectMusic"] = "ScreenSelectMusic",
             ["ScreenSelectNumPlayers"] = "ScreenSelectStyle",
             ["ScreenEvaluationNormal"] = "ScreenEvaluation",
+            ["ScreenEvaluationRave"] = "ScreenEvaluation",
+            ["ScreenEvaluationNonstop"] = "ScreenEvaluation",
+            ["ScreenEvaluationOni"] = "ScreenEvaluation",
         }
     },
     {

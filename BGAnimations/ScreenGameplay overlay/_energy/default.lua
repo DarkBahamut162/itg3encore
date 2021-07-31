@@ -104,8 +104,9 @@ local t = Def.ActorFrame{
 		end;
 
 		Def.ActorFrame{
+			Condition=GAMESTATE:IsPlayerEnabled(PLAYER_1) or GAMESTATE:GetPlayMode() == 'PlayMode_Rave';
 			Name="Player1";
-			OnCommand=function(self) self:player(PLAYER_1):x(SCREEN_CENTER_X-240):y(SCREEN_TOP-2+29):addx(-SCREEN_WIDTH/3) end;
+			OnCommand=function(self) self:x(SCREEN_CENTER_X-240):y(SCREEN_TOP-2+29):addx(-SCREEN_WIDTH/3) end;
 			TweenOnCommand=function(self) self:sleep(1.5):decelerate(0.5):addx(SCREEN_WIDTH/3) end;
 			TweenOffCommand=function(self) self:stoptweening():accelerate(0.8):addx(-SCREEN_WIDTH/3) end;
 
@@ -133,8 +134,9 @@ local t = Def.ActorFrame{
 		};
 
 		Def.ActorFrame{
+			Condition=GAMESTATE:IsPlayerEnabled(PLAYER_2) or GAMESTATE:GetPlayMode() == 'PlayMode_Rave';
 			Name="Player2";
-			OnCommand=function(self) self:player(PLAYER_2):x(SCREEN_CENTER_X+240):y(SCREEN_TOP-2+29):addx(SCREEN_WIDTH/3) end;
+			OnCommand=function(self) self:x(SCREEN_CENTER_X+240):y(SCREEN_TOP-2+29):addx(SCREEN_WIDTH/3) end;
 			TweenOnCommand=function(self) self:sleep(1.5):decelerate(0.5):addx(-SCREEN_WIDTH/3) end;
 			TweenOffCommand=function(self) self:stoptweening():accelerate(0.8):addx(SCREEN_WIDTH/3) end;
 

@@ -44,9 +44,6 @@ local t = Def.ActorFrame{
 	};
 	Def.ActorFrame{
 		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y-34) end;
-		BeginCommand=function(self)
-			self:visible(pm == 'PlayMode_Regular' or pm == 'PlayMode_Nonstop' or pm == 'PlayMode_Oni')
-		end;
 		LoadActor("modsframe")..{
 			OnCommand=function(self) self:diffusealpha(0):sleep(3):linear(0.8):diffusealpha(1) end;
 			OffCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(0) end;
@@ -116,18 +113,36 @@ local t = Def.ActorFrame{
 			OnCommand=function(self) self:diffusealpha(0):sleep(3):linear(0.8):diffusealpha(1) end;
 			OffCommand=function(self) self:linear(0.2):diffusealpha(0) end;
 		};
+	};
+	Def.ActorFrame{
+		Name="LabelFrame";
+		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y-142) end;
+		
 		LoadFont("_v 26px bold shadow")..{
 			Text="TIME & DATE";
 			SetCommand=function(self) self:settext( string.format('%02i:%02i:%02i %s %02i %04i', Hour(), Minute(), Second(), MonthToString(MonthOfYear()), DayOfMonth(), Year()) ) end;
-			InitCommand=function(self) self:y(-48):shadowlength(2):horizalign(right):zoom(0.5):playcommand("Set") end;
+			InitCommand=function(self) self:y(-48):shadowlength(2):horizalign(center):zoom(0.5):playcommand("Set") end;
 			OnCommand=function(self) self:diffusealpha(0):sleep(3):linear(0.8):diffusealpha(1) end;
 			OffCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(0) end;
 		};
 	};
 
+	Def.ActorFrame{
+		LoadActor(THEME:GetPathG("ScreenEvaluation","GradeFrame p1/_graph base"))..{
+			InitCommand=function(self) self:player(PLAYER_1):x(THEME:GetMetric("ScreenEvaluation","GradeFrameP1X")-55):y(THEME:GetMetric("ScreenEvaluation","GradeFrameP1Y")+101):addx(-EvalTweenDistance()) end;
+			OnCommand=function(self) self:sleep(3):decelerate(0.3):addx(EvalTweenDistance()) end;
+			OffCommand=function(self) self:accelerate(0.3):addx(-EvalTweenDistance()) end;
+		};
+		LoadActor(THEME:GetPathG("ScreenEvaluation","GradeFrame p1/_graph base"))..{
+			InitCommand=function(self) self:player(PLAYER_2):x(THEME:GetMetric("ScreenEvaluation","GradeFrameP2X")+55):y(THEME:GetMetric("ScreenEvaluation","GradeFrameP2Y")+101):zoomx(-1):addx(EvalTweenDistance()) end;
+			OnCommand=function(self) self:sleep(3):decelerate(0.3):addx(-EvalTweenDistance()) end;
+			OffCommand=function(self) self:accelerate(0.3):addx(EvalTweenDistance()) end;
+		};
+	};
+
 	LoadFont("_angel glow")..{
 		Text="Song Title";
-		InitCommand=function(self) self:x(SCREEN_CENTER_X-300):halign(0):y(SCREEN_TOP+76,animate,0):maxwidth(545):zoom(0.6):shadowlength(0):playcommand("Update") end;
+		InitCommand=function(self) self:x(SCREEN_CENTER_X-300):halign(0):y(SCREEN_TOP+74,animate,0):maxwidth(545):zoom(0.6):shadowlength(0):playcommand("Update") end;
 		OnCommand=function(self) self:diffusealpha(0):sleep(3):linear(0.3):diffusealpha(1) end;
 		OffCommand=function(self) self:linear(0.2):diffusealpha(0) end;
 		UpdateCommand=function(self) 
@@ -143,19 +158,6 @@ local t = Def.ActorFrame{
 		
 			self:settext( text )
 		end;
-	};
-
-	Def.ActorFrame{
-		LoadActor(THEME:GetPathG("ScreenEvaluation","GradeFrame p1/_graph base"))..{
-			InitCommand=function(self) self:player(PLAYER_1):x(THEME:GetMetric("ScreenEvaluation","GradeFrameP1X")-55):y(THEME:GetMetric("ScreenEvaluation","GradeFrameP1Y")+101):addx(-EvalTweenDistance()) end;
-			OnCommand=function(self) self:sleep(3):decelerate(0.3):addx(EvalTweenDistance()) end;
-			OffCommand=function(self) self:accelerate(0.3):addx(-EvalTweenDistance()) end;
-		};
-		LoadActor(THEME:GetPathG("ScreenEvaluation","GradeFrame p1/_graph base"))..{
-			InitCommand=function(self) self:player(PLAYER_2):x(THEME:GetMetric("ScreenEvaluation","GradeFrameP2X")+55):y(THEME:GetMetric("ScreenEvaluation","GradeFrameP2Y")+101):zoomx(-1):addx(EvalTweenDistance()) end;
-			OnCommand=function(self) self:sleep(3):decelerate(0.3):addx(-EvalTweenDistance()) end;
-			OffCommand=function(self) self:accelerate(0.3):addx(EvalTweenDistance()) end;
-		};
 	};
 };
 

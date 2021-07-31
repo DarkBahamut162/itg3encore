@@ -64,7 +64,6 @@ Branch.SongOptions = function()
 	end
 end
 
---[[
 Branch.AfterGameplay = function()
 	if GAMESTATE:IsCourseMode() then
 		if GAMESTATE:GetPlayMode() == 'PlayMode_Nonstop' then
@@ -101,4 +100,3 @@ Branch.AfterEvaluation = function()
 		return "ScreenEvaluationSummary"
 	end
 end
-]]--
