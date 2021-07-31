@@ -1,7 +1,6 @@
 local player = ...
 assert(player,"[ScreenEvaluation PersonalRecord] requires player")
-local stats = STATSMAN:GetCurStageStats():GetPlayerStageStats(player);
-local record = stats:GetPersonalHighScoreIndex()
+local record = STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetPersonalHighScoreIndex()
 local hasPersonalRecord = (record == 0)
 
 return Def.ActorFrame{

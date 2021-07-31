@@ -1,7 +1,6 @@
 local player = ...
 assert(player,"[ScreenEvaluation MachineRecord] requires player")
-local stats = STATSMAN:GetCurStageStats():GetPlayerStageStats(player);
-local record = stats:GetMachineHighScoreIndex()
+local record = STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetMachineHighScoreIndex()
 local hasMachineRecord = (record ~= -1) and record <= 10
 
 return Def.ActorFrame{
