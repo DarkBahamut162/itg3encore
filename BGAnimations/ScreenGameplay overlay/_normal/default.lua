@@ -25,19 +25,19 @@ local t = Def.ActorFrame{
 
 		LoadActor("_uplight")..{
 			InitCommand=function(self) self:CenterX():y(SCREEN_TOP-2+24):diffusealpha(0) end;
-			OnCommand=function(self) self:effectclock('beat'):diffuseramp():effectcolor1(color("#007892")):effectcolor2(color("#00EAFF")):effectperiod(1):effectoffset(0):diffusealpha(0):linear(0.4):diffusealpha(1) end;
+			OnCommand=function(self) self:effectclock('beat'):diffuseramp():effectcolor1(color("#007892")):effectcolor2(color("#00EAFF")):effectperiod(1):effectoffset(0.05):diffusealpha(0):linear(0.4):diffusealpha(1) end;
 		};
 		LoadActor("_uplight")..{
 			InitCommand=function(self) self:CenterX():y(SCREEN_TOP-2+24):diffusealpha(0):blend(Blend.Add) end;
-			OnCommand=function(self) self:effectclock('beat'):diffuseramp():effectcolor1(color("#FFFFFF00")):effectcolor2(color("#00EAFF")):effectperiod(1):effectoffset(0):diffusealpha(0):linear(0.4):diffusealpha(1) end;
+			OnCommand=function(self) self:effectclock('beat'):diffuseramp():effectcolor1(color("#FFFFFF00")):effectcolor2(color("#00EAFF")):effectperiod(1):effectoffset(0.05):diffusealpha(0):linear(0.4):diffusealpha(1) end;
 		};
 		LoadActor("_bpmupligt")..{
 			InitCommand=function(self) self:CenterX():y(SCREEN_TOP-2+46):diffusealpha(0):visible(GAMESTATE:GetPlayMode() ~= 'PlayMode_Rave') end;
-			OnCommand=function(self) self:effectclock('beat'):diffuseramp():effectcolor1(color("#007892")):effectcolor2(color("#00EAFF")):effectperiod(1):effectoffset(0):diffusealpha(0):linear(0.4):diffusealpha(1) end;
+			OnCommand=function(self) self:effectclock('beat'):diffuseramp():effectcolor1(color("#007892")):effectcolor2(color("#00EAFF")):effectperiod(1):effectoffset(0.05):diffusealpha(0):linear(0.4):diffusealpha(1) end;
 		};
 		LoadActor("_bpmupligt")..{
 			InitCommand=function(self) self:CenterX():y(SCREEN_TOP-2+46):diffusealpha(0):blend(Blend.Add):visible(GAMESTATE:GetPlayMode() ~= 'PlayMode_Rave') end;
-			OnCommand=function(self) self:effectclock('beat'):diffuseramp():effectcolor1(color("#FFFFFF00")):effectcolor2(color("#00EAFF")):effectperiod(1):effectoffset(0):diffusealpha(0):linear(0.4):diffusealpha(1) end;
+			OnCommand=function(self) self:effectclock('beat'):diffuseramp():effectcolor1(color("#FFFFFF00")):effectcolor2(color("#00EAFF")):effectperiod(1):effectoffset(0.05):diffusealpha(0):linear(0.4):diffusealpha(1) end;
 		};
 		LoadActor("width")..{
 			InitCommand=function(self) self:x(SCREEN_CENTER_X-190):y(SCREEN_TOP-2+24):halign(1) end;

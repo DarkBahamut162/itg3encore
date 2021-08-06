@@ -43,4 +43,7 @@ return Def.ActorFrame{
 		InitCommand=function(self) self:Center():FullScreen():diffuse(color("#00000000")) end;
 		OnCommand=function(self) self:sleep(3):linear(0.3):diffusealpha(1) end;
 	};
+	LoadActor( "bleh.ogg" ) .. {
+		StartTransitioningCommand=function(self) self:play() end;
+	};
 };

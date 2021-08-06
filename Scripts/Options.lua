@@ -15,7 +15,7 @@ function SongMods()
 
 	-- shared begin
 	--local options = "1,2,3,4,7,5,18,17,9,"
-	local options = "1,2,4,F,3,5,E1,E2,17,9,"
+	local options = "1,2,4,F,3,5,RE,AE,17,9,"
 
 	-- differences
 	if pm == 'PlayMode_Regular' then
