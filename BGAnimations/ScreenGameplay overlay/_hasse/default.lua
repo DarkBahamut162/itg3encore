@@ -36,11 +36,11 @@ local t = Def.ActorFrame{
 
 		LoadActor("_uplight.png")..{
 			InitCommand=function(self) self:CenterX():y(SCREEN_TOP-2+24) end;
-			OnCommand=function(self) self:effectclock('beat'):diffuseramp():effectcolor1(color("#FFFFFF00")):effectcolor2(color("#FFFFFFFF")):effectperiod(1):effectoffset(0.05):diffusealpha(0):linear(0.4):diffusealpha(1) end;
+			OnCommand=function(self) self:effectclock('beat'):diffuseramp():effectcolor1(color("#FFFFFF00")):effectcolor2(color("#FFFFFFFF")):effectperiod(0.5):effect_hold_at_full(0.5):diffusealpha(0):linear(0.4):diffusealpha(1) end;
 		};
 		LoadActor("_uplight2")..{
 			InitCommand=function(self) self:CenterX():y(SCREEN_TOP-2+50):visible(GAMESTATE:GetPlayMode() ~= 'PlayMode_Rave') end;
-			OnCommand=function(self) self:effectclock('beat'):diffuseramp():effectcolor1(color("#FFFFFF00")):effectcolor2(color("#FFFFFFFF")):effectperiod(1):effectoffset(0.05):diffusealpha(0):linear(0.4):diffusealpha(1) end;
+			OnCommand=function(self) self:effectclock('beat'):diffuseramp():effectcolor1(color("#FFFFFF00")):effectcolor2(color("#FFFFFFFF")):effectperiod(0.5):effect_hold_at_full(0.5):diffusealpha(0):linear(0.4):diffusealpha(1) end;
 		};
 		LoadActor("width")..{
 			InitCommand=function(self) self:x(SCREEN_CENTER_X-190):y(SCREEN_TOP-2+24):halign(1):zoomtowidth(3) end;
@@ -62,19 +62,19 @@ local t = Def.ActorFrame{
 		LoadActor("bpmbasea")..{ InitCommand=function(self) self:CenterX():y(SCREEN_TOP-2+64-4.5):visible(GAMESTATE:GetPlayMode() ~= 'PlayMode_Rave') end; };
 		LoadActor("_neons")..{
 			InitCommand=function(self) self:CenterX():y(SCREEN_TOP-2+24):blend(Blend.Add) end;
-			OnCommand=function(self) self:effectclock('beat'):diffuseramp():effectcolor1(color("#474747")):effectcolor2(color("##EEEEEE")):effectperiod(1):effectoffset(0.05):diffusealpha(0):linear(0.4):diffusealpha(1) end;
+			OnCommand=function(self) self:effectclock('beat'):diffuseramp():effectcolor1(color("#474747")):effectcolor2(color("##EEEEEE")):effectperiod(0.5):effect_hold_at_full(0.5):diffusealpha(0):linear(0.4):diffusealpha(1) end;
 		};
 		LoadActor("_neons")..{
 			InitCommand=function(self) self:CenterX():y(SCREEN_TOP-2+24) end;
-			OnCommand=function(self) self:effectclock('beat'):diffuseramp():effectcolor1(color("#FFFFFF00")):effectcolor2(color("#FFFFFFFF")):effectperiod(1):effectoffset(0.05):diffusealpha(0):linear(0.4):diffusealpha(1) end;
+			OnCommand=function(self) self:effectclock('beat'):diffuseramp():effectcolor1(color("#FFFFFF00")):effectcolor2(color("#FFFFFFFF")):effectperiod(0.5):effect_hold_at_full(0.5):diffusealpha(0):linear(0.4):diffusealpha(1) end;
 		};
 		LoadActor("_neon2")..{
 			InitCommand=function(self) self:CenterX():y(SCREEN_TOP-2+44):blend(Blend.Add):visible(GAMESTATE:GetPlayMode() ~= 'PlayMode_Rave') end;
-			OnCommand=function(self) self:effectclock('beat'):diffuseramp():effectcolor1(color("#474747")):effectcolor2(color("##EEEEEE")):effectperiod(1):effectoffset(0.05):diffusealpha(0):linear(0.4):diffusealpha(1) end;
+			OnCommand=function(self) self:effectclock('beat'):diffuseramp():effectcolor1(color("#474747")):effectcolor2(color("##EEEEEE")):effectperiod(0.5):effect_hold_at_full(0.5):diffusealpha(0):linear(0.4):diffusealpha(1) end;
 		};
 		LoadActor("_neon2")..{
 			InitCommand=function(self) self:CenterX():y(SCREEN_TOP-2+44):visible(GAMESTATE:GetPlayMode() ~= 'PlayMode_Rave') end;
-			OnCommand=function(self) self:effectclock('beat'):diffuseramp():effectcolor1(color("#FFFFFF00")):effectcolor2(color("#FFFFFFFF")):effectperiod(1):effectoffset(0.05):diffusealpha(0):linear(0.4):diffusealpha(1) end;
+			OnCommand=function(self) self:effectclock('beat'):diffuseramp():effectcolor1(color("#FFFFFF00")):effectcolor2(color("#FFFFFFFF")):effectperiod(0.5):effect_hold_at_full(0.5):diffusealpha(0):linear(0.4):diffusealpha(1) end;
 		};
 		LoadFont("_r bold 30px")..{
 			InitCommand=function(self) self:CenterX():y(SCREEN_TOP-2+23):maxwidth(540):diffusebottomedge(color("#dedede")) end;
