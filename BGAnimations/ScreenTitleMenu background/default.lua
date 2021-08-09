@@ -263,7 +263,7 @@ local t = Def.ActorFrame{
 	};
 
 	LoadFont("_v 26px bold black")..{
-		InitCommand=function(self) self:CenterX():y(SCREEN_BOTTOM-33+100):diffusealpha(0):horizalign(center):shadowlength(0):zoom(0.5) end;
+		InitCommand=function(self) self:CenterX():y(SCREEN_BOTTOM-34+100):diffusealpha(0):horizalign(center):shadowlength(0):zoom(0.5) end;
 		OnCommand=function(self) self:decelerate(0.4):addy(-100):diffusealpha(1):playcommand("Refresh") end;
 		OffCommand=function(self) self:accelerate(0.5):addy(100):diffusealpha(0) end;
 		RefreshCommand=function(self)
@@ -272,10 +272,17 @@ local t = Def.ActorFrame{
 	};
 
 	LoadFont("ScreenOptions serial number")..{
-		InitCommand=function(self) self:x(SCREEN_RIGHT-30):y(SCREEN_BOTTOM-42):shadowlength(2):horizalign(right):wrapwidthpixels(1000):zoom(0.5) end;
+		InitCommand=function(self) self:x(SCREEN_RIGHT-30):y(SCREEN_BOTTOM-42):shadowlength(2):horizalign(right):maxwidth(573):zoom(0.5) end;
 		OnCommand=function(self) self:diffusealpha(0):sleep(0.5):linear(0.5):diffusealpha(1):playcommand("Refresh") end;
 		RefreshCommand=function(self)
 			self:settext("ITG-(H/B)-2011/12/12-ITG3-r35-Encore")
+		end;
+	};
+	LoadFont("ScreenOptions serial number")..{
+		InitCommand=function(self) self:x(SCREEN_LEFT+30):y(SCREEN_BOTTOM-42):shadowlength(2):horizalign(left):maxwidth(573):zoom(0.5) end;
+		OnCommand=function(self) self:diffusealpha(0):sleep(0.5):linear(0.5):diffusealpha(1):playcommand("Refresh") end;
+		RefreshCommand=function(self) 
+			self:settext("StepMania " .. ProductVersion() .. " (" .. VersionDate() .. ")")
 		end;
 	};
 	LoadFont("_r bold 30px")..{
