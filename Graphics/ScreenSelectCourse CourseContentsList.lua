@@ -9,7 +9,7 @@ local transform = function(self,offsetFromCenter,itemIndex,numitems)
 end
 return Def.CourseContentsList {
 	MaxSongs = 99;
-    NumItemsToDraw = 8; -- xxx: Doesn't scroll anymore.
+	NumItemsToDraw = 8; -- xxx: Doesn't scroll anymore.
 	ShowCommand=function(self) self:linear(0.3):zoomy(1) end;
 	HideCommand=function(self) self:linear(0.3):zoomy(0) end;
 	SetCommand=function(self)

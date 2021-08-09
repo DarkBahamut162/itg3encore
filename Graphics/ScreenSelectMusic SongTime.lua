@@ -1,5 +1,5 @@
 return LoadFont("_r bold bevel numbers")..{
-    SetCommand=function(self)
+	SetCommand=function(self)
 		local curSelection = nil;
 		local length = 0.0;
 		if GAMESTATE:IsCourseMode() then

@@ -5,12 +5,12 @@ return Def.BitmapText{
 	Font= "_r bold 30px",
 	Name="RemainingTime",
 	Text="",
-    InitCommand=function(self)
-        self:valign(1):halign(1)
-        self:zoom(0.5):x( _screen.cx - _screen.w/8 + 60 ):y(80 - 7.5)
-        if player == PLAYER_2 then
-            self:x( _screen.cx + _screen.w/3.4 + 60 )
-        end
+	InitCommand=function(self)
+		self:valign(1):halign(1)
+		self:zoom(0.5):x( _screen.cx - _screen.w/8 + 60 ):y(80 - 7.5)
+		if player == PLAYER_2 then
+			self:x( _screen.cx + _screen.w/3.4 + 60 )
+		end
 		self:shadowlength(1):skewx(-0.125)
 	end,
 	CurrentSongChangedMessageCommand=function(self)
