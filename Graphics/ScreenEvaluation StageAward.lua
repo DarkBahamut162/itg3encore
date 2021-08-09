@@ -4,16 +4,16 @@ local award;
 local failed = STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetFailed()
 
 local awardRef = {
-	["80PercentW3"]       = { File = THEME:GetPathG("_award","models/ribbon"), Color = "green" },
-	["90PercentW3"]       = { File = THEME:GetPathG("_award","models/plaque"), Color = "green" },
-	["100PercentW3"]      = { File = THEME:GetPathG("_award","models/trophy"), Color = "green" },
-	["SingleDigitW3"]     = { File = THEME:GetPathG("_award","models/ribbon"), Color = "pink" },
-	["OneW3"]             = { File = THEME:GetPathG("_award","models/flag"), Color = "green" },
-	["FullComboW3"]       = { File = THEME:GetPathG("_award","models/ribbon"), Color = "blue" },
-	["SingleDigitW2"]     = { File = THEME:GetPathG("_award","models/plaque"), Color = "silver" },
-	["OneW2"]             = { File = THEME:GetPathG("_award","models/flag"), Color = "orange" },
-	["FullComboW2"]       = { File = THEME:GetPathG("_award","models/plaque"), Color = "bronze" },
-	["FullComboW1"]       = { File = THEME:GetPathG("_award","models/trophy"), Color = "bronze" },
+	["80PercentW3"]		= { File = THEME:GetPathG("_award","models/ribbon"), Color = "green" },
+	["90PercentW3"]		= { File = THEME:GetPathG("_award","models/plaque"), Color = "green" },
+	["100PercentW3"]	= { File = THEME:GetPathG("_award","models/trophy"), Color = "green" },
+	["SingleDigitW3"]	= { File = THEME:GetPathG("_award","models/ribbon"), Color = "pink" },
+	["OneW3"]			= { File = THEME:GetPathG("_award","models/flag"), Color = "green" },
+	["FullComboW3"]		= { File = THEME:GetPathG("_award","models/ribbon"), Color = "blue" },
+	["SingleDigitW2"]	= { File = THEME:GetPathG("_award","models/plaque"), Color = "silver" },
+	["OneW2"]			= { File = THEME:GetPathG("_award","models/flag"), Color = "orange" },
+	["FullComboW2"]		= { File = THEME:GetPathG("_award","models/plaque"), Color = "bronze" },
+	["FullComboW1"]		= { File = THEME:GetPathG("_award","models/trophy"), Color = "bronze" },
 };
 
 local steps = GetRadarData(player,"RadarCategory_TapsAndHolds");
