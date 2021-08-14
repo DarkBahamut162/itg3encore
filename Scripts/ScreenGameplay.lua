@@ -95,6 +95,18 @@ function AllowOptionsMenu()
 	end
 end
 
+-- We can't use the 'hidden' command on a per-player basis for combo, so
+-- instead take advantage of the X combo offset.  See the [Player] section
+-- in metrics.ini.
+function GetComboXOffset(pn)
+	local number = (pn == PLAYER_1) and "P1" or "P2"
+	if getenv("HideCombo" .. number) then
+		return "SCREEN_WIDTH*2" -- This is enough to hide it on either side
+	else
+		return 0 -- No offset
+	end
+end
+
 function PlayerFullComboed(pn)
 	if GAMESTATE:IsPlayerEnabled(pn) then
 		return STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):FullCombo();

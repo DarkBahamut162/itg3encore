@@ -37,6 +37,53 @@ for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
 	};
 end
 
+t[#t+1] = LoadActor(THEME:GetPathS("OptionsList","opened"))..{
+	OptionsListOpenedMessageCommand=function(self)
+		self:play()
+	end
+}
+
+t[#t+1] = LoadActor(THEME:GetPathS("OptionsList","closed"))..{
+	OptionsListClosedMessageCommand=function(self)
+		self:play()
+	end
+}
+
+t[#t+1] = LoadActor(THEME:GetPathS("OptionsList","left"))..{
+	OptionsListRightMessageCommand=function(self) self:queuecommand("Refresh")end,
+	OptionsListLeftMessageCommand=function(self) self:queuecommand("Refresh")end,
+	OptionsListQuickChangeMessageCommand=function(self) self:queuecommand("Refresh")end,
+	RefreshCommand=function(self)
+		self:play()
+	end
+}
+
+t[#t+1] = LoadActor(THEME:GetPathS("OptionsList","start"))..{
+	OptionsListStartMessageCommand=function(self) self:queuecommand("Refresh")end,
+	OptionsListResetMessageCommand=function(self) self:queuecommand("Refresh")end,
+	RefreshCommand=function(self)
+		self:play()
+	end
+}
+t[#t+1] = LoadActor(THEME:GetPathS("OptionsList","pop"))..{
+	OptionsListPopMessageCommand=function(self) self:queuecommand("Refresh")end,
+	RefreshCommand=function(self)
+		self:play()
+	end
+}
+t[#t+1] = LoadActor(THEME:GetPathS("OptionsList","push"))..{
+	OptionsListPushMessageCommand=function(self) self:queuecommand("Refresh")end,
+	RefreshCommand=function(self)
+		self:play()
+	end
+}
+
+t[#t+1] = LoadActor(THEME:GetPathS("ScreenSelectMusic","select down"))..{
+	SelectMenuOpenedMessageCommand=function(self) self:queuecommand("Refresh")end,
+	RefreshCommand=function(self)
+		self:play()
+	end
+}
 
 t[#t+1] = Def.ActorFrame{
 	LoadActor(THEME:GetPathG('ScreenSelectMusic','BannerFrame'));

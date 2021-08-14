@@ -61,72 +61,6 @@ local t = Def.ActorFrame{
 		};
 	};
 
-	Def.ActorFrame{
-		Name="OptionsListPaneP1";
-		LoadActor(THEME:GetPathG("_pane","elements/_lbase"))..{
-			InitCommand=function(self) self:x(SCREEN_CENTER_X+26):y(SCREEN_BOTTOM):draworder(-5):horizalign(right):vertalign(bottom):diffusealpha(0) end;
-			OnCommand=function(self) self:addx(-SCREEN_WIDTH):decelerate(0.75):addx(SCREEN_WIDTH) end;
-			OffCommand=function(self) self:sleep(0.35):accelerate(0.75):addx(-SCREEN_WIDTH) end;
-			OptionsListOpenedP1MessageCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(1) end;
-			OptionsListClosedP1MessageCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(0) end;
-		};
-		LoadActor(THEME:GetPathG("_pane","elements/_basewidth"))..{
-			InitCommand=function(self) self:x(SCREEN_CENTER_X-174):y(SCREEN_BOTTOM):draworder(-5):horizalign(right):vertalign(bottom):zoomtowidth(SCREEN_WIDTH/2):diffusealpha(0) end;
-			OnCommand=function(self) self:addx(-SCREEN_WIDTH):decelerate(0.75):addx(SCREEN_WIDTH) end;
-			OffCommand=function(self) self:sleep(0.35):accelerate(0.75):addx(-SCREEN_WIDTH) end;
-			OptionsListOpenedP1MessageCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(1) end;
-			OptionsListClosedP1MessageCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(0) end;
-		};
-	};
-	Def.ActorFrame{
-		Name="OptionsListPaneP2";
-		LoadActor(THEME:GetPathG("_pane","elements/_rbase"))..{
-			InitCommand=function(self) self:x(SCREEN_CENTER_X-26):y(SCREEN_BOTTOM):draworder(-5):horizalign(left):vertalign(bottom):diffusealpha(0) end;
-			OnCommand=function(self) self:addx(SCREEN_WIDTH):decelerate(0.75):addx(-SCREEN_WIDTH) end;
-			OffCommand=function(self) self:sleep(0.35):accelerate(0.75):addx(SCREEN_WIDTH) end;
-			OptionsListOpenedP1MessageCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(1) end;
-			OptionsListClosedP1MessageCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(0) end;
-		};
-		LoadActor(THEME:GetPathG("_pane","elements/_basewidth"))..{
-			InitCommand=function(self) self:x(SCREEN_CENTER_X+174):y(SCREEN_BOTTOM):draworder(-5):horizalign(left):vertalign(bottom):zoomtowidth(SCREEN_WIDTH/2):diffusealpha(0) end;
-			OnCommand=function(self) self:addx(SCREEN_WIDTH):decelerate(0.75):addx(-SCREEN_WIDTH) end;
-			OffCommand=function(self) self:sleep(0.35):accelerate(0.75):addx(SCREEN_WIDTH) end;
-			OptionsListOpenedP1MessageCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(1) end;
-			OptionsListClosedP1MessageCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(0) end;
-		};
-	};
-
-	Def.ActorFrame{
-		Name="OptionsListBaseP1";
-		InitCommand=function(self) self:x(SCREEN_CENTER_X-220):y(SCREEN_CENTER_Y+22) end;
-		LoadActor(THEME:GetPathG("options","pane"))..{
-			InitCommand=function(self) self:diffusealpha(0):zoomx(0.6) end;
-			OptionsListOpenedP1MessageCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(1):zoomx(1) end;
-			OptionsListClosedP1MessageCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(0):zoomx(0.6) end;
-		};
-		LoadActor(THEME:GetPathG("options","pane"))..{
-			InitCommand=function(self) self:blend(Blend.Add):diffusealpha(0) end;
-			OptionsListOpenedP1MessageCommand=function(self) self:stoptweening():diffusealpha(0) end;
-			OptionsListClosedP1MessageCommand=function(self) self:stoptweening():diffusealpha(0) end;
-			OptionsListResetP1MessageCommand=function(self) self:stoptweening():diffusealpha(1):linear(0.2):diffusealpha(0) end;
-		};
-	};
-	Def.ActorFrame{
-		Name="OptionsListBaseP2";
-		InitCommand=function(self) self:x(SCREEN_CENTER_X+220):y(SCREEN_CENTER_Y+22) end;
-		LoadActor(THEME:GetPathG("options","pane"))..{
-			InitCommand=function(self) self:zoomx(-1):diffusealpha(0):zoomx(0.6) end;
-			OptionsListOpenedP1MessageCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(1):zoomx(1) end;
-			OptionsListClosedP1MessageCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(0):zoomx(0.6) end;
-		};
-		LoadActor(THEME:GetPathG("options","pane"))..{
-			InitCommand=function(self) self:zoomx(-1):blend(Blend.Add):diffusealpha(0) end;
-			OptionsListOpenedP1MessageCommand=function(self) self:stoptweening():diffusealpha(0) end;
-			OptionsListClosedP1MessageCommand=function(self) self:stoptweening():diffusealpha(0) end;
-			OptionsListResetP1MessageCommand=function(self) self:stoptweening():diffusealpha(1):linear(0.2):diffusealpha(0) end;
-		};
-	};
-
 	-- stepartist crap
 	Def.ActorFrame{
 		Name="StepArtistP1";
@@ -385,37 +319,6 @@ local t = Def.ActorFrame{
 		};
 	};
 
-	Def.ActorFrame{
-		Name="OptionsListBaseP1";
-		InitCommand=function(self) self:x(SCREEN_CENTER_X-220):y(SCREEN_CENTER_Y+22) end;
-		LoadActor(THEME:GetPathG("options","pane"))..{
-			InitCommand=function(self) self:diffusealpha(0):zoomx(0.6) end;
-			OptionsListOpenedP1MessageCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(1):zoomx(1) end;
-			OptionsListClosedP1MessageCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(0):zoomx(0.6) end;
-		};
-		LoadActor(THEME:GetPathG("options","pane"))..{
-			InitCommand=function(self) self:diffusealpha(0):blend(Blend.Add) end;
-			OptionsListOpenedP1MessageCommand=function(self) self:stoptweening():diffusealpha(0) end;
-			OptionsListClosedP1MessageCommand=function(self) self:stoptweening():diffusealpha(0) end;
-			OptionsListResetP1MessageCommand=function(self) self:stoptweening():diffusealpha(1):linear(0.2):diffusealpha(0) end;
-		};
-	};
-	Def.ActorFrame{
-		Name="OptionsListBaseP2";
-		InitCommand=function(self) self:x(SCREEN_CENTER_X+220):y(SCREEN_CENTER_Y+22) end;
-		LoadActor(THEME:GetPathG("options","pane"))..{
-			InitCommand=function(self) self:diffusealpha(0):zoomx(-0.6) end;
-			OptionsListOpenedP2MessageCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(1):zoomx(1) end;
-			OptionsListClosedP2MessageCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(0):zoomx(0.6) end;
-		};
-		LoadActor(THEME:GetPathG("options","pane"))..{
-			InitCommand=function(self) self:diffusealpha(0):blend(Blend.Add):zoomx(-1) end;
-			OptionsListOpenedP2MessageCommand=function(self) self:stoptweening():diffusealpha(0) end;
-			OptionsListClosedP2MessageCommand=function(self) self:stoptweening():diffusealpha(0) end;
-			OptionsListResetP2MessageCommand=function(self) self:stoptweening():diffusealpha(1):linear(0.2):diffusealpha(0) end;
-		};
-	};
-
 	-- panedisplay stuff
 	Def.ActorFrame{
 		Name="PaneDisplayArea";
@@ -451,6 +354,77 @@ local t = Def.ActorFrame{
 		ShowPressStartForOptionsCommand=function(self) self:zoom(1.15):diffusealpha(0):decelerate(0.07):zoom(1):diffusealpha(1) end;
 		ShowEnteringOptionsCommand=function(self) self:stoptweening():zoomy(0):setstate(1):accelerate(0.07):zoomy(1) end;
 		HidePressStartForOptionsCommandCommand=function(self) self:stoptweening():linear(0.3):cropleft(1.3) end;
+	};
+
+	Def.ActorFrame{
+		Name="OptionsListBaseP1";
+		InitCommand=function(self) self:x(SCREEN_CENTER_X-220):y(SCREEN_CENTER_Y+22) end;
+		LoadActor(THEME:GetPathG("options","pane"))..{
+			InitCommand=function(self) self:diffusealpha(0):zoomx(0.6) end;
+			OptionsListOpenedMessageCommand=function(self,params)
+				if params.Player == PLAYER_1 then
+					self:stoptweening():linear(0.2):diffusealpha(1):zoomx(1)
+				end
+			end;
+			OptionsListClosedMessageCommand=function(self,params)
+				if params.Player == PLAYER_1 then
+					self:stoptweening():linear(0.2):diffusealpha(0):zoomx(0.6)
+				end
+			end;
+		};
+		LoadActor(THEME:GetPathG("options","pane"))..{
+			InitCommand=function(self) self:blend(Blend.Add):diffusealpha(0) end;
+			OptionsListOpenedMessageCommand=function(self,params)
+				if params.Player == PLAYER_1 then
+					self:stoptweening():diffusealpha(0)
+				end
+			end;
+			OptionsListClosedMessageCommand=function(self,params)
+				if params.Player == PLAYER_1 then
+					self:stoptweening():diffusealpha(0)
+				end
+			end;
+			OptionsListResetMessageCommand=function(self,params)
+				if params.Player == PLAYER_1 then
+					self:stoptweening():diffusealpha(1):linear(0.2):diffusealpha(0)
+				end
+			end;
+		};
+	};
+	Def.ActorFrame{
+		Name="OptionsListBaseP2";
+		InitCommand=function(self) self:x(SCREEN_CENTER_X+220):y(SCREEN_CENTER_Y+22) end;
+		LoadActor(THEME:GetPathG("options","pane"))..{
+			InitCommand=function(self) self:zoomx(-1):diffusealpha(0):zoomx(0.6) end;
+			OptionsListOpenedMessageCommand=function(self,params)
+				if params.Player == PLAYER_2 then
+					self:stoptweening():linear(0.2):diffusealpha(1):zoomx(1)
+				end
+			end;
+			OptionsListClosedMessageCommand=function(self,params)
+				if params.Player == PLAYER_2 then
+					self:stoptweening():linear(0.2):diffusealpha(0):zoomx(0.6)
+				end
+			end;
+		};
+		LoadActor(THEME:GetPathG("options","pane"))..{
+			InitCommand=function(self) self:zoomx(-1):blend(Blend.Add):diffusealpha(0) end;
+			OptionsListOpenedMessageCommand=function(self,params)
+				if params.Player == PLAYER_2 then
+					self:stoptweening():diffusealpha(0)
+				end
+			end;
+			OptionsListClosedMessageCommand=function(self,params)
+				if params.Player == PLAYER_2 then
+					self:stoptweening():diffusealpha(0)
+				end
+			end;
+			OptionsListResetMessageCommand=function(self,params)
+				if params.Player == PLAYER_2 then
+					self:stoptweening():diffusealpha(1):linear(0.2):diffusealpha(0)
+				end
+			end;
+		};
 	};
 
 	LoadActor(THEME:GetPathB("","_coins"));
