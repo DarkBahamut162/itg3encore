@@ -84,7 +84,7 @@ local t = Def.ActorFrame{
 				if song then
 					text = song:GetDisplayFullTitle()
 				end
-				if course and GAMESTATE:IsCourseMode() then
+				if course then
 					text = course:GetDisplayFullTitle() .. " - " .. text;
 				end
 				self:settext(text);
