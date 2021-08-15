@@ -52,6 +52,7 @@ The following has been re-introduced from OpenITG's ITG3Encore Theme:
 * **Full Combo Splash Animation**
 * **CustomMods** and **ScreenFilter**
 * **Encore Folders**
+* **OptionsList** *(Not yet fully functional)*
 
 * Re-Added stuff in **Course Mode**
   * **Song Time** & **HAS MODS**
