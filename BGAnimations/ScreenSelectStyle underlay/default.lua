@@ -22,5 +22,8 @@ return Def.ActorFrame{
 	LoadActor(THEME:GetPathB("_shared","underlay arrows"))..{
 		InitCommand=function(self) self:x(184) end;
 	};
-	LoadActor(THEME:GetPathB("ScreenWithMenuElements","underlay/_normaltop"));
+
+	LoadActor(THEME:GetPathB("ScreenWithMenuElements","underlay/fore"))..{
+		OnCommand=function(self) self:playcommand("DoOn") end;
+	};
 };

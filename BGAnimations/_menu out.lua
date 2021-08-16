@@ -20,4 +20,12 @@ return Def.ActorFrame{
 		InitCommand=function(self) self:x(SCREEN_CENTER_X-120):CenterY():diffusealpha(0) end;
 		OnCommand=function(self) self:spin():diffusealpha(1) end;
 	};
+	LoadActor("blueflare")..{
+		InitCommand=function(self) self:draworder(115):blend(Blend.Add):Center():zoomx(15):zoomtoheight(SCREEN_HEIGHT+SCREEN_HEIGHT/4) end;
+		OnCommand=function(self) self:decelerate(0.9):zoomtoheight(0):diffusealpha(0.5) end;
+	};
+	LoadActor("_flare")..{
+		InitCommand=function(self) self:blend(Blend.Add):x(SCREEN_CENTER_X-120):CenterY():zoom(0.5) end;
+		OnCommand=function(self) self:linear(1.6):rotationz(460):zoom(0) end;
+	};
 };
