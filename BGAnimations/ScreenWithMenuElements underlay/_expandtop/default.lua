@@ -26,7 +26,7 @@ local t = Def.ActorFrame{
 			:linear(2.5*(180/SCREEN_WIDTH))
 			:cropleft(1):cropright(-0.3*(SCREEN_WIDTH/180))
 			:sleep(0.1+(2.5*((SCREEN_WIDTH-180)/SCREEN_WIDTH))):queuecommand("On") end;
-		OffCommand=function(self) self:accelerate(0.5):addy(-100) end;
+		OffCommand=function(self) self:stoptweening():accelerate(0.5):addy(-100) end;
 	};
 	LoadActor("up2")..{
 		InitCommand=function(self) self:x(SCREEN_LEFT+180):valign(0):halign(0):zoomtowidth(SCREEN_WIDTH-630) end;
@@ -35,7 +35,7 @@ local t = Def.ActorFrame{
 			:linear(2.5*((SCREEN_WIDTH-630)/SCREEN_WIDTH))
 			:cropleft(1):cropright(-0.3*(SCREEN_WIDTH/(SCREEN_WIDTH-630)))
 			:sleep(0.1+(2.5*(180*0.4/SCREEN_WIDTH))+(2.5*(450/SCREEN_WIDTH))):queuecommand("On") end;
-		OffCommand=function(self) self:accelerate(0.5):addy(-100) end;
+		OffCommand=function(self) self:stoptweening():accelerate(0.5):addy(-100) end;
 	};
 	LoadActor("up3")..{
 		InitCommand=function(self) self:x(SCREEN_RIGHT):halign(1):valign(0) end;
@@ -44,14 +44,8 @@ local t = Def.ActorFrame{
 			:linear(2.5*(450/SCREEN_WIDTH))
 			:cropleft(1):cropright(-0.3*(SCREEN_WIDTH/450))
 			:sleep(0.1+(2.5*((SCREEN_WIDTH-450)*0.4/SCREEN_WIDTH))):queuecommand("On") end;
-		OffCommand=function(self) self:accelerate(0.5):addy(-100) end;
+		OffCommand=function(self) self:stoptweening():accelerate(0.5):addy(-100) end;
 	};
-	--[[
-	LoadActor("up")..{
-		OnCommand=function(self) self:CenterX():y(46):zoomtowidth(SCREEN_WIDTH):diffusealpha(0):sleep(0.9):diffusealpha(1):cropleft(-0.3):cropright(1):faderight(0.1):fadeleft(0.1):linear(2.5):cropleft(1):cropright(-0.3):sleep(0.1):queuecommand("On") end;
-		OffCommand=function(self) self:accelerate(0.5):addy(-100) end;
-	};
-	]]--
 };
 
 return t;
