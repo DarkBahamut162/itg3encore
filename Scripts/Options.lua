@@ -36,13 +36,17 @@ function SongMods()
 
 	-- differences 2 (should be "27,24," but timingscale is not in sm5)
 	if pm == 'PlayMode_Regular' then
-		if HasLua(GAMESTATE:GetCurrentSong()) then
+		if HasLua() then
 			options = options .. "20,21,24,"
 		else
 			options = options .. "20,24,"
 		end
 	elseif pm == 'PlayMode_Nonstop' then
-		options = options .. "20,21,24,"
+		if IsCourseSecret() then
+			options = options .. "20,24,"
+		else
+			options = options .. "20,21,24,"
+		end
 	end
 
 	if pm == 'PlayMode_Rave' or pm == 'PlayMode_Oni' then

@@ -19,6 +19,21 @@ if GAMESTATE:GetPlayMode() == "PlayMode_Oni" then
 	end
 end
 
+--Force turn off ShowModsPX if turned on before but denied after
+if getenv("StatsDisplayP1") or getenv("StatsDisplayP2") then
+	if GAMESTATE:IsCourseMode() then
+		if IsCourseSecret() then
+			setenv("StatsDisplayP1",false);
+			setenv("StatsDisplayP2",false);
+		end
+	else
+		if not HasLua() then
+			setenv("StatsDisplayP1",false);
+			setenv("StatsDisplayP2",false);
+		end
+	end
+end
+
 local t = Def.ActorFrame{
 	Def.Quad{
 		OnCommand=function(self) self:FullScreen():diffusecolor(Color.Black) end;

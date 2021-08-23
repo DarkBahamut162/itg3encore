@@ -178,6 +178,19 @@ function HasLuaFG(song)
 	return false;
 end;
 
-function HasLua(song)
+function HasLua()
+	local song = GAMESTATE:GetCurrentSong();
 	return HasLuaBG(song) or HasLuaFG(song);
+end;
+
+function IsCourseSecret()
+	local isSecret = false;
+	
+	for i=1,#GAMESTATE:GetCurrentCourse():GetCourseEntries() do
+		if GAMESTATE:GetCurrentCourse():GetCourseEntry(i-1):IsSecret() then
+			isSecret = true
+		end;
+	end
+
+	return isSecret;
 end;
