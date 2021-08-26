@@ -5,7 +5,8 @@ local function UpdateSingleBPM(self)
 	local songPosition = pState:GetSongPosition()
 	local mods = GAMESTATE:GetSongOptionsObject("ModsLevel_Song")
 	local rate = mods:MusicRate()
-	local bpm = songPosition:GetCurBPS() * 60 * rate
+	local haste = SCREENMAN:GetTopScreen():GetHasteRate() or 1
+	local bpm = songPosition:GetCurBPS() * 60 * rate * haste
 	bpmDisplay:settext( string.format("%03.0f",bpm) )
 end
 
