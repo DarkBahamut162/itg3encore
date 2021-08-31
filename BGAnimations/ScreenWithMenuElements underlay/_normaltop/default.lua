@@ -21,7 +21,8 @@ local t = Def.ActorFrame{
 	};
 	LoadActor("up1")..{
 		InitCommand=function(self) self:x(SCREEN_LEFT):halign(0):valign(0) end;
-		OnCommand=function(self) self:diffusealpha(0):sleep(0.9):diffusealpha(1)
+		OnCommand=function(self) self:queuecommand("Animate") end;
+		AnimateCommand=function(self) self:diffusealpha(0):sleep(0.9):diffusealpha(1)
 			:cropleft(-0.3*(SCREEN_WIDTH/180)):cropright(1):faderight(0.1*(SCREEN_WIDTH/180)):fadeleft(0.1*(SCREEN_WIDTH/180))
 			:linear(2.5*(180/SCREEN_WIDTH))
 			:cropleft(1):cropright(-0.3*(SCREEN_WIDTH/180))
@@ -30,7 +31,8 @@ local t = Def.ActorFrame{
 	};
 	LoadActor("up2")..{
 		InitCommand=function(self) self:x(SCREEN_LEFT+180):valign(0):halign(0):zoomtowidth(SCREEN_WIDTH-630) end;
-		OnCommand=function(self) self:diffusealpha(0):sleep(0.9+(2.5*(180*0.6/SCREEN_WIDTH))):diffusealpha(1)
+		OnCommand=function(self) self:queuecommand("Animate") end;
+		AnimateCommand=function(self) self:diffusealpha(0):sleep(0.9+(2.5*(180*0.6/SCREEN_WIDTH))):diffusealpha(1)
 			:cropleft(-0.3*(SCREEN_WIDTH/(SCREEN_WIDTH-630))):cropright(1):faderight(0.1*(SCREEN_WIDTH/(SCREEN_WIDTH-630))):fadeleft(0.1*(SCREEN_WIDTH/(SCREEN_WIDTH-630)))
 			:linear(2.5*((SCREEN_WIDTH-630)/SCREEN_WIDTH))
 			:cropleft(1):cropright(-0.3*(SCREEN_WIDTH/(SCREEN_WIDTH-630)))
@@ -39,7 +41,8 @@ local t = Def.ActorFrame{
 	};
 	LoadActor("up3")..{
 		InitCommand=function(self) self:x(SCREEN_RIGHT):halign(1):valign(0) end;
-		OnCommand=function(self) self:diffusealpha(0):sleep(0.9+(2.5*((SCREEN_WIDTH-450)*0.6/SCREEN_WIDTH))):diffusealpha(1)
+		OnCommand=function(self) self:queuecommand("Animate") end;
+		AnimateCommand=function(self) self:diffusealpha(0):sleep(0.9+(2.5*((SCREEN_WIDTH-450)*0.6/SCREEN_WIDTH))):diffusealpha(1)
 			:cropleft(-0.3*(SCREEN_WIDTH/450)):cropright(1):faderight(0.1*(SCREEN_WIDTH/450)):fadeleft(0.1*(SCREEN_WIDTH/450))
 			:linear(2.5*(450/SCREEN_WIDTH))
 			:cropleft(1):cropright(-0.3*(SCREEN_WIDTH/450))
