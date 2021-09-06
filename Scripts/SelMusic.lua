@@ -98,18 +98,20 @@ function GetSMParameter(song,prm)
 	local pl=string.lower(prm);
 	local l;
 	while true do
-		l=f:GetLine();
-		local ll=string.lower(l);
-		if string.find(ll,"#notes:.*") or f:AtEOF() then
-			break;
-		--[ja] BOM考慮して .* を頭につける
-		--[en] BOM considerations . * at the beginning
-		elseif (string.find(ll,"^.*#"..pl..":.*") and (not string.find(ll,"^%/%/.*"))) or gl~="" then
-			gl=gl..""..split("//",l)[1];
-			if string.find(ll,".*;") then
+		if f then
+			l=f:GetLine();
+			local ll=string.lower(l);
+			if string.find(ll,"#notes:.*") or f:AtEOF() then
 				break;
+			--[ja] BOM考慮して .* を頭につける
+			--[en] BOM considerations . * at the beginning
+			elseif (string.find(ll,"^.*#"..pl..":.*") and (not string.find(ll,"^%/%/.*"))) or gl~="" then
+				gl=gl..""..split("//",l)[1];
+				if string.find(ll,".*;") then
+					break;
+				end;
 			end;
-		end;
+		end
 	end;
 	local tmp={};
 	if gl=="" then
