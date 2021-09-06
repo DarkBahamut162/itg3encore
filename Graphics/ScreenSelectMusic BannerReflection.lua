@@ -23,7 +23,10 @@ return Def.FadingBanner{
 					if curIdx+1 == numItems-1 then
 						self:LoadRandom()
 					elseif curIdx+1 ~= numItems then
-						-- try to find group banner
+						local path = SONGMAN:GetSongGroupBannerPath( wheel:GetSelectedSection() )
+						if path == "" or path == nil then else
+							self:LoadFromSongGroup(split("/",path)[2])
+						end
 					end
 				end
 			end
