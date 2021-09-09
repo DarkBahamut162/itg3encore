@@ -26,10 +26,13 @@ if getenv("StatsDisplayP1") or getenv("StatsDisplayP2") then
 			setenv("StatsDisplayP1",false);
 			setenv("StatsDisplayP2",false);
 		end
-	else
+	end
+end
+if getenv("ShowModsP1") or getenv("ShowModsP2") then
+	if not GAMESTATE:IsCourseMode() then
 		if not HasLua() then
-			setenv("StatsDisplayP1",false);
-			setenv("StatsDisplayP2",false);
+			setenv("ShowModsP1",false);
+			setenv("ShowModsP2",false);
 		end
 	end
 end
