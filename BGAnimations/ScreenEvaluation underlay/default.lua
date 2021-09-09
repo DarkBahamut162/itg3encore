@@ -25,7 +25,7 @@ local t = Def.ActorFrame{
 		OffCommand=function(self) self:accelerate(0.3):addx(-EvalTweenDistance()) end;
 	};
 	LoadActor("mask")..{
-		InitCommand=function(self) self:x(SCREEN_CENTER_X+200):y(SCREEN_CENTER_Y+151):addx(EvalTweenDistance()):zbuffer(true):blend('BlendMode_NoEffect') end;
+		InitCommand=function(self) self:x(SCREEN_CENTER_X+200):y(SCREEN_CENTER_Y+151):addx(EvalTweenDistance()):zbuffer(true):blend('BlendMode_NoEffect'):zoomx(-1) end;
 		OnCommand=function(self) self:sleep(3):decelerate(0.3):addx(-EvalTweenDistance()) end;
 		OffCommand=function(self) self:accelerate(0.3):addx(EvalTweenDistance()) end;
 	};
