@@ -29,12 +29,8 @@ if numPlayers == 1 then
 
 	local pos;
 	-- [ScreenGameplay] PlayerP#Player*Side(s)X
-	if center1P then
-		pos = SCREEN_CENTER_X
-	else
-		local metricName = string.format("PlayerP%i%sX",pNum,styleType)
-		pos = THEME:GetMetric("ScreenGameplay",metricName)
-	end
+	local metricName = string.format("PlayerP%i%sX",pNum,styleType)
+	pos = THEME:GetMetric("ScreenGameplay",metricName)
 	t[#t+1] = Def.Quad{
 		Name="SinglePlayerFilter";
 		InitCommand=function(self) self:x(pos):CenterY():zoomto(filterWidth,SCREEN_HEIGHT*3):diffusecolor(filterColor):diffusealpha(filterAlpha) end;

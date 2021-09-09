@@ -10,7 +10,8 @@ local background = Def.ActorFrame {
 	OnCommand=function()
 		for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
 			local pX = pname(pn);
-			if PREFSMAN:GetPreference("Center1Player") and GAMESTATE:GetNumPlayersEnabled() == 1 then
+			if (PREFSMAN:GetPreference("Center1Player") and GAMESTATE:GetNumPlayersEnabled() == 1) or
+			ToEnumShortString(GAMESTATE:GetCurrentStyle():GetStyleType()) == "TwoSides" then
 				if pn == PLAYER_2 then
 					SCREENMAN:GetTopScreen():GetChild("Player"..pX):addx(SCREEN_WIDTH/4);
 				else

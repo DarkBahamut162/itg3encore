@@ -4,7 +4,9 @@ local statObject = "single";
 if numPlayers == 1 then
 	-- check for doubles
 	local style = GAMESTATE:GetCurrentStyle()
-	if style:GetStyleType() == 'StyleType_OnePlayerTwoSides' then
+	if style:GetStyleType() == 'StyleType_OnePlayerTwoSides' or
+	GAMESTATE:GetMasterPlayerNumber() == PLAYER_1 and getenv("RotationRightP1") or
+	GAMESTATE:GetMasterPlayerNumber() == PLAYER_2 and getenv("RotationLeftP2") then
 		statObject = "double"
 	else
 		statObject = "single"
