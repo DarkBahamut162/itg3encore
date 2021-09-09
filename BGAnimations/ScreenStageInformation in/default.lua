@@ -19,7 +19,7 @@ if GAMESTATE:GetPlayMode() == "PlayMode_Oni" then
 	end
 end
 
---Force turn off ShowModsPX if turned on before but denied after
+--Force turn off StatsDisplayPX if inside a course with secret songs
 if getenv("StatsDisplayP1") or getenv("StatsDisplayP2") then
 	if GAMESTATE:IsCourseMode() then
 		if IsCourseSecret() then
@@ -28,6 +28,8 @@ if getenv("StatsDisplayP1") or getenv("StatsDisplayP2") then
 		end
 	end
 end
+
+--Force turn off ShowModsPX if turned on before but denied after
 if getenv("ShowModsP1") or getenv("ShowModsP2") then
 	if not GAMESTATE:IsCourseMode() then
 		if not HasLua() then
