@@ -345,6 +345,26 @@ function DisplayCustomModifiersText(pn)	--gives me text of all custom modifiers 
 	local pName = (pn == PLAYER_2 and 2 or 1)
 	pName = string.format("P%i",pName)
 	
+	if getenv("UnderCombo"..pName) and getenv("UnderTapJudgments"..pName) and getenv("UnderHoldJudgments"..pName) then
+		if t == "" then t = "Under All" else t = t .. ", Under All" end
+	else
+		if getenv("UnderTapJudgments"..pName) and getenv("UnderHoldJudgments"..pName) then
+			if t == "" then t = "Under Judgments" else t = t .. ", Under Judgments" end
+		else
+			if getenv("UnderCombo"..pName) then if t == "" then t = "Under Combo" else t = t .. ", Under Combo" end end
+			if getenv("UnderTapJudgments"..pName) then if t == "" then t = "Under Tap Judgments" else t = t .. ", Under Tap Judgments" end end
+			if getenv("UnderHoldJudgments"..pName) then if t == "" then t = "Under Hold Judgments" else t = t .. ", Under Hold Judgments" end end
+		end
+	end
+	
+	if getenv("HideScore"..pName) and getenv("HideLife"..pName) and getenv("HideCombo"..pName) then
+		if t == "" then t = "Hide All" else t = t .. ", Hide All" end
+	else
+		if getenv("HideScore"..pName) then if t == "" then t = "Hide Score" else t = t .. ", Hide Score" end end
+		if getenv("HideLife"..pName) then if t == "" then t = "Hide Life" else t = t .. ", Hide Life" end end
+		if getenv("HideCombo"..pName) then if t == "" then t = "Hide Combo" else t = t .. ", Hide Combo" end end
+	end
+
 	if getenv("RotationLeft"..pName) then if t == "" then t = "Rotated Left" else t = t .. ", Rotated Left" end end
 	if getenv("RotationRight"..pName) then if t == "" then t = "Rotated Right" else t = t .. ", Rotated Right" end end
 	if getenv("RotationUpsideDown"..pName) then if t == "" then t = "Rotated Downward" else t = t .. ", Rotated Downward" end end
@@ -356,6 +376,9 @@ function DisplayCustomModifiersText(pn)	--gives me text of all custom modifiers 
 	elseif getenv("EffectSpinReverse"..pName) then if t == "" then t = "Spin Left" else t = t .. ", Spin Left" end 
 	elseif getenv("EffectSpin"..pName) then if t == "" then t = "Spin Right" else t = t .. ", Spin Right" end 
 	elseif getenv("EffectVibrate"..pName) then if t == "" then t = "Vibrate" else t = t .. ", Vibrate" end end
+
+	if getenv("ShowMods"..pName) then if t == "" then t = "Show Mods" else t = t .. ", Show Mods" end end
+	if getenv("StatsDisplay"..pName) then if t == "" then t = "Stats Display" else t = t .. ", Stats Display" end end
 
 	if getenv("ScreenFilter"..pName) == 0.5 then if t == "" then t = "Dark Filter" else t = t .. ", Dark Filter" end end
 	if getenv("ScreenFilter"..pName) == 0.65 then if t == "" then t = "Darker Filter" else t = t .. ", Darker Filter" end end
