@@ -8,18 +8,12 @@ return LoadFont("_r bold bevel numbers")..{
 				local trail = GAMESTATE:GetCurrentTrail(GAMESTATE:GetMasterPlayerNumber());
 				if trail then
 					length = TrailUtil.GetTotalSeconds(trail);
-				else
-					length = 0.0;
 				end;
-			else
-				length = 0.0;
 			end;
 		else
 			curSelection = GAMESTATE:GetCurrentSong();
 			if curSelection then
 				length = curSelection:MusicLengthSeconds();
-			else
-				length = 0.0;
 			end;
 		end;
 		self:settext( SecondsToMMSSMsMs(length) );
