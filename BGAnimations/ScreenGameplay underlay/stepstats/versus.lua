@@ -9,7 +9,7 @@ return Def.ActorFrame{
 		Def.ActorFrame{
 			Name="PlayerP1";
 			InitCommand=function(self) self:x(SCREEN_LEFT+20-SCREEN_WIDTH/2):addx(-100) end;
-			BeginCommand=function(self) self:visible(GAMESTATE:IsHumanPlayer(PLAYER_1) and getenv("StatsDisplayP1")) end;
+			BeginCommand=function(self) self:visible(GAMESTATE:IsHumanPlayer(PLAYER_1) and getenv("StatsDisplayP1") or false) end;
 			OnCommand=function(self) self:sleep(0.5):decelerate(0.8):addx(100) end;
 			OffCommand=function(self) if AnyPlayerFullComboed() then self:sleep(1) end; self:accelerate(0.8):addx(-100) end;
 
@@ -106,7 +106,7 @@ return Def.ActorFrame{
 		Def.ActorFrame{
 			Name="PlayerP2";
 			InitCommand=function(self) self:x(SCREEN_RIGHT-20-SCREEN_WIDTH/2):addx(100) end;
-			BeginCommand=function(self) self:visible(GAMESTATE:IsHumanPlayer(PLAYER_2) and getenv("StatsDisplayP2")) end;
+			BeginCommand=function(self) self:visible(GAMESTATE:IsHumanPlayer(PLAYER_2) and getenv("StatsDisplayP2") or false) end;
 			OnCommand=function(self) self:sleep(0.5):decelerate(0.8):addx(-100) end;
 			OffCommand=function(self) if AnyPlayerFullComboed() then self:sleep(1) end; self:accelerate(0.8):addx(100) end;
 
@@ -399,7 +399,7 @@ return Def.ActorFrame{
 	Def.ActorFrame{
 		Name="Labels";
 		InitCommand=function(self) self:y(GAMESTATE:GetPlayMode() == 'PlayMode_Rave' and -10 or 0):addy(-100) end;
-		BeginCommand=function(self) self:visible(getenv("StatsDisplayP1") or getenv("StatsDisplayP2")) end;
+		BeginCommand=function(self) self:visible(getenv("StatsDisplayP1") or getenv("StatsDisplayP2") or false) end;
 		OnCommand=function(self) self:sleep(0.5):decelerate(0.8):addy(100) end;
 		OffCommand=function(self) if AnyPlayerFullComboed() then self:sleep(1) end; self:accelerate(0.8):addy(-100) end;
 		LoadFont("ScreenGameplay judgment")..{
@@ -416,7 +416,7 @@ return Def.ActorFrame{
 	Def.ActorFrame{
 		Name="NumbersP1";
 		InitCommand=function(self) self:y(GAMESTATE:GetPlayMode() == 'PlayMode_Rave' and -10 or 0):addy(-100) end;
-		BeginCommand=function(self) self:visible(GAMESTATE:IsHumanPlayer(PLAYER_1) and getenv("StatsDisplayP1")) end;
+		BeginCommand=function(self) self:visible(GAMESTATE:IsHumanPlayer(PLAYER_1) and getenv("StatsDisplayP1") or false) end;
 		OnCommand=function(self) self:sleep(0.5):decelerate(0.8):addy(100) end;
 		OffCommand=function(self) if AnyPlayerFullComboed() then self:sleep(1) end; self:accelerate(0.8):addy(-100) end;
 		StepMessageCommand=function(self,p)
@@ -455,7 +455,7 @@ return Def.ActorFrame{
 	Def.ActorFrame{
 		Name="NumbersP2";
 		InitCommand=function(self) self:y(GAMESTATE:GetPlayMode() == 'PlayMode_Rave' and -10 or 0):addy(-100) end;
-		BeginCommand=function(self) self:visible(GAMESTATE:IsHumanPlayer(PLAYER_2) and getenv("StatsDisplayP2")) end;
+		BeginCommand=function(self) self:visible(GAMESTATE:IsHumanPlayer(PLAYER_2) and getenv("StatsDisplayP2") or false) end;
 		OnCommand=function(self) self:sleep(0.5):decelerate(0.8):addy(100) end;
 		OffCommand=function(self) if AnyPlayerFullComboed() then self:sleep(1) end; self:accelerate(0.8):addy(-100) end;
 		StepMessageCommand=function(self,p)

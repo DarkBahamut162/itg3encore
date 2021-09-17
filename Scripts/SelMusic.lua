@@ -137,47 +137,61 @@ function GetSMParameter(song,prm)
 end;
 
 function HasLuaBG(song)
-	local var=GetSMParameter(song,"bgchanges");
-	local prm;
-	if var~="" then
-		prm=split(",",var);
-		for i=1,#prm do
-			prm[i] = split("=",prm[i])[2];
-			if string.find(prm[i],".lua",0,true) then 
-				return true
-			elseif string.find(prm[i],".",0,true) then else
-				if string.find(prm[i],"-nosongbg-",0,true)
-				or string.find(prm[i],"-random-",0,true)
-				or string.find(prm[i],"songbackground",0,true)
-				or prm[i] == "" then else
-					return true;
+	local var = GetSMParameter(song,"bgchanges")
+	local prm, cur
+	if var ~= "" then
+		prm = split(",",var)
+		if prm ~= "" then
+			for i=1,#prm do
+				prm[i] = split("=",prm[i])
+				if #prm[i] >= 2 then
+					cur = prm[i][2]
+					if cur ~= "" then
+						if string.find(cur,".lua",0,true) then 
+							return true
+						elseif string.find(cur,".",0,true) then else
+							if string.find(cur,"-nosongbg-",0,true)
+							or string.find(cur,"-random-",0,true)
+							or string.find(cur,"songbackground",0,true)
+							or cur == "" then else
+								return true
+							end
+						end
+					end
 				end
-			end;
-		end;
-	end;
-	return false;
+			end
+		end
+	end
+	return false
 end;
 
 function HasLuaFG(song)
-	local var=GetSMParameter(song,"fgchanges");
-	local prm;
-	if var~="" then
-		prm=split(",",var);
-		for i=1,#prm do
-			prm[i] = split("=",prm[i])[2];
-			if string.find(prm[i],".lua",0,true) then 
-				return true
-			elseif string.find(prm[i],".",0,true) then else
-				if string.find(prm[i],"-nosongbg-",0,true)
-				or string.find(prm[i],"-random-",0,true)
-				or string.find(prm[i],"songbackground",0,true)
-				or prm[i] == "" then else
-					return true;
+	local var = GetSMParameter(song,"fgchanges")
+	local prm, cur
+	if var ~= "" then
+		prm = split(",",var)
+		if prm ~= "" then
+			for i=1,#prm do
+				prm[i] = split("=",prm[i])
+				if #prm[i] >= 2 then
+					cur = prm[i][2]
+					if cur ~= "" then
+						if string.find(prm[i],".lua",0,true) then 
+							return true
+						elseif string.find(prm[i],".",0,true) then else
+							if string.find(prm[i],"-nosongbg-",0,true)
+							or string.find(prm[i],"-random-",0,true)
+							or string.find(prm[i],"songbackground",0,true)
+							or prm[i] == "" then else
+								return true
+							end
+						end
+					end
 				end
-			end;
-		end;
-	end;
-	return false;
+			end
+		end
+	end
+	return false
 end;
 
 function HasLua()
