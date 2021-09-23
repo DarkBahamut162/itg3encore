@@ -22,7 +22,12 @@ return Def.BitmapText{
 		end
 		self:diffuse(PlayerColor(player)):addy(-100):sleep(0.5):decelerate(0.8):addy(100) end;
 	OffCommand=function(self) if AnyPlayerFullComboed() then self:sleep(1); end self:accelerate(0.8); self:addy(-100); end;
-	JudgmentMessageCommand=function(self) self:queuecommand("RedrawScore") end,
+	JudgmentMessageCommand=function(self,params)
+		if params.TapNoteScore and params.TapNoteScore ~= 'TapNoteScore_Invalid'
+			and params.TapNoteScore ~= 'TapNoteScore_None' then
+			self:queuecommand("RedrawScore")
+		end
+	end,
 	RedrawScoreCommand=function(self)
 		local dp = STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetPercentDancePoints()
 		local percent = FormatPercentScore( dp ):sub(1,-2)
