@@ -136,9 +136,10 @@ function GetSMParameter(song,prm)
 	return tmp[1];
 end;
 
-function HasLuaBG(song)
-	local var = GetSMParameter(song,"bgchanges")
+function HasLua(song,changes)
+	local var = GetSMParameter(song,changes)
 	local prm, cur
+	local output = false
 	if var ~= "" then
 		prm = split(",",var)
 		if prm ~= "" then
@@ -148,13 +149,11 @@ function HasLuaBG(song)
 					cur = prm[i][2]
 					if cur ~= "" then
 						if string.find(cur,".lua",0,true) then 
-							return true
+							output = true
 						elseif string.find(cur,".",0,true) then else
-							if string.find(cur,"-nosongbg-",0,true)
-							or string.find(cur,"-random-",0,true)
-							or string.find(cur,"songbackground",0,true)
-							or cur == "" then else
-								return true
+							if string.find(cur,"-nosongbg-",0,true) or string.find(cur,"-random-",0,true)
+								or string.find(cur,"songbackground",0,true) or cur == "" then else
+								output = true
 							end
 						end
 					end
@@ -162,12 +161,13 @@ function HasLuaBG(song)
 			end
 		end
 	end
-	return false
+	return output
 end;
 
-function HasLuaFG(song)
-	local var = GetSMParameter(song,"fgchanges")
+function HasImage(song,changes)
+	local var = GetSMParameter(song,changes)
 	local prm, cur
+	local output = false
 	if var ~= "" then
 		prm = split(",",var)
 		if prm ~= "" then
@@ -176,27 +176,58 @@ function HasLuaFG(song)
 				if #prm[i] >= 2 then
 					cur = prm[i][2]
 					if cur ~= "" then
-						if string.find(prm[i],".lua",0,true) then 
-							return true
-						elseif string.find(prm[i],".",0,true) then else
-							if string.find(prm[i],"-nosongbg-",0,true)
-							or string.find(prm[i],"-random-",0,true)
-							or string.find(prm[i],"songbackground",0,true)
-							or prm[i] == "" then else
-								return true
-							end
-						end
+						if string.find(cur,".jpg",0,true) or string.find(cur,".jpeg",0,true) or
+							string.find(cur,".gif",0,true) or string.find(cur,".png",0,true) or
+							string.find(cur,".bmp",0,true) then
+							output = true
+						end;
 					end
 				end
 			end
 		end
 	end
-	return false
+	return output
 end;
 
-function HasLua()
+function HasVideo(song,changes)
+	local var = GetSMParameter(song,changes)
+	local prm, cur
+	local output = false
+	if var ~= "" then
+		prm = split(",",var)
+		if prm ~= "" then
+			for i=1,#prm do
+				prm[i] = split("=",prm[i])
+				if #prm[i] >= 2 then
+					cur = prm[i][2]
+					if cur ~= "" then
+						if string.find(cur,".ogv",0,true) or string.find(cur,".avi",0,true) or
+							string.find(cur,".mov",0,true) or string.find(cur,".mpg",0,true) or
+							string.find(cur,".mpeg",0,true) or string.find(cur,".wmv",0,true) or
+							string.find(cur,".flv",0,true) or string.find(cur,".mp4",0,true) then
+							output = true
+						end;
+					end
+				end
+			end
+		end
+	end
+	return output
+end;
+
+function HasLuaCheck()
 	local song = GAMESTATE:GetCurrentSong();
-	return HasLuaBG(song) or HasLuaFG(song);
+	return HasLua(song,"bgchanges") or HasLua(song,"fgchanges");
+end;
+
+function HasVideoCheck()
+	local song = GAMESTATE:GetCurrentSong();
+	return HasVideo(song,"bgchanges") or HasVideo(song,"fgchanges");
+end;
+
+function HasImageCheck()
+	local song = GAMESTATE:GetCurrentSong();
+	return HasImage(song,"bgchanges") or HasImage(song,"fgchanges");
 end;
 
 function IsCourseSecret()

@@ -32,12 +32,12 @@ return Def.ActorFrame{
 			else
 				curSelection = GAMESTATE:GetCurrentSong();
 				if curSelection then
-					if HasLua(curSelection) then
+					if HasLuaCheck() then
 						text = "HAS LUA"
 					end;
 				end;
 			end;
-			self:settext( text );
+			self:settext( text ):valign(1);
 		end;
 	};
 };

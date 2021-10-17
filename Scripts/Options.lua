@@ -36,7 +36,7 @@ function SongMods()
 
 	-- differences 2 (should be "27,24," but timingscale is not in sm5)
 	if pm == 'PlayMode_Regular' then
-		if HasLua() then
+		if HasLuaCheck() then
 			options = options .. "20,21,24,"
 		else
 			options = options .. "20,24,"

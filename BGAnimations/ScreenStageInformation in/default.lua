@@ -32,7 +32,7 @@ end
 --Force turn off ShowModsPX if turned on before but denied after
 if getenv("ShowModsP1") or getenv("ShowModsP2") then
 	if not GAMESTATE:IsCourseMode() then
-		if not HasLua() then
+		if not HasLuaCheck() then
 			setenv("ShowModsP1",false);
 			setenv("ShowModsP2",false);
 		end
