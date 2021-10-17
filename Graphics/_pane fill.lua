@@ -1,6 +1,23 @@
 local player = ...
 assert(player,"[Graphics/_pane fill] player required")
 
+local stats = {
+	{0,	25,	50,	100,200},	--jumps
+	{0,	25,	50,	100,150},	--holds
+	{0,	25,	50,	90,	140},	--mines
+	{0,	15,	30,	45,	60},	--hands
+	{0,	10,	20,	30,	40},	--rolls
+};
+
+local colors = {
+	{0.4,	0.4,	0.4},	--gray
+	{0,		1,		0},		--green
+	{1,		1,		0},		--yellow
+	{1,		0.5,	0},		--orange
+	{1,		0,		0},		--red
+	{0,		0.75,	1},		--cyan
+};
+
 return Def.ActorFrame{
 	Def.Quad{
 		Name="Jumps";
@@ -24,18 +41,18 @@ return Def.ActorFrame{
 			if steps then
 				local rv = steps:GetRadarValues(player)
 				local val = rv:GetValue('RadarCategory_Jumps')
-				if val == 0 then self:diffusecolor( color(".4,0.4,0.4,1") ) yZoom = 0
-				elseif val <= 24 * numSongs then self:diffusecolor( color("#00FF00FF") ) yZoom = 0.2*24
-				elseif val <= 49 * numSongs then self:diffusecolor( color("#FFFF00FF") ) yZoom = 0.4*24
-				elseif val <= 99 * numSongs then self:diffusecolor( color("#FF8800FF") ) yZoom = 0.6*24
-				elseif val <= 199 * numSongs then self:diffusecolor( color("#FF0000FF") ) yZoom = 0.8*24
-				else self:diffusecolor( color("#00C0FFFF") ) yZoom = 24
+				if val == stats[1][1] then self:diffusecolor( color(colors[1][1]..","..colors[1][2]..","..colors[1][3]..",1") ) yZoom = 0
+				elseif val <= stats[1][2] * numSongs then self:diffusecolor( color(colors[2][1]..","..colors[2][2]..","..colors[2][3]..",1") ) yZoom = 0.2*24
+				elseif val <= stats[1][3] * numSongs then self:diffusecolor( color(colors[3][1]..","..colors[3][2]..","..colors[3][3]..",1") ) yZoom = 0.4*24
+				elseif val <= stats[1][4] * numSongs then self:diffusecolor( color(colors[4][1]..","..colors[4][2]..","..colors[4][3]..",1") ) yZoom = 0.6*24
+				elseif val <= stats[1][5] * numSongs then self:diffusecolor( color(colors[5][1]..","..colors[5][2]..","..colors[5][3]..",1") ) yZoom = 0.8*24
+				else self:diffusecolor( color(colors[6][1]..","..colors[6][2]..","..colors[6][3]..",1") ) yZoom = 24
 				end
 			else
 				yZoom = 0
 			end
-			self:finishtweening()
-			self:decelerate(0.1)
+			--self:finishtweening()
+			self:decelerate(0.1-self:GetTweenTimeLeft())
 			self:zoomy(yZoom)
 		end;
 		CurrentSongChangedMessageCommand=function(self) self:playcommand("Set") end;
@@ -75,18 +92,18 @@ return Def.ActorFrame{
 			if steps then
 				local rv = steps:GetRadarValues(player)
 				local val = rv:GetValue('RadarCategory_Holds')
-				if val == 0 then self:diffusecolor( color(".4,0.4,0.4,1") ) yZoom = 0
-				elseif val <= 24 * numSongs then self:diffusecolor( color("#00FF00FF") ) yZoom = 0.2*24
-				elseif val <= 49 * numSongs then self:diffusecolor( color("#FFFF00FF") ) yZoom = 0.4*24
-				elseif val <= 99 * numSongs then self:diffusecolor( color("#FF8800FF") ) yZoom = 0.6*24
-				elseif val <= 150 * numSongs then self:diffusecolor( color("#FF0000FF") ) yZoom = 0.8*24
-				else self:diffusecolor( color("#00C0FFFF") ) yZoom = 24
+				if val == stats[2][1] then self:diffusecolor( color(colors[1][1]..","..colors[1][2]..","..colors[1][3]..",1") ) yZoom = 0
+				elseif val <= stats[2][2] * numSongs then self:diffusecolor( color(colors[2][1]..","..colors[2][2]..","..colors[2][3]..",1") ) yZoom = 0.2*24
+				elseif val <= stats[2][3] * numSongs then self:diffusecolor( color(colors[3][1]..","..colors[3][2]..","..colors[3][3]..",1") ) yZoom = 0.4*24
+				elseif val <= stats[2][4] * numSongs then self:diffusecolor( color(colors[4][1]..","..colors[4][2]..","..colors[4][3]..",1") ) yZoom = 0.6*24
+				elseif val <= stats[2][5] * numSongs then self:diffusecolor( color(colors[5][1]..","..colors[5][2]..","..colors[5][3]..",1") ) yZoom = 0.8*24
+				else self:diffusecolor( color(colors[6][1]..","..colors[6][2]..","..colors[6][3]..",1") ) yZoom = 24
 				end
 			else
 				yZoom = 0
 			end
-			self:finishtweening()
-			self:decelerate(0.1)
+			--self:finishtweening()
+			self:decelerate(0.1-self:GetTweenTimeLeft())
 			self:zoomy(yZoom)
 		end;
 		CurrentSongChangedMessageCommand=function(self) self:playcommand("Set") end;
@@ -126,18 +143,18 @@ return Def.ActorFrame{
 			if steps then
 				local rv = steps:GetRadarValues(player)
 				local val = rv:GetValue('RadarCategory_Mines')
-				if val == 0 then self:diffusecolor( color(".4,0.4,0.4,1") ) yZoom = 0
-				elseif val <= 24 * numSongs then self:diffusecolor( color("#00FF00FF") ) yZoom = 0.2*24
-				elseif val <= 49 * numSongs then self:diffusecolor( color("#FFFF00FF") ) yZoom = 0.4*24
-				elseif val <= 89 * numSongs then self:diffusecolor( color("#FF8800FF") ) yZoom = 0.6*24
-				elseif val <= 139 * numSongs then self:diffusecolor( color("#FF0000FF") ) yZoom = 0.8*24
-				else self:diffusecolor( color("#00C0FFFF") ) yZoom = 24
+				if val == stats[3][1] then self:diffusecolor( color(colors[1][1]..","..colors[1][2]..","..colors[1][3]..",1") ) yZoom = 0
+				elseif val <= stats[3][2] * numSongs then self:diffusecolor( color(colors[2][1]..","..colors[2][2]..","..colors[2][3]..",1") ) yZoom = 0.2*24
+				elseif val <= stats[3][3] * numSongs then self:diffusecolor( color(colors[3][1]..","..colors[3][2]..","..colors[3][3]..",1") ) yZoom = 0.4*24
+				elseif val <= stats[3][4] * numSongs then self:diffusecolor( color(colors[4][1]..","..colors[4][2]..","..colors[4][3]..",1") ) yZoom = 0.6*24
+				elseif val <= stats[3][5] * numSongs then self:diffusecolor( color(colors[5][1]..","..colors[5][2]..","..colors[5][3]..",1") ) yZoom = 0.8*24
+				else self:diffusecolor( color(colors[6][1]..","..colors[6][2]..","..colors[6][3]..",1") ) yZoom = 24
 				end
 			else
 				yZoom = 0
 			end
-			self:finishtweening()
-			self:decelerate(0.1)
+			--self:finishtweening()
+			self:decelerate(0.1-self:GetTweenTimeLeft())
 			self:zoomy(yZoom)
 		end;
 		CurrentSongChangedMessageCommand=function(self) self:playcommand("Set") end;
@@ -177,18 +194,18 @@ return Def.ActorFrame{
 			if steps then
 				local rv = steps:GetRadarValues(player)
 				local val = rv:GetValue('RadarCategory_Hands')
-				if val == 0 then self:diffusecolor( color(".4,0.4,0.4,1") ) yZoom = 0
-				elseif val <= 14 * numSongs then self:diffusecolor( color("#00FF00FF") ) yZoom = 0.2*24
-				elseif val <= 29 * numSongs then self:diffusecolor( color("#FFFF00FF") ) yZoom = 0.4*24
-				elseif val <= 39 * numSongs then self:diffusecolor( color("#FF8800FF") ) yZoom = 0.6*24
-				elseif val <= 51 * numSongs then self:diffusecolor( color("#FF0000FF") ) yZoom = 0.8*24
-				else self:diffusecolor( color("#00C0FFFF") ) yZoom = 24
+				if val == stats[4][1] then self:diffusecolor( color(colors[1][1]..","..colors[1][2]..","..colors[1][3]..",1") ) yZoom = 0
+				elseif val <= stats[4][2] * numSongs then self:diffusecolor( color(colors[2][1]..","..colors[2][2]..","..colors[2][3]..",1") ) yZoom = 0.2*24
+				elseif val <= stats[4][3] * numSongs then self:diffusecolor( color(colors[3][1]..","..colors[3][2]..","..colors[3][3]..",1") ) yZoom = 0.4*24
+				elseif val <= stats[4][4] * numSongs then self:diffusecolor( color(colors[4][1]..","..colors[4][2]..","..colors[4][3]..",1") ) yZoom = 0.6*24
+				elseif val <= stats[4][5] * numSongs then self:diffusecolor( color(colors[5][1]..","..colors[5][2]..","..colors[5][3]..",1") ) yZoom = 0.8*24
+				else self:diffusecolor( color(colors[6][1]..","..colors[6][2]..","..colors[6][3]..",1") ) yZoom = 24
 				end
 			else
 				yZoom = 0
 			end
-			self:finishtweening()
-			self:decelerate(0.1)
+			--self:finishtweening()
+			self:decelerate(0.1-self:GetTweenTimeLeft())
 			self:zoomy(yZoom)
 		end;
 		CurrentSongChangedMessageCommand=function(self) self:playcommand("Set") end;
@@ -228,18 +245,18 @@ return Def.ActorFrame{
 			if steps then
 				local rv = steps:GetRadarValues(player)
 				local val = rv:GetValue('RadarCategory_Rolls')
-				if val == 0 then self:diffusecolor( color(".4,0.4,0.4,1") ) yZoom = 0
-				elseif val <=  9 * numSongs then self:diffusecolor( color("#00FF00FF") ) yZoom = 0.2*24
-				elseif val <= 19 * numSongs then self:diffusecolor( color("#FFFF00FF") ) yZoom = 0.4*24
-				elseif val <= 29 * numSongs then self:diffusecolor( color("#FF8800FF") ) yZoom = 0.6*24
-				elseif val <= 39 * numSongs then self:diffusecolor( color("#FF0000FF") ) yZoom = 0.8*24
-				else self:diffusecolor( color("#00C0FFFF") ) yZoom = 24
+				if val == stats[5][1] then self:diffusecolor( color(colors[1][1]..","..colors[1][2]..","..colors[1][3]..",1") ) yZoom = 0
+				elseif val <= stats[5][2] * numSongs then self:diffusecolor( color(colors[2][1]..","..colors[2][2]..","..colors[2][3]..",1") ) yZoom = 0.2*24
+				elseif val <= stats[5][3] * numSongs then self:diffusecolor( color(colors[3][1]..","..colors[3][2]..","..colors[3][3]..",1") ) yZoom = 0.4*24
+				elseif val <= stats[5][4] * numSongs then self:diffusecolor( color(colors[4][1]..","..colors[4][2]..","..colors[4][3]..",1") ) yZoom = 0.6*24
+				elseif val <= stats[5][5] * numSongs then self:diffusecolor( color(colors[5][1]..","..colors[5][2]..","..colors[5][3]..",1") ) yZoom = 0.8*24
+				else self:diffusecolor( color(colors[6][1]..","..colors[6][2]..","..colors[6][3]..",1") ) yZoom = 24
 				end
 			else
 				yZoom = 0
 			end
-			self:finishtweening()
-			self:decelerate(0.1)
+			--self:finishtweening()
+			self:decelerate(0.1-self:GetTweenTimeLeft())
 			self:zoomy(yZoom)
 		end;
 		CurrentSongChangedMessageCommand=function(self) self:playcommand("Set") end;

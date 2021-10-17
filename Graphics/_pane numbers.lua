@@ -1,6 +1,23 @@
 local player = ...
 assert(player,"[Graphics/ScreenSelectMusic PaneNumbers] player required")
 
+local stats = {
+	{0,	25,	50,	100,200},	--jumps
+	{0,	25,	50,	100,150},	--holds
+	{0,	25,	50,	90,	140},	--mines
+	{0,	15,	30,	45,	60},	--hands
+	{0,	10,	20,	30,	40},	--rolls
+}
+
+local colors = {
+	{0.4,	0.4,	0.4},	--gray
+	{0,		1,		0},		--green
+	{1,		1,		0},		--yellow
+	{1,		0.5,	0},		--orange
+	{1,		0,		0},		--red
+	{0,		0.75,	1},		--cyan
+}
+
 return Def.ActorFrame{
 	LoadFont("smallnumbers")..{
 		Name="Jumps";
@@ -38,13 +55,13 @@ return Def.ActorFrame{
 			if song or course then
 				self:visible(true)
 				-- coloring
-				local itemColor = color(".4,0.4,0.4,1")
-				if num == 0 then itemColor = color(".4,0.4,0.4,1")
-				elseif num <= 24 * numSongs then itemColor = color("0,1,0,1")
-				elseif num <= 49 * numSongs then itemColor = color("1,1,0,1")
-				elseif num <= 99 * numSongs then itemColor = color("1,0.53,0,1")
-				elseif num <= 199 * numSongs then itemColor = color("1,0,0,1")
-				else itemColor = color("0,0.75,1,1")
+				local itemColor = color(colors[1][1]..","..colors[1][2]..","..colors[1][3]..",1")
+				if num == stats[1][1] then itemColor = color(colors[1][1]..","..colors[1][2]..","..colors[1][3]..",1")
+				elseif num <= stats[1][2] * numSongs then itemColor = color(colors[2][1]..","..colors[2][2]..","..colors[2][3]..",1")
+				elseif num <= stats[1][3] * numSongs then itemColor = color(colors[3][1]..","..colors[3][2]..","..colors[3][3]..",1")
+				elseif num <= stats[1][4] * numSongs then itemColor = color(colors[4][1]..","..colors[4][2]..","..colors[4][3]..",1")
+				elseif num <= stats[1][5] * numSongs then itemColor = color(colors[5][1]..","..colors[5][2]..","..colors[5][3]..",1")
+				else itemColor = color(colors[6][1]..","..colors[6][2]..","..colors[6][3]..",1")
 				end
 				num = string.format("%03i",num)
 				self:settext(num)
@@ -93,13 +110,13 @@ return Def.ActorFrame{
 			if song or course then
 				self:visible(true)
 				-- coloring
-				local itemColor = color(".4,0.4,0.4,1")
-				if num == 0 then itemColor = color(".4,0.4,0.4,1")
-				elseif num <= 24 * numSongs then itemColor = color("0,1,0,1")
-				elseif num <= 49 * numSongs then itemColor = color("1,1,0,1")
-				elseif num <= 99 * numSongs then itemColor = color("1,0.53,0,1")
-				elseif num <= 150 * numSongs then itemColor = color("1,0,0,1")
-				else itemColor = color("0,0.75,1,1")
+				local itemColor = color(colors[1][1]..","..colors[1][2]..","..colors[1][3]..",1")
+				if num == stats[2][1] then itemColor = color(colors[1][1]..","..colors[1][2]..","..colors[1][3]..",1")
+				elseif num <= stats[2][2] * numSongs then itemColor = color(colors[2][1]..","..colors[2][2]..","..colors[2][3]..",1")
+				elseif num <= stats[2][3] * numSongs then itemColor = color(colors[3][1]..","..colors[3][2]..","..colors[3][3]..",1")
+				elseif num <= stats[2][4] * numSongs then itemColor = color(colors[4][1]..","..colors[4][2]..","..colors[4][3]..",1")
+				elseif num <= stats[2][5] * numSongs then itemColor = color(colors[5][1]..","..colors[5][2]..","..colors[5][3]..",1")
+				else itemColor = color(colors[6][1]..","..colors[6][2]..","..colors[6][3]..",1")
 				end
 				num = string.format("%03i",num)
 				self:settext(num)
@@ -148,13 +165,13 @@ return Def.ActorFrame{
 			if song or course then
 				self:visible(true)
 				-- coloring
-				local itemColor = color(".4,0.4,0.4,1")
-				if num == 0 then itemColor = color(".4,0.4,0.4,1")
-				elseif num <= 24 * numSongs then itemColor = color("0,1,0,1")
-				elseif num <= 49 * numSongs then itemColor = color("1,1,0,1")
-				elseif num <= 89 * numSongs then itemColor = color("1,0.53,0,1")
-				elseif num <= 139 * numSongs then itemColor = color("1,0,0,1")
-				else itemColor = color("0,0.75,1,1")
+				local itemColor = color(colors[1][1]..","..colors[1][2]..","..colors[1][3]..",1")
+				if num == stats[3][1] then itemColor = color(colors[1][1]..","..colors[1][2]..","..colors[1][3]..",1")
+				elseif num <= stats[3][2] * numSongs then itemColor = color(colors[2][1]..","..colors[2][2]..","..colors[2][3]..",1")
+				elseif num <= stats[3][3] * numSongs then itemColor = color(colors[3][1]..","..colors[3][2]..","..colors[3][3]..",1")
+				elseif num <= stats[3][4] * numSongs then itemColor = color(colors[4][1]..","..colors[4][2]..","..colors[4][3]..",1")
+				elseif num <= stats[3][5] * numSongs then itemColor = color(colors[5][1]..","..colors[5][2]..","..colors[5][3]..",1")
+				else itemColor = color(colors[6][1]..","..colors[6][2]..","..colors[6][3]..",1")
 				end
 				num = string.format("%03i",num)
 				self:settext(num)
@@ -203,13 +220,13 @@ return Def.ActorFrame{
 			if song or course then
 				self:visible(true)
 				-- coloring
-				local itemColor = color(".4,0.4,0.4,1")
-				if num == 0 then itemColor = color(".4,0.4,0.4,1")
-				elseif num <= 14 * numSongs then itemColor = color("0,1,0,1")
-				elseif num <= 29 * numSongs then itemColor = color("1,1,0,1")
-				elseif num <= 39 * numSongs then itemColor = color("1,0.53,0,1")
-				elseif num <= 51 * numSongs then itemColor = color("1,0,0,1")
-				else itemColor = color("0,0.75,1,1")
+				local itemColor = color(colors[1][1]..","..colors[1][2]..","..colors[1][3]..",1")
+				if num == stats[4][1] then itemColor = color(colors[1][1]..","..colors[1][2]..","..colors[1][3]..",1")
+				elseif num <= stats[4][2] * numSongs then itemColor = color(colors[2][1]..","..colors[2][2]..","..colors[2][3]..",1")
+				elseif num <= stats[4][3] * numSongs then itemColor = color(colors[3][1]..","..colors[3][2]..","..colors[3][3]..",1")
+				elseif num <= stats[4][4] * numSongs then itemColor = color(colors[4][1]..","..colors[4][2]..","..colors[4][3]..",1")
+				elseif num <= stats[4][5] * numSongs then itemColor = color(colors[5][1]..","..colors[5][2]..","..colors[5][3]..",1")
+				else itemColor = color(colors[6][1]..","..colors[6][2]..","..colors[6][3]..",1")
 				end
 				num = string.format("%03i",num)
 				self:settext(num)
@@ -258,13 +275,13 @@ return Def.ActorFrame{
 			if song or course then
 				self:visible(true)
 				-- coloring
-				local itemColor = color(".4,0.4,0.4,1")
-				if num == 0 then itemColor = color(".4,0.4,0.4,1")
-				elseif num <= 9 * numSongs then itemColor = color("0,1,0,1")
-				elseif num <= 19 * numSongs then itemColor = color("1,1,0,1")
-				elseif num <= 29 * numSongs then itemColor = color("1,0.53,0,1")
-				elseif num <= 39 * numSongs then itemColor = color("1,0,0,1")
-				else itemColor = color("0,0.75,1,1")
+				local itemColor = color(colors[1][1]..","..colors[1][2]..","..colors[1][3]..",1")
+				if num == stats[5][1] then itemColor = color(colors[1][1]..","..colors[1][2]..","..colors[1][3]..",1")
+				elseif num <= stats[5][2] * numSongs then itemColor = color(colors[2][1]..","..colors[2][2]..","..colors[2][3]..",1")
+				elseif num <= stats[5][3] * numSongs then itemColor = color(colors[3][1]..","..colors[3][2]..","..colors[3][3]..",1")
+				elseif num <= stats[5][4] * numSongs then itemColor = color(colors[4][1]..","..colors[4][2]..","..colors[4][3]..",1")
+				elseif num <= stats[5][5] * numSongs then itemColor = color(colors[5][1]..","..colors[5][2]..","..colors[5][3]..",1")
+				else itemColor = color(colors[6][1]..","..colors[6][2]..","..colors[6][3]..",1")
 				end
 				num = string.format("%03i",num)
 				self:settext(num)
