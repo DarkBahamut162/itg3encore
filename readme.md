@@ -32,7 +32,7 @@ It's sources have being displayed down below.
 **Date:**  Jan 7th 2018
 
 ---
-I could have actually forked it from the SM5's github but I didn't. My reasoning was that it wasn't ITG3 anymore but it was being turned into ITG3Encore (something else while using the same code).
+I could have actually forked it but I didn't. My reasoning was that it wasn't going to be ITG3 anymore but it was being turned into ITG3Encore (something else while starting off using the same code).
 
 What has been fixed so far:
 
@@ -40,24 +40,24 @@ What has been fixed so far:
 * Removed **D-Pad** Modifier since it breaks other Modifiers (like SM5's new SpeedMod)
 * Better and sorted **ScreenPlayerOptions**
 * Actually fixed **Course Mode** (Battle, Marathon & Survival Mode)
-  * Better **Song List**
-  * Display **_panes** & **StepArtists** and correctly calculate their difficulty color
+  * Fixed/Better **Song List**
+  * Displays **_panes** & **StepArtists** and correctly calculate their difficulty color
   * Fixed **LifeMeterBar/LifeMeterTime** *(except for Marathon Mode?)*
-  * Fixed **Rounds/Songs Display**
+  * Re-Added stuff in **Course Mode**
+    * **Song Time** & **HAS MODS**
+      * Introduced **HAS LUA**
+    * **RemainingTime** & **DeltaSeconds**
+    * Forced implementation of **NoteSkin** via ApplyGameCommand
+* Fixed **Rounds/Songs Display**
 * Fixed **PeakComboAward** & **StageAward**
+* Added back **Rotation** to **Judgments** & **Holds** during Gameplay
 
 The following has been re-introduced from OpenITG's ITG3Encore Theme:
-* Added back rotation to **Judgments** & **Holds** during GamePlay
 * **BPM Display** *(Disabled in Battle Mode)*
 * **Full Combo Splash Animation**
 * **CustomMods** and **ScreenFilter**
-* **Encore Folders**
+* **Encore "Folders"**
 * **OptionsList** *(Not yet fully functional)*
 
-* Re-Added stuff in **Course Mode**
-  * **Song Time** & **HAS MODS**
-    * Introduced **HAS LUA**
-  * **RemainingTime** & **DeltaSeconds**
-  * Forced implementation of **NoteSkin** via ApplyGameCommand
 
-Stuff still needs to get fixed, even if the fixed and re-introduced list are quite long.
+Stuff still needs to get fixed, even if the fixed and re-introduced list/code are quite long/big.
