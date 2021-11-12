@@ -2,12 +2,12 @@ local player = ...
 assert(player,"[Graphics/ScreenSelectMusic PaneNumbers] player required")
 
 local stats = {
-	{0,	25,	50,	100,200},	--jumps
-	{0,	25,	50,	100,150},	--holds
-	{0,	25,	50,	90,	140},	--mines
-	{0,	15,	30,	45,	60},	--hands
-	{0,	10,	20,	30,	40},	--rolls
-}
+	{0,	25,	50,	100,200,300},	--jumps
+	{0,	25,	50,	100,150,200},	--holds
+	{0,	25,	50,	100,150,200},	--mines
+	{0,	15,	30,	45,	60,	75},	--hands
+	{0,	10,	20,	30,	40,	50},	--rolls
+};
 
 local colors = {
 	{0.4,	0.4,	0.4},	--gray

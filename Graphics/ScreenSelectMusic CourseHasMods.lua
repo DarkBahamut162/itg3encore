@@ -14,7 +14,7 @@ return Def.ActorFrame{
 			if GAMESTATE:IsCourseMode() then
 				curSelection = GAMESTATE:GetCurrentCourse();
 				if curSelection then
-					if curSelection:HasMods() then
+					if curSelection:HasMods() or curSelection:HasTimedMods() then
 						text = "HAS MODS"
 					else
 						local trail = GAMESTATE:GetCurrentTrail(GAMESTATE:GetMasterPlayerNumber())

@@ -21,15 +21,6 @@ return Def.BitmapText{
 	JudgmentMessageCommand=function(self,params)
 		if params.Player == player then
 			if params.HoldNoteScore then
-				local tns = ToEnumShortString(params.HoldNoteScore)
-				local prefname= ("TimeMeterSecondsChange%s"):format(tns)
-				if PREFSMAN:PreferenceExists(prefname) then
-					self:stoptweening():stopeffect():diffusealpha(1):zoom(0.75):linear(0.3):zoom(0.6):sleep(1):diffusealpha(0)
-					--self:finishtweening():diffusealpha(1):zoom(1):decelerate(0.3):zoom(0.75):sleep(0.5):linear(0.2):diffusealpha(0):zoom(0)
-					self:playcommand( "GainSeconds" )
-					self:playcommand( tns )
-					self:settextf( "%+1.1fs", PREFSMAN:GetPreference(prefname) )
-				end
 			elseif params.TapNoteScore then
 				local tns = ToEnumShortString(params.TapNoteScore)
 				local prefname= ("TimeMeterSecondsChange%s"):format(tns)

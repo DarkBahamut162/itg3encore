@@ -2,11 +2,11 @@ local player = ...
 assert(player,"[Graphics/_pane fill] player required")
 
 local stats = {
-	{0,	25,	50,	100,200},	--jumps
-	{0,	25,	50,	100,150},	--holds
-	{0,	25,	50,	90,	140},	--mines
-	{0,	15,	30,	45,	60},	--hands
-	{0,	10,	20,	30,	40},	--rolls
+	{0,	25,	50,	100,200,300},	--jumps
+	{0,	25,	50,	100,150,200},	--holds
+	{0,	25,	50,	100,150,200},	--mines
+	{0,	15,	30,	45,	60,	75},	--hands
+	{0,	10,	20,	30,	40,	50},	--rolls
 };
 
 local colors = {
@@ -17,6 +17,17 @@ local colors = {
 	{1,		0,		0},		--red
 	{0,		0.75,	1},		--cyan
 };
+
+local function getValue(val0, val1, val2)
+	-- val0 = currentValue
+	-- val1 = minValue
+	-- val2 = maxValue
+
+	--lua.ReportScriptError("Part 1 = "..(val0 - val1))
+	--lua.ReportScriptError("Part 2 = "..(val2 - val1))
+	--lua.ReportScriptError("ALL = "..((val0 - val1) / (val2 - val1)))
+	return ((val0 - val1) / (val2 - val1))
+end
 
 return Def.ActorFrame{
 	Def.Quad{
@@ -42,10 +53,11 @@ return Def.ActorFrame{
 				local rv = steps:GetRadarValues(player)
 				local val = rv:GetValue('RadarCategory_Jumps')
 				if val == stats[1][1] then self:diffusecolor( color(colors[1][1]..","..colors[1][2]..","..colors[1][3]..",1") ) yZoom = 0
-				elseif val <= stats[1][2] * numSongs then self:diffusecolor( color(colors[2][1]..","..colors[2][2]..","..colors[2][3]..",1") ) yZoom = 0.2*24
-				elseif val <= stats[1][3] * numSongs then self:diffusecolor( color(colors[3][1]..","..colors[3][2]..","..colors[3][3]..",1") ) yZoom = 0.4*24
-				elseif val <= stats[1][4] * numSongs then self:diffusecolor( color(colors[4][1]..","..colors[4][2]..","..colors[4][3]..",1") ) yZoom = 0.6*24
-				elseif val <= stats[1][5] * numSongs then self:diffusecolor( color(colors[5][1]..","..colors[5][2]..","..colors[5][3]..",1") ) yZoom = 0.8*24
+				elseif val <= stats[1][2] * numSongs then self:diffusecolor( color(colors[2][1]..","..colors[2][2]..","..colors[2][3]..",1") ) yZoom = getValue(val, stats[1][1], stats[1][2])*24/5/(numSongs*2)
+				elseif val <= stats[1][3] * numSongs then self:diffusecolor( color(colors[3][1]..","..colors[3][2]..","..colors[3][3]..",1") ) yZoom = getValue(val, stats[1][2], stats[1][3])*24/5/(numSongs*2)+(0.2*24)
+				elseif val <= stats[1][4] * numSongs then self:diffusecolor( color(colors[4][1]..","..colors[4][2]..","..colors[4][3]..",1") ) yZoom = getValue(val, stats[1][3], stats[1][4])*24/5/(numSongs*2)+(0.4*24)
+				elseif val <= stats[1][5] * numSongs then self:diffusecolor( color(colors[5][1]..","..colors[5][2]..","..colors[5][3]..",1") ) yZoom = getValue(val, stats[1][4], stats[1][5])*24/5/(numSongs*2)+(0.6*24)
+				elseif val <= stats[1][6] * numSongs then self:diffusecolor( color(colors[6][1]..","..colors[6][2]..","..colors[6][3]..",1") ) yZoom = getValue(val, stats[1][5], stats[1][6])*24/5/(numSongs*2)+(0.8*24)
 				else self:diffusecolor( color(colors[6][1]..","..colors[6][2]..","..colors[6][3]..",1") ) yZoom = 24
 				end
 			else
@@ -93,10 +105,11 @@ return Def.ActorFrame{
 				local rv = steps:GetRadarValues(player)
 				local val = rv:GetValue('RadarCategory_Holds')
 				if val == stats[2][1] then self:diffusecolor( color(colors[1][1]..","..colors[1][2]..","..colors[1][3]..",1") ) yZoom = 0
-				elseif val <= stats[2][2] * numSongs then self:diffusecolor( color(colors[2][1]..","..colors[2][2]..","..colors[2][3]..",1") ) yZoom = 0.2*24
-				elseif val <= stats[2][3] * numSongs then self:diffusecolor( color(colors[3][1]..","..colors[3][2]..","..colors[3][3]..",1") ) yZoom = 0.4*24
-				elseif val <= stats[2][4] * numSongs then self:diffusecolor( color(colors[4][1]..","..colors[4][2]..","..colors[4][3]..",1") ) yZoom = 0.6*24
-				elseif val <= stats[2][5] * numSongs then self:diffusecolor( color(colors[5][1]..","..colors[5][2]..","..colors[5][3]..",1") ) yZoom = 0.8*24
+				elseif val <= stats[2][2] * numSongs then self:diffusecolor( color(colors[2][1]..","..colors[2][2]..","..colors[2][3]..",1") ) yZoom = getValue(val, stats[2][1], stats[2][2])*24/5/(numSongs*2)
+				elseif val <= stats[2][3] * numSongs then self:diffusecolor( color(colors[3][1]..","..colors[3][2]..","..colors[3][3]..",1") ) yZoom = getValue(val, stats[2][2], stats[2][3])*24/5/(numSongs*2)+(0.2*24)
+				elseif val <= stats[2][4] * numSongs then self:diffusecolor( color(colors[4][1]..","..colors[4][2]..","..colors[4][3]..",1") ) yZoom = getValue(val, stats[2][3], stats[2][4])*24/5/(numSongs*2)+(0.4*24)
+				elseif val <= stats[2][5] * numSongs then self:diffusecolor( color(colors[5][1]..","..colors[5][2]..","..colors[5][3]..",1") ) yZoom = getValue(val, stats[2][4], stats[2][5])*24/5/(numSongs*2)+(0.6*24)
+				elseif val <= stats[2][6] * numSongs then self:diffusecolor( color(colors[6][1]..","..colors[6][2]..","..colors[6][3]..",1") ) yZoom = getValue(val, stats[2][5], stats[2][6])*24/5/(numSongs*2)+(0.8*24)
 				else self:diffusecolor( color(colors[6][1]..","..colors[6][2]..","..colors[6][3]..",1") ) yZoom = 24
 				end
 			else
@@ -144,10 +157,11 @@ return Def.ActorFrame{
 				local rv = steps:GetRadarValues(player)
 				local val = rv:GetValue('RadarCategory_Mines')
 				if val == stats[3][1] then self:diffusecolor( color(colors[1][1]..","..colors[1][2]..","..colors[1][3]..",1") ) yZoom = 0
-				elseif val <= stats[3][2] * numSongs then self:diffusecolor( color(colors[2][1]..","..colors[2][2]..","..colors[2][3]..",1") ) yZoom = 0.2*24
-				elseif val <= stats[3][3] * numSongs then self:diffusecolor( color(colors[3][1]..","..colors[3][2]..","..colors[3][3]..",1") ) yZoom = 0.4*24
-				elseif val <= stats[3][4] * numSongs then self:diffusecolor( color(colors[4][1]..","..colors[4][2]..","..colors[4][3]..",1") ) yZoom = 0.6*24
-				elseif val <= stats[3][5] * numSongs then self:diffusecolor( color(colors[5][1]..","..colors[5][2]..","..colors[5][3]..",1") ) yZoom = 0.8*24
+				elseif val <= stats[3][2] * numSongs then self:diffusecolor( color(colors[2][1]..","..colors[2][2]..","..colors[2][3]..",1") ) yZoom = getValue(val, stats[3][1], stats[3][2])*24/5/(numSongs*2)
+				elseif val <= stats[3][3] * numSongs then self:diffusecolor( color(colors[3][1]..","..colors[3][2]..","..colors[3][3]..",1") ) yZoom = getValue(val, stats[3][2], stats[3][3])*24/5/(numSongs*2)+(0.2*24)
+				elseif val <= stats[3][4] * numSongs then self:diffusecolor( color(colors[4][1]..","..colors[4][2]..","..colors[4][3]..",1") ) yZoom = getValue(val, stats[3][3], stats[3][4])*24/5/(numSongs*2)+(0.4*24)
+				elseif val <= stats[3][5] * numSongs then self:diffusecolor( color(colors[5][1]..","..colors[5][2]..","..colors[5][3]..",1") ) yZoom = getValue(val, stats[3][4], stats[3][5])*24/5/(numSongs*2)+(0.6*24)
+				elseif val <= stats[3][6] * numSongs then self:diffusecolor( color(colors[6][1]..","..colors[6][2]..","..colors[6][3]..",1") ) yZoom = getValue(val, stats[3][5], stats[3][6])*24/5/(numSongs*2)+(0.8*24)
 				else self:diffusecolor( color(colors[6][1]..","..colors[6][2]..","..colors[6][3]..",1") ) yZoom = 24
 				end
 			else
@@ -195,10 +209,11 @@ return Def.ActorFrame{
 				local rv = steps:GetRadarValues(player)
 				local val = rv:GetValue('RadarCategory_Hands')
 				if val == stats[4][1] then self:diffusecolor( color(colors[1][1]..","..colors[1][2]..","..colors[1][3]..",1") ) yZoom = 0
-				elseif val <= stats[4][2] * numSongs then self:diffusecolor( color(colors[2][1]..","..colors[2][2]..","..colors[2][3]..",1") ) yZoom = 0.2*24
-				elseif val <= stats[4][3] * numSongs then self:diffusecolor( color(colors[3][1]..","..colors[3][2]..","..colors[3][3]..",1") ) yZoom = 0.4*24
-				elseif val <= stats[4][4] * numSongs then self:diffusecolor( color(colors[4][1]..","..colors[4][2]..","..colors[4][3]..",1") ) yZoom = 0.6*24
-				elseif val <= stats[4][5] * numSongs then self:diffusecolor( color(colors[5][1]..","..colors[5][2]..","..colors[5][3]..",1") ) yZoom = 0.8*24
+				elseif val <= stats[4][2] * numSongs then self:diffusecolor( color(colors[2][1]..","..colors[2][2]..","..colors[2][3]..",1") ) yZoom = getValue(val, stats[4][1], stats[4][2])*24/5/(numSongs*2)
+				elseif val <= stats[4][3] * numSongs then self:diffusecolor( color(colors[3][1]..","..colors[3][2]..","..colors[3][3]..",1") ) yZoom = getValue(val, stats[4][2], stats[4][3])*24/5/(numSongs*2)+(0.2*24)
+				elseif val <= stats[4][4] * numSongs then self:diffusecolor( color(colors[4][1]..","..colors[4][2]..","..colors[4][3]..",1") ) yZoom = getValue(val, stats[4][3], stats[4][4])*24/5/(numSongs*2)+(0.4*24)
+				elseif val <= stats[4][5] * numSongs then self:diffusecolor( color(colors[5][1]..","..colors[5][2]..","..colors[5][3]..",1") ) yZoom = getValue(val, stats[4][4], stats[4][5])*24/5/(numSongs*2)+(0.6*24)
+				elseif val <= stats[4][6] * numSongs then self:diffusecolor( color(colors[6][1]..","..colors[6][2]..","..colors[6][3]..",1") ) yZoom = getValue(val, stats[4][5], stats[4][6])*24/5/(numSongs*2)+(0.8*24)
 				else self:diffusecolor( color(colors[6][1]..","..colors[6][2]..","..colors[6][3]..",1") ) yZoom = 24
 				end
 			else
@@ -246,10 +261,11 @@ return Def.ActorFrame{
 				local rv = steps:GetRadarValues(player)
 				local val = rv:GetValue('RadarCategory_Rolls')
 				if val == stats[5][1] then self:diffusecolor( color(colors[1][1]..","..colors[1][2]..","..colors[1][3]..",1") ) yZoom = 0
-				elseif val <= stats[5][2] * numSongs then self:diffusecolor( color(colors[2][1]..","..colors[2][2]..","..colors[2][3]..",1") ) yZoom = 0.2*24
-				elseif val <= stats[5][3] * numSongs then self:diffusecolor( color(colors[3][1]..","..colors[3][2]..","..colors[3][3]..",1") ) yZoom = 0.4*24
-				elseif val <= stats[5][4] * numSongs then self:diffusecolor( color(colors[4][1]..","..colors[4][2]..","..colors[4][3]..",1") ) yZoom = 0.6*24
-				elseif val <= stats[5][5] * numSongs then self:diffusecolor( color(colors[5][1]..","..colors[5][2]..","..colors[5][3]..",1") ) yZoom = 0.8*24
+				elseif val <= stats[5][2] * numSongs then self:diffusecolor( color(colors[2][1]..","..colors[2][2]..","..colors[2][3]..",1") ) yZoom = getValue(val, stats[5][1], stats[5][2])*24/5/(numSongs*2)
+				elseif val <= stats[5][3] * numSongs then self:diffusecolor( color(colors[3][1]..","..colors[3][2]..","..colors[3][3]..",1") ) yZoom = getValue(val, stats[5][2], stats[5][3])*24/5/(numSongs*2)+(0.2*24)
+				elseif val <= stats[5][4] * numSongs then self:diffusecolor( color(colors[4][1]..","..colors[4][2]..","..colors[4][3]..",1") ) yZoom = getValue(val, stats[5][3], stats[5][4])*24/5/(numSongs*2)+(0.4*24)
+				elseif val <= stats[5][5] * numSongs then self:diffusecolor( color(colors[5][1]..","..colors[5][2]..","..colors[5][3]..",1") ) yZoom = getValue(val, stats[5][4], stats[5][5])*24/5/(numSongs*2)+(0.6*24)
+				elseif val <= stats[5][6] * numSongs then self:diffusecolor( color(colors[6][1]..","..colors[6][2]..","..colors[6][3]..",1") ) yZoom = getValue(val, stats[5][5], stats[5][6])*24/5/(numSongs*2)+(0.8*24)
 				else self:diffusecolor( color(colors[6][1]..","..colors[6][2]..","..colors[6][3]..",1") ) yZoom = 24
 				end
 			else
