@@ -108,12 +108,6 @@ function InitOptions()
 	setenv("ScreenFilterP2",0)
 end
 
---[[ option rows ]]
-
-setenv("UnderComboP1",false)
-setenv("UnderTapJudgmentsP1",false)
-setenv("UnderHoldJudgmentsP1",false)
-
 -- underField options
 function OptionUnderFieldOptions()
 	local t = {
