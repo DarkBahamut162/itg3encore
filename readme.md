@@ -37,7 +37,7 @@ I could have actually forked it but I didn't. My reasoning was that it wasn't go
 What has been fixed so far:
 
 * All **cmd()** transformed to **function(self)**
-* Removed **D-Pad** Modifier since it breaks other Modifiers (like SM5's new SpeedMod)
+* Removed **D-Pad** Modifier since it breaks other Modifiers (like the new SpeedMod)
 * Better and sorted **ScreenPlayerOptions**
 * Actually fixed **Course Mode** (Battle, Marathon & Survival Mode)
   * Fixed/Better **Song List**
