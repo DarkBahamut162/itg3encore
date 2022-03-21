@@ -379,7 +379,7 @@ function DisplayCustomModifiersText(pn)	--gives me text of all custom modifiers 
 	if getenv("ScreenFilter"..pName) == 0.85 then if t == "" then t = "Darkest Filter" else t = t .. ", Darkest Filter" end end
 	if getenv("ScreenFilter"..pName) == 1.0 then if t == "" then t = "Wesley Snipes" else t = t .. ", Wesley Snipes" end end
 	
-	if GetRateMod() ~= '' then if t == "" then t = GetRateMod() else t = t .. ", " .. GetRateMod() end end
+	--if GetRateMod() ~= '' then if t == "" then t = GetRateMod() else t = t .. ", " .. GetRateMod() end end
 	
 	return t
 	
