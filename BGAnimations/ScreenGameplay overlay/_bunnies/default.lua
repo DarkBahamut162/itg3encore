@@ -85,7 +85,7 @@ local t = Def.ActorFrame{
 			OnCommand=function(self) self:effectclock('beat'):diffuseramp():effectcolor1(color("#FFFFFF00")):effectcolor2(color("#fcff00")):effectperiod(0.5):effect_hold_at_full(0.5):diffusealpha(0):linear(0.4):diffusealpha(1) end;
 		};
 		LoadFont("_r bold 30px")..{
-			InitCommand=function(self) self:CenterX():y(SCREEN_TOP-2+23):maxwidth(540):diffusebottomedge(color("#dedede")) end;
+			InitCommand=function(self) self:CenterX():y(SCREEN_TOP-2+23):maxwidth(573):diffusebottomedge(color("#dedede")) end;
 			OnCommand=function(self) self:addy(3):zoom(0.5):shadowlength(2):zoomy(0):sleep(2):decelerate(0.3):zoomy(0.45):animate(0):playcommand("Update") end;
 			CurrentSongChangedMessageCommand=function(self) self:playcommand("Update") end;
 			UpdateCommand=function(self)
