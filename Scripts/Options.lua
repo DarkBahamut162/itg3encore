@@ -101,8 +101,21 @@ function InitOptions()
 	setenv("ShowModsP1",false)
 	setenv("ShowModsP2",false)
 	-- stats display
-	setenv("StatsDisplayP1",false)
-	setenv("StatsDisplayP2",false)
+	setenv("ShowStatsP1",false)
+	setenv("ShowStatsP2",false)
+	-- stats Range
+	setenv("ShowW1P1",false)
+	setenv("ShowW2P1",false)
+	setenv("ShowW3P1",false)
+	setenv("ShowW4P1",false)
+	setenv("ShowW5P1",false)
+	setenv("ShowMissP1",false)
+	setenv("ShowW1P2",false)
+	setenv("ShowW2P2",false)
+	setenv("ShowW3P2",false)
+	setenv("ShowW4P2",false)
+	setenv("ShowW5P2",false)
+	setenv("ShowMissP2",false)
 	-- screen filter
 	setenv("ScreenFilterP1",0)
 	setenv("ScreenFilterP2",0)
@@ -168,14 +181,46 @@ function OptionShowStats()
 		SelectType = "SelectMultiple",
 		OneChoiceForAllPlayers = false,
 		ExportOnChange = false,
-		Choices = { "Show In-game Statistics" },
+		Choices = { "Show Step Statistics" },
 		LoadSelections = function(self, list, pn)
 			local pX = pname(pn);
-			list[1] = getenv("StatsDisplay"..pX)
+			list[1] = getenv("ShowStats"..pX)
 		end,
 		SaveSelections = function(self, list, pn)
 			local pX = pname(pn);
-			setenv("StatsDisplay"..pX,list[1])
+			setenv("ShowStats"..pX,list[1])
+		end
+	}
+	setmetatable(t, t)
+	return t
+end
+
+-- stats display
+function OptionShowStatsPlus()
+	local t = {
+		Name="IngameStats",
+		LayoutType = "ShowAllInRow",
+		SelectType = "SelectOne",
+		OneChoiceForAllPlayers = false,
+		ExportOnChange = false,
+		Choices = { "W1","W2","W3","W4","W5","Miss" },
+		LoadSelections = function(self, list, pn)
+			local pX = pname(pn);
+			list[1] = getenv("ShowW1"..pX)
+			list[2] = getenv("ShowW2"..pX)
+			list[3] = getenv("ShowW3"..pX)
+			list[4] = getenv("ShowW4"..pX)
+			list[5] = getenv("ShowW5"..pX)
+			list[6] = getenv("ShowMiss"..pX)
+		end,
+		SaveSelections = function(self, list, pn)
+			local pX = pname(pn);
+			setenv("ShowW1"..pX,list[1])
+			setenv("ShowW2"..pX,list[2])
+			setenv("ShowW3"..pX,list[3])
+			setenv("ShowW4"..pX,list[4])
+			setenv("ShowW5"..pX,list[5])
+			setenv("ShowMiss"..pX,list[6])
 		end
 	}
 	setmetatable(t, t)
@@ -316,21 +361,28 @@ function OptionRowScreenFilter()
 end
 
 function GetRateModHelper( rate )
-	return GAMESTATE:PlayerIsUsingModifier(0, rate) or GAMESTATE:PlayerIsUsingModifier(1, rate)
+	local msrate = string.format( "%.1f", GAMESTATE:GetSongOptionsObject("ModsLevel_Preferred"):MusicRate() )
+
+	return msrate == rate
 end
 
 function GetRateMod()
-	if GetRateModHelper('1.0xmusic') then return ''
-	elseif GetRateModHelper('1.1xmusic') then return '1.1x Rate' 
-	elseif GetRateModHelper('1.2xmusic') then return '1.2x Rate' 
-	elseif GetRateModHelper('1.3xmusic') then return '1.3x Rate' 
-	elseif GetRateModHelper('1.4xmusic') then return '1.4x Rate' 
-	elseif GetRateModHelper('1.5xmusic') then return '1.5x Rate' 
-	elseif GetRateModHelper('1.6xmusic') then return '1.6x Rate' 
-	elseif GetRateModHelper('1.7xmusic') then return '1.7x Rate' 
-	elseif GetRateModHelper('1.8xmusic') then return '1.8x Rate' 
-	elseif GetRateModHelper('1.9xmusic') then return '1.9x Rate' 
-	elseif GetRateModHelper('2.0xmusic') then return '2.0x Rate' 
+	if GetRateModHelper('1.0') then return ''
+	elseif GetRateModHelper('0.5') then return '0.5x Rate' 
+	elseif GetRateModHelper('0.6') then return '0.6x Rate' 
+	elseif GetRateModHelper('0.7') then return '0.7x Rate' 
+	elseif GetRateModHelper('0.8') then return '0.8x Rate' 
+	elseif GetRateModHelper('0.9') then return '0.9x Rate' 
+	elseif GetRateModHelper('1.1') then return '1.1x Rate' 
+	elseif GetRateModHelper('1.2') then return '1.2x Rate' 
+	elseif GetRateModHelper('1.3') then return '1.3x Rate' 
+	elseif GetRateModHelper('1.4') then return '1.4x Rate' 
+	elseif GetRateModHelper('1.5') then return '1.5x Rate' 
+	elseif GetRateModHelper('1.6') then return '1.6x Rate' 
+	elseif GetRateModHelper('1.7') then return '1.7x Rate' 
+	elseif GetRateModHelper('1.8') then return '1.8x Rate' 
+	elseif GetRateModHelper('1.9') then return '1.9x Rate' 
+	elseif GetRateModHelper('2.0') then return '2.0x Rate' 
 	else return '(Unknown rate mod)' end
 end
 
@@ -372,14 +424,14 @@ function DisplayCustomModifiersText(pn)	--gives me text of all custom modifiers 
 	elseif getenv("EffectVibrate"..pName) then if t == "" then t = "Vibrate" else t = t .. ", Vibrate" end end
 
 	if getenv("ShowMods"..pName) then if t == "" then t = "Show Mods" else t = t .. ", Show Mods" end end
-	if getenv("StatsDisplay"..pName) then if t == "" then t = "Stats Display" else t = t .. ", Stats Display" end end
+	if getenv("ShowStats"..pName) then if t == "" then t = "Show Stats" else t = t .. ", Show Stats" end end
 
 	if getenv("ScreenFilter"..pName) == 0.5 then if t == "" then t = "Dark Filter" else t = t .. ", Dark Filter" end end
 	if getenv("ScreenFilter"..pName) == 0.65 then if t == "" then t = "Darker Filter" else t = t .. ", Darker Filter" end end
 	if getenv("ScreenFilter"..pName) == 0.85 then if t == "" then t = "Darkest Filter" else t = t .. ", Darkest Filter" end end
 	if getenv("ScreenFilter"..pName) == 1.0 then if t == "" then t = "Wesley Snipes" else t = t .. ", Wesley Snipes" end end
 	
-	--if GetRateMod() ~= '' then if t == "" then t = GetRateMod() else t = t .. ", " .. GetRateMod() end end
+	if GetRateMod() ~= '' then if t == "" then t = GetRateMod() else t = t .. ", " .. GetRateMod() end end
 	
 	return t
 	

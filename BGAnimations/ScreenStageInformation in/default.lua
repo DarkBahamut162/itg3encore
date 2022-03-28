@@ -19,12 +19,12 @@ if GAMESTATE:GetPlayMode() == "PlayMode_Oni" then
 	end
 end
 
---Force turn off StatsDisplayPX if inside a course with secret songs
-if getenv("StatsDisplayP1") or getenv("StatsDisplayP2") then
+--Force turn off ShowStatsPX if inside a course with secret songs
+if getenv("ShowStatsP1") or getenv("ShowStatsP2") then
 	if GAMESTATE:IsCourseMode() then
 		if IsCourseSecret() then
-			setenv("StatsDisplayP1",false);
-			setenv("StatsDisplayP2",false);
+			setenv("ShowStatsP1",false);
+			setenv("ShowStatsP2",false);
 		end
 	end
 end

@@ -9,7 +9,7 @@ t[#t+1] = Def.ActorFrame{
 		Condition=GAMESTATE:GetPlayMode() == 'PlayMode_Regular' and GAMESTATE:GetEasiestStepsDifficulty() == 'Difficulty_Beginner';
 	};
 	LoadActor("stepstats")..{
-		Condition=getenv("StatsDisplayP1") or getenv("StatsDisplayP2");
+		Condition=getenv("ShowStatsP1") or getenv("ShowStatsP2");
 	};
 	LoadActor("danger")..{
 		Condition=GAMESTATE:GetPlayMode() ~= "PlayMode_Oni";
