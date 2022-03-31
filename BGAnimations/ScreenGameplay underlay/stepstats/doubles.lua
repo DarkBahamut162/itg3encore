@@ -1,5 +1,5 @@
 local pn = GAMESTATE:GetMasterPlayerNumber()
-local xPos = pn == PLAYER_1 and (SCREEN_RIGHT-20-SCREEN_WIDTH/2) or (SCREEN_LEFT+20-SCREEN_WIDTH/2)
+local xPos = pn == PLAYER_1 and (SCREEN_RIGHT-20-SCREEN_WIDTH/2) or (SCREEN_LEFT+34-SCREEN_WIDTH/4*3)
 
 return Def.ActorFrame{
 	OnCommand=function(self)
@@ -11,8 +11,8 @@ return Def.ActorFrame{
 		Name="Player";
 		InitCommand=function(self) self:x(xPos):addx(100) end;
 		BeginCommand=function(self) self:visible(GAMESTATE:IsHumanPlayer(pn)) end;
-		OnCommand=function(self) self:sleep(0.5):decelerate(0.8):addx(-100) end;
-		OffCommand=function(self) if AnyPlayerFullComboed() then self:sleep(1) end; self:accelerate(0.8):addx(100) end;
+		OnCommand=function(self) self:sleep(0.5):decelerate(0.8):addx(GAMESTATE:GetMasterPlayerNumber() == PLAYER_1 and -100 or 100) end;
+		OffCommand=function(self) if AnyPlayerFullComboed() then self:sleep(1) end; self:accelerate(0.8):addx(GAMESTATE:GetMasterPlayerNumber() == PLAYER_1 and 100 or -100) end;
 
 		LoadActor("d_bg");
 		LoadActor("d_bar_fantastic")..{
@@ -99,53 +99,6 @@ return Def.ActorFrame{
 					end
 				end
 			end;
-		};
-
-		Def.ActorFrame{
-			Name="Labels";
-			LoadFont("ScreenGameplay judgment")..{
-				InitCommand=function(self) self:x(-4):y(-204+15*0):zoom(0.5):horizalign(left):diffuse(color("#b2f9ff")):settext("F") end;
-			};
-			LoadFont("ScreenGameplay judgment")..{
-				InitCommand=function(self) self:x(-4):y(-204+15*1):zoom(0.5):horizalign(left):diffuse(color("#ffe2bd")):settext("E") end;
-			};
-			LoadFont("ScreenGameplay judgment")..{
-				InitCommand=function(self) self:x(-4):y(-204+15*2):zoom(0.5):horizalign(left):diffuse(color("#c9fb9f")):settext("D") end;
-			};
-		};
-		Def.ActorFrame{
-			Name="Numbers";
-			StepMessageCommand=function(self,p)
-				if p.PlayerNumber == pn then
-					self:RunCommandsOnChildren(function(self) self:queuecommand("Update") end);
-				end
-			end;
-			LoadFont("ScreenGameplay judgment")..{
-				InitCommand=function(self) self:x(-10):y(-204+15*0):zoom(0.5):horizalign(right):settext("0") end;
-				UpdateCommand=function(self)
-					local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn)
-					local w1Notes = pss:GetTapNoteScores('TapNoteScore_W1')
-					self:settext(w1Notes)
-				end;
-			};
-			LoadFont("ScreenGameplay judgment")..{
-				InitCommand=function(self) self:x(-10):y(-204+15*1):zoom(0.5):horizalign(right):settext("0") end;
-				UpdateCommand=function(self)
-					local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn)
-					local w2Notes = pss:GetTapNoteScores('TapNoteScore_W2')
-					self:settext(w2Notes)
-				end;
-			};
-			LoadFont("ScreenGameplay judgment")..{
-				InitCommand=function(self) self:x(-10):y(-204+15*2):zoom(0.5):horizalign(right):settext("0") end;
-				UpdateCommand=function(self)
-					local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn)
-					local otherNotes = pss:GetTapNoteScores('TapNoteScore_W3')
-					otherNotes = otherNotes + pss:GetTapNoteScores('TapNoteScore_W4')
-					otherNotes = otherNotes + pss:GetTapNoteScores('TapNoteScore_W5')
-					self:settext(otherNotes)
-				end;
-			};
 		};
 	};
 };
