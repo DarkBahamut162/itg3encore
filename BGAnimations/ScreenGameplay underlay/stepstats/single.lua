@@ -1,6 +1,6 @@
 -- single stats
 local pn = GAMESTATE:GetMasterPlayerNumber()
-
+local startX = GAMESTATE:GetMasterPlayerNumber() == PLAYER_1 and SCREEN_WIDTH/4 or -SCREEN_WIDTH/4
 return Def.ActorFrame{
 	InitCommand=function(self)
 		self:Center()
@@ -9,14 +9,17 @@ return Def.ActorFrame{
 		Name="JudgePane";
 		BeginCommand=function(self) self:visible(GAMESTATE:IsHumanPlayer(pn)) end;
 		OnCommand=function(self)
-			self:x(SCREEN_WIDTH/4+((getenv("RotationSoloP1") or getenv("RotationSoloP2")) and 64 or 0));
+			self:x(startX+((getenv("RotationSoloP1") or getenv("RotationSoloP2")) and 64 or 0));
 			self:y((getenv("RotationSoloP1") or getenv("RotationSoloP2")) and 34 or 0);
 			self:zoom((getenv("RotationSoloP1") or getenv("RotationSoloP2")) and .75 or 1);
-			self:addx(SCREEN_WIDTH/2);
+			self:addx(GAMESTATE:GetMasterPlayerNumber() == PLAYER_1 and SCREEN_WIDTH/2 or -SCREEN_WIDTH/2);
 			self:decelerate(1);
-			self:addx(-SCREEN_WIDTH/2);
+			self:addx(GAMESTATE:GetMasterPlayerNumber() == PLAYER_1 and -SCREEN_WIDTH/2 or SCREEN_WIDTH/2);
 		end;
-		OffCommand=function(self) if AnyPlayerFullComboed() then self:sleep(1) end; self:accelerate(0.8):addx(SCREEN_WIDTH/2) end;
+		OffCommand=function(self)
+			if AnyPlayerFullComboed() then self:sleep(1) end;
+			self:accelerate(0.8):addx(GAMESTATE:GetMasterPlayerNumber() == PLAYER_1 and SCREEN_WIDTH/2 or -SCREEN_WIDTH/2)
+		end;
 		LoadActor("stats bg");
 
 		Def.ActorFrame{
