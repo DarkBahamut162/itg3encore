@@ -3,13 +3,18 @@ local t = Def.ActorFrame{
 	Name="GameplayUnderlay",
 }
 
+local stats = false;
+if getenv("ShowStatsP1") == nil and getenv("ShowStatsP2") == nil then
+	stats = true;
+end
+
 t[#t+1] = Def.ActorFrame{
 	LoadActor("ScreenFilter");
 	LoadActor("beginner")..{
 		Condition=GAMESTATE:GetPlayMode() == 'PlayMode_Regular' and GAMESTATE:GetEasiestStepsDifficulty() == 'Difficulty_Beginner';
 	};
 	LoadActor("stepstats")..{
-		Condition=getenv("ShowStatsP1") or getenv("ShowStatsP2");
+		Condition=stats;
 	};
 	LoadActor("danger")..{
 		Condition=GAMESTATE:GetPlayMode() ~= "PlayMode_Oni";
