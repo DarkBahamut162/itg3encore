@@ -1,13 +1,8 @@
 local function UpdateSingleBPM(self)
 	local bpmDisplay = self:GetChild("BPMDisplay")
 	local pn = GAMESTATE:GetMasterPlayerNumber()
-	local pState = GAMESTATE:GetPlayerState(pn)
-	local songPosition = pState:GetSongPosition()
-	local mods = GAMESTATE:GetSongOptionsObject("ModsLevel_Song")
-	local rate = mods:MusicRate()
-	local haste = SCREENMAN:GetTopScreen():GetHasteRate() or 1
-	local bpm = songPosition:GetCurBPS() * 60 * rate * haste
-	bpmDisplay:settext( string.format("%03.0f",bpm) )
+	local truebpm = SCREENMAN:GetTopScreen():GetTrueBPS(pn) * 60
+	bpmDisplay:settext( string.format("%03.0f",truebpm) )
 end
 
 return Def.ActorFrame{
