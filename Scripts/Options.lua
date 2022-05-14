@@ -101,21 +101,8 @@ function InitOptions()
 	setenv("ShowModsP1",false)
 	setenv("ShowModsP2",false)
 	-- stats display
-	setenv("ShowStatsP1",false)
-	setenv("ShowStatsP2",false)
-	-- stats Range
-	setenv("ShowW1P1",false)
-	setenv("ShowW2P1",false)
-	setenv("ShowW3P1",false)
-	setenv("ShowW4P1",false)
-	setenv("ShowW5P1",false)
-	setenv("ShowMissP1",false)
-	setenv("ShowW1P2",false)
-	setenv("ShowW2P2",false)
-	setenv("ShowW3P2",false)
-	setenv("ShowW4P2",false)
-	setenv("ShowW5P2",false)
-	setenv("ShowMissP2",false)
+	setenv("ShowStatsP1",0)
+	setenv("ShowStatsP2",0)
 	-- screen filter
 	setenv("ScreenFilterP1",0)
 	setenv("ScreenFilterP2",0)
@@ -176,51 +163,36 @@ end
 -- stats display
 function OptionShowStats()
 	local t = {
-		Name="IngameStats",
-		LayoutType = "ShowAllInRow",
-		SelectType = "SelectMultiple",
-		OneChoiceForAllPlayers = false,
-		ExportOnChange = false,
-		Choices = { "Show Step Statistics" },
-		LoadSelections = function(self, list, pn)
-			local pX = pname(pn);
-			list[1] = getenv("ShowStats"..pX)
-		end,
-		SaveSelections = function(self, list, pn)
-			local pX = pname(pn);
-			setenv("ShowStats"..pX,list[1])
-		end
-	}
-	setmetatable(t, t)
-	return t
-end
-
--- stats display
-function OptionShowStatsPlus()
-	local t = {
-		Name="IngameStats",
+		Name="ShowStats",
 		LayoutType = "ShowAllInRow",
 		SelectType = "SelectOne",
 		OneChoiceForAllPlayers = false,
 		ExportOnChange = false,
-		Choices = { "W1","W2","W3","W4","W5","Miss" },
+		Choices = { "Off","W1","W2","W3","W4","W5","Miss" },
 		LoadSelections = function(self, list, pn)
 			local pX = pname(pn);
-			list[1] = getenv("ShowW1"..pX)
-			list[2] = getenv("ShowW2"..pX)
-			list[3] = getenv("ShowW3"..pX)
-			list[4] = getenv("ShowW4"..pX)
-			list[5] = getenv("ShowW5"..pX)
-			list[6] = getenv("ShowMiss"..pX)
+			local pref = getenv("ShowStats"..pX)+1
+			local selected = 0
+			for i, choice in ipairs(self.Choices) do
+				if i == (getenv("ShowStats"..pX) + 1) then
+					selected = i
+					break
+				end
+			end
+			if selected ~= 0 then
+				list[selected] = true
+			else
+				list[1] = true
+			end
 		end,
 		SaveSelections = function(self, list, pn)
 			local pX = pname(pn);
-			setenv("ShowW1"..pX,list[1])
-			setenv("ShowW2"..pX,list[2])
-			setenv("ShowW3"..pX,list[3])
-			setenv("ShowW4"..pX,list[4])
-			setenv("ShowW5"..pX,list[5])
-			setenv("ShowMiss"..pX,list[6])
+			for i, choice in ipairs(self.Choices) do
+				if list[i] then
+					setenv("ShowStats"..pX,i-1)
+					return
+				end
+			end
 		end
 	}
 	setmetatable(t, t)
@@ -424,7 +396,7 @@ function DisplayCustomModifiersText(pn)	--gives me text of all custom modifiers 
 	elseif getenv("EffectVibrate"..pName) then if t == "" then t = "Vibrate" else t = t .. ", Vibrate" end end
 
 	if getenv("ShowMods"..pName) then if t == "" then t = "Show Mods" else t = t .. ", Show Mods" end end
-	if getenv("ShowStats"..pName) then if t == "" then t = "Show Stats" else t = t .. ", Show Stats" end end
+	if getenv("ShowStats"..pName) > 0 then if t == "" then t = "Show Stats" else t = t .. ", Show Stats" end end
 
 	if getenv("ScreenFilter"..pName) == 0.5 then if t == "" then t = "Dark Filter" else t = t .. ", Dark Filter" end end
 	if getenv("ScreenFilter"..pName) == 0.65 then if t == "" then t = "Darker Filter" else t = t .. ", Darker Filter" end end
