@@ -1,7 +1,6 @@
 local player = ...
 assert(player,"[ScreenEvaluation StageAward] requires player")
 local award = STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetStageAward();
-local failed = STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetFailed()
 
 local awardRef = {
 	["StageAward_80PercentW3"]		= { File = THEME:GetPathG("_award","models/ribbon"), Color = "green" },
