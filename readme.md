@@ -39,6 +39,7 @@ What has been fixed so far:
 * All **cmd()** transformed to **function(self)**
 * Removed **D-Pad** Modifier since it breaks other Modifiers (like the new SpeedMod)
 * Better and sorted **ScreenPlayerOptions**
+* Better **StatsDisplay/ShowStats** going from a range of 1-6 instead of just 3
 * Actually fixed **Course Mode** (Battle, Marathon & Survival Mode)
   * Fixed/Better **Song List**
   * Displays **_panes** & **StepArtists** and correctly calculate their difficulty color
@@ -49,8 +50,8 @@ What has been fixed so far:
     * **RemainingTime** & **DeltaSeconds**
     * Forced implementation of **NoteSkin** via ApplyGameCommand
 * Fixed **Rounds/Songs Display**
-* Fixed **PeakComboAward** & **StageAward**
 * Added back **Rotation** to **Judgments** & **Holds** during Gameplay
+* Shows **ProductFamily**
 
 The following has been re-introduced from OpenITG's ITG3Encore Theme:
 * **BPM Display** *(Disabled in Battle Mode)*
@@ -61,3 +62,4 @@ The following has been re-introduced from OpenITG's ITG3Encore Theme:
 
 
 Stuff still needs to get fixed, even if the fixed and re-introduced list/code are quite long/big.
+Also: This Theme has been optimized for **Project OutFox**! It might work incorrectly when used in StepMania 5!
