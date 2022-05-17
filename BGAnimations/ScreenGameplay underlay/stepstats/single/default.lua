@@ -71,7 +71,7 @@ return Def.ActorFrame{
 		LoadFont("ScreenGameplay judgment")..{
 			Name="NumbersW1";
 			Condition=getenv("ShowStatsP1") >= 1 or getenv("ShowStatsP2") >= 1;
-			InitCommand=function(self) self:settext("0"):zoom(0.75):addy(100):addx(barCenter):shadowlength(0) end;
+			InitCommand=function(self) self:settext("0"):zoom(0.75):addy(100):addx(barCenter):shadowlength(0):maxwidth(barWidth[bgNum]*2) end;
 			StepMessageCommand=function(self,p)
 				if p.PlayerNumber == pn then
 					self:queuecommand("Update")
@@ -86,7 +86,7 @@ return Def.ActorFrame{
 		LoadFont("ScreenGameplay judgment")..{
 			Name="NumbersW2";
 			Condition=getenv("ShowStatsP1") >= 2 or getenv("ShowStatsP2") >= 2;
-			InitCommand=function(self) self:settext("0"):zoom(0.75):addy(100):addx(barCenter+(barWidth[bgNum]+barSpace[bgNum])*1):shadowlength(0) end;
+			InitCommand=function(self) self:settext("0"):zoom(0.75):addy(100):addx(barCenter+(barWidth[bgNum]+barSpace[bgNum])*1):shadowlength(0):maxwidth(barWidth[bgNum]*2) end;
 			StepMessageCommand=function(self,p)
 				if p.PlayerNumber == pn then
 					self:queuecommand("Update")
@@ -101,7 +101,7 @@ return Def.ActorFrame{
 		LoadFont("ScreenGameplay judgment")..{
 			Name="NumbersW3";
 			Condition=getenv("ShowStatsP1") >= 3 or getenv("ShowStatsP2") >= 3;
-			InitCommand=function(self) self:settext("0"):zoom(0.75):addy(100):addx(barCenter+(barWidth[bgNum]+barSpace[bgNum])*2):shadowlength(0) end;
+			InitCommand=function(self) self:settext("0"):zoom(0.75):addy(100):addx(barCenter+(barWidth[bgNum]+barSpace[bgNum])*2):shadowlength(0):maxwidth(barWidth[bgNum]*2) end;
 			StepMessageCommand=function(self,p)
 				if p.PlayerNumber == pn then
 					self:queuecommand("Update")
@@ -116,7 +116,7 @@ return Def.ActorFrame{
 		LoadFont("ScreenGameplay judgment")..{
 			Name="NumbersW4";
 			Condition=getenv("ShowStatsP1") >= 4 or getenv("ShowStatsP2") >= 4;
-			InitCommand=function(self) self:settext("0"):zoom(0.75):addy(100):addx(barCenter+(barWidth[bgNum]+barSpace[bgNum])*3):shadowlength(0) end;
+			InitCommand=function(self) self:settext("0"):zoom(0.75):addy(100):addx(barCenter+(barWidth[bgNum]+barSpace[bgNum])*3):shadowlength(0):maxwidth(barWidth[bgNum]*2) end;
 			StepMessageCommand=function(self,p)
 				if p.PlayerNumber == pn then
 					self:queuecommand("Update")
@@ -131,7 +131,7 @@ return Def.ActorFrame{
 		LoadFont("ScreenGameplay judgment")..{
 			Name="NumbersW5";
 			Condition=getenv("ShowStatsP1") >= 5 or getenv("ShowStatsP2") >= 5;
-			InitCommand=function(self) self:settext("0"):zoom(0.75):addy(100):addx(barCenter+(barWidth[bgNum]+barSpace[bgNum])*4):shadowlength(0) end;
+			InitCommand=function(self) self:settext("0"):zoom(0.75):addy(100):addx(barCenter+(barWidth[bgNum]+barSpace[bgNum])*4):shadowlength(0):maxwidth(barWidth[bgNum]*2) end;
 			StepMessageCommand=function(self,p)
 				if p.PlayerNumber == pn then
 					self:queuecommand("Update")
@@ -146,7 +146,7 @@ return Def.ActorFrame{
 		LoadFont("ScreenGameplay judgment")..{
 			Name="NumbersMiss";
 			Condition=getenv("ShowStatsP1") >= 6 or getenv("ShowStatsP2") >= 6;
-			InitCommand=function(self) self:settext("0"):zoom(0.75):addy(100):addx(barCenter+(barWidth[bgNum]+barSpace[bgNum])*5):shadowlength(0) end;
+			InitCommand=function(self) self:settext("0"):zoom(0.75):addy(100):addx(barCenter+(barWidth[bgNum]+barSpace[bgNum])*5):shadowlength(0):maxwidth(barWidth[bgNum]*2) end;
 			StepMessageCommand=function(self,p)
 				if p.PlayerNumber == pn then
 					self:queuecommand("Update")
