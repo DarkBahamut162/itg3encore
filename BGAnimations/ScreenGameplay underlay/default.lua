@@ -28,10 +28,10 @@ for player in ivalues(Players) do
 		Condition=GAMESTATE:GetPlayMode() ~= "PlayMode_Oni" and GAMESTATE:GetPlayMode() ~= 'PlayMode_Rave';
 	}
 	t[#t+1] = LoadActor("RemainingTime", player)..{
-		Condition=GAMESTATE:GetPlayMode() == "PlayMode_Oni";
+		Condition=GAMESTATE:GetPlayMode() == "PlayMode_Oni" and GAMESTATE:GetCurrentCourse(player):GetCourseEntry(GAMESTATE:GetCourseSongIndex()):GetGainSeconds() > 0;
 	}
 	t[#t+1] = LoadActor("DeltaSeconds", player)..{
-		Condition=GAMESTATE:GetPlayMode() == "PlayMode_Oni";
+		Condition=GAMESTATE:GetPlayMode() == "PlayMode_Oni" and GAMESTATE:GetCurrentCourse(player):GetCourseEntry(GAMESTATE:GetCourseSongIndex()):GetGainSeconds() > 0;
 	}
 end
 
