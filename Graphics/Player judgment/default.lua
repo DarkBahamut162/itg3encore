@@ -66,8 +66,9 @@ return Def.ActorFrame {
 		end
 	end;
 	HealthStateChangedMessageCommand=function(self, param)
-		if param.HealthState == 'HealthState_Dead' then --If player dies
+		local State = GAMESTATE:GetPlayerState(player)
+		if State:GetHealthState() == "HealthState_Dead" then
 			self:visible(false);
 		end
-	end
+	end;
 };

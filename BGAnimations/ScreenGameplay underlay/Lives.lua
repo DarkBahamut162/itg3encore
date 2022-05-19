@@ -14,6 +14,12 @@ local t = Def.ActorFrame{
 		InitCommand=function(self) self:rotationz(-90):zoom(2):addx(player == PLAYER_1 and -100 or 100); end;
 		OnCommand=function(self) self:decelerate(0.8):addx(player == PLAYER_1 and 100 or -100) end;
 		OffCommand=function(self) self:accelerate(0.8):addx(player == PLAYER_1 and -100 or 100) end;
+		HealthStateChangedMessageCommand=function(self, param)
+			local State = GAMESTATE:GetPlayerState(player)
+			if State:GetHealthState() == "HealthState_Dead" then
+				self:accelerate(0.8):addx(player == PLAYER_1 and -100 or 100)
+			end
+		end;
 		LoadActor("meter black")..{
 			InitCommand=function(self) self:zoomx(1.04) end;
 		};
@@ -56,6 +62,12 @@ local t = Def.ActorFrame{
 		InitCommand=function(self) self:addx(player == PLAYER_1 and -100 or 100); end;
 		OnCommand=function(self) self:decelerate(0.8):addx(player == PLAYER_1 and 100 or -100) end;
 		OffCommand=function(self) self:accelerate(0.8):addx(player == PLAYER_1 and -100 or 100) end;
+		HealthStateChangedMessageCommand=function(self, param)
+			local State = GAMESTATE:GetPlayerState(player)
+			if State:GetHealthState() == "HealthState_Dead" then
+				self:accelerate(0.8):addx(player == PLAYER_1 and -100 or 100)
+			end
+		end;
 		LoadFont("_angel glow")..{
 			BeginCommand=function(self)
 				local screen = SCREENMAN:GetTopScreen();
