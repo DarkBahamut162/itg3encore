@@ -28,10 +28,20 @@ for player in ivalues(Players) do
 		Condition=GAMESTATE:GetPlayMode() ~= "PlayMode_Oni" and GAMESTATE:GetPlayMode() ~= 'PlayMode_Rave';
 	}
 	t[#t+1] = LoadActor("RemainingTime", player)..{
-		Condition=GAMESTATE:GetPlayMode() == "PlayMode_Oni" and GAMESTATE:GetCurrentCourse(player):GetCourseEntry(GAMESTATE:GetCourseSongIndex()):GetGainSeconds() > 0;
+		Condition=GAMESTATE:GetPlayMode() == "PlayMode_Oni" and GAMESTATE:GetCurrentCourse(player):GetCourseEntry(1):GetGainSeconds() > 0;
 	}
 	t[#t+1] = LoadActor("DeltaSeconds", player)..{
-		Condition=GAMESTATE:GetPlayMode() == "PlayMode_Oni" and GAMESTATE:GetCurrentCourse(player):GetCourseEntry(GAMESTATE:GetCourseSongIndex()):GetGainSeconds() > 0;
+		Condition=GAMESTATE:GetPlayMode() == "PlayMode_Oni" and GAMESTATE:GetCurrentCourse(player):GetCourseEntry(1):GetGainSeconds() > 0;
+	}
+	t[#t+1] = LoadActor("Lives", player)..{
+		Condition=GAMESTATE:GetPlayMode() == "PlayMode_Oni" and GAMESTATE:GetCurrentCourse(player):GetCourseEntry(1):GetGainSeconds() == 0;
+		InitCommand=function(self)
+			if player == PLAYER_1 then
+				self:x((SCREEN_LEFT+20)+GetLifebarAdjustment()):y(OffsetLifebarHeight(PLAYER_1))
+			else
+				self:x((SCREEN_RIGHT-20)-GetLifebarAdjustment()):y(OffsetLifebarHeight(PLAYER_2))
+			end
+		end;
 	}
 end
 
