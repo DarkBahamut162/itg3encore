@@ -65,4 +65,9 @@ return Def.ActorFrame {
 			c.Judgment:rotationz( TNSRotationZ[tns] * StepEvenOdd(param.Player) );
 		end
 	end;
+	HealthStateChangedMessageCommand=function(self, param)
+		if param.HealthState == 'HealthState_Dead' then --If player dies
+			self:visible(false);
+		end
+	end
 };

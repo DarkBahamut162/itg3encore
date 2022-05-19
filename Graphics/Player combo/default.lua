@@ -70,5 +70,12 @@ return Def.ActorFrame {
 
 		Pulse( c.Number, param );
 		Pulse( Label, param );
+		
+		local State = GAMESTATE:GetPlayerState(player)
+		if State:GetHealthState() == "HealthState_Dead" then
+			c.Number:visible(false);
+			c.ComboLabel:visible(false);
+			c.MissesLabel:visible(false);
+		end
 	end;
 };
