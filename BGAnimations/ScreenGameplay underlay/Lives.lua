@@ -50,46 +50,43 @@ local t = Def.ActorFrame{
 			DestroyCommand=function(self) self:visible(false) end;
 		};
 	};
+
 	--LIVES cur/max
-	LoadFont("_angel glow")..{
-		BeginCommand=function(self)
-			local screen = SCREENMAN:GetTopScreen();
-			local glifemeter = screen:GetLifeMeter(player);
-			self:settext(glifemeter:GetTotalLives());
-			self:x(-1):y(-5):maxwidth(28);
-			self:valign(1):halign(0.5);
-			self:addx(player == PLAYER_1 and -100 or 100);
-		end;
+	Def.ActorFrame{
+		InitCommand=function(self) self:addx(player == PLAYER_1 and -100 or 100); end;
 		OnCommand=function(self) self:decelerate(0.8):addx(player == PLAYER_1 and 100 or -100) end;
 		OffCommand=function(self) self:accelerate(0.8):addx(player == PLAYER_1 and -100 or 100) end;
-		LifeChangedMessageCommand=function(self,params)
-			if params.Player == player then
-				self:settext(params.LivesLeft);
+		LoadFont("_angel glow")..{
+			BeginCommand=function(self)
+				local screen = SCREENMAN:GetTopScreen();
+				local glifemeter = screen:GetLifeMeter(player);
+				self:settext(glifemeter:GetTotalLives());
+				self:x(-1):y(-5):maxwidth(28);
+				self:valign(1):halign(0.5);
 			end;
-		end;
-	};
-	LoadFont("_angel glow")..{
-		BeginCommand=function(self)
-			self:settext("_");
-			self:x(-1):y(-12);
-			self:valign(0.5):halign(0.5);
-			self:zoomx(2);
-			self:addx(player == PLAYER_1 and -100 or 100);
-		end;
-		OnCommand=function(self) self:decelerate(0.8):addx(player == PLAYER_1 and 100 or -100) end;
-		OffCommand=function(self) self:accelerate(0.8):addx(player == PLAYER_1 and -100 or 100) end;
-	};
-	LoadFont("_angel glow")..{
-		BeginCommand=function(self)
-			local screen = SCREENMAN:GetTopScreen();
-			local glifemeter = screen:GetLifeMeter(player);
-			self:settext(glifemeter:GetTotalLives());
-			self:x(-1):y(5):maxwidth(28);
-			self:valign(0):halign(0.5);
-			self:addx(player == PLAYER_1 and -100 or 100);
-		end;
-		OnCommand=function(self) self:decelerate(0.8):addx(player == PLAYER_1 and 100 or -100) end;
-		OffCommand=function(self) self:accelerate(0.8):addx(player == PLAYER_1 and -100 or 100) end;
+			LifeChangedMessageCommand=function(self,params)
+				if params.Player == player then
+					self:settext(params.LivesLeft);
+				end;
+			end;
+		};
+		LoadFont("_angel glow")..{
+			BeginCommand=function(self)
+				self:settext("_");
+				self:x(-1):y(-12);
+				self:valign(0.5):halign(0.5);
+				self:zoomx(2);
+			end;
+		};
+		LoadFont("_angel glow")..{
+			BeginCommand=function(self)
+				local screen = SCREENMAN:GetTopScreen();
+				local glifemeter = screen:GetLifeMeter(player);
+				self:settext(glifemeter:GetTotalLives());
+				self:x(-1):y(5):maxwidth(28);
+				self:valign(0):halign(0.5);
+			end;
+		};
 	};
 };
 
