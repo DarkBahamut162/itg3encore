@@ -152,6 +152,7 @@ local t = Def.ActorFrame{
 
 			LoadActor(THEME:GetPathG("_difficulty","icons"))..{
 				InitCommand=function(self) self:pause():zoomx(-1):playcommand("Update") end;
+				CurrentSongChangedMessageCommand=function(self) self:playcommand("Update") end;
 				UpdateCommand=function(self)
 					local steps = GAMESTATE:GetCurrentSteps(PLAYER_2)
 					if GAMESTATE:IsCourseMode() then
