@@ -215,6 +215,34 @@ function HasVideo(song,changes)
 	return output
 end;
 
+function NeedsBPMfix(song)
+	local var = GetSMParameter(song,"BPMS")
+	local prm, cur
+	local output = false
+	if var ~= "" then
+		prm = split(",",var)
+		if prm ~= "" then
+			for i=1,#prm do
+				prm[i] = split("=",prm[i])
+				if #prm[i] >= 2 then
+					cur = prm[i][2]
+					if cur ~= "" then
+						if tonumber(cur) >= 109713 then
+							output = true
+						end;
+					end
+				end
+			end
+		end
+	end
+	return output
+end;
+
+function NeedsBPMfixCheck()
+	local song = GAMESTATE:GetCurrentSong();
+	return NeedsBPMfix(song);
+end;
+
 function HasLuaCheck()
 	local song = GAMESTATE:GetCurrentSong();
 	return HasLua(song,"bgchanges") or HasLua(song,"fgchanges");

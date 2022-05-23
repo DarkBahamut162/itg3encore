@@ -50,7 +50,7 @@ function SongMods()
 	end
 
 	if pm == 'PlayMode_Rave' or pm == 'PlayMode_Oni' then
-		options = "3,28,20,21,"
+		options = "1,3,28,20,21,"
 	end
 
 	-- ends on 16:
