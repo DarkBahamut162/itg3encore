@@ -72,7 +72,8 @@ return Def.ActorFrame {
 		Pulse( Label, param );
 		
 		local State = GAMESTATE:GetPlayerState(player)
-		if State:GetHealthState() == "HealthState_Dead" then
+		local PlayerOptions = GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Preferred")
+		if State:GetHealthState() == "HealthState_Dead" and (PlayerOptions:FailSetting() == "FailType_Immediate") then
 			c.Number:visible(false);
 			c.ComboLabel:visible(false);
 			c.MissesLabel:visible(false);

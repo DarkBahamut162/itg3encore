@@ -67,7 +67,8 @@ return Def.ActorFrame {
 	end;
 	HealthStateChangedMessageCommand=function(self, param)
 		local State = GAMESTATE:GetPlayerState(player)
-		if State:GetHealthState() == "HealthState_Dead" then
+		local PlayerOptions = GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Preferred")
+		if State:GetHealthState() == "HealthState_Dead" and (PlayerOptions:FailSetting() == "FailType_Immediate") then
 			self:visible(false);
 		end
 	end;
