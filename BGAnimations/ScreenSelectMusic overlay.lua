@@ -1,4 +1,16 @@
 local t = Def.ActorFrame{
+	OffCommand = function(self, params)
+		if GAMESTATE:GetPlayMode() == 'PlayMode_Oni' then
+			for pn in ivalues(GAMESTATE:GetEnabledPlayers()) do
+				local playeroptions = GAMESTATE:GetPlayerState(pn):GetPlayerOptions("ModsLevel_Preferred")
+				if playeroptions:MMod() then GAMESTATE:ApplyGameCommand('mod,'..playeroptions:MMod().."m",pn) break end
+				if playeroptions:AMod() then GAMESTATE:ApplyGameCommand('mod,'..playeroptions:AMod().."a",pn) break end
+				if playeroptions:CAMod() then GAMESTATE:ApplyGameCommand('mod,'..playeroptions:CAMod().."ca",pn) break end
+				if playeroptions:XMod() then GAMESTATE:ApplyGameCommand('mod,'..playeroptions:XMod().."x",pn) end
+				if playeroptions:CMod() then GAMESTATE:ApplyGameCommand('mod,'..playeroptions:CMod().."c",pn) end
+			end
+		end
+	end;
 	LoadActor(THEME:GetPathB("ScreenWithMenuElements","underlay/_sides"))..{
 		InitCommand=function(self) self:ztest(true) end
 	},
