@@ -10,8 +10,9 @@ local background = Def.ActorFrame {
 	OnCommand=function()
 		for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
 			local pX = pname(pn);
-			if (PREFSMAN:GetPreference("Center1Player") and GAMESTATE:GetNumPlayersEnabled() == 1) or
-			ToEnumShortString(GAMESTATE:GetCurrentStyle():GetStyleType()) == "TwoSides" then
+			lua.ReportScriptError( "GetStyleType = " .. ToEnumShortString(GAMESTATE:GetCurrentStyle():GetStyleType()))
+			if (PREFSMAN:GetPreference("Center1Player") and GAMESTATE:GetNumPlayersEnabled() == 1) and
+			ToEnumShortString(GAMESTATE:GetCurrentStyle():GetStyleType()) == "OnePlayerOneSide" then
 				if pn == PLAYER_2 then
 					SCREENMAN:GetTopScreen():GetChild("Player"..pX):addx(SCREEN_WIDTH/4);
 				else
@@ -54,7 +55,8 @@ local background = Def.ActorFrame {
 				end
 			end
 		end
-	end
+	end;
+	DoneLoadingNextSongMessageCommand=function(self) self:playcommand("On") end;
 };
 
 return background;
