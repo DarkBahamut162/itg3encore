@@ -10,7 +10,7 @@ local background = Def.ActorFrame {
 	OnCommand=function()
 		for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
 			local pX = pname(pn);
-			lua.ReportScriptError( "GetStyleType = " .. ToEnumShortString(GAMESTATE:GetCurrentStyle():GetStyleType()))
+			--lua.ReportScriptError( "GetStyleType = " .. ToEnumShortString(GAMESTATE:GetCurrentStyle():GetStyleType()))
 			if (PREFSMAN:GetPreference("Center1Player") and GAMESTATE:GetNumPlayersEnabled() == 1) and
 			ToEnumShortString(GAMESTATE:GetCurrentStyle():GetStyleType()) == "OnePlayerOneSide" then
 				if pn == PLAYER_2 then

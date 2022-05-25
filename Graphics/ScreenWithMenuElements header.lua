@@ -1,4 +1,4 @@
-lua.ReportScriptError( ("Hello %s"):format(Var "LoadingScreen") )
+--lua.ReportScriptError( ("Hello %s"):format(Var "LoadingScreen") )
 local t = Def.ActorFrame{
 	LoadActor( THEME:GetPathG("_dynamic","headers"), Var "LoadingScreen" )..{
 		InitCommand=function(self) self:xy(SCREEN_CENTER_X,30) end,
