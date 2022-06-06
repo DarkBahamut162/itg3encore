@@ -17,7 +17,7 @@ end
 Branch.StartGame = function()
 	if GAMESTATE:GetCoinMode() == 'CoinMode_Home' then
 		-- check game mode to pick Style/NumPlayers
-		if GAMESTATE:GetPlayMode() == 'PlayMode_Rave' then
+		if isRave() then
 			return "ScreenSelectNumPlayers"
 		end
 		return "ScreenSelectStyle"
@@ -71,7 +71,7 @@ Branch.AfterGameplay = function()
 		else	-- oni and endless are shared
 			return "ScreenEvaluationOni"
 		end
-	elseif GAMESTATE:GetPlayMode() == 'PlayMode_Rave' then
+	elseif isRave() then
 		return "ScreenEvaluationRave"
 	else
 		return "ScreenEvaluationNormal"

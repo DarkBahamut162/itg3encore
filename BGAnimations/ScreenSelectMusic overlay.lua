@@ -1,6 +1,6 @@
 local t = Def.ActorFrame{
 	OffCommand = function(self, params)
-		if GAMESTATE:GetPlayMode() == 'PlayMode_Oni' then
+		if isOni() then
 			for pn in ivalues(GAMESTATE:GetEnabledPlayers()) do
 				local playeroptions = GAMESTATE:GetPlayerState(pn):GetPlayerOptions("ModsLevel_Preferred")
 				if playeroptions:MMod() then GAMESTATE:ApplyGameCommand('mod,'..playeroptions:MMod().."m",pn) break end

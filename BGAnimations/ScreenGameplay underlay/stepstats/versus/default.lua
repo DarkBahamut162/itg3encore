@@ -23,7 +23,7 @@ else
 		end;
 
 		Def.ActorFrame{
-			Condition=GAMESTATE:GetPlayMode() ~= 'PlayMode_Rave' and getenv("ShowStatsP1") > 0;
+			Condition=not isRave() and getenv("ShowStatsP1") > 0;
 			Def.ActorFrame{
 				Name="PlayerP1";
 				InitCommand=function(self) self:x(SCREEN_LEFT+20-SCREEN_WIDTH/2):addx(-100):zoomx(-1) end;
@@ -387,7 +387,7 @@ else
 
 		Def.ActorFrame{
 			Name="Labels";
-			InitCommand=function(self) self:y(GAMESTATE:GetPlayMode() == 'PlayMode_Rave' and -10 or 0):addy(-100) end;
+			InitCommand=function(self) self:y(isRave() and -10 or 0):addy(-100) end;
 			Condition=getenv("ShowStatsP1") > 0 or getenv("ShowStatsP2") > 0;
 			OnCommand=function(self) self:sleep(0.5):decelerate(0.8):addy(100) end;
 			OffCommand=function(self) if AnyPlayerFullComboed() then self:sleep(1) end; self:accelerate(0.8):addy(-100) end;
@@ -419,7 +419,7 @@ else
 
 		Def.ActorFrame{
 			Name="NumbersP1";
-			InitCommand=function(self) self:y(GAMESTATE:GetPlayMode() == 'PlayMode_Rave' and -10 or 0):addy(-100) end;
+			InitCommand=function(self) self:y(isRave() and -10 or 0):addy(-100) end;
 			Condition=getenv("ShowStatsP1") > 0 or getenv("ShowStatsP2") > 0;
 			OnCommand=function(self) self:sleep(0.5):decelerate(0.8):addy(100) end;
 			OffCommand=function(self) if AnyPlayerFullComboed() then self:sleep(1) end; self:accelerate(0.8):addy(-100) end;
@@ -510,7 +510,7 @@ else
 
 		Def.ActorFrame{
 			Name="NumbersP2";
-			InitCommand=function(self) self:y(GAMESTATE:GetPlayMode() == 'PlayMode_Rave' and -10 or 0):addy(-100) end;
+			InitCommand=function(self) self:y(isRave() and -10 or 0):addy(-100) end;
 			Condition=getenv("ShowStatsP1") > 0 or getenv("ShowStatsP2") > 0;
 			OnCommand=function(self) self:sleep(0.5):decelerate(0.8):addy(100) end;
 			OffCommand=function(self) if AnyPlayerFullComboed() then self:sleep(1) end; self:accelerate(0.8):addy(-100) end;

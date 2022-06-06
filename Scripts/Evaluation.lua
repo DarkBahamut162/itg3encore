@@ -32,17 +32,29 @@ function PlayerMaxCombo(pn)
 end
 
 function GetRadarData( pnPlayer, rcRadarCategory )
-	local tRadarValues;
-	local StepsOrTrail;
-	local fDesiredValue = 0;
+	local tRadarValues
+	local StepsOrTrail
+	local fDesiredValue = 0
 	if GAMESTATE:GetCurrentTrail( pnPlayer ) then
-		StepsOrTrail = GAMESTATE:GetCurrentTrail( pnPlayer );
-		fDesiredValue = StepsOrTrail:GetRadarValues( pnPlayer ):GetValue( rcRadarCategory );
+		StepsOrTrail = GAMESTATE:GetCurrentTrail( pnPlayer )
+		fDesiredValue = StepsOrTrail:GetRadarValues( pnPlayer ):GetValue( rcRadarCategory )
 	elseif GAMESTATE:GetCurrentSteps( pnPlayer ) then
-		StepsOrTrail = GAMESTATE:GetCurrentSteps( pnPlayer );
-		fDesiredValue = StepsOrTrail:GetRadarValues( pnPlayer ):GetValue( rcRadarCategory );
+		StepsOrTrail = GAMESTATE:GetCurrentSteps( pnPlayer )
+		fDesiredValue = StepsOrTrail:GetRadarValues( pnPlayer ):GetValue( rcRadarCategory )
 	else
-		StepsOrTrail = nil;
-	end;
-	return fDesiredValue;
-end;
+		StepsOrTrail = nil
+	end
+	return fDesiredValue
+end
+
+function isOni()
+	return GAMESTATE:GetPlayMode() == "PlayMode_Oni"
+end
+
+function isRave()
+	return GAMESTATE:GetPlayMode() == "PlayMode_Rave"
+end
+
+function isLifeline(player)
+	return isOni() and GAMESTATE:GetCurrentCourse(player):GetCourseEntry(1):GetGainSeconds() == 0
+end

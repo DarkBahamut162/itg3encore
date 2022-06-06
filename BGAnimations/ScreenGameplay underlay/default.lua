@@ -18,23 +18,23 @@ t[#t+1] = Def.ActorFrame{
 		Condition=stats;
 	};
 	LoadActor("danger")..{
-		Condition=GAMESTATE:GetPlayMode() ~= "PlayMode_Oni";
+		Condition=not isOni();
 	};
 	LoadActor("dead");
 };
 
 for player in ivalues(Players) do
 	t[#t+1] = LoadActor("Score", player)..{
-		Condition=GAMESTATE:GetPlayMode() ~= "PlayMode_Oni" and GAMESTATE:GetPlayMode() ~= 'PlayMode_Rave';
+		Condition=not isOni() and not isRave();
 	}
 	t[#t+1] = LoadActor("RemainingTime", player)..{
-		Condition=GAMESTATE:GetPlayMode() == "PlayMode_Oni" and GAMESTATE:GetCurrentCourse(player):GetCourseEntry(1):GetGainSeconds() > 0;
+		Condition=isOni() and not isLifeline(player);
 	}
 	t[#t+1] = LoadActor("DeltaSeconds", player)..{
-		Condition=GAMESTATE:GetPlayMode() == "PlayMode_Oni" and GAMESTATE:GetCurrentCourse(player):GetCourseEntry(1):GetGainSeconds() > 0;
+		Condition=isOni() and not isLifeline(player);
 	}
 	t[#t+1] = LoadActor("Lives", player)..{
-		Condition=GAMESTATE:GetPlayMode() == "PlayMode_Oni" and GAMESTATE:GetCurrentCourse(player):GetCourseEntry(1):GetGainSeconds() == 0;
+		Condition=isOni() and isLifeline(player);
 		InitCommand=function(self)
 			if player == PLAYER_1 then
 				self:x((SCREEN_LEFT+20)+GetLifebarAdjustment()):y(OffsetLifebarHeight(PLAYER_1))

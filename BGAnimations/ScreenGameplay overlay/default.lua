@@ -4,7 +4,7 @@ local t = Def.ActorFrame{
 	-- rave names
 	Def.ActorFrame{
 		Name="RaveNames";
-		InitCommand=function(self) self:CenterX():y(SCREEN_TOP+58):visible(GAMESTATE:GetPlayMode() == 'PlayMode_Rave') end;
+		InitCommand=function(self) self:CenterX():y(SCREEN_TOP+58):visible(isRave()) end;
 		OnCommand=function(self) self:addy(-100):sleep(0.5):decelerate(0.8):addy(100) end;
 		OffCommand=function(self) self:accelerate(0.8):addy(-100) end;
 
