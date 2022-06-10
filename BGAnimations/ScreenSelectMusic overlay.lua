@@ -119,6 +119,10 @@ local t = Def.ActorFrame{
 								elseif i < #entries then
 									artist = artist .. ", " .. entries[i]:GetSteps():GetAuthorCredit()
 								end
+								if string.len(artist) >= 50 then
+									artist = "Various"
+									break
+								end
 							end
 						end
 						if artist then
