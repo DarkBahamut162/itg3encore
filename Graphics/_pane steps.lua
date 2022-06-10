@@ -57,7 +57,7 @@ return Def.ActorFrame{
 			local song = GAMESTATE:GetCurrentSong()
 			local course = GAMESTATE:GetCurrentCourse()
 			local numSongs = 1
-			if song or course then
+			if song or (course and not IsCourseSecret()) then
 				if song then
 					local steps = GAMESTATE:GetCurrentSteps(player)
 					if steps then

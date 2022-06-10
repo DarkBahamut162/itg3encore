@@ -260,11 +260,13 @@ end;
 
 function IsCourseSecret()
 	local isSecret = false;
-	
-	for i=1,#GAMESTATE:GetCurrentCourse():GetCourseEntries() do
-		if GAMESTATE:GetCurrentCourse():GetCourseEntry(i-1):IsSecret() then
-			isSecret = true
-		end;
+
+	if GAMESTATE:IsCourseMode() then
+		for i=1,#GAMESTATE:GetCurrentCourse():GetCourseEntries() do
+			if GAMESTATE:GetCurrentCourse():GetCourseEntry(i-1):IsSecret() then
+				isSecret = true
+			end
+		end
 	end
 
 	return isSecret;

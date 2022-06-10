@@ -56,7 +56,7 @@ return Def.ActorFrame{
 				self:visible(true)
 				-- coloring
 				local itemColor = color(colors[1][1]..","..colors[1][2]..","..colors[1][3]..",1")
-				if num == stats[1][1] then itemColor = color(colors[1][1]..","..colors[1][2]..","..colors[1][3]..",1")
+				if num <= stats[1][1] then itemColor = color(colors[1][1]..","..colors[1][2]..","..colors[1][3]..",1")
 				elseif num <= stats[1][2] * numSongs then itemColor = color(colors[2][1]..","..colors[2][2]..","..colors[2][3]..",1")
 				elseif num <= stats[1][3] * numSongs then itemColor = color(colors[3][1]..","..colors[3][2]..","..colors[3][3]..",1")
 				elseif num <= stats[1][4] * numSongs then itemColor = color(colors[4][1]..","..colors[4][2]..","..colors[4][3]..",1")
@@ -64,6 +64,7 @@ return Def.ActorFrame{
 				else itemColor = color(colors[6][1]..","..colors[6][2]..","..colors[6][3]..",1")
 				end
 				num = string.format("%03i",num)
+				if IsCourseSecret() then num = "???" end
 				self:settext(num)
 				self:diffusecolor(itemColor)
 			else
@@ -111,7 +112,7 @@ return Def.ActorFrame{
 				self:visible(true)
 				-- coloring
 				local itemColor = color(colors[1][1]..","..colors[1][2]..","..colors[1][3]..",1")
-				if num == stats[2][1] then itemColor = color(colors[1][1]..","..colors[1][2]..","..colors[1][3]..",1")
+				if num <= stats[2][1] then itemColor = color(colors[1][1]..","..colors[1][2]..","..colors[1][3]..",1")
 				elseif num <= stats[2][2] * numSongs then itemColor = color(colors[2][1]..","..colors[2][2]..","..colors[2][3]..",1")
 				elseif num <= stats[2][3] * numSongs then itemColor = color(colors[3][1]..","..colors[3][2]..","..colors[3][3]..",1")
 				elseif num <= stats[2][4] * numSongs then itemColor = color(colors[4][1]..","..colors[4][2]..","..colors[4][3]..",1")
@@ -119,6 +120,7 @@ return Def.ActorFrame{
 				else itemColor = color(colors[6][1]..","..colors[6][2]..","..colors[6][3]..",1")
 				end
 				num = string.format("%03i",num)
+				if IsCourseSecret() then num = "???" end
 				self:settext(num)
 				self:diffusecolor(itemColor)
 			else
@@ -166,7 +168,7 @@ return Def.ActorFrame{
 				self:visible(true)
 				-- coloring
 				local itemColor = color(colors[1][1]..","..colors[1][2]..","..colors[1][3]..",1")
-				if num == stats[3][1] then itemColor = color(colors[1][1]..","..colors[1][2]..","..colors[1][3]..",1")
+				if num <= stats[3][1] then itemColor = color(colors[1][1]..","..colors[1][2]..","..colors[1][3]..",1")
 				elseif num <= stats[3][2] * numSongs then itemColor = color(colors[2][1]..","..colors[2][2]..","..colors[2][3]..",1")
 				elseif num <= stats[3][3] * numSongs then itemColor = color(colors[3][1]..","..colors[3][2]..","..colors[3][3]..",1")
 				elseif num <= stats[3][4] * numSongs then itemColor = color(colors[4][1]..","..colors[4][2]..","..colors[4][3]..",1")
@@ -174,6 +176,7 @@ return Def.ActorFrame{
 				else itemColor = color(colors[6][1]..","..colors[6][2]..","..colors[6][3]..",1")
 				end
 				num = string.format("%03i",num)
+				if IsCourseSecret() then num = "???" end
 				self:settext(num)
 				self:diffusecolor(itemColor)
 			else
@@ -221,7 +224,7 @@ return Def.ActorFrame{
 				self:visible(true)
 				-- coloring
 				local itemColor = color(colors[1][1]..","..colors[1][2]..","..colors[1][3]..",1")
-				if num == stats[4][1] then itemColor = color(colors[1][1]..","..colors[1][2]..","..colors[1][3]..",1")
+				if num <= stats[4][1] then itemColor = color(colors[1][1]..","..colors[1][2]..","..colors[1][3]..",1")
 				elseif num <= stats[4][2] * numSongs then itemColor = color(colors[2][1]..","..colors[2][2]..","..colors[2][3]..",1")
 				elseif num <= stats[4][3] * numSongs then itemColor = color(colors[3][1]..","..colors[3][2]..","..colors[3][3]..",1")
 				elseif num <= stats[4][4] * numSongs then itemColor = color(colors[4][1]..","..colors[4][2]..","..colors[4][3]..",1")
@@ -229,6 +232,7 @@ return Def.ActorFrame{
 				else itemColor = color(colors[6][1]..","..colors[6][2]..","..colors[6][3]..",1")
 				end
 				num = string.format("%03i",num)
+				if IsCourseSecret() then num = "???" end
 				self:settext(num)
 				self:diffusecolor(itemColor)
 			else
@@ -276,7 +280,7 @@ return Def.ActorFrame{
 				self:visible(true)
 				-- coloring
 				local itemColor = color(colors[1][1]..","..colors[1][2]..","..colors[1][3]..",1")
-				if num == stats[5][1] then itemColor = color(colors[1][1]..","..colors[1][2]..","..colors[1][3]..",1")
+				if num <= stats[5][1] then itemColor = color(colors[1][1]..","..colors[1][2]..","..colors[1][3]..",1")
 				elseif num <= stats[5][2] * numSongs then itemColor = color(colors[2][1]..","..colors[2][2]..","..colors[2][3]..",1")
 				elseif num <= stats[5][3] * numSongs then itemColor = color(colors[3][1]..","..colors[3][2]..","..colors[3][3]..",1")
 				elseif num <= stats[5][4] * numSongs then itemColor = color(colors[4][1]..","..colors[4][2]..","..colors[4][3]..",1")
@@ -284,6 +288,7 @@ return Def.ActorFrame{
 				else itemColor = color(colors[6][1]..","..colors[6][2]..","..colors[6][3]..",1")
 				end
 				num = string.format("%03i",num)
+				if IsCourseSecret() then num = "???" end
 				self:settext(num)
 				self:diffusecolor(itemColor)
 			else
