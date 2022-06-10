@@ -43,10 +43,10 @@ return Def.CourseContentsList {
 		Def.TextBanner{
 			InitCommand=function(self) self:Load("CourseTextBanner"):zoom(0.75):halign(0):SetFromString("", "", "", "", "", "") end;
 			SetSongCommand=function(self, params)
-				if params.Song then
-					self:SetFromSong( params.Song );
-				else
+				if not params.Song or params.Secret then
 					self:SetFromString( "??????????", "??????????", "", "", "", "" );
+				else
+					self:SetFromSong( params.Song );
 				end
 				self:finishtweening():zoomy(0):sleep(0.125*params.Number):linear(0.125):zoomy(1.1):linear(0.05):zoomx(1.1):decelerate(0.1):zoom(1);
 			end;
