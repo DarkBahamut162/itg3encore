@@ -23,6 +23,10 @@ return Def.ActorFrame{
 							elseif i < #artists then
 								text = text .. ", " .. artists[i]
 							end
+							if string.len(text) >= 60 then
+								text = "Various Artists"
+								break
+							end
 						end
 					end
 				else
