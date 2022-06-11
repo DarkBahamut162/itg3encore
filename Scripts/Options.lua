@@ -74,16 +74,25 @@ function InitOptions()
 	setenv("HideComboP1",false)
 	setenv("HideComboP2",false)
 	-- rotation
-	setenv("RotationNormalP1",true)
 	setenv("RotationLeftP1",false)
 	setenv("RotationRightP1",false)
 	setenv("RotationUpsideDownP1",false)
-	setenv("RotationSoloP1",false)
-	setenv("RotationNormalP2",true)
 	setenv("RotationLeftP2",false)
 	setenv("RotationRightP2",false)
 	setenv("RotationUpsideDownP2",false)
-	setenv("RotationSoloP2",false)
+
+	if GAMESTATE:GetNumPlayersEnabled() and PREFSMAN:GetPreference("Center1Player") then
+		setenv("RotationNormalP1",false)
+		setenv("RotationNormalP2",false)
+		setenv("RotationSoloP1",true)
+		setenv("RotationSoloP2",true)
+	else
+		setenv("RotationNormalP1",true)
+		setenv("RotationNormalP2",true)
+		setenv("RotationSoloP1",false)
+		setenv("RotationSoloP2",false)
+	end
+
 	-- effect
 	setenv("EffectWagP1",false)
 	setenv("EffectPulseP1",false)
