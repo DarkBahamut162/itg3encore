@@ -32,21 +32,26 @@ local background = Def.ActorFrame {
 				elseif getenv("RotationUpsideDown"..pX) == true then
 					SCREENMAN:GetTopScreen():GetChild("Player"..pX):GetChild("NoteField"):rotationz(180):addy(20);
 				elseif getenv("RotationSolo"..pX) == true then
-					if pn == PLAYER_2 then
-						SCREENMAN:GetTopScreen():GetChild("Player"..pX):addx(-SCREEN_WIDTH/4);
-					else
-						SCREENMAN:GetTopScreen():GetChild("Player"..pX):addx(SCREEN_WIDTH/4);
+					if ToEnumShortString(GAMESTATE:GetCurrentStyle():GetStyleType()) == "OnePlayerOneSide" then
+						if pn == PLAYER_2 then
+							SCREENMAN:GetTopScreen():GetChild("Player"..pX):addx(-SCREEN_WIDTH/4);
+						else
+							SCREENMAN:GetTopScreen():GetChild("Player"..pX):addx(SCREEN_WIDTH/4);
+						end
 					end
 				end
 
-				if getenv("EffectSpin"..pX) == true then
-					SCREENMAN:GetTopScreen():GetChild("Player"..pX):spin():effectclock('beat'):effectmagnitude(0,0,45);
+				local mlevel = GAMESTATE:IsCourseMode() and "ModsLevel_Stage" or "ModsLevel_Preferred"
+				local currentMini = 1-math.round(GAMESTATE:GetPlayerState(pn):GetPlayerOptions(mlevel):Mini()*50) / 100;
+
+				if getenv("EffectVibrate"..pX) == true then
+					SCREENMAN:GetTopScreen():GetChild("Player"..pX):vibrate():effectmagnitude(20*currentMini,20*currentMini,20*currentMini);
+				elseif getenv("EffectSpin"..pX) == true then
+					SCREENMAN:GetTopScreen():GetChild("Player"..pX):spin():effectclock('beat'):effectmagnitude(0,0,45*currentMini);
 				elseif getenv("EffectSpinReverse"..pX) == true then
-					SCREENMAN:GetTopScreen():GetChild("Player"..pX):spin():effectclock('beat'):effectmagnitude(0,0,-45);
-				elseif getenv("EffectVibrate"..pX) == true then
-					SCREENMAN:GetTopScreen():GetChild("Player"..pX):vibrate():effectmagnitude(20,20,20);
+					SCREENMAN:GetTopScreen():GetChild("Player"..pX):spin():effectclock('beat'):effectmagnitude(0,0,-45*currentMini);
 				elseif getenv("EffectBounce"..pX) == true then
-					SCREENMAN:GetTopScreen():GetChild("Player"..pX):bob():effectclock('beat'):effectmagnitude(30,30,30);
+					SCREENMAN:GetTopScreen():GetChild("Player"..pX):bob():effectclock('beat'):effectmagnitude(30*currentMini,30*currentMini,30*currentMini);
 				elseif getenv("EffectPulse"..pX) == true then
 					SCREENMAN:GetTopScreen():GetChild("Player"..pX):pulse():effectclock('beat');
 				elseif getenv("EffectWag"..pX) == true then
