@@ -37,6 +37,7 @@ return Def.ActorFrame{
 
 	Def.Actor{
 		BeginCommand=function(self)
+			InitRotationOptions()
 			if SCREENMAN:GetTopScreen():HaveProfileToLoad() then self:sleep(1.5); end;
 			self:queuecommand("Load");
 		end;
