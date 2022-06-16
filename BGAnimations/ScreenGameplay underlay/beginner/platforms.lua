@@ -1,9 +1,13 @@
 local pm = GAMESTATE:GetPlayMode()
+local P1X = (getenv("RotationSoloP1") and GAMESTATE:GetNumPlayersEnabled() == 1) and SCREEN_CENTER_X or SCREEN_CENTER_X-SCREEN_WIDTH/4
+local P2X = (getenv("RotationSoloP2") and GAMESTATE:GetNumPlayersEnabled() == 1) and SCREEN_CENTER_X or SCREEN_CENTER_X+SCREEN_WIDTH/4
+local P1r = (getenv("RotationSoloP1") and GAMESTATE:GetNumPlayersEnabled()) and 0 or -20
+local P2r = (getenv("RotationSoloP2") and GAMESTATE:GetNumPlayersEnabled()) and 0 or 20
 
 return Def.ActorFrame{
 	Def.ActorFrame{
 		Name="PlatformP1";
-		InitCommand=function(self) self:x(SCREEN_CENTER_X-SCREEN_WIDTH/4):y(SCREEN_CENTER_Y+40):zoom(1.2):rotationx(-20):fov(45):vanishpoint(SCREEN_CENTER_X-160,SCREEN_CENTER_Y+40) end;
+		InitCommand=function(self) self:x(P1X):y(SCREEN_CENTER_Y+40):zoom(1.2):rotationx(P1r):fov(45):vanishpoint(SCREEN_CENTER_X-160,SCREEN_CENTER_Y+40) end;
 		BeginCommand=function(self)
 			local isHuman = GAMESTATE:IsHumanPlayer(PLAYER_1)
 			local stepsDiff = GAMESTATE:GetCurrentSteps(PLAYER_1):GetDifficulty()
@@ -42,7 +46,7 @@ return Def.ActorFrame{
 
 	Def.ActorFrame{
 		Name="PlatformP2";
-		InitCommand=function(self) self:x(SCREEN_CENTER_X+SCREEN_WIDTH/4):y(SCREEN_CENTER_Y+40):zoom(1.2):rotationx(-20):fov(45):vanishpoint(SCREEN_CENTER_X+160,SCREEN_CENTER_Y+40) end;
+		InitCommand=function(self) self:x(P2X):y(SCREEN_CENTER_Y+40):zoom(1.2):rotationx(P2r):fov(45):vanishpoint(SCREEN_CENTER_X+160,SCREEN_CENTER_Y+40) end;
 		BeginCommand=function(self)
 			local isHuman = GAMESTATE:IsHumanPlayer(PLAYER_2)
 			local stepsDiff = GAMESTATE:GetCurrentSteps(PLAYER_2):GetDifficulty()

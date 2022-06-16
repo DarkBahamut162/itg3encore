@@ -1,6 +1,13 @@
+local posX = SCREEN_CENTER_X;
+if GAMESTATE:GetMasterPlayerNumber() == PLAYER_1 and getenv("RotationSoloP1") then
+	posX = SCREEN_CENTER_X-SCREEN_WIDTH/4
+elseif GAMESTATE:GetMasterPlayerNumber() == PLAYER_2 and getenv("RotationSoloP2") then
+	posX = SCREEN_CENTER_X+SCREEN_WIDTH/4
+end
+
 return Def.ActorFrame{
 	Def.ActorFrame{
-		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+15) end;
+		InitCommand=function(self) self:x(posX):y(SCREEN_CENTER_Y+15) end;
 		Def.ActorFrame{
 			LoadActor("light_frame");
 
