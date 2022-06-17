@@ -75,66 +75,66 @@ end
 --[ja] SMファイルで指定したパラメータの内容を読み取る
 --[en] Read the contents of the parameters specified in the SM file.
 function GetSMParameter(song,prm)
-	local st=song:GetAllSteps();
+	local st=song:GetAllSteps()
 	if #st<1 then
-		return "";
-	end;
-	local t;
-	t=st[1]:GetFilename();
+		return ""
+	end
+	local t
+	t=st[1]:GetFilename()
 	if not FILEMAN:DoesFileExist(t) then
-		return "";
-	end;
+		return ""
+	end
 	--[ja] 形式ではじく
 	--[en] burst out in a formal manner
-	local lt=string.lower(t);
+	local lt=string.lower(t)
 	if not string.find(lt,".*%.sm") and not string.find(lt,".*%.ssc") then
-		return "";
-	end;
-	local f=RageFileUtil.CreateRageFile();
-	f:Open(t,1);
+		return ""
+	end
+	local f=RageFileUtil.CreateRageFile()
+	f:Open(t,1)
 	--[ja] 複数行を考慮していったん別変数に代入する
 	--[en] Assign to a separate variable once to account for multiple lines
-	local gl="";
-	local pl=string.lower(prm);
-	local l;
+	local gl=""
+	local pl=string.lower(prm)
+	local l
 	while true do
 		if f then
-			l=f:GetLine();
-			local ll=string.lower(l);
+			l=f:GetLine()
+			local ll=string.lower(l)
 			if string.find(ll,"#notes:.*") or f:AtEOF() then
-				break;
+				break
 			--[ja] BOM考慮して .* を頭につける
 			--[en] BOM considerations . * at the beginning
 			elseif (string.find(ll,"^.*#"..pl..":.*") and (not string.find(ll,"^%/%/.*"))) or gl~="" then
-				gl=gl..""..split("//",l)[1];
+				gl=gl..""..split("//",l)[1]
 				if string.find(ll,".*;") then
-					break;
-				end;
-			end;
+					break
+				end
+			end
 		end
-	end;
-	local tmp={};
+	end
+	local tmp={}
 	if gl=="" then
-		tmp={""};
+		tmp={""}
 	else
-		tmp=split(":",gl);
+		tmp=split(":",gl)
 		if tmp[2]==";" then
-			tmp[1]="";
+			tmp[1]=""
 		else
 			if #tmp>2 then
-				tmp[1]=tmp[2];
+				tmp[1]=tmp[2]
 				for i=3,#tmp do
-					tmp[1]=tmp[1]..":"..split(";",tmp[i])[1];
-				end;
+					tmp[1]=tmp[1]..":"..split(";",tmp[i])[1]
+				end
 			else
-				tmp[1]=split(";",tmp[2])[1];
-			end;
-		end;
-	end;
-	f:Close();
-	f:destroy();
-	return tmp[1];
-end;
+				tmp[1]=split(";",tmp[2])[1]
+			end
+		end
+	end
+	f:Close()
+	f:destroy()
+	return tmp[1]
+end
 
 function HasLua(song,changes)
 	local var = GetSMParameter(song,changes)
@@ -162,7 +162,7 @@ function HasLua(song,changes)
 		end
 	end
 	return output
-end;
+end
 
 function HasImage(song,changes)
 	local var = GetSMParameter(song,changes)
@@ -180,14 +180,14 @@ function HasImage(song,changes)
 							string.find(cur,".gif",0,true) or string.find(cur,".png",0,true) or
 							string.find(cur,".bmp",0,true) then
 							output = true
-						end;
+						end
 					end
 				end
 			end
 		end
 	end
 	return output
-end;
+end
 
 function HasVideo(song,changes)
 	local var = GetSMParameter(song,changes)
@@ -206,14 +206,14 @@ function HasVideo(song,changes)
 							string.find(cur,".mpeg",0,true) or string.find(cur,".wmv",0,true) or
 							string.find(cur,".flv",0,true) or string.find(cur,".mp4",0,true) then
 							output = true
-						end;
+						end
 					end
 				end
 			end
 		end
 	end
 	return output
-end;
+end
 
 function NeedsBPMfix(song)
 	local var = GetSMParameter(song,"BPMS")
@@ -229,37 +229,47 @@ function NeedsBPMfix(song)
 					if cur ~= "" then
 						if tonumber(cur) >= 109713 then
 							output = true
-						end;
+						end
 					end
 				end
 			end
 		end
 	end
 	return output
-end;
+end
 
+--Extreme BPMs to warp desync check
 function NeedsBPMfixCheck()
-	local song = GAMESTATE:GetCurrentSong();
-	return NeedsBPMfix(song);
-end;
+	local song = GAMESTATE:GetCurrentSong()
+	return NeedsBPMfix(song)
+end
+
+--False LASTSECONDHINT fix check
+function NeedsSecsFixCheck()
+	local song = GAMESTATE:GetCurrentSong()
+	local totalsecond = song:MusicLengthSeconds()
+	local lastsecond = song:GetLastSecond()
+	local difference = totalsecond - lastsecond
+	return {totalsecond, lastsecond, difference}
+end
 
 function HasLuaCheck()
 	local song = GAMESTATE:GetCurrentSong();
-	return HasLua(song,"bgchanges") or HasLua(song,"fgchanges");
-end;
+	return HasLua(song,"bgchanges") or HasLua(song,"fgchanges")
+end
 
 function HasVideoCheck()
 	local song = GAMESTATE:GetCurrentSong();
-	return HasVideo(song,"bgchanges") or HasVideo(song,"fgchanges");
-end;
+	return HasVideo(song,"bgchanges") or HasVideo(song,"fgchanges")
+end
 
 function HasImageCheck()
 	local song = GAMESTATE:GetCurrentSong();
-	return HasImage(song,"bgchanges") or HasImage(song,"fgchanges");
-end;
+	return HasImage(song,"bgchanges") or HasImage(song,"fgchanges")
+end
 
 function IsCourseSecret()
-	local isSecret = false;
+	local isSecret = false
 
 	if GAMESTATE:IsCourseMode() then
 		for i=1,#GAMESTATE:GetCurrentCourse():GetCourseEntries() do
@@ -269,5 +279,58 @@ function IsCourseSecret()
 		end
 	end
 
-	return isSecret;
-end;
+	return isSecret
+end
+
+local allowednotes = {
+	["TapNoteType_Tap"] = true,
+	["TapNoteType_Lift"] = true,
+	-- Support the heads of the subtypes.
+	["TapNoteSubType_Hold"] = true,
+	["TapNoteSubType_Roll"] = true,
+}
+
+function getStats(Steps)
+    local chartint = 1
+	local currentBeat = 0;
+	local currentNotes = 0;
+	local noteCounter = {0,0,0,0};
+	local lastRegisteredBeat = 0;
+	local hash = 0;
+
+    if Steps then
+        for k,v in pairs( GAMESTATE:GetCurrentSong():GetAllSteps() ) do
+            if v == Steps then
+				chartint = k
+				hash = Steps:GetHash()
+				break
+			end
+        end
+		if hash > 0 then
+			if LoadModule("Config.Exists.lua")(hash.."_","Cache/Steps/"..hash) then
+				return split("_",LoadModule("Config.Load.lua")(hash.."_","Cache/Steps/"..hash))
+			else
+				for k,v in pairs( GAMESTATE:GetCurrentSong():GetNoteData(chartint) ) do
+					if currentBeat < v[1] then
+						lastRegisteredBeat = currentBeat
+						currentBeat = v[1]
+						if currentNotes ~= 0 then 
+							noteCounter[currentNotes] = noteCounter[currentNotes] + 1
+						end
+						currentNotes = 0
+					end
+					if allowednotes[ v[3] ] then
+						currentNotes = currentNotes + 1
+					end
+				end
+				if lastRegisteredBeat < currentBeat then
+					if currentNotes ~= 0 then
+						noteCounter[currentNotes] = noteCounter[currentNotes] + 1
+					end
+				end
+				LoadModule("Config.Save.lua")(hash.."_",table.concat(noteCounter, "_"),"Cache/Steps/"..hash)
+			end
+		end
+    end
+    return {noteCounter[1],noteCounter[2],noteCounter[3],noteCounter[4]}
+end
