@@ -4,16 +4,21 @@ function PlayerUsingBothSides()
 end
 
 function EvalX()
+	return 0;
+	--[[
 	if not PlayerUsingBothSides() then return 0 end
 
 	local Offset = 147
 	if GAMESTATE:GetMasterPlayerNumber() == PLAYER_2 then Offset = Offset * -1 end
 	return Offset;
+	]]--
 end
 
 function EvalTweenDistance()
 	local Distance = SCREEN_WIDTH/2
+	--[[
 	if PlayerUsingBothSides() then Distance = Distance * 2 end
+	]]--
 	return Distance
 end
 
