@@ -1,4 +1,5 @@
 # In The Groove 3 Encore
+![In The Groove 3 Encore](https://user-images.githubusercontent.com/83576877/176179247-61a15786-5992-4a2e-ba08-4eec7ed4613f.png)
 
 The following project has been in-officially taken over by me (DarkBahamut162).
 
@@ -39,6 +40,7 @@ What has been fixed so far:
 * All **cmd()** transformed to **function(self)**
 * Removed **D-Pad** Modifier since it breaks other Modifiers (like the new SpeedMod)
 * Better and sorted **ScreenPlayerOptions**
+* Added **MOD** & **BPM range** within **Name Badges** inside **ScreenPlayerOptions**
 * Better **StatsDisplay/ShowStats** going from a range of 1-6 instead of just 3
 * Actually fixed **Course Mode** (Battle, Marathon & Survival Mode)
   * Fixed/Better **Song List**
@@ -49,6 +51,8 @@ What has been fixed so far:
       * Introduced **HAS LUA**
     * **RemainingTime** & **DeltaSeconds**
     * Forced implementation of **NoteSkin** via ApplyGameCommand
+    * Forced implementation of **SpeedMods** if GamePlay is in Oni mode
+    * Added **LifeBar** for Oni Courses that have lives
 * Fixed **Rounds/Songs Display**
 * Added back **Rotation** to **Judgments** & **Holds** during Gameplay
 * Shows **ProductFamily**
@@ -58,7 +62,7 @@ The following has been re-introduced from OpenITG's ITG3Encore Theme:
 * **Full Combo Splash Animation**
 * **CustomMods** and **ScreenFilter**
 * **Encore "Folders"**
-* **OptionsList** *(Not yet fully functional)*
+* **OptionsList** *(Mostly functional)*
 
 
 Stuff still needs to get fixed, even if the fixed and re-introduced list/code are quite long/big.
