@@ -19,15 +19,6 @@ local TNSFrames = {
 	TapNoteScore_Miss = 5;
 };
 
-local TNSRotationZ = {
-	TapNoteScore_W1 = 0;
-	TapNoteScore_W2 = 0;
-	TapNoteScore_W3 = 3;
-	TapNoteScore_W4 = 5;
-	TapNoteScore_W5 = 10;
-	TapNoteScore_Miss = 30;
-};
-
 return Def.ActorFrame {
 	LoadActor("_judgments") .. {
 		Name="Judgment";
@@ -55,15 +46,14 @@ return Def.ActorFrame {
 		end
 		self:playcommand("Reset");
 
-		c.Judgment:visible( true );
-		c.Judgment:setstate( iFrame );
-		JudgeCmds[param.TapNoteScore](c.Judgment);
-		-- handle rotation
-		if tns == 'TapNoteScore_W1' or tns == 'TapNoteScore_W2' then
-			c.Judgment:rotationz(0)
+		if tns == 'TapNoteScore_Miss' then
+			c.Judgment:rotationz(30 * StepEvenOdd(param.Player))
 		else
-			c.Judgment:rotationz( TNSRotationZ[tns] * StepEvenOdd(param.Player) );
+			c.Judgment:rotationz(math.min(math.abs(param.TapNoteOffset), PREFSMAN:GetPreference("TimingWindowSecondsW5")) * 10 / PREFSMAN:GetPreference("TimingWindowSecondsW5") * StepEvenOdd(param.Player));
 		end
+		JudgeCmds[param.TapNoteScore](c.Judgment);
+		c.Judgment:setstate( iFrame );
+		c.Judgment:visible( true );
 	end;
 	HealthStateChangedMessageCommand=function(self, param)
 		local State = GAMESTATE:GetPlayerState(player)
