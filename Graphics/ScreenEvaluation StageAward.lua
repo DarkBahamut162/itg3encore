@@ -17,7 +17,7 @@ local awardRef = {
 
 local t = Def.ActorFrame{};
 
-if award then
+if award and not STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetFailed() then
 	t[#t+1] = LoadActor(awardRef[award].File,awardRef[award].Color)..{
 		Name="Trophy";
 		InitCommand=function(self) self:zoom(0.7):x(-60):y(-80):rotationy(-15) end;
