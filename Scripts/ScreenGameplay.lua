@@ -109,15 +109,15 @@ end
 
 function PlayerFullComboed(pn)
 	if GAMESTATE:IsPlayerEnabled(pn) then
-		return STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):FullCombo();
+		return (not STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):GetFailed() and STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):FullCombo()) and true or false;
 	end
-	return false
 end
 
 function AnyPlayerFullComboed(self)
 	if PlayerFullComboed(PLAYER_1) or PlayerFullComboed(PLAYER_2) then 
 		return true
 	end
+	return false
 end
 
 -- Needed for judgment rotation
