@@ -22,7 +22,7 @@ end;
 --Marvelous FullCombo
 t[#t+1] = LoadActor("bluebeam")..{
 	InitCommand=function(self) self:blend("BlendMode_Add"):x(GetPosition(pn)):y(SCREEN_CENTER_Y-SCREEN_HEIGHT/9+15):diffusealpha(0):zoom(0.3):cropleft(0.5):cropright(0.5) end;
-	OffCommand=function(self) self:queuecommand("CheckScore") end;
+	OffCommand=function(self) if PlayerFullComboed(pn) then self:queuecommand("CheckScore") end end;
 	CheckScoreCommand=function(self)
 		local fct = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn);
 		if fct:FullComboOfScore('TapNoteScore_W1') == true then
@@ -46,8 +46,8 @@ t[#t+1] = LoadActor("bluebeam")..{
 };
 t[#t+1] = LoadActor("full combo text")..{
 	InitCommand=function(self) self:x(GetPosition(pn)):y(SCREEN_CENTER_Y-SCREEN_HEIGHT/8+15):diffusealpha(0):shadowlength(0) end;
-	OffCommand=function(self) self:queuecommand("SetStats") end;
-	SetStatsCommand=function(self)
+	OffCommand=function(self) if PlayerFullComboed(pn) then self:queuecommand("CheckScore") end end;
+	CheckScoreCommand=function(self)
 		local fct = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn);
 		if fct:FullComboOfScore('TapNoteScore_W1') == true then
 			self:sleep(0.4)
@@ -67,8 +67,8 @@ t[#t+1] = LoadActor("full combo text")..{
 };
 t[#t+1] = LoadActor("full combo glow")..{
 	InitCommand=function(self) self:x(GetPosition(pn)):y(SCREEN_CENTER_Y-SCREEN_HEIGHT/8+15):diffusealpha(0) end;
-	OffCommand=function(self) self:queuecommand("SetStats") end;
-	SetStatsCommand=function(self)
+	OffCommand=function(self) if PlayerFullComboed(pn) then self:queuecommand("CheckScore") end end;
+	CheckScoreCommand=function(self)
 		local fct = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn);
 		if fct:FullComboOfScore('TapNoteScore_W1') == true then
 			self:sleep(0.1)
@@ -88,7 +88,7 @@ t[#t+1] = LoadActor("full combo glow")..{
 };
 t[#t+1] = LoadActor("_fan")..{
 	InitCommand=function(self) self:x(GetPosition(pn)):y(SCREEN_HEIGHT/2):zoomx(1.25):blend("BlendMode_Add"):cropleft(0.5):cropright(0.5):faderight(0.5):fadeleft(0.5):zoomtoheight(SCREEN_HEIGHT*1.5):diffusealpha(0) end;
-	OffCommand=function(self) self:queuecommand("CheckScore") end;
+	OffCommand=function(self) if PlayerFullComboed(pn) then self:queuecommand("CheckScore") end end;
 	CheckScoreCommand=function(self)
 		local fct = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn);
 		if fct:FullComboOfScore('TapNoteScore_W1') == true then
@@ -113,7 +113,7 @@ t[#t+1] = LoadActor("_fan")..{
 };
 t[#t+1] = LoadActor("_fan")..{
 	InitCommand=function(self) self:x(GetPosition(pn)):y(SCREEN_HEIGHT/2):blend("BlendMode_Add"):fadetop(0.1):fadebottom(0.5):zoomtoheight(SCREEN_HEIGHT*2):diffusealpha(0) end;
-	OffCommand=function(self) self:queuecommand("CheckScore") end;
+	OffCommand=function(self) if PlayerFullComboed(pn) then self:queuecommand("CheckScore") end end;
 	CheckScoreCommand=function(self)
 		local fct = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn);
 		if fct:FullComboOfScore('TapNoteScore_W1') == true then
@@ -133,7 +133,7 @@ t[#t+1] = LoadActor("_fan")..{
 };
 t[#t+1] = LoadActor("blueflare")..{
 	InitCommand=function(self) self:x(GetPosition(pn)):blend("BlendMode_Add"):y(SCREEN_CENTER_Y-SCREEN_HEIGHT/9+15):diffusealpha(0):zoom(0.3) end;
-	OffCommand=function(self) self:queuecommand("CheckScore") end;
+	OffCommand=function(self) if PlayerFullComboed(pn) then self:queuecommand("CheckScore") end end;
 	CheckScoreCommand=function(self)
 		local fct = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn);
 		if fct:FullComboOfScore('TapNoteScore_W1') == true then
@@ -156,7 +156,7 @@ t[#t+1] = LoadActor("blueflare")..{
 --Perfect FullCombo
 t[#t+1] = LoadActor("orangebeam")..{
 	InitCommand=function(self) self:blend("BlendMode_Add"):x(GetPosition(pn)):y(SCREEN_CENTER_Y-SCREEN_HEIGHT/9+15):diffusealpha(0):zoom(0.3):cropleft(0.5):cropright(0.5) end;
-	OffCommand=function(self) self:queuecommand("CheckScore") end;
+	OffCommand=function(self) if PlayerFullComboed(pn) then self:queuecommand("CheckScore") end end;
 	CheckScoreCommand=function(self)
 		local fct = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn);
 		if fct:FullComboOfScore('TapNoteScore_W1') == true then
@@ -180,8 +180,8 @@ t[#t+1] = LoadActor("orangebeam")..{
 };
 t[#t+1] = LoadActor("full combo text")..{
 	InitCommand=function(self) self:x(GetPosition(pn)):y(SCREEN_CENTER_Y-SCREEN_HEIGHT/8+15):diffusealpha(0):shadowlength(0) end;
-	OffCommand=function(self) self:queuecommand("SetStats") end;
-	SetStatsCommand=function(self)
+	OffCommand=function(self) if PlayerFullComboed(pn) then self:queuecommand("CheckScore") end end;
+	CheckScoreCommand=function(self)
 		local fct = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn);
 		if fct:FullComboOfScore('TapNoteScore_W1') == true then
 			self:visible(false);
@@ -201,8 +201,8 @@ t[#t+1] = LoadActor("full combo text")..{
 };
 t[#t+1] = LoadActor("full combo glow")..{
 	InitCommand=function(self) self:x(GetPosition(pn)):y(SCREEN_CENTER_Y-SCREEN_HEIGHT/8+15):diffusealpha(0) end;
-	OffCommand=function(self) self:queuecommand("SetStats") end;
-	SetStatsCommand=function(self)
+	OffCommand=function(self) if PlayerFullComboed(pn) then self:queuecommand("CheckScore") end end;
+	CheckScoreCommand=function(self)
 		local fct = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn);
 		if fct:FullComboOfScore('TapNoteScore_W1') == true then
 			self:visible(false);
@@ -222,7 +222,7 @@ t[#t+1] = LoadActor("full combo glow")..{
 };
 t[#t+1] = LoadActor("_ex")..{
 	InitCommand=function(self) self:x(GetPosition(pn)):y(SCREEN_HEIGHT/2):zoomx(1.25):blend("BlendMode_Add"):cropleft(0.5):cropright(0.5):faderight(0.5):fadeleft(0.5):zoomtoheight(SCREEN_HEIGHT*1.5):diffusealpha(0) end;
-	OffCommand=function(self) self:queuecommand("CheckScore") end;
+	OffCommand=function(self) if PlayerFullComboed(pn) then self:queuecommand("CheckScore") end end;
 	CheckScoreCommand=function(self)
 		local fct = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn);
 		if fct:FullComboOfScore('TapNoteScore_W1') == true then
@@ -247,7 +247,7 @@ t[#t+1] = LoadActor("_ex")..{
 };
 t[#t+1] = LoadActor("_ex")..{
 	InitCommand=function(self) self:x(GetPosition(pn)):y(SCREEN_HEIGHT/2):blend("BlendMode_Add"):fadetop(0.1):fadebottom(0.5):zoomtoheight(SCREEN_HEIGHT*2):diffusealpha(0) end;
-	OffCommand=function(self) self:queuecommand("CheckScore") end;
+	OffCommand=function(self) if PlayerFullComboed(pn) then self:queuecommand("CheckScore") end end;
 	CheckScoreCommand=function(self)
 		local fct = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn);
 		if fct:FullComboOfScore('TapNoteScore_W1') == true then
@@ -267,7 +267,7 @@ t[#t+1] = LoadActor("_ex")..{
 };
 t[#t+1] = LoadActor("orangeflare")..{
 	InitCommand=function(self) self:x(GetPosition(pn)):blend("BlendMode_Add"):y(SCREEN_CENTER_Y-SCREEN_HEIGHT/9+15):diffusealpha(0):zoom(0.3) end;
-	OffCommand=function(self) self:queuecommand("CheckScore") end;
+	OffCommand=function(self) if PlayerFullComboed(pn) then self:queuecommand("CheckScore") end end;
 	CheckScoreCommand=function(self)
 		local fct = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn);
 		if fct:FullComboOfScore('TapNoteScore_W1') == true then
@@ -290,7 +290,7 @@ t[#t+1] = LoadActor("orangeflare")..{
 --FullCombo
 t[#t+1] = LoadActor("greenbeam")..{
 	InitCommand=function(self) self:blend("BlendMode_Add"):x(GetPosition(pn)):y(SCREEN_CENTER_Y-SCREEN_HEIGHT/9+15):diffusealpha(0):zoom(0.3):cropleft(0.5):cropright(0.5) end;
-	OffCommand=function(self) self:queuecommand("CheckScore") end;
+	OffCommand=function(self) if PlayerFullComboed(pn) then self:queuecommand("CheckScore") end end;
 	CheckScoreCommand=function(self)
 		local fct = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn);
 		if fct:FullComboOfScore('TapNoteScore_W1') == true then
@@ -314,8 +314,8 @@ t[#t+1] = LoadActor("greenbeam")..{
 };
 t[#t+1] = LoadActor("full combo text")..{
 	InitCommand=function(self) self:x(GetPosition(pn)):y(SCREEN_CENTER_Y-SCREEN_HEIGHT/8+15):diffusealpha(0):shadowlength(0) end;
-	OffCommand=function(self) self:queuecommand("SetStats") end;
-	SetStatsCommand=function(self)
+	OffCommand=function(self) if PlayerFullComboed(pn) then self:queuecommand("CheckScore") end end;
+	CheckScoreCommand=function(self)
 		local fct = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn);
 		if fct:FullComboOfScore('TapNoteScore_W1') == true then
 			self:visible(false);
@@ -335,8 +335,8 @@ t[#t+1] = LoadActor("full combo text")..{
 };
 t[#t+1] = LoadActor("full combo glow")..{
 	InitCommand=function(self) self:x(GetPosition(pn)):y(SCREEN_CENTER_Y-SCREEN_HEIGHT/8+15):diffusealpha(0) end;
-	OffCommand=function(self) self:queuecommand("SetStats") end;
-	SetStatsCommand=function(self)
+	OffCommand=function(self) if PlayerFullComboed(pn) then self:queuecommand("CheckScore") end end;
+	CheckScoreCommand=function(self)
 		local fct = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn);
 		if fct:FullComboOfScore('TapNoteScore_W1') == true then
 			self:visible(false);
@@ -356,7 +356,7 @@ t[#t+1] = LoadActor("full combo glow")..{
 };
 t[#t+1] = LoadActor("_great")..{
 	InitCommand=function(self) self:x(GetPosition(pn)):y(SCREEN_HEIGHT/2):zoomx(1.25):blend("BlendMode_Add"):cropleft(0.5):cropright(0.5):faderight(0.5):fadeleft(0.5):zoomtoheight(SCREEN_HEIGHT*1.5):diffusealpha(0) end;
-	OffCommand=function(self) self:queuecommand("CheckScore") end;
+	OffCommand=function(self) if PlayerFullComboed(pn) then self:queuecommand("CheckScore") end end;
 	CheckScoreCommand=function(self)
 		local fct = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn);
 		if fct:FullComboOfScore('TapNoteScore_W1') == true then
@@ -381,7 +381,7 @@ t[#t+1] = LoadActor("_great")..{
 };
 t[#t+1] = LoadActor("_great")..{
 	InitCommand=function(self) self:x(GetPosition(pn)):y(SCREEN_HEIGHT/2):blend("BlendMode_Add"):fadetop(0.1):fadebottom(0.5):zoomtoheight(SCREEN_HEIGHT*2):diffusealpha(0) end;
-	OffCommand=function(self) self:queuecommand("CheckScore") end;
+	OffCommand=function(self) if PlayerFullComboed(pn) then self:queuecommand("CheckScore") end end;
 	CheckScoreCommand=function(self)
 		local fct = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn);
 		if fct:FullComboOfScore('TapNoteScore_W1') == true then
@@ -401,7 +401,7 @@ t[#t+1] = LoadActor("_great")..{
 };
 t[#t+1] = LoadActor("greenflare")..{
 	InitCommand=function(self) self:x(GetPosition(pn)):blend("BlendMode_Add"):y(SCREEN_CENTER_Y-SCREEN_HEIGHT/9+15):diffusealpha(0):zoom(0.3) end;
-	OffCommand=function(self) self:queuecommand("CheckScore") end;
+	OffCommand=function(self) if PlayerFullComboed(pn) then self:queuecommand("CheckScore") end end;
 	CheckScoreCommand=function(self)
 		local fct = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn);
 		if fct:FullComboOfScore('TapNoteScore_W1') == true then
