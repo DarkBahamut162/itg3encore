@@ -20,8 +20,8 @@ local function checkInitSpeedMods()
 	if playeroptions:MMod()			then pX = playeroptions:MMod() pXmod = "m"
 	elseif playeroptions:AMod()		then pX = playeroptions:AMod() pXmod = "a"
 	elseif playeroptions:CAMod()	then pX = playeroptions:CAMod() pXmod = "ca"
-	elseif playeroptions:XMod()		then pX = playeroptions:XMod() pXmod = "x"
-	elseif playeroptions:CMod()		then pX = playeroptions:CMod() pXmod = "c" end
+	elseif playeroptions:XMod()		then pX = playeroptions:XMod() * 100 pXmod = "x"
+	elseif playeroptions:CMod()		then pX = playeroptions:CMod() pXmod = "C" end
 end
 
 local function modifiedBPM(speed,mode)
@@ -70,8 +70,8 @@ local t = Def.ActorFrame{
 		BeginCommand=function(self)
 			if GAMESTATE:IsPlayerEnabled(player) then
 				checkInitSpeedMods()
-				bpmtext = modifiedBPM(pXmod,pX)
-				self:settextf("MOD: %s%s  BPM: %s",pX,pXmod,bpmtext)
+				bpmtext = modifiedBPM(pX,pXmod)
+				self:settextf("MOD: %s%s  BPM: %s",pXmod == "x" and pX/100 or pX,pXmod,bpmtext)
 			end
 		end;
 		SpeedChoiceChangedMessageCommand=function(self,param)
