@@ -3,6 +3,49 @@ local t = LoadFallbackB();
 t[#t+1] = StandardDecorationFromFile("BannerReflection","BannerReflection");
 t[#t+1] = StandardDecorationFromFile("Triangle","Triangle");
 
+t[#t+1] = Def.FadingBanner{
+	InitCommand=function(self) self:x(SCREEN_CENTER_X+160-20):y(SCREEN_TOP+160-11):addx(SCREEN_WIDTH):decelerate(0.75):addx(-SCREEN_WIDTH):ztest(true):vertalign(bottom):playcommand("Set") end;
+	OffCommand=function(self) self:accelerate(0.75):addx(SCREEN_WIDTH) end;
+	SetCommand=function(self)
+		local song = GAMESTATE:GetCurrentSong()
+		local course = GAMESTATE:GetCurrentCourse()
+		local sortOrder = GAMESTATE:GetSortOrder()
+		if song then
+			self:LoadFromSong(song)
+		elseif course then
+			self:LoadFromCourse(course)
+		elseif sortOrder == 'SortOrder_ModeMenu' then
+			self:LoadFromSortOrder('SortOrder_ModeMenu')
+		else
+			-- load fallback first
+			self:LoadFromSong(nil)
+
+			local topScreen = SCREENMAN:GetTopScreen()
+			if topScreen then
+				local wheel = topScreen:GetMusicWheel()
+				if wheel then
+					local curIdx = wheel:GetCurrentIndex()
+					local numItems = wheel:GetNumItems()
+
+					-- chance is the second to last item on the wheel
+					if curIdx+1 == numItems-1 then
+						self:LoadRandom()
+					elseif curIdx+1 ~= numItems then
+						local path = SONGMAN:GetSongGroupBannerPath( wheel:GetSelectedSection() )
+						if path == "" or path == nil then else
+							self:LoadFromSongGroup(split("/",path)[2])
+						end
+					end
+				end
+			end
+		end
+		self:scaletoclipped(320,120)
+	end;
+	CurrentSongChangedMessageCommand=function(self) self:playcommand("Set") end;
+	CurrentCourseChangedMessageCommand=function(self) self:playcommand("Set") end;
+	WheelMovingMessageCommand=function(self) self:queuecommand("Set") end;
+};
+
 -- stepsdisplay
 local function StepsDisplay(pn)
 	local function set(self, player) self:SetFromGameState(player); end
