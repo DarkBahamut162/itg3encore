@@ -37,7 +37,7 @@ local t = Def.ActorFrame{
 		LoadActor("frame")..{
 			InitCommand=function(self) self:x(SCREEN_CENTER_X):y(SCREEN_CENTER_Y-30):zoomx(0.80):zoomy(1.005):addy(SCREEN_HEIGHT) end;
 			OnCommand=function(self) self:sleep(3):decelerate(0.3):addy(-SCREEN_HEIGHT) end;
-			OffCommand=function(self) self:accelerate(0.3):addx(SCREEN_HEIGHT) end;
+			OffCommand=function(self) self:accelerate(0.3):addy(SCREEN_HEIGHT) end;
 		};
 		LoadActor("base frame")..{
 			InitCommand=function(self) self:x(THEME:GetMetric("ScreenEvaluation","GradeFrameP1X")-27):y(THEME:GetMetric("ScreenEvaluation","GradeFrameP1Y")-32):addx(-EvalTweenDistance()) end;
