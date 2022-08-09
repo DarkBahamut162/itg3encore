@@ -12,6 +12,24 @@ local barCenter		= 0;
 -- on 4 -> right (4) 2 pixel off
 -- on 6 -> left (3) 1 pixel off
 
+local mines, holds, rolls, holdsAndRolls = 0,0,0,0
+
+local song = GAMESTATE:GetCurrentSong()
+local course = GAMESTATE:GetCurrentCourse()
+local steps
+if song then
+	steps = GAMESTATE:GetCurrentSteps(pn)
+elseif course then
+	steps = GAMESTATE:GetCurrentTrail(pn)
+end
+if steps then
+	local rv = steps:GetRadarValues(pn)
+	mines = rv:GetValue('RadarCategory_Mines')
+	holds = rv:GetValue('RadarCategory_Holds')
+	rolls = rv:GetValue('RadarCategory_Rolls')
+	holdsAndRolls = holds + rolls
+end
+
 local bgNum = GAMESTATE:GetMasterPlayerNumber() == PLAYER_1 and getenv("ShowStatsP1") or getenv("ShowStatsP2");
 if bgNum > 0 then
 	barCenter	= -totalWidth/2+barWidth[bgNum]/2;
@@ -39,39 +57,53 @@ return Def.ActorFrame{
 		LoadActor("s_bg" .. bgNum);
 
 		Def.ActorFrame{
-			OnCommand=function(self) self:addx(10) end;
+			OnCommand=function(self)
+				self:addx(10)
+				if mines == 0 then
+					self:GetChild("MineName"):visible(false)
+					self:GetChild("MineCounter"):visible(false)
+				end
+				if holdsAndRolls == 0 then
+					self:GetChild("HoldName"):visible(false)
+					self:GetChild("HoldCounter"):visible(false)
+				else
+					if holds > 0 and rolls > 0 then
+						self:GetChild("HoldName"):settext("Holds/Rolls Dropped:")
+					elseif holds == 0 and rolls > 0 then
+						self:GetChild("HoldName"):settext("Rolls Dropped:")
+					end
+				end
+				self:queuecommand("Update")
+			end;
 			JudgmentMessageCommand=function(self,param)
 				if param.Player == pn then
 					self:queuecommand("Update")
 				end
 			end;
-			LetGoCommand=function(self,param)
-				if param.Player == pn then
-					self:queuecommand("Update")
-				end
-			end;
 			UpdateCommand=function(self)
-				local holdDropCount = self:GetChild("HoldMiss")
-				local mineCount = self:GetChild("Mine")
+				local holdDropCount = self:GetChild("HoldCounter")
+				local mineCount = self:GetChild("MineCounter")
 				local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn)
-				mineCount:settext(pss:GetTapNoteScores('TapNoteScore_HitMine'))
-				holdDropCount:settext(pss:GetHoldNoteScores('HoldNoteScore_LetGo'))
+				mineCount:settext(pss:GetTapNoteScores('TapNoteScore_HitMine').."/"..mines)
+				holdDropCount:settext(pss:GetHoldNoteScores('HoldNoteScore_LetGo').."/"..holdsAndRolls)
 			end;
 			LoadFont("ScreenGameplay judgment")..{
+				Name="HoldName";
 				Text="Holds Dropped:";
-				InitCommand=function(self) self:horizalign(left):zoom(0.75):shadowlength(0):addy(145):addx(-110) end;
+				OnCommand=function(self) self:maxwidth(125):horizalign(left):zoom(0.75):shadowlength(0):addy(145):addx(-110) end;
 			};
 			LoadFont("ScreenGameplay judgment")..{
+				Name="MineName";
 				Text="Mines Hit: ";
-				InitCommand=function(self) self:horizalign(left):zoom(0.75):shadowlength(0):addy(125):addx(-110) end;
+				OnCommand=function(self) self:maxwidth(125):horizalign(left):zoom(0.75):shadowlength(0):addy(125):addx(-110) end;
 			};
 			LoadFont("ScreenGameplay judgment")..{
-				Name="HoldMiss";
-				InitCommand=function(self) self:horizalign(right):zoom(0.75):shadowlength(0):addy(145):addx(90):settext("0") end;
+				Name="HoldCounter";
+				OnCommand=function(self) self:maxwidth(125):horizalign(right):zoom(0.75):shadowlength(0):addy(145):addx(90) end;
 			};
 			LoadFont("ScreenGameplay judgment")..{
-				Name="Mine";
-				InitCommand=function(self) self:horizalign(right):zoom(0.75):shadowlength(0):addy(125):addx(90):settext("0") end;
+				Name="MineCounter";
+				OnCommand=function(self) self:maxwidth(125):horizalign(right):zoom(0.75):shadowlength(0):addy(125):addx(90) end;
 			};
 		};
 
