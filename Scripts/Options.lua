@@ -58,6 +58,16 @@ function SongMods()
 	return options
 end
 
+function getPercentValues()
+	local temp = "";
+	for i=0,10 do
+		temp = temp .. (i*10) .. "%"
+		if i < 10 then temp = temp .. "," end
+	end
+
+	return split(",",temp)
+end
+
 function InitRotationOptions()
 	if GAMESTATE:GetNumPlayersEnabled() == 1 and PREFSMAN:GetPreference("Center1Player") then
 		setenv("RotationNormalP1",false)
@@ -129,16 +139,14 @@ function OptionUnderFieldOptions()
 		ExportOnChange = false,
 		Choices = { "Combo", "Tap Judgments", "Hold Judgments" },
 		LoadSelections = function(self, list, pn)
-			local pX = pname(pn);
-			list[1] = getenv("UnderCombo"..pX)
-			list[2] = getenv("UnderTapJudgments"..pX)
-			list[3] = getenv("UnderHoldJudgments"..pX)
+			list[1] = getenv("UnderCombo"..ToEnumShortString(pn))
+			list[2] = getenv("UnderTapJudgments"..ToEnumShortString(pn))
+			list[3] = getenv("UnderHoldJudgments"..ToEnumShortString(pn))
 		end,
 		SaveSelections = function(self, list, pn)
-			local pX = pname(pn);
-			setenv("UnderCombo"..pX,list[1])
-			setenv("UnderTapJudgments"..pX,list[2])
-			setenv("UnderHoldJudgments"..pX,list[3])
+			setenv("UnderCombo"..ToEnumShortString(pn),list[1])
+			setenv("UnderTapJudgments"..ToEnumShortString(pn),list[2])
+			setenv("UnderHoldJudgments"..ToEnumShortString(pn),list[3])
 		end,
 	}
 	setmetatable(t, t)
@@ -155,16 +163,14 @@ function OptionTournamentOptions()
 		ExportOnChange = false,
 		Choices = { "Hide Score", "Hide Combo", "Hide Lifebar" },
 		LoadSelections = function(self, list, pn)
-			local pX = pname(pn);
-			list[1] = getenv("HideScore"..pX)
-			list[2] = getenv("HideCombo"..pX)
-			list[3] = getenv("HideLife"..pX)
+			list[1] = getenv("HideScore"..ToEnumShortString(pn))
+			list[2] = getenv("HideCombo"..ToEnumShortString(pn))
+			list[3] = getenv("HideLife"..ToEnumShortString(pn))
 		end,
 		SaveSelections = function(self, list, pn)
-			local pX = pname(pn);
-			setenv("HideScore"..pX,list[1])
-			setenv("HideCombo"..pX,list[2])
-			setenv("HideLife"..pX,list[3])
+			setenv("HideScore"..ToEnumShortString(pn),list[1])
+			setenv("HideCombo"..ToEnumShortString(pn),list[2])
+			setenv("HideLife"..ToEnumShortString(pn),list[3])
 		end,
 	}
 	setmetatable(t, t)
@@ -181,11 +187,10 @@ function OptionShowStats()
 		ExportOnChange = false,
 		Choices = { "Off","W1","W2","W3","W4","W5","Miss" },
 		LoadSelections = function(self, list, pn)
-			local pX = pname(pn);
-			local pref = getenv("ShowStats"..pX)+1
+			local pref = getenv("ShowStats"..ToEnumShortString(pn))+1
 			local selected = 0
 			for i, choice in ipairs(self.Choices) do
-				if i == (getenv("ShowStats"..pX) + 1) then
+				if i == (getenv("ShowStats"..ToEnumShortString(pn)) + 1) then
 					selected = i
 					break
 				end
@@ -197,10 +202,9 @@ function OptionShowStats()
 			end
 		end,
 		SaveSelections = function(self, list, pn)
-			local pX = pname(pn);
 			for i, choice in ipairs(self.Choices) do
 				if list[i] then
-					setenv("ShowStats"..pX,i-1)
+					setenv("ShowStats"..ToEnumShortString(pn),i-1)
 					return
 				end
 			end
@@ -220,12 +224,10 @@ function OptionShowModifiers()
 		ExportOnChange = false,
 		Choices = { "Show Active Modifiers" },
 		LoadSelections = function(self, list, pn)
-			local pX = pname(pn);
-			list[1] = getenv("ShowMods"..pX)
+			list[1] = getenv("ShowMods"..ToEnumShortString(pn))
 		end,
 		SaveSelections = function(self, list, pn)
-			local pX = pname(pn);
-			setenv("ShowMods"..pX,list[1])
+			setenv("ShowMods"..ToEnumShortString(pn),list[1])
 		end
 	}
 	setmetatable(t, t)
@@ -250,20 +252,18 @@ function OptionOrientation()
 		-- xxx: dumb shit
 		Choices = AvailableArrowDirections(),
 		LoadSelections = function(self, list, pn)
-			local pX = pname(pn);
-			list[1] = getenv("RotationNormal"..pX)
-			list[2] = getenv("RotationLeft"..pX)
-			list[3] = getenv("RotationRight"..pX)
-			list[4] = getenv("RotationUpsideDown"..pX)
-			if GAMESTATE:GetNumPlayersEnabled() == 1 then list[5] = getenv("RotationSolo"..pX) end
+			list[1] = getenv("RotationNormal"..ToEnumShortString(pn))
+			list[2] = getenv("RotationLeft"..ToEnumShortString(pn))
+			list[3] = getenv("RotationRight"..ToEnumShortString(pn))
+			list[4] = getenv("RotationUpsideDown"..ToEnumShortString(pn))
+			if GAMESTATE:GetNumPlayersEnabled() == 1 then list[5] = getenv("RotationSolo"..ToEnumShortString(pn)) end
 		end;
 		SaveSelections = function(self, list, pn)
-			local pX = pname(pn);
-			setenv("RotationNormal"..pX,list[1])
-			setenv("RotationLeft"..pX,list[2])
-			setenv("RotationRight"..pX,list[3])
-			setenv("RotationUpsideDown"..pX,list[4])
-			if GAMESTATE:GetNumPlayersEnabled() == 1 then setenv("RotationSolo"..pX,list[5]) end
+			setenv("RotationNormal"..ToEnumShortString(pn),list[1])
+			setenv("RotationLeft"..ToEnumShortString(pn),list[2])
+			setenv("RotationRight"..ToEnumShortString(pn),list[3])
+			setenv("RotationUpsideDown"..ToEnumShortString(pn),list[4])
+			if GAMESTATE:GetNumPlayersEnabled() == 1 then setenv("RotationSolo"..ToEnumShortString(pn),list[5]) end
 		end;
 	};
 	setmetatable(t, t)
@@ -279,22 +279,20 @@ function OptionPlayfield()
 		ExportOnChange = false,
 		Choices = { "Vibrate", "Spin Right", "Spin Left", "Bob", "Pulse", "Wag" },
 		LoadSelections = function(self, list, pn)
-			local pX = pname(pn);
-			list[1] = getenv("EffectVibrate"..pX)
-			list[2] = getenv("EffectSpin"..pX)
-			list[3] = getenv("EffectSpinReverse"..pX)
-			list[4] = getenv("EffectBounce"..pX)
-			list[5] = getenv("EffectPulse"..pX)
-			list[6] = getenv("EffectWag"..pX)
+			list[1] = getenv("EffectVibrate"..ToEnumShortString(pn))
+			list[2] = getenv("EffectSpin"..ToEnumShortString(pn))
+			list[3] = getenv("EffectSpinReverse"..ToEnumShortString(pn))
+			list[4] = getenv("EffectBounce"..ToEnumShortString(pn))
+			list[5] = getenv("EffectPulse"..ToEnumShortString(pn))
+			list[6] = getenv("EffectWag"..ToEnumShortString(pn))
 		end;
 		SaveSelections = function(self, list, pn)
-			local pX = pname(pn);
-			setenv("EffectVibrate"..pX,list[1])
-			setenv("EffectSpin"..pX,list[2])
-			setenv("EffectSpinReverse"..pX,list[3])
-			setenv("EffectBounce"..pX,list[4])
-			setenv("EffectPulse"..pX,list[5])
-			setenv("EffectWag"..pX,list[6])
+			setenv("EffectVibrate"..ToEnumShortString(pn),list[1])
+			setenv("EffectSpin"..ToEnumShortString(pn),list[2])
+			setenv("EffectSpinReverse"..ToEnumShortString(pn),list[3])
+			setenv("EffectBounce"..ToEnumShortString(pn),list[4])
+			setenv("EffectPulse"..ToEnumShortString(pn),list[5])
+			setenv("EffectWag"..ToEnumShortString(pn),list[6])
 		end;
 	};
 	setmetatable(t, t)
@@ -310,17 +308,11 @@ function OptionRowScreenFilter()
 		SelectType = "SelectOne",
 		OneChoiceForAllPlayers = false,
 		ExportOnChange = false,
-		Choices = { 'Disabled', 'Dark', 'Darker', 'Darkest', 'Wesley Snipes' },
+		Choices = getPercentValues(),
 		LoadSelections = function(self, list, pn)
-			local pName = ToEnumShortString(pn)
-			local filterValue = getenv("ScreenFilter"..pName)
+			local filterValue = getenv("ScreenFilter"..ToEnumShortString(pn))
 			if filterValue ~= nil then
-				local val = 1
-				if filterValue == 0.5 then val = 2
-				elseif filterValue == 0.65 then val = 3
-				elseif filterValue == 0.85 then val = 4
-				elseif filterValue == 1.0 then val = 5
-				end
+				local val = filterValue*10+1
 				list[val] = true
 			else
 				setenv("ScreenFilter"..pName,0)
@@ -328,15 +320,11 @@ function OptionRowScreenFilter()
 			end
 		end,
 		SaveSelections = function(self, list, pn)
-			local pName = ToEnumShortString(pn)
 			local val = 0
-			if list[1] then val = 0
-			elseif list[2] then val = 0.5
-			elseif list[3] then val = 0.65
-			elseif list[4] then val = 0.85
-			elseif list[5] then val = 1.0
+			for i=1,#list do
+				if list[i] then val = (i-1)/10 end
 			end
-			setenv("ScreenFilter"..pName,val)
+			setenv("ScreenFilter"..ToEnumShortString(pn),val)
 		end,
 	};
 	setmetatable(t, t)
@@ -409,10 +397,7 @@ function DisplayCustomModifiersText(pn)	--gives me text of all custom modifiers 
 	if getenv("ShowMods"..pName) then if t == "" then t = "Show Mods" else t = t .. ", Show Mods" end end
 	if getenv("ShowStats"..pName) > 0 then if t == "" then t = "Show Stats" else t = t .. ", Show Stats" end end
 
-	if getenv("ScreenFilter"..pName) == 0.5 then if t == "" then t = "Dark Filter" else t = t .. ", Dark Filter" end end
-	if getenv("ScreenFilter"..pName) == 0.65 then if t == "" then t = "Darker Filter" else t = t .. ", Darker Filter" end end
-	if getenv("ScreenFilter"..pName) == 0.85 then if t == "" then t = "Darkest Filter" else t = t .. ", Darkest Filter" end end
-	if getenv("ScreenFilter"..pName) == 1.0 then if t == "" then t = "Wesley Snipes" else t = t .. ", Wesley Snipes" end end
+	if getenv("ScreenFilter"..pName) > 0 then if t == "" then t = "Screen Filter ("..(getenv("ScreenFilter"..pName)*100).."%)" else t = t .. ", Screen Filter ("..(getenv("ScreenFilter"..pName)*100).."%)" end end
 	
 	if GetRateMod() ~= '' then if t == "" then t = GetRateMod() else t = t .. ", " .. GetRateMod() end end
 	
