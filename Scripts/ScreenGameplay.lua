@@ -108,16 +108,19 @@ function GetComboXOffset(pn)
 end
 
 function PlayerFullComboed(pn)
-	if GAMESTATE:IsPlayerEnabled(pn) then
-		return (not STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):GetFailed() and STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):FullCombo()) and true or false;
-	end
+	local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn)
+	return (not pss:GetFailed() and pss:FullCombo()) and true or false;
 end
 
-function AnyPlayerFullComboed(self)
-	if PlayerFullComboed(PLAYER_1) or PlayerFullComboed(PLAYER_2) then 
-		return true
+function AnyPlayerFullComboed()
+	local output = false
+
+	for pn in ivalues(GAMESTATE:GetEnabledPlayers()) do
+		if not output then
+			output = PlayerFullComboed(pn)
+		end
 	end
-	return false
+	return output
 end
 
 -- Needed for judgment rotation
