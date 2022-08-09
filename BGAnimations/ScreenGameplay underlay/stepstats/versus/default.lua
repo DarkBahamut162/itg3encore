@@ -37,8 +37,8 @@ else
 				LoadActor("../w1")..{
 					InitCommand=function(self) self:vertalign(bottom):addx(barCenterP1):addy(-111):zoomx(0.01*barWidth[getenv("ShowStatsP1")]):zoomy(0) end;
 					Condition=getenv("ShowStatsP1") >= 1;
-					StepMessageCommand=function(self,p)
-						if p.PlayerNumber == PLAYER_1 then self:queuecommand("Update") end
+					JudgmentMessageCommand=function(self,param)
+						if param.Player == PLAYER_1 then self:queuecommand("Update") end
 					end;
 					UpdateCommand=function(self)
 						local song = GAMESTATE:GetCurrentSong()
@@ -65,8 +65,8 @@ else
 				LoadActor("../w2")..{
 					InitCommand=function(self) self:vertalign(bottom):addx(barCenterP1+(barWidth[getenv("ShowStatsP1")]+barSpace[getenv("ShowStatsP1")])*1):addy(-111):zoomx(0.01*barWidth[getenv("ShowStatsP1")]):zoomy(0) end;
 					Condition=getenv("ShowStatsP1") >= 2;
-					StepMessageCommand=function(self,p)
-						if p.PlayerNumber == PLAYER_1 then self:queuecommand("Update") end
+					JudgmentMessageCommand=function(self,param)
+						if param.Player == PLAYER_1 then self:queuecommand("Update") end
 					end;
 					UpdateCommand=function(self)
 						local song = GAMESTATE:GetCurrentSong()
@@ -93,8 +93,8 @@ else
 				LoadActor("../w3")..{
 					InitCommand=function(self) self:vertalign(bottom):addx(barCenterP1+(barWidth[getenv("ShowStatsP1")]+barSpace[getenv("ShowStatsP1")])*2):addy(-111):zoomx(0.01*barWidth[getenv("ShowStatsP1")]):zoomy(0) end;
 					Condition=getenv("ShowStatsP1") >= 3;
-					StepMessageCommand=function(self,p)
-						if p.PlayerNumber == PLAYER_1 then self:queuecommand("Update") end
+					JudgmentMessageCommand=function(self,param)
+						if param.Player == PLAYER_1 then self:queuecommand("Update") end
 					end;
 					UpdateCommand=function(self)
 						local song = GAMESTATE:GetCurrentSong()
@@ -121,8 +121,8 @@ else
 				LoadActor("../w4")..{
 					InitCommand=function(self) self:vertalign(bottom):addx(barCenterP1+(barWidth[getenv("ShowStatsP1")]+barSpace[getenv("ShowStatsP1")])*3):addy(-111):zoomx(0.01*barWidth[getenv("ShowStatsP1")]):zoomy(0) end;
 					Condition=getenv("ShowStatsP1") >= 4;
-					StepMessageCommand=function(self,p)
-						if p.PlayerNumber == PLAYER_1 then self:queuecommand("Update") end
+					JudgmentMessageCommand=function(self,param)
+						if param.Player == PLAYER_1 then self:queuecommand("Update") end
 					end;
 					UpdateCommand=function(self)
 						local song = GAMESTATE:GetCurrentSong()
@@ -149,8 +149,8 @@ else
 				LoadActor("../w5")..{
 					InitCommand=function(self) self:vertalign(bottom):addx(barCenterP1+(barWidth[getenv("ShowStatsP1")]+barSpace[getenv("ShowStatsP1")])*4):addy(-111):zoomx(0.01*barWidth[getenv("ShowStatsP1")]):zoomy(0) end;
 					Condition=getenv("ShowStatsP1") >= 5;
-					StepMessageCommand=function(self,p)
-						if p.PlayerNumber == PLAYER_1 then self:queuecommand("Update") end
+					JudgmentMessageCommand=function(self,param)
+						if param.Player == PLAYER_1 then self:queuecommand("Update") end
 					end;
 					UpdateCommand=function(self)
 						local song = GAMESTATE:GetCurrentSong()
@@ -177,8 +177,8 @@ else
 				LoadActor("../w6")..{
 					InitCommand=function(self) self:vertalign(bottom):addx(barCenterP1+(barWidth[getenv("ShowStatsP1")]+barSpace[getenv("ShowStatsP1")])*5):addy(-111):zoomx(0.01*barWidth[getenv("ShowStatsP1")]):zoomy(0) end;
 					Condition=getenv("ShowStatsP1") >= 6;
-					StepMessageCommand=function(self,p)
-						if p.PlayerNumber == PLAYER_1 then self:queuecommand("Update") end
+					JudgmentMessageCommand=function(self,param)
+						if param.Player == PLAYER_1 then self:queuecommand("Update") end
 					end;
 					UpdateCommand=function(self)
 						local song = GAMESTATE:GetCurrentSong()
@@ -217,8 +217,8 @@ else
 				LoadActor("../w1")..{
 					InitCommand=function(self) self:vertalign(bottom):addx(barCenterP2):addy(-111):zoomx(0.01*barWidth[getenv("ShowStatsP2")]):zoomy(0) end;
 					Condition=getenv("ShowStatsP2") >= 1;
-					StepMessageCommand=function(self,p)
-						if p.PlayerNumber == PLAYER_2 then self:queuecommand("Update") end
+					JudgmentMessageCommand=function(self,param)
+						if param.Player == PLAYER_2 then self:queuecommand("Update") end
 					end;
 					UpdateCommand=function(self)
 						local song = GAMESTATE:GetCurrentSong()
@@ -245,8 +245,8 @@ else
 				LoadActor("../w2")..{
 					InitCommand=function(self) self:vertalign(bottom):addx(barCenterP2+(barWidth[getenv("ShowStatsP2")]+barSpace[getenv("ShowStatsP2")])*1):addy(-111):zoomx(0.01*barWidth[getenv("ShowStatsP2")]):zoomy(0) end;
 					Condition=getenv("ShowStatsP2") >= 2;
-					StepMessageCommand=function(self,p)
-						if p.PlayerNumber == PLAYER_2 then self:queuecommand("Update") end
+					JudgmentMessageCommand=function(self,param)
+						if param.Player == PLAYER_2 then self:queuecommand("Update") end
 					end;
 					UpdateCommand=function(self)
 						local song = GAMESTATE:GetCurrentSong()
@@ -273,8 +273,8 @@ else
 				LoadActor("../w3")..{
 					InitCommand=function(self) self:vertalign(bottom):addx(barCenterP2+(barWidth[getenv("ShowStatsP2")]+barSpace[getenv("ShowStatsP2")])*2):addy(-111):zoomx(0.01*barWidth[getenv("ShowStatsP2")]):zoomy(0) end;
 					Condition=getenv("ShowStatsP2") >= 3;
-					StepMessageCommand=function(self,p)
-						if p.PlayerNumber == PLAYER_2 then self:queuecommand("Update") end
+					JudgmentMessageCommand=function(self,param)
+						if param.Player == PLAYER_2 then self:queuecommand("Update") end
 					end;
 					UpdateCommand=function(self)
 						local song = GAMESTATE:GetCurrentSong()
@@ -301,8 +301,8 @@ else
 				LoadActor("../w4")..{
 					InitCommand=function(self) self:vertalign(bottom):addx(barCenterP2+(barWidth[getenv("ShowStatsP2")]+barSpace[getenv("ShowStatsP2")])*3):addy(-111):zoomx(0.01*barWidth[getenv("ShowStatsP2")]):zoomy(0) end;
 					Condition=getenv("ShowStatsP2") >= 4;
-					StepMessageCommand=function(self,p)
-						if p.PlayerNumber == PLAYER_2 then self:queuecommand("Update") end
+					JudgmentMessageCommand=function(self,param)
+						if param.Player == PLAYER_2 then self:queuecommand("Update") end
 					end;
 					UpdateCommand=function(self)
 						local song = GAMESTATE:GetCurrentSong()
@@ -329,8 +329,8 @@ else
 				LoadActor("../w5")..{
 					InitCommand=function(self) self:vertalign(bottom):addx(barCenterP2+(barWidth[getenv("ShowStatsP2")]+barSpace[getenv("ShowStatsP2")])*4):addy(-111):zoomx(0.01*barWidth[getenv("ShowStatsP2")]):zoomy(0) end;
 					Condition=getenv("ShowStatsP2") >= 5;
-					StepMessageCommand=function(self,p)
-						if p.PlayerNumber == PLAYER_2 then self:queuecommand("Update") end
+					JudgmentMessageCommand=function(self,param)
+						if param.Player == PLAYER_2 then self:queuecommand("Update") end
 					end;
 					UpdateCommand=function(self)
 						local song = GAMESTATE:GetCurrentSong()
@@ -357,8 +357,8 @@ else
 				LoadActor("../w6")..{
 					InitCommand=function(self) self:vertalign(bottom):addx(barCenterP2+(barWidth[getenv("ShowStatsP2")]+barSpace[getenv("ShowStatsP2")])*5):addy(-111):zoomx(0.01*barWidth[getenv("ShowStatsP2")]):zoomy(0) end;
 					Condition=getenv("ShowStatsP2") >= 5;
-					StepMessageCommand=function(self,p)
-						if p.PlayerNumber == PLAYER_2 then self:queuecommand("Update") end
+					JudgmentMessageCommand=function(self,param)
+						if param.Player == PLAYER_2 then self:queuecommand("Update") end
 					end;
 					UpdateCommand=function(self)
 						local song = GAMESTATE:GetCurrentSong()
@@ -423,8 +423,8 @@ else
 			Condition=getenv("ShowStatsP1") > 0 or getenv("ShowStatsP2") > 0;
 			OnCommand=function(self) self:sleep(0.5):decelerate(0.8):addy(100) end;
 			OffCommand=function(self) if AnyPlayerFullComboed() then self:sleep(1) end; self:accelerate(0.8):addy(-100) end;
-			StepMessageCommand=function(self,p)
-				if p.PlayerNumber == PLAYER_1 then
+			JudgmentMessageCommand=function(self,param)
+				if param.Player == PLAYER_1 then
 					self:RunCommandsOnChildren(function(self) self:queuecommand("Update") end);
 				end
 			end;
@@ -514,8 +514,8 @@ else
 			Condition=getenv("ShowStatsP1") > 0 or getenv("ShowStatsP2") > 0;
 			OnCommand=function(self) self:sleep(0.5):decelerate(0.8):addy(100) end;
 			OffCommand=function(self) if AnyPlayerFullComboed() then self:sleep(1) end; self:accelerate(0.8):addy(-100) end;
-			StepMessageCommand=function(self,p)
-				if p.PlayerNumber == PLAYER_2 then
+			JudgmentMessageCommand=function(self,param)
+				if param.Player == PLAYER_2 then
 					self:RunCommandsOnChildren(function(self) self:queuecommand("Update") end);
 				end
 			end;

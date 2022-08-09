@@ -40,15 +40,22 @@ return Def.ActorFrame{
 
 		Def.ActorFrame{
 			OnCommand=function(self) self:addx(10) end;
-			StepMessageCommand=function(self,p)
-				if p.PlayerNumber == pn then
-					-- stuff
-					local holdDropCount = self:GetChild("HoldMiss")
-					local mineCount = self:GetChild("Mine")
-					local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn)
-					mineCount:settext(pss:GetTapNoteScores('TapNoteScore_HitMine'))
-					holdDropCount:settext(pss:GetHoldNoteScores('HoldNoteScore_LetGo'))
+			JudgmentMessageCommand=function(self,param)
+				if param.Player == pn then
+					self:queuecommand("Update")
 				end
+			end;
+			LetGoCommand=function(self,param)
+				if param.Player == pn then
+					self:queuecommand("Update")
+				end
+			end;
+			UpdateCommand=function(self)
+				local holdDropCount = self:GetChild("HoldMiss")
+				local mineCount = self:GetChild("Mine")
+				local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn)
+				mineCount:settext(pss:GetTapNoteScores('TapNoteScore_HitMine'))
+				holdDropCount:settext(pss:GetHoldNoteScores('HoldNoteScore_LetGo'))
 			end;
 			LoadFont("ScreenGameplay judgment")..{
 				Text="Holds Dropped:";
@@ -72,11 +79,11 @@ return Def.ActorFrame{
 			Name="NumbersW1";
 			Condition=getenv("ShowStatsP1") >= 1 or getenv("ShowStatsP2") >= 1;
 			InitCommand=function(self) self:settext("0"):zoom(0.75):addy(100):addx(barCenter):shadowlength(0):maxwidth(barWidth[bgNum]*2) end;
-			StepMessageCommand=function(self,p)
-				if p.PlayerNumber == pn then
+            JudgmentMessageCommand=function(self,param)
+				if param.Player == pn then
 					self:queuecommand("Update")
 				end
-			end;
+            end;
 			UpdateCommand=function(self)
 				local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn)
 				local w1Notes = pss:GetTapNoteScores('TapNoteScore_W1')
@@ -87,8 +94,8 @@ return Def.ActorFrame{
 			Name="NumbersW2";
 			Condition=getenv("ShowStatsP1") >= 2 or getenv("ShowStatsP2") >= 2;
 			InitCommand=function(self) self:settext("0"):zoom(0.75):addy(100):addx(barCenter+(barWidth[bgNum]+barSpace[bgNum])*1):shadowlength(0):maxwidth(barWidth[bgNum]*2) end;
-			StepMessageCommand=function(self,p)
-				if p.PlayerNumber == pn then
+			JudgmentMessageCommand=function(self,param)
+				if param.Player == pn then
 					self:queuecommand("Update")
 				end
 			end;
@@ -102,8 +109,8 @@ return Def.ActorFrame{
 			Name="NumbersW3";
 			Condition=getenv("ShowStatsP1") >= 3 or getenv("ShowStatsP2") >= 3;
 			InitCommand=function(self) self:settext("0"):zoom(0.75):addy(100):addx(barCenter+(barWidth[bgNum]+barSpace[bgNum])*2):shadowlength(0):maxwidth(barWidth[bgNum]*2) end;
-			StepMessageCommand=function(self,p)
-				if p.PlayerNumber == pn then
+			JudgmentMessageCommand=function(self,param)
+				if param.Player == pn then
 					self:queuecommand("Update")
 				end
 			end;
@@ -117,8 +124,8 @@ return Def.ActorFrame{
 			Name="NumbersW4";
 			Condition=getenv("ShowStatsP1") >= 4 or getenv("ShowStatsP2") >= 4;
 			InitCommand=function(self) self:settext("0"):zoom(0.75):addy(100):addx(barCenter+(barWidth[bgNum]+barSpace[bgNum])*3):shadowlength(0):maxwidth(barWidth[bgNum]*2) end;
-			StepMessageCommand=function(self,p)
-				if p.PlayerNumber == pn then
+			JudgmentMessageCommand=function(self,param)
+				if param.Player == pn then
 					self:queuecommand("Update")
 				end
 			end;
@@ -132,8 +139,8 @@ return Def.ActorFrame{
 			Name="NumbersW5";
 			Condition=getenv("ShowStatsP1") >= 5 or getenv("ShowStatsP2") >= 5;
 			InitCommand=function(self) self:settext("0"):zoom(0.75):addy(100):addx(barCenter+(barWidth[bgNum]+barSpace[bgNum])*4):shadowlength(0):maxwidth(barWidth[bgNum]*2) end;
-			StepMessageCommand=function(self,p)
-				if p.PlayerNumber == pn then
+			JudgmentMessageCommand=function(self,param)
+				if param.Player == pn then
 					self:queuecommand("Update")
 				end
 			end;
@@ -147,8 +154,8 @@ return Def.ActorFrame{
 			Name="NumbersMiss";
 			Condition=getenv("ShowStatsP1") >= 6 or getenv("ShowStatsP2") >= 6;
 			InitCommand=function(self) self:settext("0"):zoom(0.75):addy(100):addx(barCenter+(barWidth[bgNum]+barSpace[bgNum])*5):shadowlength(0):maxwidth(barWidth[bgNum]*2) end;
-			StepMessageCommand=function(self,p)
-				if p.PlayerNumber == pn then
+			JudgmentMessageCommand=function(self,param)
+				if param.Player == pn then
 					self:queuecommand("Update")
 				end
 			end;
@@ -204,8 +211,8 @@ return Def.ActorFrame{
 		LoadActor("../w1")..{
 			InitCommand=function(self) self:vertalign(bottom):addx(barCenter):addy(86):zoomx(0.01*barWidth[bgNum]):zoomy(0) end;
 			Condition=getenv("ShowStatsP1") >= 1 or getenv("ShowStatsP2") >= 1;
-			StepMessageCommand=function(self,p)
-				if p.PlayerNumber == pn then
+			JudgmentMessageCommand=function(self,param)
+				if param.Player == pn then
 					self:queuecommand("Update")
 				end
 			end;
@@ -234,8 +241,8 @@ return Def.ActorFrame{
 		LoadActor("../w2")..{
 			InitCommand=function(self) self:vertalign(bottom):addx(barCenter+(barWidth[bgNum]+barSpace[bgNum])*1):addy(86):zoomx(0.01*barWidth[bgNum]):zoomy(0) end;
 			Condition=getenv("ShowStatsP1") >= 2 or getenv("ShowStatsP2") >= 2;
-			StepMessageCommand=function(self,p)
-				if p.PlayerNumber == pn then
+			JudgmentMessageCommand=function(self,param)
+				if param.Player == pn then
 					self:queuecommand("Update")
 				end
 			end;
@@ -264,8 +271,8 @@ return Def.ActorFrame{
 		LoadActor("../w3")..{
 			InitCommand=function(self) self:vertalign(bottom):addx(barCenter+(barWidth[bgNum]+barSpace[bgNum])*2):addy(86):zoomx(0.01*barWidth[bgNum]):zoomy(0) end;
 			Condition=getenv("ShowStatsP1") >= 3 or getenv("ShowStatsP2") >= 3;
-			StepMessageCommand=function(self,p)
-				if p.PlayerNumber == pn then
+			JudgmentMessageCommand=function(self,param)
+				if param.Player == pn then
 					self:queuecommand("Update")
 				end
 			end;
@@ -294,8 +301,8 @@ return Def.ActorFrame{
 		LoadActor("../w4")..{
 			InitCommand=function(self) self:vertalign(bottom):addx(barCenter+(barWidth[bgNum]+barSpace[bgNum])*3):addy(86):zoomx(0.01*barWidth[bgNum]):zoomy(0) end;
 			Condition=getenv("ShowStatsP1") >= 4 or getenv("ShowStatsP2") >= 4;
-			StepMessageCommand=function(self,p)
-				if p.PlayerNumber == pn then
+			JudgmentMessageCommand=function(self,param)
+				if param.Player == pn then
 					self:queuecommand("Update")
 				end
 			end;
@@ -324,8 +331,8 @@ return Def.ActorFrame{
 		LoadActor("../w5")..{
 			InitCommand=function(self) self:vertalign(bottom):addx(barCenter+(barWidth[bgNum]+barSpace[bgNum])*4):addy(86):zoomx(0.01*barWidth[bgNum]):zoomy(0) end;
 			Condition=getenv("ShowStatsP1") >= 5 or getenv("ShowStatsP2") >= 5;
-			StepMessageCommand=function(self,p)
-				if p.PlayerNumber == pn then
+			JudgmentMessageCommand=function(self,param)
+				if param.Player == pn then
 					self:queuecommand("Update")
 				end
 			end;
@@ -354,8 +361,8 @@ return Def.ActorFrame{
 		LoadActor("../w6")..{
 			InitCommand=function(self) self:vertalign(bottom):addx(barCenter+(barWidth[bgNum]+barSpace[bgNum])*5):addy(86):zoomx(0.01*barWidth[bgNum]):zoomy(0) end;
 			Condition=getenv("ShowStatsP1") >= 6 or getenv("ShowStatsP2") >= 6;
-			StepMessageCommand=function(self,p)
-				if p.PlayerNumber == pn then
+			JudgmentMessageCommand=function(self,param)
+				if param.Player == pn then
 					self:queuecommand("Update")
 				end
 			end;

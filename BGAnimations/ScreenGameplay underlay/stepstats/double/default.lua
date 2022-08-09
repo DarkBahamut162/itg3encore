@@ -28,8 +28,8 @@ return Def.ActorFrame{
 		LoadActor("../w1")..{
 			InitCommand=function(self) self:vertalign(bottom):x(barCenter):y(164):zoomx(0.01*barWidth[bgNum]):zoomy(0) end;
 			Condition=getenv("ShowStatsP1") >= 1 or getenv("ShowStatsP2") >= 1;
-			StepMessageCommand=function(self,p)
-				if p.PlayerNumber == pn then self:queuecommand("Update") end
+			JudgmentMessageCommand=function(self,param)
+				if param.Player == pn then self:queuecommand("Update") end
 			end;
 			UpdateCommand=function(self)
 				local song = GAMESTATE:GetCurrentSong()
@@ -56,8 +56,8 @@ return Def.ActorFrame{
 		LoadActor("../w2")..{
 			InitCommand=function(self) self:vertalign(bottom):x(barCenter+barWidth[bgNum]*1):y(164):zoomx(0.01*barWidth[bgNum]):zoomy(0) end;
 			Condition=getenv("ShowStatsP1") >= 2 or getenv("ShowStatsP2") >= 2;
-			StepMessageCommand=function(self,p)
-				if p.PlayerNumber == pn then self:queuecommand("Update") end
+			JudgmentMessageCommand=function(self,param)
+				if param.Player == pn then self:queuecommand("Update") end
 			end;
 			UpdateCommand=function(self)
 				local song = GAMESTATE:GetCurrentSong()
@@ -84,8 +84,8 @@ return Def.ActorFrame{
 		LoadActor("../w3")..{
 			InitCommand=function(self) self:vertalign(bottom):x(barCenter+barWidth[bgNum]*2):y(164):zoomx(0.01*barWidth[bgNum]):zoomy(0) end;
 			Condition=getenv("ShowStatsP1") >= 3 or getenv("ShowStatsP2") >= 3;
-			StepMessageCommand=function(self,p)
-				if p.PlayerNumber == pn then self:queuecommand("Update") end
+			JudgmentMessageCommand=function(self,param)
+				if param.Player == pn then self:queuecommand("Update") end
 			end;
 			UpdateCommand=function(self)
 				local song = GAMESTATE:GetCurrentSong()
@@ -112,8 +112,8 @@ return Def.ActorFrame{
 		LoadActor("../w4")..{
 			InitCommand=function(self) self:vertalign(bottom):x(barCenter+barWidth[bgNum]*3):y(164):zoomx(0.01*barWidth[bgNum]):zoomy(0) end;
 			Condition=getenv("ShowStatsP1") >= 4 or getenv("ShowStatsP2") >= 4;
-			StepMessageCommand=function(self,p)
-				if p.PlayerNumber == pn then self:queuecommand("Update") end
+			JudgmentMessageCommand=function(self,param)
+				if param.Player == pn then self:queuecommand("Update") end
 			end;
 			UpdateCommand=function(self)
 				local song = GAMESTATE:GetCurrentSong()
@@ -140,8 +140,8 @@ return Def.ActorFrame{
 		LoadActor("../w5")..{
 			InitCommand=function(self) self:vertalign(bottom):x(barCenter+barWidth[bgNum]*4):y(164):zoomx(0.01*barWidth[bgNum]):zoomy(0) end;
 			Condition=getenv("ShowStatsP1") >= 5 or getenv("ShowStatsP2") >= 5;
-			StepMessageCommand=function(self,p)
-				if p.PlayerNumber == pn then self:queuecommand("Update") end
+			JudgmentMessageCommand=function(self,param)
+				if param.Player == pn then self:queuecommand("Update") end
 			end;
 			UpdateCommand=function(self)
 				local song = GAMESTATE:GetCurrentSong()
@@ -168,8 +168,8 @@ return Def.ActorFrame{
 		LoadActor("../w6")..{
 			InitCommand=function(self) self:vertalign(bottom):x(barCenter+barWidth[bgNum]*5):y(164):zoomx(0.01*barWidth[bgNum]):zoomy(0) end;
 			Condition=getenv("ShowStatsP1") >= 6 or getenv("ShowStatsP2") >= 6;
-			StepMessageCommand=function(self,p)
-				if p.PlayerNumber == pn then self:queuecommand("Update") end
+			JudgmentMessageCommand=function(self,param)
+				if param.Player == pn then self:queuecommand("Update") end
 			end;
 			UpdateCommand=function(self)
 				local song = GAMESTATE:GetCurrentSong()
