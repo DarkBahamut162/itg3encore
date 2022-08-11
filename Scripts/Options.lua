@@ -315,7 +315,7 @@ function OptionRowScreenFilter()
 				local val = filterValue*10+1
 				list[val] = true
 			else
-				setenv("ScreenFilter"..pName,0)
+				setenv("ScreenFilter"..ToEnumShortString(pn),0)
 				list[1] = true
 			end
 		end,
@@ -359,45 +359,43 @@ end
 
 function DisplayCustomModifiersText(pn)	--gives me text of all custom modifiers that are applied (and rate mods)
 	local t = ""
-	local pName = (pn == PLAYER_2 and 2 or 1)
-	pName = string.format("P%i",pName)
 	
-	if getenv("UnderCombo"..pName) and getenv("UnderTapJudgments"..pName) and getenv("UnderHoldJudgments"..pName) then
+	if getenv("UnderCombo"..ToEnumShortString(pn)) and getenv("UnderTapJudgments"..ToEnumShortString(pn)) and getenv("UnderHoldJudgments"..ToEnumShortString(pn)) then
 		if t == "" then t = "Under All" else t = t .. ", Under All" end
 	else
-		if getenv("UnderTapJudgments"..pName) and getenv("UnderHoldJudgments"..pName) then
+		if getenv("UnderTapJudgments"..ToEnumShortString(pn)) and getenv("UnderHoldJudgments"..ToEnumShortString(pn)) then
 			if t == "" then t = "Under Judgments" else t = t .. ", Under Judgments" end
 		else
-			if getenv("UnderCombo"..pName) then if t == "" then t = "Under Combo" else t = t .. ", Under Combo" end end
-			if getenv("UnderTapJudgments"..pName) then if t == "" then t = "Under Tap Judgments" else t = t .. ", Under Tap Judgments" end end
-			if getenv("UnderHoldJudgments"..pName) then if t == "" then t = "Under Hold Judgments" else t = t .. ", Under Hold Judgments" end end
+			if getenv("UnderCombo"..ToEnumShortString(pn)) then if t == "" then t = "Under Combo" else t = t .. ", Under Combo" end end
+			if getenv("UnderTapJudgments"..ToEnumShortString(pn)) then if t == "" then t = "Under Tap Judgments" else t = t .. ", Under Tap Judgments" end end
+			if getenv("UnderHoldJudgments"..ToEnumShortString(pn)) then if t == "" then t = "Under Hold Judgments" else t = t .. ", Under Hold Judgments" end end
 		end
 	end
 	
-	if getenv("HideScore"..pName) and getenv("HideLife"..pName) and getenv("HideCombo"..pName) then
+	if getenv("HideScore"..ToEnumShortString(pn)) and getenv("HideLife"..ToEnumShortString(pn)) and getenv("HideCombo"..ToEnumShortString(pn)) then
 		if t == "" then t = "Hide All" else t = t .. ", Hide All" end
 	else
-		if getenv("HideScore"..pName) then if t == "" then t = "Hide Score" else t = t .. ", Hide Score" end end
-		if getenv("HideLife"..pName) then if t == "" then t = "Hide Life" else t = t .. ", Hide Life" end end
-		if getenv("HideCombo"..pName) then if t == "" then t = "Hide Combo" else t = t .. ", Hide Combo" end end
+		if getenv("HideScore"..ToEnumShortString(pn)) then if t == "" then t = "Hide Score" else t = t .. ", Hide Score" end end
+		if getenv("HideLife"..ToEnumShortString(pn)) then if t == "" then t = "Hide Life" else t = t .. ", Hide Life" end end
+		if getenv("HideCombo"..ToEnumShortString(pn)) then if t == "" then t = "Hide Combo" else t = t .. ", Hide Combo" end end
 	end
 
-	if getenv("RotationLeft"..pName) then if t == "" then t = "Rotated Left" else t = t .. ", Rotated Left" end end
-	if getenv("RotationRight"..pName) then if t == "" then t = "Rotated Right" else t = t .. ", Rotated Right" end end
-	if getenv("RotationUpsideDown"..pName) then if t == "" then t = "Rotated Downward" else t = t .. ", Rotated Downward" end end
-	if getenv("RotationSolo"..pName) then if t == "" then t = "Centered" else t = t .. ", Centered" end end
+	if getenv("RotationLeft"..ToEnumShortString(pn)) then if t == "" then t = "Rotated Left" else t = t .. ", Rotated Left" end end
+	if getenv("RotationRight"..ToEnumShortString(pn)) then if t == "" then t = "Rotated Right" else t = t .. ", Rotated Right" end end
+	if getenv("RotationUpsideDown"..ToEnumShortString(pn)) then if t == "" then t = "Rotated Downward" else t = t .. ", Rotated Downward" end end
+	if getenv("RotationSolo"..ToEnumShortString(pn)) then if t == "" then t = "Centered" else t = t .. ", Centered" end end
 	
-	if getenv("EffectWag"..pName) then if t == "" then t = "Wag" else t = t .. ", Wag" end 
-	elseif getenv("EffectPulse"..pName) then if t == "" then t = "Pulse" else t = t .. ", Pulse" end 
-	elseif getenv("EffectBounce"..pName) then if t == "" then t = "Bounce" else t = t .. ", Bounce" end 
-	elseif getenv("EffectSpinReverse"..pName) then if t == "" then t = "Spin Left" else t = t .. ", Spin Left" end 
-	elseif getenv("EffectSpin"..pName) then if t == "" then t = "Spin Right" else t = t .. ", Spin Right" end 
-	elseif getenv("EffectVibrate"..pName) then if t == "" then t = "Vibrate" else t = t .. ", Vibrate" end end
+	if getenv("EffectWag"..ToEnumShortString(pn)) then if t == "" then t = "Wag" else t = t .. ", Wag" end 
+	elseif getenv("EffectPulse"..ToEnumShortString(pn)) then if t == "" then t = "Pulse" else t = t .. ", Pulse" end 
+	elseif getenv("EffectBounce"..ToEnumShortString(pn)) then if t == "" then t = "Bounce" else t = t .. ", Bounce" end 
+	elseif getenv("EffectSpinReverse"..ToEnumShortString(pn)) then if t == "" then t = "Spin Left" else t = t .. ", Spin Left" end 
+	elseif getenv("EffectSpin"..ToEnumShortString(pn)) then if t == "" then t = "Spin Right" else t = t .. ", Spin Right" end 
+	elseif getenv("EffectVibrate"..ToEnumShortString(pn)) then if t == "" then t = "Vibrate" else t = t .. ", Vibrate" end end
 
-	if getenv("ShowMods"..pName) then if t == "" then t = "Show Mods" else t = t .. ", Show Mods" end end
-	if getenv("ShowStats"..pName) > 0 then if t == "" then t = "Show Stats" else t = t .. ", Show Stats" end end
+	if getenv("ShowMods"..ToEnumShortString(pn)) then if t == "" then t = "Show Mods" else t = t .. ", Show Mods" end end
+	if getenv("ShowStats"..ToEnumShortString(pn)) > 0 then if t == "" then t = "Show Stats" else t = t .. ", Show Stats" end end
 
-	if getenv("ScreenFilter"..pName) > 0 then if t == "" then t = "Screen Filter ("..(getenv("ScreenFilter"..pName)*100).."%)" else t = t .. ", Screen Filter ("..(getenv("ScreenFilter"..pName)*100).."%)" end end
+	if getenv("ScreenFilter"..ToEnumShortString(pn)) > 0 then if t == "" then t = "Screen Filter ("..(getenv("ScreenFilter"..ToEnumShortString(pn))*100).."%)" else t = t .. ", Screen Filter ("..(getenv("ScreenFilter"..ToEnumShortString(pn))*100).."%)" end end
 	
 	if GetRateMod() ~= '' then if t == "" then t = GetRateMod() else t = t .. ", " .. GetRateMod() end end
 	
