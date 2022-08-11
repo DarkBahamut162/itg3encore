@@ -1,8 +1,7 @@
 -- ScreenGameplay-related stuff
 
 function OffsetLifebarHeight(pn)
-	local pX = pname(pn);
-	if getenv("RotationLeft"..pX) or getenv("RotationRight"..pX) then
+	if getenv("RotationLeft"..ToEnumShortString(pn)) or getenv("RotationRight"..ToEnumShortString(pn)) then
 		return SCREEN_CENTER_Y
 	else
 		return SCREEN_CENTER_Y+30
@@ -99,8 +98,7 @@ end
 -- instead take advantage of the X combo offset.  See the [Player] section
 -- in metrics.ini.
 function GetComboXOffset(pn)
-	local number = (pn == PLAYER_1) and "P1" or "P2"
-	if getenv("HideCombo" .. number) then
+	if getenv("HideCombo" .. ToEnumShortString(pn)) then
 		return "SCREEN_WIDTH*2" -- This is enough to hide it on either side
 	else
 		return 0 -- No offset

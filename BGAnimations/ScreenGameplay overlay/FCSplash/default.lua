@@ -5,7 +5,7 @@ assert(pn);
 
 local t = Def.ActorFrame{};
 
-local IsUsingSoloSingles = getenv("RotationSoloP1") or getenv("RotationSoloP2");
+local IsUsingSoloSingles = getenv("RotationSolo"..ToEnumShortString(pn));
 local NumPlayers = GAMESTATE:GetNumPlayersEnabled();
 local NumSides = GAMESTATE:GetNumSidesJoined();
 

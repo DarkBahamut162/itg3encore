@@ -15,11 +15,7 @@ return Def.BitmapText{
 		end
 	end,
 	OnCommand=function(self)
-		if player==PLAYER_1 then
-			self:visible(not getenv("HideScoreP1"));
-		elseif player==PLAYER_2 then
-			self:visible(not getenv("HideScoreP2"));
-		end
+		self:visible(not getenv("HideScore"..ToEnumShortString(player)));
 		self:diffuse(PlayerColor(player)):addy(-100):sleep(0.5):decelerate(0.8):addy(100) end;
 	OffCommand=function(self) if AnyPlayerFullComboed() then self:sleep(1); end self:accelerate(0.8); self:addy(-100); end;
 	JudgmentMessageCommand=function(self,params)

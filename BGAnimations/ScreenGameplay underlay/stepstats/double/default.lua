@@ -6,7 +6,7 @@ local barHeight		= 268;
 local totalWidth	= 14;
 local barCenter		= 0;
 
-local bgNum = GAMESTATE:GetMasterPlayerNumber() == PLAYER_1 and getenv("ShowStatsP1") or getenv("ShowStatsP2");
+local bgNum = getenv("ShowStats"..ToEnumShortString(pn));
 if bgNum > 0 then
 	barCenter	= -totalWidth/2+barWidth[bgNum]/2;
 end
@@ -27,7 +27,7 @@ return Def.ActorFrame{
 		LoadActor("d_bg");
 		LoadActor("../w1")..{
 			InitCommand=function(self) self:vertalign(bottom):x(barCenter):y(164):zoomx(0.01*barWidth[bgNum]):zoomy(0) end;
-			Condition=getenv("ShowStatsP1") >= 1 or getenv("ShowStatsP2") >= 1;
+			Condition=getenv("ShowStats"..ToEnumShortString(pn)) >= 1;
 			JudgmentMessageCommand=function(self,param)
 				if param.Player == pn then self:queuecommand("Update") end
 			end;
@@ -55,7 +55,7 @@ return Def.ActorFrame{
 		};
 		LoadActor("../w2")..{
 			InitCommand=function(self) self:vertalign(bottom):x(barCenter+barWidth[bgNum]*1):y(164):zoomx(0.01*barWidth[bgNum]):zoomy(0) end;
-			Condition=getenv("ShowStatsP1") >= 2 or getenv("ShowStatsP2") >= 2;
+			Condition=getenv("ShowStats"..ToEnumShortString(pn)) >= 2;
 			JudgmentMessageCommand=function(self,param)
 				if param.Player == pn then self:queuecommand("Update") end
 			end;
@@ -83,7 +83,7 @@ return Def.ActorFrame{
 		};
 		LoadActor("../w3")..{
 			InitCommand=function(self) self:vertalign(bottom):x(barCenter+barWidth[bgNum]*2):y(164):zoomx(0.01*barWidth[bgNum]):zoomy(0) end;
-			Condition=getenv("ShowStatsP1") >= 3 or getenv("ShowStatsP2") >= 3;
+			Condition=getenv("ShowStats"..ToEnumShortString(pn)) >= 3;
 			JudgmentMessageCommand=function(self,param)
 				if param.Player == pn then self:queuecommand("Update") end
 			end;
@@ -111,7 +111,7 @@ return Def.ActorFrame{
 		};
 		LoadActor("../w4")..{
 			InitCommand=function(self) self:vertalign(bottom):x(barCenter+barWidth[bgNum]*3):y(164):zoomx(0.01*barWidth[bgNum]):zoomy(0) end;
-			Condition=getenv("ShowStatsP1") >= 4 or getenv("ShowStatsP2") >= 4;
+			Condition=getenv("ShowStats"..ToEnumShortString(pn)) >= 4;
 			JudgmentMessageCommand=function(self,param)
 				if param.Player == pn then self:queuecommand("Update") end
 			end;
@@ -139,7 +139,7 @@ return Def.ActorFrame{
 		};
 		LoadActor("../w5")..{
 			InitCommand=function(self) self:vertalign(bottom):x(barCenter+barWidth[bgNum]*4):y(164):zoomx(0.01*barWidth[bgNum]):zoomy(0) end;
-			Condition=getenv("ShowStatsP1") >= 5 or getenv("ShowStatsP2") >= 5;
+			Condition=getenv("ShowStats"..ToEnumShortString(pn)) >= 5;
 			JudgmentMessageCommand=function(self,param)
 				if param.Player == pn then self:queuecommand("Update") end
 			end;
@@ -167,7 +167,7 @@ return Def.ActorFrame{
 		};
 		LoadActor("../w6")..{
 			InitCommand=function(self) self:vertalign(bottom):x(barCenter+barWidth[bgNum]*5):y(164):zoomx(0.01*barWidth[bgNum]):zoomy(0) end;
-			Condition=getenv("ShowStatsP1") >= 6 or getenv("ShowStatsP2") >= 6;
+			Condition=getenv("ShowStats"..ToEnumShortString(pn)) >= 6;
 			JudgmentMessageCommand=function(self,param)
 				if param.Player == pn then self:queuecommand("Update") end
 			end;

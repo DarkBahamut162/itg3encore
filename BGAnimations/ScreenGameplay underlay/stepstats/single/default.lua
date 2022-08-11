@@ -2,8 +2,8 @@
 local pn = GAMESTATE:GetMasterPlayerNumber()
 local startX = GAMESTATE:GetMasterPlayerNumber() == PLAYER_1 and SCREEN_WIDTH/4 or -SCREEN_WIDTH/4
 
-local barWidth		= {202	,92	,57	,36		,26	,20};
-local barSpace		= {0	,18	,16	,19.5	,18	,16+1/3};
+local barWidth		= {202,	92,	57,	36,		26,	20};
+local barSpace		= {0,	18,	16,	19.5,	18,	16+1/3};
 local barHeight		= 228;
 local totalWidth	= 202;
 local barCenter		= 0;
@@ -30,7 +30,7 @@ if steps then
 	holdsAndRolls = holds + rolls
 end
 
-local bgNum = GAMESTATE:GetMasterPlayerNumber() == PLAYER_1 and getenv("ShowStatsP1") or getenv("ShowStatsP2");
+local bgNum = getenv("ShowStats"..ToEnumShortString(pn));
 if bgNum > 0 then
 	barCenter	= -totalWidth/2+barWidth[bgNum]/2;
 end
@@ -43,9 +43,9 @@ return Def.ActorFrame{
 		Name="JudgePane";
 		BeginCommand=function(self) self:visible(GAMESTATE:IsHumanPlayer(pn)) end;
 		OnCommand=function(self)
-			self:x(startX+((getenv("RotationSoloP1") or getenv("RotationSoloP2")) and 64 or 0));
-			self:y((getenv("RotationSoloP1") or getenv("RotationSoloP2")) and 34 or 0);
-			self:zoom((getenv("RotationSoloP1") or getenv("RotationSoloP2")) and .75 or 1);
+			self:x(startX+(getenv("RotationSolo"..ToEnumShortString(pn)) and 64 or 0));
+			self:y(getenv("RotationSolo"..ToEnumShortString(pn)) and 34 or 0);
+			self:zoom(getenv("RotationSolo"..ToEnumShortString(pn)) and .75 or 1);
 			self:addx(GAMESTATE:GetMasterPlayerNumber() == PLAYER_1 and SCREEN_WIDTH/2 or -SCREEN_WIDTH/2);
 			self:decelerate(1);
 			self:addx(GAMESTATE:GetMasterPlayerNumber() == PLAYER_1 and -SCREEN_WIDTH/2 or SCREEN_WIDTH/2);
@@ -109,7 +109,7 @@ return Def.ActorFrame{
 
 		LoadFont("ScreenGameplay judgment")..{
 			Name="NumbersW1";
-			Condition=getenv("ShowStatsP1") >= 1 or getenv("ShowStatsP2") >= 1;
+			Condition=getenv("ShowStats"..ToEnumShortString(pn)) >= 1;
 			InitCommand=function(self) self:settext("0"):zoom(0.75):addy(100):addx(barCenter):shadowlength(0):maxwidth(barWidth[bgNum]*2) end;
             JudgmentMessageCommand=function(self,param)
 				if param.Player == pn then
@@ -124,7 +124,7 @@ return Def.ActorFrame{
 		};
 		LoadFont("ScreenGameplay judgment")..{
 			Name="NumbersW2";
-			Condition=getenv("ShowStatsP1") >= 2 or getenv("ShowStatsP2") >= 2;
+			Condition=getenv("ShowStats"..ToEnumShortString(pn)) >= 2;
 			InitCommand=function(self) self:settext("0"):zoom(0.75):addy(100):addx(barCenter+(barWidth[bgNum]+barSpace[bgNum])*1):shadowlength(0):maxwidth(barWidth[bgNum]*2) end;
 			JudgmentMessageCommand=function(self,param)
 				if param.Player == pn then
@@ -139,7 +139,7 @@ return Def.ActorFrame{
 		};
 		LoadFont("ScreenGameplay judgment")..{
 			Name="NumbersW3";
-			Condition=getenv("ShowStatsP1") >= 3 or getenv("ShowStatsP2") >= 3;
+			Condition=getenv("ShowStats"..ToEnumShortString(pn)) >= 3;
 			InitCommand=function(self) self:settext("0"):zoom(0.75):addy(100):addx(barCenter+(barWidth[bgNum]+barSpace[bgNum])*2):shadowlength(0):maxwidth(barWidth[bgNum]*2) end;
 			JudgmentMessageCommand=function(self,param)
 				if param.Player == pn then
@@ -154,7 +154,7 @@ return Def.ActorFrame{
 		};
 		LoadFont("ScreenGameplay judgment")..{
 			Name="NumbersW4";
-			Condition=getenv("ShowStatsP1") >= 4 or getenv("ShowStatsP2") >= 4;
+			Condition=getenv("ShowStats"..ToEnumShortString(pn)) >= 4;
 			InitCommand=function(self) self:settext("0"):zoom(0.75):addy(100):addx(barCenter+(barWidth[bgNum]+barSpace[bgNum])*3):shadowlength(0):maxwidth(barWidth[bgNum]*2) end;
 			JudgmentMessageCommand=function(self,param)
 				if param.Player == pn then
@@ -169,7 +169,7 @@ return Def.ActorFrame{
 		};
 		LoadFont("ScreenGameplay judgment")..{
 			Name="NumbersW5";
-			Condition=getenv("ShowStatsP1") >= 5 or getenv("ShowStatsP2") >= 5;
+			Condition=getenv("ShowStats"..ToEnumShortString(pn)) >= 5;
 			InitCommand=function(self) self:settext("0"):zoom(0.75):addy(100):addx(barCenter+(barWidth[bgNum]+barSpace[bgNum])*4):shadowlength(0):maxwidth(barWidth[bgNum]*2) end;
 			JudgmentMessageCommand=function(self,param)
 				if param.Player == pn then
@@ -184,7 +184,7 @@ return Def.ActorFrame{
 		};
 		LoadFont("ScreenGameplay judgment")..{
 			Name="NumbersMiss";
-			Condition=getenv("ShowStatsP1") >= 6 or getenv("ShowStatsP2") >= 6;
+			Condition=getenv("ShowStats"..ToEnumShortString(pn)) >= 6;
 			InitCommand=function(self) self:settext("0"):zoom(0.75):addy(100):addx(barCenter+(barWidth[bgNum]+barSpace[bgNum])*5):shadowlength(0):maxwidth(barWidth[bgNum]*2) end;
 			JudgmentMessageCommand=function(self,param)
 				if param.Player == pn then
@@ -204,37 +204,37 @@ return Def.ActorFrame{
 			InitCommand=function(self) self:visible(GAMESTATE:GetCurrentStageIndex()==0) end;
 			LoadFont("_v 26px bold black")..{
 				Text="Fantastics";
-				Condition=getenv("ShowStatsP1") >= 1 or getenv("ShowStatsP2") >= 1;
+				Condition=getenv("ShowStats"..ToEnumShortString(pn)) >= 1;
 				InitCommand=function(self) self:rotationz(-90):addx(barCenter):addy(-20):shadowlength(0):queuecommand("FadeOn") end;
 				FadeOnCommand=function(self) self:sleep(2):linear(1):diffusealpha(0) end;
 			};
 			LoadFont("_v 26px bold black")..{
 				Text="Excellents";
-				Condition=getenv("ShowStatsP1") >= 2 or getenv("ShowStatsP2") >= 2;
+				Condition=getenv("ShowStats"..ToEnumShortString(pn)) >= 2;
 				InitCommand=function(self) self:rotationz(-90):addx(barCenter+(barWidth[bgNum]+barSpace[bgNum])*1):addy(-20):shadowlength(0):queuecommand("FadeOn") end;
 				FadeOnCommand=function(self) self:sleep(2.25):linear(1):diffusealpha(0) end;
 			};
 			LoadFont("_v 26px bold black")..{
 				Text="Greats";
-				Condition=getenv("ShowStatsP1") >= 3 or getenv("ShowStatsP2") >= 3;
+				Condition=getenv("ShowStats"..ToEnumShortString(pn)) >= 3;
 				InitCommand=function(self) self:rotationz(-90):addx(barCenter+(barWidth[bgNum]+barSpace[bgNum])*2):addy(-20):shadowlength(0):queuecommand("FadeOn") end;
 				FadeOnCommand=function(self) self:sleep(2.5):linear(1):diffusealpha(0) end;
 			};
 			LoadFont("_v 26px bold black")..{
 				Text="Decents";
-				Condition=getenv("ShowStatsP1") >= 4 or getenv("ShowStatsP2") >= 4;
+				Condition=getenv("ShowStats"..ToEnumShortString(pn)) >= 4;
 				InitCommand=function(self) self:rotationz(-90):addx(barCenter+(barWidth[bgNum]+barSpace[bgNum])*3):addy(-20):shadowlength(0):queuecommand("FadeOn") end;
 				FadeOnCommand=function(self) self:sleep(2.5):linear(1):diffusealpha(0) end;
 			};
 			LoadFont("_v 26px bold black")..{
 				Text="Way-Offs";
-				Condition=getenv("ShowStatsP1") >= 5 or getenv("ShowStatsP2") >= 5;
+				Condition=getenv("ShowStats"..ToEnumShortString(pn)) >= 5;
 				InitCommand=function(self) self:rotationz(-90):addx(barCenter+(barWidth[bgNum]+barSpace[bgNum])*4):addy(-20):shadowlength(0):queuecommand("FadeOn") end;
 				FadeOnCommand=function(self) self:sleep(2.5):linear(1):diffusealpha(0) end;
 			};
 			LoadFont("_v 26px bold black")..{
 				Text="Misses";
-				Condition=getenv("ShowStatsP1") >= 6 or getenv("ShowStatsP2") >= 6;
+				Condition=getenv("ShowStats"..ToEnumShortString(pn)) >= 6;
 				InitCommand=function(self) self:rotationz(-90):addx(barCenter+(barWidth[bgNum]+barSpace[bgNum])*5):addy(-20):shadowlength(0):queuecommand("FadeOn") end;
 				FadeOnCommand=function(self) self:sleep(2.5):linear(1):diffusealpha(0) end;
 			};
@@ -242,7 +242,7 @@ return Def.ActorFrame{
 
 		LoadActor("../w1")..{
 			InitCommand=function(self) self:vertalign(bottom):addx(barCenter):addy(86):zoomx(0.01*barWidth[bgNum]):zoomy(0) end;
-			Condition=getenv("ShowStatsP1") >= 1 or getenv("ShowStatsP2") >= 1;
+			Condition=getenv("ShowStats"..ToEnumShortString(pn)) >= 1;
 			JudgmentMessageCommand=function(self,param)
 				if param.Player == pn then
 					self:queuecommand("Update")
@@ -272,7 +272,7 @@ return Def.ActorFrame{
 		};
 		LoadActor("../w2")..{
 			InitCommand=function(self) self:vertalign(bottom):addx(barCenter+(barWidth[bgNum]+barSpace[bgNum])*1):addy(86):zoomx(0.01*barWidth[bgNum]):zoomy(0) end;
-			Condition=getenv("ShowStatsP1") >= 2 or getenv("ShowStatsP2") >= 2;
+			Condition=getenv("ShowStats"..ToEnumShortString(pn)) >= 2;
 			JudgmentMessageCommand=function(self,param)
 				if param.Player == pn then
 					self:queuecommand("Update")
@@ -302,7 +302,7 @@ return Def.ActorFrame{
 		};
 		LoadActor("../w3")..{
 			InitCommand=function(self) self:vertalign(bottom):addx(barCenter+(barWidth[bgNum]+barSpace[bgNum])*2):addy(86):zoomx(0.01*barWidth[bgNum]):zoomy(0) end;
-			Condition=getenv("ShowStatsP1") >= 3 or getenv("ShowStatsP2") >= 3;
+			Condition=getenv("ShowStats"..ToEnumShortString(pn)) >= 3;
 			JudgmentMessageCommand=function(self,param)
 				if param.Player == pn then
 					self:queuecommand("Update")
@@ -332,7 +332,7 @@ return Def.ActorFrame{
 		};
 		LoadActor("../w4")..{
 			InitCommand=function(self) self:vertalign(bottom):addx(barCenter+(barWidth[bgNum]+barSpace[bgNum])*3):addy(86):zoomx(0.01*barWidth[bgNum]):zoomy(0) end;
-			Condition=getenv("ShowStatsP1") >= 4 or getenv("ShowStatsP2") >= 4;
+			Condition=getenv("ShowStats"..ToEnumShortString(pn)) >= 4;
 			JudgmentMessageCommand=function(self,param)
 				if param.Player == pn then
 					self:queuecommand("Update")
@@ -362,7 +362,7 @@ return Def.ActorFrame{
 		};
 		LoadActor("../w5")..{
 			InitCommand=function(self) self:vertalign(bottom):addx(barCenter+(barWidth[bgNum]+barSpace[bgNum])*4):addy(86):zoomx(0.01*barWidth[bgNum]):zoomy(0) end;
-			Condition=getenv("ShowStatsP1") >= 5 or getenv("ShowStatsP2") >= 5;
+			Condition=getenv("ShowStats"..ToEnumShortString(pn)) >= 5;
 			JudgmentMessageCommand=function(self,param)
 				if param.Player == pn then
 					self:queuecommand("Update")
@@ -392,7 +392,7 @@ return Def.ActorFrame{
 		};
 		LoadActor("../w6")..{
 			InitCommand=function(self) self:vertalign(bottom):addx(barCenter+(barWidth[bgNum]+barSpace[bgNum])*5):addy(86):zoomx(0.01*barWidth[bgNum]):zoomy(0) end;
-			Condition=getenv("ShowStatsP1") >= 6 or getenv("ShowStatsP2") >= 6;
+			Condition=getenv("ShowStats"..ToEnumShortString(pn)) >= 6;
 			JudgmentMessageCommand=function(self,param)
 				if param.Player == pn then
 					self:queuecommand("Update")
