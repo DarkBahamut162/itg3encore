@@ -9,9 +9,6 @@ return Def.FadingBanner{
 		elseif sortOrder == 'SortOrder_ModeMenu' then
 			self:LoadFromSortOrder('SortOrder_ModeMenu')
 		else
-			-- load fallback first
-			self:LoadFromSong(nil)
-
 			local topScreen = SCREENMAN:GetTopScreen()
 			if topScreen then
 				local wheel = topScreen:GetMusicWheel()
@@ -24,7 +21,9 @@ return Def.FadingBanner{
 						self:LoadRandom()
 					elseif curIdx+1 ~= numItems then
 						local path = SONGMAN:GetSongGroupBannerPath( wheel:GetSelectedSection() )
-						if path == "" or path == nil then else
+						if path == "" or path == nil then
+							self:LoadFromSong(nil)
+						else
 							self:LoadFromSongGroup(split("/",path)[2])
 						end
 					end
