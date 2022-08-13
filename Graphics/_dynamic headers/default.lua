@@ -10,6 +10,7 @@ local NameCase = setmetatable(
 			["ScreenEvaluationRave"] = "ScreenEvaluation",
 			["ScreenEvaluationNonstop"] = "ScreenEvaluation",
 			["ScreenEvaluationOni"] = "ScreenEvaluation",
+			["ScreenEvaluationSummary"] = "ScreenEvaluation",
 			["ScreenOptionsMapping"] = "null",
 			["ScreenSetBGFit"] = "null",
 			["ScreenOverscanConfig"] = "null",

@@ -9,7 +9,11 @@ if stageRemap[curStage] == songsPerPlay then
 end
 if GAMESTATE:IsEventMode() then curStage = 'Stage_Event' end
 
-curStage = ToEnumShortString(curStage)
+if stageRemap[curStage] then
+	curStage = stageRemap[curStage]
+else
+	curStage = ToEnumShortString(curStage)
+end
 
 -- Force noteskin to be applied here ~DarkBahamut162
 if isOni() then

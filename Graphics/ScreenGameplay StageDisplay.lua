@@ -22,7 +22,11 @@ return Def.ActorFrame{
 				end
 				if GAMESTATE:IsEventMode() then curStage = 'Stage_Event' end
 
-				curStage = ToEnumShortString(curStage)
+				if stageRemap[curStage] then
+					curStage = stageRemap[curStage]
+				else
+					curStage = ToEnumShortString(curStage)
+				end
 				self:Load(THEME:GetPathG("_gameplay","stage "..curStage))
 			end
 		end;
