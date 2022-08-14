@@ -105,9 +105,39 @@ function GetComboXOffset(pn)
 	end
 end
 
-function PlayerFullComboed(pn)
+function GetTapScore(pn, category)
 	local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn)
-	return (not pss:GetFailed() and pss:FullCombo()) and true or false;
+	return pss:GetTapNoteScores(category)
+end
+
+function GetHoldScore(pn, category)
+	local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn)
+	return pss:GetHoldNoteScores(category)
+end
+
+function GetNotesHit(pn)
+	return GetTapScore(pn, "TapNoteScore_W1") + GetTapScore(pn, "TapNoteScore_W2") + GetTapScore(pn, "TapNoteScore_W3")
+end
+
+function PlayerFullComboed(pn)
+	if GAMESTATE:IsPlayerEnabled(pn) then
+		local SongOrCourse, StepsOrTrail
+
+		if GAMESTATE:IsCourseMode() then
+			SongOrCourse = GAMESTATE:GetCurrentCourse()
+			StepsOrTrail = GAMESTATE:GetCurrentTrail(pn)
+		else
+			SongOrCourse = GAMESTATE:GetCurrentSong()
+			StepsOrTrail = GAMESTATE:GetCurrentSteps(pn)
+		end
+
+		local TotalSteps = StepsOrTrail:GetRadarValues(pn):GetValue('RadarCategory_TapsAndHolds')
+		local TotalHolds = StepsOrTrail:GetRadarValues(pn):GetValue('RadarCategory_Holds')
+		local TotalRolls = StepsOrTrail:GetRadarValues(pn):GetValue('RadarCategory_Rolls')
+		
+		if GetNotesHit(pn) == TotalSteps and GetHoldScore(pn, "HoldNoteScore_Held") == (TotalHolds + TotalRolls) then return true end
+	end	
+	return false
 end
 
 function AnyPlayerFullComboed()
