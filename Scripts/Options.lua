@@ -37,20 +37,20 @@ function SongMods()
 	-- differences 2 (should be "27,24," but timingscale is not in sm5)
 	if pm == 'PlayMode_Regular' then
 		if HasLuaCheck() then
-			options = options .. "20,21,24,"
+			options = options .. "20,P,21,24,"
 		else
-			options = options .. "20,24,"
+			options = options .. "20,P,24,"
 		end
 	elseif pm == 'PlayMode_Nonstop' then
 		if IsCourseSecret() then
-			options = options .. "20,24,"
+			options = options .. "20,P,24,"
 		else
-			options = options .. "20,21,24,"
+			options = options .. "20,P,21,24,"
 		end
 	end
 
 	if pm == 'PlayMode_Rave' or pm == 'PlayMode_Oni' then
-		options = "1,3,28,20,21,"
+		options = "1,3,28,20,P,21,"
 	end
 
 	-- ends on 16:
@@ -124,6 +124,8 @@ function InitOptions()
 	-- stats display
 	setenv("ShowStatsP1",0)
 	setenv("ShowStatsP2",0)
+	setenv("SetPacemakerP1",0)
+	setenv("SetPacemakerP2",0)
 	-- screen filter
 	setenv("ScreenFilterP1",0)
 	setenv("ScreenFilterP2",0)
@@ -185,27 +187,46 @@ function OptionShowStats()
 		SelectType = "SelectOne",
 		OneChoiceForAllPlayers = false,
 		ExportOnChange = false,
-		Choices = { "Off","W1","W2","W3","W4","W5","Miss" },
+		Choices = { "Off","W1","W2","W3","W4","W5","Miss","IIDX" },
 		LoadSelections = function(self, list, pn)
-			local pref = getenv("ShowStats"..ToEnumShortString(pn))+1
-			local selected = 0
-			for i, choice in ipairs(self.Choices) do
-				if i == (getenv("ShowStats"..ToEnumShortString(pn)) + 1) then
-					selected = i
-					break
-				end
-			end
-			if selected ~= 0 then
-				list[selected] = true
-			else
-				list[1] = true
-			end
+			local selected = getenv("ShowStats"..ToEnumShortString(pn))+1
+			list[selected] = true
 		end,
 		SaveSelections = function(self, list, pn)
 			for i, choice in ipairs(self.Choices) do
 				if list[i] then
 					setenv("ShowStats"..ToEnumShortString(pn),i-1)
-					return
+					break
+				end
+			end
+		end
+	}
+	setmetatable(t, t)
+	return t
+end
+
+-- stats display
+function OptionSetPacemaker()
+	local t = {
+		Name="SetPacemaker",
+		LayoutType = "ShowAllInRow",
+		SelectType = "SelectOne",
+		OneChoiceForAllPlayers = false,
+		ExportOnChange = false,
+		Choices = {'C-','C','C+','B-','B','B+','A-','A','A+','S-','S','S+','★','★★','★★★','★★★★'},
+		LoadSelections = function(self, list, pn)
+			local selected = getenv("SetPacemaker"..ToEnumShortString(pn))
+			if selected ~= 0 then
+				list[selected] = true
+			else
+				list[11] = true
+			end
+		end,
+		SaveSelections = function(self, list, pn)
+			for i, choice in ipairs(self.Choices) do
+				if list[i] then
+					setenv("SetPacemaker"..ToEnumShortString(pn),i)
+					break
 				end
 			end
 		end
