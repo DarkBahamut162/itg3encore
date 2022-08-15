@@ -42,6 +42,8 @@ What has been fixed so far:
 * Better and sorted **ScreenPlayerOptions**
 * Added **MOD** & **BPM range** within **Name Badges** inside **ScreenPlayerOptions**
 * Better **StatsDisplay/ShowStats** going from a range of 1-6 instead of just 3
+  * Added option for a fully functional IIDX pacemaker with selectable target meter
+    * For 2 Player VS, both players need to choose IIDX
 * Actually fixed **Course Mode** (Battle, Marathon & Survival Mode)
   * Fixed/Better **Song List**
   * Displays **_panes** & **StepArtists** and correctly calculate their difficulty color
