@@ -14,7 +14,7 @@ local t = Def.ActorFrame{
 		SlowCommand=function(self) self:SetUpdateRate(1.5) end;
 	};
 
-	LoadActor("evaluation banner mask")..{
+	LoadActor("../ScreenEvaluation underlay/evaluation banner mask")..{
 		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+135):zbuffer(true):blend('BlendMode_NoEffect'):diffusealpha(0) end;
 		OnCommand=function(self) self:sleep(2.8):diffusealpha(1) end;
 		OffCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(0) end;

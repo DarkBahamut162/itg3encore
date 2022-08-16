@@ -3,7 +3,7 @@ local t = LoadFallbackB();
 -- StepsDisplay
 if ShowStandardDecoration("StepsDisplay") then
 	for pn in ivalues(PlayerNumber) do
-		if GAMESTATE:IsPlayerEnabled(pn) or isRave() then
+		if (GAMESTATE:IsPlayerEnabled(pn) or isRave()) and Var "LoadingScreen" ~= "ScreenEvaluationSummary" then
 			local t2 = Def.ActorFrame{
 				--InitCommand=function(self) self:player(pn) end;
 				LoadActor(THEME:GetPathG("_difficulty","icons"))..{
