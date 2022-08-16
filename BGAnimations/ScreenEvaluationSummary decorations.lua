@@ -1,5 +1,10 @@
 local t = LoadFallbackB();
 
 t[#t+1] = StandardDecorationFromFileOptional("BannerList","BannerList");
-
+t[#t+1] = Def.Sprite{
+    Texture= THEME:GetPathG("ScreenEvaluation","BannerFrame"),
+    InitCommand=function(self) self:x(SCREEN_CENTER_X):y(SCREEN_CENTER_Y+135) end,
+    OnCommand=function(self) self:diffusealpha(0):sleep(3):linear(0.5):diffusealpha(1) end,
+    OffCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(0) end
+}
 return t
