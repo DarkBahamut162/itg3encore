@@ -36,8 +36,10 @@ return Def.ActorFrame{
 		OnCommand=function(self) self:linear(0.3):diffusealpha(1) end;
 		UpdateCommand=function(self)
 			local steps = GAMESTATE:GetCurrentSteps(GAMESTATE:GetMasterPlayerNumber())
-			local state = DifficultyToState(steps:GetDifficulty())
-			self:setstate(state)
+			if steps then
+				local state = DifficultyToState(steps:GetDifficulty())
+				self:setstate(state)
+			end
 		end;
 		CurrentStepsP1ChangedMessageCommand=function(self) self:playcommand("Update") end;
 	};
@@ -45,8 +47,10 @@ return Def.ActorFrame{
 		InitCommand=function(self) self:x(SCREEN_LEFT+76):y(SCREEN_CENTER_Y-20):shadowlength(0):diffusealpha(0.8):zoom(0.6):maxwidth(184):playcommand("Update") end;
 		UpdateCommand=function(self)
 			local steps = GAMESTATE:GetCurrentSteps(GAMESTATE:GetMasterPlayerNumber())
-			self:settext( GetCustomDifficulty(steps:GetStepsType(),steps:GetDifficulty(),nil) );
-			self:sleep(0.5)
+			if steps then
+				self:settext( GetCustomDifficulty(steps:GetStepsType(),steps:GetDifficulty(),nil) );
+				self:sleep(0.5)
+			end
 		end;
 		CurrentStepsP1ChangedMessageCommand=function(self) self:playcommand("Update") end;
 	};
