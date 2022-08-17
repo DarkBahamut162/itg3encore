@@ -1,5 +1,5 @@
 local t = Def.ActorFrame{
-	LoadActor("_normaltop");
+	LoadActor("_top");
 	LoadActor("flare")..{
 		InitCommand=function(self) self:blend(Blend.Add):x(SCREEN_LEFT-128):y(40) end;
 		OnCommand=function(self) self:queuecommand("Animate") end;

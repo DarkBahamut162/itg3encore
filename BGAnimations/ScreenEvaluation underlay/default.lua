@@ -7,7 +7,7 @@ local t = Def.ActorFrame{
 		OnCommand=function(self) self:playcommand("DoOff"):finishtweening():playcommand("Slow"):queuecommand("DoOn") end;
 		SlowCommand=function(self) self:SetUpdateRate(1.5) end;
 	};
-	LoadActor(THEME:GetPathB("ScreenWithMenuElements","underlay/_expandtop"))..{
+	LoadActor(THEME:GetPathB("ScreenWithMenuElements","underlay/_top"))..{
 		OnCommand=function(self) self:playcommand("DoOff"):finishtweening():playcommand("Slow"):queuecommand("DoOn") end;
 		SlowCommand=function(self) self:SetUpdateRate(1.5) end;
 	};

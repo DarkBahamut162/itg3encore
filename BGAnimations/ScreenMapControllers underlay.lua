@@ -1,7 +1,7 @@
 return Def.ActorFrame{
 	LoadActor(THEME:GetPathB("ScreenWithMenuElements","underlay/_sides"));
 	LoadActor(THEME:GetPathB("ScreenWithMenuElements","underlay/_base"));
-	LoadActor(THEME:GetPathB("ScreenWithMenuElements","underlay/_normaltop"));
+	LoadActor(THEME:GetPathB("ScreenWithMenuElements","underlay/_top"));
 	Def.ActorFrame{
 		Name="Page";
 		InitCommand=function(self) self:Center() end;
