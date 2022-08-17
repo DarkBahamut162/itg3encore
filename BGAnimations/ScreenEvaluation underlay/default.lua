@@ -126,12 +126,12 @@ local t = Def.ActorFrame{
 	};
 
 	Def.ActorFrame{
-		LoadActor(THEME:GetPathG("ScreenEvaluation","GradeFrame p1/_graph base"))..{
+		LoadActor(THEME:GetPathG("ScreenEvaluation","GraphFrame p1/_base"))..{
 			InitCommand=function(self) self:player(PLAYER_1):x(THEME:GetMetric("ScreenEvaluation","GradeFrameP1X")-55):y(THEME:GetMetric("ScreenEvaluation","GradeFrameP1Y")+101):addx(-EvalTweenDistance()) end;
 			OnCommand=function(self) self:sleep(3):decelerate(0.3):addx(EvalTweenDistance()) end;
 			OffCommand=function(self) self:accelerate(0.3):addx(-EvalTweenDistance()) end;
 		};
-		LoadActor(THEME:GetPathG("ScreenEvaluation","GradeFrame p1/_graph base"))..{
+		LoadActor(THEME:GetPathG("ScreenEvaluation","GraphFrame p1/_base"))..{
 			InitCommand=function(self) self:player(PLAYER_2):x(THEME:GetMetric("ScreenEvaluation","GradeFrameP2X")+55):y(THEME:GetMetric("ScreenEvaluation","GradeFrameP2Y")+101):zoomx(-1):addx(EvalTweenDistance()) end;
 			OnCommand=function(self) self:sleep(3):decelerate(0.3):addx(-EvalTweenDistance()) end;
 			OffCommand=function(self) self:accelerate(0.3):addx(EvalTweenDistance()) end;
