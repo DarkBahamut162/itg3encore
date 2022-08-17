@@ -12,7 +12,7 @@ return Def.ActorFrame{
 		};
 	};
 
-	LoadActor("explanation frame")..{
+	LoadActor(THEME:GetPathG("explanation","frame"))..{
 		InitCommand=function(self) self:x(SCREEN_CENTER_X+100):y(SCREEN_CENTER_Y+138-8):horizalign(center):diffusealpha(0) end;
 		OnCommand=function(self) self:linear(0.5):diffusealpha(1.0) end;
 		MadeChoiceP1MessageCommand=function(self) self:playcommand("GoOff") end;

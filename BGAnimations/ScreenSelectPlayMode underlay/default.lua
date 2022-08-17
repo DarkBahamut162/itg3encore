@@ -6,7 +6,7 @@ return Def.ActorFrame{
 		OnCommand=function(self) self:playcommand("DoOn") end;
 	};
 
-	LoadActor("explanation frame")..{
+	LoadActor(THEME:GetPathG("explanation","frame"))..{
 		InitCommand=function(self) self:x(SCREEN_CENTER_X-55-34):y(SCREEN_CENTER_Y+120):diffusealpha(0) end;
 		OnCommand=function(self) self:linear(0.5):diffusealpha(1.0) end;
 		MadeChoiceP1MessageCommand=function(self) self:playcommand("GoOff") end;
