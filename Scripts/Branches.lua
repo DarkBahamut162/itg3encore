@@ -100,3 +100,10 @@ Branch.AfterEvaluation = function()
 		return "ScreenEvaluationSummary"
 	end
 end
+
+Branch.AfterSaveSummary = function()
+	if STATSMAN:GetBestGrade() <= 0 then return "ScreenEndingPerfect"
+	elseif STATSMAN:GetBestGrade() <= 3 then return "ScreenEndingGood"
+	elseif STATSMAN:GetBestGrade() <= 6 then return "ScreenEndingOkay"
+	else return "ScreenEndingNormal" end
+end
