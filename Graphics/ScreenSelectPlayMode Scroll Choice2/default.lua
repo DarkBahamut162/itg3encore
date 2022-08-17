@@ -32,13 +32,13 @@ return Def.ActorFrame{
 		LoseFocusCommand=function(self) self:bouncebegin(0.1):zoom(0) end;
 	};
 
-	LoadActor(THEME:GetPathG("","blueflarerojo.png"))..{
+	LoadActor(THEME:GetPathG("","blueflarerojo"))..{
 		InitCommand=function(self) self:x(-82):y(-70):blend(Blend.Add):diffusealpha(0) end;
 		GainFocusCommand=function(self) self:finishtweening():zoom(0):diffusealpha(0):zoomx(7):zoomy(4):diffusealpha(1):linear(0.2):zoomy(0):diffusealpha(0) end;
 		LoseFocusCommand=function(self) self:diffusealpha(0) end;
 		OffCommand=function(self) self:diffusealpha(0) end;
 	};
-	LoadActor(THEME:GetPathG("","blueflarerojo.png"))..{
+	LoadActor(THEME:GetPathG("","blueflarerojo"))..{
 		InitCommand=function(self) self:x(-82):y(-70):blend(Blend.Add):diffusealpha(0) end;
 		GainFocusCommand=function(self) self:finishtweening():zoom(0):diffusealpha(0):zoomx(7):zoomy(4):diffusealpha(1):linear(0.4):zoomy(0):diffusealpha(0) end;
 		LoseFocusCommand=function(self) self:diffusealpha(0) end;

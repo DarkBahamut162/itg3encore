@@ -131,7 +131,7 @@ t[#t+1] = LoadActor("_fan")..{
 		end;
 	end;	
 };
-t[#t+1] = LoadActor("blueflare")..{
+t[#t+1] = LoadActor(THEME:GetPathG("","blueflare.png"))..{
 	InitCommand=function(self) self:x(GetPosition(pn)):blend("BlendMode_Add"):y(SCREEN_CENTER_Y-SCREEN_HEIGHT/9+15):diffusealpha(0):zoom(0.3) end;
 	OffCommand=function(self) if PlayerFullComboed(pn) then self:queuecommand("CheckScore") end end;
 	CheckScoreCommand=function(self)

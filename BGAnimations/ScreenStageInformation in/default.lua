@@ -205,7 +205,7 @@ local t = Def.ActorFrame{
 		};
 	};
 
-	LoadActor("blueflare")..{
+	LoadActor(THEME:GetPathG("","blueflare.png"))..{
 		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+12.5):blend(Blend.Add):draworder(115) end;
 		OnCommand=function(self) self:zoomx(15):zoomtoheight(SCREEN_HEIGHT+SCREEN_HEIGHT/4):linear(1):zoomtoheight(0):diffusealpha(0.0) end;
 	};
