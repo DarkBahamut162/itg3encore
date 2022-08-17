@@ -13,7 +13,7 @@ return Def.ActorFrame{
 			local stepsDiff = GAMESTATE:GetCurrentSteps(PLAYER_1):GetDifficulty()
 			self:visible(isHuman and stepsDiff=='Difficulty_Beginner' and pm == 'PlayMode_Regular')
 		end;
-		LoadActor("_platform")..{ InitCommand=function(self) self:y(7):diffuse(color("0.6,0.6,0.6,0.8")) end; };
+		LoadActor("../platform")..{ InitCommand=function(self) self:y(7):diffuse(color("0.6,0.6,0.6,0.8")) end; };
 		LoadActor("panelglow")..{
 			InitCommand=function(self) self:x(-45):diffusealpha(0):blend(Blend.Add) end;
 			CrossCommand=function(self) self:finishtweening():diffusealpha(1):zoom(1.1):linear(0.4):zoom(1):diffusealpha(0) end;
@@ -52,7 +52,7 @@ return Def.ActorFrame{
 			local stepsDiff = GAMESTATE:GetCurrentSteps(PLAYER_2):GetDifficulty()
 			self:visible(isHuman and stepsDiff=='Difficulty_Beginner' and pm == 'PlayMode_Regular')
 		end;
-		LoadActor("_platform")..{ InitCommand=function(self) self:y(7):diffuse(color("0.6,0.6,0.6,0.8")) end; };
+		LoadActor("../platform")..{ InitCommand=function(self) self:y(7):diffuse(color("0.6,0.6,0.6,0.8")) end; };
 		LoadActor("panelglow")..{
 			InitCommand=function(self) self:x(-45):diffusealpha(0):blend(Blend.Add) end;
 			CrossCommand=function(self) self:finishtweening():diffusealpha(1):zoom(1.1):linear(0.4):zoom(1):diffusealpha(0) end;
