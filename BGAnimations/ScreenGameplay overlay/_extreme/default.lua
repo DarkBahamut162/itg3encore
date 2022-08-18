@@ -33,7 +33,7 @@ local t = Def.ActorFrame{
 			InitCommand=function(self) self:x(SCREEN_CENTER_X+193):y(SCREEN_TOP+23):halign(1):zoomx(-1) end;
 			OnCommand=function(self) self:sleep(1.5):linear(0.1):x(SCREEN_RIGHT-16) end;
 		};
-		LoadActor("base")..{ InitCommand=function(self) self:CenterX():y(SCREEN_TOP+24) end; };
+		LoadActor("_base normal")..{ InitCommand=function(self) self:CenterX():y(SCREEN_TOP+24) end; };
 		LoadActor("_neons")..{
 			InitCommand=function(self) self:CenterX():y(SCREEN_TOP+24):blend(Blend.Add) end;
 			OnCommand=function(self) self:effectclock('beat'):diffuseramp():effectcolor1(color("#007892")):effectcolor2(color("#00EAFF")):effectperiod(0.5):diffusealpha(0):linear(0.4):diffusealpha(1) end;
