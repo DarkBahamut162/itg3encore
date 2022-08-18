@@ -1,10 +1,10 @@
 local t = Def.ActorFrame{
 	InitCommand=function(self) self:fov(70) end;
-	LoadActor("_logo")..{
+	LoadActor(THEME:GetPathB("","_thanks/_outfox/logo"))..{
 		InitCommand=function(self) self:x(-180) end;
 		OnCommand=function(self) self:pulse():effectclock("beat"):effectperiod(0.83):effectmagnitude(1,1.25,0):zoom(0.6) end;
 	};
-	LoadActor("_text")..{
+	LoadActor(THEME:GetPathB("","_thanks/_outfox/text"))..{
 		OnCommand=function(self) self:x(120):zoom(0.6) end;
 	};
 	LoadActor("_text")..{

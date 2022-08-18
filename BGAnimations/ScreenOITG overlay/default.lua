@@ -1,15 +1,8 @@
 return Def.ActorFrame{
-	--[[
-	LoadActor("openitg")..{
-		InitCommand=function(self) self:x(SCREEN_LEFT-15):y(SCREEN_CENTER_Y-SCREEN_HEIGHT/2.8):zoom(0.65) end;
-	};
-	--]]
-
 	LoadActor("itg")..{
 		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y-80):zoom(0.7) end;
 	};
-
-	LoadActor("sm5")..{
+	LoadActor("outfox")..{
 		InitCommand=function(self) self:x(SCREEN_LEFT+192):y(WideScale(SCREEN_CENTER_Y+64,SCREEN_CENTER_Y+80)):zoom(0.65) end;
 	};
 	LoadActor("bxrx")..{
