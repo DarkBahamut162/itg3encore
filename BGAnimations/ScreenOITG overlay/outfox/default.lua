@@ -7,7 +7,7 @@ local t = Def.ActorFrame{
 	LoadActor(THEME:GetPathB("","_thanks/_outfox/text"))..{
 		OnCommand=function(self) self:x(120):zoom(0.6) end;
 	};
-	LoadActor("_text")..{
+	LoadActor(THEME:GetPathB("","_thanks/_outfox/text"))..{
 		Name="TextGlow";
 		InitCommand=function(self) self:blend(Blend.Add):diffusealpha(0.05) end;
 		OnCommand=function(self) self:x(120):glowshift():effectperiod(2.5):effectcolor1(color("1,1,1,0.25")):effectcolor2(color("1,1,1,1")):zoom(0.6) end;
