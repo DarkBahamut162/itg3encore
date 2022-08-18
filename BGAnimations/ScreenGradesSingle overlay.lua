@@ -15,18 +15,15 @@ local stats = {
 	{ Difficulty='Difficulty_Challenge', },-- 4
 	{ Difficulty='Difficulty_Medium', },-- 5
 	{ Difficulty='Difficulty_Hard', },-- 6
-	{ Difficulty='Difficulty_Medium', },-- 7
+	{ Difficulty='Difficulty_Challenge', },-- 7
 };
 
--- todo: loop this using difficulties from easy-hard
-local diffs = Enum.Reverse(Difficulty)
-local tiers = Enum.Reverse(Grade)
-for i=diffs['Difficulty_Easy'],diffs['Difficulty_Challenge'] do
+for i=1,4 do
 	local nums = Def.ActorFrame{
 		Name="NumbersTier"..i;
 		InitCommand=function(self) self:y(scale(i+1,1,7,SCREEN_CENTER_Y-130,SCREEN_CENTER_Y+130)) end;
 	};
-	for s=tiers['Grade_Tier01'],tiers['Grade_Tier11'] do
+	for s=1,10 do
 		local score = LoadFont("_futurist metalic")..{
 			InitCommand=function(self) self:x(scale(s,1,10,SCREEN_LEFT+160,SCREEN_RIGHT-50)):zoom(0.7) end;
 			BeginCommand=function(self)
@@ -38,12 +35,12 @@ for i=diffs['Difficulty_Easy'],diffs['Difficulty_Challenge'] do
 	end
 	table.insert(t,nums)
 end
-for i=diffs['Difficulty_Medium'],diffs['Difficulty_Hard'] do
+for i=5,6 do
 	local nums = Def.ActorFrame{
 		Name="NumbersTier"..i;
-		InitCommand=function(self) self:y(scale(i+4,1,7,SCREEN_CENTER_Y-130,SCREEN_CENTER_Y+130)) end;
+		InitCommand=function(self) self:y(scale(i+1,1,7,SCREEN_CENTER_Y-130,SCREEN_CENTER_Y+130)) end;
 	};
-	for s=tiers['Grade_Tier01'],tiers['Grade_Tier11'] do
+	for s=1,10 do
 		local score = LoadFont("_futurist metalic")..{
 			InitCommand=function(self) self:x(scale(s,1,10,SCREEN_LEFT+160,SCREEN_RIGHT-50)):zoom(0.7) end;
 			BeginCommand=function(self)
