@@ -6,9 +6,15 @@ return Def.ActorFrame{
 		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y-158):diffuse(color("#000000FF")):zoomto(SCREEN_WIDTH,SCREEN_HEIGHT/2) end;
 	};
 	LoadActor("lolhi")..{
+		Condition=not GAMESTATE:IsAnyHumanPlayerUsingMemoryCard();
+		InitCommand=function(self) self:Center():zoomx(SCREEN_WIDTH):zoomy(0.68) end;
+	};
+	LoadActor("profile")..{
+		Condition=GAMESTATE:IsAnyHumanPlayerUsingMemoryCard();
 		InitCommand=function(self) self:Center():zoomx(SCREEN_WIDTH):zoomy(0.68) end;
 	};
 	LoadFont("_z 36px shadowx")..{
+		Condition=not GAMESTATE:IsAnyHumanPlayerUsingMemoryCard();
 		Text="SAVING PROFILES...";
 		InitCommand=function(self) self:x(SCREEN_CENTER_X+42):CenterY():zoom(0.75) end;
 		OnCommand=function(self)
@@ -20,7 +26,8 @@ return Def.ActorFrame{
 		end;
 	};
 	LoadFont("_z 36px shadowx")..{
-		Text="LOADING...";
+		Condition=GAMESTATE:IsAnyHumanPlayerUsingMemoryCard();
+		Text="SAVING MACHINE STATS...";
 		InitCommand=function(self) self:x(SCREEN_CENTER_X+42):CenterY():zoom(0.7):diffusealpha(0) end;
 		OnCommand=function(self)
 			if SCREENMAN:GetTopScreen():HaveProfileToSave() then
