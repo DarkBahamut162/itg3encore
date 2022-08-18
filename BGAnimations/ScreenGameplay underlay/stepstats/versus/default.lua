@@ -24,14 +24,14 @@ else
 			StepsOrTrail[pn] = GAMESTATE:GetCurrentSteps(pn)
 		end
 		
-		if not scorelist[pn] then
+		if not scorelist[pn] and GAMESTATE:IsHumanPlayer(pn) then
 			scorelist[pn] = PROFILEMAN:GetMachineProfile():GetHighScoreList(SongOrCourse[pn],StepsOrTrail[pn])
 		end
-		if not scorelist[pn] then
+		if not scorelist[pn] and GAMESTATE:IsHumanPlayer(pn) then
 			scorelist[pn] = PROFILEMAN:GetProfile(pn):GetHighScoreList(SongOrCourse[pn],StepsOrTrail[pn])
 		end
 		
-		if scorelist[pn] then
+		if scorelist[pn] and GAMESTATE:IsHumanPlayer(pn) then
 			topscore[pn] = scorelist[pn]:GetHighScores()[1]
 		end
 		if getenv("ShowStats"..ToEnumShortString(pn)) > 0 then
