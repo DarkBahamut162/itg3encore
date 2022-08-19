@@ -75,3 +75,12 @@ function GetScreenNameEntryTraditionalHelpText()
 	end
 	return THEME:GetString("ScreenNameEntryTraditional","HelpTextNoHighScores")
 end
+
+function EnabledAndProfile(pn)
+	return GAMESTATE:IsPlayerEnabled(pn) and PROFILEMAN:IsPersistentProfile(pn)
+end
+
+function ScreenEndingGetDisplayName(pn)
+	if PROFILEMAN:IsPersistentProfile(pn) then return GAMESTATE:GetPlayerDisplayName(pn) end
+	return "No Card"
+end

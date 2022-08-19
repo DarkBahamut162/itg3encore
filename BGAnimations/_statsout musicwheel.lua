@@ -1,7 +1,3 @@
-local function EnabledAndProfile(player)
-	return GAMESTATE:IsPlayerEnabled(player) and PROFILEMAN:IsPersistentProfile(player)
-end
-
 local t = Def.ActorFrame{
 	Def.ActorFrame{
 		Name="CardPaneP1";
