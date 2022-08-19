@@ -6,7 +6,7 @@ return Def.ActorFrame{
         };
         -- P1
         Def.ActorFrame{
-            Condition=EnabledAndProfile(PLAYER_1) and not GAMESTATE:IsCourseMode();
+            Condition=HumanAndProfile(PLAYER_1) and not GAMESTATE:IsCourseMode();
             OnCommand=function(self) self:x(SCREEN_CENTER_X-276):y(SCREEN_CENTER_Y+41) end;
             LoadFont("_r bold 30px")..{
                 Text=THEME:GetString("CustomDifficulty", "Easy");
@@ -30,7 +30,7 @@ return Def.ActorFrame{
             };
         };
         Def.ActorFrame{
-            Condition=EnabledAndProfile(PLAYER_1) and GAMESTATE:IsCourseMode();
+            Condition=HumanAndProfile(PLAYER_1) and GAMESTATE:IsCourseMode();
             OnCommand=function(self) self:x(SCREEN_CENTER_X-276):y(SCREEN_CENTER_Y+41) end;
             LoadFont("_r bold 30px")..{
                 Text=THEME:GetString("CourseDifficulty", "Medium");
@@ -51,7 +51,7 @@ return Def.ActorFrame{
             OnCommand=function(self) self:x(SCREEN_CENTER_X+230):y(SCREEN_CENTER_Y-140) end;
         };
         Def.ActorFrame{
-            Condition=EnabledAndProfile(PLAYER_2) and not GAMESTATE:IsCourseMode();
+            Condition=HumanAndProfile(PLAYER_2) and not GAMESTATE:IsCourseMode();
             OnCommand=function(self) self:x(SCREEN_CENTER_X+216):y(SCREEN_CENTER_Y+41) end;
             LoadFont("_r bold 30px")..{
                 Text=THEME:GetString("CustomDifficulty", "Easy");
@@ -75,7 +75,7 @@ return Def.ActorFrame{
             };
         };
         Def.ActorFrame{
-            Condition=EnabledAndProfile(PLAYER_2) and GAMESTATE:IsCourseMode();
+            Condition=HumanAndProfile(PLAYER_2) and GAMESTATE:IsCourseMode();
             OnCommand=function(self) self:x(SCREEN_CENTER_X+216):y(SCREEN_CENTER_Y+41) end;
             LoadFont("_r bold 30px")..{
                 Text=THEME:GetString("CourseDifficulty", "Medium");

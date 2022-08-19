@@ -76,6 +76,10 @@ function GetScreenNameEntryTraditionalHelpText()
 	return THEME:GetString("ScreenNameEntryTraditional","HelpTextNoHighScores")
 end
 
+function HumanAndProfile(pn)
+	return GAMESTATE:IsHumanPlayer(pn) and PROFILEMAN:IsPersistentProfile(pn)
+end
+
 function EnabledAndProfile(pn)
 	return GAMESTATE:IsPlayerEnabled(pn) and PROFILEMAN:IsPersistentProfile(pn)
 end
