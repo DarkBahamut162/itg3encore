@@ -24,330 +24,92 @@ creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
 creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
 creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
 creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
-creditsOkay[#creditsOkay+1] = Def.ActorFrame{
-	LoadActor("frame");
-	LoadFont("_r bold 30px")..{
-		Text="Jason Bolt";
-		OnCommand=function(self) self:y(10):x(42):diffuse(color("#FFFFFF")) end;
-	};
-	LoadFont("_r normal")..{
-		Text="Theme, Graphics, Coding";
-		OnCommand=function(self) self:y(-29):x(38):zoomx(0.57):zoomy(0.6):shadowlength(0):diffuse(color("#FFFFFF")) end;
-	};
-	LoadActor("_people")..{
-		OnCommand=function(self) self:animate(0):setstate(1):x(-114) end;
-	};
-};
-creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
-creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
-creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
-creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
-creditsOkay[#creditsOkay+1] = Def.ActorFrame{
-	LoadActor("frame");
-	LoadFont("_r bold 30px")..{
-		Text="Harvey Kung";
-		OnCommand=function(self) self:y(10):x(42):diffuse(color("#FFFFFF")) end;
-	};
-	LoadFont("_r normal")..{
-		Text="Theme, Coding";
-		OnCommand=function(self) self:y(-29):x(38):zoomx(0.57):zoomy(0.6):shadowlength(0):diffuse(color("#FFFFFF")) end;
-	};
-	LoadActor("_people")..{
-		OnCommand=function(self) self:animate(0):setstate(0):x(-114) end;
-	};
-};
-creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
-creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
-creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
-creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
-creditsOkay[#creditsOkay+1] = Def.ActorFrame{
-	LoadActor("frame");
-	LoadFont("_r bold 30px")..{
-		Text="Albeiro Barbosa";
-		OnCommand=function(self) self:y(10):x(42):diffuse(color("#FFFFFF")) end;
-	};
-	LoadFont("_r normal")..{
-		Text="themes, audio";
-		OnCommand=function(self) self:y(-29):x(38):zoomx(0.57):zoomy(0.6):shadowlength(0):diffuse(color("#FFFFFF")) end;
-	};
-	LoadActor("_people")..{
-		OnCommand=function(self) self:animate(0):setstate(18):x(-114) end;
-	};
-};
-creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
-creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
-creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
-creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
-creditsOkay[#creditsOkay+1] = Def.ActorFrame{
-	LoadActor("frame");
-	LoadFont("_r bold 30px")..{
-		Text="Luis del Angel";
-		OnCommand=function(self) self:y(10):x(42):diffuse(color("#FFFFFF")) end;
-	};
-	LoadFont("_r normal")..{
-		Text="Graphics, Coding, audio";
-		OnCommand=function(self) self:y(-29):x(38):zoomx(0.57):zoomy(0.6):shadowlength(0):diffuse(color("#FFFFFF")) end;
-	};
-	LoadActor("_people")..{
-		OnCommand=function(self) self:animate(0):setstate(17):x(-114) end;
-	};
-};
-creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
-creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
-creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
-creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
-creditsOkay[#creditsOkay+1] = Def.ActorFrame{
-	LoadActor("frame");
-	LoadFont("_r bold 30px")..{
-		Text="Dominick Renzetti";
-		OnCommand=function(self) self:y(10):x(42):diffuse(color("#FFFFFF")) end;
-	};
-	LoadFont("_r normal")..{
-		Text="Graphics, Stepcharts";
-		OnCommand=function(self) self:y(-29):x(38):zoomx(0.57):zoomy(0.6):shadowlength(0):diffuse(color("#FFFFFF")) end;
-	};
-	LoadActor("_people")..{
-		OnCommand=function(self) self:animate(0):setstate(2):x(-114) end;
-	};
-};
-creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
-creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
-creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
-creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
-creditsOkay[#creditsOkay+1] = Def.ActorFrame{
-	LoadActor("frame");
-	LoadFont("_r bold 30px")..{
-		Text="Felipe Valladares";
-		OnCommand=function(self) self:y(10):x(42):diffuse(color("#FFFFFF")) end;
-	};
-	LoadFont("_r normal")..{
-		Text="Graphics";
-		OnCommand=function(self) self:y(-29):x(38):zoomx(0.57):zoomy(0.6):shadowlength(0):diffuse(color("#FFFFFF")) end;
-	};
-	LoadActor("_people")..{
-		OnCommand=function(self) self:animate(0):setstate(3):x(-114) end;
-	};
-};
-creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
-creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
-creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
-creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
-creditsOkay[#creditsOkay+1] = Def.ActorFrame{
-	LoadActor("frame");
-	LoadFont("_r bold 30px")..{
-		Text="Donnie D'Amato";
-		OnCommand=function(self) self:y(10):x(42):diffuse(color("#FFFFFF")) end;
-	};
-	LoadFont("_r normal")..{
-		Text="Stepcharts";
-		OnCommand=function(self) self:y(-29):x(38):zoomx(0.57):zoomy(0.6):shadowlength(0):diffuse(color("#FFFFFF")) end;
-	};
-	LoadActor("_people")..{
-		OnCommand=function(self) self:animate(0):setstate(4):x(-114) end;
-	};
-};
-creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
-creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
-creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
-creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
-creditsOkay[#creditsOkay+1] = Def.ActorFrame{
-	LoadActor("frame");
-	LoadFont("_r bold 30px")..{
-		Text="Tommy Sturtevant";
-		OnCommand=function(self) self:y(10):x(42):diffuse(color("#FFFFFF")) end;
-	};
-	LoadFont("_r normal")..{
-		Text="Background Scripting";
-		OnCommand=function(self) self:y(-29):x(38):zoomx(0.57):zoomy(0.6):shadowlength(0):diffuse(color("#FFFFFF")) end;
-	};
-	LoadActor("_people")..{
-		OnCommand=function(self) self:animate(0):setstate(12):x(-114) end;
-	};
-};
-creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
-creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
-creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
-creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
-creditsOkay[#creditsOkay+1] = Def.ActorFrame{
-	LoadActor("frame");
-	LoadFont("_r bold 30px")..{
-		Text="Jordan Frederick";
-		OnCommand=function(self) self:y(10):x(42):diffuse(color("#FFFFFF")) end;
-	};
-	LoadFont("_r normal")..{
-		Text="Stepcharts";
-		OnCommand=function(self) self:y(-29):x(38):zoomx(0.57):zoomy(0.6):shadowlength(0):diffuse(color("#FFFFFF")) end;
-	};
-	LoadActor("_people")..{
-		OnCommand=function(self) self:animate(0):setstate(5):x(-114) end;
-	};
-	LoadActor("_people")..{
-		OnCommand=function(self) self:animate(0):setstate(6):x(-114):diffusealpha(0):queuecommand("Look") end;
-		LookCommand=function(self) self:sleep(5):diffusealpha(1):sleep(0.4):diffusealpha(0):queuecommand("Look") end;
-	};
-};
-creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
-creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
-creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
-creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
-creditsOkay[#creditsOkay+1] = Def.ActorFrame{
-	LoadActor("frame");
-	LoadFont("_r bold 30px")..{
-		Text="Matthew Emirzian";
-		OnCommand=function(self) self:y(10):x(42):diffuse(color("#FFFFFF")) end;
-	};
-	LoadFont("_r normal")..{
-		Text="Stepcharts";
-		OnCommand=function(self) self:y(-29):x(38):zoomx(0.57):zoomy(0.6):shadowlength(0):diffuse(color("#FFFFFF")) end;
-	};
-	LoadActor("_people")..{
-		OnCommand=function(self) self:animate(0):setstate(7):x(-114) end;
-	};
-};
-creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
-creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
-creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
-creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
-creditsOkay[#creditsOkay+1] = Def.ActorFrame{
-	LoadActor("frame");
-	LoadFont("_r bold 30px")..{
-		Text="Chris Foy";
-		OnCommand=function(self) self:y(10):x(42):diffuse(color("#FFFFFF")) end;
-	};
-	LoadFont("_r normal")..{
-		Text="Stepcharts";
-		OnCommand=function(self) self:y(-29):x(38):zoomx(0.57):zoomy(0.6):shadowlength(0):diffuse(color("#FFFFFF")) end;
-	};
-	LoadActor("_people")..{
-		OnCommand=function(self) self:animate(0):setstate(8):x(-114) end;
-	};
-};
-creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
-creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
-creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
-creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
-creditsOkay[#creditsOkay+1] = Def.ActorFrame{
-	LoadActor("frame");
-	LoadFont("_r bold 30px")..{
-		Text="Kyle Ward";
-		OnCommand=function(self) self:y(10):x(42):diffuse(color("#FFFFFF")) end;
-	};
-	LoadFont("_r normal")..{
-		Text="Stepcharts, Audio";
-		OnCommand=function(self) self:y(-29):x(38):zoomx(0.57):zoomy(0.6):shadowlength(0):diffuse(color("#FFFFFF")) end;
-	};
-	LoadActor("_people")..{
-		OnCommand=function(self) self:animate(0):setstate(9):x(-114) end;
-	};
-};
-creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
-creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
-creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
-creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
-creditsOkay[#creditsOkay+1] = Def.ActorFrame{
-	LoadActor("frame");
-	LoadFont("_r bold 30px")..{
-		Text="Ryan McKanna";
-		OnCommand=function(self) self:y(10):x(42):diffuse(color("#FFFFFF")) end;
-	};
-	LoadFont("_r normal")..{
-		Text="Stepcharts";
-		OnCommand=function(self) self:y(-29):x(38):zoomx(0.57):zoomy(0.6):shadowlength(0):diffuse(color("#FFFFFF")) end;
-	};
-	LoadActor("_people")..{
-		OnCommand=function(self) self:animate(0):setstate(10):x(-114) end;
-	};
-};
-creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
-creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
-creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
-creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
-creditsOkay[#creditsOkay+1] = Def.ActorFrame{
-	LoadActor("frame");
-	LoadFont("_r bold 30px")..{
-		Text="Eric Holniker";
-		OnCommand=function(self) self:y(10):x(42):diffuse(color("#FFFFFF")) end;
-	};
-	LoadFont("_r normal")..{
-		Text="Stepcharts";
-		OnCommand=function(self) self:y(-29):x(38):zoomx(0.57):zoomy(0.6):shadowlength(0):diffuse(color("#FFFFFF")) end;
-	};
-	LoadActor("_people")..{
-		OnCommand=function(self) self:animate(0):setstate(15):x(-114) end;
-	};
-};
-creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
-creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
-creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
-creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
-creditsOkay[#creditsOkay+1] = Def.ActorFrame{
-	LoadActor("frame");
-	LoadFont("_r bold 30px")..{
-		Text="Grace Turner";
-		OnCommand=function(self) self:y(10):x(42):diffuse(color("#FFFFFF")) end;
-	};
-	LoadFont("_r normal")..{
-		Text="Audio, Stepcharts";
-		OnCommand=function(self) self:y(-29):x(38):zoomx(0.57):zoomy(0.6):shadowlength(0):diffuse(color("#FFFFFF")) end;
-	};
-	LoadActor("_people")..{
-		OnCommand=function(self) self:animate(0):setstate(16):x(-114) end;
-	};
-};
-creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
-creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
-creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
-creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
-creditsOkay[#creditsOkay+1] = Def.ActorFrame{
-	LoadActor("frame");
-	LoadFont("_r bold 30px")..{
-		Text="Gabriel Marchan";
-		OnCommand=function(self) self:y(10):x(42):diffuse(color("#FFFFFF")) end;
-	};
-	LoadFont("_r normal")..{
-		Text="Courses";
-		OnCommand=function(self) self:y(-29):x(38):zoomx(0.57):zoomy(0.6):shadowlength(0):diffuse(color("#FFFFFF")) end;
-	};
-	LoadActor("_people")..{
-		OnCommand=function(self) self:animate(0):setstate(11):x(-114) end;
-	};
-};
-creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
-creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
-creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
-creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
-creditsOkay[#creditsOkay+1] = Def.ActorFrame{
-	LoadActor("frame");
-	LoadFont("_r bold 30px")..{
-		Text="Mark Cannon";
-		OnCommand=function(self) self:y(10):x(42):diffuse(color("#FFFFFF")) end;
-	};
-	LoadFont("_r normal")..{
-		Text="Programming";
-		OnCommand=function(self) self:y(-29):x(38):zoomx(0.57):zoomy(0.6):shadowlength(0):diffuse(color("#FFFFFF")) end;
-	};
-	LoadActor("_people")..{
-		OnCommand=function(self) self:animate(0):setstate(13):x(-114) end;
-	};
-};
-creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
-creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
-creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
-creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
-creditsOkay[#creditsOkay+1] = Def.ActorFrame{
-	LoadActor("frame");
-	LoadFont("_r bold 30px")..{
-		Text="Pat McIlroy";
-		OnCommand=function(self) self:y(10):x(42):diffuse(color("#FFFFFF")) end;
-	};
-	LoadFont("_r normal")..{
-		Text="Programming";
-		OnCommand=function(self) self:y(-29):x(38):zoomx(0.57):zoomy(0.6):shadowlength(0):diffuse(color("#FFFFFF")) end;
-	};
-	LoadActor("_people")..{
-		OnCommand=function(self) self:animate(0):setstate(14):x(-114) end;
-	};
-};
+creditsOkay[#creditsOkay+1] = LoadActor("lightning");
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadActor("kung");
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadActor("albeiro");
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadActor("angel");
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadActor("skin");
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadActor("rain");
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadActor("phrek");
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadActor("gutter");
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadActor("jbean");
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadActor("mj");
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadActor("foy");
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadActor("kyle");
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadActor("plague");
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadActor("eric");
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadActor("gact");
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadActor("link");
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadActor("vyhd");
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadActor("pat");
 creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
 creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
 creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
