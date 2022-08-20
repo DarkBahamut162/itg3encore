@@ -1,0 +1,471 @@
+local creditsOkay = {}
+local creditsDiffuseOkay = {
+	[ 98] = color("#76B1D5"),
+	[146] = color("#ffa800"),
+	[149] = color("#ffa800"),
+	[150] = color("#ddf3ff"),
+	[157] = color("#ffa800"),
+	[158] = color("#ddf3ff"),
+	[163] = color("#ffa800"),
+	[164] = color("#ddf3ff"),
+	[169] = color("#ffa800"),
+	[170] = color("#ddf3ff"),
+	[175] = color("#ffa800"),
+	[176] = color("#ddf3ff"),
+	[181] = color("#ffa800"),
+	[182] = color("#ddf3ff"),
+}
+
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = Def.ActorFrame{
+	LoadActor("frame");
+	LoadFont("_r bold 30px")..{
+		Text="Jason Bolt";
+		OnCommand=function(self) self:y(10):x(42):diffuse(color("#FFFFFF")) end;
+	};
+	LoadFont("_r normal")..{
+		Text="Theme, Graphics, Coding";
+		OnCommand=function(self) self:y(-29):x(38):zoomx(0.57):zoomy(0.6):shadowlength(0):diffuse(color("#FFFFFF")) end;
+	};
+	LoadActor("_people")..{
+		OnCommand=function(self) self:animate(0):setstate(1):x(-114) end;
+	};
+};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = Def.ActorFrame{
+	LoadActor("frame");
+	LoadFont("_r bold 30px")..{
+		Text="Harvey Kung";
+		OnCommand=function(self) self:y(10):x(42):diffuse(color("#FFFFFF")) end;
+	};
+	LoadFont("_r normal")..{
+		Text="Theme, Coding";
+		OnCommand=function(self) self:y(-29):x(38):zoomx(0.57):zoomy(0.6):shadowlength(0):diffuse(color("#FFFFFF")) end;
+	};
+	LoadActor("_people")..{
+		OnCommand=function(self) self:animate(0):setstate(0):x(-114) end;
+	};
+};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = Def.ActorFrame{
+	LoadActor("frame");
+	LoadFont("_r bold 30px")..{
+		Text="Albeiro Barbosa";
+		OnCommand=function(self) self:y(10):x(42):diffuse(color("#FFFFFF")) end;
+	};
+	LoadFont("_r normal")..{
+		Text="themes, audio";
+		OnCommand=function(self) self:y(-29):x(38):zoomx(0.57):zoomy(0.6):shadowlength(0):diffuse(color("#FFFFFF")) end;
+	};
+	LoadActor("_people")..{
+		OnCommand=function(self) self:animate(0):setstate(18):x(-114) end;
+	};
+};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = Def.ActorFrame{
+	LoadActor("frame");
+	LoadFont("_r bold 30px")..{
+		Text="Luis del Angel";
+		OnCommand=function(self) self:y(10):x(42):diffuse(color("#FFFFFF")) end;
+	};
+	LoadFont("_r normal")..{
+		Text="Graphics, Coding, audio";
+		OnCommand=function(self) self:y(-29):x(38):zoomx(0.57):zoomy(0.6):shadowlength(0):diffuse(color("#FFFFFF")) end;
+	};
+	LoadActor("_people")..{
+		OnCommand=function(self) self:animate(0):setstate(17):x(-114) end;
+	};
+};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = Def.ActorFrame{
+	LoadActor("frame");
+	LoadFont("_r bold 30px")..{
+		Text="Dominick Renzetti";
+		OnCommand=function(self) self:y(10):x(42):diffuse(color("#FFFFFF")) end;
+	};
+	LoadFont("_r normal")..{
+		Text="Graphics, Stepcharts";
+		OnCommand=function(self) self:y(-29):x(38):zoomx(0.57):zoomy(0.6):shadowlength(0):diffuse(color("#FFFFFF")) end;
+	};
+	LoadActor("_people")..{
+		OnCommand=function(self) self:animate(0):setstate(2):x(-114) end;
+	};
+};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = Def.ActorFrame{
+	LoadActor("frame");
+	LoadFont("_r bold 30px")..{
+		Text="Felipe Valladares";
+		OnCommand=function(self) self:y(10):x(42):diffuse(color("#FFFFFF")) end;
+	};
+	LoadFont("_r normal")..{
+		Text="Graphics";
+		OnCommand=function(self) self:y(-29):x(38):zoomx(0.57):zoomy(0.6):shadowlength(0):diffuse(color("#FFFFFF")) end;
+	};
+	LoadActor("_people")..{
+		OnCommand=function(self) self:animate(0):setstate(3):x(-114) end;
+	};
+};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = Def.ActorFrame{
+	LoadActor("frame");
+	LoadFont("_r bold 30px")..{
+		Text="Donnie D'Amato";
+		OnCommand=function(self) self:y(10):x(42):diffuse(color("#FFFFFF")) end;
+	};
+	LoadFont("_r normal")..{
+		Text="Stepcharts";
+		OnCommand=function(self) self:y(-29):x(38):zoomx(0.57):zoomy(0.6):shadowlength(0):diffuse(color("#FFFFFF")) end;
+	};
+	LoadActor("_people")..{
+		OnCommand=function(self) self:animate(0):setstate(4):x(-114) end;
+	};
+};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = Def.ActorFrame{
+	LoadActor("frame");
+	LoadFont("_r bold 30px")..{
+		Text="Tommy Sturtevant";
+		OnCommand=function(self) self:y(10):x(42):diffuse(color("#FFFFFF")) end;
+	};
+	LoadFont("_r normal")..{
+		Text="Background Scripting";
+		OnCommand=function(self) self:y(-29):x(38):zoomx(0.57):zoomy(0.6):shadowlength(0):diffuse(color("#FFFFFF")) end;
+	};
+	LoadActor("_people")..{
+		OnCommand=function(self) self:animate(0):setstate(12):x(-114) end;
+	};
+};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = Def.ActorFrame{
+	LoadActor("frame");
+	LoadFont("_r bold 30px")..{
+		Text="Jordan Frederick";
+		OnCommand=function(self) self:y(10):x(42):diffuse(color("#FFFFFF")) end;
+	};
+	LoadFont("_r normal")..{
+		Text="Stepcharts";
+		OnCommand=function(self) self:y(-29):x(38):zoomx(0.57):zoomy(0.6):shadowlength(0):diffuse(color("#FFFFFF")) end;
+	};
+	LoadActor("_people")..{
+		OnCommand=function(self) self:animate(0):setstate(5):x(-114) end;
+	};
+	LoadActor("_people")..{
+		OnCommand=function(self) self:animate(0):setstate(6):x(-114):diffusealpha(0):queuecommand("Look") end;
+		LookCommand=function(self) self:sleep(5):diffusealpha(1):sleep(0.4):diffusealpha(0):queuecommand("Look") end;
+	};
+};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = Def.ActorFrame{
+	LoadActor("frame");
+	LoadFont("_r bold 30px")..{
+		Text="Matthew Emirzian";
+		OnCommand=function(self) self:y(10):x(42):diffuse(color("#FFFFFF")) end;
+	};
+	LoadFont("_r normal")..{
+		Text="Stepcharts";
+		OnCommand=function(self) self:y(-29):x(38):zoomx(0.57):zoomy(0.6):shadowlength(0):diffuse(color("#FFFFFF")) end;
+	};
+	LoadActor("_people")..{
+		OnCommand=function(self) self:animate(0):setstate(7):x(-114) end;
+	};
+};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = Def.ActorFrame{
+	LoadActor("frame");
+	LoadFont("_r bold 30px")..{
+		Text="Chris Foy";
+		OnCommand=function(self) self:y(10):x(42):diffuse(color("#FFFFFF")) end;
+	};
+	LoadFont("_r normal")..{
+		Text="Stepcharts";
+		OnCommand=function(self) self:y(-29):x(38):zoomx(0.57):zoomy(0.6):shadowlength(0):diffuse(color("#FFFFFF")) end;
+	};
+	LoadActor("_people")..{
+		OnCommand=function(self) self:animate(0):setstate(8):x(-114) end;
+	};
+};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = Def.ActorFrame{
+	LoadActor("frame");
+	LoadFont("_r bold 30px")..{
+		Text="Kyle Ward";
+		OnCommand=function(self) self:y(10):x(42):diffuse(color("#FFFFFF")) end;
+	};
+	LoadFont("_r normal")..{
+		Text="Stepcharts, Audio";
+		OnCommand=function(self) self:y(-29):x(38):zoomx(0.57):zoomy(0.6):shadowlength(0):diffuse(color("#FFFFFF")) end;
+	};
+	LoadActor("_people")..{
+		OnCommand=function(self) self:animate(0):setstate(9):x(-114) end;
+	};
+};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = Def.ActorFrame{
+	LoadActor("frame");
+	LoadFont("_r bold 30px")..{
+		Text="Ryan McKanna";
+		OnCommand=function(self) self:y(10):x(42):diffuse(color("#FFFFFF")) end;
+	};
+	LoadFont("_r normal")..{
+		Text="Stepcharts";
+		OnCommand=function(self) self:y(-29):x(38):zoomx(0.57):zoomy(0.6):shadowlength(0):diffuse(color("#FFFFFF")) end;
+	};
+	LoadActor("_people")..{
+		OnCommand=function(self) self:animate(0):setstate(10):x(-114) end;
+	};
+};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = Def.ActorFrame{
+	LoadActor("frame");
+	LoadFont("_r bold 30px")..{
+		Text="Eric Holniker";
+		OnCommand=function(self) self:y(10):x(42):diffuse(color("#FFFFFF")) end;
+	};
+	LoadFont("_r normal")..{
+		Text="Stepcharts";
+		OnCommand=function(self) self:y(-29):x(38):zoomx(0.57):zoomy(0.6):shadowlength(0):diffuse(color("#FFFFFF")) end;
+	};
+	LoadActor("_people")..{
+		OnCommand=function(self) self:animate(0):setstate(15):x(-114) end;
+	};
+};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = Def.ActorFrame{
+	LoadActor("frame");
+	LoadFont("_r bold 30px")..{
+		Text="Grace Turner";
+		OnCommand=function(self) self:y(10):x(42):diffuse(color("#FFFFFF")) end;
+	};
+	LoadFont("_r normal")..{
+		Text="Audio, Stepcharts";
+		OnCommand=function(self) self:y(-29):x(38):zoomx(0.57):zoomy(0.6):shadowlength(0):diffuse(color("#FFFFFF")) end;
+	};
+	LoadActor("_people")..{
+		OnCommand=function(self) self:animate(0):setstate(16):x(-114) end;
+	};
+};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = Def.ActorFrame{
+	LoadActor("frame");
+	LoadFont("_r bold 30px")..{
+		Text="Gabriel Marchan";
+		OnCommand=function(self) self:y(10):x(42):diffuse(color("#FFFFFF")) end;
+	};
+	LoadFont("_r normal")..{
+		Text="Courses";
+		OnCommand=function(self) self:y(-29):x(38):zoomx(0.57):zoomy(0.6):shadowlength(0):diffuse(color("#FFFFFF")) end;
+	};
+	LoadActor("_people")..{
+		OnCommand=function(self) self:animate(0):setstate(11):x(-114) end;
+	};
+};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = Def.ActorFrame{
+	LoadActor("frame");
+	LoadFont("_r bold 30px")..{
+		Text="Mark Cannon";
+		OnCommand=function(self) self:y(10):x(42):diffuse(color("#FFFFFF")) end;
+	};
+	LoadFont("_r normal")..{
+		Text="Programming";
+		OnCommand=function(self) self:y(-29):x(38):zoomx(0.57):zoomy(0.6):shadowlength(0):diffuse(color("#FFFFFF")) end;
+	};
+	LoadActor("_people")..{
+		OnCommand=function(self) self:animate(0):setstate(13):x(-114) end;
+	};
+};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = Def.ActorFrame{
+	LoadActor("frame");
+	LoadFont("_r bold 30px")..{
+		Text="Pat McIlroy";
+		OnCommand=function(self) self:y(10):x(42):diffuse(color("#FFFFFF")) end;
+	};
+	LoadFont("_r normal")..{
+		Text="Programming";
+		OnCommand=function(self) self:y(-29):x(38):zoomx(0.57):zoomy(0.6):shadowlength(0):diffuse(color("#FFFFFF")) end;
+	};
+	LoadActor("_people")..{
+		OnCommand=function(self) self:animate(0):setstate(14):x(-114) end;
+	};
+};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="Test Team";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="G. PolloxxX";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="Lil Lion";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="Matt Vandermeulen";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="Jeffrey Odendahl";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="Carlos 'Wanny' Ortega";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="John 'GooFWeaR' Uhlman";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="AJ Kelly";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="Steve 'Nevets933' Bauer";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="Derek 'Whicker' Bauer";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="Scott 'Scooter' Smiesko";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="Max Racaud";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="Josh Laughery";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="Ryan Jackson";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="Andrzej Poetek";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="Grace 'GACT' Turner";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="Tyler Thompson";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="Ryan Lower";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="Joseph Sherman";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="Kevin 'PF3K' Lin";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="Michael Porter";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="Brian 'Red' Kurtz";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="Valentina O'Donnell";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="Bryan Wills";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="Brandon Stokes";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="Janel Yeager";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="Brian Rudowski";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="Ryan Campbell";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="Jarad Kaplan";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="Phil Eberhardt";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="Chelsie Ehasz";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="Adam Landes";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="Patrick Richards";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="Ian Hunsberger";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="Carly Chiavaroli";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="Huamid 'Moon' Alnuaimi";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="Felicia 'Foola' Olawuni";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="Sonia Leng";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="Garrett Shourds";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="Bradley Shank";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="Jorrie Marie";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="Jordan Miller";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="Damien Diehl";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="Jason 'TheGreat' Gilleece";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="Justin 'Pags' Pagano";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="Special Thanks to:";}; --145
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadActor(THEME:GetPathB("","_thanks/_bx"));
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="Boxorroxors";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="www.boxorroxors.net";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadActor(THEME:GetPathB("","_thanks/_sci"));
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="SCI Recordings!";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="www.scirecordings.com";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadActor(THEME:GetPathB("","_thanks/_itgf"));
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="ITGfreak/Rhythmatic.net";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="www.rhythmatic.net";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadActor(THEME:GetPathB("","_thanks/_gs"));
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="GrooveStats";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="www.groovestats.com";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadActor(THEME:GetPathB("","_thanks/_n3k"));
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="Naota3k";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="www.naota3k.com";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadActor(THEME:GetPathB("","_thanks/_rx"));
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="RoXoR";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="www.roxorgames.com";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="";};
+creditsOkay[#creditsOkay+1] = LoadFont("_r bold 30px")..{Text="THANK YOU FOR PLAYING!";};
+
+return Def.ActorFrame{
+    Def.ActorFrame{
+		OnCommand=function(self) self:Center() end;
+		LoadActor("credits frame")..{
+			OnCommand=function(self) self:croptop(1):fadetop(1):sleep(3):linear(0.8):croptop(-1):fadetop(-1) end;
+		};
+		Def.ActorScroller{
+			SecondsPerItem=0.26,
+			NumItemsToDraw=23,
+			OnCommand=function(self) self:SetLoop(false):ScrollThroughAllItems():SetCurrentAndDestinationItem(-16):SetDestinationItem(#creditsOkay); end,
+			TransformFunction=function(self,offset,itemIndex,numItems)
+				self:y(offset*24):zoom(0.7):ztest(1)
+				if itemIndex <= 97 and itemIndex ~= 0 then self:zoom(1) end
+				if creditsDiffuseOkay[itemIndex] then
+					self:diffuse(creditsDiffuseOkay[itemIndex])
+				end
+			end,
+			children = creditsOkay,
+		};
+	};
+};
