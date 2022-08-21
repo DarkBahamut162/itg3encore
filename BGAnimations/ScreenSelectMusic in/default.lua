@@ -1,4 +1,4 @@
-local t = Def.ActorFrame{
+return Def.ActorFrame{
 	LoadActor(THEME:GetPathB("_selectmusic","menu in add"));
 	Def.Actor{
 		OnCommand=function(self) self:sleep(0.8) end;
@@ -10,5 +10,3 @@ local t = Def.ActorFrame{
 		OnCommand=function(self) self:play() end;
 	};
 };
-
-return t;

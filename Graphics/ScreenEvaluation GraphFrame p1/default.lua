@@ -1,4 +1,4 @@
-local t = Def.ActorFrame{
+return Def.ActorFrame{
 	LoadActor("_base")..{
 		Condition=not isRave();
 		OnCommand=function(self) self:x(SCREEN_CENTER_X-200):y(SCREEN_CENTER_Y+154):addx(-EvalTweenDistance()):sleep(3):decelerate(0.3):addx(EvalTweenDistance()) end;
@@ -11,5 +11,3 @@ local t = Def.ActorFrame{
 		OffCommand=function(self) self:accelerate(0.3):addx(-EvalTweenDistance()) end;
 	};
 };
-
-return t;

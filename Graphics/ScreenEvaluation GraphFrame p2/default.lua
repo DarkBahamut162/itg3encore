@@ -1,4 +1,4 @@
-local t = Def.ActorFrame{
+return Def.ActorFrame{
 	LoadActor("../ScreenEvaluation GraphFrame p1/_base")..{
 		Condition=not isRave();
 		InitCommand=function(self) self:zoomx(-1) end; 
@@ -12,5 +12,3 @@ local t = Def.ActorFrame{
 		OffCommand=function(self) self:accelerate(0.3):addx(EvalTweenDistance()) end;
 	};
 };
-
-return t;

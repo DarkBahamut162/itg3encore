@@ -33,7 +33,7 @@ end
 table.insert(scrollItems, CreateScrollerItem("&leftarrow;","Back"))
 table.insert(scrollItems, CreateScrollerItem("&ok;","End"))
 
-local t = Def.ActorFrame{
+return Def.ActorFrame{
 	Name="KeyboardController"..PlayerNumberToString(Player),
 
 	-- todo: handle wrapping
@@ -122,5 +122,3 @@ local t = Def.ActorFrame{
 
 	LoadActor("cursor")
 }
-
-return t

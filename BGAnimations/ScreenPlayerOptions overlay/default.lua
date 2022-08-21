@@ -1,4 +1,4 @@
-local t = Def.ActorFrame{
+return Def.ActorFrame{
 	Def.ActorFrame{
 		InitCommand=function(self) self:y(SCREEN_CENTER_Y-157) end;
 		LoadActor(THEME:GetPathG("_name","badge"),PLAYER_1)..{
@@ -34,5 +34,3 @@ local t = Def.ActorFrame{
 	};
 	LoadActor(THEME:GetPathB("","_coins"));
 };
-
-return t;

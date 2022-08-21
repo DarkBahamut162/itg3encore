@@ -1,4 +1,4 @@
-local t = Def.ActorFrame{
+return Def.ActorFrame{
 	Def.ActorFrame{
 		InitCommand=function(self) self:CenterX():y(SCREEN_TOP+24):addy(-100) end;
 		OnCommand=function(self) self:sleep(0.5):queuecommand("TweenOn") end;
@@ -167,5 +167,3 @@ local t = Def.ActorFrame{
 		};
 	};
 };
-
-return t;

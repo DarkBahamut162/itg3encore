@@ -7,7 +7,7 @@ if song then
 	local title = song:GetDisplayFullTitle()
 end
 
-local t = Def.ActorFrame{
+return Def.ActorFrame{
 	Def.ActorFrame{
 		Name="VertexLights";
 		LoadActor("light")..{
@@ -35,5 +35,3 @@ local t = Def.ActorFrame{
 		DestroyCommand=function(self) self:visible(false) end;
 	};
 };
-
-return t;

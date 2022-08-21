@@ -54,7 +54,7 @@ local function modifiedBPM(speed,mode)
 	end
 end
 
-local t = Def.ActorFrame{
+return Def.ActorFrame{
 	LoadActor(THEME:GetPathG("_name","frame"))..{ InitCommand=function(self) self:zoomx(1.75):xy(-205.5,5) end; };
 	LoadFont("_v 26px bold diffuse")..{
 		InitCommand=function(self) self:xy(-280,4):maxwidth(160):zoom(0.5):shadowlength(2):diffuse(PlayerColor(player)) end;
@@ -82,5 +82,3 @@ local t = Def.ActorFrame{
 		end;
 	};
 };
-
-return t;

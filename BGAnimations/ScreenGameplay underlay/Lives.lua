@@ -2,7 +2,7 @@ local player = ...
 assert( player )
 local maxLives
 
-local t = Def.ActorFrame{
+return Def.ActorFrame{
 	InitCommand=function(self)
 		self:zoom(0.5):x( _screen.cx - _screen.w/8 + 60 ):y(80 - 7.5)
 		if player == PLAYER_2 then
@@ -104,5 +104,3 @@ local t = Def.ActorFrame{
 		};
 	};
 };
-
-return t;

@@ -61,7 +61,7 @@ end
 
 -- life graph
 local function GraphDisplay(pn)
-	local t = Def.ActorFrame {
+	return Def.ActorFrame {
 		Def.GraphDisplay {
 			InitCommand=function(self) self:Load("GraphDisplay"..ToEnumShortString(pn)) end;
 			BeginCommand=function(self)
@@ -71,7 +71,6 @@ local function GraphDisplay(pn)
 			end
 		};
 	};
-	return t;
 end
 
 if ShowStandardDecoration("GraphDisplay") then
@@ -84,7 +83,7 @@ end
 
 -- combo graph
 local function ComboGraph( pn )
-	local t = Def.ActorFrame {
+	return Def.ActorFrame {
 		Def.ComboGraph {
 			InitCommand=function(self) self:Load("ComboGraph"..ToEnumShortString(pn)) end;
 			BeginCommand=function(self)
@@ -94,7 +93,6 @@ local function ComboGraph( pn )
 			end
 		};
 	};
-	return t;
 end
 
 if ShowStandardDecoration("ComboGraph") then

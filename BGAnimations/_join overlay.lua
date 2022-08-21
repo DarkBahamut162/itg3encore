@@ -1,5 +1,5 @@
 -- so much crap
-local t = Def.ActorFrame{
+return Def.ActorFrame{
 	LoadFont("_v 26px bold black")..{
 		InitCommand=function(self) self:CenterX():y(SCREEN_BOTTOM-14):shadowlength(0):zoom(0.6):diffusealpha(0):sleep(0.5):linear(0.2):diffusealpha(1):draworder(9999) end;
 		OnCommand=function(self) self:diffuseshift():effectcolor1(color("#FFFFFF")):effectcolor2(color("#FFFFFF")):playcommand("Refresh") end;
@@ -118,9 +118,4 @@ local t = Def.ActorFrame{
 			JoinedCommand=function(self) self:linear(0.2):diffusealpha(0) end;
 		};
 	};
-	Def.ActorFrame{
-		
-	};
 };
-
-return t;

@@ -1,4 +1,4 @@
-local t = Def.ActorFrame{
+return Def.ActorFrame{
 	LoadActor( THEME:GetPathG("_dynamic","headers"), Var "LoadingScreen" )..{
 		InitCommand=function(self) self:xy(SCREEN_CENTER_X,SCREEN_TOP+30) end,
 		OnCommand=function(self) self:zoom(1.3) end
@@ -9,5 +9,3 @@ local t = Def.ActorFrame{
 		OnCommand=function(self) self:sleep(0.2):linear(0.8):cropright(-0.3) end;
 	};
 };
-
-return t;

@@ -1,4 +1,4 @@
-local t = Def.ActorFrame{
+return Def.ActorFrame{
 	LoadActor(THEME:GetPathB("ScreenWithMenuElements","underlay/_base")),
 	LoadActor(THEME:GetPathB("ScreenWithMenuElements","underlay/_sides")),
 	LoadActor(THEME:GetPathB("ScreenWithMenuElements","underlay/_top")),
@@ -54,5 +54,3 @@ local t = Def.ActorFrame{
 		OffCommand=function(self) self:linear(0.2):diffusealpha(0) end;
 	}
 }
-
-return t

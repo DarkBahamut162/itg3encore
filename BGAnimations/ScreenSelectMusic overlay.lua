@@ -1,4 +1,4 @@
-local t = Def.ActorFrame{
+return Def.ActorFrame{
 	OffCommand = function(self, params)
 		if isOni() then
 			for pn in ivalues(GAMESTATE:GetEnabledPlayers()) do
@@ -445,5 +445,3 @@ local t = Def.ActorFrame{
 
 	LoadActor(THEME:GetPathB("","_coins"));
 };
-
-return t;

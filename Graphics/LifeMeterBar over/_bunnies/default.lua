@@ -1,4 +1,4 @@
-local t = Def.ActorFrame{
+return Def.ActorFrame{
 	LoadActor("light")..{
 		InitCommand=function(self) self:blend(Blend.Add):addx(-146):diffusealpha(0) end;
 		OnCommand=function(self) self:sleep(2.5):accelerate(0.3):diffusealpha(1):diffuseshift():effectcolor1(color("#FFFFFF")):effectcolor2(color("#FFFFFF00")):effectclock('beat'):effectperiod(4) end;
@@ -22,5 +22,3 @@ local t = Def.ActorFrame{
 		DestroyCommand=function(self) self:visible(false) end;
 	};
 };
-
-return t;

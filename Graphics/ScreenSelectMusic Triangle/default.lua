@@ -1,4 +1,4 @@
-local t = Def.ActorFrame{
+return Def.ActorFrame{
 	LoadActor("wheel cursor glow")..{
 		InitCommand=function(self) self:diffusealpha(0) end;
 		OnCommand=function(self) self:sleep(0.1):linear(0.3):diffusealpha(1) end;
@@ -30,5 +30,3 @@ local t = Def.ActorFrame{
 		CurrentSongChangedMessageCommand=function(self) self:diffusealpha(0):stoptweening():playcommand("Refresh") end;
 	};
 };
-
-return t;

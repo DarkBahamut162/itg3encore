@@ -1,6 +1,4 @@
-local t = Def.ActorFrame{
+return Def.ActorFrame{
 	LoadActor("_base");
 	LoadActor("_sides");
 };
-
-return t;

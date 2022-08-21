@@ -1,4 +1,4 @@
-local t = Def.ActorFrame{
+return Def.ActorFrame{
 	LoadActor("_bottom")..{
 		InitCommand=function(self) self:Center():FullScreen():diffusealpha(0) end;
 		OnCommand=function(self) self:accelerate(0.3):diffusealpha(1) end;
@@ -62,5 +62,3 @@ local t = Def.ActorFrame{
 		OnCommand=function(self) self:playcommand("Set"):sleep(0.1):linear(0.3):diffusealpha(1) end;
 	};
 };
-
-return t;

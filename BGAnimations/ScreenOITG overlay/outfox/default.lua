@@ -1,4 +1,4 @@
-local t = Def.ActorFrame{
+return Def.ActorFrame{
 	InitCommand=function(self) self:fov(70) end;
 	LoadActor(THEME:GetPathB("","_thanks/_outfox/logo"))..{
 		InitCommand=function(self) self:x(-180) end;
@@ -23,5 +23,3 @@ local t = Def.ActorFrame{
 		OnCommand=function(self) self:diffusealpha(0):sleep(1):linear(0.5):diffusealpha(1) end;
 	};
 };
-
-return t;

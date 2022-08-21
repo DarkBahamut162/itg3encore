@@ -10,11 +10,9 @@ else
 	page = "options page"
 end
 
-local t = Def.ActorFrame{
+return Def.ActorFrame{
 	LoadActor(page)..{ InitCommand=function(self) self:addy(-17) end; };
 	LoadActor("line highlight mask right")..{
 		InitCommand=function(self) self:addy(-145):x(291):zwrite(true):blend('BlendMode_NoEffect') end;
 	};
 };
-
-return t;

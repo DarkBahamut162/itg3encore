@@ -15,7 +15,7 @@ for group in ivalues(groups) do
 	end
 end
 
-local t = Def.ActorFrame{
+return Def.ActorFrame{
 	OnCommand=function(self)
 		InitOptions()
 	end;
@@ -297,5 +297,3 @@ local t = Def.ActorFrame{
 		end;
 	};
 };
-
-return t;

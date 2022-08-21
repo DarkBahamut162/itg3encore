@@ -1,4 +1,4 @@
-local t = Def.ActorFrame{
+return Def.ActorFrame{
 	Def.ActorFrame{
 		Name="JudgeFrames";
 		Def.ActorFrame{
@@ -104,5 +104,3 @@ local t = Def.ActorFrame{
 		OffCommand=function(self) self:accelerate(0.3):addx(-EvalTweenDistance()) end;
 	};
 };
-
-return t;

@@ -1,4 +1,4 @@
-local t = Def.ActorFrame{
+return Def.ActorFrame{
 	LoadActor("_lside")..{
 		InitCommand=function(self) self:x(SCREEN_LEFT):halign(0):valign(0) end;
 		OnCommand=function(self) self:y(SCREEN_TOP-100):decelerate(0.8):y(SCREEN_TOP) end;
@@ -50,5 +50,3 @@ local t = Def.ActorFrame{
 		OffCommand=function(self) self:stoptweening():accelerate(0.5):addy(-100) end;
 	};
 };
-
-return t;

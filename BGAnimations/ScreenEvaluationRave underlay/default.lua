@@ -1,6 +1,6 @@
 local pm = GAMESTATE:GetPlayMode()
 
-local t = Def.ActorFrame{
+return Def.ActorFrame{
 	LoadActor(THEME:GetPathB("ScreenWithMenuElements","underlay/_base"))..{
 		OnCommand=function(self) self:playcommand("DoOff"):finishtweening():playcommand("Slow"):queuecommand("DoOn") end;
 		SlowCommand=function(self) self:SetUpdateRate(1.5) end;
@@ -221,5 +221,3 @@ local t = Def.ActorFrame{
 		end;
 	};
 };
-
-return t;

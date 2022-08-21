@@ -1,7 +1,7 @@
 -- This is because the "CurrentSongChangedMessageCommand" triggers upon loading the SelectScreen
 local InitialLoad = false;
 
-local t = Def.ActorFrame{
+return Def.ActorFrame{
 
 	Def.ActorFrame{
 		Name="Frame";
@@ -44,5 +44,3 @@ local t = Def.ActorFrame{
 		};
 	};
 };
-
-return t;

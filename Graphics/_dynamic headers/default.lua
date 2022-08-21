@@ -29,7 +29,7 @@ local NameCase = setmetatable(
 	}
 )
 
-local t = Def.ActorFrame{
+return Def.ActorFrame{
 	Def.Sprite{
 		Texture=NameCase(LabelName),
 		OnCommand=function(self)
@@ -40,5 +40,3 @@ local t = Def.ActorFrame{
 		end
 	}
 }
-
-return t

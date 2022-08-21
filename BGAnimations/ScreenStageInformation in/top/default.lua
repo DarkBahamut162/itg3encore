@@ -1,4 +1,4 @@
-local t = Def.ActorFrame{
+return Def.ActorFrame{
 	LoadActor("_top")..{
 		InitCommand=function(self) self:Center():FullScreen():diffusealpha(0) end;
 		OnCommand=function(self) self:accelerate(0.3):diffusealpha(1) end;
@@ -37,5 +37,3 @@ local t = Def.ActorFrame{
 		OnCommand=function(self) self:diffusealpha(1):zoom(1):linear(1):rotationz(250):diffusealpha(0) end;
 	};
 };
-
-return t;

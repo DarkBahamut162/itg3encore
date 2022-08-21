@@ -1,4 +1,4 @@
-local t = Def.ActorFrame{
+return Def.ActorFrame{
 	LoadActor("_top");
 	LoadActor("flare")..{
 		InitCommand=function(self) self:blend(Blend.Add):x(SCREEN_LEFT-128):y(40) end;
@@ -11,5 +11,3 @@ local t = Def.ActorFrame{
 		AnimateCommand=function(self) self:sleep(0.6):rotationz(0):linear(1):x(SCREEN_LEFT-128):rotationz(360) end;
 	};
 }
-
-return t

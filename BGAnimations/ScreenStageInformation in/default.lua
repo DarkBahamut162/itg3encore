@@ -43,7 +43,7 @@ if getenv("ShowModsP1") or getenv("ShowModsP2") then
 	end
 end
 
-local t = Def.ActorFrame{
+return Def.ActorFrame{
 	Def.Quad{
 		OnCommand=function(self) self:FullScreen():diffusecolor(Color.Black) end;
 	};
@@ -218,5 +218,3 @@ local t = Def.ActorFrame{
 		OnCommand=function(self) self:CenterY():zoomx(2):zoomy(4):diffusealpha(1):CenterX():linear(0.9):diffusealpha(0):zoomy(0):x(SCREEN_CENTER_X+250) end;
 	};
 };
-
-return t;
