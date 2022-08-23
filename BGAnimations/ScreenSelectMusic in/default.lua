@@ -3,10 +3,10 @@ return Def.ActorFrame{
 	Def.Actor{
 		OnCommand=function(self) self:sleep(0.8) end;
 	};
-	LoadActor(THEME:GetPathB("_statsout","musicwheel"))..{
-		Condition=GAMESTATE:IsAnyHumanPlayerUsingMemoryCard();
-	};
 	LoadActor("open.ogg")..{
 		OnCommand=function(self) self:play() end;
+	};
+	LoadActor(THEME:GetPathB("_statsout","musicwheel"))..{
+		Condition=GAMESTATE:IsAnyHumanPlayerUsingMemoryCard();
 	};
 };

@@ -1,10 +1,10 @@
 return Def.ActorFrame{
 	Def.Quad{
-		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+120):diffuse(color("#000000FF")):zoomto(SCREEN_WIDTH,SCREEN_HEIGHT/2) end;
+		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+120):diffuse(color("0,0,0,1")):zoomto(SCREEN_WIDTH,SCREEN_HEIGHT/2):diffusealpha(0) end;
 		OnCommand=function(self) self:sleep(0):linear(0.5):diffusealpha(1):y(SCREEN_CENTER_Y+158) end;
 	};
 	Def.Quad{
-		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y-120):diffuse(color("#000000FF")):zoomto(SCREEN_WIDTH,SCREEN_HEIGHT/2) end;
+		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y-120):diffuse(color("0,0,0,1")):zoomto(SCREEN_WIDTH,SCREEN_HEIGHT/2):diffusealpha(0) end;
 		OnCommand=function(self) self:sleep(0):linear(0.5):diffusealpha(1):y(SCREEN_CENTER_Y-158) end;
 	};
 	LoadActor("lolhi")..{
