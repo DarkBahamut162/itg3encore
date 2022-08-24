@@ -1,23 +1,11 @@
 function SongMods()
-	--[[ oitg mods:
-	19|tournament
-	20|showstats
-	22|orientation
-	23|playfield
-	25|screenfilter
-	27|timingscale
-	--]]
-
 	local pm = GAMESTATE:GetPlayMode()
 	local style = GAMESTATE:GetCurrentStyle()
 	local styleType = style:GetStyleType()
 	local doubles = (styleType == 'StyleType_OnePlayerTwoSides' or styleType == 'StyleType_TwoPlayersSharedSides')
 
-	-- shared begin
-	--local options = "1,2,3,4,7,5,18,17,9,"
 	local options = "1,2,4,F,3,5,RE,AE,17,9,"
 
-	-- differences
 	if pm == 'PlayMode_Regular' then
 		if doubles then
 			options = options .. "23,10,11,"
@@ -27,11 +15,9 @@ function SongMods()
 	elseif pm == 'PlayMode_Nonstop' then
 		options = options .. "22,23,"
 	else
-		-- survival/fallback
 		options = options .. "10,11,"
 	end
 
-	-- next shared
 	options = options .. "12,13,14,7,M,A,15,19,28,25,"
 
 	-- differences 2 (should be "27,24," but timingscale is not in sm5)
@@ -53,7 +39,6 @@ function SongMods()
 		options = "1,3,28,20,P,21,"
 	end
 
-	-- ends on 16:
 	options = options .. "16"
 	return options
 end
@@ -83,21 +68,20 @@ function InitRotationOptions()
 end
 
 function InitOptions()
-	-- underField
 	setenv("UnderComboP1",false)
 	setenv("UnderComboP2",false)
 	setenv("UnderTapJudgmentsP1",false)
 	setenv("UnderTapJudgmentsP2",false)
 	setenv("UnderHoldJudgmentsP1",false)
 	setenv("UnderHoldJudgmentsP2",false)
-	-- tournament
+
 	setenv("HideScoreP1",false)
 	setenv("HideScoreP2",false)
 	setenv("HideLifeP1",false)
 	setenv("HideLifeP2",false)
 	setenv("HideComboP1",false)
 	setenv("HideComboP2",false)
-	-- rotation
+
 	setenv("RotationLeftP1",false)
 	setenv("RotationRightP1",false)
 	setenv("RotationUpsideDownP1",false)
@@ -105,7 +89,6 @@ function InitOptions()
 	setenv("RotationRightP2",false)
 	setenv("RotationUpsideDownP2",false)
 
-	-- effect
 	setenv("EffectWagP1",false)
 	setenv("EffectPulseP1",false)
 	setenv("EffectBounceP1",false)
@@ -118,20 +101,19 @@ function InitOptions()
 	setenv("EffectSpinReverseP2",false)
 	setenv("EffectSpinP2",false)
 	setenv("EffectVibrateP2",false)
-	-- mods display
+
 	setenv("ShowModsP1",false)
 	setenv("ShowModsP2",false)
-	-- stats display
+
 	setenv("ShowStatsP1",0)
 	setenv("ShowStatsP2",0)
 	setenv("SetPacemakerP1",0)
 	setenv("SetPacemakerP2",0)
-	-- screen filter
+
 	setenv("ScreenFilterP1",0)
 	setenv("ScreenFilterP2",0)
 end
 
--- underField options
 function OptionUnderFieldOptions()
 	local t = {
 		Name="UnderFieldOptions",
@@ -155,7 +137,6 @@ function OptionUnderFieldOptions()
 	return t
 end
 
--- tournament options
 function OptionTournamentOptions()
 	local t = {
 		Name="TournamentOptions",
@@ -179,7 +160,6 @@ function OptionTournamentOptions()
 	return t
 end
 
--- stats display
 function OptionShowStats()
 	local t = {
 		Name="ShowStats",
@@ -205,7 +185,6 @@ function OptionShowStats()
 	return t
 end
 
--- stats display
 function OptionSetPacemaker()
 	local t = {
 		Name="SetPacemaker",
@@ -235,7 +214,6 @@ function OptionSetPacemaker()
 	return t
 end
 
--- mods display
 function OptionShowModifiers()
 	local t = {
 		Name="ShowModifiers",
@@ -255,8 +233,6 @@ function OptionShowModifiers()
 	return t
 end
 
--- "DarkLink's Custom Mods"
--- i am ashamed to have to even put this code in the theme -f
 local function AvailableArrowDirections()
 	local dirs = { "Normal", "Left", "Right", "Upside-Down" }
 	if GAMESTATE:GetNumPlayersEnabled() == 1 then dirs[#dirs+1] = "Solo-Centered" end
@@ -270,7 +246,6 @@ function OptionOrientation()
 		SelectType = "SelectOne",
 		OneChoiceForAllPlayers = false,
 		ExportOnChange = false,
-		-- xxx: dumb shit
 		Choices = AvailableArrowDirections(),
 		LoadSelections = function(self, list, pn)
 			list[1] = getenv("RotationNormal"..ToEnumShortString(pn))
@@ -319,9 +294,7 @@ function OptionPlayfield()
 	setmetatable(t, t)
 	return t
 end
--- end of stuff I had to take from someone else
 
--- screen filter a la sm-ssc!
 function OptionRowScreenFilter()
 	local t = {
 		Name="ScreenFilter",
@@ -378,9 +351,9 @@ function GetRateMod()
 	else return '(Unknown rate mod)' end
 end
 
-function DisplayCustomModifiersText(pn)	--gives me text of all custom modifiers that are applied (and rate mods)
+function DisplayCustomModifiersText(pn)
 	local t = ""
-	
+
 	if getenv("UnderCombo"..ToEnumShortString(pn)) and getenv("UnderTapJudgments"..ToEnumShortString(pn)) and getenv("UnderHoldJudgments"..ToEnumShortString(pn)) then
 		if t == "" then t = "Under All" else t = t .. ", Under All" end
 	else
@@ -405,7 +378,7 @@ function DisplayCustomModifiersText(pn)	--gives me text of all custom modifiers 
 	if getenv("RotationRight"..ToEnumShortString(pn)) then if t == "" then t = "Rotated Right" else t = t .. ", Rotated Right" end end
 	if getenv("RotationUpsideDown"..ToEnumShortString(pn)) then if t == "" then t = "Rotated Downward" else t = t .. ", Rotated Downward" end end
 	if getenv("RotationSolo"..ToEnumShortString(pn)) then if t == "" then t = "Centered" else t = t .. ", Centered" end end
-	
+
 	if getenv("EffectWag"..ToEnumShortString(pn)) then if t == "" then t = "Wag" else t = t .. ", Wag" end 
 	elseif getenv("EffectPulse"..ToEnumShortString(pn)) then if t == "" then t = "Pulse" else t = t .. ", Pulse" end 
 	elseif getenv("EffectBounce"..ToEnumShortString(pn)) then if t == "" then t = "Bounce" else t = t .. ", Bounce" end 
@@ -417,9 +390,8 @@ function DisplayCustomModifiersText(pn)	--gives me text of all custom modifiers 
 	if getenv("ShowStats"..ToEnumShortString(pn)) > 0 then if t == "" then t = "Show Stats" else t = t .. ", Show Stats" end end
 
 	if getenv("ScreenFilter"..ToEnumShortString(pn)) > 0 then if t == "" then t = "Screen Filter ("..(getenv("ScreenFilter"..ToEnumShortString(pn))*100).."%)" else t = t .. ", Screen Filter ("..(getenv("ScreenFilter"..ToEnumShortString(pn))*100).."%)" end end
-	
+
 	if GetRateMod() ~= '' then if t == "" then t = GetRateMod() else t = t .. ", " .. GetRateMod() end end
-	
+
 	return t
-	
 end

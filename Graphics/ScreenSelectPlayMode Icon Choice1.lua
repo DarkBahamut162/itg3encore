@@ -1,4 +1,3 @@
--- ScreenSelectPlayMode Icon Choice1
 return Def.ActorFrame{
 	LoadFont("_r bold glow 30px")..{
 		Text="Good clean dancing fun\nfor all players";

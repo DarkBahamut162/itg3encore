@@ -1,7 +1,6 @@
 local t = Def.ActorFrame{
 	LoadActor(GetSongFrame());
 
-	-- rave names
 	Def.ActorFrame{
 		Name="RaveNames";
 		InitCommand=function(self) self:CenterX():y(SCREEN_TOP+58):visible(isRave()) end;
@@ -42,17 +41,14 @@ local t = Def.ActorFrame{
 		Def.ActorFrame{
 			Name="InfoP1";
 			InitCommand=function(self) self:visible(GAMESTATE:IsPlayerEnabled(PLAYER_1)) end;
-			-- stage background left gradient
 			LoadActor(THEME:GetPathB("ScreenStageInformation","in/_left gradient"))..{
 				InitCommand=function(self) self:x(SCREEN_LEFT):y(SCREEN_CENTER_Y+150):horizalign(left) end;
 				OnCommand=function(self) self:sleep(1):linear(1):diffusealpha(0) end;
 			};
-			-- stage background p1
 			LoadActor(THEME:GetPathB("ScreenStageInformation","in/_p1"))..{
 				InitCommand=function(self) self:x(SCREEN_LEFT):y(SCREEN_CENTER_Y+150):horizalign(left) end;
 				OnCommand=function(self) self:sleep(1):linear(1):diffusealpha(0) end;
 			};
-			-- step artist p1
 			LoadFont("_r bold 30px")..{
 				Text="Step Artist:";
 				InitCommand=function(self) self:x(SCREEN_LEFT+5):y(SCREEN_CENTER_Y+172):zoom(0.6):halign(0):shadowlength(2) end;
@@ -63,7 +59,6 @@ local t = Def.ActorFrame{
 				end;
 				OnCommand=function(self) self:sleep(1):linear(1):diffusealpha(0) end;
 			};
-			-- step desc p1
 			LoadFont("_r bold 30px")..{
 				Name="AuthorText";
 				InitCommand=function(self) self:x(SCREEN_LEFT+100):y(SCREEN_CENTER_Y+172):shadowlength(2):halign(0):zoom(0.6) end;
@@ -84,7 +79,6 @@ local t = Def.ActorFrame{
 				end;
 				OnCommand=function(self) self:sleep(1):linear(1):diffusealpha(0) end;
 			};
-			-- player name p1
 			LoadFont("_r bold 30px")..{
 			Name="PlayerName";
 			InitCommand=function(self) self:x(SCREEN_LEFT+44):y(SCREEN_CENTER_Y+142):shadowlength(2):halign(0):zoom(0.8) end;
@@ -97,17 +91,14 @@ local t = Def.ActorFrame{
 		Def.ActorFrame{
 			Name="InfoP2";
 			InitCommand=function(self) self:visible(GAMESTATE:IsPlayerEnabled(PLAYER_2)) end;
-			-- stage background right gradient
 			LoadActor(THEME:GetPathB("ScreenStageInformation","in/_right gradient"))..{
 				InitCommand=function(self) self:x(SCREEN_RIGHT):y(SCREEN_CENTER_Y+150):horizalign(right) end;
 				OnCommand=function(self) self:sleep(1):linear(1):diffusealpha(0) end;
 			};
-			-- stage background p2
 			LoadActor(THEME:GetPathB("ScreenStageInformation","in/_p2"))..{
 				InitCommand=function(self) self:x(SCREEN_RIGHT):y(SCREEN_CENTER_Y+150):horizalign(right) end;
 				OnCommand=function(self) self:sleep(1):linear(1):diffusealpha(0) end;
 			};
-			-- step artist p2
 			LoadFont("_r bold 30px")..{
 				Text=":Step Artist";
 				InitCommand=function(self) self:x(SCREEN_RIGHT-5):y(SCREEN_CENTER_Y+172):zoom(0.6):halign(1):shadowlength(2) end;
@@ -118,7 +109,6 @@ local t = Def.ActorFrame{
 				end;
 				OnCommand=function(self) self:sleep(1):linear(1):diffusealpha(0) end;
 			};
-			-- step desc p2
 			LoadFont("_r bold 30px")..{
 				Name="AuthorText";
 				InitCommand=function(self) self:x(SCREEN_RIGHT-100):y(SCREEN_CENTER_Y+172):shadowlength(2):halign(1):zoom(0.6) end;
@@ -139,7 +129,6 @@ local t = Def.ActorFrame{
 				end;
 				OnCommand=function(self) self:sleep(1):linear(1):diffusealpha(0) end;
 			};
-			-- player name p2
 			LoadFont("_r bold 30px")..{
 				Name="PlayerName";
 				InitCommand=function(self) self:x(SCREEN_RIGHT-44):y(SCREEN_CENTER_Y+142):shadowlength(2):halign(1):zoom(0.8) end;
@@ -180,7 +169,6 @@ local t = Def.ActorFrame{
 		OnCommand=function(self) self:playcommand("Set"):sleep(1.5):linear(1):diffusealpha(0) end;
 	};
 
-	-- demo
 	Def.ActorFrame{
 		Name="DemonstrationFrame";
 		BeginCommand=function(self) self:visible(GAMESTATE:IsDemonstration() and SCREENMAN:GetTopScreen():GetName() ~= 'ScreenJukebox') end;

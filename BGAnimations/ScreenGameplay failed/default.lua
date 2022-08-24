@@ -33,12 +33,6 @@ return Def.ActorFrame{
 		};
 	};
 
-	-- There would be code here, but I am not one of the people who wishes to
-	-- acknowledge the existence of an overplayed piece of crap meme. If you
-	-- want whatever Lightning added when you failed Crispy's "The Game" (from
-	-- the original ITG) in the ITG3 theme to appear in this port, you'll have
-	-- to add it yourself. I'm not going to do it for you. -freem.
-
 	Def.Quad{
 		InitCommand=function(self) self:Center():FullScreen():diffuse(color("#00000000")) end;
 		StartTransitioningCommand=function(self) self:sleep(3):linear(0.3):diffusealpha(1) end;

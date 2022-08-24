@@ -65,7 +65,6 @@ return Def.ActorFrame{
 					local diffScale = PREFSMAN:GetPreference("LifeDifficultyScale")
 					local thresholds = { 1.7, 1.5, 1.3, 1, 0.9, 0.7, 0.5 }
 					for i = 1,7 do
-						-- stuff
 						c["Diff"..i]:visible( diffScale <= thresholds[i] )
 					end
 				end;

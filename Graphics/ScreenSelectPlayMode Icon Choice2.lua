@@ -1,4 +1,3 @@
--- ScreenSelectPlayMode Icon Choice2
 return Def.ActorFrame{
 	LoadFont("_r bold glow 30px")..{
 		Text="Launch modifier attacks\nagainst your opponent";

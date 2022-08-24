@@ -1,4 +1,4 @@
-local itemColor = ... -- "gold", "silver", "blue"
+local itemColor = ...
 assert(itemColor,"[_award models/itg/] requires itemColor")
 
 return Def.ActorFrame{

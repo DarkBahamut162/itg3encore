@@ -9,7 +9,6 @@ end
 
 return Def.ActorFrame{
 	InitCommand=function(self) self:SetUpdateFunction(UpdateSingleBPM) end,
-	-- manual bpm display
 	LoadFont("_eurostile normal")..{
 		Text="BPM",
 		InitCommand=function(self) self:shadowlength(1):zoomx(0):zoomy(0):sleep(1.2):accelerate(0.3):zoomx(0.6):zoomy(0.6):sleep(1):decelerate(0.3):zoomx(0):zoomy(3) end;

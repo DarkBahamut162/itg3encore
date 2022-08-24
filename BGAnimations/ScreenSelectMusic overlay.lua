@@ -73,7 +73,6 @@ return Def.ActorFrame{
 		};
 	};
 
-	-- stepartist crap
 	Def.ActorFrame{
 		Name="StepArtistP1";
 		InitCommand=function(self) self:x(SCREEN_LEFT):y(SCREEN_BOTTOM-109):addx(-SCREEN_WIDTH):player(PLAYER_1):draworder(-2) end;
@@ -112,7 +111,6 @@ return Def.ActorFrame{
 					if trail then
 						local entries = trail:GetTrailEntries()
 						for i=1,#entries do
-							--prevent duplicates ~DarkBahamut162
 							if not string.find(artist,entries[i]:GetSteps():GetAuthorCredit()) then
 								if i == 1 then
 									artist = entries[i]:GetSteps():GetAuthorCredit()
@@ -188,12 +186,15 @@ return Def.ActorFrame{
 					if trail then
 						local entries = trail:GetTrailEntries()
 						for i=1,#entries do
-							--prevent duplicates ~DarkBahamut162
 							if not string.find(artist,entries[i]:GetSteps():GetAuthorCredit()) then
 								if i == 1 then
 									artist = entries[i]:GetSteps():GetAuthorCredit()
 								elseif i < #entries then
 									artist = artist .. ", " .. entries[i]:GetSteps():GetAuthorCredit()
+								end
+								if string.len(artist) >= 50 then
+									artist = "Various"
+									break
 								end
 							end
 						end
@@ -223,7 +224,6 @@ return Def.ActorFrame{
 		};
 	};
 
-	-- stuff behind panedisplay, idk
 	Def.ActorFrame{
 		Name="Pane";
 		InitCommand=function(self) self:draworder(-1) end;
@@ -335,7 +335,6 @@ return Def.ActorFrame{
 		};
 	};
 
-	-- panedisplay stuff
 	Def.ActorFrame{
 		Name="PaneDisplayArea";
 		InitCommand=function(self) self:y(SCREEN_BOTTOM-184) end;
@@ -364,7 +363,6 @@ return Def.ActorFrame{
 		InitCommand=function(self) self:x(SCREEN_RIGHT-SCREEN_WIDTH/5.415):y(SCREEN_BOTTOM-54):player(PLAYER_2) end;
 	};
 
-	-- options message!
 	LoadActor(THEME:GetPathG("ScreenSelectMusic","OptionsMessage"))..{
 		InitCommand=function(self) self:Center():pause():diffusealpha(0) end;
 		ShowPressStartForOptionsCommand=function(self) self:zoom(1.15):diffusealpha(0):decelerate(0.07):zoom(1):diffusealpha(1) end;

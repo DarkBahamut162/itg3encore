@@ -7,7 +7,6 @@ return Def.ActorFrame{
 	Def.ActorFrame{
 		InitCommand=function(self) self:CenterX() end;
 		BeginCommand=function(self)
-			-- onepassed
 			local stageStats = STATSMAN:GetCurStageStats()
 			self:visible( stageStats:OnePassed() )
 		end;
@@ -25,7 +24,6 @@ return Def.ActorFrame{
 		};
 	};
 
-	-- cleared/failed text
 	Def.ActorFrame{
 		Name="Cleared";
 		BeginCommand=function(self)

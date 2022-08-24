@@ -16,7 +16,6 @@ return Def.FadingBanner{
 					local curIdx = wheel:GetCurrentIndex()
 					local numItems = wheel:GetNumItems()
 
-					-- chance is the second to last item on the wheel
 					if curIdx+1 == numItems-1 then
 						self:LoadRandom()
 					elseif curIdx+1 ~= numItems then

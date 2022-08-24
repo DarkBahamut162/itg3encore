@@ -1,8 +1,7 @@
---[[ Screen Filter ]]
 local numPlayers = GAMESTATE:GetNumPlayersEnabled()
 
-local padding = 8 -- 4px on each side
-local arrowWidth = 64 -- until noteskin metrics are implemented...
+local padding = 4*2
+local arrowWidth = 64
 
 local filterColor = color("0.135,0.135,0.135,1")
 local filterAlphas = {
@@ -23,7 +22,6 @@ if numPlayers == 1 then
 	local pNum = (player == PLAYER_1) and 1 or 2
 	local filterAlpha = tonumber(getenv("ScreenFilterP"..pNum));
 
-	-- Calculate mini and adjust width
 	local mlevel = GAMESTATE:IsCourseMode() and "ModsLevel_Stage" or "ModsLevel_Preferred"
 	local currentMini = 1-math.round(GAMESTATE:GetPlayerState(player):GetPlayerOptions(mlevel):Mini()*50) / 100;
 	filterWidth = (filterWidth + padding) * currentMini
@@ -33,14 +31,12 @@ if numPlayers == 1 then
 	end
 
 	local pos;
-	-- [ScreenGameplay] PlayerP#Player*Side(s)X
 	local metricName = string.format("PlayerP%i%sX",pNum,styleType)
 	pos = THEME:GetMetric("ScreenGameplay",metricName)
 	t[#t+1] = Def.Quad{
 		Name="SinglePlayerFilter";
 		InitCommand=function(self) self:x(pos):CenterY():zoomto(filterWidth,SCREEN_HEIGHT*3):diffusecolor(filterColor):diffusealpha(filterAlpha) end;
 		OnCommand=function(self)
-			--Rotation
 			if getenv("RotationLeftP"..pNum) then 
 				self:rotationz(90):y(SCREEN_CENTER_Y+8)
 			elseif getenv("RotationRightP"..pNum) then
@@ -55,7 +51,6 @@ if numPlayers == 1 then
 				end
 			end
 
-			--Effect
 			if getenv("EffectVibrateP"..pNum) then
 			elseif getenv("EffectSpinP"..pNum) then 
 				self:spin() 
@@ -79,15 +74,12 @@ if numPlayers == 1 then
 		end;
 	};
 else
-	-- two players... a bit more complex.
 	if styleType == "TwoPlayersSharedSides" then
-		-- routine, just use one in the center.
 		local player = GAMESTATE:GetMasterPlayerNumber()
 		local pNum = player == PLAYER_1 and 1 or 2
 		local metricName = "PlayerP".. pNum .."TwoPlayersSharedSidesX"
 		filterAlphas[player] = tonumber(getenv("ScreenFilterP"..pNum))
 
-		-- Calculate mini and adjust width
 		local mlevel = GAMESTATE:IsCourseMode() and "ModsLevel_Stage" or "ModsLevel_Preferred"
 		local currentMini = 1-math.round(GAMESTATE:GetPlayerState(player):GetPlayerOptions(mlevel):Mini()*50) / 100;
 		filterWidth = (filterWidth + padding) * currentMini
@@ -100,7 +92,6 @@ else
 			Name="RoutineFilter";
 			InitCommand=function(self) self:x(THEME:GetMetric("ScreenGameplay",metricName)):CenterY():zoomto(filterWidth,SCREEN_HEIGHT*3):diffusecolor(filterColor):diffusealpha(filterAlphas[player]) end;
 			OnCommand=function(self)
-				--Rotation
 				if getenv("RotationLeftP"..pNum) then 
 					self:rotationz(90):y(SCREEN_CENTER_Y+8)
 				elseif getenv("RotationRightP"..pNum) then
@@ -109,7 +100,6 @@ else
 					self:y(SCREEN_CENTER_Y+20)
 				end
 
-				--Effect
 				if getenv("EffectVibrateP"..pNum) then
 				elseif getenv("EffectSpinP"..pNum) then 
 					self:spin() 
@@ -133,13 +123,11 @@ else
 			end;
 		};
 	else
-		-- otherwise we need two separate ones. to the pairsmobile!
 		for i, player in ipairs(PlayerNumber) do
 			local filterWidth = (arrowWidth * cols)
 			local pNum = (player == PLAYER_1) and 1 or 2
 			filterAlphas[player] = tonumber(getenv("ScreenFilterP"..pNum));
 
-			-- Calculate mini and adjust width
 			local mlevel = GAMESTATE:IsCourseMode() and "ModsLevel_Stage" or "ModsLevel_Preferred"
 			local currentMini = 1-math.round(GAMESTATE:GetPlayerState(player):GetPlayerOptions(mlevel):Mini()*50) / 100;
 			filterWidth = (filterWidth + padding) * currentMini
@@ -154,7 +142,6 @@ else
 				Name="Player"..pNum.."Filter";
 				InitCommand=function(self) self:x(pos):CenterY():zoomto(filterWidth,SCREEN_HEIGHT*3):diffusecolor(filterColor):diffusealpha(filterAlphas[player] or 0.5) end;
 				OnCommand=function(self)
-					--Rotation
 					if getenv("RotationLeftP"..pNum) then 
 						self:rotationz(90):y(SCREEN_CENTER_Y+8)
 					elseif getenv("RotationRightP"..pNum) then
@@ -163,7 +150,6 @@ else
 						self:y(SCREEN_CENTER_Y+20)
 					end
 
-					--Effect
 					if getenv("EffectVibrateP"..pNum) then
 					elseif getenv("EffectSpinP"..pNum) then 
 						self:spin() 

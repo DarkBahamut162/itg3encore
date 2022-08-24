@@ -2,30 +2,23 @@ local player = ...
 assert(player,"[Graphics/_pane fill] player required")
 
 local stats = {
-	{0,	25,	50,	100,200,300},	--jumps
-	{0,	25,	50,	100,150,200},	--holds
-	{0,	25,	50,	100,150,200},	--mines
-	{0,	15,	30,	45,	60,	75},	--hands
-	{0,	10,	20,	30,	40,	50},	--rolls
+	{0,	25,	50,	100,200,300},
+	{0,	25,	50,	100,150,200},
+	{0,	25,	50,	100,150,200},
+	{0,	15,	30,	45,	60,	75},
+	{0,	10,	20,	30,	40,	50},
 };
 
 local colors = {
-	{0.4,	0.4,	0.4},	--gray
-	{0,		1,		0},		--green
-	{1,		1,		0},		--yellow
-	{1,		0.5,	0},		--orange
-	{1,		0,		0},		--red
-	{0,		0.75,	1},		--cyan
+	{0.4,	0.4,	0.4},
+	{0,		1,		0},
+	{1,		1,		0},
+	{1,		0.5,	0},
+	{1,		0,		0},
+	{0,		0.75,	1},
 };
 
 local function getValue(val0, val1, val2)
-	-- val0 = currentValue
-	-- val1 = minValue
-	-- val2 = maxValue
-
-	--lua.ReportScriptError("Part 1 = "..(val0 - val1))
-	--lua.ReportScriptError("Part 2 = "..(val2 - val1))
-	--lua.ReportScriptError("ALL = "..((val0 - val1) / (val2 - val1)))
 	return ((val0 - val1) / (val2 - val1))
 end
 

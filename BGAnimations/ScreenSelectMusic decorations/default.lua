@@ -24,7 +24,6 @@ t[#t+1] = Def.FadingBanner{
 					local curIdx = wheel:GetCurrentIndex()
 					local numItems = wheel:GetNumItems()
 
-					-- chance is the second to last item on the wheel
 					if curIdx+1 == numItems-1 then
 						self:LoadRandom()
 					elseif curIdx+1 ~= numItems then
@@ -45,7 +44,6 @@ t[#t+1] = Def.FadingBanner{
 	WheelMovingMessageCommand=function(self) self:queuecommand("Set") end;
 };
 
--- stepsdisplay
 local function StepsDisplay(pn)
 	local function set(self, player) self:SetFromGameState(player); end
 
@@ -69,11 +67,10 @@ local function StepsDisplay(pn)
 end
 
 for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
-	local MetricsName = "StepsDisplay" .. PlayerNumberToString(pn);
 	t[#t+1] = StepsDisplay(pn) .. {
 		InitCommand=function(self)
 			self:player(pn);
-			self:name(MetricsName);
+			self:name("StepsDisplay" .. PlayerNumberToString(pn));
 			ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen");
 		end;
 	};

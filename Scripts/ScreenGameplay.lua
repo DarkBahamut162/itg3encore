@@ -1,5 +1,3 @@
--- ScreenGameplay-related stuff
-
 function OffsetLifebarHeight(pn)
 	if getenv("RotationLeft"..ToEnumShortString(pn)) or getenv("RotationRight"..ToEnumShortString(pn)) then
 		return SCREEN_CENTER_Y
@@ -31,7 +29,6 @@ function DifficultyToState(diff)
 	return diffState[diff]
 end
 
--- used for gameplay overlay and life meter
 function GetSongFrame()
 	if GAMESTATE:IsCourseMode() then return "_normal" end
 	local song = GAMESTATE:GetCurrentSong()
@@ -44,7 +41,7 @@ function GetSongFrame()
 	local frame
 	if string.find(songDir,"Dance Dance Revolution 8th Mix") or string.find(songDir,"Dance Dance Revolution Extreme") then
 		frame = "_extreme"
-	elseif string.find(songTitle,"VerTex") then -- probably matches vertex beta
+	elseif string.find(songTitle,"VerTex") then
 		frame = "_vertex"
 	elseif string.find(songTitle,"Dream to Nightmare") then
 		frame = "_nightmare"

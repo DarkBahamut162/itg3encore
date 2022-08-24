@@ -1,7 +1,6 @@
 local Player = ...
 if not Player then error("[ScreenNameEntryTraditional DifficultyIcon] needs player.") end
 
--- DifficultyToFrame
 local DifficultyToFrame = {
 	['Difficulty_Beginner']		= 0,
 	['Difficulty_Easy']			= 1,
@@ -16,7 +15,6 @@ return LoadActor("DifficultyIcon")..{
 	ChangeDisplayedFeatMessageCommand=function(self,param)
 		if param.Player == Player then
 			if GAMESTATE:IsCourseMode() then
-				-- derive from trail difficulty in course mode
 				local trail = GAMESTATE:GetCurrentTrail(Player)
 				local difficulty = trail:GetDifficulty()
 				self:setstate(DifficultyToFrame[difficulty])

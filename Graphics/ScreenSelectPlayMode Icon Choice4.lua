@@ -1,4 +1,3 @@
--- ScreenSelectPlayMode Icon Choice4
 return Def.ActorFrame{
 	LoadFont("_r bold glow 30px")..{
 		Text="Beat the clock by stepping\naccurately with modifiers";

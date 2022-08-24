@@ -4,7 +4,6 @@ return Def.ActorFrame{
             Condition=GAMESTATE:IsHumanPlayer(PLAYER_1);
             OnCommand=function(self) self:x(SCREEN_CENTER_X-230):y(SCREEN_CENTER_Y-140) end;
         };
-        -- P1
         Def.ActorFrame{
             Condition=HumanAndProfile(PLAYER_1) and not GAMESTATE:IsCourseMode();
             OnCommand=function(self) self:x(SCREEN_CENTER_X-276):y(SCREEN_CENTER_Y+41) end;
@@ -45,7 +44,6 @@ return Def.ActorFrame{
         };
     };
     Def.ActorFrame{
-        -- P2
         LoadActor("p2gradient")..{
             Condition=GAMESTATE:IsHumanPlayer(PLAYER_2);
             OnCommand=function(self) self:x(SCREEN_CENTER_X+230):y(SCREEN_CENTER_Y-140) end;

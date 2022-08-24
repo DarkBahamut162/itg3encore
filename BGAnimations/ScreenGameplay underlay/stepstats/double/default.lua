@@ -48,7 +48,6 @@ return Def.ActorFrame{
 
 		LoadActor("d_bg");
 
-		-- ITG STATS
 		Def.ActorFrame{
 			Condition=getenv("ShowStats"..ToEnumShortString(pn)) < 7;
 			LoadActor("../w1")..{
@@ -130,7 +129,6 @@ return Def.ActorFrame{
 				end;
 			};
 		};
-		-- IIDX STATS
 		Def.ActorFrame{
 			Condition=getenv("ShowStats"..ToEnumShortString(pn)) == 7;
 			JudgmentMessageCommand=function(self,param)
@@ -144,7 +142,6 @@ return Def.ActorFrame{
 					DPCurMax = DPCurMax + 5
 				end
 			end;
-			-- Highscore Target
 			LoadActor("../w3")..{
 				OnCommand=function(self)
 					self:vertalign(bottom):x(barCenter+(barWidth[bgNum])*1):y(164):zoomx(0.01*barWidth[bgNum]):zoomy(0)
@@ -153,7 +150,6 @@ return Def.ActorFrame{
 					end
 				end;
 			};
-			-- Target Target
 			LoadActor("../w6")..{
 				OnCommand=function(self)
 					self:vertalign(bottom):x(barCenter+(barWidth[bgNum])*2):y(164):zoomx(0.01*barWidth[bgNum])
@@ -162,7 +158,6 @@ return Def.ActorFrame{
 				end;
 			};
 
-			-- Player Current
 			LoadActor("../w1")..{
 				InitCommand=function(self) self:vertalign(bottom):x(barCenter):y(164):zoomx(0.01*barWidth[bgNum]):zoomy(0) end;
 				JudgmentMessageCommand=function(self,param)
@@ -174,7 +169,6 @@ return Def.ActorFrame{
 					self:zoomy(DP*barHeight)
 				end;
 			};
-			-- Highscore Current
 			LoadActor("../w3")..{
 				InitCommand=function(self) self:vertalign(bottom):x(barCenter+barWidth[bgNum]*1):y(164):zoomx(0.01*barWidth[bgNum]):zoomy(0) end;
 				JudgmentMessageCommand=function(self,param)
@@ -191,7 +185,6 @@ return Def.ActorFrame{
 					end
 				end;
 			};
-			-- Target Current
 			LoadActor("../w6")..{
 				InitCommand=function(self) self:vertalign(bottom):x(barCenter+barWidth[bgNum]*2):y(164):zoomx(0.01*barWidth[bgNum]):zoomy(0) end;
 				JudgmentMessageCommand=function(self,param)

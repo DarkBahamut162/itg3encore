@@ -68,7 +68,7 @@ Branch.AfterGameplay = function()
 	if GAMESTATE:IsCourseMode() then
 		if GAMESTATE:GetPlayMode() == 'PlayMode_Nonstop' then
 			return "ScreenEvaluationNonstop"
-		else	-- oni and endless are shared
+		else
 			return "ScreenEvaluationOni"
 		end
 	elseif isRave() then
@@ -79,7 +79,6 @@ Branch.AfterGameplay = function()
 end
 
 Branch.AfterEvaluation = function()
-	--normal
 	if GAMESTATE:GetSmallestNumStagesLeftForAnyHumanPlayer() >= 1 then
 		return "ScreenProfileSave"
 	elseif GAMESTATE:GetCurrentStage() == "Stage_Extra1" then

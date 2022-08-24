@@ -1,5 +1,4 @@
 return Def.ActorFrame{
-	-- single
 	Def.ActorFrame{
 		Name="DeadSingle";
 		BeginCommand=function(self)
@@ -25,7 +24,6 @@ return Def.ActorFrame{
 		};
 	};
 
-	-- double
 	Def.ActorFrame{
 		Name="DeadDouble";
 		BeginCommand=function(self)

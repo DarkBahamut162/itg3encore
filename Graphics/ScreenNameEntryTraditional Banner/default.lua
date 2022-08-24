@@ -1,10 +1,6 @@
--- STATSMAN:GetStagesPlayed()
-
 return Def.ActorFrame{
-	-- banner, which is meant to fade between multiple banners... great.
 	Def.Banner{
 		InitCommand=function(self) self:ztest(true):scaletoclipped(174,68) end;
-
 		ChangeDisplayedFeatMessageCommand=function(self,param)
 			if GAMESTATE:IsCourseMode() then
 				self:LoadFromCourse(GAMESTATE:GetCurrentCourse())
@@ -16,7 +12,5 @@ return Def.ActorFrame{
 			end
 		end,
 	},
-
-	-- banner frame, no big deal.
 	LoadActor(THEME:GetPathG("ScreenEvaluation","BannerFrame"))
 }

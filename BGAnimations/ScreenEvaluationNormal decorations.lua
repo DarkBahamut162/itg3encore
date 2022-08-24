@@ -33,11 +33,10 @@ end
 
 for pn in ivalues(PlayerNumber) do
 	if GAMESTATE:IsPlayerEnabled(pn) then
-		local MetricsName = "MachineRecord" .. PlayerNumberToString(pn);
 		t[#t+1] = LoadActor(THEME:GetPathG(Var "LoadingScreen", "MachineRecord"), pn ) .. {
 			InitCommand=function(self) 
 				self:player(pn); 
-				self:name(MetricsName); 
+				self:name("MachineRecord" .. PlayerNumberToString(pn)); 
 				ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen"); 
 			end;
 		};
@@ -46,11 +45,10 @@ end
 
 for pn in ivalues(PlayerNumber) do
 	if GAMESTATE:IsPlayerEnabled(pn) then
-		local MetricsName = "PersonalRecord" .. PlayerNumberToString(pn);
 		t[#t+1] = LoadActor(THEME:GetPathG(Var "LoadingScreen", "PersonalRecord"), pn)..{
 			InitCommand=function(self) 
 				self:player(pn); 
-				self:name(MetricsName); 
+				self:name("PersonalRecord" .. PlayerNumberToString(pn)); 
 				ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen"); 
 			end;
 		};
@@ -100,11 +98,10 @@ if ShowStandardDecoration("ComboGraph") then
 end;
 
 local function StageAward( pn )
-	local MetricsName = "StageAward"..ToEnumShortString(pn);
 	return LoadActor(THEME:GetPathG("ScreenEvaluation", "StageAward"), pn)..{
 		InitCommand=function(self) 
 			self:player(pn); 
-			self:name(MetricsName); 
+			self:name("StageAward"..ToEnumShortString(pn)); 
 		end;
 	};
 end
@@ -118,11 +115,10 @@ if ShowStandardDecoration("StageAward") then
 end;
 
 local function PeakComboAward( pn )
-	local MetricsName = "PeakComboAward"..ToEnumShortString(pn);
 	return LoadActor( THEME:GetPathG(Var "LoadingScreen", "PeakComboAward"), pn ) .. {
 		InitCommand=function(self) 
 			self:player(pn); 
-			self:name(MetricsName); 
+			self:name("PeakComboAward"..ToEnumShortString(pn)); 
 		end;
 	};
 end

@@ -29,13 +29,13 @@ local bottomedge = {
 
 local steps = {0,250,375,600,625,750,875,1000,1200};
 
-for key,value in pairs(topedge) do --actualcode
+for key,value in pairs(topedge) do
     topedge[key][1] = string.format("%x", topedge[key][1] * 255)
     topedge[key][2] = string.format("%x", topedge[key][2] * 255)
     topedge[key][3] = string.format("%x", topedge[key][3] * 255)
 end
 
-for key,value in pairs(bottomedge) do --actualcode
+for key,value in pairs(bottomedge) do
     bottomedge[key][1] = string.format("%x", bottomedge[key][1] * 255)
     bottomedge[key][2] = string.format("%x", bottomedge[key][2] * 255)
     bottomedge[key][3] = string.format("%x", bottomedge[key][3] * 255)

@@ -1,4 +1,4 @@
-local itemColor = ... -- "blue", "green", "orange", "pink", "purple", "red"
+local itemColor = ...
 assert(itemColor,"[_award models/ribbon/] requires itemColor")
 
 return Def.ActorFrame{

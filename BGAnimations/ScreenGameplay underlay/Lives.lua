@@ -60,7 +60,6 @@ return Def.ActorFrame{
 		};
 	};
 
-	--LIVES cur/max
 	Def.ActorFrame{
 		InitCommand=function(self) self:addx(player == PLAYER_1 and -100 or 100); end;
 		OnCommand=function(self) self:decelerate(0.8):addx(player == PLAYER_1 and 100 or -100) end;

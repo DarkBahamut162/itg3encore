@@ -16,7 +16,6 @@ return Def.ActorFrame{
 				if trail then
 					local artists = trail:GetArtists()
 					for i=1,#artists do
-						--prevent duplicates ~DarkBahamut162
 						if not string.find(text,artists[i]) then
 							if i == 1 then
 								text = artists[i]

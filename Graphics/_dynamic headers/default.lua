@@ -1,6 +1,5 @@
 local LabelName = ...
 
--- lua.ReportScriptError("Actuating Dynamic header...")
 local NameCase = setmetatable(
 	{
 		matches = {
@@ -18,12 +17,9 @@ local NameCase = setmetatable(
 	},
 	{
 		__call = function(this,item)
-			-- lua.ReportScriptError( ("Call! item is %s"):format( item ) )
 			if this.matches[ item ] then
-				-- lua.ReportScriptError( ("match! item (%s) is now %s"):format( item, this.matches[ item ] ) )
 				return this.matches[ item ]
 			end
-			-- lua.ReportScriptError( ("no match! item (%s) remains."):format( item ) )
 			return item
 		end
 	}

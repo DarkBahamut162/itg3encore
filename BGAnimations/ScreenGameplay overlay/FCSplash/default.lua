@@ -1,5 +1,3 @@
---FullCombo base from moonlight by AJ
-
 local pn = ...;
 assert(pn);
 
@@ -17,7 +15,6 @@ local function GetPosition(pn)
 end;
 
 return Def.ActorFrame{
-	--Marvelous FullCombo
 	LoadActor("bluebeam")..{
 		InitCommand=function(self) self:blend("BlendMode_Add"):x(GetPosition(pn)):y(SCREEN_CENTER_Y-SCREEN_HEIGHT/9+15):diffusealpha(0):zoom(0.3):cropleft(0.5):cropright(0.5) end;
 		OffCommand=function(self) if PlayerFullComboed(pn) then self:queuecommand("CheckScore") end end;
@@ -151,7 +148,6 @@ return Def.ActorFrame{
 		end;	
 	};
 
-	--Perfect FullCombo
 	LoadActor("orangebeam")..{
 		InitCommand=function(self) self:blend("BlendMode_Add"):x(GetPosition(pn)):y(SCREEN_CENTER_Y-SCREEN_HEIGHT/9+15):diffusealpha(0):zoom(0.3):cropleft(0.5):cropright(0.5) end;
 		OffCommand=function(self) if PlayerFullComboed(pn) then self:queuecommand("CheckScore") end end;
@@ -285,7 +281,6 @@ return Def.ActorFrame{
 		end;	
 	};
 
-	--FullCombo
 	LoadActor("greenbeam")..{
 		InitCommand=function(self) self:blend("BlendMode_Add"):x(GetPosition(pn)):y(SCREEN_CENTER_Y-SCREEN_HEIGHT/9+15):diffusealpha(0):zoom(0.3):cropleft(0.5):cropright(0.5) end;
 		OffCommand=function(self) if PlayerFullComboed(pn) then self:queuecommand("CheckScore") end end;

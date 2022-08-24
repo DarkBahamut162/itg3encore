@@ -1,5 +1,3 @@
-local pm = GAMESTATE:GetPlayMode()
-
 return Def.ActorFrame{
 	LoadActor(THEME:GetPathB("ScreenWithMenuElements","underlay/_base"))..{
 		OnCommand=function(self) self:playcommand("DoOff"):finishtweening():playcommand("Slow"):queuecommand("DoOn") end;

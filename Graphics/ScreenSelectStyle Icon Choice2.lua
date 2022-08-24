@@ -1,4 +1,3 @@
--- ScreenSelectStyle Icon Choice2
 return Def.ActorFrame{
 	LoadFont("_r bold glow 30px")..{
 		Text="Two Players, each use 4 Panels";

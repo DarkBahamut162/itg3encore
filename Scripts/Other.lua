@@ -1,4 +1,3 @@
--- credits stuff
 function Get2PlayerJoinMessage()
 	if not GAMESTATE:PlayersCanJoin() then return "" end
 	if GAMESTATE:GetCoinMode()=='CoinMode_Free' or GAMESTATE:GetCoinMode()=='CoinMode_Home' then

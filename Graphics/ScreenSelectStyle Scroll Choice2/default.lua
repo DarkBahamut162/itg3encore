@@ -1,4 +1,3 @@
--- ScreenSelectStyle Scroll Choice2
 return Def.ActorFrame{
 	MadeChoiceP1MessageCommand=function(self) self:playcommand("GoOff") end;
 	MadeChoiceP2MessageCommand=function(self) self:playcommand("GoOff") end;

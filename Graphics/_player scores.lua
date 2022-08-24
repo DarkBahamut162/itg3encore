@@ -25,7 +25,6 @@ return Def.ActorFrame{
 						scoreText = "0.00%"
 					end
 				else
-					-- no steps
 					nameText = "no";
 					scoreText = "steps"
 				end
@@ -50,7 +49,6 @@ return Def.ActorFrame{
 					nameText = "CRS" scoreText = "-100%"
 				end
 			else
-				-- no song, no course
 				nameText = "N/A" scoreText = "0.00%"
 			end
 			name:settext(nameText)
@@ -106,7 +104,6 @@ return Def.ActorFrame{
 						scoreText = "0.00%"
 					end
 				else
-					-- no steps
 					scoreText = "steps"
 				end
 			elseif GAMESTATE:IsCourseMode() then
@@ -128,7 +125,6 @@ return Def.ActorFrame{
 					scoreText = "?"
 				end
 			else
-				-- no song
 				scoreText = "?"
 			end
 			name:settext(nameText)

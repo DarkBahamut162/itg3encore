@@ -56,7 +56,6 @@ return Def.ActorFrame{
 		OnCommand=function(self) self:sleep(3):linear(0.8):diffusealpha(1) end;
 		OffCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(0) end;
 	};
-	-- custom mods p1/p2
 	LoadFont("_v 26px bold shadow")..{
 		Text="";
 		InitCommand=function(self) if GAMESTATE:IsPlayerEnabled(PLAYER_1) then self:settext(DisplayCustomModifiersText(PLAYER_1)) end self:maxwidth(350):zoom(0.5):x(SCREEN_CENTER_X-9-2):y(SCREEN_CENTER_Y+9):horizalign(right):shadowlength(0):diffusebottomedge(color("#BBB9FB")) end;
@@ -70,7 +69,6 @@ return Def.ActorFrame{
 		OffCommand=function(self) self:linear(0.2):diffusealpha(0) end;
 	};
 
-	-- detail labels
 	Def.ActorFrame{
 		Name="LabelFrame";
 		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y-142) end;

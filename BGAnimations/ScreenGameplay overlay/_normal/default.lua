@@ -92,7 +92,6 @@ return Def.ActorFrame{
 		};
 	};
 
-	-- difficulty
 	Def.ActorFrame{
 		OnCommand=function(self) self:draworder(1):sleep(0.5):queuecommand("TweenOn") end;
 		OffCommand=function(self) self:queuecommand("Hide") end;

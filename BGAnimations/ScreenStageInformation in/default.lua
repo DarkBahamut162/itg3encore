@@ -15,7 +15,6 @@ else
 	curStage = ToEnumShortString(curStage)
 end
 
--- Force noteskin to be applied here ~DarkBahamut162
 if isOni() then
 	for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
 		local noteskin = GAMESTATE:GetPlayerState(pn):GetPlayerOptions("ModsLevel_Preferred"):NoteSkin();
@@ -23,7 +22,6 @@ if isOni() then
 	end
 end
 
---Force turn off ShowStatsPX if inside a course with secret songs
 if getenv("ShowStatsP1") > 0 or getenv("ShowStatsP2") > 0 then
 	if GAMESTATE:IsCourseMode() then
 		if IsCourseSecret() then
@@ -33,7 +31,6 @@ if getenv("ShowStatsP1") > 0 or getenv("ShowStatsP2") > 0 then
 	end
 end
 
---Force turn off ShowModsPX if turned on before but denied after
 if getenv("ShowModsP1") or getenv("ShowModsP2") then
 	if not GAMESTATE:IsCourseMode() then
 		if not HasLuaCheck() then
@@ -167,18 +164,16 @@ return Def.ActorFrame{
 		};
 	};
 
-	-- tutorial
-		Def.ActorFrame{
-			Name="Tutorial";
-			InitCommand=function(self) self:CenterX() end;
-			Condition=not GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentSong() == SONGMAN:FindSong('In The Groove/Training1/');
-			LoadFont("_big blue glow")..{
-				Text="Welcome to the::tutorial program";
-				OnCommand=function(self) self:y(SCREEN_CENTER_Y-112):diffusealpha(0):zoom(4):sleep(0.0):linear(0.3):diffusealpha(1):zoom(1) end;
-			};
+	Def.ActorFrame{
+		Name="Tutorial";
+		InitCommand=function(self) self:CenterX() end;
+		Condition=not GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentSong() == SONGMAN:FindSong('In The Groove/Training1/');
+		LoadFont("_big blue glow")..{
+			Text="Welcome to the::tutorial program";
+			OnCommand=function(self) self:y(SCREEN_CENTER_Y-112):diffusealpha(0):zoom(4):sleep(0.0):linear(0.3):diffusealpha(1):zoom(1) end;
 		};
+	};
 
-	-- courses
 	Def.ActorFrame{
 		Name="CourseText";
 		Condition=GAMESTATE:IsCourseMode();

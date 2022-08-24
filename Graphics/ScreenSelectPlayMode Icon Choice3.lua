@@ -1,4 +1,3 @@
--- ScreenSelectPlayMode Icon Choice3
 return Def.ActorFrame{
 	LoadFont("_r bold glow 30px")..{
 		Text="Play longer, but look out\nfor scripted modifiers";

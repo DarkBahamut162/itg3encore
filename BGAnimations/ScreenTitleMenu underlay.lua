@@ -1,4 +1,3 @@
--- trickery!
 InitOptions()
 
 return Def.ActorFrame{

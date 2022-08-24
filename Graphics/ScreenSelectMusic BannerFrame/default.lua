@@ -1,4 +1,3 @@
--- This is because the "CurrentSongChangedMessageCommand" triggers upon loading the SelectScreen
 local InitialLoad = false;
 
 return Def.ActorFrame{

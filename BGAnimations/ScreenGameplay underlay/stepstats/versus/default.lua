@@ -11,7 +11,6 @@ local DPCurMax = {
 }
 local IIDX = false
 
--- all this because of ScreenDemonstration... ~DarkBahamut162
 if getenv("ShowStatsP1") == nil or getenv("ShowStatsP2") == nil then
 	return Def.ActorFrame{}
 else
@@ -298,7 +297,6 @@ else
 			LoadActor("../single/s_bg_7");
 			Def.ActorFrame{
 				Name="BarLabels";
-				-- only show on first stage
 				InitCommand=function(self) self:visible(GAMESTATE:GetCurrentStageIndex()==0) end;
 				LoadFont("_v 26px bold black")..{
 					Text="Target P1";
@@ -467,7 +465,6 @@ else
 				end;
 			};
 
-			-- Target Target P1
 			LoadActor("../w6")..{
 				OnCommand=function(self)
 					self:vertalign(bottom):addx(barCenter[PLAYER_1]+(barWidth[6]+barSpace[6])*0):addy(barHeight/2):zoomx(0.01*barWidth[6])
@@ -475,7 +472,6 @@ else
 					self:zoomy(target*barHeight):diffusealpha(0.25)
 				end;
 			};
-			-- Highscore Target P1
 			LoadActor("../w3")..{
 				OnCommand=function(self)
 					self:vertalign(bottom):addx(barCenter[PLAYER_1]+(barWidth[6]+barSpace[6])*1):addy(barHeight/2):zoomx(0.01*barWidth[6]):zoomy(0)
@@ -484,7 +480,6 @@ else
 					end
 				end;
 			};
-			-- Highscore Target P2
 			LoadActor("../w3")..{
 				OnCommand=function(self)
 					self:vertalign(bottom):addx(barCenter[PLAYER_2]+(barWidth[6]+barSpace[6])*4):addy(barHeight/2):zoomx(0.01*barWidth[6]):zoomy(0)
@@ -493,7 +488,6 @@ else
 					end
 				end;
 			};
-			-- Target Target P2
 			LoadActor("../w6")..{
 				OnCommand=function(self)
 					self:vertalign(bottom):addx(barCenter[PLAYER_2]+(barWidth[6]+barSpace[6])*5):addy(barHeight/2):zoomx(0.01*barWidth[6])
@@ -502,7 +496,6 @@ else
 				end;
 			};
 
-			-- Target Current P1
 			LoadActor("../w6")..{
 				InitCommand=function(self) self:vertalign(bottom):addx(barCenter[PLAYER_1]+(barWidth[6]+barSpace[6])*0):addy(barHeight/2):zoomx(0.01*barWidth[6]):zoomy(0) end;
 				JudgmentMessageCommand=function(self,param)
@@ -517,7 +510,6 @@ else
 					self:zoomy(DPCurMax[PLAYER_1]/DPMax*target*barHeight)
 				end;
 			};
-			-- Highscore Current P1
 			LoadActor("../w3")..{
 				InitCommand=function(self) self:vertalign(bottom):addx(barCenter[PLAYER_1]+(barWidth[6]+barSpace[6])*1):addy(barHeight/2):zoomx(0.01*barWidth[6]):zoomy(0) end;
 				JudgmentMessageCommand=function(self,param)
@@ -536,7 +528,6 @@ else
 					end
 				end;
 			};
-			-- Player Current P1
 			LoadActor("../w1")..{
 				InitCommand=function(self) self:vertalign(bottom):addx(barCenter[PLAYER_1]+(barWidth[6]+barSpace[6])*2):addy(barHeight/2):zoomx(0.01*barWidth[6]):zoomy(0) end;
 				JudgmentMessageCommand=function(self,param)
@@ -550,7 +541,6 @@ else
 					self:zoomy(DP*barHeight)
 				end;
 			};
-			-- Player Current P2
 			LoadActor("../w1")..{
 				InitCommand=function(self) self:vertalign(bottom):addx(barCenter[PLAYER_2]+(barWidth[6]+barSpace[6])*3):addy(barHeight/2):zoomx(0.01*barWidth[6]):zoomy(0) end;
 				JudgmentMessageCommand=function(self,param)
@@ -564,7 +554,6 @@ else
 					self:zoomy(DP*barHeight)
 				end;
 			};
-			-- Highscore Current P2
 			LoadActor("../w3")..{
 				InitCommand=function(self) self:vertalign(bottom):addx(barCenter[PLAYER_2]+(barWidth[6]+barSpace[6])*4):addy(barHeight/2):zoomx(0.01*barWidth[6]):zoomy(0) end;
 				JudgmentMessageCommand=function(self,param)
@@ -583,7 +572,6 @@ else
 					end
 				end;
 			};
-			-- Target Current P2
 			LoadActor("../w6")..{
 				InitCommand=function(self) self:vertalign(bottom):addx(barCenter[PLAYER_2]+(barWidth[6]+barSpace[6])*5):addy(barHeight/2):zoomx(0.01*barWidth[6]):zoomy(0) end;
 				JudgmentMessageCommand=function(self,param)

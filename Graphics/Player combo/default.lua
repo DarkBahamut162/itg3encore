@@ -43,7 +43,7 @@ return Def.ActorFrame {
 		end
 
 		local Label;
-		-- aaaaaaaa
+
 		if param.Combo then
 			Label = c.ComboLabel;
 			c.MissesLabel:visible(false)
@@ -60,7 +60,6 @@ return Def.ActorFrame {
 
 		c.Number:settext( string.format("%i", iCombo) );
 
-		-- combo logic
 		if param.FullComboW1 then ComboW1(c.Number) ComboW1(Label)
 		elseif param.FullComboW2 then ComboW2(c.Number) ComboW2(Label)
 		elseif param.FullComboW3 then ComboW3(c.Number) ComboW3(Label)

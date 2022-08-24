@@ -33,7 +33,6 @@ for i=1,3 do
 		local num = LoadFont("_eurostile normal")..{
 			InitCommand=function(self) self:y(scale(n,1,7,SCREEN_CENTER_Y-150,SCREEN_CENTER_Y+10)):zoom(0.6):halign(1) end;
 			BeginCommand=function(self)
-				--set real numbers here
 				local val, text
 				if types[i] == "Actual" then
 					if n > 5 then

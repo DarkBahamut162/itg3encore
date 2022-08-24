@@ -1,4 +1,3 @@
--- single stats
 local pn = GAMESTATE:GetMasterPlayerNumber()
 local startX = GAMESTATE:GetMasterPlayerNumber() == PLAYER_1 and SCREEN_WIDTH/4 or -SCREEN_WIDTH/4
 
@@ -67,7 +66,6 @@ return Def.ActorFrame{
 		end;
 		LoadActor("s_bg" .. bgNum);
 
-		-- ITG STATS
 		Def.ActorFrame{
 			Condition=getenv("ShowStats"..ToEnumShortString(pn)) < 7;
 			Def.ActorFrame{
@@ -214,7 +212,6 @@ return Def.ActorFrame{
 
 			Def.ActorFrame{
 				Name="BarLabels";
-				-- only show on first stage
 				InitCommand=function(self) self:visible(GAMESTATE:GetCurrentStageIndex()==0) end;
 				LoadFont("_v 26px bold black")..{
 					Text="Fantastics";
@@ -345,7 +342,6 @@ return Def.ActorFrame{
 				end;
 			};
 		};
-		-- IIDX STATS
 		Def.ActorFrame{
 			Condition=getenv("ShowStats"..ToEnumShortString(pn)) == 7;
 			JudgmentMessageCommand=function(self,param)
@@ -362,7 +358,6 @@ return Def.ActorFrame{
 			LoadActor("s_bg_7");
 			Def.ActorFrame{
 				Name="BarLabels";
-				-- only show on first stage
 				InitCommand=function(self) self:visible(GAMESTATE:GetCurrentStageIndex()==0) end;
 				LoadFont("_v 26px bold black")..{
 					Text=PROFILEMAN:GetPlayerName(GAMESTATE:GetMasterPlayerNumber());
@@ -456,7 +451,6 @@ return Def.ActorFrame{
 				end;
 			};
 
-			-- Highscore Target
 			LoadActor("../w3")..{
 				OnCommand=function(self)
 					self:vertalign(bottom):addx(barCenter+(barWidth[bgNum]+barSpace[bgNum])*1):addy(barHeight/2):zoomx(0.01*barWidth[bgNum]):zoomy(0)
@@ -465,7 +459,6 @@ return Def.ActorFrame{
 					end
 				end;
 			};
-			-- Target Target
 			LoadActor("../w6")..{
 				OnCommand=function(self)
 					self:vertalign(bottom):addx(barCenter+(barWidth[bgNum]+barSpace[bgNum])*2):addy(barHeight/2):zoomx(0.01*barWidth[bgNum])
@@ -474,7 +467,6 @@ return Def.ActorFrame{
 				end;
 			};
 
-			-- Player Current
 			LoadActor("../w1")..{
 				InitCommand=function(self) self:vertalign(bottom):addx(barCenter):addy(barHeight/2):zoomx(0.01*barWidth[bgNum]):zoomy(0) end;
 				JudgmentMessageCommand=function(self,param)
@@ -488,7 +480,6 @@ return Def.ActorFrame{
 					self:zoomy(DP*barHeight)
 				end;
 			};
-			-- Highscore Current
 			LoadActor("../w3")..{
 				InitCommand=function(self) self:vertalign(bottom):addx(barCenter+(barWidth[bgNum]+barSpace[bgNum])*1):addy(barHeight/2):zoomx(0.01*barWidth[bgNum]):zoomy(0) end;
 				JudgmentMessageCommand=function(self,param)
@@ -507,7 +498,6 @@ return Def.ActorFrame{
 					end
 				end;
 			};
-			-- Target Current
 			LoadActor("../w6")..{
 				InitCommand=function(self) self:vertalign(bottom):addx(barCenter+(barWidth[bgNum]+barSpace[bgNum])*2):addy(barHeight/2):zoomx(0.01*barWidth[bgNum]):zoomy(0) end;
 				JudgmentMessageCommand=function(self,param)

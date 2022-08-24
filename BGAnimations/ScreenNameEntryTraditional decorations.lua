@@ -3,23 +3,21 @@ local t = LoadFallbackB()
 
 -- Out of Ranking
 for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
-	local MetricsName = "OutOfRanking" .. PlayerNumberToString(pn);
 	t[#t+1] = LoadActor(THEME:GetPathG("ScreenNameEntryTraditional","OutOfRanking"))..{
 		InitCommand=function(self)
 			self:player(pn)
-			self:name(MetricsName)
+			self:name("OutOfRanking" .. PlayerNumberToString(pn))
 			ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen")
 		end
 	}
 end
 
 -- Keyboard
-for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
-	local MetricsName = "Keyboard" .. PlayerNumberToString(pn);
+for pn in ivalues(GAMESTATE:GetHumanPlayers()) lastDuration
 	t[#t+1] = LoadActor(THEME:GetPathG("ScreenNameEntryTraditional","Keyboard"),pn)..{
 		InitCommand=function(self)
 			self:player(pn)
-			self:name(MetricsName)
+			self:name("Keyboard" .. PlayerNumberToString(pn))
 			ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen")
 		end
 	}
@@ -27,11 +25,10 @@ end
 
 -- Selection (Entered name)
 for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
-	local MetricsName = "Selection" .. PlayerNumberToString(pn);
 	t[#t+1] = LoadActor(THEME:GetPathG("ScreenNameEntryTraditional","Selection"),pn)..{
 		InitCommand=function(self)
 			self:player(pn)
-			self:name(MetricsName)
+			self:name("Selection" .. PlayerNumberToString(pn))
 			ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen")
 		end
 	}
@@ -39,11 +36,10 @@ end
 
 -- Wheel
 for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
-	local MetricsName = "Wheel" .. PlayerNumberToString(pn);
 	t[#t+1] = LoadActor(THEME:GetPathG("ScreenNameEntryTraditional","Wheel"),pn)..{
 		InitCommand=function(self)
 			self:player(pn)
-			self:name(MetricsName)
+			self:name("Wheel" .. PlayerNumberToString(pn))
 			ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen")
 		end
 	}
@@ -51,11 +47,10 @@ end
 
 -- Score
 for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
-	local MetricsName = "Score" .. PlayerNumberToString(pn);
 	t[#t+1] = LoadActor(THEME:GetPathG("ScreenNameEntryTraditional","Score"),pn)..{
 		InitCommand=function(self)
 			self:player(pn)
-			self:name(MetricsName)
+			self:name("Score" .. PlayerNumberToString(pn))
 			ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen")
 		end
 	}
@@ -65,11 +60,10 @@ end
 
 -- DifficultyIcon
 for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
-	local MetricsName = "DifficultyIcon" .. PlayerNumberToString(pn);
 	t[#t+1] = LoadActor(THEME:GetPathG("ScreenNameEntryTraditional","DifficultyIcon"),pn)..{
 		InitCommand=function(self)
 			self:player(pn)
-			self:name(MetricsName)
+			self:name("DifficultyIcon" .. PlayerNumberToString(pn))
 			ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen")
 		end
 	}
