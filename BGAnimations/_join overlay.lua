@@ -1,4 +1,3 @@
--- so much crap
 return Def.ActorFrame{
 	LoadFont("_v 26px bold black")..{
 		InitCommand=function(self) self:CenterX():y(SCREEN_BOTTOM-14):shadowlength(0):zoom(0.6):diffusealpha(0):sleep(0.5):linear(0.2):diffusealpha(1):draworder(9999) end;
@@ -14,7 +13,6 @@ return Def.ActorFrame{
 		CoinModeChangedMessageCommand=function(self) self:playcommand("Refresh") end;
 	};
 
-	-- P1
 	Def.ActorFrame{
 		Name="PressStartP1";
 		InitCommand=function(self) self:x(SCREEN_LEFT+90):y(SCREEN_BOTTOM-44):playcommand("Refresh") end;
@@ -64,11 +62,7 @@ return Def.ActorFrame{
 			JoinedCommand=function(self) self:linear(0.2):diffusealpha(0) end;
 		};
 	};
-	Def.ActorFrame{
-		
-	};
 
-	-- P2
 	Def.ActorFrame{
 		Name="PressStartP2";
 		InitCommand=function(self) self:x(SCREEN_RIGHT-90):y(SCREEN_BOTTOM-44):playcommand("Refresh") end;

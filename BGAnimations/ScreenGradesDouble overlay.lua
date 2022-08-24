@@ -1,6 +1,5 @@
 local t = Def.ActorFrame{
 	LoadActor(THEME:GetPathB("_grade","list"));
-
 	LoadActor(THEME:GetPathB("_grade","difficulties"))..{
 		InitCommand=function(self) self:x(SCREEN_LEFT+80) end;
 	};
@@ -9,16 +8,15 @@ local t = Def.ActorFrame{
 local prof = PROFILEMAN:GetMachineProfile();
 
 local stats = {
-	{ Difficulty='Difficulty_Easy', },-- 1
-	{ Difficulty='Difficulty_Medium', },-- 2
-	{ Difficulty='Difficulty_Hard', },-- 3
-	{ Difficulty='Difficulty_Challenge', },-- 4
-	{ Difficulty='Difficulty_Medium', },-- 5
-	{ Difficulty='Difficulty_Hard', },-- 6
-	{ Difficulty='Difficulty_Challenge', },-- 7
+	{ Difficulty='Difficulty_Easy', },
+	{ Difficulty='Difficulty_Medium', },
+	{ Difficulty='Difficulty_Hard', },
+	{ Difficulty='Difficulty_Challenge', },
+	{ Difficulty='Difficulty_Medium', },
+	{ Difficulty='Difficulty_Hard', },
+	{ Difficulty='Difficulty_Challenge', },
 };
 
--- todo: loop this using difficulties from easy-hard
 local diffs = Enum.Reverse(Difficulty)
 local tiers = Enum.Reverse(Grade)
 for i=1,4 do

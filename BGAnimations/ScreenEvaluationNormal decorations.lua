@@ -1,6 +1,5 @@
 local t = LoadFallbackB();
 
--- StepsDisplay
 if ShowStandardDecoration("StepsDisplay") then
 	for pn in ivalues(PlayerNumber) do
 		if (GAMESTATE:IsPlayerEnabled(pn) or isRave()) and Var "LoadingScreen" ~= "ScreenEvaluationSummary" then
@@ -32,7 +31,6 @@ if ShowStandardDecoration("StepsDisplay") then
 	end
 end
 
--- records text
 for pn in ivalues(PlayerNumber) do
 	if GAMESTATE:IsPlayerEnabled(pn) then
 		local MetricsName = "MachineRecord" .. PlayerNumberToString(pn);
@@ -59,7 +57,6 @@ for pn in ivalues(PlayerNumber) do
 	end
 end
 
--- life graph
 local function GraphDisplay(pn)
 	return Def.ActorFrame {
 		Def.GraphDisplay {
@@ -81,7 +78,6 @@ if ShowStandardDecoration("GraphDisplay") then
 	end
 end
 
--- combo graph
 local function ComboGraph( pn )
 	return Def.ActorFrame {
 		Def.ComboGraph {
@@ -103,7 +99,6 @@ if ShowStandardDecoration("ComboGraph") then
 	end;
 end;
 
--- awards
 local function StageAward( pn )
 	local MetricsName = "StageAward"..ToEnumShortString(pn);
 	return LoadActor(THEME:GetPathG("ScreenEvaluation", "StageAward"), pn)..{
@@ -113,6 +108,7 @@ local function StageAward( pn )
 		end;
 	};
 end
+
 if ShowStandardDecoration("StageAward") then
 	for pn in ivalues(PlayerNumber) do
 		if GAMESTATE:IsPlayerEnabled(pn) then
@@ -130,6 +126,7 @@ local function PeakComboAward( pn )
 		end;
 	};
 end
+
 if ShowStandardDecoration("PeakComboAward") then
 	for pn in ivalues(PlayerNumber) do
 		if GAMESTATE:IsPlayerEnabled(pn) then

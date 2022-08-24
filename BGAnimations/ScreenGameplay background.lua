@@ -1,11 +1,4 @@
---[[
-	Let's begin by setting the enviroment that this will be placed on.
-	We Center it, make a fov so depth can happen, flip the Y axis because Characters
-	in StepMania are flipped, and set the Z position depending on Aspect Ratio because
-	the z field changes on the current Aspect Ratio, so correct that.
-]]
---The only way on making custommods work... I think... ~DarkBahamut162
-local background = Def.ActorFrame {
+return Def.ActorFrame {
 	Name="YOU_WISH_YOU_WERE_PLAYING_BEATMANIA_RIGHT_NOW",
 	OnCommand=function()
 		for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
@@ -61,5 +54,3 @@ local background = Def.ActorFrame {
 	end;
 	DoneLoadingNextSongMessageCommand=function(self) self:playcommand("On") end;
 };
-
-return background;
