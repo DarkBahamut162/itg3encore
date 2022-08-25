@@ -59,9 +59,9 @@ for i=1,3 do
 				self:settext(text)
 			end;
 		};
-		table.insert(thing,num)
+		thing[#thing+1] = num;
 	end
-	table.insert(t,thing)
+	t[#t+1] = thing;
 end
 
 local shortGrade = ToEnumShortString( GetGradeFromPercent(GetTotalPercentComplete('StepsType_Dance_Double')) )
@@ -128,8 +128,6 @@ local totals = Def.ActorFrame{
 		};
 	};
 };
-table.insert(t,totals)
-
--- extra crap!
+t[#t+1] = totals;
 
 return t;

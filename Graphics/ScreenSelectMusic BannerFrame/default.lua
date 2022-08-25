@@ -1,7 +1,6 @@
 local InitialLoad = false;
 
 return Def.ActorFrame{
-
 	Def.ActorFrame{
 		Name="Frame";
 		LoadActor("frame")..{

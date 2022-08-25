@@ -1,9 +1,6 @@
 local Player = ...
 if not Player then error("[ScreenNameEntryTraditional Score] score needs player badly") end
 
-local machineProfile = PROFILEMAN:GetMachineProfile()
-
--- xxx: this is a PercentageDisplay in the hardcoded version
 return LoadFont("_r bold numbers")..{
 	BeginCommand=function(self) self:diffuse(PlayerColor(Player)) end;
 	ChangeDisplayedFeatMessageCommand=function(self,param)

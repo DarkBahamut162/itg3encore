@@ -6,7 +6,9 @@ if style then
 
 	if st == "Single" then
 		state = (master_pn == PLAYER_2) and 1 or 0
-	end;
+	else
+		st = "Versus"
+	end
 
 	return LoadActor(THEME:GetPathG("ScreenWithMenuElements","StyleIcon/"..st))..{
 		InitCommand=function(self) self:animate(false):setstate(state) end;

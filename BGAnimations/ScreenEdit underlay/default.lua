@@ -26,7 +26,6 @@ return Def.ActorFrame{
 	LoadActor("infopane")..{
 		InitCommand=function(self) self:x(SCREEN_RIGHT):y(SCREEN_CENTER_Y-5):horizalign(right) end;
 	};
-	-- icons (unused for now)
 
 	LoadFont("_r 26px bold glow")..{
 		InitCommand=function(self) self:x(SCREEN_LEFT+76):y(SCREEN_TOP+40):shadowlength(1):settext("EDITOR") end;
@@ -62,6 +61,8 @@ return Def.ActorFrame{
 		end;
 		OnCommand=function(self) self:decelerate(1):y(SCREEN_CENTER_Y-74):diffusealpha(1) end;
 	};
-
-	-- abridged help
+	LoadFont("_r bold 30px")..{
+		Text="Press F1\nfor commands.\n\nPress Start\nfor the Edit Menu";
+		InitCommand=function(self) self:horizalign(center):shadowlength(2):zoom(0.6):x(SCREEN_LEFT+74):y(SCREEN_BOTTOM-90) end;
+	};
 };

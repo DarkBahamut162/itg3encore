@@ -32,9 +32,9 @@ for i=1,4 do
 				self:settext(prof:GetTotalStepsWithTopGrade('StepsType_Dance_Double',Difficulty[i],tier))
 			end;
 		};
-		table.insert(nums,score)
+		nums[#nums+1] = score;
 	end
-	table.insert(t,nums)
+	t[#t+1] = nums;
 end
 for i=5,6 do
 	local nums = Def.ActorFrame{
@@ -49,9 +49,9 @@ for i=5,6 do
 				self:settext(prof:GetTotalTrailsWithTopGrade('StepsType_Dance_Double',Difficulty[i],tier))
 			end;
 		};
-		table.insert(nums,score)
+		nums[#nums+1] = score;
 	end
-	table.insert(t,nums)
+	t[#t+1] = nums;
 end
 
 return t

@@ -4,7 +4,7 @@ if ShowStandardDecoration("StepsDisplay") then
 	for pn in ivalues(PlayerNumber) do
 		if (GAMESTATE:IsPlayerEnabled(pn) or isRave()) and Var "LoadingScreen" ~= "ScreenEvaluationSummary" then
 			local t2 = Def.ActorFrame{
-				--InitCommand=function(self) self:player(pn) end;
+				InitCommand=function(self) self:player(pn) end;
 				LoadActor(THEME:GetPathG("_difficulty","icons"))..{
 					InitCommand=function(self) self:zoomy(0.8):animate(0):zoomx((pn==PLAYER_2) and -0.8 or 0.8):playcommand("Update") end;
 					UpdateCommand=function(self)
