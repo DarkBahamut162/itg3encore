@@ -3,6 +3,10 @@ assert(player,"[ScreenEvaluation MachineRecord] requires player")
 local record = STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetMachineHighScoreIndex()
 local hasMachineRecord = (record ~= -1) and record <= 10
 
+if hasMachineRecord and not STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetFailed() then
+	setenv("HighScoreable"..ToEnumShortString(player),true)
+end
+
 return Def.ActorFrame{
 	LoadFont("_v 26px bold diffuse")..{
 		InitCommand=function(self) self:zoomx(0.6):zoomy(0.5):shadowlength(2):cropright(1):visible(hasMachineRecord) end;

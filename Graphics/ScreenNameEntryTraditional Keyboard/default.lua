@@ -1,12 +1,6 @@
 local Player = ...
 if not Player then error("[ScreenNameEntryTraditional Keyboard] what, you WANT me to randomly assign a player for the keyboard? too bad. I don't feel like dealing with the humorless people who will submit bug reports about it.") end
 
--- CreateScrollerItem(char,altName)
--- Creates a scroller item for the Keyboard.
-
--- Params:
--- char			Character to draw
--- altName		Alternate name (optional)
 local function CreateScrollerItem(char,altName)
 	local textZoom = 0.95
 	if altName and (altName == "Back" or altName == "End") then
@@ -23,20 +17,17 @@ local function CreateScrollerItem(char,altName)
 	}
 end
 
--- create scroller items
 local KeyboardLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789?!."
 local scrollItems = {}
 for c in string.gmatch(KeyboardLetters,".") do
-	table.insert(scrollItems, CreateScrollerItem(c))
+	scrollItems[#scrollItems+1] = CreateScrollerItem(c);
 end
--- don't forget the "leftarrow" and "ok" items too
-table.insert(scrollItems, CreateScrollerItem("&leftarrow;","Back"))
-table.insert(scrollItems, CreateScrollerItem("&ok;","End"))
+
+scrollItems[#scrollItems+1] = CreateScrollerItem("&leftarrow;","Back");
+scrollItems[#scrollItems+1] = CreateScrollerItem("&ok;","End");
 
 return Def.ActorFrame{
 	Name="KeyboardController"..PlayerNumberToString(Player),
-
-	-- todo: handle wrapping
 	KeyboardLeftMessageCommand=function(self,param)
 		if param.Player == Player then
 			local scroller = self:GetChild("KeyScroller")
@@ -49,10 +40,9 @@ return Def.ActorFrame{
 			end
 
 			scroller:SetCurrentAndDestinationItem(cur)
+			SOUND:PlayOnce( THEME:GetPathS( 'ScreenNameEntryTraditional', "change" ) )
 		end
 	end,
-
-	-- todo: handle wrapping
 	KeyboardRightMessageCommand=function(self,param)
 		if param.Player == Player then
 			local scroller = self:GetChild("KeyScroller")
@@ -65,16 +55,14 @@ return Def.ActorFrame{
 			end
 
 			scroller:SetCurrentAndDestinationItem(cur)
+			SOUND:PlayOnce( THEME:GetPathS( 'ScreenNameEntryTraditional', "change" ) )
 		end
 	end,
 
 	KeyboardEnterMessageCommand=function(self,param)
 		if param.Player == Player then
 			local ts = SCREENMAN:GetTopScreen()
-			-- check what item we're on; Back and End are options too.
 			local scroller = self:GetChild("KeyScroller")
-
-			-- ActorScroller:GetCurrentItem is 0-indexed; Lua tables are 1-indexed.
 			local index = scroller:GetCurrentItem()
 			if index ~= scroller:GetNumItems() then
 				index = index+1
@@ -85,18 +73,23 @@ return Def.ActorFrame{
 
 			if selectedChar == "End" then
 				ts:Finish(Player)
-
 				self:playcommand("Off")
+				SOUND:PlayOnce( THEME:GetPathS( 'ScreenNameEntryTraditional', "key" ) )
 			elseif selectedChar == "Back" then
-				ts:Backspace(Player)
+				if ts:Backspace(Player) then
+					SOUND:PlayOnce( THEME:GetPathS( 'ScreenNameEntryTraditional', "key" ) )
+				else
+					SOUND:PlayOnce( THEME:GetPathS( 'ScreenNameEntryTraditional', "invalid" ) )
+				end
 			else
-				local ek = ts:EnterKey(Player,selectedChar)
-				-- check value of ek in order to something something sounds
+				if ts:EnterKey(Player,selectedChar) then
+					SOUND:PlayOnce( THEME:GetPathS( 'ScreenNameEntryTraditional', "key" ) )
+				else
+					SOUND:PlayOnce( THEME:GetPathS( 'ScreenNameEntryTraditional', "invalid" ) )
+				end
 			end
 		end
 	end,
-
-	-- Handle messages fired by ScreenNameEntryTraditional:SelectChar
 	SelectKeyMessageCommand=function(self,param)
 		if param.PlayerNumber == Player then
 			local scroller = self:GetChild("KeyScroller")
@@ -108,7 +101,6 @@ return Def.ActorFrame{
 		end
 	end,
 
-	-- scroller
 	Def.ActorScroller{
 		Name="KeyScroller",
 		SecondsPerItem=0.2,

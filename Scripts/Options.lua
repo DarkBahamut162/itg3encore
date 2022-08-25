@@ -68,6 +68,9 @@ function InitRotationOptions()
 end
 
 function InitOptions()
+	setenv("HighScoreableP1",false)
+	setenv("HighScoreableP2",false)
+
 	setenv("UnderComboP1",false)
 	setenv("UnderComboP2",false)
 	setenv("UnderTapJudgmentsP1",false)

@@ -3,6 +3,10 @@ assert(player,"[ScreenEvaluation PersonalRecord] requires player")
 local record = STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetPersonalHighScoreIndex()
 local hasPersonalRecord = (record == 0)
 
+if hasPersonalRecord and not STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetFailed() then
+	setenv("HighScoreable"..ToEnumShortString(player),true)
+end
+
 return Def.ActorFrame{
 	LoadFont("_v 26px bold diffuse")..{
 		Text="New Personal Record!";
