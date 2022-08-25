@@ -15,13 +15,4 @@ return Def.ActorFrame{
 			InitCommand=function(self) self:blend(Blend.Add):shadowlength(0):diffuseshift():effectcolor1(color("#6BFF75")):effectcolor2(color("#FFFFFF00")):zoom(0.7):effectclock("beat") end;
 		};
 	};
-
-	Def.ActorFrame{
-		Name="UnlockFrame";
-	};
-
-	Def.Quad{
-		InitCommand=function(self) self:Center():FullScreen():diffuse(color("0,0,0,0")) end;
-		-- unlock command
-	};
 };
