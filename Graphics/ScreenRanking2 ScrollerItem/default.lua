@@ -29,7 +29,7 @@ local Scores = Def.ActorFrame{
 for i=1,4 do
 	Scores[#Scores+1] = LoadFont("_v 26px bold black")..{
 		Name="Name"..i;
-		InitCommand=function(self) self:x(scale(i,1,4,-48,240)):y(-8):zoomx(0.875):zoomy(0.625) end;
+		InitCommand=function(self) self:x(scale(i,1,4,-48,240)):y(-8):zoomx(0.875):zoomy(0.625):maxwidth(100) end;
 	};
 	Scores[#Scores+1] = LoadFont("_futurist numbers metallic")..{
 		Name="Score"..i;
