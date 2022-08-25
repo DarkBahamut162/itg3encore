@@ -15,9 +15,7 @@ return Def.ActorFrame{
 		InitCommand=function(self) self:ztest(true) end
 	},
 	LoadActor(THEME:GetPathB("ScreenWithMenuElements","underlay/_base")),
-
-	LoadActor(THEME:GetPathB("ScreenWithMenuElements","underlay/_top")),
-
+	LoadActor(THEME:GetPathB("ScreenWithMenuElements","underlay/_expandtop")),
 	StandardDecorationFromFileOptional("StyleIcon","StyleIcon"),
 	StandardDecorationFromFileOptional("StageDisplay","StageDisplay"),
 

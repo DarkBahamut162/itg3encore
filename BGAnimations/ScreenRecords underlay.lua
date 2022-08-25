@@ -25,7 +25,7 @@ return Def.ActorFrame{
 		OffCommand=function(self) self:accelerate(0.5):addy(100) end;
 	};
 
-	LoadActor(THEME:GetPathB("ScreenWithMenuElements","underlay/_top"));
+	LoadActor(THEME:GetPathB("ScreenWithMenuElements","underlay/_normaltop"));
 
 	LoadFont("_z bold gray 36px")..{
 		Text="LOADING...";
