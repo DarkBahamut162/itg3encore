@@ -65,7 +65,7 @@ return Def.ActorFrame{
 			InitCommand=function(self) self:CenterX():y(SCREEN_TOP-2+24) end;
 			OnCommand=function(self) self:effectclock('beat'):diffuseramp():effectcolor1(color("#973636")):effectcolor2(color("#f11e1e")):effectperiod(0.5):effect_hold_at_full(0.5):diffusealpha(0):linear(0.4):diffusealpha(1) end;
 		};
-		LoadActor("_neons bpm")..{
+		LoadActor("_neons bottom")..{
 			InitCommand=function(self) self:CenterX():y(SCREEN_TOP-2+63):blend(Blend.Add):visible(not isRave()) end;
 			OnCommand=function(self) self:effectclock('beat'):diffuseramp():effectcolor1(color("#680303")):effectcolor2(color("#f11e1e")):effectperiod(0.5):effect_hold_at_full(0.5):diffusealpha(0):linear(0.4):diffusealpha(1) end;
 		};

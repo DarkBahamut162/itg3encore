@@ -66,7 +66,7 @@ return Def.ActorFrame{
 			InitCommand=function(self) self:x(SCREEN_CENTER_X+193):y(SCREEN_TOP-2+24):halign(1):zoomx(-1) end;
 			OnCommand=function(self) self:sleep(1.5):linear(0.1):x(SCREEN_RIGHT-16) end;
 		};
-		LoadActor("_base normal")..{ InitCommand=function(self) self:CenterX():y(SCREEN_TOP-2+24-3) end; };
+		LoadActor("_base normal")..{ InitCommand=function(self) self:CenterX():y(SCREEN_TOP-2+24) end; };
 		LoadActor("_base bpm")..{ InitCommand=function(self) self:CenterX():y(SCREEN_TOP-2+64-5):visible(not isRave()) end; };
 		LoadActor("_neons top")..{
 			InitCommand=function(self) self:CenterX():y(SCREEN_TOP-2+24):blend(Blend.Add) end;

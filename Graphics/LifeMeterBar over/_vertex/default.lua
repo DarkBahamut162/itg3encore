@@ -1,10 +1,11 @@
 local color1 = color("#00EAFF")
 local color2 = color("FFFFFF00")
+local vertexOn = false
 
-local song = GAMESTATE:GetCurrentSong()
-if song then
-	-- check WHICH vertex is selected
-	local title = song:GetDisplayFullTitle()
+if GAMESTATE:GetCurrentSong() then
+	if GAMESTATE:GetCurrentSong() == SONGMAN:FindSong('In The Groove/VerTex') then vertexOn = true color1 = color("0,1,0,1") end
+	if GAMESTATE:GetCurrentSong() == SONGMAN:FindSong('In The Groove 2/VerTex²') then vertexOn = true color1 = color("1,0,0,1") end
+	if GAMESTATE:GetCurrentSong() == SONGMAN:FindSong('In The Groove 3/VerTex^3') then vertexOn = true color1 = color("1,0,1,1") end
 end
 
 return Def.ActorFrame{
@@ -20,13 +21,13 @@ return Def.ActorFrame{
 		};
 	};
 
-	LoadActor("base")..{ InitCommand=function(self) self:addx(-5) end; };
+	LoadActor("base")..{ InitCommand=function(self) self:addx(-5) if vertexOn then self:diffusecolor(color1) end end; };
 	LoadActor("streak")..{
-		InitCommand=function(self) self:addx(-155):addx(-100) end;
+		InitCommand=function(self) self:addx(-155):addx(-100) if vertexOn then self:diffusecolor(color1) end end;
 		OnCommand=function(self) self:sleep(0.8):decelerate(0.6):addx(100) end;
 	};
 	LoadActor("streak")..{
-		InitCommand=function(self) self:addx(-174):addx(-100) end;
+		InitCommand=function(self) self:addx(-174):addx(-100) if vertexOn then self:diffusecolor(color1) end end;
 		OnCommand=function(self) self:sleep(1):decelerate(0.6):addx(100) end;
 	};
 	LoadActor("glow2")..{

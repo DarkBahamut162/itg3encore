@@ -1,3 +1,12 @@
+local vertexOn = false
+local vertexColor = color("0,0,0,0")
+
+if GAMESTATE:GetCurrentSong() then
+	if GAMESTATE:GetCurrentSong() == SONGMAN:FindSong('In The Groove/VerTex') then vertexOn = true vertexColor = color("0,1,0,1") end
+	if GAMESTATE:GetCurrentSong() == SONGMAN:FindSong('In The Groove 2/VerTex²') then vertexOn = true vertexColor = color("1,0,0,1") end
+	if GAMESTATE:GetCurrentSong() == SONGMAN:FindSong('In The Groove 3/VerTex^3') then vertexOn = true vertexColor = color("1,0,1,1") end
+end
+
 return Def.ActorFrame{
 	Def.ActorFrame{
 		InitCommand=function(self) self:CenterX():y(SCREEN_TOP-2+24):addy(-100) end;
@@ -17,7 +26,7 @@ return Def.ActorFrame{
 		TweenOnCommand=function(self) self:decelerate(0.8):addy(100) end;
 		TweenOffCommand=function(self) if AnyPlayerFullComboed() then self:sleep(1) end; self:accelerate(0.8):addy(-100) end;
 		Def.SongMeterDisplay{
-			InitCommand=function(self) self:SetStreamWidth(292) end;
+			InitCommand=function(self) self:SetStreamWidth(292) if vertexOn then self:diffusecolor(vertexColor) end end;
 			Stream=LoadActor("meter stream");
 			Tip=LoadActor("tip")..{
 				OnCommand=function(self) self:zoom(0):sleep(1.8):zoom(1):diffuseshift():effectcolor1(color("1,1,1,1")):effectcolor2(color("1,1,1,0.5")):effectclock("beat"):effectperiod(4) end;
@@ -51,23 +60,23 @@ return Def.ActorFrame{
 			OnCommand=function(self) self:effectclock('beat'):diffuseramp():effectcolor1(color("#FFFFFF00")):effectcolor2(color("#00EAFF")):effectperiod(0.5):effect_hold_at_full(0.5):diffusealpha(0):linear(0.4):diffusealpha(1) end;
 		};
 		LoadActor("width")..{
-			InitCommand=function(self) self:x(SCREEN_CENTER_X-190):y(SCREEN_TOP-2+24):halign(1):zoomtowidth(3) end;
+			InitCommand=function(self) self:x(SCREEN_CENTER_X-190):y(SCREEN_TOP-2+24):halign(1):zoomtowidth(3) if vertexOn then self:diffusecolor(vertexColor) end end;
 			OnCommand=function(self) self:sleep(1.5):linear(0.1):zoomtowidth(SCREEN_WIDTH/2-200) end;
 		};
 		LoadActor("width")..{
-			InitCommand=function(self) self:x(SCREEN_CENTER_X+190):y(SCREEN_TOP-2+24):halign(0):zoomtowidth(3) end;
+			InitCommand=function(self) self:x(SCREEN_CENTER_X+190):y(SCREEN_TOP-2+24):halign(0):zoomtowidth(3) if vertexOn then self:diffusecolor(vertexColor) end end;
 			OnCommand=function(self) self:sleep(1.5):linear(0.1):zoomtowidth(SCREEN_WIDTH/2-200) end;
 		};
 		LoadActor("left")..{
-			InitCommand=function(self) self:x(SCREEN_CENTER_X-193):y(SCREEN_TOP-2+24):halign(1) end;
+			InitCommand=function(self) self:x(SCREEN_CENTER_X-193):y(SCREEN_TOP-2+24):halign(1) if vertexOn then self:diffusecolor(vertexColor) end end;
 			OnCommand=function(self) self:sleep(1.5):linear(0.1):x(SCREEN_LEFT+16) end;
 		};
 		LoadActor("left")..{
-			InitCommand=function(self) self:x(SCREEN_CENTER_X+193):y(SCREEN_TOP-2+24):halign(1):zoomx(-1) end;
+			InitCommand=function(self) self:x(SCREEN_CENTER_X+193):y(SCREEN_TOP-2+24):halign(1):zoomx(-1) if vertexOn then self:diffusecolor(vertexColor) end end;
 			OnCommand=function(self) self:sleep(1.5):linear(0.1):x(SCREEN_RIGHT-16) end;
 		};
-		LoadActor("_base normal")..{ InitCommand=function(self) self:CenterX():y(SCREEN_TOP-2+24-3) end; };
-		LoadActor("_base bpm")..{ InitCommand=function(self) self:CenterX():y(SCREEN_TOP-2+64-3):visible(not isRave()) end; };
+		LoadActor("_base normal")..{ InitCommand=function(self) self:CenterX():y(SCREEN_TOP-2+24) if vertexOn then self:diffusecolor(vertexColor) end end; };
+		LoadActor("_base bpm")..{ InitCommand=function(self) self:CenterX():y(SCREEN_TOP-2+64-3):visible(not isRave()) if vertexOn then self:diffusecolor(vertexColor) end end; };
 		LoadActor("_neons top")..{
 			InitCommand=function(self) self:CenterX():y(SCREEN_TOP-2+24):blend(Blend.Add) end;
 			OnCommand=function(self) self:effectclock('beat'):diffuseramp():effectcolor1(color("#007892")):effectcolor2(color("#00EAFF")):effectperiod(0.5):effect_hold_at_full(0.5):diffusealpha(0):linear(0.4):diffusealpha(1) end;
@@ -77,11 +86,11 @@ return Def.ActorFrame{
 			OnCommand=function(self) self:effectclock('beat'):diffuseramp():effectcolor1(color("#FFFFFF00")):effectcolor2(color("#00EAFF")):effectperiod(0.5):effect_hold_at_full(0.5):diffusealpha(0):linear(0.4):diffusealpha(1) end;
 		};
 		LoadActor("_neons bottom")..{
-			InitCommand=function(self) self:CenterX():y(SCREEN_TOP-2+41):blend(Blend.Add):visible(not isRave()) end;
+			InitCommand=function(self) self:CenterX():y(SCREEN_TOP-2+40):blend(Blend.Add):visible(not isRave()) end;
 			OnCommand=function(self) self:effectclock('beat'):diffuseramp():effectcolor1(color("#007892")):effectcolor2(color("#00EAFF")):effectperiod(0.5):effect_hold_at_full(0.5):diffusealpha(0):linear(0.4):diffusealpha(1) end;
 		};
 		LoadActor("_neons bottom")..{
-			InitCommand=function(self) self:CenterX():y(SCREEN_TOP-2+41):visible(not isRave()) end;
+			InitCommand=function(self) self:CenterX():y(SCREEN_TOP-2+40):visible(not isRave()) end;
 			OnCommand=function(self) self:effectclock('beat'):diffuseramp():effectcolor1(color("#FFFFFF00")):effectcolor2(color("#00EAFF")):effectperiod(0.5):effect_hold_at_full(0.5):diffusealpha(0):linear(0.4):diffusealpha(1) end;
 		};
 		LoadFont("_r bold 30px")..{
