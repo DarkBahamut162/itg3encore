@@ -51,7 +51,14 @@ return Def.ActorFrame{
 			InitCommand=function(self) self:x(SCREEN_LEFT+60):y(SCREEN_CENTER_Y+165):diffusealpha(0) end;
 			OnCommand=function(self) self:sleep(5.5):linear(0.3):diffusealpha(0.6):sleep(4.4):linear(0.5):diffusealpha(0) end;
 		};
-		-- horiz line x2
+		LoadActor(THEME:GetPathB("ScreenSelectStyle","out/horiz-line"))..{
+			InitCommand=function(self) self:x(SCREEN_LEFT+120):y(SCREEN_CENTER_Y+155):cropleft(0.5):cropright(0.5) end;
+			OnCommand=function(self) self:sleep(5):accelerate(0.15):cropleft(0):cropright(0):accelerate(0.15):addy(-43):decelerate(0.2):addy(-43):diffusealpha(0) end;
+		};
+		LoadActor(THEME:GetPathB("ScreenSelectStyle","out/horiz-line"))..{
+			InitCommand=function(self) self:x(SCREEN_LEFT+120):y(SCREEN_CENTER_Y+155):cropleft(0.5):cropright(0.5) end;
+			OnCommand=function(self) self:sleep(5):accelerate(0.15):cropleft(0):cropright(0):accelerate(0.15):addy(43):decelerate(0.2):addy(43):diffusealpha(0) end;
+		};
 		LoadFont("_r bold 30px")..{
 			Text="Player Name";
 			InitCommand=function(self) self:x(SCREEN_LEFT+120):y(SCREEN_CENTER_Y+87):diffusetopedge(color("#fff000")):diffusebottomedge(color("#ffa500")):shadowlength(2):horizalign(center):zoom(0.8):diffusealpha(0) end;
