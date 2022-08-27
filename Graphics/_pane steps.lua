@@ -48,10 +48,6 @@ return Def.ActorFrame{
 		InitCommand=function(self) self:x(-67):y(120+4):horizalign(center):zoom(0.35):diffusealpha(0) end;
 		OnCommand=function(self) self:sleep(0.4):linear(0.2):diffusealpha(1):shadowlength(2) end;
 		OffCommand=function(self) self:linear(0.4):diffusealpha(0) end;
-		--[[
-		SongNumStepsTextGainFocusCommand=function(self) self:stoptweening():sleep(0.15):linear(0.2):diffusealpha(1) end;
-		SongNumStepsTextLoseFocusCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(0) end;
-		--]]
 		SetCommand=function(self)
 			local val = 0
 			local song = GAMESTATE:GetCurrentSong()

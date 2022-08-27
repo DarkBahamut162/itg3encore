@@ -6,17 +6,6 @@ function OffsetLifebarHeight(pn)
 	end
 end
 
--- To be called wherever the lifebars are positioned
-function GetLifebarAdjustment()
-	--[[
-	local lifetype = ProfileTable.LifebarAdjustment
-	-- assume "coin" unless otherwise specified
-	if not lifetype then return "0" end
-	return lifetype
-	--]]
-	return "0"
-end
-
 local diffState = {
 	Difficulty_Beginner = 0,
 	Difficulty_Easy = 1,
@@ -25,6 +14,7 @@ local diffState = {
 	Difficulty_Challenge = 4,
 	Difficulty_Edit = 5,
 };
+
 function DifficultyToState(diff)
 	return diffState[diff]
 end
@@ -32,12 +22,9 @@ end
 function GetSongFrame()
 	if GAMESTATE:IsCourseMode() then return "_normal" end
 	local song = GAMESTATE:GetCurrentSong()
-
 	local songTitle = song:GetDisplayFullTitle()
 	local songArtist = song:GetDisplayArtist()
 	local songDir = song:GetSongDir()
-
-	-- todo: tighten up song/string matching
 	local frame
 	if string.find(songDir,"Dance Dance Revolution 8th Mix") or string.find(songDir,"Dance Dance Revolution Extreme") then
 		frame = "_extreme"
@@ -80,9 +67,6 @@ function songfail(bVertex)
 	return not bVertex
 end
 
--- AllowOptionsMenu()
--- [en] returns if you are able to select options
--- on ScreenSelectMusic.
 function AllowOptionsMenu()
 	if GAMESTATE:IsAnExtraStage() then
 		return false
@@ -91,14 +75,11 @@ function AllowOptionsMenu()
 	end
 end
 
--- We can't use the 'hidden' command on a per-player basis for combo, so
--- instead take advantage of the X combo offset.  See the [Player] section
--- in metrics.ini.
 function GetComboXOffset(pn)
 	if getenv("HideCombo" .. ToEnumShortString(pn)) then
-		return "SCREEN_WIDTH*2" -- This is enough to hide it on either side
+		return "SCREEN_WIDTH*2"
 	else
-		return 0 -- No offset
+		return 0
 	end
 end
 
@@ -148,7 +129,6 @@ function AnyPlayerFullComboed()
 	return output
 end
 
--- Needed for judgment rotation
 local StepCount = {0,0};
 function StepEvenOdd(player)
 	local PX = (player == PLAYER_1) and 1 or 2;
@@ -160,7 +140,6 @@ function StepEvenOdd(player)
 	end
 end
 
--- Needed for hold rotation
 local HoldCount = {0,0};
 function HoldEvenOdd(player)
 	local PX = (player == PLAYER_1) and 1 or 2;

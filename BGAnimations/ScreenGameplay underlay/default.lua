@@ -37,9 +37,9 @@ for player in ivalues(Players) do
 		Condition=isOni() and isLifeline(player);
 		InitCommand=function(self)
 			if player == PLAYER_1 then
-				self:x((SCREEN_LEFT+20)+GetLifebarAdjustment()):y(OffsetLifebarHeight(PLAYER_1))
+				self:x(SCREEN_LEFT+20):y(OffsetLifebarHeight(PLAYER_1))
 			else
-				self:x((SCREEN_RIGHT-20)-GetLifebarAdjustment()):y(OffsetLifebarHeight(PLAYER_2))
+				self:x(SCREEN_RIGHT-20):y(OffsetLifebarHeight(PLAYER_2))
 			end
 		end;
 	}

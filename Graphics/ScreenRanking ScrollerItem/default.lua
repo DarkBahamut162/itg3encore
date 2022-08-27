@@ -11,7 +11,6 @@ local t = Def.ActorFrame{
 		end;
 	};
 	LoadFont("_v 26px bold diffuse")..{
-		--maxwidth,264
 		InitCommand=function(self) self:x(-292):halign(0):zoom(0.6):shadowlength(1):wrapwidthpixels(264):maxheight(58) end;
 		SetCommand=function(self, params)
 			if params.Song then

@@ -32,7 +32,6 @@ return Def.ActorFrame{
 			local texwidth = self:GetWidth()
 			self:texcoordvelocity(0.45,0):zoomtowidth(SCREEN_WIDTH)
 			:customtexturerect(0,0,SCREEN_WIDTH/texwidth,1):ztest(true)
-			-- :bob():effectmagnitude(0,-80,0)
 		end
 	}
 }
