@@ -7,22 +7,16 @@ Branch.TitleScreen = function()
 	if GAMESTATE:GetCoinMode() == 'CoinMode_Home' then
 		return "ScreenTitleMenu"
 	end
-	-- workout menu
-	if MonthOfYear() == 4 and DayOfMonth() == 1 then
-		return "ScreenTitleAlt"
-	end
 	return "ScreenTitleJoin"
 end
 
 Branch.StartGame = function()
 	if GAMESTATE:GetCoinMode() == 'CoinMode_Home' then
-		-- check game mode to pick Style/NumPlayers
 		if isRave() then
 			return "ScreenSelectNumPlayers"
 		end
 		return "ScreenSelectStyle"
 	else
-		-- arcade mode!
 		if PREFSMAN:GetPreference("ShowCaution") then return "ScreenWarning" end
 		return "ScreenSelectGameMode"
 	end
