@@ -19,14 +19,13 @@ function GetPossible( stepsType )
 end
 
 function GetTotalPercentComplete( stepsType )
-	-- why 0.96? wtf
-	return GetActual(stepsType) / (0.96*GetPossible(stepsType))
+	return GetActual(stepsType) / GetPossible(stepsType)
 end
 
 function GetSongsPercentComplete( stepsType, difficulty )
-	return PROFILEMAN:GetMachineProfile():GetSongsPercentComplete(stepsType,difficulty)/0.96
+	return PROFILEMAN:GetMachineProfile():GetSongsPercentComplete(stepsType,difficulty)
 end
 
 function GetCoursesPercentComplete( stepsType, difficulty )
-	return PROFILEMAN:GetMachineProfile():GetCoursesPercentComplete(stepsType,difficulty)/0.96
+	return PROFILEMAN:GetMachineProfile():GetCoursesPercentComplete(stepsType,difficulty)
 end
