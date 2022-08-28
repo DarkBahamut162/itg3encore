@@ -1,16 +1,12 @@
-local stageRemap = {
-	Stage_1st	= 1, Stage_2nd	= 2, Stage_3rd	= 3,
-	Stage_4th	= 4, Stage_5th	= 5, Stage_6th	= 6
-}
 local curStage = GAMESTATE:GetCurrentStage()
 local songsPerPlay = PREFSMAN:GetPreference("SongsPerPlay")
-if stageRemap[curStage] == songsPerPlay then
+if curStage:gsub("%D+", "") == songsPerPlay then
 	curStage = 'Stage_Final'
 end
 if GAMESTATE:IsEventMode() then curStage = 'Stage_Event' end
 
-if stageRemap[curStage] then
-	curStage = stageRemap[curStage]
+if curStage:gsub("%D+", "") ~= "" then
+	curStage = curStage:gsub("%D+", "")
 else
 	curStage = ToEnumShortString(curStage)
 end
