@@ -1,6 +1,6 @@
 function ScreenCleaning()
 	if Hour() > 2 and Hour() < 7 and GetScreenCleaning() == true then return "ScreenNoise" end
-	return "ScreenCompany";
+	return "ScreenCompany"
 end
 
 Branch.TitleScreen = function()
@@ -81,10 +81,10 @@ Branch.AfterEvaluation = function()
 				return "ScreenProfileSaveSummary"
 			else
 				return "ScreenEvaluationSummary"
-			end;
+			end
 		else
 			return "ScreenProfileSave"
-		end;
+		end
 	elseif STATSMAN:GetCurStageStats():AllFailed() then
 		return "ScreenEvaluationSummary"
 	elseif GAMESTATE:IsCourseMode() then

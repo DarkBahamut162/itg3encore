@@ -13,7 +13,7 @@ local diffState = {
 	Difficulty_Hard = 3,
 	Difficulty_Challenge = 4,
 	Difficulty_Edit = 5,
-};
+}
 
 function DifficultyToState(diff)
 	return diffState[diff]
@@ -112,9 +112,9 @@ function PlayerFullComboed(pn)
 		local TotalSteps = StepsOrTrail:GetRadarValues(pn):GetValue('RadarCategory_TapsAndHolds')
 		local TotalHolds = StepsOrTrail:GetRadarValues(pn):GetValue('RadarCategory_Holds')
 		local TotalRolls = StepsOrTrail:GetRadarValues(pn):GetValue('RadarCategory_Rolls')
-		
+
 		if GetNotesHit(pn) == TotalSteps and GetHoldScore(pn, "HoldNoteScore_Held") == (TotalHolds + TotalRolls) then return true end
-	end	
+	end
 	return false
 end
 
@@ -129,10 +129,10 @@ function AnyPlayerFullComboed()
 	return output
 end
 
-local StepCount = {0,0};
+local StepCount = {0,0}
 function StepEvenOdd(player)
-	local PX = (player == PLAYER_1) and 1 or 2;
-	StepCount[PX]=StepCount[PX]+1;
+	local PX = (player == PLAYER_1) and 1 or 2
+	StepCount[PX]=StepCount[PX]+1
 	if StepCount[PX] % 2 == 0 then
 		return 1
 	else
@@ -140,10 +140,10 @@ function StepEvenOdd(player)
 	end
 end
 
-local HoldCount = {0,0};
+local HoldCount = {0,0}
 function HoldEvenOdd(player)
-	local PX = (player == PLAYER_1) and 1 or 2;
-	HoldCount[PX]=HoldCount[PX]+1;
+	local PX = (player == PLAYER_1) and 1 or 2
+	HoldCount[PX]=HoldCount[PX]+1
 	if HoldCount[PX] % 2 == 0 then
 		return 1
 	else

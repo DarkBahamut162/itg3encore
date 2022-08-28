@@ -4,7 +4,7 @@ function PlayerUsingBothSides()
 end
 
 function EvalX()
-	return 0;
+	return 0
 end
 
 function EvalTweenDistance()
@@ -22,7 +22,7 @@ end
 function PlayerMaxCombo(pn)
 	if GAMESTATE:IsPlayerEnabled(pn) then
 		return STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):MaxCombo()
-	end	
+	end
 	return -1
 end
 

@@ -1,5 +1,5 @@
 function GetActual( stepsType )
-	return 
+	return
 		PROFILEMAN:GetMachineProfile():GetSongsActual(stepsType,'Difficulty_Easy')+
 		PROFILEMAN:GetMachineProfile():GetSongsActual(stepsType,'Difficulty_Medium')+
 		PROFILEMAN:GetMachineProfile():GetSongsActual(stepsType,'Difficulty_Hard')+
@@ -9,7 +9,7 @@ function GetActual( stepsType )
 end
 
 function GetPossible( stepsType )
-	return 
+	return
 		PROFILEMAN:GetMachineProfile():GetSongsPossible(stepsType,'Difficulty_Easy')+
 		PROFILEMAN:GetMachineProfile():GetSongsPossible(stepsType,'Difficulty_Medium')+
 		PROFILEMAN:GetMachineProfile():GetSongsPossible(stepsType,'Difficulty_Hard')+

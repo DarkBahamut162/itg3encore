@@ -19,7 +19,7 @@ It's sources have being displayed down below.
 [In The Groove 3 (StepMania 5)](https://github.com/JoseVarelaP/itg3-sm5-revival)
 ---
 
-**Description:** A revival of the ITG3 theme for StepMania 5 
+**Description:** A revival of the ITG3 theme for StepMania 5
 
 **Date:** Mar 27th 2011 - Jan 20th 2021
 

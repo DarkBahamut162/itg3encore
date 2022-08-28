@@ -8,7 +8,7 @@ function Get2PlayerJoinMessage()
 		numSidesNotJoined = numSidesNotJoined - 1
 	end
 	local coinsRequiredToJoinRest = numSidesNotJoined * PREFSMAN:GetPreference("CoinsPerCredit")
-	local remaining = coinsRequiredToJoinRest - GAMESTATE:GetCoins();
+	local remaining = coinsRequiredToJoinRest - GAMESTATE:GetCoins()
 	local s = "For 2 Players, insert " .. remaining .. " more coin(s)"
 	if remaining > 1 then s = s.."s" end
 	return s
@@ -19,7 +19,7 @@ function GetCreditType()
 end
 
 function GetRandomSongNames(n)
-	local s = "";
+	local s = ""
 	for i = 1,n do
 		local song = SONGMAN:GetRandomSong()
 		if song then s = s..song:GetDisplayFullTitle().."\n" end
@@ -28,7 +28,7 @@ function GetRandomSongNames(n)
 end
 
 function GetRandomCourseNames(n)
-	local s = "";
+	local s = ""
 	for i = 1,n do
 		local course = SONGMAN:GetRandomCourse()
 		if course then s = s..course:GetDisplayFullTitle().."\n" end
@@ -52,7 +52,7 @@ function GetRandomModifierNames(n)
 		"Metal","Cel","Flat","Robot","Vivid"
 	}
 	mods = tableshuffle( mods )
-	local s = "";
+	local s = ""
 	for i = 1,math.min(n,table.getn(mods)) do
 		s = s .. mods[i] .. "\n"
 	end
@@ -99,39 +99,39 @@ function PercentAward( pn )
 end
 
 function StarIcon( Actor,pn )
-	local stars = StarAward( pn ); 
-	if stars < 10 then Actor:hidden(1) end 
-	if stars >= 10 then Actor:setstate(4) end 
-	if stars >= 25 then Actor:setstate(5) end 
-	if stars >= 50 then Actor:setstate(6) end 
-	if stars >= 100 then Actor:setstate(7) end 
+	local stars = StarAward( pn )
+	if stars < 10 then Actor:hidden(1) end
+	if stars >= 10 then Actor:setstate(4) end
+	if stars >= 25 then Actor:setstate(5) end
+	if stars >= 50 then Actor:setstate(6) end
+	if stars >= 100 then Actor:setstate(7) end
 end
 
-function QuadIcon( Actor,pn ) 
-	local quads = QuadAward( pn ); 
-	if quads < 10 then Actor:hidden(1) end 
-	if quads >= 10 then Actor:setstate(8) end 
-	if quads >= 25 then Actor:setstate(9) end 
-	if quads >= 50 then Actor:setstate(10) end 
-	if quads >= 100 then Actor:setstate(11) end 
+function QuadIcon( Actor,pn )
+	local quads = QuadAward( pn )
+	if quads < 10 then Actor:hidden(1) end
+	if quads >= 10 then Actor:setstate(8) end
+	if quads >= 25 then Actor:setstate(9) end
+	if quads >= 50 then Actor:setstate(10) end
+	if quads >= 100 then Actor:setstate(11) end
 end
 
-function PercentIcon( Actor,pn ) 
-	local perc = PercentAward( pn ); 
-	if perc < 500 then Actor:hidden(1) end 
-	if perc >= 500 then Actor:setstate(0) end 
-	if perc >= 2500 then Actor:setstate(1) end 
-	if perc >= 7500 then Actor:setstate(2) end 
-	if perc >= 15000 then Actor:setstate(3) end 
+function PercentIcon( Actor,pn )
+	local perc = PercentAward( pn )
+	if perc < 500 then Actor:hidden(1) end
+	if perc >= 500 then Actor:setstate(0) end
+	if perc >= 2500 then Actor:setstate(1) end
+	if perc >= 7500 then Actor:setstate(2) end
+	if perc >= 15000 then Actor:setstate(3) end
 end
 
-function CalorieIcon( Actor,pn ) 
-	local cals = CalorieAward( pn ); 
-	if cals < 250 then Actor:hidden(1) end 
-	if cals >= 250 then Actor:setstate(12) end 
-	if cals >= 750 then Actor:setstate(13) end 
-	if cals >= 1500 then Actor:setstate(14) end 
-	if cals >= 3000 then Actor:setstate(15) end 
+function CalorieIcon( Actor,pn )
+	local cals = CalorieAward( pn )
+	if cals < 250 then Actor:hidden(1) end
+	if cals >= 250 then Actor:setstate(12) end
+	if cals >= 750 then Actor:setstate(13) end
+	if cals >= 1500 then Actor:setstate(14) end
+	if cals >= 3000 then Actor:setstate(15) end
 end
 
 function getProfileSongs( pn )

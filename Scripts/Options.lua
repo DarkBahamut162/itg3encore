@@ -44,7 +44,7 @@ function SongMods()
 end
 
 function getPercentValues()
-	local temp = "";
+	local temp = ""
 	for i=0,10 do
 		temp = temp .. (i*10) .. "%"
 		if i < 10 then temp = temp .. "," end
@@ -134,7 +134,7 @@ function OptionUnderFieldOptions()
 			setenv("UnderCombo"..ToEnumShortString(pn),list[1])
 			setenv("UnderTapJudgments"..ToEnumShortString(pn),list[2])
 			setenv("UnderHoldJudgments"..ToEnumShortString(pn),list[3])
-		end,
+		end
 	}
 	setmetatable(t, t)
 	return t
@@ -157,7 +157,7 @@ function OptionTournamentOptions()
 			setenv("HideScore"..ToEnumShortString(pn),list[1])
 			setenv("HideCombo"..ToEnumShortString(pn),list[2])
 			setenv("HideLife"..ToEnumShortString(pn),list[3])
-		end,
+		end
 	}
 	setmetatable(t, t)
 	return t
@@ -256,15 +256,15 @@ function OptionOrientation()
 			list[3] = getenv("RotationRight"..ToEnumShortString(pn))
 			list[4] = getenv("RotationUpsideDown"..ToEnumShortString(pn))
 			if GAMESTATE:GetNumPlayersEnabled() == 1 then list[5] = getenv("RotationSolo"..ToEnumShortString(pn)) end
-		end;
+		end,
 		SaveSelections = function(self, list, pn)
 			setenv("RotationNormal"..ToEnumShortString(pn),list[1])
 			setenv("RotationLeft"..ToEnumShortString(pn),list[2])
 			setenv("RotationRight"..ToEnumShortString(pn),list[3])
 			setenv("RotationUpsideDown"..ToEnumShortString(pn),list[4])
 			if GAMESTATE:GetNumPlayersEnabled() == 1 then setenv("RotationSolo"..ToEnumShortString(pn),list[5]) end
-		end;
-	};
+		end
+	}
 	setmetatable(t, t)
 	return t
 end
@@ -284,7 +284,7 @@ function OptionPlayfield()
 			list[4] = getenv("EffectBounce"..ToEnumShortString(pn))
 			list[5] = getenv("EffectPulse"..ToEnumShortString(pn))
 			list[6] = getenv("EffectWag"..ToEnumShortString(pn))
-		end;
+		end,
 		SaveSelections = function(self, list, pn)
 			setenv("EffectVibrate"..ToEnumShortString(pn),list[1])
 			setenv("EffectSpin"..ToEnumShortString(pn),list[2])
@@ -292,8 +292,8 @@ function OptionPlayfield()
 			setenv("EffectBounce"..ToEnumShortString(pn),list[4])
 			setenv("EffectPulse"..ToEnumShortString(pn),list[5])
 			setenv("EffectWag"..ToEnumShortString(pn),list[6])
-		end;
-	};
+		end
+	}
 	setmetatable(t, t)
 	return t
 end
@@ -322,8 +322,8 @@ function OptionRowScreenFilter()
 				if list[i] then val = (i-1)/10 end
 			end
 			setenv("ScreenFilter"..ToEnumShortString(pn),val)
-		end,
-	};
+		end
+	}
 	setmetatable(t, t)
 	return t
 end
@@ -336,21 +336,21 @@ end
 
 function GetRateMod()
 	if GetRateModHelper('1.0') then return ''
-	elseif GetRateModHelper('0.5') then return '0.5x Rate' 
-	elseif GetRateModHelper('0.6') then return '0.6x Rate' 
-	elseif GetRateModHelper('0.7') then return '0.7x Rate' 
-	elseif GetRateModHelper('0.8') then return '0.8x Rate' 
-	elseif GetRateModHelper('0.9') then return '0.9x Rate' 
-	elseif GetRateModHelper('1.1') then return '1.1x Rate' 
-	elseif GetRateModHelper('1.2') then return '1.2x Rate' 
-	elseif GetRateModHelper('1.3') then return '1.3x Rate' 
-	elseif GetRateModHelper('1.4') then return '1.4x Rate' 
-	elseif GetRateModHelper('1.5') then return '1.5x Rate' 
-	elseif GetRateModHelper('1.6') then return '1.6x Rate' 
-	elseif GetRateModHelper('1.7') then return '1.7x Rate' 
-	elseif GetRateModHelper('1.8') then return '1.8x Rate' 
-	elseif GetRateModHelper('1.9') then return '1.9x Rate' 
-	elseif GetRateModHelper('2.0') then return '2.0x Rate' 
+	elseif GetRateModHelper('0.5') then return '0.5x Rate'
+	elseif GetRateModHelper('0.6') then return '0.6x Rate'
+	elseif GetRateModHelper('0.7') then return '0.7x Rate'
+	elseif GetRateModHelper('0.8') then return '0.8x Rate'
+	elseif GetRateModHelper('0.9') then return '0.9x Rate'
+	elseif GetRateModHelper('1.1') then return '1.1x Rate'
+	elseif GetRateModHelper('1.2') then return '1.2x Rate'
+	elseif GetRateModHelper('1.3') then return '1.3x Rate'
+	elseif GetRateModHelper('1.4') then return '1.4x Rate'
+	elseif GetRateModHelper('1.5') then return '1.5x Rate'
+	elseif GetRateModHelper('1.6') then return '1.6x Rate'
+	elseif GetRateModHelper('1.7') then return '1.7x Rate'
+	elseif GetRateModHelper('1.8') then return '1.8x Rate'
+	elseif GetRateModHelper('1.9') then return '1.9x Rate'
+	elseif GetRateModHelper('2.0') then return '2.0x Rate'
 	else return '(Unknown rate mod)' end
 end
 
@@ -368,7 +368,7 @@ function DisplayCustomModifiersText(pn)
 			if getenv("UnderHoldJudgments"..ToEnumShortString(pn)) then if t == "" then t = "Under Hold Judgments" else t = t .. ", Under Hold Judgments" end end
 		end
 	end
-	
+
 	if getenv("HideScore"..ToEnumShortString(pn)) and getenv("HideLife"..ToEnumShortString(pn)) and getenv("HideCombo"..ToEnumShortString(pn)) then
 		if t == "" then t = "Hide All" else t = t .. ", Hide All" end
 	else
@@ -382,11 +382,11 @@ function DisplayCustomModifiersText(pn)
 	if getenv("RotationUpsideDown"..ToEnumShortString(pn)) then if t == "" then t = "Rotated Downward" else t = t .. ", Rotated Downward" end end
 	if getenv("RotationSolo"..ToEnumShortString(pn)) then if t == "" then t = "Centered" else t = t .. ", Centered" end end
 
-	if getenv("EffectWag"..ToEnumShortString(pn)) then if t == "" then t = "Wag" else t = t .. ", Wag" end 
-	elseif getenv("EffectPulse"..ToEnumShortString(pn)) then if t == "" then t = "Pulse" else t = t .. ", Pulse" end 
-	elseif getenv("EffectBounce"..ToEnumShortString(pn)) then if t == "" then t = "Bounce" else t = t .. ", Bounce" end 
-	elseif getenv("EffectSpinReverse"..ToEnumShortString(pn)) then if t == "" then t = "Spin Left" else t = t .. ", Spin Left" end 
-	elseif getenv("EffectSpin"..ToEnumShortString(pn)) then if t == "" then t = "Spin Right" else t = t .. ", Spin Right" end 
+	if getenv("EffectWag"..ToEnumShortString(pn)) then if t == "" then t = "Wag" else t = t .. ", Wag" end
+	elseif getenv("EffectPulse"..ToEnumShortString(pn)) then if t == "" then t = "Pulse" else t = t .. ", Pulse" end
+	elseif getenv("EffectBounce"..ToEnumShortString(pn)) then if t == "" then t = "Bounce" else t = t .. ", Bounce" end
+	elseif getenv("EffectSpinReverse"..ToEnumShortString(pn)) then if t == "" then t = "Spin Left" else t = t .. ", Spin Left" end
+	elseif getenv("EffectSpin"..ToEnumShortString(pn)) then if t == "" then t = "Spin Right" else t = t .. ", Spin Right" end
 	elseif getenv("EffectVibrate"..ToEnumShortString(pn)) then if t == "" then t = "Vibrate" else t = t .. ", Vibrate" end end
 
 	if getenv("ShowMods"..ToEnumShortString(pn)) then if t == "" then t = "Show Mods" else t = t .. ", Show Mods" end end
