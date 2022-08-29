@@ -1,4 +1,4 @@
-local gc = Var("GameCommand");
+local gc = Var("GameCommand")
 local itemColors = {
 	Dance = color("#01DE20"),
 	Battle = color("#DE0101"),

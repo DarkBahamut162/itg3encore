@@ -5,7 +5,7 @@ local t = Def.ActorFrame{
 	};
 };
 
-local prof = PROFILEMAN:GetMachineProfile();
+local prof = PROFILEMAN:GetMachineProfile()
 
 local stats = {
 	{ Difficulty='Difficulty_Easy', },

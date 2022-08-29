@@ -1,5 +1,5 @@
 local transform = function(self,offsetFromCenter,itemIndex,numitems)
-	self:y( offsetFromCenter * 44 );
+	self:y( offsetFromCenter * 44 )
 	if offsetFromCenter < -1 or offsetFromCenter > 5 then
 		self:diffusealpha(0)
 	else
@@ -12,13 +12,13 @@ return Def.CourseContentsList {
 	ShowCommand=function(self) self:linear(0.3):zoomy(1) end;
 	HideCommand=function(self) self:linear(0.3):zoomy(0) end;
 	SetCommand=function(self)
-		self:SetFromGameState();
-		self:SetCurrentAndDestinationItem(0);
-		self:SetPauseCountdownSeconds(2);
-		self:SetSecondsPauseBetweenItems( 0.5 );
-		self:SetTransformFromFunction(transform);
-		self:SetDestinationItem( math.max(0,self:GetNumItems() - 4) );
-		self:SetLoop(false);
+		self:SetFromGameState()
+		self:SetCurrentAndDestinationItem(0)
+		self:SetPauseCountdownSeconds(2)
+		self:SetSecondsPauseBetweenItems( 0.5 )
+		self:SetTransformFromFunction(transform)
+		self:SetDestinationItem( math.max(0,self:GetNumItems() - 4) )
+		self:SetLoop(false)
 	end;
 	CurrentTrailP1ChangedMessageCommand=function(self) self:playcommand("Set") end;
 	CurrentTrailP2ChangedMessageCommand=function(self) self:playcommand("Set") end;
@@ -29,20 +29,20 @@ return Def.CourseContentsList {
 			InitCommand=function(self) self:x(-145):zoom(0.8):shadowlength(0):halign(1) end;
 			SetSongCommand=function(self, params)
 				if params.PlayerNumber ~= GAMESTATE:GetMasterPlayerNumber() then return end
-				self:settext( params.Meter );
-				self:diffuse( DifficultyToColor(params.Difficulty) );
-				self:finishtweening():zoomy(0):sleep(0.125*params.Number):linear(0.125):zoomy(1.1):linear(0.05):zoomx(1.1):decelerate(0.1):zoom(1);
+				self:settext( params.Meter )
+				self:diffuse( DifficultyToColor(params.Difficulty) )
+				self:finishtweening():zoomy(0):sleep(0.125*params.Number):linear(0.125):zoomy(1.1):linear(0.05):zoomx(1.1):decelerate(0.1):zoom(1)
 			end;
 		};
 		Def.TextBanner{
 			InitCommand=function(self) self:Load("CourseTextBanner"):zoom(0.75):halign(0):SetFromString("", "", "", "", "", "") end;
 			SetSongCommand=function(self, params)
 				if not params.Song or params.Secret then
-					self:SetFromString( "??????????", "??????????", "", "", "", "" );
+					self:SetFromString( "??????????", "??????????", "", "", "", "" )
 				else
-					self:SetFromSong( params.Song );
+					self:SetFromSong( params.Song )
 				end
-				self:finishtweening():zoomy(0):sleep(0.125*params.Number):linear(0.125):zoomy(1.1):linear(0.05):zoomx(1.1):decelerate(0.1):zoom(1);
+				self:finishtweening():zoomy(0):sleep(0.125*params.Number):linear(0.125):zoomy(1.1):linear(0.05):zoomx(1.1):decelerate(0.1):zoom(1)
 			end;
 		};
 		Def.Quad{

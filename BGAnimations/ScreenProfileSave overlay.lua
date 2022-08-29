@@ -7,10 +7,10 @@ return Def.ActorFrame{
 	};
 	Def.Actor{
 		BeginCommand=function(self)
-			if SCREENMAN:GetTopScreen():HaveProfileToSave() then self:sleep(1.5); end;
-			self:queuecommand("Load");
+			if SCREENMAN:GetTopScreen():HaveProfileToSave() then self:sleep(1.5) end;
+			self:queuecommand("Load")
 		end;
-		LoadCommand=function() SCREENMAN:GetTopScreen():Continue(); end;
+		LoadCommand=function() SCREENMAN:GetTopScreen():Continue() end;
 	};
 	LoadActor("_disk")..{
 		InitCommand=function(self) self:x(SCREEN_CENTER_X-120):CenterY() end;

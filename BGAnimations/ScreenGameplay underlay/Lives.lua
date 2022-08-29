@@ -11,7 +11,7 @@ return Def.ActorFrame{
 	end;
 
 	Def.ActorFrame{
-		InitCommand=function(self) self:rotationz(-90):zoom(2):addx(player == PLAYER_1 and -100 or 100); end;
+		InitCommand=function(self) self:rotationz(-90):zoom(2):addx(player == PLAYER_1 and -100 or 100) end;
 		OnCommand=function(self) self:decelerate(0.8):addx(player == PLAYER_1 and 100 or -100) end;
 		OffCommand=function(self)
 			if AnyPlayerFullComboed() then self:sleep(1) end
@@ -30,9 +30,9 @@ return Def.ActorFrame{
 			InitCommand=function(self) self:zoomx(1.04):cropright(1):sleep(1):decelerate(0.6):cropright(0) end;
 			LifeChangedMessageCommand=function(self,params)
 				if params.Player == player then
-					local screen = SCREENMAN:GetTopScreen();
-					local glifemeter = screen:GetLifeMeter(player);
-					self:stoptweening():accelerate(0.1):cropright(1-(params.LivesLeft/glifemeter:GetTotalLives()));
+					local screen = SCREENMAN:GetTopScreen()
+					local glifemeter = screen:GetLifeMeter(player)
+					self:stoptweening():accelerate(0.1):cropright(1-(params.LivesLeft/glifemeter:GetTotalLives()))
 				end;
 			end;
 		};
@@ -61,7 +61,7 @@ return Def.ActorFrame{
 	};
 
 	Def.ActorFrame{
-		InitCommand=function(self) self:addx(player == PLAYER_1 and -100 or 100); end;
+		InitCommand=function(self) self:addx(player == PLAYER_1 and -100 or 100) end;
 		OnCommand=function(self) self:decelerate(0.8):addx(player == PLAYER_1 and 100 or -100) end;
 		OffCommand=function(self) self:accelerate(0.8):addx(player == PLAYER_1 and -100 or 100) end;
 		HealthStateChangedMessageCommand=function(self, param)
@@ -72,33 +72,33 @@ return Def.ActorFrame{
 		end;
 		LoadFont("_angel glow")..{
 			BeginCommand=function(self)
-				local screen = SCREENMAN:GetTopScreen();
-				local glifemeter = screen:GetLifeMeter(player);
-				self:settext(glifemeter:GetTotalLives());
-				self:x(-1):y(-5):maxwidth(28);
-				self:valign(1):halign(0.5);
+				local screen = SCREENMAN:GetTopScreen()
+				local glifemeter = screen:GetLifeMeter(player)
+				self:settext(glifemeter:GetTotalLives())
+				self:x(-1):y(-5):maxwidth(28)
+				self:valign(1):halign(0.5)
 			end;
 			LifeChangedMessageCommand=function(self,params)
 				if params.Player == player then
-					self:settext(params.LivesLeft);
+					self:settext(params.LivesLeft)
 				end;
 			end;
 		};
 		LoadFont("_angel glow")..{
 			BeginCommand=function(self)
-				self:settext("_");
-				self:x(-1):y(-12);
-				self:valign(0.5):halign(0.5);
-				self:zoomx(2);
+				self:settext("_")
+				self:x(-1):y(-12)
+				self:valign(0.5):halign(0.5)
+				self:zoomx(2)
 			end;
 		};
 		LoadFont("_angel glow")..{
 			BeginCommand=function(self)
-				local screen = SCREENMAN:GetTopScreen();
-				local glifemeter = screen:GetLifeMeter(player);
-				self:settext(glifemeter:GetTotalLives());
-				self:x(-1):y(5):maxwidth(28);
-				self:valign(0):halign(0.5);
+				local screen = SCREENMAN:GetTopScreen()
+				local glifemeter = screen:GetLifeMeter(player)
+				self:settext(glifemeter:GetTotalLives())
+				self:x(-1):y(5):maxwidth(28)
+				self:valign(0):halign(0.5)
 			end;
 		};
 	};

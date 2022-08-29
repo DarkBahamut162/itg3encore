@@ -5,15 +5,15 @@ return Def.ActorFrame{
 		CoinModeChangedMessageCommand=function(self) self:playcommand("Refresh") end;
 		RefreshCommand=function(self)
 			if GAMESTATE:GetCoinMode()=='CoinMode_Home' then
-				self:settext('');
+				self:settext('')
 				return
 			end
 			local coins=GAMESTATE:GetCoins()
 			local coinsPerCredit=PREFSMAN:GetPreference('CoinsPerCredit')
 			if coins >= coinsPerCredit or GAMESTATE:GetCoinMode()=='CoinMode_Free' then
-				self:playcommand("PressStart");
+				self:playcommand("PressStart")
 			else
-				self:playcommand("InsertCoin");
+				self:playcommand("InsertCoin")
 			end
 		end;
 		InsertCoinCommand=function(self) self:settext(GetCreditType()):diffuseshift():effectcolor1(color("0,0,0,0.3")):effectcolor2(color("0,0,0,0")):effectperiod(2) end;
@@ -25,15 +25,15 @@ return Def.ActorFrame{
 		CoinModeChangedMessageCommand=function(self) self:playcommand("Refresh") end;
 		RefreshCommand=function(self)
 			if GAMESTATE:GetCoinMode()=='CoinMode_Home' then
-				self:settext('');
+				self:settext('')
 				return
 			end
 			local coins=GAMESTATE:GetCoins()
 			local coinsPerCredit=PREFSMAN:GetPreference('CoinsPerCredit')
 			if coins >= coinsPerCredit or GAMESTATE:GetCoinMode()=='CoinMode_Free' then
-				self:playcommand("PressStart");
+				self:playcommand("PressStart")
 			else
-				self:playcommand("InsertCoin");
+				self:playcommand("InsertCoin")
 			end
 		end;
 		InsertCoinCommand=function(self) self:settext(GetCreditType()):diffuseshift():effectcolor1(color("1,1,1,0.2")):effectcolor2(color("1,1,1,1")):effectperiod(2) end;
@@ -71,9 +71,9 @@ return Def.ActorFrame{
 			local coins=GAMESTATE:GetCoins()
 			local coinsPerCredit=PREFSMAN:GetPreference('CoinsPerCredit')
 			if coins >= coinsPerCredit or GAMESTATE:GetCoinMode()=='CoinMode_Free' then
-				self:playcommand("PressStart");
+				self:playcommand("PressStart")
 			else
-				self:playcommand("InsertCoin");
+				self:playcommand("InsertCoin")
 			end
 		end;
 		InsertCoinCommand=function(self) self:visible(false) end;
@@ -88,9 +88,9 @@ return Def.ActorFrame{
 			local coins=GAMESTATE:GetCoins()
 			local coinsPerCredit=PREFSMAN:GetPreference('CoinsPerCredit')
 			if coins >= coinsPerCredit or GAMESTATE:GetCoinMode()=='CoinMode_Free' then
-				self:playcommand("PressStart");
+				self:playcommand("PressStart")
 			else
-				self:playcommand("InsertCoin");
+				self:playcommand("InsertCoin")
 			end
 		end;
 		InsertCoinCommand=function(self) self:visible(false) end;
@@ -105,9 +105,9 @@ return Def.ActorFrame{
 			local coins=GAMESTATE:GetCoins()
 			local coinsPerCredit=PREFSMAN:GetPreference('CoinsPerCredit')
 			if coins >= coinsPerCredit or GAMESTATE:GetCoinMode()=='CoinMode_Free' then
-				self:playcommand("PressStart");
+				self:playcommand("PressStart")
 			else
-				self:playcommand("InsertCoin");
+				self:playcommand("InsertCoin")
 			end
 		end;
 		InsertCoinCommand=function(self) self:visible(false) end;
@@ -122,9 +122,9 @@ return Def.ActorFrame{
 			local coins=GAMESTATE:GetCoins()
 			local coinsPerCredit=PREFSMAN:GetPreference('CoinsPerCredit')
 			if coins >= coinsPerCredit or GAMESTATE:GetCoinMode()=='CoinMode_Free' then
-				self:playcommand("PressStart");
+				self:playcommand("PressStart")
 			else
-				self:playcommand("InsertCoin");
+				self:playcommand("InsertCoin")
 			end
 		end;
 		InsertCoinCommand=function(self) self:visible(false) end;

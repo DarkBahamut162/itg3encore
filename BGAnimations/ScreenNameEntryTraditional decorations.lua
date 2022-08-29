@@ -73,7 +73,7 @@ for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
 	};
 end
 
-t[#t+1] = StandardDecorationFromFile("Banner","Banner");
+t[#t+1] = StandardDecorationFromFile("Banner","Banner")
 
 for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
 	if getenv("HighScoreable"..ToEnumShortString(pn)) then

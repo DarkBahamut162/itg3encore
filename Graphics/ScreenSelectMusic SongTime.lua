@@ -3,20 +3,20 @@ return LoadFont("_r bold bevel numbers")..{
 		local curSelection = nil;
 		local length = 0.0;
 		if GAMESTATE:IsCourseMode() then
-			curSelection = GAMESTATE:GetCurrentCourse();
+			curSelection = GAMESTATE:GetCurrentCourse()
 			if curSelection then
-				local trail = GAMESTATE:GetCurrentTrail(GAMESTATE:GetMasterPlayerNumber());
+				local trail = GAMESTATE:GetCurrentTrail(GAMESTATE:GetMasterPlayerNumber())
 				if trail then
-					length = TrailUtil.GetTotalSeconds(trail);
+					length = TrailUtil.GetTotalSeconds(trail)
 				end;
 			end;
 		else
-			curSelection = GAMESTATE:GetCurrentSong();
+			curSelection = GAMESTATE:GetCurrentSong()
 			if curSelection then
-				length = curSelection:MusicLengthSeconds();
+				length = curSelection:MusicLengthSeconds()
 			end;
 		end;
-		self:settext( SecondsToMMSSMsMs(length) );
+		self:settext( SecondsToMMSSMsMs(length) )
 	end;
 	CurrentSongChangedMessageCommand=function(self) self:queuecommand("Set") end;
 	CurrentCourseChangedMessageCommand=function(self) self:queuecommand("Set") end;

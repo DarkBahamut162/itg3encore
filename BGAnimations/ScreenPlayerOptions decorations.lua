@@ -5,9 +5,6 @@ for pn in ivalues(PlayerNumber) do
 		t[#t+1] = StandardDecorationFromFile("Disqualify"..ToEnumShortString(pn), "Disqualify")..{
 			UpdateCommand=function(self)
 				local disqualify = GAMESTATE:CurrentOptionsDisqualifyPlayer(pn)
-				if disqualify then
-					Trace("player "..ToEnumShortString(pn).." is gonna get dairy queen'd");
-				end
 				self:diffusealpha(disqualify and 1 or 0)
 			end;
 			ChangeValueMessageCommand=function(self,param)

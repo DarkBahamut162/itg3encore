@@ -13,7 +13,7 @@ return Def.ActorFrame{
 		Def.BitmapText{
 			Font="_r bold shadow 30px",
 			Text="????",
-			InitCommand=function(self) local s=SecondsToMSSMsMs( STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_1):GetSurvivalSeconds() ); self:settext(s) end,
+			InitCommand=function(self) local s=SecondsToMSSMsMs( STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_1):GetSurvivalSeconds() ) self:settext(s) end,
 			OnCommand=function(self) self:shadowlength(0):x(10):y(10):zoom(0.8):diffusebottomedge(0.7,0.7,0.7,1) end
 		},
 	};
@@ -30,7 +30,7 @@ return Def.ActorFrame{
 		Def.BitmapText{
 			Font="_r bold shadow 30px",
 			Text="????",
-			InitCommand=function(self) local s=SecondsToMSSMsMs( STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_2):GetSurvivalSeconds() ); self:settext(s) end,
+			InitCommand=function(self) local s=SecondsToMSSMsMs( STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_2):GetSurvivalSeconds() ) self:settext(s) end,
 			OnCommand=function(self) self:shadowlength(0):x(10):y(10):zoom(0.8):diffusebottomedge(0.7,0.7,0.7,1) end,
 		},
 	}

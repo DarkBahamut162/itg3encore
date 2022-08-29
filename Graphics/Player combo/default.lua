@@ -1,11 +1,11 @@
 local c;
 local player = Var "Player";
-local ShowComboAt = THEME:GetMetric("Combo", "ShowComboAt");
-local Pulse = THEME:GetMetric("Combo", "PulseCommand");
+local ShowComboAt = THEME:GetMetric("Combo", "ShowComboAt")
+local Pulse = THEME:GetMetric("Combo", "PulseCommand")
 
-local NumberMinZoom = THEME:GetMetric("Combo", "NumberMinZoom");
-local NumberMaxZoom = THEME:GetMetric("Combo", "NumberMaxZoom");
-local NumberMaxZoomAt = THEME:GetMetric("Combo", "NumberMaxZoomAt");
+local NumberMinZoom = THEME:GetMetric("Combo", "NumberMinZoom")
+local NumberMaxZoom = THEME:GetMetric("Combo", "NumberMaxZoom")
+local NumberMaxZoomAt = THEME:GetMetric("Combo", "NumberMaxZoomAt")
 
 local ComboW1 = THEME:GetMetric("Combo","FullComboW1Command")
 local ComboW2 = THEME:GetMetric("Combo","FullComboW2Command")
@@ -16,29 +16,29 @@ local ComboMiss = THEME:GetMetric("Combo","MissComboCommand")
 return Def.ActorFrame {
 	LoadFont( "Combo", "numbers" ) .. {
 		Name="Number";
-		OnCommand = THEME:GetMetric("Combo", "NumberOnCommand");
+		OnCommand=THEME:GetMetric("Combo", "NumberOnCommand");
 	};
 	LoadActor("_combo") .. {
 		Name="ComboLabel";
-		OnCommand = THEME:GetMetric("Combo", "LabelOnCommand");
+		OnCommand=THEME:GetMetric("Combo", "LabelOnCommand");
 	};
 	LoadActor("_misses") .. {
 		Name="MissesLabel";
-		OnCommand = THEME:GetMetric("Combo", "LabelOnCommand");
+		OnCommand=THEME:GetMetric("Combo", "LabelOnCommand");
 	};
 	InitCommand = function(self)
-		c = self:GetChildren();
-		c.Number:visible(false);
-		c.ComboLabel:visible(false);
-		c.MissesLabel:visible(false);
+		c = self:GetChildren()
+		c.Number:visible(false)
+		c.ComboLabel:visible(false)
+		c.MissesLabel:visible(false)
 	end;
 
 	ComboCommand=function(self, param)
 		local iCombo = param.Misses or param.Combo;
 		if not iCombo or iCombo < ShowComboAt then
-			c.Number:visible(false);
-			c.ComboLabel:visible(false);
-			c.MissesLabel:visible(false);
+			c.Number:visible(false)
+			c.ComboLabel:visible(false)
+			c.MissesLabel:visible(false)
 			return;
 		end
 
@@ -52,13 +52,12 @@ return Def.ActorFrame {
 			c.ComboLabel:visible(false)
 		end
 
-		param.Zoom = scale( iCombo, 0, NumberMaxZoomAt, NumberMinZoom, NumberMaxZoom );
-		param.Zoom = clamp( param.Zoom, NumberMinZoom, NumberMaxZoom );
+		param.Zoom = scale( iCombo, 0, NumberMaxZoomAt, NumberMinZoom, NumberMaxZoom )
+		param.Zoom = clamp( param.Zoom, NumberMinZoom, NumberMaxZoom )
 
-		c.Number:visible(true);
-		Label:visible(true);
-
-		c.Number:settext( string.format("%i", iCombo) );
+		c.Number:visible(true)
+		Label:visible(true)
+		c.Number:settext( string.format("%i", iCombo) )
 
 		if param.FullComboW1 then ComboW1(c.Number) ComboW1(Label)
 		elseif param.FullComboW2 then ComboW2(c.Number) ComboW2(Label)
@@ -67,15 +66,15 @@ return Def.ActorFrame {
 		else ComboMiss(c.Number) ComboMiss(Label)
 		end
 
-		Pulse( c.Number, param );
-		Pulse( Label, param );
+		Pulse( c.Number, param )
+		Pulse( Label, param )
 		
 		local State = GAMESTATE:GetPlayerState(player)
 		local PlayerOptions = GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Preferred")
 		if State:GetHealthState() == "HealthState_Dead" and (PlayerOptions:FailSetting() == "FailType_Immediate") then
-			c.Number:visible(false);
-			c.ComboLabel:visible(false);
-			c.MissesLabel:visible(false);
+			c.Number:visible(false)
+			c.ComboLabel:visible(false)
+			c.MissesLabel:visible(false)
 		end
 	end;
 };

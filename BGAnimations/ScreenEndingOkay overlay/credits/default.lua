@@ -219,7 +219,7 @@ return Def.ActorFrame{
 		Def.ActorScroller{
 			SecondsPerItem=0.26,
 			NumItemsToDraw=23,
-			OnCommand=function(self) self:SetLoop(false):ScrollThroughAllItems():SetCurrentAndDestinationItem(-16):SetDestinationItem(#credits); end,
+			OnCommand=function(self) self:SetLoop(false):ScrollThroughAllItems():SetCurrentAndDestinationItem(-16):SetDestinationItem(#credits) end,
 			TransformFunction=function(self,offset,itemIndex,numItems)
 				self:y(offset*24):zoom(0.7):ztest(1)
 				if itemIndex <= 97 and itemIndex ~= 0 then self:zoom(1) end

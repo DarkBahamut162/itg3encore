@@ -48,8 +48,8 @@ return Def.ActorFrame{
 			elseif course then
 				local trail = GAMESTATE:GetCurrentTrail(player)
 				if trail then
-					num = trail:GetRadarValues(player):GetValue('RadarCategory_Jumps');
-					numSongs = TrailUtil.GetNumSongs(trail);
+					num = trail:GetRadarValues(player):GetValue('RadarCategory_Jumps')
+					numSongs = TrailUtil.GetNumSongs(trail)
 				end
 			end
 			if song or course then
@@ -103,8 +103,8 @@ return Def.ActorFrame{
 			elseif course then
 				local trail = GAMESTATE:GetCurrentTrail(player)
 				if trail then
-					num = trail:GetRadarValues(player):GetValue('RadarCategory_Holds');
-					numSongs = TrailUtil.GetNumSongs(trail);
+					num = trail:GetRadarValues(player):GetValue('RadarCategory_Holds')
+					numSongs = TrailUtil.GetNumSongs(trail)
 				end
 			end
 			if song or course then
@@ -158,8 +158,8 @@ return Def.ActorFrame{
 			elseif course then
 				local trail = GAMESTATE:GetCurrentTrail(player)
 				if trail then
-					num = trail:GetRadarValues(player):GetValue('RadarCategory_Mines');
-					numSongs = TrailUtil.GetNumSongs(trail);
+					num = trail:GetRadarValues(player):GetValue('RadarCategory_Mines')
+					numSongs = TrailUtil.GetNumSongs(trail)
 				end
 			end
 			if song or course then
@@ -213,8 +213,8 @@ return Def.ActorFrame{
 			elseif course then
 				local trail = GAMESTATE:GetCurrentTrail(player)
 				if trail then
-					num = trail:GetRadarValues(player):GetValue('RadarCategory_Hands');
-					numSongs = TrailUtil.GetNumSongs(trail);
+					num = trail:GetRadarValues(player):GetValue('RadarCategory_Hands')
+					numSongs = TrailUtil.GetNumSongs(trail)
 				end
 			end
 			if song or course then
@@ -268,8 +268,8 @@ return Def.ActorFrame{
 			elseif course then
 				local trail = GAMESTATE:GetCurrentTrail(player)
 				if trail then
-					num = trail:GetRadarValues(player):GetValue('RadarCategory_Rolls');
-					numSongs = TrailUtil.GetNumSongs(trail);
+					num = trail:GetRadarValues(player):GetValue('RadarCategory_Rolls')
+					numSongs = TrailUtil.GetNumSongs(trail)
 				end
 			end
 			if song or course then

@@ -57,7 +57,7 @@ return Def.ActorFrame{
 					CrossCommand=function(self) self:finishtweening():diffusealpha(1):zoom(1.4):linear(0.2):zoom(1):sleep(0.4):diffusealpha(0) end;
 					NoteCrossedMessageCommand=function(self,param)
 						if param.ButtonName == "Left" then
-							self:playcommand("Cross");
+							self:playcommand("Cross")
 						end
 					end;
 					NoteCrossedJumpMessageCommand=function(self) self:finishtweening():diffusealpha(0) end;
@@ -68,7 +68,7 @@ return Def.ActorFrame{
 					CrossCommand=function(self) self:finishtweening():diffusealpha(1):zoom(1.4):linear(0.2):zoom(1):sleep(0.4):diffusealpha(0) end;
 					NoteCrossedMessageCommand=function(self,param)
 						if param.ButtonName == "Right" then
-							self:playcommand("Cross");
+							self:playcommand("Cross")
 						end
 					end;
 					NoteCrossedJumpMessageCommand=function(self) self:finishtweening():diffusealpha(0) end;
@@ -79,7 +79,7 @@ return Def.ActorFrame{
 					CrossCommand=function(self) self:finishtweening():diffusealpha(1):zoom(1.4):linear(0.2):zoom(1):sleep(0.4):diffusealpha(0) end;
 					NoteCrossedMessageCommand=function(self,param)
 						if param.ButtonName == "Up" then
-							self:playcommand("Cross");
+							self:playcommand("Cross")
 						end
 					end;
 					NoteCrossedJumpMessageCommand=function(self) self:finishtweening():diffusealpha(0) end;
@@ -90,7 +90,7 @@ return Def.ActorFrame{
 					CrossCommand=function(self) self:finishtweening():diffusealpha(1):zoom(1.4):linear(0.2):zoom(1):sleep(0.4):diffusealpha(0) end;
 					NoteCrossedMessageCommand=function(self,param)
 						if param.ButtonName == "Down" then
-							self:playcommand("Cross");
+							self:playcommand("Cross")
 						end
 					end;
 					NoteCrossedJumpMessageCommand=function(self) self:finishtweening():diffusealpha(0) end;

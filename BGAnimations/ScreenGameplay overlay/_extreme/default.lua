@@ -56,7 +56,7 @@ return Def.ActorFrame{
 				if course then
 					text = course:GetDisplayFullTitle() .. " - " .. text;
 				end
-				self:settext(text);
+				self:settext(text)
 			end;
 		};
 	};

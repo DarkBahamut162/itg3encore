@@ -47,7 +47,7 @@ return Def.ActorFrame{
 		UpdateCommand=function(self)
 			local steps = GAMESTATE:GetCurrentSteps(GAMESTATE:GetMasterPlayerNumber())
 			if steps then
-				self:settext( GetCustomDifficulty(steps:GetStepsType(),steps:GetDifficulty(),nil) );
+				self:settext( GetCustomDifficulty(steps:GetStepsType(),steps:GetDifficulty(),nil) )
 				self:sleep(0.5)
 			end
 		end;

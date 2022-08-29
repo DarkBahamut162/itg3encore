@@ -14,8 +14,8 @@ local awardRef = {
 	["PeakComboAward_10000"]	= { File = THEME:GetPathG("_award","models/itg"), Color = "blue" },
 };
 
-local t = Def.ActorFrame{};
-local award = STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetPeakComboAward();
+local t = Def.ActorFrame{}
+local award = STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetPeakComboAward()
 
 if award then
 	t[#t+1] = LoadActor(awardRef[award].File,awardRef[award].Color)..{

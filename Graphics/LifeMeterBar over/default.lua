@@ -1,1 +1,1 @@
-return Def.ActorFrame{ LoadActor(GetSongFrame()); };
+return Def.ActorFrame{ LoadActor(GetSongFrame()) };

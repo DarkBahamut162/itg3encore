@@ -120,7 +120,7 @@ local totals = Def.ActorFrame{
 				if val >= 1 then
 					self:diffuseshift()
 				end;
-				self:effectcolor1(color("0.5,0.7,1,1"));
+				self:effectcolor1(color("0.5,0.7,1,1"))
 			end;
 		};
 		LoadActor( THEME:GetPathG("GradeDisplayEval",shortGrade) )..{

@@ -27,7 +27,7 @@ return Def.ActorFrame{
 					sel = GAMESTATE:GetCurrentSong()
 					if sel then self:LoadFromSong(sel) end
 				end
-				self:scaletoclipped(292,114);
+				self:scaletoclipped(292,114)
 			end;
 		};
 		LoadActor("_banner glass");

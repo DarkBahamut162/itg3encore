@@ -275,7 +275,7 @@ credits[#credits+1] = LoadFont("_r bold 30px")..{Text="THANK YOU FOR PLAYING!";}
 return Def.ActorScroller{
 	SecondsPerItem=0.275,
 	NumItemsToDraw=23,
-	OnCommand=function(self) self:SetLoop(false):ScrollThroughAllItems():SetCurrentAndDestinationItem(-10):SetDestinationItem(#credits); end,
+	OnCommand=function(self) self:SetLoop(false):ScrollThroughAllItems():SetCurrentAndDestinationItem(-10):SetDestinationItem(#credits) end,
 	TransformFunction=function(self,offset,itemIndex,numItems)
 		self:y(offset*24):zoom(0.7):ztest(1)
 		if creditsDiffuse[itemIndex] then

@@ -17,8 +17,8 @@ return Def.ActorFrame{
 		Name="PressStartP1";
 		InitCommand=function(self) self:x(SCREEN_LEFT+90):y(SCREEN_BOTTOM-44):playcommand("Refresh") end;
 		RefreshCommand=function(self)
-			if GAMESTATE:IsPlayerEnabled(PLAYER_1) then self:visible(false); return end
-			if GAMESTATE:GetCoinMode() == 'CoinMode_Home' then self:visible(true) return end;
+			if GAMESTATE:IsPlayerEnabled(PLAYER_1) then self:visible(false) return end
+			if GAMESTATE:GetCoinMode() == 'CoinMode_Home' then self:visible(true) return end
 			local coins=GAMESTATE:GetCoins()
 			local coinsPerCredit=PREFSMAN:GetPreference('CoinsPerCredit')
 			if coins >= coinsPerCredit or GAMESTATE:GetCoinMode()=='CoinMode_Free'
@@ -30,7 +30,7 @@ return Def.ActorFrame{
 		end;
 		PlayerJoinedMessageCommand=function(self,param)
 			if param.Player == PLAYER_1 then
-				self:RunCommandsOnChildren(function(self) self:playcommand("Joined") end);
+				self:RunCommandsOnChildren(function(self) self:playcommand("Joined") end)
 			end
 		end;
 
@@ -67,8 +67,8 @@ return Def.ActorFrame{
 		Name="PressStartP2";
 		InitCommand=function(self) self:x(SCREEN_RIGHT-90):y(SCREEN_BOTTOM-44):playcommand("Refresh") end;
 		RefreshCommand=function(self)
-			if GAMESTATE:IsPlayerEnabled(PLAYER_2) then self:visible(false); return end
-			if GAMESTATE:GetCoinMode() == 'CoinMode_Home' then self:visible(true) return end;
+			if GAMESTATE:IsPlayerEnabled(PLAYER_2) then self:visible(false) return end
+			if GAMESTATE:GetCoinMode() == 'CoinMode_Home' then self:visible(true) return end
 			local coins=GAMESTATE:GetCoins()
 			local coinsPerCredit=PREFSMAN:GetPreference('CoinsPerCredit')
 			if coins >= coinsPerCredit or GAMESTATE:GetCoinMode()=='CoinMode_Free'
@@ -80,7 +80,7 @@ return Def.ActorFrame{
 		end;
 		PlayerJoinedMessageCommand=function(self,param)
 			if param.Player == PLAYER_2 then
-				self:RunCommandsOnChildren(function(self) self:playcommand("Joined") end);
+				self:RunCommandsOnChildren(function(self) self:playcommand("Joined") end)
 			end
 		end;
 

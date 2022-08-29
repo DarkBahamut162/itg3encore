@@ -93,8 +93,8 @@ return Def.ActorFrame{
 			CurrentStepsP1ChangedMessageCommand=function(self) self:playcommand("Update") end;
 			CurrentTrailP1ChangedMessageCommand=function(self) self:playcommand("Update") end;
 			UpdateCommand=function(self)
-				local song = GAMESTATE:GetCurrentSong();
-				local course = GAMESTATE:GetCurrentCourse();
+				local song = GAMESTATE:GetCurrentSong()
+				local course = GAMESTATE:GetCurrentCourse()
 				local artist = ""
 				local result = ""
 				if song then
@@ -168,8 +168,8 @@ return Def.ActorFrame{
 			CurrentStepsP2ChangedMessageCommand=function(self) self:playcommand("Update") end;
 			CurrentTrailP2ChangedMessageCommand=function(self) self:playcommand("Update") end;
 			UpdateCommand=function(self)
-				local song = GAMESTATE:GetCurrentSong();
-				local course = GAMESTATE:GetCurrentCourse();
+				local song = GAMESTATE:GetCurrentSong()
+				local course = GAMESTATE:GetCurrentCourse()
 				local artist = ""
 				local result = ""
 				if song then

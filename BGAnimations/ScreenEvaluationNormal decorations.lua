@@ -1,4 +1,4 @@
-local t = LoadFallbackB();
+local t = LoadFallbackB()
 
 if ShowStandardDecoration("StepsDisplay") then
 	for pn in ivalues(PlayerNumber) do
@@ -26,7 +26,7 @@ if ShowStandardDecoration("StepsDisplay") then
 					end;
 				};
 			};
-			t[#t+1] = StandardDecorationFromTable("StepsDisplay"..ToEnumShortString(pn), t2);
+			t[#t+1] = StandardDecorationFromTable("StepsDisplay"..ToEnumShortString(pn), t2)
 		end
 	end
 end
@@ -35,9 +35,8 @@ for pn in ivalues(PlayerNumber) do
 	if GAMESTATE:IsPlayerEnabled(pn) then
 		t[#t+1] = LoadActor(THEME:GetPathG(Var "LoadingScreen", "MachineRecord"), pn ) .. {
 			InitCommand=function(self) 
-				self:player(pn); 
-				self:name("MachineRecord" .. PlayerNumberToString(pn)); 
-				ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen"); 
+				self:player(pn):name("MachineRecord" .. PlayerNumberToString(pn))
+				ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen")
 			end;
 		};
 	end
@@ -47,9 +46,8 @@ for pn in ivalues(PlayerNumber) do
 	if GAMESTATE:IsPlayerEnabled(pn) then
 		t[#t+1] = LoadActor(THEME:GetPathG(Var "LoadingScreen", "PersonalRecord"), pn)..{
 			InitCommand=function(self) 
-				self:player(pn); 
-				self:name("PersonalRecord" .. PlayerNumberToString(pn)); 
-				ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen"); 
+				self:player(pn):name("PersonalRecord" .. PlayerNumberToString(pn))
+				ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen")
 			end;
 		};
 	end
@@ -60,9 +58,8 @@ local function GraphDisplay(pn)
 		Def.GraphDisplay {
 			InitCommand=function(self) self:Load("GraphDisplay"..ToEnumShortString(pn)) end;
 			BeginCommand=function(self)
-				local ss = SCREENMAN:GetTopScreen():GetStageStats();
-				self:Set( ss, ss:GetPlayerStageStats(pn) );
-				self:player( pn );
+				local ss = SCREENMAN:GetTopScreen():GetStageStats()
+				self:Set( ss, ss:GetPlayerStageStats(pn) ):player( pn )
 			end
 		};
 	};
@@ -71,7 +68,7 @@ end
 if ShowStandardDecoration("GraphDisplay") then
 	for pn in ivalues(PlayerNumber) do
 		if GAMESTATE:IsPlayerEnabled(pn) then
-			t[#t+1] = StandardDecorationFromTable("GraphDisplay"..ToEnumShortString(pn), GraphDisplay(pn));
+			t[#t+1] = StandardDecorationFromTable("GraphDisplay"..ToEnumShortString(pn), GraphDisplay(pn))
 		end
 	end
 end
@@ -81,9 +78,8 @@ local function ComboGraph( pn )
 		Def.ComboGraph {
 			InitCommand=function(self) self:Load("ComboGraph"..ToEnumShortString(pn)) end;
 			BeginCommand=function(self)
-				local ss = SCREENMAN:GetTopScreen():GetStageStats();
-				self:Set( ss, ss:GetPlayerStageStats(pn) );
-				self:player( pn );
+				local ss = SCREENMAN:GetTopScreen():GetStageStats()
+				self:Set( ss, ss:GetPlayerStageStats(pn) ):player( pn )
 			end
 		};
 	};
@@ -92,7 +88,7 @@ end
 if ShowStandardDecoration("ComboGraph") then
 	for pn in ivalues(PlayerNumber) do
 		if GAMESTATE:IsPlayerEnabled(pn) then
-			t[#t+1] = StandardDecorationFromTable("ComboGraph"..ToEnumShortString(pn), ComboGraph(pn));
+			t[#t+1] = StandardDecorationFromTable("ComboGraph"..ToEnumShortString(pn), ComboGraph(pn))
 		end;
 	end;
 end;
@@ -100,8 +96,7 @@ end;
 local function StageAward( pn )
 	return LoadActor(THEME:GetPathG("ScreenEvaluation", "StageAward"), pn)..{
 		InitCommand=function(self) 
-			self:player(pn); 
-			self:name("StageAward"..ToEnumShortString(pn)); 
+			self:player(pn):name("StageAward"..ToEnumShortString(pn))
 		end;
 	};
 end
@@ -109,7 +104,7 @@ end
 if ShowStandardDecoration("StageAward") then
 	for pn in ivalues(PlayerNumber) do
 		if GAMESTATE:IsPlayerEnabled(pn) then
-			t[#t+1] = StandardDecorationFromTable("StageAward"..ToEnumShortString(pn), StageAward(pn));
+			t[#t+1] = StandardDecorationFromTable("StageAward"..ToEnumShortString(pn), StageAward(pn))
 		end;
 	end;
 end;
@@ -117,8 +112,7 @@ end;
 local function PeakComboAward( pn )
 	return LoadActor( THEME:GetPathG(Var "LoadingScreen", "PeakComboAward"), pn ) .. {
 		InitCommand=function(self) 
-			self:player(pn); 
-			self:name("PeakComboAward"..ToEnumShortString(pn)); 
+			self:player(pn):name("PeakComboAward"..ToEnumShortString(pn))
 		end;
 	};
 end
@@ -126,7 +120,7 @@ end
 if ShowStandardDecoration("PeakComboAward") then
 	for pn in ivalues(PlayerNumber) do
 		if GAMESTATE:IsPlayerEnabled(pn) then
-			t[#t+1] = StandardDecorationFromTable("PeakComboAward"..ToEnumShortString(pn), PeakComboAward(pn));
+			t[#t+1] = StandardDecorationFromTable("PeakComboAward"..ToEnumShortString(pn), PeakComboAward(pn))
 		end;
 	end;
 end;

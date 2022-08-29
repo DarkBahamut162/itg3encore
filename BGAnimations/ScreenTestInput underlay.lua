@@ -13,7 +13,7 @@ return Def.ActorFrame {
 	Def.InputList {
 		Font="Common Normal",
 		InitCommand=function (self)
-			self:x(SCREEN_LEFT+145):y(SCREEN_CENTER_Y):zoom(1):halign(0):vertspacing(8):maxwidth(560)
+			self:x(SCREEN_LEFT+145):y(SCREEN_CENTER_Y):maxheight(SCREEN_CENTER_Y):zoom(1):halign(0):vertspacing(8):maxwidth(560)
 		end
 	};
 };

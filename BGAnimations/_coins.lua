@@ -31,14 +31,7 @@ return Def.ActorFrame{
 		InitCommand=function(self) self:CenterX():y(SCREEN_BOTTOM-16):diffusealpha(0):horizalign(center):shadowlength(2):zoom(0.5) end;
 		OnCommand=function(self) self:playcommand("Refresh") end;
 		RefreshCommand=function(self)
-			self:diffusealpha(0);
-			self:zoom(0);
-			self:linear(0.08);
-			self:zoom(0.5);
-			self:diffusealpha(0.85);
-			self:sleep(0.08);
-			self:linear(0.1);
-			self:diffusealpha(0)
+			self:diffusealpha(0):zoom(0):linear(0.08):zoom(0.5):diffusealpha(0.85):sleep(0.08):linear(0.1):diffusealpha(0)
 		end;
 		CoinInsertedMessageCommand=function(self) self:stoptweening():playcommand("Refresh") end;
 	};

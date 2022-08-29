@@ -65,8 +65,8 @@ return Def.ActorFrame{
 				elseif course then
 					local trail = GAMESTATE:GetCurrentTrail(player)
 					if trail then
-						val = trail:GetRadarValues(player):GetValue('RadarCategory_TapsAndHolds');
-						numSongs = TrailUtil.GetNumSongs(trail);
+						val = trail:GetRadarValues(player):GetValue('RadarCategory_TapsAndHolds')
+						numSongs = TrailUtil.GetNumSongs(trail)
 					else
 						val = 0
 					end

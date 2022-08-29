@@ -1,6 +1,6 @@
 local player = ...
 assert(player,"[ScreenEvaluation StageAward] requires player")
-local award = STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetStageAward();
+local award = STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetStageAward()
 
 local awardRef = {
 	["StageAward_80PercentW3"]		= { File = THEME:GetPathG("_award","models/ribbon"), Color = "green" },
@@ -15,7 +15,7 @@ local awardRef = {
 	["StageAward_FullComboW1"]		= { File = THEME:GetPathG("_award","models/trophy"), Color = "bronze" },
 };
 
-local t = Def.ActorFrame{};
+local t = Def.ActorFrame{}
 
 if award and not STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetFailed() then
 	t[#t+1] = LoadActor(awardRef[award].File,awardRef[award].Color)..{

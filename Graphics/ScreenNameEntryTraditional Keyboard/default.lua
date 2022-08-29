@@ -20,11 +20,11 @@ end
 local KeyboardLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789?!."
 local scrollItems = {}
 for c in string.gmatch(KeyboardLetters,".") do
-	scrollItems[#scrollItems+1] = CreateScrollerItem(c);
+	scrollItems[#scrollItems+1] = CreateScrollerItem(c)
 end
 
-scrollItems[#scrollItems+1] = CreateScrollerItem("&leftarrow;","Back");
-scrollItems[#scrollItems+1] = CreateScrollerItem("&ok;","End");
+scrollItems[#scrollItems+1] = CreateScrollerItem("&leftarrow;","Back")
+scrollItems[#scrollItems+1] = CreateScrollerItem("&ok;","End")
 
 return Def.ActorFrame{
 	Name="KeyboardController"..PlayerNumberToString(Player),

@@ -1,7 +1,7 @@
-local t = LoadFallbackB();
+local t = LoadFallbackB()
 
-t[#t+1] = StandardDecorationFromFile("BannerReflection","BannerReflection");
-t[#t+1] = StandardDecorationFromFile("Triangle","Triangle");
+t[#t+1] = StandardDecorationFromFile("BannerReflection","BannerReflection")
+t[#t+1] = StandardDecorationFromFile("Triangle","Triangle")
 
 t[#t+1] = Def.FadingBanner{
 	InitCommand=function(self) self:x(SCREEN_CENTER_X+160-20):y(SCREEN_TOP+160-11):addx(SCREEN_WIDTH):decelerate(0.75):addx(-SCREEN_WIDTH):ztest(true):vertalign(bottom):playcommand("Set") end;
@@ -45,7 +45,7 @@ t[#t+1] = Def.FadingBanner{
 };
 
 local function StepsDisplay(pn)
-	local function set(self, player) self:SetFromGameState(player); end
+	local function set(self, player) self:SetFromGameState(player) end
 
 	local t = Def.StepsDisplay {
 		InitCommand=function(self) self:player(pn):Load("StepsDisplay",GAMESTATE:GetPlayerState(pn)) end;
@@ -56,11 +56,11 @@ local function StepsDisplay(pn)
 	};
 
 	if pn == PLAYER_1 then
-		t.CurrentStepsP1ChangedMessageCommand=function(self) set(self, pn); end;
-		t.CurrentTrailP1ChangedMessageCommand=function(self) set(self, pn); end;
+		t.CurrentStepsP1ChangedMessageCommand=function(self) set(self, pn) end;
+		t.CurrentTrailP1ChangedMessageCommand=function(self) set(self, pn) end;
 	else
-		t.CurrentStepsP2ChangedMessageCommand=function(self) set(self, pn); end;
-		t.CurrentTrailP2ChangedMessageCommand=function(self) set(self, pn); end;
+		t.CurrentStepsP2ChangedMessageCommand=function(self) set(self, pn) end;
+		t.CurrentTrailP2ChangedMessageCommand=function(self) set(self, pn) end;
 	end
 
 	return t;
@@ -69,9 +69,9 @@ end
 for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
 	t[#t+1] = StepsDisplay(pn) .. {
 		InitCommand=function(self)
-			self:player(pn);
-			self:name("StepsDisplay" .. PlayerNumberToString(pn));
-			ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen");
+			self:player(pn)
+			self:name("StepsDisplay" .. PlayerNumberToString(pn))
+			ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen")
 		end;
 	};
 end

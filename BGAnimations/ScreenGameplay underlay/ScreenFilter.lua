@@ -20,7 +20,7 @@ local filterWidth = (arrowWidth * cols)
 if numPlayers == 1 then
 	local player = GAMESTATE:GetMasterPlayerNumber()
 	local pNum = (player == PLAYER_1) and 1 or 2
-	local filterAlpha = tonumber(getenv("ScreenFilterP"..pNum));
+	local filterAlpha = tonumber(getenv("ScreenFilterP"..pNum))
 
 	local mlevel = GAMESTATE:IsCourseMode() and "ModsLevel_Stage" or "ModsLevel_Preferred"
 	local currentMini = 1-math.round(GAMESTATE:GetPlayerState(player):GetPlayerOptions(mlevel):Mini()*50) / 100;
@@ -126,7 +126,7 @@ else
 		for i, player in ipairs(PlayerNumber) do
 			local filterWidth = (arrowWidth * cols)
 			local pNum = (player == PLAYER_1) and 1 or 2
-			filterAlphas[player] = tonumber(getenv("ScreenFilterP"..pNum));
+			filterAlphas[player] = tonumber(getenv("ScreenFilterP"..pNum))
 
 			local mlevel = GAMESTATE:IsCourseMode() and "ModsLevel_Stage" or "ModsLevel_Preferred"
 			local currentMini = 1-math.round(GAMESTATE:GetPlayerState(player):GetPlayerOptions(mlevel):Mini()*50) / 100;

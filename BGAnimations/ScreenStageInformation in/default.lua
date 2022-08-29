@@ -13,16 +13,16 @@ end
 
 if isOni() then
 	for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
-		local noteskin = GAMESTATE:GetPlayerState(pn):GetPlayerOptions("ModsLevel_Preferred"):NoteSkin();
-		GAMESTATE:ApplyGameCommand('mod,'..noteskin,pn);
+		local noteskin = GAMESTATE:GetPlayerState(pn):GetPlayerOptions("ModsLevel_Preferred"):NoteSkin()
+		GAMESTATE:ApplyGameCommand('mod,'..noteskin,pn)
 	end
 end
 
 if getenv("ShowStatsP1") > 0 or getenv("ShowStatsP2") > 0 then
 	if GAMESTATE:IsCourseMode() then
 		if IsCourseSecret() then
-			setenv("ShowStatsP1",0);
-			setenv("ShowStatsP2",0);
+			setenv("ShowStatsP1",0)
+			setenv("ShowStatsP2",0)
 		end
 	end
 end
@@ -30,8 +30,8 @@ end
 if getenv("ShowModsP1") or getenv("ShowModsP2") then
 	if not GAMESTATE:IsCourseMode() then
 		if not HasLuaCheck() then
-			setenv("ShowModsP1",false);
-			setenv("ShowModsP2",false);
+			setenv("ShowModsP1",false)
+			setenv("ShowModsP2",false)
 		end
 	end
 end

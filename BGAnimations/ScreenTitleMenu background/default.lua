@@ -1,5 +1,5 @@
-local groups = SONGMAN:GetSongGroupNames();
-local ITG3ADDONS, ITG3UNLOCKS, REBIRTH, REBIRTHPLUS, REBIRTHTWO = false, false, false, false, false;
+local groups = SONGMAN:GetSongGroupNames()
+local ITG3ADDONS, ITG3UNLOCKS, REBIRTH, REBIRTHPLUS, REBIRTHTWO = false, false, false, false, false
 
 for group in ivalues(groups) do
 	if string.find(group,"In The Groove 3 Unlocks") then
@@ -281,9 +281,9 @@ return Def.ActorFrame{
 		InitCommand=function(self) self:x(SCREEN_LEFT+35):y(SCREEN_TOP+50):shadowlength(2):horizalign(left):wrapwidthpixels(1000):zoom(0.6) end;
 		OnCommand=function(self) self:diffusealpha(0):sleep(0.5):linear(0.5):diffusealpha(1):playcommand("Refresh") end;
 		RefreshCommand=function(self)
-			local songs = SONGMAN:GetNumSongs();
-			local groups = SONGMAN:GetNumSongGroups();
-			local courses = SONGMAN:GetNumCourses();
+			local songs = SONGMAN:GetNumSongs()
+			local groups = SONGMAN:GetNumSongGroups()
+			local courses = SONGMAN:GetNumCourses()
 			self:settext(songs.." songs in "..groups.." groups, "..courses.." courses")
 		end;
 	};

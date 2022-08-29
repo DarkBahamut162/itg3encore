@@ -18,28 +18,28 @@ return Def.ActorFrame{
 			InitCommand=function(self) self:x(-45):diffusealpha(0):blend(Blend.Add) end;
 			CrossCommand=function(self) self:finishtweening():diffusealpha(1):zoom(1.1):linear(0.4):zoom(1):diffusealpha(0) end;
 			NoteCrossedMessageCommand=function(self,param)
-				if param.ButtonName == "Left" then self:playcommand("Cross"); end
+				if param.ButtonName == "Left" then self:playcommand("Cross") end
 			end;
 		};
 		LoadActor("panelglow")..{
 			InitCommand=function(self) self:x(46):diffusealpha(0):blend(Blend.Add) end;
 			CrossCommand=function(self) self:finishtweening():diffusealpha(1):zoom(1.1):linear(0.4):zoom(1):diffusealpha(0) end;
 			NoteCrossedMessageCommand=function(self,param)
-				if param.ButtonName == "Right" then self:playcommand("Cross"); end
+				if param.ButtonName == "Right" then self:playcommand("Cross") end
 			end;
 		};
 		LoadActor("panelglow")..{
 			InitCommand=function(self) self:y(-45):diffusealpha(0):blend(Blend.Add) end;
 			CrossCommand=function(self) self:finishtweening():diffusealpha(1):zoom(1.1):linear(0.4):zoom(1):diffusealpha(0) end;
 			NoteCrossedMessageCommand=function(self,param)
-				if param.ButtonName == "Up" then self:playcommand("Cross"); end
+				if param.ButtonName == "Up" then self:playcommand("Cross") end
 			end;
 		};
 		LoadActor("panelglow")..{
 			InitCommand=function(self) self:y(45):diffusealpha(0):blend(Blend.Add) end;
 			CrossCommand=function(self) self:finishtweening():diffusealpha(1):zoom(1.1):linear(0.4):zoom(1):diffusealpha(0) end;
 			NoteCrossedMessageCommand=function(self,param)
-				if param.ButtonName == "Down" then self:playcommand("Cross"); end
+				if param.ButtonName == "Down" then self:playcommand("Cross") end
 			end;
 		};
 	};
@@ -57,28 +57,28 @@ return Def.ActorFrame{
 			InitCommand=function(self) self:x(-45):diffusealpha(0):blend(Blend.Add) end;
 			CrossCommand=function(self) self:finishtweening():diffusealpha(1):zoom(1.1):linear(0.4):zoom(1):diffusealpha(0) end;
 			NoteCrossedMessageCommand=function(self,param)
-				if param.ButtonName == "Left" then self:playcommand("Cross"); end
+				if param.ButtonName == "Left" then self:playcommand("Cross") end
 			end;
 		};
 		LoadActor("panelglow")..{
 			InitCommand=function(self) self:x(46):diffusealpha(0):blend(Blend.Add) end;
 			CrossCommand=function(self) self:finishtweening():diffusealpha(1):zoom(1.1):linear(0.4):zoom(1):diffusealpha(0) end;
 			NoteCrossedMessageCommand=function(self,param)
-				if param.ButtonName == "Right" then self:playcommand("Cross"); end
+				if param.ButtonName == "Right" then self:playcommand("Cross") end
 			end;
 		};
 		LoadActor("panelglow")..{
 			InitCommand=function(self) self:y(-45):diffusealpha(0):blend(Blend.Add) end;
 			CrossCommand=function(self) self:finishtweening():diffusealpha(1):zoom(1.1):linear(0.4):zoom(1):diffusealpha(0) end;
 			NoteCrossedMessageCommand=function(self,param)
-				if param.ButtonName == "Up" then self:playcommand("Cross"); end
+				if param.ButtonName == "Up" then self:playcommand("Cross") end
 			end;
 		};
 		LoadActor("panelglow")..{
 			InitCommand=function(self) self:y(45):diffusealpha(0):blend(Blend.Add) end;
 			CrossCommand=function(self) self:finishtweening():diffusealpha(1):zoom(1.1):linear(0.4):zoom(1):diffusealpha(0) end;
 			NoteCrossedMessageCommand=function(self,param)
-				if param.ButtonName == "Down" then self:playcommand("Cross"); end
+				if param.ButtonName == "Down" then self:playcommand("Cross") end
 			end;
 		};
 	};

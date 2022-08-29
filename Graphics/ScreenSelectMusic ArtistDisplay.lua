@@ -6,11 +6,11 @@ return Def.ActorFrame{
 		CurrentTrailP1ChangedMessageCommand=function(self) self:playcommand("Set") end;
 		CurrentTrailP2ChangedMessageCommand=function(self) self:playcommand("Set") end;
 		SetCommand=function(self) 
-			local song = GAMESTATE:GetCurrentSong(); 
+			local song = GAMESTATE:GetCurrentSong()
 			local course = GAMESTATE:GetCurrentCourse()
 			local text = ""
 			if song then 
-				text = song:GetDisplayArtist();
+				text = song:GetDisplayArtist()
 			elseif course then
 				local trail = GAMESTATE:GetCurrentTrail(GAMESTATE:GetMasterPlayerNumber())
 				if trail then
@@ -32,7 +32,7 @@ return Def.ActorFrame{
 					text = ""
 				end
 			end;
-			self:settext(text);
+			self:settext(text)
 		end;
 	};
 };
