@@ -7,7 +7,7 @@ local barCenter		= {}
 local SongOrCourse, StepsOrTrail, scorelist, topscore = {},{},{},{}
 local DPCurMax = {
 	[PLAYER_1] = 0,
-	[PLAYER_2] = 0,
+	[PLAYER_2] = 0
 }
 local IIDX = false
 

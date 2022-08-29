@@ -11,7 +11,7 @@ local topedge = {
 	{0,		0.75,	1},
 	{0.66,	0,		1},
 	{1,		0,		0},
-	{0.99,	0.29,	1},
+	{0.99,	0.29,	1}
 }
 
 local bottomedge = {
@@ -24,10 +24,10 @@ local bottomedge = {
 	{0.38,	0.85,	1},
 	{0.76,	0.31,	1},
 	{1,		0.33,	0.33},
-	{1,		1,		1},
+	{1,		1,		1}
 }
 
-local steps = {0,250,375,600,625,750,875,1000,1200};
+local steps = {0,250,375,600,625,750,875,1000,1200}
 
 for key,value in pairs(topedge) do
     topedge[key][1] = string.format("%x", topedge[key][1] * 255)
@@ -44,10 +44,10 @@ end
 
 return Def.ActorFrame{
 	LoadFont("_z 36px shadowx")..{
-		Name="StepCount";
-		InitCommand=function(self) self:x(-67):y(120+4):horizalign(center):zoom(0.35):diffusealpha(0) end;
-		OnCommand=function(self) self:sleep(0.4):linear(0.2):diffusealpha(1):shadowlength(2) end;
-		OffCommand=function(self) self:linear(0.4):diffusealpha(0) end;
+		Name="StepCount",
+		InitCommand=function(self) self:x(-67):y(120+4):horizalign(center):zoom(0.35):diffusealpha(0) end,
+		OnCommand=function(self) self:sleep(0.4):linear(0.2):diffusealpha(1):shadowlength(2) end,
+		OffCommand=function(self) self:linear(0.4):diffusealpha(0) end,
 		SetCommand=function(self)
 			local val = 0
 			local song = GAMESTATE:GetCurrentSong()
@@ -109,25 +109,25 @@ return Def.ActorFrame{
 			end
 			self:settext(val)
 			self:maxwidth(150)
-		end;
-		CurrentSongChangedMessageCommand=function(self) self:playcommand("Set") end;
+		end,
+		CurrentSongChangedMessageCommand=function(self) self:playcommand("Set") end,
 		CurrentStepsP1ChangedMessageCommand=function(self)
 			if player == PLAYER_1 then self:playcommand("Set") end
-		end;
+		end,
 		CurrentTrailP1ChangedMessageCommand=function(self)
 			if player == PLAYER_1 then self:playcommand("Set") end
-		end;
+		end,
 		CurrentStepsP2ChangedMessageCommand=function(self)
 			if player == PLAYER_2 then self:playcommand("Set") end
-		end;
+		end,
 		CurrentTrailP2ChangedMessageCommand=function(self)
 			if player == PLAYER_2 then self:playcommand("Set") end
-		end;
-	};
+		end
+	},
 	LoadFont("_v 26px bold diffuse")..{
-		Name="Label";
-		InitCommand=function(self) self:x(-67):y(120+17):settext("STEPS"):shadowlength(2):zoomx(0.45):zoomy(0.4):horizalign(center):diffusealpha(0) end;
-		OnCommand=function(self) self:sleep(0.85):linear(0.2):diffusebottomedge(color("#8F8F8F")):diffusealpha(1) end;
-		OffCommand=function(self) self:linear(0.4):diffusealpha(0) end;
-	};
-};
+		Name="Label",
+		InitCommand=function(self) self:x(-67):y(120+17):settext("STEPS"):shadowlength(2):zoomx(0.45):zoomy(0.4):horizalign(center):diffusealpha(0) end,
+		OnCommand=function(self) self:sleep(0.85):linear(0.2):diffusebottomedge(color("#8F8F8F")):diffusealpha(1) end,
+		OffCommand=function(self) self:linear(0.4):diffusealpha(0) end
+	}
+}

@@ -13,7 +13,7 @@ local creditsDiffuse = {
 	[175] = color("#ffa800"),
 	[176] = color("#ddf3ff"),
 	[181] = color("#ffa800"),
-	[182] = color("#ddf3ff"),
+	[182] = color("#ddf3ff")
 }
 
 credits[#credits+1] = LoadFont("_r bold 30px")..{Text="";};

@@ -6,8 +6,8 @@ local stats = {
 	{0,	25,	50,	100,150,200},
 	{0,	25,	50,	100,150,200},
 	{0,	15,	30,	45,	60,	75},
-	{0,	10,	20,	30,	40,	50},
-};
+	{0,	10,	20,	30,	40,	50}
+}
 
 local colors = {
 	{0.4,	0.4,	0.4},
@@ -15,8 +15,8 @@ local colors = {
 	{1,		1,		0},
 	{1,		0.5,	0},
 	{1,		0,		0},
-	{0,		0.75,	1},
-};
+	{0,		0.75,	1}
+}
 
 local function getValue(val0, val1, val2)
 	return ((val0 - val1) / (val2 - val1))
@@ -24,13 +24,13 @@ end
 
 return Def.ActorFrame{
 	Def.Quad{
-		Name="Jumps";
-		InitCommand=function(self) self:x(-127+100):y(125+17):valign(1):zoomto(24,0):diffusealpha(0):blend(Blend.Add) end;
-		BeginCommand=function(self) self:stoptweening():playcommand("Set") end;
-		OnCommand=function(self) self:sleep(0.3):decelerate(0.1):diffusealpha(0.5) end;
+		Name="Jumps",
+		InitCommand=function(self) self:x(-127+100):y(125+17):valign(1):zoomto(24,0):diffusealpha(0):blend(Blend.Add) end,
+		BeginCommand=function(self) self:stoptweening():playcommand("Set") end,
+		OnCommand=function(self) self:sleep(0.3):decelerate(0.1):diffusealpha(0.5) end,
 		SetCommand=function(self)
 			local yZoom = 0
-			local numSongs = 1;
+			local numSongs = 1
 			local song = GAMESTATE:GetCurrentSong()
 			local course = GAMESTATE:GetCurrentCourse()
 			local steps
@@ -59,30 +59,30 @@ return Def.ActorFrame{
 			
 			self:decelerate(0.1)
 			self:zoomy(yZoom)
-		end;
-		CurrentSongChangedMessageCommand=function(self) self:stoptweening():playcommand("Set") end;
+		end,
+		CurrentSongChangedMessageCommand=function(self) self:stoptweening():playcommand("Set") end,
 		CurrentStepsP1ChangedMessageCommand=function(self)
 			if player == PLAYER_1 then self:stoptweening():playcommand("Set") end
-		end;
+		end,
 		CurrentTrailP1ChangedMessageCommand=function(self)
 			if player == PLAYER_1 then self:stoptweening():playcommand("Set") end
-		end;
+		end,
 		CurrentStepsP2ChangedMessageCommand=function(self)
 			if player == PLAYER_2 then self:stoptweening():playcommand("Set") end
-		end;
+		end,
 		CurrentTrailP2ChangedMessageCommand=function(self)
 			if player == PLAYER_2 then self:stoptweening():playcommand("Set") end
-		end;
-		OffCommand=function(self) self:accelerate(0.2):diffusealpha(0) end;
-	};
+		end,
+		OffCommand=function(self) self:accelerate(0.2):diffusealpha(0) end
+	},
 	Def.Quad{
-		Name="Holds";
-		InitCommand=function(self) self:x(-102+100):y(125+17):valign(1):zoomto(24,0):diffusealpha(0):blend(Blend.Add) end;
-		BeginCommand=function(self) self:stoptweening():playcommand("Set") end;
-		OnCommand=function(self) self:sleep(0.3):decelerate(0.1):diffusealpha(0.5) end;
+		Name="Holds",
+		InitCommand=function(self) self:x(-102+100):y(125+17):valign(1):zoomto(24,0):diffusealpha(0):blend(Blend.Add) end,
+		BeginCommand=function(self) self:stoptweening():playcommand("Set") end,
+		OnCommand=function(self) self:sleep(0.3):decelerate(0.1):diffusealpha(0.5) end,
 		SetCommand=function(self)
 			local yZoom = 0
-			local numSongs = 1;
+			local numSongs = 1
 			local song = GAMESTATE:GetCurrentSong()
 			local course = GAMESTATE:GetCurrentCourse()
 			local steps
@@ -111,30 +111,30 @@ return Def.ActorFrame{
 			
 			self:decelerate(0.1)
 			self:zoomy(yZoom)
-		end;
-		CurrentSongChangedMessageCommand=function(self) self:stoptweening():playcommand("Set") end;
+		end,
+		CurrentSongChangedMessageCommand=function(self) self:stoptweening():playcommand("Set") end,
 		CurrentStepsP1ChangedMessageCommand=function(self)
 			if player == PLAYER_1 then self:stoptweening():playcommand("Set") end
-		end;
+		end,
 		CurrentTrailP1ChangedMessageCommand=function(self)
 			if player == PLAYER_1 then self:stoptweening():playcommand("Set") end
-		end;
+		end,
 		CurrentStepsP2ChangedMessageCommand=function(self)
 			if player == PLAYER_2 then self:stoptweening():playcommand("Set") end
-		end;
+		end,
 		CurrentTrailP2ChangedMessageCommand=function(self)
 			if player == PLAYER_2 then self:stoptweening():playcommand("Set") end
-		end;
-		OffCommand=function(self) self:accelerate(0.2):diffusealpha(0) end;
-	};
+		end,
+		OffCommand=function(self) self:accelerate(0.2):diffusealpha(0) end
+	},
 	Def.Quad{
-		Name="Mines";
-		InitCommand=function(self) self:x(-77+100):y(125+17):valign(1):zoomto(24,0):diffusealpha(0):blend(Blend.Add) end;
-		BeginCommand=function(self) self:stoptweening():playcommand("Set") end;
-		OnCommand=function(self) self:sleep(0.3):decelerate(0.1):diffusealpha(0.5) end;
+		Name="Mines",
+		InitCommand=function(self) self:x(-77+100):y(125+17):valign(1):zoomto(24,0):diffusealpha(0):blend(Blend.Add) end,
+		BeginCommand=function(self) self:stoptweening():playcommand("Set") end,
+		OnCommand=function(self) self:sleep(0.3):decelerate(0.1):diffusealpha(0.5) end,
 		SetCommand=function(self)
 			local yZoom = 0
-			local numSongs = 1;
+			local numSongs = 1
 			local song = GAMESTATE:GetCurrentSong()
 			local course = GAMESTATE:GetCurrentCourse()
 			local steps
@@ -163,30 +163,30 @@ return Def.ActorFrame{
 			
 			self:decelerate(0.1)
 			self:zoomy(yZoom)
-		end;
-		CurrentSongChangedMessageCommand=function(self) self:stoptweening():playcommand("Set") end;
+		end,
+		CurrentSongChangedMessageCommand=function(self) self:stoptweening():playcommand("Set") end,
 		CurrentStepsP1ChangedMessageCommand=function(self)
 			if player == PLAYER_1 then self:stoptweening():playcommand("Set") end
-		end;
+		end,
 		CurrentTrailP1ChangedMessageCommand=function(self)
 			if player == PLAYER_1 then self:stoptweening():playcommand("Set") end
-		end;
+		end,
 		CurrentStepsP2ChangedMessageCommand=function(self)
 			if player == PLAYER_2 then self:stoptweening():playcommand("Set") end
-		end;
+		end,
 		CurrentTrailP2ChangedMessageCommand=function(self)
 			if player == PLAYER_2 then self:stoptweening():playcommand("Set") end
-		end;
-		OffCommand=function(self) self:accelerate(0.2):diffusealpha(0) end;
-	};
+		end,
+		OffCommand=function(self) self:accelerate(0.2):diffusealpha(0) end
+	},
 	Def.Quad{
-		Name="Hands";
-		InitCommand=function(self) self:x(-52+100):y(125+17):valign(1):zoomto(24,0):diffusealpha(0):blend(Blend.Add) end;
-		BeginCommand=function(self) self:stoptweening():playcommand("Set") end;
-		OnCommand=function(self) self:sleep(0.3):decelerate(0.1):diffusealpha(0.5) end;
+		Name="Hands",
+		InitCommand=function(self) self:x(-52+100):y(125+17):valign(1):zoomto(24,0):diffusealpha(0):blend(Blend.Add) end,
+		BeginCommand=function(self) self:stoptweening():playcommand("Set") end,
+		OnCommand=function(self) self:sleep(0.3):decelerate(0.1):diffusealpha(0.5) end,
 		SetCommand=function(self)
 			local yZoom = 0
-			local numSongs = 1;
+			local numSongs = 1
 			local song = GAMESTATE:GetCurrentSong()
 			local course = GAMESTATE:GetCurrentCourse()
 			local steps
@@ -215,30 +215,30 @@ return Def.ActorFrame{
 			
 			self:decelerate(0.1)
 			self:zoomy(yZoom)
-		end;
-		CurrentSongChangedMessageCommand=function(self) self:stoptweening():playcommand("Set") end;
+		end,
+		CurrentSongChangedMessageCommand=function(self) self:stoptweening():playcommand("Set") end,
 		CurrentStepsP1ChangedMessageCommand=function(self)
 			if player == PLAYER_1 then self:stoptweening():playcommand("Set") end
-		end;
+		end,
 		CurrentTrailP1ChangedMessageCommand=function(self)
 			if player == PLAYER_1 then self:stoptweening():playcommand("Set") end
-		end;
+		end,
 		CurrentStepsP2ChangedMessageCommand=function(self)
 			if player == PLAYER_2 then self:stoptweening():playcommand("Set") end
-		end;
+		end,
 		CurrentTrailP2ChangedMessageCommand=function(self)
 			if player == PLAYER_2 then self:stoptweening():playcommand("Set") end
-		end;
-		OffCommand=function(self) self:accelerate(0.2):diffusealpha(0) end;
-	};
+		end,
+		OffCommand=function(self) self:accelerate(0.2):diffusealpha(0) end
+	},
 	Def.Quad{
-		Name="Rolls";
-		InitCommand=function(self) self:x(-27+100):y(125+17):valign(1):zoomto(24,0):diffusealpha(0):blend(Blend.Add) end;
-		BeginCommand=function(self) self:stoptweening():playcommand("Set") end;
-		OnCommand=function(self) self:sleep(0.3):decelerate(0.1):diffusealpha(0.5) end;
+		Name="Rolls",
+		InitCommand=function(self) self:x(-27+100):y(125+17):valign(1):zoomto(24,0):diffusealpha(0):blend(Blend.Add) end,
+		BeginCommand=function(self) self:stoptweening():playcommand("Set") end,
+		OnCommand=function(self) self:sleep(0.3):decelerate(0.1):diffusealpha(0.5) end,
 		SetCommand=function(self)
 			local yZoom = 0
-			local numSongs = 1;
+			local numSongs = 1
 			local song = GAMESTATE:GetCurrentSong()
 			local course = GAMESTATE:GetCurrentCourse()
 			local steps
@@ -267,20 +267,20 @@ return Def.ActorFrame{
 			
 			self:decelerate(0.1)
 			self:zoomy(yZoom)
-		end;
-		CurrentSongChangedMessageCommand=function(self) self:stoptweening():playcommand("Set") end;
+		end,
+		CurrentSongChangedMessageCommand=function(self) self:stoptweening():playcommand("Set") end,
 		CurrentStepsP1ChangedMessageCommand=function(self)
 			if player == PLAYER_1 then self:stoptweening():playcommand("Set") end
-		end;
+		end,
 		CurrentTrailP1ChangedMessageCommand=function(self)
 			if player == PLAYER_1 then self:stoptweening():playcommand("Set") end
-		end;
+		end,
 		CurrentStepsP2ChangedMessageCommand=function(self)
 			if player == PLAYER_2 then self:stoptweening():playcommand("Set") end
-		end;
+		end,
 		CurrentTrailP2ChangedMessageCommand=function(self)
 			if player == PLAYER_2 then self:stoptweening():playcommand("Set") end
-		end;
-		OffCommand=function(self) self:accelerate(0.2):diffusealpha(0) end;
-	};
-};
+		end,
+		OffCommand=function(self) self:accelerate(0.2):diffusealpha(0) end
+	}
+}

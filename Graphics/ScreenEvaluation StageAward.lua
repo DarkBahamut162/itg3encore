@@ -12,8 +12,8 @@ local awardRef = {
 	["StageAward_SingleDigitW2"]	= { File = THEME:GetPathG("_award","models/plaque"), Color = "silver" },
 	["StageAward_OneW2"]			= { File = THEME:GetPathG("_award","models/flag"), Color = "orange" },
 	["StageAward_FullComboW2"]		= { File = THEME:GetPathG("_award","models/plaque"), Color = "bronze" },
-	["StageAward_FullComboW1"]		= { File = THEME:GetPathG("_award","models/trophy"), Color = "bronze" },
-};
+	["StageAward_FullComboW1"]		= { File = THEME:GetPathG("_award","models/trophy"), Color = "bronze" }
+}
 
 local t = Def.ActorFrame{}
 

@@ -21,9 +21,9 @@ local t = Def.ActorFrame{
 	};
 };
 
-local types = { "Actual","Possible","PercentComplete" };
+local types = { "Actual","Possible","PercentComplete" }
 local prof = PROFILEMAN:GetMachineProfile()
-local diffs = { nil, 'Difficulty_Easy', 'Difficulty_Medium', 'Difficulty_Hard', 'Difficulty_Challenge', 'Difficulty_Medium', 'Difficulty_Hard', }
+local diffs = { nil, 'Difficulty_Easy', 'Difficulty_Medium', 'Difficulty_Hard', 'Difficulty_Challenge', 'Difficulty_Medium', 'Difficulty_Hard' }
 for i=1,3 do
 	local thing = Def.ActorFrame{
 		InitCommand=function(self) self:x(scale(i,1,3,SCREEN_LEFT+300,SCREEN_RIGHT-100)) end;

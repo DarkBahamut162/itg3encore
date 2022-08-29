@@ -11,8 +11,8 @@ local awardRef = {
 	["PeakComboAward_7000"]		= { File = THEME:GetPathG("_award","models/trophy"), Color = "gold" },
 	["PeakComboAward_8000"]		= { File = THEME:GetPathG("_award","models/itg"), Color = "silver" },
 	["PeakComboAward_9000"]		= { File = THEME:GetPathG("_award","models/itg"), Color = "gold" },
-	["PeakComboAward_10000"]	= { File = THEME:GetPathG("_award","models/itg"), Color = "blue" },
-};
+	["PeakComboAward_10000"]	= { File = THEME:GetPathG("_award","models/itg"), Color = "blue" }
+}
 
 local t = Def.ActorFrame{}
 local award = STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetPeakComboAward()

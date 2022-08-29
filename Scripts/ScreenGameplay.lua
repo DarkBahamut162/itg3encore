@@ -12,7 +12,7 @@ local diffState = {
 	Difficulty_Medium = 2,
 	Difficulty_Hard = 3,
 	Difficulty_Challenge = 4,
-	Difficulty_Edit = 5,
+	Difficulty_Edit = 5
 }
 
 function DifficultyToState(diff)

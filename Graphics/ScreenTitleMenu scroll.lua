@@ -6,7 +6,7 @@ local itemColors = {
 	Survival = color("#0188DE"),
 	Fitness = color("#DE01B2"),
 	default = color("1,1,1,1")
-};
+}
 
 local itemColor = itemColors[gc:GetName()] or itemColors.default
 

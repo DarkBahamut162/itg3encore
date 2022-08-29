@@ -2,21 +2,21 @@ local c;
 local player = Var "Player";
 
 local JudgeCmds = {
-	TapNoteScore_W1 = THEME:GetMetric( "Judgment", "JudgmentW1Command" )
-	TapNoteScore_W2 = THEME:GetMetric( "Judgment", "JudgmentW2Command" )
-	TapNoteScore_W3 = THEME:GetMetric( "Judgment", "JudgmentW3Command" )
-	TapNoteScore_W4 = THEME:GetMetric( "Judgment", "JudgmentW4Command" )
-	TapNoteScore_W5 = THEME:GetMetric( "Judgment", "JudgmentW5Command" )
+	TapNoteScore_W1 = THEME:GetMetric( "Judgment", "JudgmentW1Command" ),
+	TapNoteScore_W2 = THEME:GetMetric( "Judgment", "JudgmentW2Command" ),
+	TapNoteScore_W3 = THEME:GetMetric( "Judgment", "JudgmentW3Command" ),
+	TapNoteScore_W4 = THEME:GetMetric( "Judgment", "JudgmentW4Command" ),
+	TapNoteScore_W5 = THEME:GetMetric( "Judgment", "JudgmentW5Command" ),
 	TapNoteScore_Miss = THEME:GetMetric( "Judgment", "JudgmentMissCommand" )
 };
 
 local TNSFrames = {
-	TapNoteScore_W1 = 0;
-	TapNoteScore_W2 = 1;
-	TapNoteScore_W3 = 2;
-	TapNoteScore_W4 = 3;
-	TapNoteScore_W5 = 4;
-	TapNoteScore_Miss = 5;
+	TapNoteScore_W1 = 0,
+	TapNoteScore_W2 = 1,
+	TapNoteScore_W3 = 2,
+	TapNoteScore_W4 = 3,
+	TapNoteScore_W5 = 4,
+	TapNoteScore_Miss = 5
 };
 
 return Def.ActorFrame {

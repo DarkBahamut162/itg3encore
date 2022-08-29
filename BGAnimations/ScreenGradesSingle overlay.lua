@@ -8,13 +8,13 @@ local t = Def.ActorFrame{
 local prof = PROFILEMAN:GetMachineProfile()
 
 local stats = {
-	{ Difficulty='Difficulty_Easy', },
-	{ Difficulty='Difficulty_Medium', },
-	{ Difficulty='Difficulty_Hard', },
-	{ Difficulty='Difficulty_Challenge', },
-	{ Difficulty='Difficulty_Medium', },
-	{ Difficulty='Difficulty_Hard', },
-	{ Difficulty='Difficulty_Challenge', },
+	{ Difficulty='Difficulty_Easy' },
+	{ Difficulty='Difficulty_Medium' },
+	{ Difficulty='Difficulty_Hard' },
+	{ Difficulty='Difficulty_Challenge' },
+	{ Difficulty='Difficulty_Medium' },
+	{ Difficulty='Difficulty_Hard' },
+	{ Difficulty='Difficulty_Challenge' }
 };
 
 for i=1,4 do

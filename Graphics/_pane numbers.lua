@@ -6,8 +6,8 @@ local stats = {
 	{0,	25,	50,	100,150,200},
 	{0,	25,	50,	100,150,200},
 	{0,	15,	30,	45,	60,	75},
-	{0,	10,	20,	30,	40,	50},
-};
+	{0,	10,	20,	30,	40,	50}
+}
 
 local colors = {
 	{0.4,	0.4,	0.4},
@@ -15,26 +15,26 @@ local colors = {
 	{1,		1,		0},
 	{1,		0.5,	0},
 	{1,		0,		0},
-	{0,		0.75,	1},
+	{0,		0.75,	1}
 }
 
 return Def.ActorFrame{
 	LoadFont("smallnumbers")..{
-		Name="Jumps";
-		InitCommand=function(self) self:x(-127+100):diffusealpha(0):horizalign(center):maxwidth(22) end;
-		CurrentSongChangedMessageCommand=function(self) self:playcommand("Set") end;
+		Name="Jumps",
+		InitCommand=function(self) self:x(-127+100):diffusealpha(0):horizalign(center):maxwidth(22) end,
+		CurrentSongChangedMessageCommand=function(self) self:playcommand("Set") end,
 		CurrentStepsP1ChangedMessageCommand=function(self)
 			if player == PLAYER_1 then self:playcommand("Set") end
-		end;
+		end,
 		CurrentTrailP1ChangedMessageCommand=function(self)
 			if player == PLAYER_1 then self:playcommand("Set") end
-		end;
+		end,
 		CurrentStepsP2ChangedMessageCommand=function(self)
 			if player == PLAYER_2 then self:playcommand("Set") end
-		end;
+		end,
 		CurrentTrailP2ChangedMessageCommand=function(self)
 			if player == PLAYER_2 then self:playcommand("Set") end
-		end;
+		end,
 		SetCommand=function(self)
 			local song = GAMESTATE:GetCurrentSong()
 			local course = GAMESTATE:GetCurrentCourse()
@@ -69,27 +69,27 @@ return Def.ActorFrame{
 			else
 				self:visible(false)
 			end
-		end;
-		SelectMenuOpenedMessageCommand=function(self) self:stoptweening():playcommand("Set"):linear(0.2):diffusealpha(1) end;
-		SelectMenuClosedMessageCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(0) end;
-		OffCommand=function(self) self:stoptweening():linear(0.12):diffusealpha(0) end;
-	};
+		end,
+		SelectMenuOpenedMessageCommand=function(self) self:stoptweening():playcommand("Set"):linear(0.2):diffusealpha(1) end,
+		SelectMenuClosedMessageCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(0) end,
+		OffCommand=function(self) self:stoptweening():linear(0.12):diffusealpha(0) end
+	},
 	LoadFont("smallnumbers")..{
-		Name="Holds";
-		InitCommand=function(self) self:x(-102+100):diffusealpha(0):horizalign(center):maxwidth(22) end;
-		CurrentSongChangedMessageCommand=function(self) self:playcommand("Set") end;
+		Name="Holds",
+		InitCommand=function(self) self:x(-102+100):diffusealpha(0):horizalign(center):maxwidth(22) end,
+		CurrentSongChangedMessageCommand=function(self) self:playcommand("Set") end,
 		CurrentStepsP1ChangedMessageCommand=function(self)
 			if player == PLAYER_1 then self:playcommand("Set") end
-		end;
+		end,
 		CurrentTrailP1ChangedMessageCommand=function(self)
 			if player == PLAYER_1 then self:playcommand("Set") end
-		end;
+		end,
 		CurrentStepsP2ChangedMessageCommand=function(self)
 			if player == PLAYER_2 then self:playcommand("Set") end
-		end;
+		end,
 		CurrentTrailP2ChangedMessageCommand=function(self)
 			if player == PLAYER_2 then self:playcommand("Set") end
-		end;
+		end,
 		SetCommand=function(self)
 			local song = GAMESTATE:GetCurrentSong()
 			local course = GAMESTATE:GetCurrentCourse()
@@ -124,27 +124,27 @@ return Def.ActorFrame{
 			else
 				self:visible(false)
 			end
-		end;
-		SelectMenuOpenedMessageCommand=function(self) self:stoptweening():playcommand("Set"):linear(0.2):diffusealpha(1) end;
-		SelectMenuClosedMessageCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(0) end;
-		OffCommand=function(self) self:stoptweening():linear(0.12):diffusealpha(0) end;
-	};
+		end,
+		SelectMenuOpenedMessageCommand=function(self) self:stoptweening():playcommand("Set"):linear(0.2):diffusealpha(1) end,
+		SelectMenuClosedMessageCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(0) end,
+		OffCommand=function(self) self:stoptweening():linear(0.12):diffusealpha(0) end
+	},
 	LoadFont("smallnumbers")..{
-		Name="Mines";
-		InitCommand=function(self) self:x(-77+100):diffusealpha(0):horizalign(center):maxwidth(22) end;
-		CurrentSongChangedMessageCommand=function(self) self:playcommand("Set") end;
+		Name="Mines",
+		InitCommand=function(self) self:x(-77+100):diffusealpha(0):horizalign(center):maxwidth(22) end,
+		CurrentSongChangedMessageCommand=function(self) self:playcommand("Set") end,
 		CurrentStepsP1ChangedMessageCommand=function(self)
 			if player == PLAYER_1 then self:playcommand("Set") end
-		end;
+		end,
 		CurrentTrailP1ChangedMessageCommand=function(self)
 			if player == PLAYER_1 then self:playcommand("Set") end
-		end;
+		end,
 		CurrentStepsP2ChangedMessageCommand=function(self)
 			if player == PLAYER_2 then self:playcommand("Set") end
-		end;
+		end,
 		CurrentTrailP2ChangedMessageCommand=function(self)
 			if player == PLAYER_2 then self:playcommand("Set") end
-		end;
+		end,
 		SetCommand=function(self)
 			local song = GAMESTATE:GetCurrentSong()
 			local course = GAMESTATE:GetCurrentCourse()
@@ -179,27 +179,27 @@ return Def.ActorFrame{
 			else
 				self:visible(false)
 			end
-		end;
-		SelectMenuOpenedMessageCommand=function(self) self:stoptweening():playcommand("Set"):linear(0.2):diffusealpha(1) end;
-		SelectMenuClosedMessageCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(0) end;
-		OffCommand=function(self) self:stoptweening():linear(0.12):diffusealpha(0) end;
-	};
+		end,
+		SelectMenuOpenedMessageCommand=function(self) self:stoptweening():playcommand("Set"):linear(0.2):diffusealpha(1) end,
+		SelectMenuClosedMessageCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(0) end,
+		OffCommand=function(self) self:stoptweening():linear(0.12):diffusealpha(0) end
+	},
 	LoadFont("smallnumbers")..{
-		Name="Hands";
-		InitCommand=function(self) self:x(-52+100):diffusealpha(0):horizalign(center):maxwidth(22) end;
-		CurrentSongChangedMessageCommand=function(self) self:playcommand("Set") end;
+		Name="Hands",
+		InitCommand=function(self) self:x(-52+100):diffusealpha(0):horizalign(center):maxwidth(22) end,
+		CurrentSongChangedMessageCommand=function(self) self:playcommand("Set") end,
 		CurrentStepsP1ChangedMessageCommand=function(self)
 			if player == PLAYER_1 then self:playcommand("Set") end
-		end;
+		end,
 		CurrentTrailP1ChangedMessageCommand=function(self)
 			if player == PLAYER_1 then self:playcommand("Set") end
-		end;
+		end,
 		CurrentStepsP2ChangedMessageCommand=function(self)
 			if player == PLAYER_2 then self:playcommand("Set") end
-		end;
+		end,
 		CurrentTrailP2ChangedMessageCommand=function(self)
 			if player == PLAYER_2 then self:playcommand("Set") end
-		end;
+		end,
 		SetCommand=function(self)
 			local song = GAMESTATE:GetCurrentSong()
 			local course = GAMESTATE:GetCurrentCourse()
@@ -234,27 +234,27 @@ return Def.ActorFrame{
 			else
 				self:visible(false)
 			end
-		end;
-		SelectMenuOpenedMessageCommand=function(self) self:stoptweening():playcommand("Set"):linear(0.2):diffusealpha(1) end;
-		SelectMenuClosedMessageCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(0) end;
-		OffCommand=function(self) self:stoptweening():linear(0.12):diffusealpha(0) end;
-	};
+		end,
+		SelectMenuOpenedMessageCommand=function(self) self:stoptweening():playcommand("Set"):linear(0.2):diffusealpha(1) end,
+		SelectMenuClosedMessageCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(0) end,
+		OffCommand=function(self) self:stoptweening():linear(0.12):diffusealpha(0) end
+	},
 	LoadFont("smallnumbers")..{
-		Name="Rolls";
-		InitCommand=function(self) self:x(-27+100):diffusealpha(0):horizalign(center):maxwidth(22) end;
-		CurrentSongChangedMessageCommand=function(self) self:playcommand("Set") end;
+		Name="Rolls",
+		InitCommand=function(self) self:x(-27+100):diffusealpha(0):horizalign(center):maxwidth(22) end,
+		CurrentSongChangedMessageCommand=function(self) self:playcommand("Set") end,
 		CurrentStepsP1ChangedMessageCommand=function(self)
 			if player == PLAYER_1 then self:playcommand("Set") end
-		end;
+		end,
 		CurrentTrailP1ChangedMessageCommand=function(self)
 			if player == PLAYER_1 then self:playcommand("Set") end
-		end;
+		end,
 		CurrentStepsP2ChangedMessageCommand=function(self)
 			if player == PLAYER_2 then self:playcommand("Set") end
-		end;
+		end,
 		CurrentTrailP2ChangedMessageCommand=function(self)
 			if player == PLAYER_2 then self:playcommand("Set") end
-		end;
+		end,
 		SetCommand=function(self)
 			local song = GAMESTATE:GetCurrentSong()
 			local course = GAMESTATE:GetCurrentCourse()
@@ -289,9 +289,9 @@ return Def.ActorFrame{
 			else
 				self:visible(false)
 			end
-		end;
-		SelectMenuOpenedMessageCommand=function(self) self:stoptweening():playcommand("Set"):linear(0.2):diffusealpha(1) end;
-		SelectMenuClosedMessageCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(0) end;
-		OffCommand=function(self) self:stoptweening():linear(0.12):diffusealpha(0) end;
-	};
-};
+		end,
+		SelectMenuOpenedMessageCommand=function(self) self:stoptweening():playcommand("Set"):linear(0.2):diffusealpha(1) end,
+		SelectMenuClosedMessageCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(0) end,
+		OffCommand=function(self) self:stoptweening():linear(0.12):diffusealpha(0) end
+	}
+}

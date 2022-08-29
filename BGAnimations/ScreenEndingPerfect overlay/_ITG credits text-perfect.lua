@@ -28,7 +28,7 @@ local creditsDiffuse = {
 	[200] = color("#ffa800"),
 	[201] = color("#ddf3ff"),
 	[206] = color("#ffa800"),
-	[207] = color("#ddf3ff"),
+	[207] = color("#ddf3ff")
 }
 
 credits[#credits+1] = LoadFont("_v credit")..{Text=""; OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end;};
