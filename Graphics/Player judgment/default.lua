@@ -1,5 +1,5 @@
-local c;
-local player = Var "Player";
+local c
+local player = Var "Player"
 
 local JudgeCmds = {
 	TapNoteScore_W1 = THEME:GetMetric( "Judgment", "JudgmentW1Command" ),
@@ -8,7 +8,7 @@ local JudgeCmds = {
 	TapNoteScore_W4 = THEME:GetMetric( "Judgment", "JudgmentW4Command" ),
 	TapNoteScore_W5 = THEME:GetMetric( "Judgment", "JudgmentW5Command" ),
 	TapNoteScore_Miss = THEME:GetMetric( "Judgment", "JudgmentMissCommand" )
-};
+}
 
 local TNSFrames = {
 	TapNoteScore_W1 = 0,
@@ -17,18 +17,17 @@ local TNSFrames = {
 	TapNoteScore_W4 = 3,
 	TapNoteScore_W5 = 4,
 	TapNoteScore_Miss = 5
-};
+}
 
 return Def.ActorFrame {
 	LoadActor("_judgments") .. {
-		Name="Judgment";
-		InitCommand=function(self) self:pause():visible(false) end;
-		ResetCommand=function(self) self:finishtweening():x(0):y(0):stopeffect():visible(false) end;
-	};
+		Name="Judgment",
+		InitCommand=function(self) self:pause():visible(false) end,
+		ResetCommand=function(self) self:finishtweening():x(0):y(0):stopeffect():visible(false) end
+	},
 	InitCommand = function(self)
 		c = self:GetChildren()
-	end;
-
+	end,
 	JudgmentMessageCommand=function(self, param)
 		if param.Player ~= player then return end
 		if not param.TapNoteScore then return end
@@ -54,12 +53,12 @@ return Def.ActorFrame {
 		JudgeCmds[param.TapNoteScore](c.Judgment)
 		c.Judgment:setstate( iFrame )
 		c.Judgment:visible( true )
-	end;
+	end,
 	HealthStateChangedMessageCommand=function(self, param)
 		local State = GAMESTATE:GetPlayerState(player)
 		local PlayerOptions = GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Preferred")
 		if State:GetHealthState() == "HealthState_Dead" and (PlayerOptions:FailSetting() == "FailType_Immediate") then
 			self:visible(false)
 		end
-	end;
-};
+	end
+}

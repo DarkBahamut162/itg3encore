@@ -1,4 +1,4 @@
-local t = LoadFallbackB();
+local t = LoadFallbackB()
 
 for pn in ivalues(PlayerNumber) do
 	if GAMESTATE:IsPlayerEnabled(pn) then
@@ -6,18 +6,18 @@ for pn in ivalues(PlayerNumber) do
 			UpdateCommand=function(self)
 				local disqualify = GAMESTATE:CurrentOptionsDisqualifyPlayer(pn)
 				self:diffusealpha(disqualify and 1 or 0)
-			end;
+			end,
 			ChangeValueMessageCommand=function(self,param)
 				if param.PlayerNumber == pn then self:playcommand("Update") end
-			end;
+			end,
 			ChangeRowMessageCommand=function(self,param)
 				if param.PlayerNumber == pn then self:playcommand("Update") end
-			end;
+			end,
 			SelectMultipleMessageCommand=function(self,param)
 				if param.PlayerNumber == pn then self:playcommand("Update") end
-			end;
-		};
-	end;
-end;
+			end
+		}
+	end
+end
 
 return t

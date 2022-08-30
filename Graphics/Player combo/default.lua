@@ -1,5 +1,5 @@
-local c;
-local player = Var "Player";
+local c
+local player = Var "Player"
 local ShowComboAt = THEME:GetMetric("Combo", "ShowComboAt")
 local Pulse = THEME:GetMetric("Combo", "PulseCommand")
 
@@ -15,40 +15,39 @@ local ComboMiss = THEME:GetMetric("Combo","MissComboCommand")
 
 return Def.ActorFrame {
 	LoadFont( "Combo", "numbers" ) .. {
-		Name="Number";
-		OnCommand=THEME:GetMetric("Combo", "NumberOnCommand");
-	};
+		Name="Number",
+		OnCommand=THEME:GetMetric("Combo", "NumberOnCommand")
+	},
 	LoadActor("_combo") .. {
-		Name="ComboLabel";
-		OnCommand=THEME:GetMetric("Combo", "LabelOnCommand");
-	};
+		Name="ComboLabel",
+		OnCommand=THEME:GetMetric("Combo", "LabelOnCommand")
+	},
 	LoadActor("_misses") .. {
-		Name="MissesLabel";
-		OnCommand=THEME:GetMetric("Combo", "LabelOnCommand");
-	};
+		Name="MissesLabel",
+		OnCommand=THEME:GetMetric("Combo", "LabelOnCommand")
+	},
 	InitCommand = function(self)
 		c = self:GetChildren()
 		c.Number:visible(false)
 		c.ComboLabel:visible(false)
 		c.MissesLabel:visible(false)
-	end;
-
+	end,
 	ComboCommand=function(self, param)
-		local iCombo = param.Misses or param.Combo;
+		local iCombo = param.Misses or param.Combo
 		if not iCombo or iCombo < ShowComboAt then
 			c.Number:visible(false)
 			c.ComboLabel:visible(false)
 			c.MissesLabel:visible(false)
-			return;
+			return
 		end
 
-		local Label;
+		local Label
 
 		if param.Combo then
-			Label = c.ComboLabel;
+			Label = c.ComboLabel
 			c.MissesLabel:visible(false)
 		else
-			Label = c.MissesLabel;
+			Label = c.MissesLabel
 			c.ComboLabel:visible(false)
 		end
 
@@ -76,5 +75,5 @@ return Def.ActorFrame {
 			c.ComboLabel:visible(false)
 			c.MissesLabel:visible(false)
 		end
-	end;
-};
+	end
+}

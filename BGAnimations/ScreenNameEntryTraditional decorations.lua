@@ -41,14 +41,14 @@ for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
 				self:name("Keyboard" .. PlayerNumberToString(pn))
 				ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen")
 			end
-		};
+		},
 		t[#t+1] = LoadActor(THEME:GetPathG("ScreenNameEntryTraditional","Selection"),pn)..{
 			InitCommand=function(self)
 				self:player(pn)
 				self:name("Selection" .. PlayerNumberToString(pn))
 				ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen")
 			end
-		};
+		}
 	end
 	t[#t+1] = LoadActor(THEME:GetPathG("ScreenNameEntryTraditional","Wheel"),pn)..{
 		InitCommand=function(self)
@@ -56,21 +56,21 @@ for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
 			self:name("Wheel" .. PlayerNumberToString(pn))
 			ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen")
 		end
-	};
+	},
 	t[#t+1] = LoadActor(THEME:GetPathG("ScreenNameEntryTraditional","Score"),pn)..{
 		InitCommand=function(self)
 			self:player(pn)
 			self:name("Score" .. PlayerNumberToString(pn))
 			ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen")
 		end
-	};
+	},
 	t[#t+1] = LoadActor(THEME:GetPathG("ScreenNameEntryTraditional","DifficultyIcon"),pn)..{
 		InitCommand=function(self)
 			self:player(pn)
 			self:name("DifficultyIcon" .. PlayerNumberToString(pn))
 			ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen")
 		end
-	};
+	}
 end
 
 t[#t+1] = StandardDecorationFromFile("Banner","Banner")

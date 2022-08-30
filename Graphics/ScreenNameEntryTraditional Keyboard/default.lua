@@ -9,10 +9,10 @@ local function CreateScrollerItem(char,altName)
 
 	if not altName then altName = char end
 	return Def.ActorFrame{
-		Name="Character_"..altName;
+		Name="Character_"..altName,
 		LoadFont("ScreenNameEntryTraditional entry")..{
 			Text=char,
-			BeginCommand=function(self) self:zoom(textZoom):shadowlength(4) end;
+			BeginCommand=function(self) self:zoom(textZoom):shadowlength(4) end
 		}
 	}
 end
@@ -100,17 +100,15 @@ return Def.ActorFrame{
 			end
 		end
 	end,
-
 	Def.ActorScroller{
 		Name="KeyScroller",
 		SecondsPerItem=0.2,
 		NumItemsToDraw=5,
-		InitCommand=function(self) self:SetLoop(true) end;
+		InitCommand=function(self) self:SetLoop(true) end,
 		TransformFunction=function(self,offset,itemIndex,numItems)
 			self:x(offset*40)
 		end,
-		children = scrollItems,
+		children = scrollItems
 	},
-
 	LoadActor("cursor")
 }

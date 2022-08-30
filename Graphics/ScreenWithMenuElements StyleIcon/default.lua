@@ -11,8 +11,8 @@ if style then
 	end
 
 	return LoadActor(THEME:GetPathG("ScreenWithMenuElements","StyleIcon/"..st))..{
-		InitCommand=function(self) self:animate(false):setstate(state) end;
-	};
+		InitCommand=function(self) self:animate(false):setstate(state) end
+	}
 else
 	return Def.Actor{}
 end

@@ -11,8 +11,10 @@ else
 end
 
 return Def.ActorFrame{
-	LoadActor(page)..{ InitCommand=function(self) self:addy(-17) end; };
+	LoadActor(page)..{
+		InitCommand=function(self) self:addy(-17) end
+	},
 	LoadActor("line highlight mask right")..{
-		InitCommand=function(self) self:addy(-145):x(291):zwrite(true):blend('BlendMode_NoEffect') end;
-	};
-};
+		InitCommand=function(self) self:addy(-145):x(291):zwrite(true):blend('BlendMode_NoEffect') end
+	}
+}

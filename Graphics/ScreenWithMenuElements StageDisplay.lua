@@ -1,8 +1,8 @@
 return Def.ActorFrame{
 	LoadFont("_z bold 19px")..{
-		InitCommand=function(self) self:shadowlength(1) end;
-		BeginCommand=function(self) self:playcommand("Set") end;
-		CurrentSongChangedMessageCommand=function(self) self:finishtweening():playcommand("Set") end;
+		InitCommand=function(self) self:shadowlength(1) end,
+		BeginCommand=function(self) self:playcommand("Set") end,
+		CurrentSongChangedMessageCommand=function(self) self:finishtweening():playcommand("Set") end,
 		SetCommand=function(self)
 			local Stage = GAMESTATE:GetCurrentStage()
 			local songsPerPlay = PREFSMAN:GetPreference("SongsPerPlay")
@@ -12,6 +12,6 @@ return Def.ActorFrame{
 			if GAMESTATE:IsEventMode() then Stage = 'Stage_Event' end
 			Stage = ToEnumShortString(Stage)
 			self:settext(THEME:GetString("Stages",Stage))
-		end;
-	};
-};
+		end
+	}
+}

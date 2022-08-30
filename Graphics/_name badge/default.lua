@@ -55,30 +55,30 @@ local function modifiedBPM(speed,mode)
 end
 
 return Def.ActorFrame{
-	LoadActor(THEME:GetPathG("_name","frame"))..{ InitCommand=function(self) self:zoomx(1.75):xy(-205.5,5) end; };
+	LoadActor(THEME:GetPathG("_name","frame"))..{ InitCommand=function(self) self:zoomx(1.75):xy(-205.5,5) end },
 	LoadFont("_v 26px bold diffuse")..{
-		InitCommand=function(self) self:xy(-280,4):maxwidth(160):zoom(0.5):shadowlength(2):diffuse(PlayerColor(player)) end;
+		InitCommand=function(self) self:xy(-280,4):maxwidth(160):zoom(0.5):shadowlength(2):diffuse(PlayerColor(player)) end,
 		BeginCommand=function(self)
 			if GAMESTATE:IsPlayerEnabled(player) then
 				self:settext( GAMESTATE:GetPlayerDisplayName(player) )
 			end
-		end;
-	};
-	LoadActor(iconName)..{ InitCommand=function(self) self:xy(-232,4):shadowlength(2) end; };
+		end
+	},
+	LoadActor(iconName)..{ InitCommand=function(self) self:xy(-232,4):shadowlength(2) end },
 	LoadFont("_v 26px bold diffuse")..{
-		InitCommand=function(self) self:xy(-226,4):maxwidth(260):halign(0):zoom(0.5):shadowlength(2):diffuse(PlayerColor(player)) end;
+		InitCommand=function(self) self:xy(-226,4):maxwidth(260):halign(0):zoom(0.5):shadowlength(2):diffuse(PlayerColor(player)) end,
 		BeginCommand=function(self)
 			if GAMESTATE:IsPlayerEnabled(player) then
 				checkInitSpeedMods()
 				bpmtext = modifiedBPM(pX,pXmod)
 				self:settextf("MOD: %s%s  BPM: %s",pXmod == "x" and pX/100 or pX,pXmod,bpmtext)
 			end
-		end;
+		end,
 		SpeedChoiceChangedMessageCommand=function(self,param)
 			if GAMESTATE:IsPlayerEnabled(player) and param.pn == player then
 				bpmtext = modifiedBPM(param.speed,param.mode)
 				self:settextf("MOD: %s%s  BPM: %s",param.mode == "x" and param.speed/100 or param.speed,param.mode,bpmtext)
 			end
-		end;
-	};
-};
+		end
+	}
+}

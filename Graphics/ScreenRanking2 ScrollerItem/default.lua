@@ -1,39 +1,38 @@
 local t = Def.ActorFrame{
-	InitCommand=function(self) self:runcommandsonleaves(function(child) child:ztest(true) end) end;
-	LoadActor("_course frame");
-
+	InitCommand=function(self) self:runcommandsonleaves(function(child) child:ztest(true) end) end,
+	LoadActor("_course frame"),
 	Def.Banner{
-		InitCommand=function(self) self:x(-276):halign(0):scaletoclipped(128,40):diffusealpha(0.5):fadeleft(0.25):faderight(0.25) end;
+		InitCommand=function(self) self:x(-276):halign(0):scaletoclipped(128,40):diffusealpha(0.5):fadeleft(0.25):faderight(0.25) end,
 		SetCommand=function(self, params)
 			if params.Course then
 				self:LoadFromCourse( params.Course )
 			end
-		end;
-	};
+		end
+	},
 	LoadFont("_v 26px bold diffuse")..{
-		InitCommand=function(self) self:x(-292):halign(0):zoom(0.6):shadowlength(1):wrapwidthpixels(264) end;
+		InitCommand=function(self) self:x(-292):halign(0):zoom(0.6):shadowlength(1):wrapwidthpixels(264) end,
 		SetCommand=function(self, params)
 			if params.Course then
 				self:settext( params.Course:GetDisplayFullTitle() )
 			end
-		end;
-	};
-};
+		end
+	}
+}
 
 local c
 local Scores = Def.ActorFrame{
-	InitCommand=function(self) c = self:GetChildren() self:x(188) end;
-};
+	InitCommand=function(self) c = self:GetChildren() self:x(188) end
+}
 
 for i=1,4 do
 	Scores[#Scores+1] = LoadFont("_v 26px bold black")..{
-		Name="Name"..i;
-		InitCommand=function(self) self:x(scale(i,1,4,-48,240)):y(-8):zoomx(0.875):zoomy(0.625):maxwidth(100) end;
-	};
+		Name="Name"..i,
+		InitCommand=function(self) self:x(scale(i,1,4,-48,240)):y(-8):zoomx(0.875):zoomy(0.625):maxwidth(100) end
+	}
 	Scores[#Scores+1] = LoadFont("_futurist numbers metallic")..{
-		Name="Score"..i;
-		InitCommand=function(self) self:x(scale(i,1,4,-48,240)):y(10):zoomx(0.5):zoomy(0.75) end;
-	};
+		Name="Score"..i,
+		InitCommand=function(self) self:x(scale(i,1,4,-48,240)):y(10):zoomx(0.5):zoomy(0.75) end
+	}
 end
 
 Scores.SetCommand=function(self,param)
@@ -61,7 +60,7 @@ Scores.SetCommand=function(self,param)
 			end
 		end
 	end
-end;
+end
 
 t[#t+1] = Scores
 

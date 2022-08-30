@@ -4,8 +4,8 @@ t[#t+1] = StandardDecorationFromFile("BannerReflection","BannerReflection")
 t[#t+1] = StandardDecorationFromFile("Triangle","Triangle")
 
 t[#t+1] = Def.FadingBanner{
-	InitCommand=function(self) self:x(SCREEN_CENTER_X+160-20):y(SCREEN_TOP+160-11):addx(SCREEN_WIDTH):decelerate(0.75):addx(-SCREEN_WIDTH):ztest(true):vertalign(bottom):playcommand("Set") end;
-	OffCommand=function(self) self:accelerate(0.75):addx(SCREEN_WIDTH) end;
+	InitCommand=function(self) self:x(SCREEN_CENTER_X+160-20):y(SCREEN_TOP+160-11):addx(SCREEN_WIDTH):decelerate(0.75):addx(-SCREEN_WIDTH):ztest(true):vertalign(bottom):playcommand("Set") end,
+	OffCommand=function(self) self:accelerate(0.75):addx(SCREEN_WIDTH) end,
 	SetCommand=function(self)
 		local song = GAMESTATE:GetCurrentSong()
 		local course = GAMESTATE:GetCurrentCourse()
@@ -38,32 +38,32 @@ t[#t+1] = Def.FadingBanner{
 			end
 		end
 		self:scaletoclipped(320,120)
-	end;
-	CurrentSongChangedMessageCommand=function(self) self:playcommand("Set") end;
-	CurrentCourseChangedMessageCommand=function(self) self:playcommand("Set") end;
-	WheelMovingMessageCommand=function(self) self:queuecommand("Set") end;
-};
+	end,
+	CurrentSongChangedMessageCommand=function(self) self:playcommand("Set") end,
+	CurrentCourseChangedMessageCommand=function(self) self:playcommand("Set") end,
+	WheelMovingMessageCommand=function(self) self:queuecommand("Set") end
+}
 
 local function StepsDisplay(pn)
 	local function set(self, player) self:SetFromGameState(player) end
 
 	local t = Def.StepsDisplay {
-		InitCommand=function(self) self:player(pn):Load("StepsDisplay",GAMESTATE:GetPlayerState(pn)) end;
+		InitCommand=function(self) self:player(pn):Load("StepsDisplay",GAMESTATE:GetPlayerState(pn)) end,
 		CurrentSongChangedMessageCommand=function(self)
 			local song = GAMESTATE:GetCurrentSong()
 			self:visible(song ~= nil)
-		end;
-	};
+		end
+	}
 
 	if pn == PLAYER_1 then
-		t.CurrentStepsP1ChangedMessageCommand=function(self) set(self, pn) end;
-		t.CurrentTrailP1ChangedMessageCommand=function(self) set(self, pn) end;
+		t.CurrentStepsP1ChangedMessageCommand=function(self) set(self, pn) end
+		t.CurrentTrailP1ChangedMessageCommand=function(self) set(self, pn) end
 	else
-		t.CurrentStepsP2ChangedMessageCommand=function(self) set(self, pn) end;
-		t.CurrentTrailP2ChangedMessageCommand=function(self) set(self, pn) end;
+		t.CurrentStepsP2ChangedMessageCommand=function(self) set(self, pn) end
+		t.CurrentTrailP2ChangedMessageCommand=function(self) set(self, pn) end
 	end
 
-	return t;
+	return t
 end
 
 for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
@@ -72,8 +72,8 @@ for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
 			self:player(pn)
 			self:name("StepsDisplay" .. PlayerNumberToString(pn))
 			ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen")
-		end;
-	};
+		end
+	}
 end
 
 t[#t+1] = LoadActor(THEME:GetPathS("OptionsList","opened"))..{
@@ -125,13 +125,13 @@ t[#t+1] = LoadActor(THEME:GetPathS("ScreenSelectMusic","select down"))..{
 }
 
 t[#t+1] = Def.ActorFrame{
-	LoadActor(THEME:GetPathG('ScreenSelectMusic','BannerFrame'));
-	StandardDecorationFromFile("ArtistDisplay","ArtistDisplay");
-	StandardDecorationFromFile("BPMDisplay","BPMDisplay");
-	StandardDecorationFromFile("CourseHasMods","CourseHasMods");
-	StandardDecorationFromFileOptional("SongTime","SongTime");
-	StandardDecorationFromFileOptional("StepsDisplayList","StepsDisplayList");
-	StandardDecorationFromFileOptional("CourseContentsList","CourseContentsList");
-};
+	LoadActor(THEME:GetPathG('ScreenSelectMusic','BannerFrame')),
+	StandardDecorationFromFile("ArtistDisplay","ArtistDisplay"),
+	StandardDecorationFromFile("BPMDisplay","BPMDisplay"),
+	StandardDecorationFromFile("CourseHasMods","CourseHasMods"),
+	StandardDecorationFromFileOptional("SongTime","SongTime"),
+	StandardDecorationFromFileOptional("StepsDisplayList","StepsDisplayList"),
+	StandardDecorationFromFileOptional("CourseContentsList","CourseContentsList")
+}
 
-return t;
+return t

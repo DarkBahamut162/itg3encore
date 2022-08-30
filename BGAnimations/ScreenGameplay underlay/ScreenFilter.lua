@@ -10,7 +10,7 @@ local filterAlphas = {
 	Default = 0
 }
 
-local t = Def.ActorFrame{};
+local t = Def.ActorFrame{}
 
 local style = GAMESTATE:GetCurrentStyle()
 local cols = style:ColumnsPerPlayer()
@@ -23,19 +23,19 @@ if numPlayers == 1 then
 	local filterAlpha = tonumber(getenv("ScreenFilterP"..pNum))
 
 	local mlevel = GAMESTATE:IsCourseMode() and "ModsLevel_Stage" or "ModsLevel_Preferred"
-	local currentMini = 1-math.round(GAMESTATE:GetPlayerState(player):GetPlayerOptions(mlevel):Mini()*50) / 100;
+	local currentMini = 1-math.round(GAMESTATE:GetPlayerState(player):GetPlayerOptions(mlevel):Mini()*50) / 100
 	filterWidth = (filterWidth + padding) * currentMini
 
 	if getenv("EffectVibrateP"..pNum) then
 		filterWidth = filterWidth + (30 * currentMini)
 	end
 
-	local pos;
+	local pos
 	local metricName = string.format("PlayerP%i%sX",pNum,styleType)
 	pos = THEME:GetMetric("ScreenGameplay",metricName)
 	t[#t+1] = Def.Quad{
-		Name="SinglePlayerFilter";
-		InitCommand=function(self) self:x(pos):CenterY():zoomto(filterWidth,SCREEN_HEIGHT*3):diffusecolor(filterColor):diffusealpha(filterAlpha) end;
+		Name="SinglePlayerFilter",
+		InitCommand=function(self) self:x(pos):CenterY():zoomto(filterWidth,SCREEN_HEIGHT*3):diffusecolor(filterColor):diffusealpha(filterAlpha) end,
 		OnCommand=function(self)
 			if getenv("RotationLeftP"..pNum) then 
 				self:rotationz(90):y(SCREEN_CENTER_Y+8)
@@ -71,8 +71,8 @@ if numPlayers == 1 then
 				self:wag()
 				self:effectclock('beat')
 			end
-		end;
-	};
+		end
+	}
 else
 	if styleType == "TwoPlayersSharedSides" then
 		local player = GAMESTATE:GetMasterPlayerNumber()
@@ -81,7 +81,7 @@ else
 		filterAlphas[player] = tonumber(getenv("ScreenFilterP"..pNum))
 
 		local mlevel = GAMESTATE:IsCourseMode() and "ModsLevel_Stage" or "ModsLevel_Preferred"
-		local currentMini = 1-math.round(GAMESTATE:GetPlayerState(player):GetPlayerOptions(mlevel):Mini()*50) / 100;
+		local currentMini = 1-math.round(GAMESTATE:GetPlayerState(player):GetPlayerOptions(mlevel):Mini()*50) / 100
 		filterWidth = (filterWidth + padding) * currentMini
 
 		if getenv("EffectVibrateP"..pNum) then
@@ -89,8 +89,8 @@ else
 		end
 
 		t[#t+1] = Def.Quad{
-			Name="RoutineFilter";
-			InitCommand=function(self) self:x(THEME:GetMetric("ScreenGameplay",metricName)):CenterY():zoomto(filterWidth,SCREEN_HEIGHT*3):diffusecolor(filterColor):diffusealpha(filterAlphas[player]) end;
+			Name="RoutineFilter",
+			InitCommand=function(self) self:x(THEME:GetMetric("ScreenGameplay",metricName)):CenterY():zoomto(filterWidth,SCREEN_HEIGHT*3):diffusecolor(filterColor):diffusealpha(filterAlphas[player]) end,
 			OnCommand=function(self)
 				if getenv("RotationLeftP"..pNum) then 
 					self:rotationz(90):y(SCREEN_CENTER_Y+8)
@@ -120,8 +120,8 @@ else
 					self:wag()
 					self:effectclock('beat')
 				end
-			end;
-		};
+			end
+		}
 	else
 		for i, player in ipairs(PlayerNumber) do
 			local filterWidth = (arrowWidth * cols)
@@ -129,7 +129,7 @@ else
 			filterAlphas[player] = tonumber(getenv("ScreenFilterP"..pNum))
 
 			local mlevel = GAMESTATE:IsCourseMode() and "ModsLevel_Stage" or "ModsLevel_Preferred"
-			local currentMini = 1-math.round(GAMESTATE:GetPlayerState(player):GetPlayerOptions(mlevel):Mini()*50) / 100;
+			local currentMini = 1-math.round(GAMESTATE:GetPlayerState(player):GetPlayerOptions(mlevel):Mini()*50) / 100
 			filterWidth = (filterWidth + padding) * currentMini
 
 			if getenv("EffectVibrateP"..pNum) then
@@ -139,8 +139,8 @@ else
 			local metricName = string.format("PlayerP%i%sX",pNum,styleType)
 			local pos = THEME:GetMetric("ScreenGameplay",metricName)
 			t[#t+1] = Def.Quad{
-				Name="Player"..pNum.."Filter";
-				InitCommand=function(self) self:x(pos):CenterY():zoomto(filterWidth,SCREEN_HEIGHT*3):diffusecolor(filterColor):diffusealpha(filterAlphas[player] or 0.5) end;
+				Name="Player"..pNum.."Filter",
+				InitCommand=function(self) self:x(pos):CenterY():zoomto(filterWidth,SCREEN_HEIGHT*3):diffusecolor(filterColor):diffusealpha(filterAlphas[player] or 0.5) end,
 				OnCommand=function(self)
 					if getenv("RotationLeftP"..pNum) then 
 						self:rotationz(90):y(SCREEN_CENTER_Y+8)
@@ -170,10 +170,10 @@ else
 						self:wag()
 						self:effectclock('beat')
 					end
-				end;
-			};
+				end
+			}
 		end
 	end
 end
 
-return t;
+return t

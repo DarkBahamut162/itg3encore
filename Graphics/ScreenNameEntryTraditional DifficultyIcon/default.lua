@@ -11,7 +11,7 @@ local DifficultyToFrame = {
 }
 
 return LoadActor("DifficultyIcon")..{
-	InitCommand=function(self) self:animate(false) end;
+	InitCommand=function(self) self:animate(false) end,
 	ChangeDisplayedFeatMessageCommand=function(self,param)
 		if param.Player == Player then
 			if GAMESTATE:IsCourseMode() then

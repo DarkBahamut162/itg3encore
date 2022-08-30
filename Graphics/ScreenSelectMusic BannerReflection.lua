@@ -1,6 +1,6 @@
 return Def.FadingBanner{
-	InitCommand=function(self) self:playcommand("Set"):ztest(true):vertalign(bottom):zoomy(-1) end;
-	BeginCommand=function(self) self:visible(not GAMESTATE:IsCourseMode()) end;
+	InitCommand=function(self) self:playcommand("Set"):ztest(true):vertalign(bottom):zoomy(-1) end,
+	BeginCommand=function(self) self:visible(not GAMESTATE:IsCourseMode()) end,
 	SetCommand=function(self)
 		local song = GAMESTATE:GetCurrentSong()
 		local sortOrder = GAMESTATE:GetSortOrder()
@@ -30,7 +30,7 @@ return Def.FadingBanner{
 			end
 		end
 		self:scaletoclipped(320,120)
-	end;
-	CurrentSongChangedMessageCommand=function(self) self:playcommand("Set") end;
-	WheelMovingMessageCommand=function(self) self:queuecommand("Set") end;
-};
+	end,
+	CurrentSongChangedMessageCommand=function(self) self:playcommand("Set") end,
+	WheelMovingMessageCommand=function(self) self:queuecommand("Set") end
+}

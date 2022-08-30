@@ -47,22 +47,22 @@ local function MakeHighScoreWheelItem(index)
 			LoadFont(wheelItemFont)..{
 				Name="Rank",
 				Text=index+1,
-				InitCommand=function(self) self:x(-158):shadowlength(2) end;
+				InitCommand=function(self) self:x(-158):shadowlength(2) end,
 				FocusCommand=wheelItemFocus,
 			},
 			LoadFont(wheelItemFont)..{
 				Name="Name",
-				InitCommand=function(self) self:x(-89):maxwidth(80):shadowlength(2) end;
+				InitCommand=function(self) self:x(-89):maxwidth(80):shadowlength(2) end,
 				FocusCommand=wheelItemFocus,
 			},
 			LoadFont(wheelItemFont)..{
 				Name="Score",
-				InitCommand=function(self) self:x(87):halign(1):maxwidth(120):shadowlength(2) end;
+				InitCommand=function(self) self:x(87):halign(1):maxwidth(120):shadowlength(2) end,
 				FocusCommand=wheelItemFocus,
 			},
 			LoadFont(wheelItemFont)..{
 				Name="Date",
-				InitCommand=function(self) self:x(134):maxwidth(60):shadowlength(2) end;
+				InitCommand=function(self) self:x(134):maxwidth(60):shadowlength(2) end,
 				FocusCommand=wheelItemFocus,
 			}
 		}
@@ -70,11 +70,11 @@ local function MakeHighScoreWheelItem(index)
 end
 
 return Def.ActorFrame{
-	InitCommand=function(self) self:fov(15) end;
+	InitCommand=function(self) self:fov(15) end,
 
 	Def.ActorScroller{
 		SecondsPerItem=0.2,
-		NumItemsToDraw=10.5;
+		NumItemsToDraw=10.5,
 		TransformFunction=function(self,offset,itemIndex,numItems)
 			local degrees=18*offset
 			local radians=degrees*math.pi/180
@@ -82,8 +82,7 @@ return Def.ActorFrame{
 			self:y(math.sin(radians)*90)
 			self:z(math.cos(radians)*90)
 		end,
-		OffCommand=function(self) self:stoptweening() end;
-
+		OffCommand=function(self) self:stoptweening() end,
 		ChangeDisplayedFeatMessageCommand=function(self,param)
 			if param.Player == Player then
 				self:SetCurrentAndDestinationItem(15)
@@ -167,5 +166,5 @@ return Def.ActorFrame{
 		MakeHighScoreWheelItem(7),
 		MakeHighScoreWheelItem(8),
 		MakeHighScoreWheelItem(9)
-	},
+	}
 }

@@ -1,6 +1,6 @@
 return Def.ActorFrame{
 	Def.Sprite{
-		CurrentSongChangedMessageCommand=function(self) self:playcommand("Set") end;
+		CurrentSongChangedMessageCommand=function(self) self:playcommand("Set") end,
 		SetCommand=function(self)
 			local curStage = GAMESTATE:GetCurrentStage()
 			if GAMESTATE:IsCourseMode() then
@@ -21,11 +21,11 @@ return Def.ActorFrame{
 				end
 				self:Load(THEME:GetPathG("_gameplay","stage "..curStage))
 			end
-		end;
-	};
+		end
+	},
 	LoadFont("_z bold gray 36px")..{
-		Text="";
-		CurrentSongChangedMessageCommand=function(self) self:playcommand("Set") end;
+		Text="",
+		CurrentSongChangedMessageCommand=function(self) self:playcommand("Set") end,
 		SetCommand=function(self)
 			local curStage = GAMESTATE:GetCurrentStage()
 			if GAMESTATE:IsCourseMode() then
@@ -33,6 +33,6 @@ return Def.ActorFrame{
 					self:settext("SONG ".. (GAMESTATE:GetCourseSongIndex()+1))
 				end
 			end
-		end;
-	};
-};
+		end
+	}
+}
