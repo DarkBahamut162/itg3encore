@@ -1,6 +1,6 @@
 return Def.ActorFrame{
-    LoadFallbackB();
-    StandardDecorationFromFileOptional("BannerList","BannerList");
+    LoadFallbackB(),
+    StandardDecorationFromFileOptional("BannerList","BannerList"),
     Def.Sprite{
         Texture= THEME:GetPathG("ScreenEvaluation","BannerFrame"),
         InitCommand=function(self) self:x(SCREEN_CENTER_X):y(SCREEN_CENTER_Y+135) end,

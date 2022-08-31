@@ -1,4 +1,4 @@
 return Def.ActorFrame{
-    LoadFallbackB();
-    StandardDecorationFromFileOptional("StageDisplay","StageDisplay");
+    LoadFallbackB(),
+    StandardDecorationFromFileOptional("StageDisplay","StageDisplay")
 }

@@ -1,3 +1,3 @@
 return Def.ActorFrame{
-	LoadActor(THEME:GetPathB("","_coins"));
-};
+	LoadActor(THEME:GetPathB("","_coins"))
+}

@@ -34,7 +34,7 @@ return Def.ActorFrame {
 				end
 
 				local mlevel = GAMESTATE:IsCourseMode() and "ModsLevel_Stage" or "ModsLevel_Preferred"
-				local currentMini = 1-math.round(GAMESTATE:GetPlayerState(pn):GetPlayerOptions(mlevel):Mini()*50) / 100;
+				local currentMini = 1-math.round(GAMESTATE:GetPlayerState(pn):GetPlayerOptions(mlevel):Mini()*50) / 100
 
 				if getenv("EffectVibrate"..ToEnumShortString(pn)) == true then
 					SCREENMAN:GetTopScreen():GetChild("Player"..ToEnumShortString(pn)):vibrate():effectmagnitude(20*currentMini,20*currentMini,20*currentMini)
@@ -51,6 +51,6 @@ return Def.ActorFrame {
 				end
 			end
 		end
-	end;
-	DoneLoadingNextSongMessageCommand=function(self) self:playcommand("On") end;
-};
+	end,
+	DoneLoadingNextSongMessageCommand=function(self) self:playcommand("On") end
+}
