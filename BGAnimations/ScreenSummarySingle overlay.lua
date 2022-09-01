@@ -48,7 +48,7 @@ for i=1,3 do
 					text = string.format("%5.2f",val)
 				elseif types[i] == "PercentComplete" then
 					if n > 5 then
-						val = GetSongsPercentComplete('StepsType_Dance_Single',diffs[n])
+						val = GetCoursesPercentComplete('StepsType_Dance_Single',diffs[n])
 					else
 						val = GetSongsPercentComplete('StepsType_Dance_Single',diffs[n])
 					end
@@ -75,11 +75,11 @@ local totals = Def.ActorFrame{
 			InitCommand=function(self) self:x(SCREEN_CENTER_X+106):y(-24):horizalign(right):zoom(0.7) end,
 			BeginCommand=function(self)
 				local val = 0
-				for i=1,6 do
-					if i > 4 then
-						val = val + prof:GetCoursesActual('StepsType_Dance_Single',diffs[i+1])
+				for i=2,7 do
+					if i > 5 then
+						val = val + prof:GetCoursesActual('StepsType_Dance_Single',diffs[i])
 					else
-						val = val + prof:GetSongsActual('StepsType_Dance_Single',diffs[i+1])
+						val = val + prof:GetSongsActual('StepsType_Dance_Single',diffs[i])
 					end
 				end
 				self:settext(string.format("%5.2f",val))
@@ -93,11 +93,11 @@ local totals = Def.ActorFrame{
 			InitCommand=function(self) self:x(SCREEN_CENTER_X+106):y(-4):horizalign(right):zoom(0.7) end,
 			BeginCommand=function(self)
 				local val = 0
-				for i=1,6 do
-					if i > 4 then
-						val = val + prof:GetCoursesPossible('StepsType_Dance_Single',diffs[i+1])
+				for i=2,7 do
+					if i > 5 then
+						val = val + prof:GetCoursesPossible('StepsType_Dance_Single',diffs[i])
 					else
-						val = val + prof:GetSongsPossible('StepsType_Dance_Single',diffs[i+1])
+						val = val + prof:GetSongsPossible('StepsType_Dance_Single',diffs[i])
 					end
 				end
 				self:settext(string.format("%5.2f",val))

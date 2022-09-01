@@ -25,7 +25,7 @@ return Def.ActorFrame{
 			InitCommand=function(self) self:x(SCREEN_LEFT+120):y(SCREEN_CENTER_Y+87):maxwidth(232) end,
 			BeginCommand=function(self)
 				if GAMESTATE:IsPlayerEnabled(PLAYER_1) then
-					self:settext(GetDisplayNameFromProfileOrMemoryCard(PLAYER_1))
+					self:settext("Player 1")
 				end
 			end,
 			OnCommand=function(self) self:diffusetopedge(color("#fff000")):diffusebottomedge(color("#ffa500")):shadowlength(2):horizalign(center):zoom(0.8):diffusealpha(0):sleep(1.4):linear(0.2):diffusealpha(1) end
@@ -62,7 +62,7 @@ return Def.ActorFrame{
 			InitCommand=function(self) self:x(SCREEN_RIGHT-120):y(SCREEN_CENTER_Y+87):maxwidth(232) end,
 			BeginCommand=function(self)
 				if GAMESTATE:IsPlayerEnabled(PLAYER_2) then
-					self:settext(GetDisplayNameFromProfileOrMemoryCard(PLAYER_2))
+					self:settext("Player 2")
 				end
 			end,
 			OnCommand=function(self) self:diffusetopedge(color("#fffb81")):diffusebottomedge(color("#bcff04")):shadowlength(2):horizalign(center):zoom(0.8):diffusealpha(0):sleep(1.4):linear(0.2):diffusealpha(1) end

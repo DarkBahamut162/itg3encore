@@ -53,7 +53,7 @@ return Def.ActorFrame{
 					text = song:GetDisplayFullTitle()
 				end
 				if course then
-					text = course:GetDisplayFullTitle() .. " - " .. text,
+					text = course:GetDisplayFullTitle() .. " - " .. text
 				end
 				self:settext(text)
 			end
