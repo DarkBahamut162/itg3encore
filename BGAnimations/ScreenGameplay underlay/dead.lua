@@ -1,44 +1,44 @@
 return Def.ActorFrame{
 	Def.ActorFrame{
-		Name="DeadSingle";
+		Name="DeadSingle",
 		BeginCommand=function(self)
 			local style = GAMESTATE:GetCurrentStyle()
 			local styleType = style:GetStyleType()
 			self:visible( styleType ~= "StyleType_OnePlayerTwoSides" and styleType ~= "StyleType_TwoPlayersSharedSides" )
-		end;
+		end,
 		HealthStateChangedMessageCommand=function(self, param)
 			if param.HealthState == "HealthState_Dead" then
 				local dead = self:GetChild("Dead"..ToEnumShortString(param.PlayerNumber))
 				dead:playcommand("Show")
 			end
-		end;
+		end,
 		Def.Quad{
-			Name="DeadP1";
-			InitCommand=function(self) self:diffuse(color("0,0,0,0.5")):faderight(0.3):stretchto(SCREEN_LEFT,SCREEN_TOP,SCREEN_CENTER_X,SCREEN_BOTTOM):diffusealpha(0):player(PLAYER_1) end;
-			ShowCommand=function(self) self:linear(0.2):diffusealpha(0.5) end;
-		};
+			Name="DeadP1",
+			InitCommand=function(self) self:diffuse(color("0,0,0,0.5")):faderight(0.3):stretchto(SCREEN_LEFT,SCREEN_TOP,SCREEN_CENTER_X,SCREEN_BOTTOM):diffusealpha(0):player(PLAYER_1) end,
+			ShowCommand=function(self) self:linear(0.2):diffusealpha(0.5) end
+		},
 		Def.Quad{
-			Name="DeadP2";
-			InitCommand=function(self) self:diffuse(color("0,0,0,0.5")):faderight(0.3):stretchto(SCREEN_CENTER_X,SCREEN_TOP,SCREEN_RIGHT,SCREEN_BOTTOM):diffusealpha(0):player(PLAYER_2) end;
-			ShowCommand=function(self) self:linear(0.2):diffusealpha(0.5) end;
-		};
-	};
+			Name="DeadP2",
+			InitCommand=function(self) self:diffuse(color("0,0,0,0.5")):faderight(0.3):stretchto(SCREEN_CENTER_X,SCREEN_TOP,SCREEN_RIGHT,SCREEN_BOTTOM):diffusealpha(0):player(PLAYER_2) end,
+			ShowCommand=function(self) self:linear(0.2):diffusealpha(0.5) end
+		}
+	},
 
 	Def.ActorFrame{
-		Name="DeadDouble";
+		Name="DeadDouble",
 		BeginCommand=function(self)
 			local style = GAMESTATE:GetCurrentStyle()
 			local styleType = style:GetStyleType()
 			self:visible( styleType == "StyleType_OnePlayerTwoSides" or styleType == "StyleType_TwoPlayersSharedSides" )
-		end;
+		end,
 		HealthStateChangedMessageCommand=function(self, param)
 			if param.HealthState == "HealthState_Dead" then
 				self:RunCommandsOnChildren(function(self) self:playcommand("Show") end)
 			end
-		end;
+		end,
 		Def.Quad{
-			InitCommand=function(self) self:diffuse(color("0,0,0,0.5")):fadeleft(0.2):faderight(0.2):FullScreen():diffusealpha(0) end;
-			ShowCommand=function(self) self:linear(0.2):diffusealpha(0.5) end;
-		};
-	};
-};
+			InitCommand=function(self) self:diffuse(color("0,0,0,0.5")):fadeleft(0.2):faderight(0.2):FullScreen():diffusealpha(0) end,
+			ShowCommand=function(self) self:linear(0.2):diffusealpha(0.5) end
+		}
+	}
+}

@@ -1,3 +1,3 @@
 return LoadFont("_v credit")..{
-    Text="Lightning's House\nKersey, PA";
-};
+    Text="Lightning's House\nKersey, PA"
+}

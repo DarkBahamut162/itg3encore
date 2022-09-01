@@ -1,3 +1,3 @@
 return LoadFont("_v credit")..{
-    Text="Ryan McKanna\nNaperville, IL";
-};
+    Text="Ryan McKanna\nNaperville, IL"
+}

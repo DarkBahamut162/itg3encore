@@ -17,7 +17,7 @@ return Def.BitmapText{
 		local gainSeconds = GAMESTATE:GetCurrentCourse(player):GetCourseEntry(GAMESTATE:GetCourseSongIndex()):GetGainSeconds()
 		self:stoptweening():diffuseshift():diffusealpha(1):zoom(0.75):linear(0.3):zoom(0.6):sleep(3):linear(0.5):diffusealpha(0)
 		self:settextf("%+1.1fs", gainSeconds)
-	end;
+	end,
 	JudgmentMessageCommand=function(self,params)
 		if params.Player == player then
 			if params.HoldNoteScore then

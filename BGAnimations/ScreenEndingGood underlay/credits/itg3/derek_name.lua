@@ -1,3 +1,3 @@
 return LoadFont("_v credit")..{
-    Text="Derek Bauer\nKersey, PA";
-};
+    Text="Derek Bauer\nKersey, PA"
+}

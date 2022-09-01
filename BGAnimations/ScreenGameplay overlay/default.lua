@@ -9,7 +9,7 @@ local t = Def.ActorFrame{
 			InitCommand=function(self) self:x(-254):zoom(0.55):shadowlength(0):maxwidth(160) end,
 			BeginCommand=function(self)
 				if GAMESTATE:IsHumanPlayer(PLAYER_1) then
-					self:settext(GAMESTATE:GetPlayerDisplayName(PLAYER_1))
+					self:settext(GetDisplayNameFromProfileOrMemoryCard(PLAYER_1))
 				end
 			end
 		},
@@ -17,7 +17,7 @@ local t = Def.ActorFrame{
 			InitCommand=function(self) self:x(254):zoom(0.55):shadowlength(0):maxwidth(160) end,
 			BeginCommand=function(self)
 				if GAMESTATE:IsHumanPlayer(PLAYER_2) then
-					self:settext(GAMESTATE:GetPlayerDisplayName(PLAYER_2))
+					self:settext(GetDisplayNameFromProfileOrMemoryCard(PLAYER_2))
 				end
 			end
 		}

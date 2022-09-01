@@ -1,3 +1,3 @@
 return LoadFont("_v credit")..{
-    Text="Harvey Kung\nBogota, Colombia";
-};
+    Text="Harvey Kung\nBogota, Colombia"
+}

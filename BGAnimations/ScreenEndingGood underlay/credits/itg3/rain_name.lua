@@ -1,3 +1,3 @@
 return LoadFont("_v credit")..{
-    Text="Felipe Valladares\nMaracay, Venezuela";
-};
+    Text="Felipe Valladares\nMaracay, Venezuela"
+}

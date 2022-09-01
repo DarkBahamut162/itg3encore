@@ -173,7 +173,11 @@ function OptionShowStats()
 		Choices = { "Off","W1","W2","W3","W4","W5","Miss","IIDX" },
 		LoadSelections = function(self, list, pn)
 			local selected = getenv("ShowStats"..ToEnumShortString(pn))+1
-			list[selected] = true
+			if selected ~= 0 then
+				list[selected] = true
+			else
+				list[1] = true
+			end
 		end,
 		SaveSelections = function(self, list, pn)
 			for i, choice in ipairs(self.Choices) do

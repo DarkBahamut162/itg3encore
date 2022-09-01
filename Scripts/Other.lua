@@ -67,27 +67,33 @@ function GetScreenNameEntryTraditionalHelpText()
 end
 
 function HumanAndProfile(pn)
-	return GAMESTATE:IsHumanPlayer(pn) and PROFILEMAN:IsPersistentProfile(pn)
+	return GAMESTATE:IsHumanPlayer(pn) and MEMCARDMAN:GetCardState(pn) ~= 'MemoryCardState_none'
 end
 
 function EnabledAndProfile(pn)
-	return GAMESTATE:IsPlayerEnabled(pn) and PROFILEMAN:IsPersistentProfile(pn)
+	return GAMESTATE:IsPlayerEnabled(pn) and MEMCARDMAN:GetCardState(pn) ~= 'MemoryCardState_none'
+end
+
+function GetDisplayNameFromProfileOrMemoryCard(pn)
+	if PROFILEMAN:IsPersistentProfile(pn) then return GAMESTATE:GetPlayerDisplayName(pn) end
+	if MEMCARDMAN:GetCardState(pn) ~= 'MemoryCardState_none' then return MEMCARDMAN:GetName(pn) end
+	return ""
 end
 
 function ScreenEndingGetDisplayName(pn)
-	if PROFILEMAN:IsPersistentProfile(pn) then return GAMESTATE:GetPlayerDisplayName(pn) end
+	if MEMCARDMAN:GetCardState(pn) ~= 'MemoryCardState_none' then return MEMCARDMAN:GetName(pn) end
 	return "No Card"
 end
 
 function QuadAward( pn )
-	return PROFILEMAN:GetProfile(pn):GetTotalStepsWithTopGrade(STEPS_TYPE_DANCE_SINGLE,DIFFICULTY_CHALLENGE,GRADE_TIER01)
+	return PROFILEMAN:GetProfile(pn):GetTotalStepsWithTopGrade('StepsType_Dance_Single',4,1)
 end
 
 function StarAward( pn )
-	return PROFILEMAN:GetProfile(pn):GetTotalStepsWithTopGrade(STEPS_TYPE_DANCE_SINGLE,DIFFICULTY_CHALLENGE,GRADE_TIER01)*4
-		+PROFILEMAN:GetProfile(pn):GetTotalStepsWithTopGrade(STEPS_TYPE_DANCE_SINGLE,DIFFICULTY_CHALLENGE,GRADE_TIER02)*3
-		+PROFILEMAN:GetProfile(pn):GetTotalStepsWithTopGrade(STEPS_TYPE_DANCE_SINGLE,DIFFICULTY_CHALLENGE,GRADE_TIER03)*2
-		+PROFILEMAN:GetProfile(pn):GetTotalStepsWithTopGrade(STEPS_TYPE_DANCE_SINGLE,DIFFICULTY_CHALLENGE,GRADE_TIER04)
+	return PROFILEMAN:GetProfile(pn):GetTotalStepsWithTopGrade('StepsType_Dance_Single',4,1)*4
+		+PROFILEMAN:GetProfile(pn):GetTotalStepsWithTopGrade('StepsType_Dance_Single',4,2)*3
+		+PROFILEMAN:GetProfile(pn):GetTotalStepsWithTopGrade('StepsType_Dance_Single',4,3)*2
+		+PROFILEMAN:GetProfile(pn):GetTotalStepsWithTopGrade('StepsType_Dance_Single',4,4)
 end
 
 function CalorieAward( pn )
@@ -95,7 +101,7 @@ function CalorieAward( pn )
 end
 
 function PercentAward( pn )
-	return (PROFILEMAN:GetProfile(pn):GetSongsActual(STEPS_TYPE_DANCE_SINGLE,DIFFICULTY_CHALLENGE))*100
+	return (PROFILEMAN:GetProfile(pn):GetSongsActual('StepsType_Dance_Single',4))*100
 end
 
 function StarIcon( Actor,pn )

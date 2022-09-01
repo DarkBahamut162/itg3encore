@@ -1,3 +1,3 @@
 return LoadFont("_v credit")..{
-    Text="Rob Campbell\nFredericksburg, TX";
-};
+    Text="Rob Campbell\nFredericksburg, TX"
+}

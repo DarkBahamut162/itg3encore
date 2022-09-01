@@ -101,5 +101,5 @@ return Def.ActorFrame{
 		InitCommand=function(self) self:diffusealpha(0.2):x(52):y(100):addx(EvalTweenDistance()) end,
 		OnCommand=function(self) self:sleep(3):decelerate(0.3):addx(-EvalTweenDistance()) end,
 		OffCommand=function(self) self:accelerate(0.3):addx(EvalTweenDistance()) end
-	},
-},
+	}
+}

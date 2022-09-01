@@ -37,100 +37,97 @@ return Def.ActorFrame{
 	OnCommand=function(self)
 		self:x( SCREEN_CENTER_X )
 		self:y( SCREEN_CENTER_Y)
-	end;
-
+	end,
 	Def.ActorFrame{
-		Name="Player";
-		InitCommand=function(self) self:x(xPos):addx(GAMESTATE:GetMasterPlayerNumber() == PLAYER_1 and 100 or -100) end;
-		BeginCommand=function(self) self:visible(GAMESTATE:IsHumanPlayer(pn)) end;
-		OnCommand=function(self) self:sleep(0.5):decelerate(0.8):addx(GAMESTATE:GetMasterPlayerNumber() == PLAYER_1 and -100 or 100) end;
-		OffCommand=function(self) if AnyPlayerFullComboed() then self:sleep(1) end; self:accelerate(0.8):addx(GAMESTATE:GetMasterPlayerNumber() == PLAYER_1 and 100 or -100) end;
-
-		LoadActor("d_bg");
-
+		Name="Player",
+		InitCommand=function(self) self:x(xPos):addx(GAMESTATE:GetMasterPlayerNumber() == PLAYER_1 and 100 or -100) end,
+		BeginCommand=function(self) self:visible(GAMESTATE:IsHumanPlayer(pn)) end,
+		OnCommand=function(self) self:sleep(0.5):decelerate(0.8):addx(GAMESTATE:GetMasterPlayerNumber() == PLAYER_1 and -100 or 100) end,
+		OffCommand=function(self) if AnyPlayerFullComboed() then self:sleep(1) end self:accelerate(0.8):addx(GAMESTATE:GetMasterPlayerNumber() == PLAYER_1 and 100 or -100) end,
+		LoadActor("d_bg"),
 		Def.ActorFrame{
-			Condition=getenv("ShowStats"..ToEnumShortString(pn)) < 7;
+			Condition=getenv("ShowStats"..ToEnumShortString(pn)) < 7,
 			LoadActor("../w1")..{
-				InitCommand=function(self) self:vertalign(bottom):x(barCenter):y(164):zoomx(0.01*barWidth[bgNum]):zoomy(0) end;
-				Condition=getenv("ShowStats"..ToEnumShortString(pn)) >= 1;
+				InitCommand=function(self) self:vertalign(bottom):x(barCenter):y(164):zoomx(0.01*barWidth[bgNum]):zoomy(0) end,
+				Condition=getenv("ShowStats"..ToEnumShortString(pn)) >= 1,
 				JudgmentMessageCommand=function(self,param)
 					if param.Player == pn then self:queuecommand("Update") end
-				end;
+				end,
 				UpdateCommand=function(self)
 					local TotalSteps = StepsOrTrail:GetRadarValues(pn):GetValue('RadarCategory_TapsAndHolds')
 					local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn)
 					local w1Notes = pss:GetTapNoteScores('TapNoteScore_W1')
 					self:zoomy(w1Notes/TotalSteps*barHeight)
-				end;
-			};
+				end
+			},
 			LoadActor("../w2")..{
-				InitCommand=function(self) self:vertalign(bottom):x(barCenter+barWidth[bgNum]*1):y(164):zoomx(0.01*barWidth[bgNum]):zoomy(0) end;
-				Condition=getenv("ShowStats"..ToEnumShortString(pn)) >= 2;
+				InitCommand=function(self) self:vertalign(bottom):x(barCenter+barWidth[bgNum]*1):y(164):zoomx(0.01*barWidth[bgNum]):zoomy(0) end,
+				Condition=getenv("ShowStats"..ToEnumShortString(pn)) >= 2,
 				JudgmentMessageCommand=function(self,param)
 					if param.Player == pn then self:queuecommand("Update") end
-				end;
+				end,
 				UpdateCommand=function(self)
 					local TotalSteps = StepsOrTrail:GetRadarValues(pn):GetValue('RadarCategory_TapsAndHolds')
 					local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn)
 					local w2Notes = pss:GetTapNoteScores('TapNoteScore_W2')
 					self:zoomy(w2Notes/TotalSteps*barHeight)
-				end;
-			};
+				end
+			},
 			LoadActor("../w3")..{
-				InitCommand=function(self) self:vertalign(bottom):x(barCenter+barWidth[bgNum]*2):y(164):zoomx(0.01*barWidth[bgNum]):zoomy(0) end;
-				Condition=getenv("ShowStats"..ToEnumShortString(pn)) >= 3;
+				InitCommand=function(self) self:vertalign(bottom):x(barCenter+barWidth[bgNum]*2):y(164):zoomx(0.01*barWidth[bgNum]):zoomy(0) end,
+				Condition=getenv("ShowStats"..ToEnumShortString(pn)) >= 3,
 				JudgmentMessageCommand=function(self,param)
 					if param.Player == pn then self:queuecommand("Update") end
-				end;
+				end,
 				UpdateCommand=function(self)
 					local TotalSteps = StepsOrTrail:GetRadarValues(pn):GetValue('RadarCategory_TapsAndHolds')
 					local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn)
 					local w3Notes = pss:GetTapNoteScores('TapNoteScore_W3')
 					self:zoomy(w3Notes/TotalSteps*barHeight)
-				end;
-			};
+				end
+			},
 			LoadActor("../w4")..{
-				InitCommand=function(self) self:vertalign(bottom):x(barCenter+barWidth[bgNum]*3):y(164):zoomx(0.01*barWidth[bgNum]):zoomy(0) end;
-				Condition=getenv("ShowStats"..ToEnumShortString(pn)) >= 4;
+				InitCommand=function(self) self:vertalign(bottom):x(barCenter+barWidth[bgNum]*3):y(164):zoomx(0.01*barWidth[bgNum]):zoomy(0) end,
+				Condition=getenv("ShowStats"..ToEnumShortString(pn)) >= 4,
 				JudgmentMessageCommand=function(self,param)
 					if param.Player == pn then self:queuecommand("Update") end
-				end;
+				end,
 				UpdateCommand=function(self)
 					local TotalSteps = StepsOrTrail:GetRadarValues(pn):GetValue('RadarCategory_TapsAndHolds')
 					local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn)
 					local w4Notes = pss:GetTapNoteScores('TapNoteScore_W4')
 					self:zoomy(w4Notes/TotalSteps*barHeight)
-				end;
-			};
+				end
+			},
 			LoadActor("../w5")..{
-				InitCommand=function(self) self:vertalign(bottom):x(barCenter+barWidth[bgNum]*4):y(164):zoomx(0.01*barWidth[bgNum]):zoomy(0) end;
-				Condition=getenv("ShowStats"..ToEnumShortString(pn)) >= 5;
+				InitCommand=function(self) self:vertalign(bottom):x(barCenter+barWidth[bgNum]*4):y(164):zoomx(0.01*barWidth[bgNum]):zoomy(0) end,
+				Condition=getenv("ShowStats"..ToEnumShortString(pn)) >= 5,
 				JudgmentMessageCommand=function(self,param)
 					if param.Player == pn then self:queuecommand("Update") end
-				end;
+				end,
 				UpdateCommand=function(self)
 					local TotalSteps = StepsOrTrail:GetRadarValues(pn):GetValue('RadarCategory_TapsAndHolds')
 					local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn)
 					local w5Notes = pss:GetTapNoteScores('TapNoteScore_W5')
 					self:zoomy(w5Notes/TotalSteps*barHeight)
-				end;
-			};
+				end
+			},
 			LoadActor("../w6")..{
-				InitCommand=function(self) self:vertalign(bottom):x(barCenter+barWidth[bgNum]*5):y(164):zoomx(0.01*barWidth[bgNum]):zoomy(0) end;
-				Condition=getenv("ShowStats"..ToEnumShortString(pn)) >= 6;
+				InitCommand=function(self) self:vertalign(bottom):x(barCenter+barWidth[bgNum]*5):y(164):zoomx(0.01*barWidth[bgNum]):zoomy(0) end,
+				Condition=getenv("ShowStats"..ToEnumShortString(pn)) >= 6,
 				JudgmentMessageCommand=function(self,param)
 					if param.Player == pn then self:queuecommand("Update") end
-				end;
+				end,
 				UpdateCommand=function(self)
 					local TotalSteps = StepsOrTrail:GetRadarValues(pn):GetValue('RadarCategory_TapsAndHolds')
 					local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn)
 					local missNotes = pss:GetTapNoteScores('TapNoteScore_Miss')
 					self:zoomy(missNotes/TotalSteps*barHeight)
-				end;
-			};
-		};
+				end
+			}
+		},
 		Def.ActorFrame{
-			Condition=getenv("ShowStats"..ToEnumShortString(pn)) == 7;
+			Condition=getenv("ShowStats"..ToEnumShortString(pn)) == 7,
 			JudgmentMessageCommand=function(self,param)
 				if param.TapNoteScore and
 				param.TapNoteScore ~= 'TapNoteScore_Invalid' and
@@ -141,39 +138,39 @@ return Def.ActorFrame{
 				param.TapNoteScore ~= 'TapNoteScore_None' then
 					DPCurMax = DPCurMax + 5
 				end
-			end;
+			end,
 			LoadActor("../w3")..{
 				OnCommand=function(self)
 					self:vertalign(bottom):x(barCenter+(barWidth[bgNum])*1):y(164):zoomx(0.01*barWidth[bgNum]):zoomy(0)
 					if topscore then
 						self:zoomy(topscore:GetPercentDP()*barHeight):diffusealpha(0.25)
 					end
-				end;
-			};
+				end
+			},
 			LoadActor("../w6")..{
 				OnCommand=function(self)
 					self:vertalign(bottom):x(barCenter+(barWidth[bgNum])*2):y(164):zoomx(0.01*barWidth[bgNum])
 					local target = THEME:GetMetric("PlayerStageStats", "GradePercentTier" .. string.format("%02d", 17-getenv("SetPacemaker"..ToEnumShortString(pn))))
 					self:zoomy(target*barHeight):diffusealpha(0.25)
-				end;
-			};
+				end
+			},
 
 			LoadActor("../w1")..{
-				InitCommand=function(self) self:vertalign(bottom):x(barCenter):y(164):zoomx(0.01*barWidth[bgNum]):zoomy(0) end;
+				InitCommand=function(self) self:vertalign(bottom):x(barCenter):y(164):zoomx(0.01*barWidth[bgNum]):zoomy(0) end,
 				JudgmentMessageCommand=function(self,param)
 					if param.Player == pn then self:queuecommand("Update") end
-				end;
+				end,
 				UpdateCommand=function(self)
 					local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn)
 					local DP = pss:GetPercentDancePoints()
 					self:zoomy(DP*barHeight)
-				end;
-			};
+				end
+			},
 			LoadActor("../w3")..{
-				InitCommand=function(self) self:vertalign(bottom):x(barCenter+barWidth[bgNum]*1):y(164):zoomx(0.01*barWidth[bgNum]):zoomy(0) end;
+				InitCommand=function(self) self:vertalign(bottom):x(barCenter+barWidth[bgNum]*1):y(164):zoomx(0.01*barWidth[bgNum]):zoomy(0) end,
 				JudgmentMessageCommand=function(self,param)
 					if param.Player == pn then self:queuecommand("Update") end
-				end;
+				end,
 				UpdateCommand=function(self)
 					local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn)
 					if topscore then
@@ -183,20 +180,20 @@ return Def.ActorFrame{
 						local DP = pss:GetPercentDancePoints()
 						self:zoomy(DP*barHeight)
 					end
-				end;
-			};
+				end
+			},
 			LoadActor("../w6")..{
-				InitCommand=function(self) self:vertalign(bottom):x(barCenter+barWidth[bgNum]*2):y(164):zoomx(0.01*barWidth[bgNum]):zoomy(0) end;
+				InitCommand=function(self) self:vertalign(bottom):x(barCenter+barWidth[bgNum]*2):y(164):zoomx(0.01*barWidth[bgNum]):zoomy(0) end,
 				JudgmentMessageCommand=function(self,param)
 					if param.Player == pn then self:queuecommand("Update") end
-				end;
+				end,
 				UpdateCommand=function(self)
 					local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn)
 					local DPMax = pss:GetPossibleDancePoints()
 					local target = THEME:GetMetric("PlayerStageStats", "GradePercentTier" .. string.format("%02d", 17-getenv("SetPacemaker"..ToEnumShortString(pn))))
 					self:zoomy(DPCurMax/DPMax*target*barHeight)
-				end;
-			};
-		};
-	};
-};
+				end
+			}
+		}
+	}
+}

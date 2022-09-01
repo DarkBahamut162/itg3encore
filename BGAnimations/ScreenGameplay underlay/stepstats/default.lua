@@ -1,6 +1,6 @@
 local numPlayers = GAMESTATE:GetNumPlayersEnabled()
+local statObject = "single"
 
-local statObject = "single";
 if numPlayers == 1 then
 	local style = GAMESTATE:GetCurrentStyle()
 	if style:GetStyleType() == 'StyleType_OnePlayerTwoSides' or
@@ -15,5 +15,5 @@ elseif numPlayers == 2 then
 end
 
 return Def.ActorFrame{
-	LoadActor(statObject);
-};
+	LoadActor(statObject)
+}

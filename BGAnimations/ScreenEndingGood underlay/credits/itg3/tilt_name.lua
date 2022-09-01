@@ -1,3 +1,3 @@
 return LoadFont("_v credit")..{
-    Text="Pittsburgh Mills Galleria\nPittsburgh, PA";
-};
+    Text="Pittsburgh Mills Galleria\nPittsburgh, PA"
+}

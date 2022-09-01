@@ -10,10 +10,10 @@ return Def.ActorFrame{
 			OnCommand=function(self) self:diffusealpha(0.6):sleep(2):accelerate(0.3):addx(-300) end
 		},
         LoadFont("_r bold 30px")..{
-            InitCommand=function(self) self:x(SCREEN_LEFT+120):y(SCREEN_CENTER_Y+87) end,
+            InitCommand=function(self) self:x(SCREEN_LEFT+120):y(SCREEN_CENTER_Y+87):maxwidth(232) end,
 			BeginCommand=function(self)
 				if GAMESTATE:IsPlayerEnabled(PLAYER_1) then
-					self:settext(GAMESTATE:GetPlayerDisplayName(PLAYER_1))
+					self:settext(GetDisplayNameFromProfileOrMemoryCard(PLAYER_1))
 				end
 			end,
             OnCommand=function(self) self:diffusetopedge(color("#fff000")):diffusebottomedge(color("#ffa500")):shadowlength(2):horizalign(center):zoom(0.8):sleep(2):accelerate(0.3):addx(-300) end
@@ -63,10 +63,10 @@ return Def.ActorFrame{
 			OnCommand=function(self) self:diffusealpha(0.6):sleep(2):accelerate(0.3):addx(300) end
 		},
         LoadFont("_r bold 30px")..{
-            InitCommand=function(self) self:x(SCREEN_LEFT+120):y(SCREEN_CENTER_Y+87) end,
+            InitCommand=function(self) self:x(SCREEN_LEFT+120):y(SCREEN_CENTER_Y+87):maxwidth(232) end,
 			BeginCommand=function(self)
 				if GAMESTATE:IsPlayerEnabled(PLAYER_2) then
-					self:settext(GAMESTATE:GetPlayerDisplayName(PLAYER_2))
+					self:settext(GetDisplayNameFromProfileOrMemoryCard(PLAYER_2))
 				end
 			end,
             OnCommand=function(self) self:diffusetopedge(color("#fffb81")):diffusebottomedge(color("#bcff04")):shadowlength(2):horizalign(center):zoom(0.8):sleep(2):accelerate(0.3):addx(300) end

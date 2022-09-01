@@ -16,8 +16,8 @@ return Def.BitmapText{
 	end,
 	OnCommand=function(self)
 		self:visible(not getenv("HideScore"..ToEnumShortString(player)))
-		self:diffuse(PlayerColor(player)):addy(-100):sleep(0.5):decelerate(0.8):addy(100) end;
-	OffCommand=function(self) if AnyPlayerFullComboed() then self:sleep(1) end self:accelerate(0.8):addy(-100) end;
+		self:diffuse(PlayerColor(player)):addy(-100):sleep(0.5):decelerate(0.8):addy(100) end,
+	OffCommand=function(self) if AnyPlayerFullComboed() then self:sleep(1) end self:accelerate(0.8):addy(-100) end,
 	JudgmentMessageCommand=function(self,params)
 		if params.TapNoteScore and params.TapNoteScore ~= 'TapNoteScore_Invalid'
 			and params.TapNoteScore ~= 'TapNoteScore_None' then

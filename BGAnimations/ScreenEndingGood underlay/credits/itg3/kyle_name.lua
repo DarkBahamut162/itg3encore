@@ -1,3 +1,3 @@
 return LoadFont("_v credit")..{
-    Text="Kyle Ward\nSeattle, WA";
-};
+    Text="Kyle Ward\nSeattle, WA"
+}

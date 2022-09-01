@@ -23,6 +23,11 @@ Branch.StartGame = function()
 	return "ScreenSelectGameMode"
 end
 
+Branch.AfterSelectStyleCheck = function()
+	if GAMESTATE:IsAnyHumanPlayerUsingMemoryCard() then return Branch.AfterSelectStyle() end
+	return "ScreenProfileLoad"
+end
+
 Branch.AfterSelectStyle = function()
 	if GAMESTATE:IsCourseMode() then return "ScreenSelectCourse" end
 	if IsNetSMOnline() then return SMOnlineScreen() end

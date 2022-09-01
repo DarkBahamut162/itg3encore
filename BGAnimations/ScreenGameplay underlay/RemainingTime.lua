@@ -15,8 +15,8 @@ return Def.BitmapText{
 		self:settext(SecondsToMSSMsMs( STATSMAN:GetCurStageStats():GetPlayerStageStats( player ):GetLifeRemainingSeconds() ))
 		self:queuecommand('Update')
 	end,
-	OnCommand=function(self) self:addy(-100):sleep(0.5):decelerate(0.8):addy(100) end;
-	OffCommand=function(self) if AnyPlayerFullComboed() then self:sleep(1) end self:accelerate(0.8):addy(-100) end;
+	OnCommand=function(self) self:addy(-100):sleep(0.5):decelerate(0.8):addy(100) end,
+	OffCommand=function(self) if AnyPlayerFullComboed() then self:sleep(1) end self:accelerate(0.8):addy(-100) end,
 	UpdateCommand=function(self)
 		self:settext(SecondsToMSSMsMs( STATSMAN:GetCurStageStats():GetPlayerStageStats( player ):GetLifeRemainingSeconds() ))
 		self:sleep(0.01666)

@@ -1,12 +1,12 @@
 return Def.ActorFrame{
-	LoadActor(THEME:GetPathB("_selectmusic","menu in add"));
+	LoadActor(THEME:GetPathB("_selectmusic","menu in add")),
 	Def.Actor{
-		OnCommand=function(self) self:sleep(0.8) end;
-	};
+		OnCommand=function(self) self:sleep(0.8) end
+	},
 	LoadActor("open.ogg")..{
-		OnCommand=function(self) self:play() end;
-	};
+		OnCommand=function(self) self:play() end
+	},
 	LoadActor(THEME:GetPathB("_statsout","musicwheel"))..{
-		Condition=GAMESTATE:IsAnyHumanPlayerUsingMemoryCard();
-	};
-};
+		Condition=GAMESTATE:IsAnyHumanPlayerUsingMemoryCard()
+	}
+}

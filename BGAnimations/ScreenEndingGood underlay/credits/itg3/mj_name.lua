@@ -1,3 +1,3 @@
 return LoadFont("_v credit")..{
-    Text="Matthew Emirzian\nToronto, ON";
-};
+    Text="Matthew Emirzian\nToronto, ON"
+}

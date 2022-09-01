@@ -60,7 +60,7 @@ return Def.ActorFrame{
 		InitCommand=function(self) self:xy(-280,4):maxwidth(160):zoom(0.5):shadowlength(2):diffuse(PlayerColor(player)) end,
 		BeginCommand=function(self)
 			if GAMESTATE:IsPlayerEnabled(player) then
-				self:settext( GAMESTATE:GetPlayerDisplayName(player) )
+				self:settext( GetDisplayNameFromProfileOrMemoryCard(player) )
 			end
 		end
 	},
