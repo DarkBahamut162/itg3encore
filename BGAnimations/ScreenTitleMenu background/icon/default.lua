@@ -8,7 +8,10 @@ return Def.ActorFrame{
 		LoadFont("_v 26px bold black")..{
 			Text=PREFSMAN:GetPreference('SongsPerPlay'),
 			InitCommand=function(self) self:x(SCREEN_RIGHT-200+1):y(SCREEN_TOP-2+29):horizalign(center):zoom(0.8) end,
-			OnCommand=function(self) self:diffusealpha(0):sleep(0.7):linear(0.4):diffusealpha(1) end
+			OnCommand=function(self)
+				self:diffusealpha(0):sleep(0.7):linear(0.4):diffusealpha(1)
+				if GAMESTATE:IsEventMode() then self:settext("∞") end
+			end
 		},
 		LoadFont("_v 26px bold black")..{
 			Text="ROUNDS",
@@ -61,10 +64,9 @@ return Def.ActorFrame{
 				Name="Real",
 				OnCommand=function(self)
 					local c = self:GetChildren()
-					local diffScale = PREFSMAN:GetPreference("LifeDifficultyScale")
-					local thresholds = { 1.7, 1.5, 1.3, 1, 0.9, 0.7, 0.5 }
+					local currentDiff = GetLifeDifficulty()
 					for i = 1,7 do
-						c["Diff"..i]:visible( diffScale <= thresholds[i] )
+						c["Diff"..i]:visible( i <= currentDiff )
 					end
 				end,
 				Def.Quad{
@@ -104,7 +106,118 @@ return Def.ActorFrame{
 				}
 			},
 			LoadFont("_v 26px bold black")..{
-				Text="LEVEL",
+				Text="DIFFICULTY",
+				InitCommand=function(self) self:y(6):zoom(0.4):maxwidth(120) end,
+				OnCommand=function(self) self:diffusealpha(0):sleep(0.7):linear(0.4):diffusealpha(1) end
+			}
+		}
+	},
+	Def.ActorFrame{
+		Name="Timing",
+		InitCommand=function(self) self:x(SCREEN_RIGHT-200+53*2) end,
+		LoadActor("_icon")..{
+			InitCommand=function(self) self:y(SCREEN_TOP-2+34) end,
+			OnCommand=function(self) self:diffusealpha(0):sleep(0.7):linear(0.4):diffusealpha(1) end
+		},
+		Def.ActorFrame{
+			Name="TimingBars",
+			InitCommand=function(self) self:y(SCREEN_TOP-2+40) end,
+			Def.ActorFrame{
+				Name="BG",
+				Def.Quad{
+					InitCommand=function(self) self:x(-4*4):vertalign(bottom):zoomtowidth(3):zoomtoheight(21/9*1):diffusealpha(0) end,
+					OnCommand=function(self) self:sleep(0.7):linear(0.4):diffusealpha(1):diffuse(color("#77777777")) end
+				},
+				Def.Quad{
+					InitCommand=function(self) self:x(-4*3):vertalign(bottom):zoomtowidth(3):zoomtoheight(21/9*2):diffusealpha(0) end,
+					OnCommand=function(self) self:sleep(0.7):linear(0.4):diffusealpha(1):diffuse(color("#77777777")) end
+				},
+				Def.Quad{
+					InitCommand=function(self) self:x(-4*2):vertalign(bottom):zoomtowidth(3):zoomtoheight(21/9*3):diffusealpha(0) end,
+					OnCommand=function(self) self:sleep(0.7):linear(0.4):diffusealpha(1):diffuse(color("#77777777")) end
+				},
+				Def.Quad{
+					InitCommand=function(self) self:x(-4*1):vertalign(bottom):zoomtowidth(3):zoomtoheight(21/9*4):diffusealpha(0) end,
+					OnCommand=function(self) self:sleep(0.7):linear(0.4):diffusealpha(1):diffuse(color("#77777777")) end
+				},
+				Def.Quad{
+					InitCommand=function(self) self:x(0):vertalign(bottom):zoomtowidth(3):zoomtoheight(21/9*5):diffusealpha(0) end,
+					OnCommand=function(self) self:sleep(0.7):linear(0.4):diffusealpha(1):diffuse(color("#77777777")) end
+				},
+				Def.Quad{
+					InitCommand=function(self) self:x(4*1):vertalign(bottom):zoomtowidth(3):zoomtoheight(21/9*6):diffusealpha(0) end,
+					OnCommand=function(self) self:sleep(0.7):linear(0.4):diffusealpha(1):diffuse(color("#77777777")) end
+				},
+				Def.Quad{
+					InitCommand=function(self) self:x(4*2):vertalign(bottom):zoomtowidth(3):zoomtoheight(21/9*7):diffusealpha(0) end,
+					OnCommand=function(self) self:sleep(0.7):linear(0.4):diffusealpha(1):diffuse(color("#77777777")) end
+				},
+				Def.Quad{
+					InitCommand=function(self) self:x(4*3):vertalign(bottom):zoomtowidth(3):zoomtoheight(21/9*8):diffusealpha(0) end,
+					OnCommand=function(self) self:sleep(0.7):linear(0.4):diffusealpha(1):diffuse(color("#77777777")) end
+				},
+				Def.Quad{
+					InitCommand=function(self) self:x(4*4):vertalign(bottom):zoomtowidth(3):zoomtoheight(21/9*9):diffusealpha(0) end,
+					OnCommand=function(self) self:sleep(0.7):linear(0.4):diffusealpha(1):diffuse(color("#77777777")) end
+				}
+			},
+			Def.ActorFrame{
+				Name="Real",
+				OnCommand=function(self)
+					local c = self:GetChildren()
+					local currentTiming = GetTimingDifficulty()
+					for i = 1,9 do
+						c["Timing"..i]:visible( i <= currentTiming )
+					end
+				end,
+				Def.Quad{
+					Name="Timing1",
+					InitCommand=function(self) self:x(-4*4):vertalign(bottom):zoomtowidth(3):zoomtoheight(21/9*1):diffusealpha(0) end,
+					OnCommand=function(self) self:sleep(0.7):linear(0.4):diffusealpha(1):diffuse(color("#000000")) end
+				},
+				Def.Quad{
+					Name="Timing2",
+					InitCommand=function(self) self:x(-4*3):vertalign(bottom):zoomtowidth(3):zoomtoheight(21/9*2):diffusealpha(0) end,
+					OnCommand=function(self) self:sleep(0.7):linear(0.4):diffusealpha(1):diffuse(color("#000000")) end
+				},
+				Def.Quad{
+					Name="Timing3",
+					InitCommand=function(self) self:x(-4*2):vertalign(bottom):zoomtowidth(3):zoomtoheight(21/9*3):diffusealpha(0) end,
+					OnCommand=function(self) self:sleep(0.7):linear(0.4):diffusealpha(1):diffuse(color("#000000")) end
+				},
+				Def.Quad{
+					Name="Timing4",
+					InitCommand=function(self) self:x(-4*1):vertalign(bottom):zoomtowidth(3):zoomtoheight(21/9*4):diffusealpha(0) end,
+					OnCommand=function(self) self:sleep(0.7):linear(0.4):diffusealpha(1):diffuse(color("#000000")) end
+				},
+				Def.Quad{
+					Name="Timing5",
+					InitCommand=function(self) self:x(0):vertalign(bottom):zoomtowidth(3):zoomtoheight(21/9*5):diffusealpha(0) end,
+					OnCommand=function(self) self:sleep(0.7):linear(0.4):diffusealpha(1):diffuse(color("#000000")) end
+				},
+				Def.Quad{
+					Name="Timing6",
+					InitCommand=function(self) self:x(5*1):vertalign(bottom):zoomtowidth(3):zoomtoheight(21/9*6):diffusealpha(0) end,
+					OnCommand=function(self) self:sleep(0.7):linear(0.4):diffusealpha(1):diffuse(color("#000000")) end
+				},
+				Def.Quad{
+					Name="Timing7",
+					InitCommand=function(self) self:x(5*2):vertalign(bottom):zoomtowidth(3):zoomtoheight(21/9*7):diffusealpha(0) end,
+					OnCommand=function(self) self:sleep(0.7):linear(0.4):diffusealpha(1):diffuse(color("#000000")) end
+				},
+				Def.Quad{
+					Name="Timing8",
+					InitCommand=function(self) self:x(5*3):vertalign(bottom):zoomtowidth(3):zoomtoheight(21/9*8):diffusealpha(0) end,
+					OnCommand=function(self) self:sleep(0.7):linear(0.4):diffusealpha(1):diffuse(color("#000000")) end
+				},
+				Def.Quad{
+					Name="Timing9",
+					InitCommand=function(self) self:x(5*4):vertalign(bottom):zoomtowidth(3):zoomtoheight(21/9*9):diffusealpha(0) end,
+					OnCommand=function(self) self:sleep(0.7):linear(0.4):diffusealpha(1):diffuse(color("#000000")) end
+				}
+			},
+			LoadFont("_v 26px bold black")..{
+				Text="TIMING",
 				InitCommand=function(self) self:y(6):zoom(0.4) end,
 				OnCommand=function(self) self:diffusealpha(0):sleep(0.7):linear(0.4):diffusealpha(1) end
 			}
@@ -133,17 +246,17 @@ return Def.ActorFrame{
 			end
 		end,
 		LoadActor("_icon")..{
-			InitCommand=function(self) self:x(SCREEN_RIGHT-200+53*2):y(SCREEN_TOP-2+34) end,
+			InitCommand=function(self) self:x(SCREEN_RIGHT-200+53*3):y(SCREEN_TOP-2+34) end,
 			OnCommand=function(self) self:diffusealpha(0):sleep(0.7):linear(0.4):diffusealpha(1) end
 		},
 		LoadFont("_v 26px bold black")..{
 			Name="Line1",
-			InitCommand=function(self) self:x(SCREEN_RIGHT-199+53*2):y(SCREEN_TOP-2+28) end,
+			InitCommand=function(self) self:x(SCREEN_RIGHT-199+53*3):y(SCREEN_TOP-2+28) end,
 			OnCommand=function(self) self:diffusealpha(0):sleep(0.7):linear(0.4):diffusealpha(1) end
 		},
 		LoadFont("_v 26px bold black")..{
 			Name="Line2",
-			InitCommand=function(self) self:x(SCREEN_RIGHT-199+53*2):y(SCREEN_TOP-2+40) end,
+			InitCommand=function(self) self:x(SCREEN_RIGHT-199+53*3):y(SCREEN_TOP-2+40) end,
 			OnCommand=function(self) self:diffusealpha(0):sleep(0.7):linear(0.4):diffusealpha(1) end
 		}
 	},
