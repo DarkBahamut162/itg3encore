@@ -45,7 +45,7 @@ return Def.ActorFrame{
 								end
 							end
 						end
-						if true then -- load cache StepCounter
+						if false then -- load cache StepCounter
 							if text ~= "" then text = text .. "\n" end text = text .. table.concat(getStepCounter(curStep),"|")
 						end
 						if false then -- display data if Step has any timingData
