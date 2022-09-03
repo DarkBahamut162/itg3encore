@@ -275,3 +275,27 @@ function getStepCounter(Steps)
 	if not LoadModule("Config.Exists.lua")("StepCounter",getStepCacheFile(Steps)) then cacheStep(Steps) end
 	return split("_",LoadModule("Config.Load.lua")("StepCounter",getStepCacheFile(Steps)))
 end
+
+function GetMinSecondsToStep()
+	local song = GAMESTATE:GetCurrentSong()
+	local firstSec, firstBeat = 1.55, 999
+	local firstBpm, offset = 60, 0
+	local BGCHANGES = GetSMParameter(song,"BGCHANGES")
+	local FGCHANGES = GetSMParameter(song,"FGCHANGES")
+	local firstOffset = 0
+	if #BGCHANGES > 0 then
+		firstOffset = tonumber(split('=', split(',', BGCHANGES)[1])[1])
+		if firstOffset < firstBeat then firstBeat = firstOffset end
+	end
+	if #FGCHANGES > 0 then
+		firstOffset = tonumber(split('=', split(',', FGCHANGES)[1])[1])
+		if firstOffset < firstBeat then firstBeat = firstOffset end
+	end
+	local BPMS = GetSMParameter(song,"BPMS")
+	if #BPMS > 0 then firstBpm = tonumber(split('=', split(',', BPMS)[1])[2]) end
+	local OFFSET = GetSMParameter(song,"OFFSET")
+	if #OFFSET > 0 then offset = tonumber(OFFSET) end
+	if firstBeat < 999 then firstSec = math.max(firstBeat * 60 / firstBpm, -1) end
+	firstSec = song:GetFirstSecond() - firstSec + offset + 0.05
+	return math.max(firstSec, 1.55)
+end
