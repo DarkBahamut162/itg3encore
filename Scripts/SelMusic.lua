@@ -72,26 +72,21 @@ function GetScreenSelectMusicHelpText()
 end
 
 function GetSMParameter(song,parameter)
-	local steps = song:GetAllSteps()
-	if #steps<1 then return "" end
-	local fileName = steps[1]:GetFilename()
-	if not FILEMAN:DoesFileExist(fileName) then return "" end
-	local lowercaseFileName = string.lower(fileName)
-	if not string.find(lowercaseFileName,".*%.sm") and not string.find(lowercaseFileName,".*%.ssc") then return "" end
+	local filePath = song:GetSongFilePath()
+	local suffix = string.match(filePath, '.+%.([^.]+)')
+	if suffix ~= 'sm' and suffix ~= 'ssc' then return "" end
 	local file = RageFileUtil.CreateRageFile()
-	file:Open(fileName,1)
+	file:Open(filePath,1)
 	file:Seek(0)
 	local gLine = ""
-	local lowercaseParameter = string.lower(parameter)
 	local line
 	while true do
 		if file then
 			line = file:GetLine()
-			local lowercaseLine = string.lower(line)
-			if string.find(lowercaseLine,"#notes:.*") or file:AtEOF() then break
-			elseif (string.find(lowercaseLine,"^.*#"..lowercaseParameter..":.*") and (not string.find(lowercaseLine,"^%/%/.*"))) or gLine ~= "" then
+			if string.find(line,"#NOTES:.*") or string.find(line,"#NOTEDATA:.*") or file:AtEOF() then break
+			elseif (string.find(line,"^.*#"..parameter..":.*") and (not string.find(line,"^%/%/.*"))) or gLine ~= "" then
 				gLine = gLine..""..split("//",line)[1]
-				if string.find(lowercaseLine,".*;") then break end
+				if string.find(line,".*;") then break end
 			end
 		end
 	end
@@ -147,7 +142,7 @@ end
 
 function HasLuaCheck()
 	local song = GAMESTATE:GetCurrentSong()
-	return HasLua(song,"bgchanges") or HasLua(song,"fgchanges")
+	return HasLua(song,"BGCHANGES") or HasLua(song,"FGCHANGES")
 end
 
 function IsCourseSecret()
