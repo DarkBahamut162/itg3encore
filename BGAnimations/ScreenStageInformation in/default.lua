@@ -202,5 +202,6 @@ return Def.ActorFrame{
 	LoadActor("shot")..{
 		InitCommand=function(self) self:diffusealpha(0):blend(Blend.Add) end,
 		OnCommand=function(self) self:CenterY():zoomx(2):zoomy(4):diffusealpha(1):CenterX():linear(0.9):diffusealpha(0):zoomy(0):x(SCREEN_CENTER_X+250) end
-	}
+	},
+	SOUND:PlayOnce( THEME:GetPathS( '', "_ok" ) )
 }
