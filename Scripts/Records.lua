@@ -1,31 +1,59 @@
-function GetActual( stepsType )
+function GetTotalActual( profile, stepsType )
 	return
-		PROFILEMAN:GetMachineProfile():GetSongsActual(stepsType,'Difficulty_Easy')+
-		PROFILEMAN:GetMachineProfile():GetSongsActual(stepsType,'Difficulty_Medium')+
-		PROFILEMAN:GetMachineProfile():GetSongsActual(stepsType,'Difficulty_Hard')+
-		PROFILEMAN:GetMachineProfile():GetSongsActual(stepsType,'Difficulty_Challenge')+
-		PROFILEMAN:GetMachineProfile():GetCoursesActual(stepsType,'Difficulty_Medium')+
-		PROFILEMAN:GetMachineProfile():GetCoursesActual(stepsType,'Difficulty_Hard')
+		profile:GetSongsActual(stepsType,'Difficulty_Easy')+
+		profile:GetSongsActual(stepsType,'Difficulty_Medium')+
+		profile:GetSongsActual(stepsType,'Difficulty_Hard')+
+		profile:GetSongsActual(stepsType,'Difficulty_Challenge')+
+		profile:GetCoursesActual(stepsType,'Difficulty_Medium')+
+		profile:GetCoursesActual(stepsType,'Difficulty_Hard')
 end
 
-function GetPossible( stepsType )
+function GetTotalPossible( profile, stepsType )
 	return
-		PROFILEMAN:GetMachineProfile():GetSongsPossible(stepsType,'Difficulty_Easy')+
-		PROFILEMAN:GetMachineProfile():GetSongsPossible(stepsType,'Difficulty_Medium')+
-		PROFILEMAN:GetMachineProfile():GetSongsPossible(stepsType,'Difficulty_Hard')+
-		PROFILEMAN:GetMachineProfile():GetSongsPossible(stepsType,'Difficulty_Challenge')+
-		PROFILEMAN:GetMachineProfile():GetCoursesPossible(stepsType,'Difficulty_Medium')+
-		PROFILEMAN:GetMachineProfile():GetCoursesPossible(stepsType,'Difficulty_Hard')
+		profile:GetSongsPossible(stepsType,'Difficulty_Easy')+
+		profile:GetSongsPossible(stepsType,'Difficulty_Medium')+
+		profile:GetSongsPossible(stepsType,'Difficulty_Hard')+
+		profile:GetSongsPossible(stepsType,'Difficulty_Challenge')+
+		profile:GetCoursesPossible(stepsType,'Difficulty_Medium')+
+		profile:GetCoursesPossible(stepsType,'Difficulty_Hard')
 end
 
-function GetTotalPercentComplete( stepsType )
-	return GetActual(stepsType) / GetPossible(stepsType)
+function GetTotalPercentComplete( profile, stepsType )
+	return GetTotalActual(profile,stepsType) / GetTotalPossible(profile,stepsType)
 end
 
-function GetSongsPercentComplete( stepsType, difficulty )
-	return PROFILEMAN:GetMachineProfile():GetSongsPercentComplete(stepsType,difficulty)
+function GetSongsActual( profile, stepsType )
+	return
+		profile:GetSongsActual(stepsType,'Difficulty_Easy')+
+		profile:GetSongsActual(stepsType,'Difficulty_Medium')+
+		profile:GetSongsActual(stepsType,'Difficulty_Hard')+
+		profile:GetSongsActual(stepsType,'Difficulty_Challenge')
 end
 
-function GetCoursesPercentComplete( stepsType, difficulty )
-	return PROFILEMAN:GetMachineProfile():GetCoursesPercentComplete(stepsType,difficulty)
+function GetSongsPossible( profile, stepsType )
+	return
+		profile:GetSongsPossible(stepsType,'Difficulty_Easy')+
+		profile:GetSongsPossible(stepsType,'Difficulty_Medium')+
+		profile:GetSongsPossible(stepsType,'Difficulty_Hard')+
+		profile:GetSongsPossible(stepsType,'Difficulty_Challenge')
+end
+
+function GetSongsPercentComplete( profile, stepsType )
+	return GetSongsActual(profile,stepsType) / GetSongsPossible(profile,stepsType)
+end
+
+function GetCoursesActual( profile, stepsType )
+	return
+		profile:GetCoursesActual(stepsType,'Difficulty_Medium')+
+		profile:GetCoursesActual(stepsType,'Difficulty_Hard')
+end
+
+function GetCoursesPossible( profile, stepsType )
+	return
+		profile:GetCoursesPossible(stepsType,'Difficulty_Medium')+
+		profile:GetCoursesPossible(stepsType,'Difficulty_Hard')
+end
+
+function GetCoursesPercentComplete( profile, stepsType )
+	return GetCoursesActual(profile,stepsType) / GetCoursesPossible(profile,stepsType)
 end

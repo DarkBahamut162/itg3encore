@@ -48,9 +48,9 @@ for i=1,3 do
 					text = string.format("%5.2f",val)
 				elseif types[i] == "PercentComplete" then
 					if n > 5 then
-						val = GetCoursesPercentComplete('StepsType_Dance_Single',diffs[n])
+						val = prof:GetCoursesPercentComplete('StepsType_Dance_Single',diffs[n])
 					else
-						val = GetSongsPercentComplete('StepsType_Dance_Single',diffs[n])
+						val = prof:GetSongsPercentComplete('StepsType_Dance_Single',diffs[n])
 					end
 					text = FormatPercentScore(val)
 				end
@@ -62,7 +62,7 @@ for i=1,3 do
 	t[#t+1] = thing
 end
 
-local shortGrade = ToEnumShortString( GetGradeFromPercent(GetTotalPercentComplete('StepsType_Dance_Single')) )
+local shortGrade = ToEnumShortString( GetGradeFromPercent(GetTotalPercentComplete(prof,'StepsType_Dance_Single')) )
 
 local totals = Def.ActorFrame{
 	Def.ActorFrame{
@@ -110,7 +110,7 @@ local totals = Def.ActorFrame{
 		LoadFont("_r bold numbers")..{
 			InitCommand=function(self) self:x(SCREEN_CENTER_X+136):y(20):horizalign(right) end,
 			BeginCommand=function(self)
-				local val = GetTotalPercentComplete('StepsType_Dance_Single')
+				local val = GetTotalPercentComplete(prof,'StepsType_Dance_Single')
 				self:settext(FormatPercentScore(val))
 
 				if val >= 1 then
