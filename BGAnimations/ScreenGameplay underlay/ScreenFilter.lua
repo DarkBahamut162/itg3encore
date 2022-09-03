@@ -37,7 +37,7 @@ if numPlayers == 1 then
 		Name="SinglePlayerFilter",
 		InitCommand=function(self) self:x(pos):CenterY():zoomto(filterWidth,SCREEN_HEIGHT*3):diffusecolor(filterColor):diffusealpha(filterAlpha) end,
 		OnCommand=function(self)
-			if getenv("RotationLeftP"..pNum) then 
+			if getenv("RotationLeftP"..pNum) then
 				self:rotationz(90):y(SCREEN_CENTER_Y+8)
 			elseif getenv("RotationRightP"..pNum) then
 				self:rotationz(90):y(SCREEN_CENTER_Y+8)
@@ -52,22 +52,22 @@ if numPlayers == 1 then
 			end
 
 			if getenv("EffectVibrateP"..pNum) then
-			elseif getenv("EffectSpinP"..pNum) then 
-				self:spin() 
-				self:effectclock('beat') 
+			elseif getenv("EffectSpinP"..pNum) then
+				self:spin()
+				self:effectclock('beat')
 				self:effectmagnitude(0,0,45*currentMini)
-			elseif getenv("EffectSpinReverseP"..pNum) then 
-				self:spin() 
-				self:effectclock('beat') 
+			elseif getenv("EffectSpinReverseP"..pNum) then
+				self:spin()
+				self:effectclock('beat')
 				self:effectmagnitude(0,0,-45*currentMini)
 			elseif getenv("EffectBounceP"..pNum) then
 				self:bob()
-				self:effectclock('beat') 
+				self:effectclock('beat')
 				self:effectmagnitude(30*currentMini,30*currentMini,30*currentMini)
 			elseif getenv("EffectPulseP"..pNum) then
 				self:pulse()
 				self:effectclock('beat')
-			elseif getenv("EffectWagP"..pNum) then 
+			elseif getenv("EffectWagP"..pNum) then
 				self:wag()
 				self:effectclock('beat')
 			end
@@ -92,7 +92,7 @@ else
 			Name="RoutineFilter",
 			InitCommand=function(self) self:x(THEME:GetMetric("ScreenGameplay",metricName)):CenterY():zoomto(filterWidth,SCREEN_HEIGHT*3):diffusecolor(filterColor):diffusealpha(filterAlphas[player]) end,
 			OnCommand=function(self)
-				if getenv("RotationLeftP"..pNum) then 
+				if getenv("RotationLeftP"..pNum) then
 					self:rotationz(90):y(SCREEN_CENTER_Y+8)
 				elseif getenv("RotationRightP"..pNum) then
 					self:rotationz(90):y(SCREEN_CENTER_Y+8)
@@ -101,22 +101,22 @@ else
 				end
 
 				if getenv("EffectVibrateP"..pNum) then
-				elseif getenv("EffectSpinP"..pNum) then 
-					self:spin() 
-					self:effectclock('beat') 
+				elseif getenv("EffectSpinP"..pNum) then
+					self:spin()
+					self:effectclock('beat')
 					self:effectmagnitude(0,0,45*currentMini)
-				elseif getenv("EffectSpinReverseP"..pNum) then 
-					self:spin() 
-					self:effectclock('beat') 
+				elseif getenv("EffectSpinReverseP"..pNum) then
+					self:spin()
+					self:effectclock('beat')
 					self:effectmagnitude(0,0,-45*currentMini)
 				elseif getenv("EffectBounceP"..pNum) then
 					self:bob()
-					self:effectclock('beat') 
+					self:effectclock('beat')
 					self:effectmagnitude(30*currentMini,30*currentMini,30*currentMini)
 				elseif getenv("EffectPulseP"..pNum) then
 					self:pulse()
 					self:effectclock('beat')
-				elseif getenv("EffectWagP"..pNum) then 
+				elseif getenv("EffectWagP"..pNum) then
 					self:wag()
 					self:effectclock('beat')
 				end
@@ -142,7 +142,7 @@ else
 				Name="Player"..pNum.."Filter",
 				InitCommand=function(self) self:x(pos):CenterY():zoomto(filterWidth,SCREEN_HEIGHT*3):diffusecolor(filterColor):diffusealpha(filterAlphas[player] or 0.5) end,
 				OnCommand=function(self)
-					if getenv("RotationLeftP"..pNum) then 
+					if getenv("RotationLeftP"..pNum) then
 						self:rotationz(90):y(SCREEN_CENTER_Y+8)
 					elseif getenv("RotationRightP"..pNum) then
 						self:rotationz(90):y(SCREEN_CENTER_Y+8)
@@ -151,22 +151,22 @@ else
 					end
 
 					if getenv("EffectVibrateP"..pNum) then
-					elseif getenv("EffectSpinP"..pNum) then 
-						self:spin() 
-						self:effectclock('beat') 
+					elseif getenv("EffectSpinP"..pNum) then
+						self:spin()
+						self:effectclock('beat')
 						self:effectmagnitude(0,0,45*currentMini)
-					elseif getenv("EffectSpinReverseP"..pNum) then 
-						self:spin() 
-						self:effectclock('beat') 
+					elseif getenv("EffectSpinReverseP"..pNum) then
+						self:spin()
+						self:effectclock('beat')
 						self:effectmagnitude(0,0,-45*currentMini)
 					elseif getenv("EffectBounceP"..pNum) then
 						self:bob()
-						self:effectclock('beat') 
+						self:effectclock('beat')
 						self:effectmagnitude(30*currentMini,30*currentMini,30*currentMini)
 					elseif getenv("EffectPulseP"..pNum) then
 						self:pulse()
 						self:effectclock('beat')
-					elseif getenv("EffectWagP"..pNum) then 
+					elseif getenv("EffectWagP"..pNum) then
 						self:wag()
 						self:effectclock('beat')
 					end

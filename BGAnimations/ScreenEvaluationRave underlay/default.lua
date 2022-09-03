@@ -197,7 +197,7 @@ return Def.ActorFrame{
 		InitCommand=function(self) self:x(SCREEN_CENTER_X-300):halign(0):y(SCREEN_TOP+74,animate,0):maxwidth(700):zoom(0.6):shadowlength(0):playcommand("Update") end,
 		OnCommand=function(self) self:diffusealpha(0):sleep(3):linear(0.3):diffusealpha(1) end,
 		OffCommand=function(self) self:linear(0.2):diffusealpha(0) end,
-		UpdateCommand=function(self) 
+		UpdateCommand=function(self)
 			local song = GAMESTATE:GetCurrentSong()
 			local course = GAMESTATE:GetCurrentCourse()
 			local text = ""
@@ -207,7 +207,7 @@ return Def.ActorFrame{
 			if course then
 				text = course:GetDisplayFullTitle()
 			end
-		
+
 			self:settext( text )
 		end
 	}

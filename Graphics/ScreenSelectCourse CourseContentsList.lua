@@ -22,7 +22,7 @@ return Def.CourseContentsList {
 	end,
 	CurrentTrailP1ChangedMessageCommand=function(self) self:playcommand("Set") end,
 	CurrentTrailP2ChangedMessageCommand=function(self) self:playcommand("Set") end,
-	Display = Def.ActorFrame { 
+	Display = Def.ActorFrame {
 		InitCommand=function(self) self:setsize(270,44) end,
 		LoadFont("_r bold 30px") .. {
 			InitCommand=function(self) self:x(-145):zoom(0.8):shadowlength(0):halign(1) end,

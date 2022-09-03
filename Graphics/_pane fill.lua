@@ -56,7 +56,7 @@ return Def.ActorFrame{
 			else
 				yZoom = 0
 			end
-			
+
 			self:decelerate(0.1)
 			self:zoomy(yZoom)
 		end,
@@ -108,7 +108,7 @@ return Def.ActorFrame{
 			else
 				yZoom = 0
 			end
-			
+
 			self:decelerate(0.1)
 			self:zoomy(yZoom)
 		end,
@@ -160,7 +160,7 @@ return Def.ActorFrame{
 			else
 				yZoom = 0
 			end
-			
+
 			self:decelerate(0.1)
 			self:zoomy(yZoom)
 		end,
@@ -212,7 +212,7 @@ return Def.ActorFrame{
 			else
 				yZoom = 0
 			end
-			
+
 			self:decelerate(0.1)
 			self:zoomy(yZoom)
 		end,
@@ -264,7 +264,7 @@ return Def.ActorFrame{
 			else
 				yZoom = 0
 			end
-			
+
 			self:decelerate(0.1)
 			self:zoomy(yZoom)
 		end,

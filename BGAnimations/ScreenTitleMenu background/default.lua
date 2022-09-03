@@ -262,7 +262,7 @@ return Def.ActorFrame{
 	LoadFont("ScreenOptions serial number")..{
 		InitCommand=function(self) self:x(SCREEN_LEFT+30):y(SCREEN_BOTTOM-42):shadowlength(2):horizalign(left):maxwidth((SCREEN_WIDTH-20-SCREEN_CENTER_X-119)*2):zoom(0.5) end,
 		OnCommand=function(self) self:diffusealpha(0):sleep(0.5):linear(0.5):diffusealpha(1):playcommand("Refresh") end,
-		RefreshCommand=function(self) 
+		RefreshCommand=function(self)
 			self:settext(ProductFamily() .. " " .. ProductVersion() .. " (" .. VersionDate() .. ")")
 		end
 	},

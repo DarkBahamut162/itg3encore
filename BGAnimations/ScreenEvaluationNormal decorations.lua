@@ -34,7 +34,7 @@ end
 for pn in ivalues(PlayerNumber) do
 	if GAMESTATE:IsPlayerEnabled(pn) then
 		t[#t+1] = LoadActor(THEME:GetPathG(Var "LoadingScreen", "MachineRecord"), pn ) .. {
-			InitCommand=function(self) 
+			InitCommand=function(self)
 				self:player(pn):name("MachineRecord" .. PlayerNumberToString(pn))
 				ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen")
 			end
@@ -45,7 +45,7 @@ end
 for pn in ivalues(PlayerNumber) do
 	if GAMESTATE:IsPlayerEnabled(pn) then
 		t[#t+1] = LoadActor(THEME:GetPathG(Var "LoadingScreen", "PersonalRecord"), pn)..{
-			InitCommand=function(self) 
+			InitCommand=function(self)
 				self:player(pn):name("PersonalRecord" .. PlayerNumberToString(pn))
 				ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen")
 			end
@@ -95,7 +95,7 @@ end
 
 local function StageAward( pn )
 	return LoadActor(THEME:GetPathG("ScreenEvaluation", "StageAward"), pn)..{
-		InitCommand=function(self) 
+		InitCommand=function(self)
 			self:player(pn):name("StageAward"..ToEnumShortString(pn))
 		end
 	}
@@ -111,7 +111,7 @@ end
 
 local function PeakComboAward( pn )
 	return LoadActor( THEME:GetPathG(Var "LoadingScreen", "PeakComboAward"), pn ) .. {
-		InitCommand=function(self) 
+		InitCommand=function(self)
 			self:player(pn):name("PeakComboAward"..ToEnumShortString(pn))
 		end
 	}

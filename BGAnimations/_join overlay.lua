@@ -22,9 +22,9 @@ return Def.ActorFrame{
 			local coinsPerCredit=PREFSMAN:GetPreference('CoinsPerCredit')
 			if coins >= coinsPerCredit or GAMESTATE:GetCoinMode()=='CoinMode_Free'
 				or GAMESTATE:GetPremium() == 'Premium_2PlayersFor1Credit' then
-				self:playcommand('PressStart') 
-			else 
-				self:playcommand('InsertCoin') 
+				self:playcommand('PressStart')
+			else
+				self:playcommand('InsertCoin')
 			end
 		end,
 		PlayerJoinedMessageCommand=function(self,param)
@@ -69,9 +69,9 @@ return Def.ActorFrame{
 			local coinsPerCredit=PREFSMAN:GetPreference('CoinsPerCredit')
 			if coins >= coinsPerCredit or GAMESTATE:GetCoinMode()=='CoinMode_Free'
 				or GAMESTATE:GetPremium() == 'Premium_2PlayersFor1Credit' then
-				self:playcommand('PressStart') 
-			else 
-				self:playcommand('InsertCoin') 
+				self:playcommand('PressStart')
+			else
+				self:playcommand('InsertCoin')
 			end
 		end,
 		PlayerJoinedMessageCommand=function(self,param)

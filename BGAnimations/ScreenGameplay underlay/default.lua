@@ -1,5 +1,5 @@
 local Players = GAMESTATE:GetHumanPlayers()
-local t = Def.ActorFrame{ 
+local t = Def.ActorFrame{
 	Name="GameplayUnderlay"
 }
 
