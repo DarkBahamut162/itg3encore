@@ -253,7 +253,7 @@ function cacheStep(Steps)
 					if shockArrows ~= "" then
 						shockArrows = shockArrows .. "_"
 					end
-					shockArrows = shockArrows .. "_" .. Steps:GetTimingData():GetElapsedTimeFromBeat(v[1])
+					shockArrows = shockArrows .. Steps:GetTimingData():GetElapsedTimeFromBeat(v[1])
 				end
 			end
 		end
