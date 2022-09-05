@@ -277,7 +277,18 @@ function getStepCounter(Steps)
 end
 
 function GetMinSecondsToStep()
-	local song = GAMESTATE:GetCurrentSong()
+	local song
+	if GAMESTATE:IsCourseMode() then
+		local trail = GAMESTATE:GetCurrentTrail(GAMESTATE:GetMasterPlayerNumber())
+		if trail then
+			local entry = trail:GetTrailEntry(GAMESTATE:GetCourseSongIndex()+1)
+			if entry then
+				song = entry:GetSong()
+			end
+		end
+	else
+		song = GAMESTATE:GetCurrentSong()
+	end
 	local firstSec, firstBeat = 1.55, 999
 	local firstBpm, offset = 60, 0
 	local BGCHANGES = GetSMParameter(song,"BGCHANGES")
