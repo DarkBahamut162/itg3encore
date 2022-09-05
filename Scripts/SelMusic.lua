@@ -170,7 +170,7 @@ function getStepCacheFile(Steps)
 	if hashOld then
 		cache = "Cache/Steps/"..Steps:GetHash()
 	else
-		local filename = split("/",curStep:GetFilename())
+		local filename = split("/",Steps:GetFilename())
 		cache = "Cache/Steps/Steps_"..filename[3].."_"..filename[4].."_"..ToEnumShortString(Steps:GetStepsType()).."_"..ToEnumShortString(Steps:GetDifficulty())
 	end
 	return cache
