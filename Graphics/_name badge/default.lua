@@ -7,12 +7,22 @@ local pXmod = ""
 
 local song = GAMESTATE:GetCurrentSong()
 local course = GAMESTATE:GetCurrentCourse()
-local selection = song or course
 local bpm1, bpm2
 
-if selection then
-	bpm1 = math.floor(selection:GetDisplayBpms()[1])
-	bpm2 = math.floor(selection:GetDisplayBpms()[2])
+if GAMESTATE:IsCourseMode() then
+	local entries = course:GetCourseEntries()
+	for i=1, #entries do
+		if i == 1 then
+			bpm1 = math.floor(entries[i]:GetSong():GetDisplayBpms()[1])
+			bpm2 = math.floor(entries[i]:GetSong():GetDisplayBpms()[2])
+		else
+			if math.floor(entries[i]:GetSong():GetDisplayBpms()[1]) < bpm1 then bpm1 = math.floor(entries[i]:GetSong():GetDisplayBpms()[1]) end
+			if math.floor(entries[i]:GetSong():GetDisplayBpms()[2]) > bpm2 then bpm2 = math.floor(entries[i]:GetSong():GetDisplayBpms()[2]) end
+		end
+	end
+else
+	bpm1 = math.floor(song:GetDisplayBpms()[1])
+	bpm2 = math.floor(song:GetDisplayBpms()[2])
 end
 
 local function checkInitSpeedMods()

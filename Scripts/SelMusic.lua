@@ -279,13 +279,7 @@ end
 function GetMinSecondsToStep()
 	local song
 	if GAMESTATE:IsCourseMode() then
-		local trail = GAMESTATE:GetCurrentTrail(GAMESTATE:GetMasterPlayerNumber())
-		if trail then
-			local entry = trail:GetTrailEntry(GAMESTATE:GetCourseSongIndex()+1)
-			if entry then
-				song = entry:GetSong()
-			end
-		end
+		song = GAMESTATE:GetCurrentTrail(GAMESTATE:GetMasterPlayerNumber()):GetTrailEntry(GAMESTATE:GetCourseSongIndex()+1):GetSong()
 	else
 		song = GAMESTATE:GetCurrentSong()
 	end
