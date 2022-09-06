@@ -8,7 +8,6 @@ return Def.ActorFrame{
 		OnCommand=function(self) self:sleep(0):linear(0.5):diffusealpha(1):y(SCREEN_CENTER_Y-158) end
 	},
 	LoadActor(THEME:GetPathB("_statsout","style")),
-	SOUND:PlayOnce("pop.ogg"),
 	Def.ActorFrame{
 		Condition=GAMESTATE:IsAnyHumanPlayerUsingMemoryCard(),
 		Def.Sprite{
