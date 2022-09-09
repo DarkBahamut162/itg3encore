@@ -12,5 +12,13 @@ return Def.ActorFrame{
     LoadFont("_v credit")..{
         Text="Released 2009 - Dedicated to the game that never was.",
         OnCommand=function(self) self:CenterX():y(SCREEN_BOTTOM-100):zoom(0.6):diffusealpha(0):sleep(91.5):linear(0.8):diffusealpha(1) end
+    },
+    LoadActor(THEME:GetPathG('ScreenEnding', 'card p1'))..{
+        Condition=HumanAndProfile(PLAYER_1),
+        InitCommand=function(self) self:x(SCREEN_CENTER_X-248):y(SCREEN_CENTER_Y+162) end
+    },
+    LoadActor(THEME:GetPathG('ScreenEnding', 'card p2'))..{
+        Condition=HumanAndProfile(PLAYER_2),
+        InitCommand=function(self) self:x(SCREEN_CENTER_X+248):y(SCREEN_CENTER_Y+162) end
     }
 }
