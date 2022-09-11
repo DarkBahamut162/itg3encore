@@ -51,5 +51,5 @@ function isRave()
 end
 
 function isLifeline(player)
-	return isOni() and GAMESTATE:GetCurrentCourse(player):GetCourseEntry(1):GetGainSeconds() == 0
+	return isOni() and GAMESTATE:GetCurrentCourse(player):GetCourseEntry(0):GetGainSeconds() == 0
 end
