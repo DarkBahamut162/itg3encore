@@ -106,7 +106,7 @@ end
 
 function StarIcon( Actor,pn )
 	local stars = StarAward( pn )
-	if stars < 10 then Actor:hidden(1) end
+	if stars < 10 then Actor:visible(0) end
 	if stars >= 10 then Actor:setstate(4) end
 	if stars >= 25 then Actor:setstate(5) end
 	if stars >= 50 then Actor:setstate(6) end
@@ -115,7 +115,7 @@ end
 
 function QuadIcon( Actor,pn )
 	local quads = QuadAward( pn )
-	if quads < 10 then Actor:hidden(1) end
+	if quads < 10 then Actor:visible(0) end
 	if quads >= 10 then Actor:setstate(8) end
 	if quads >= 25 then Actor:setstate(9) end
 	if quads >= 50 then Actor:setstate(10) end
@@ -124,7 +124,7 @@ end
 
 function PercentIcon( Actor,pn )
 	local perc = PercentAward( pn )
-	if perc < 500 then Actor:hidden(1) end
+	if perc < 500 then Actor:visible(0) end
 	if perc >= 500 then Actor:setstate(0) end
 	if perc >= 2500 then Actor:setstate(1) end
 	if perc >= 7500 then Actor:setstate(2) end
@@ -133,7 +133,7 @@ end
 
 function CalorieIcon( Actor,pn )
 	local cals = CalorieAward( pn )
-	if cals < 250 then Actor:hidden(1) end
+	if cals < 250 then Actor:visible(0) end
 	if cals >= 250 then Actor:setstate(12) end
 	if cals >= 750 then Actor:setstate(13) end
 	if cals >= 1500 then Actor:setstate(14) end
