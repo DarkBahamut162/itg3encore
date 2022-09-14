@@ -173,7 +173,7 @@ function OptionShowStats()
 		Choices = { "Off","W1","W2","W3","W4","W5","Miss","IIDX" },
 		LoadSelections = function(self, list, pn)
 			local selected = getenv("ShowStats"..ToEnumShortString(pn))+1
-			if selected ~= 0 then
+			if selected and selected ~= 0 then
 				list[selected] = true
 			else
 				list[1] = true
@@ -202,7 +202,7 @@ function OptionSetPacemaker()
 		Choices = {'C-','C','C+','B-','B','B+','A-','A','A+','S-','S','S+','★','★★','★★★','★★★★'},
 		LoadSelections = function(self, list, pn)
 			local selected = getenv("SetPacemaker"..ToEnumShortString(pn))
-			if selected ~= 0 then
+			if selected and selected ~= 0 then
 				list[selected] = true
 			else
 				list[11] = true
