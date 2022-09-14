@@ -33,6 +33,8 @@ t[#t+1] = Def.FadingBanner{
 						else
 							self:LoadFromSongGroup(split("/",path)[2])
 						end
+					elseif curIdx == 0 then
+						self:LoadFromSong(nil)
 					end
 				end
 			end

@@ -46,10 +46,10 @@ return Def.ActorFrame{
 						nameText = "NO" scoreText = "TRAIL"
 					end
 				else
-					nameText = "CRS" scoreText = "-100%"
+					nameText = "?" scoreText = "?"
 				end
 			else
-				nameText = "N/A" scoreText = "0.00%"
+				nameText = "?" scoreText = "?"
 			end
 			name:settext(nameText)
 			score:settext(scoreText)

@@ -25,6 +25,8 @@ return Def.FadingBanner{
 						else
 							self:LoadFromSongGroup(split("/",path)[2])
 						end
+					elseif curIdx == 0 then
+						self:LoadFromSong(nil)
 					end
 				end
 			end
@@ -32,5 +34,6 @@ return Def.FadingBanner{
 		self:scaletoclipped(320,120)
 	end,
 	CurrentSongChangedMessageCommand=function(self) self:playcommand("Set") end,
+	CurrentCourseChangedMessageCommand=function(self) self:playcommand("Set") end,
 	WheelMovingMessageCommand=function(self) self:queuecommand("Set") end
 }
