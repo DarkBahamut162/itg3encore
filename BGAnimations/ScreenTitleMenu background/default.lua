@@ -272,7 +272,7 @@ return Def.ActorFrame{
 		RefreshCommand=function(self)
 			local songs = SONGMAN:GetNumSongs()
 			local groups = SONGMAN:GetNumSongGroups()
-			local courses = SONGMAN:GetNumCourses()
+			local courses = #SONGMAN:GetAllCourses(PREFSMAN:GetPreference("AutogenGroupCourses"))
 			self:settext(songs.." songs in "..groups.." groups, "..courses.." courses")
 		end
 	}
