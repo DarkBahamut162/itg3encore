@@ -24,9 +24,6 @@ t[#t+1] = Def.ActorFrame{
 }
 
 for player in ivalues(Players) do
-	t[#t+1] = LoadActor("Score", player)..{
-		Condition=not isOni() and not isRave()
-	}
 	t[#t+1] = LoadActor("RemainingTime", player)..{
 		Condition=isOni() and not isLifeline(player)
 	}
