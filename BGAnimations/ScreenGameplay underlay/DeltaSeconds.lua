@@ -3,13 +3,13 @@ assert( player )
 
 return Def.BitmapText{
 	Font= "_r bold 30px",
-	Name="RemainingTime",
+	Name="DeltaSeconds",
 	Text="",
 	InitCommand=function(self)
-		self:valign(1):halign(1)
-		self:zoom(0.5):x( _screen.cx - _screen.w/8 + 60 ):y(80 - 7.5)
+		self:valign(1):halign(0)
+		self:zoom(0.5):x( THEME:GetMetric(Var "LoadingScreen","PlayerP1OnePlayerOneSideX") + 72 ):y(80 - 7.5)
 		if player == PLAYER_2 then
-			self:x( _screen.cx + _screen.w/3.4 + 60 )
+			self:x( THEME:GetMetric(Var "LoadingScreen","PlayerP2OnePlayerOneSideX") + 72 )
 		end
 		self:shadowlength(1):skewx(-0.125)
 	end,
