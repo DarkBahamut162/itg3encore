@@ -1,4 +1,18 @@
 return Def.ActorFrame{
+	OnCommand = function(self)
+		local player = GAMESTATE:GetMasterPlayerNumber()
+		local SongOrCourse = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentCourse() or GAMESTATE:GetCurrentSong()
+		local StepOrTrails = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentTrail(player) or GAMESTATE:GetCurrentSteps(player)
+		if GAMESTATE:GetCurrentSong() then
+			local details = GAMESTATE:IsCourseMode() and SongOrCourse:GetTranslitFullTitle() or (PREFSMAN:GetPreference("ShowNativeLanguage") and SongOrCourse:GetDisplayMainTitle() or SongOrCourse:GetTranslitFullTitle() .. " - " .. GAMESTATE:GetCurrentSong():GetGroupName())
+			details = string.len(details) < 128 and details or string.sub(details, 1, 124) .. "..."
+			local Difficulty = ToEnumShortString( StepOrTrails:GetDifficulty() ) .. " " .. StepOrTrails:GetMeter()
+			local Percentage = STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetPercentDancePoints()
+			local states = Difficulty .. " (".. string.format( "%.2f%%", Percentage*100) .. ")"
+			GAMESTATE:UpdateDiscordProfile(GAMESTATE:GetPlayerDisplayName(player))
+			GAMESTATE:UpdateDiscordScreenInfo(details,states,1)
+		end
+	end,
 	LoadActor(THEME:GetPathB("ScreenWithMenuElements","underlay/_base"))..{
 		OnCommand=function(self) self:playcommand("DoOff"):finishtweening():playcommand("Slow"):queuecommand("DoOn") end,
 		SlowCommand=function(self) self:SetUpdateRate(1.5) end

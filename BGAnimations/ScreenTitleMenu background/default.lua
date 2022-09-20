@@ -18,6 +18,8 @@ end
 return Def.ActorFrame{
 	OnCommand=function(self)
 		InitOptions()
+		GAMESTATE:UpdateDiscordGameMode(GAMESTATE:GetCurrentGame():GetName())
+		GAMESTATE:UpdateDiscordScreenInfo("Title Menu","",1)
 	end,
 	LoadActor(THEME:GetPathB("ScreenSelectMusic","background/_fallback"))..{
 		InitCommand=function(self) self:Center():diffusealpha(0) end,

@@ -1,4 +1,7 @@
 return Def.ActorFrame{
+	OnCommand=function(self)
+		GAMESTATE:UpdateDiscordScreenInfo("Selecting PlayMode","",1)
+	end,
 	LoadActor(THEME:GetPathB("ScreenWithMenuElements","underlay/back"))..{
 		OnCommand=function(self) self:playcommand("DoOn") end
 	},

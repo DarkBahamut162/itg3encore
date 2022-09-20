@@ -1,4 +1,7 @@
 return Def.ActorFrame{
+	OnCommand=function(self)
+		GAMESTATE:UpdateDiscordScreenInfo("Editing a Song","",1)
+	end,
 	Def.Quad{
 		InitCommand=function(self) self:Center():FullScreen():diffuse(color("0,0,0,1")) end
 	},

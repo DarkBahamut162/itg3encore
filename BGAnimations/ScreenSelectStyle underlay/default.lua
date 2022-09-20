@@ -1,4 +1,7 @@
 return Def.ActorFrame{
+	OnCommand=function(self)
+		GAMESTATE:UpdateDiscordScreenInfo("Selecting Style","",1)
+	end,
 	LoadActor(THEME:GetPathB("ScreenWithMenuElements","underlay/_base")),
 	LoadActor(THEME:GetPathB("ScreenWithMenuElements","underlay/_sides")),
 	Def.ActorFrame{
