@@ -1,10 +1,8 @@
 local player = ...
 assert( player )
 
-return Def.BitmapText{
-	Font= "_r bold 30px",
+return LoadFont("_r bold 30px")..{
 	Name="DeltaSeconds",
-	Text="",
 	InitCommand=function(self)
 		self:valign(1):halign(0)
 		self:zoom(0.5):x( THEME:GetMetric(Var "LoadingScreen","PlayerP1OnePlayerOneSideX") + 72 ):y(80 - 7.5)
