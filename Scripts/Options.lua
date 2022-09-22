@@ -68,6 +68,7 @@ function InitRotationOptions()
 end
 
 function InitOptions()
+	GAMESTATE:SetFailTypeExplicitlySet(true)
 	setenv("HighScoreableP1",false)
 	setenv("HighScoreableP2",false)
 
