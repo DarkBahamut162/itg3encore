@@ -1,5 +1,8 @@
 local function UpdateSingleBPM(self)
-	if SCREENMAN:GetTopScreen():GetName() == 'ScreenGameplay' or SCREENMAN:GetTopScreen():GetName() == 'ScreenDemonstration' then
+	if SCREENMAN:GetTopScreen():GetName() == 'ScreenGameplay' or
+	SCREENMAN:GetTopScreen():GetName() == 'ScreenGameplayWorkout' or
+	SCREENMAN:GetTopScreen():GetName() == 'ScreenDemonstration' or
+	SCREENMAN:GetTopScreen():GetName() == 'ScreenJukebox' then
 		local bpmDisplay = self:GetChild("BPMDisplay")
 		local pn = GAMESTATE:GetMasterPlayerNumber()
 		local truebpm = SCREENMAN:GetTopScreen():GetTrueBPS(pn) * 60
