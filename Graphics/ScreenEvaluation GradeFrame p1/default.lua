@@ -92,7 +92,7 @@ return Def.ActorFrame{
 			}
 		}
 	},
-	LoadActor("graphp1")..{
+	LoadActor("graph")..{
 		InitCommand=function(self) self:x(-52):y(100):addx(-EvalTweenDistance()) end,
 		OnCommand=function(self) self:sleep(3):decelerate(0.3):addx(EvalTweenDistance()) end,
 		OffCommand=function(self) self:accelerate(0.3):addx(-EvalTweenDistance()) end
