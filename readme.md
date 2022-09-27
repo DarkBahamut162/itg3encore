@@ -65,6 +65,7 @@ The following has been re-introduced from OpenITG's ITG3Encore Theme:
 * **CustomMods** and **ScreenFilter**
 * **Encore "Folders"**
 * **OptionsList** *(Mostly functional)*
+* **Fitness/Workout Mode** *(Singleplay only)*
 
 
 Stuff still needs to get fixed, even if the fixed and re-introduced list/code are quite long/big.

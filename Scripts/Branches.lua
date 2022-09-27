@@ -29,9 +29,15 @@ Branch.AfterSelectStyleCheck = function()
 end
 
 Branch.AfterSelectStyle = function()
+	if GAMESTATE:Env()["Workout"] then return "ScreenWorkoutMenu" end
 	if GAMESTATE:IsCourseMode() then return "ScreenSelectCourse" end
 	if IsNetSMOnline() then return SMOnlineScreen() end
 	if IsNetConnected() then return "ScreenNetSelectMusic" end
+	return "ScreenSelectMusic"
+end
+
+Branch.AfterWorkoutMenu = function()
+	if GAMESTATE:IsCourseMode() then return "ScreenSelectCourse" end
 	return "ScreenSelectMusic"
 end
 
@@ -104,4 +110,25 @@ Branch.AfterSaveSummary = function()
 	elseif STATSMAN:GetBestGrade() <= 3 then return "ScreenEndingGood"
 	elseif STATSMAN:GetBestGrade() <= 6 then return "ScreenEndingOkay"
 	else return "ScreenEndingNormal" end
+end
+
+Branch.AfterStageInformation = function()
+	if GAMESTATE:Env()["Workout"] then return "ScreenGameplayWorkout" end
+	return "ScreenGameplay"
+end
+
+Branch.AfterGameplayWorkout = function()
+	if GAMESTATE:GetPlayMode() == "PlayMode_Nonstop" then return "ScreenEvaluationCourseWorkout" end
+	if GAMESTATE:GetPlayMode() == "PlayMode_Endless" then return "ScreenEvaluationCourseWorkout" end
+	return "ScreenEvaluationWorkout"
+end
+
+Branch.AfterEvaluationWorkout = function()
+	if GAMESTATE:GetPlayMode() == "PlayMode_Endless" then return "ScreenWorkoutMenu" end
+	return "ScreenSelectCourse"
+end
+
+Branch.ScreenSelectMusicPrevScreen = function()
+	if GAMESTATE:Env()["Workout"] then return "ScreenWorkoutMenu" end
+	return Branch.TitleScreen()
 end

@@ -1,0 +1,120 @@
+return Def.ActorFrame{
+	LoadActor("base"),
+	-- Line 1: Stage Calories
+    LoadFont("_eurostile normal")..{
+		Text="Calories Burned",
+        InitCommand=function(self) self:x(-128):y(-39):zoom(0.5):horizalign(left):shadowlength(0) end
+    },
+	Def.RollingNumbers{
+		Font="_eurostile normal",
+		InitCommand=function(self) self:Load("RollingNumbersWorkoutEvaluation"):targetnumber(WorkoutGetStageCalories(PLAYER_1)):x(90):y(-39):zoom(0.5):shadowlength(0):horizalign(right):diffuse(PlayerColor(PLAYER_1)) end
+	},
+    LoadFont("_eurostile normal")..{
+		Text="cals",
+        InitCommand=function(self) self:x(110):y(-39):zoom(0.5):shadowlength(0) end
+    },
+	-- Line 2: Total Calories
+    LoadFont("_eurostile normal")..{
+		Text="Total Cals Burned",
+        InitCommand=function(self) self:x(-128):y(-23):zoom(0.5):horizalign(left):shadowlength(0) end
+    },
+	Def.RollingNumbers{
+		Font="_eurostile normal",
+		InitCommand=function(self) self:Load("RollingNumbersWorkoutEvaluation"):targetnumber(WorkoutGetTotalCaloriesEvaluation(PLAYER_1)):x(90):y(-23):zoom(0.5):shadowlength(0):horizalign(right):diffuse(PlayerColor(PLAYER_1)) end
+	},
+    LoadFont("_eurostile normal")..{
+		Text="cals",
+        InitCommand=function(self) self:x(110):y(-23):zoom(0.5):shadowlength(0) end
+    },
+	-- Line 3: Gameplay Seconds
+    LoadFont("_eurostile normal")..{
+		Text="Total Play Time",
+        InitCommand=function(self) self:x(-128):y(-7):zoom(0.5):horizalign(left):shadowlength(0) end
+    },
+	Def.RollingNumbers{
+		Font="_eurostile normal",
+		InitCommand=function(self) self:Load("RollingNumbersWorkoutEvaluation"):targetnumber(WorkoutGetTotalSeconds(PLAYER_1)/60):x(90):y(-7):zoom(0.5):shadowlength(0):horizalign(right):diffuse(PlayerColor(PLAYER_1)) end
+	},
+    LoadFont("_eurostile normal")..{
+		Text="mins",
+        InitCommand=function(self) self:x(110):y(-7):zoom(0.5):shadowlength(0) end
+    },
+	-- Line 4: Goal
+    LoadFont("_eurostile normal")..{
+		Text="Fitness Goal",
+        InitCommand=function(self) self:x(-128):y(9):zoom(0.5):horizalign(left):shadowlength(0) end
+    },
+	Def.ActorFrame{
+		Condition=WorkoutGetProfileGoalType(PLAYER_1) == 0,
+		Def.RollingNumbers{
+			Font="_eurostile normal",
+			InitCommand=function(self) self:Load("RollingNumbersWorkoutEvaluation"):targetnumber(WorkoutGetGoalCalories(PLAYER_1)):x(90):y(9):zoom(0.5):shadowlength(0):horizalign(right):diffuse(PlayerColor(PLAYER_1)) end
+		},
+		LoadFont("_eurostile normal")..{
+			Text="cals",
+			InitCommand=function(self) self:x(110):y(9):zoom(0.5):shadowlength(0) end
+		}
+	},
+	Def.ActorFrame{
+		Condition=WorkoutGetProfileGoalType(PLAYER_1) == 1,
+		Def.RollingNumbers{
+			Font="_eurostile normal",
+			InitCommand=function(self) self:Load("RollingNumbersWorkoutEvaluation"):targetnumber(WorkoutGetGoalSeconds(PLAYER_1)/60):x(90):y(9):zoom(0.5):shadowlength(0):horizalign(right):diffuse(PlayerColor(PLAYER_1)) end
+		},
+		LoadFont("_eurostile normal")..{
+			Text="mins",
+			InitCommand=function(self) self:x(110):y(9):zoom(0.5):shadowlength(0) end
+		}
+	},
+	Def.ActorFrame{
+		Condition=WorkoutGetProfileGoalType(PLAYER_1) == 2,
+		LoadFont("_eurostile normal")..{
+			Text="No Goal",
+			InitCommand=function(self) self:x(90):y(9):zoom(0.5):shadowlength(0):horizalign(right):diffuse(PlayerColor(PLAYER_1)) end
+		}
+	},
+	-- Line 5: Goal Status
+	Def.ActorFrame{
+		Condition=WorkoutGetProfileGoalType(PLAYER_1) == 0,
+		Def.ActorFrame{
+			LoadFont("_eurostile normal")..{
+				Condition=WorkoutGetPercentCompleteCaloriesEvaluation(PLAYER_1)<1,
+				Text="Keep Going!",
+				InitCommand=function(self) self:x(-70):y(36):zoom(0.6):shadowlength(0):diffuseshift() end
+			},
+			LoadFont("_eurostile normal")..{
+				Condition=WorkoutGetPercentCompleteCaloriesEvaluation(PLAYER_1)>=1,
+				Text="Goal Complete!",
+				InitCommand=function(self) self:x(-70):y(36):zoom(0.6):shadowlength(0):diffuseshift() end
+			},
+			LoadFont("_eurostile normal")..{
+				Text=string.format('%01.0f%% Complete',WorkoutGetPercentCompleteCaloriesEvaluation(PLAYER_1)*100),
+				InitCommand=function(self) self:x(64):y(36):zoom(0.6):maxwidth(220):shadowlength(0):diffuse(PlayerColor(PLAYER_1)) end
+			}
+		}
+	},
+	Def.ActorFrame{
+		Condition=WorkoutGetProfileGoalType(PLAYER_1) == 1,
+		Def.ActorFrame{
+			LoadFont("_eurostile normal")..{
+				Condition=WorkoutGetPercentCompleteSeconds(PLAYER_1)<1,
+				Text="Keep Going!",
+				InitCommand=function(self) self:x(-70):y(44):zoom(0.6):shadowlength(0):diffuseshift() end
+			},
+			LoadFont("_eurostile normal")..{
+				Condition=WorkoutGetPercentCompleteSeconds(PLAYER_1)>=1,
+				Text="Goal Complete!",
+				InitCommand=function(self) self:x(-70):y(44):zoom(0.6):shadowlength(0):diffuseshift() end
+			},
+			LoadFont("_eurostile normal")..{
+				Text=string.format('%01.0f%% Complete',WorkoutGetPercentCompleteSeconds(PLAYER_1)*100),
+				InitCommand=function(self) self:x(64):y(44):zoom(0.6):maxwidth(220):shadowlength(0):diffuse(PlayerColor(PLAYER_1)) end
+			}
+		},
+		LoadFont("_eurostile normal")..{
+			Condition=WorkoutGetProfileGoalType(PLAYER_1) == 2,
+			Text="Keep Going!",
+			InitCommand=function(self) self:x(0):y(44):zoom(0.6):shadowlength(0):diffuseshift() end
+		},
+	},
+}
