@@ -4,12 +4,6 @@ function PlayerColor( pn )
 	return color("1,1,1,1")
 end
 
-function DiffusePlayerColor( pn )
-	if pn == PLAYER_1 then return color("#FFDE00") end
-	if pn == PLAYER_2 then return color("#14FF00") end
-	return color("1,1,1,1")
-end
-
 function CustomDifficultyToColor( dc )
 	if dc == "Beginner"		then return color("#D05CF6") end
 	if dc == "Easy"			then return color("#09FF10") end
