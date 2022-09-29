@@ -1,6 +1,4 @@
-local player = ...
-assert( player )
-local maxLives
+local player = Var "Player"
 
 return Def.ActorFrame{
 	InitCommand=function(self)

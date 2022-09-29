@@ -5,8 +5,10 @@ return LoadFont("_r bold 30px")..{
 	Name="DeltaSeconds",
 	InitCommand=function(self)
 		self:valign(1):halign(0)
-		self:zoom(0.5):x( THEME:GetMetric(Var "LoadingScreen","PlayerP1OnePlayerOneSideX") + 72 ):y(80 - 7.5)
-		if player == PLAYER_2 then
+		self:zoom(0.5):y(80 - 7.5)
+		if player == PLAYER_1 then
+			self:x( THEME:GetMetric(Var "LoadingScreen","PlayerP1OnePlayerOneSideX") + 72 )
+		else
 			self:x( THEME:GetMetric(Var "LoadingScreen","PlayerP2OnePlayerOneSideX") + 72 )
 		end
 		self:shadowlength(1):skewx(-0.125)

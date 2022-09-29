@@ -27,16 +27,6 @@ for player in ivalues(Players) do
 	t[#t+1] = LoadActor("DeltaSeconds", player)..{
 		Condition=isOni() and not isLifeline(player)
 	}
-	t[#t+1] = LoadActor("Lives", player)..{
-		Condition=isOni() and isLifeline(player),
-		InitCommand=function(self)
-			if player == PLAYER_1 then
-				self:x(SCREEN_LEFT+20):y(OffsetLifebarHeight(PLAYER_1))
-			else
-				self:x(SCREEN_RIGHT-20):y(OffsetLifebarHeight(PLAYER_2))
-			end
-		end
-	}
 end
 
 return t
