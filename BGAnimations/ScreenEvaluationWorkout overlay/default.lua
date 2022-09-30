@@ -1,4 +1,6 @@
 return Def.ActorFrame{
+	StandardDecorationFromFileOptional("StyleIcon","StyleIcon"),
+	StandardDecorationFromFileOptional("StageDisplay","StageDisplay"),
 	Def.ActorFrame{
 		LoadActor("P1")..{
 			Condition=GAMESTATE:IsPlayerEnabled(PLAYER_1),
