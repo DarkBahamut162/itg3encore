@@ -31,17 +31,16 @@ return Def.ActorFrame{
 				curStep = GAMESTATE:GetCurrentSteps(GAMESTATE:GetMasterPlayerNumber())
 				if curSelection then
 					if curStep then
-						if false then -- check for BGChanges since OutFox hasn't fixed the ingame offset sync overwrite yet
-							local BGCs = GetSMParameter(curSelection,"BGCHANGES")
-							if #BGCs > 0 then
-								text = "HAS BGCHANGES"
-							end
-						end
-						if false then -- load cache HasLua
+						if false then -- load cache HasLua OR check for BGChanges since OutFox hasn't fixed the ingame offset sync overwrite yet
 							if not LoadModule("Config.Exists.lua")("HasLua",getStepCacheFile(curStep)) then cacheStep(curStep) end
 							if FILEMAN:DoesFileExist(getStepCacheFile(curStep)) then
 								if tobool(LoadModule("Config.Load.lua")("HasLua",getStepCacheFile(curStep))) then
-									if text ~= "" then text = text .. "\n" end text = text .. "HAS LUA"
+									text = "HAS LUA"
+								else
+									local BGCs = GetSMParameter(curSelection,"BGCHANGES")
+									if #BGCs > 0 then
+										text = "HAS BGCHANGES"
+									end
 								end
 							end
 						end
@@ -98,7 +97,7 @@ return Def.ActorFrame{
 												if fastestBPM < currentSet[2] then fastestBPM = currentSet[2] end
 											end
 										end
-										if duration > 3 then
+										if duration >= 4 then
 											if truebpms[1] <= tonumber(lastSet[2]) and truebpms[2] >= tonumber(lastSet[2]) then
 												if fastestBPM < lastSet[2] then fastestBPM = lastSet[2] end
 											end
@@ -115,16 +114,24 @@ return Def.ActorFrame{
 
 								duration = (curSelection:GetLastBeat()-lastSet[1]) / lastSet[2] * 60
 								if math.abs(tonumber(lastSet[2])/tonumber(currentSet[2])) >= 0.98 and math.abs(tonumber(lastSet[2])/tonumber(currentSet[2])) <= 1.02 then
-									duration = duration + lastDuration
+									--duration = duration + lastDuration
 								end
-								if duration > 3 then
+								if duration >= 4 then
 									if truebpms[1] <= tonumber(lastSet[2]) and truebpms[2] >= tonumber(lastSet[2]) then
 										if fastestBPM < lastSet[2] then fastestBPM = lastSet[2] end
 									end
 								end
 
+								if math.abs(tonumber(fastestBPM)/tonumber(truebpms[2])) >= 0.96 and math.abs(tonumber(fastestBPM)/tonumber(truebpms[2])) <= 1.04 then
+									fastestBPM = truebpms[2]
+								end
+
 								if fastestBPM == truebpms[1] then
-									if text ~= "" then text = text.."\n" end text = text .. "BPM: "..truebpms[1] .. " (" .. truebpms[2] .. ")"
+									if truebpms[1] ~= truebpms[2] then
+										if text ~= "" then text = text.."\n" end text = text .. "BPM: "..truebpms[1] .. " (" .. truebpms[2] .. ")"
+									else
+										if text ~= "" then text = text.."\n" end text = text .. "BPM: "..truebpms[1]
+									end
 								elseif fastestBPM < truebpms[2] then
 									if text ~= "" then text = text.."\n" end text = text .. "BPM: "..truebpms[1] .. " - " .. fastestBPM .. " (" .. truebpms[2] .. ")"
 								else
