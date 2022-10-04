@@ -25,7 +25,7 @@ return Def.ActorFrame{
 	LoadActor("infopane")..{
 		InitCommand=function(self) self:x(SCREEN_RIGHT):y(SCREEN_CENTER_Y-5):horizalign(right) end
 	},
-	LoadFont("_r 26px bold glow")..{
+	LoadFont("_r bold glow 30px")..{
 		InitCommand=function(self) self:x(SCREEN_LEFT+76):y(SCREEN_TOP+40):shadowlength(1):settext("EDITOR") end
 	},
 	LoadActor("difficultyframe")..{

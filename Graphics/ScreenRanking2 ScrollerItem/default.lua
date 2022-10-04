@@ -9,7 +9,7 @@ local t = Def.ActorFrame{
 			end
 		end
 	},
-	LoadFont("_v 26px bold diffuse")..{
+	LoadFont("_v 26px bold white")..{
 		InitCommand=function(self) self:x(-292):halign(0):zoom(0.6):shadowlength(1):wrapwidthpixels(264) end,
 		SetCommand=function(self, params)
 			if params.Course then

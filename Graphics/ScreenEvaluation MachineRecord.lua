@@ -8,7 +8,7 @@ if hasMachineRecord and not STATSMAN:GetCurStageStats():GetPlayerStageStats(play
 end
 
 return Def.ActorFrame{
-	LoadFont("_v 26px bold diffuse")..{
+	LoadFont("_v 26px bold white")..{
 		InitCommand=function(self) self:zoomx(0.6):zoomy(0.5):shadowlength(2):cropright(1):visible(hasMachineRecord) end,
 		BeginCommand=function(self)
 			self:settext(string.format("Machine Record #%i",record+1))

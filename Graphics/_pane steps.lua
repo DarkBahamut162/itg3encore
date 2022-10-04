@@ -124,7 +124,7 @@ return Def.ActorFrame{
 			if player == PLAYER_2 then self:playcommand("Set") end
 		end
 	},
-	LoadFont("_v 26px bold diffuse")..{
+	LoadFont("_v 26px bold white")..{
 		Name="Label",
 		InitCommand=function(self) self:x(-67):y(120+17):settext("STEPS"):shadowlength(2):zoomx(0.45):zoomy(0.4):horizalign(center):diffusealpha(0) end,
 		OnCommand=function(self) self:sleep(0.85):linear(0.2):diffusebottomedge(color("#8F8F8F")):diffusealpha(1) end,

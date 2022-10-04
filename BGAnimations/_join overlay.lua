@@ -40,7 +40,7 @@ return Def.ActorFrame{
 			InitCommand=function(self) self:x(-10):zoom(-.6) end,
 			JoinedCommand=function(self) self:linear(0.2):diffusealpha(0) end
 		},
-		LoadFont("_v 26px bold diffuse")..{
+		LoadFont("_v 26px bold white")..{
 			InitCommand=function(self) self:settext("PRESS"):shadowlength(2):zoom(0.6) end,
 			JoinedCommand=function(self) self:linear(0.2):diffusealpha(0) end
 		},
@@ -87,7 +87,7 @@ return Def.ActorFrame{
 			InitCommand=function(self) self:x(10):zoom(0.6) end,
 			JoinedCommand=function(self) self:linear(0.2):diffusealpha(0) end
 		},
-		LoadFont("_v 26px bold diffuse")..{
+		LoadFont("_v 26px bold white")..{
 			InitCommand=function(self) self:settext("PRESS"):x(-33):shadowlength(2):zoom(0.6) end,
 			JoinedCommand=function(self) self:linear(0.2):diffusealpha(0) end
 		},

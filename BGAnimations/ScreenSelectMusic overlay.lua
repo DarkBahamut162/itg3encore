@@ -98,7 +98,7 @@ return Def.ActorFrame{
 		LoadActor(THEME:GetPathG("_pane","elements/_artist"))..{
 			InitCommand=function(self) self:horizalign(left):zoom(0.5) end
 		},
-		LoadFont("_v 26px bold diffuse")..{
+		LoadFont("_v 26px bold white")..{
 			InitCommand=function(self) self:maxwidth(350):horizalign(left):x(20):y(2):shadowlength(0.5):zoom(0.5) end,
 			CurrentSongChangedMessageCommand=function(self) self:playcommand("Update") end,
 			CurrentCourseChangedMessageCommand=function(self) self:playcommand("Update") end,
@@ -172,7 +172,7 @@ return Def.ActorFrame{
 		LoadActor(THEME:GetPathG("_pane","elements/_artist"))..{
 			InitCommand=function(self) self:horizalign(left):zoomx(-.5):zoomy(0.5) end
 		},
-		LoadFont("_v 26px bold diffuse")..{
+		LoadFont("_v 26px bold white")..{
 			InitCommand=function(self) self:maxwidth(350):horizalign(right):x(-20):y(2):shadowlength(0.5):zoom(0.5) end,
 			CurrentSongChangedMessageCommand=function(self) self:playcommand("Update") end,
 			CurrentCourseChangedMessageCommand=function(self) self:playcommand("Update") end,
