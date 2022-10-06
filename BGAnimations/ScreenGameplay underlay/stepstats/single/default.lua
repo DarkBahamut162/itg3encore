@@ -1,15 +1,19 @@
 local pn = GAMESTATE:GetMasterPlayerNumber()
 local startX = GAMESTATE:GetMasterPlayerNumber() == PLAYER_1 and SCREEN_WIDTH/4 or -SCREEN_WIDTH/4
 
-local barWidth		= {202,	92,	57,	36,		26,	20,		57}
-local barSpace		= {0,	18,	16,	19.5,	18,	16+1/3,	16}
+local barWidth		= {202,	92,	57,	36,	26,	20,		57}
+local barSpace		= {0,	18,	16,	20,	18,	16+1/3,	16}
+local barOffset		= {
+	[1] = {0},
+	[2] = {0,0},
+	[3] = {0,-0.5,0},
+	[4] = {0,-1,-2/3,-4/3},
+	[5] = {0,0,0,0,0},
+	[6] = {0,0,1,0,0,0}
+}
 local barHeight		= 228
 local totalWidth	= 202
 local barCenter		= 0
-
--- on 3 -> middle (2) 1 pixel off
--- on 4 -> right (4) 2 pixel off
--- on 6 -> left (3) 1 pixel off
 
 local SongOrCourse, StepsOrTrail, scorelist, topscore
 local mines, holds, rolls, holdsAndRolls = 0,0,0,0
@@ -120,7 +124,7 @@ return Def.ActorFrame{
 			LoadFont("ScreenGameplay judgment")..{
 				Name="NumbersW1",
 				Condition=getenv("ShowStats"..ToEnumShortString(pn)) >= 1,
-				InitCommand=function(self) self:settext("0"):zoom(0.75):addy(100):addx(barCenter):shadowlength(0):maxwidth(barWidth[bgNum]*2) end,
+				InitCommand=function(self) self:settext("0"):zoom(0.75):addy(100):addx(barCenter+barOffset[bgNum][1]):shadowlength(0):maxwidth(barWidth[bgNum]*2) end,
 				JudgmentMessageCommand=function(self,param)
 					if param.Player == pn then
 						self:queuecommand("Update")
@@ -135,7 +139,7 @@ return Def.ActorFrame{
 			LoadFont("ScreenGameplay judgment")..{
 				Name="NumbersW2",
 				Condition=getenv("ShowStats"..ToEnumShortString(pn)) >= 2,
-				InitCommand=function(self) self:settext("0"):zoom(0.75):addy(100):addx(barCenter+(barWidth[bgNum]+barSpace[bgNum])*1):shadowlength(0):maxwidth(barWidth[bgNum]*2) end,
+				InitCommand=function(self) self:settext("0"):zoom(0.75):addy(100):addx(barCenter+barOffset[bgNum][2]+(barWidth[bgNum]+barSpace[bgNum])*1):shadowlength(0):maxwidth(barWidth[bgNum]*2) end,
 				JudgmentMessageCommand=function(self,param)
 					if param.Player == pn then
 						self:queuecommand("Update")
@@ -150,7 +154,7 @@ return Def.ActorFrame{
 			LoadFont("ScreenGameplay judgment")..{
 				Name="NumbersW3",
 				Condition=getenv("ShowStats"..ToEnumShortString(pn)) >= 3,
-				InitCommand=function(self) self:settext("0"):zoom(0.75):addy(100):addx(barCenter+(barWidth[bgNum]+barSpace[bgNum])*2):shadowlength(0):maxwidth(barWidth[bgNum]*2) end,
+				InitCommand=function(self) self:settext("0"):zoom(0.75):addy(100):addx(barCenter+barOffset[bgNum][3]+(barWidth[bgNum]+barSpace[bgNum])*2):shadowlength(0):maxwidth(barWidth[bgNum]*2) end,
 				JudgmentMessageCommand=function(self,param)
 					if param.Player == pn then
 						self:queuecommand("Update")
@@ -165,7 +169,7 @@ return Def.ActorFrame{
 			LoadFont("ScreenGameplay judgment")..{
 				Name="NumbersW4",
 				Condition=getenv("ShowStats"..ToEnumShortString(pn)) >= 4,
-				InitCommand=function(self) self:settext("0"):zoom(0.75):addy(100):addx(barCenter+(barWidth[bgNum]+barSpace[bgNum])*3):shadowlength(0):maxwidth(barWidth[bgNum]*2) end,
+				InitCommand=function(self) self:settext("0"):zoom(0.75):addy(100):addx(barCenter+barOffset[bgNum][4]+(barWidth[bgNum]+barSpace[bgNum])*3):shadowlength(0):maxwidth(barWidth[bgNum]*2) end,
 				JudgmentMessageCommand=function(self,param)
 					if param.Player == pn then
 						self:queuecommand("Update")
@@ -180,7 +184,7 @@ return Def.ActorFrame{
 			LoadFont("ScreenGameplay judgment")..{
 				Name="NumbersW5",
 				Condition=getenv("ShowStats"..ToEnumShortString(pn)) >= 5,
-				InitCommand=function(self) self:settext("0"):zoom(0.75):addy(100):addx(barCenter+(barWidth[bgNum]+barSpace[bgNum])*4):shadowlength(0):maxwidth(barWidth[bgNum]*2) end,
+				InitCommand=function(self) self:settext("0"):zoom(0.75):addy(100):addx(barCenter+barOffset[bgNum][5]+(barWidth[bgNum]+barSpace[bgNum])*4):shadowlength(0):maxwidth(barWidth[bgNum]*2) end,
 				JudgmentMessageCommand=function(self,param)
 					if param.Player == pn then
 						self:queuecommand("Update")
@@ -195,7 +199,7 @@ return Def.ActorFrame{
 			LoadFont("ScreenGameplay judgment")..{
 				Name="NumbersMiss",
 				Condition=getenv("ShowStats"..ToEnumShortString(pn)) >= 6,
-				InitCommand=function(self) self:settext("0"):zoom(0.75):addy(100):addx(barCenter+(barWidth[bgNum]+barSpace[bgNum])*5):shadowlength(0):maxwidth(barWidth[bgNum]*2) end,
+				InitCommand=function(self) self:settext("0"):zoom(0.75):addy(100):addx(barCenter+barOffset[bgNum][6]+(barWidth[bgNum]+barSpace[bgNum])*5):shadowlength(0):maxwidth(barWidth[bgNum]*2) end,
 				JudgmentMessageCommand=function(self,param)
 					if param.Player == pn then
 						self:queuecommand("Update")
@@ -213,42 +217,42 @@ return Def.ActorFrame{
 				LoadFont("_v 26px bold black")..{
 					Text="Fantastics",
 					Condition=getenv("ShowStats"..ToEnumShortString(pn)) >= 1,
-					InitCommand=function(self) self:rotationz(-90):addx(barCenter):addy(-20):shadowlength(0):queuecommand("FadeOn") end,
+					InitCommand=function(self) self:rotationz(-90):addx(barCenter+barOffset[bgNum][1]):addy(-20):shadowlength(0):queuecommand("FadeOn") end,
 					FadeOnCommand=function(self) self:sleep(2):linear(1):diffusealpha(0) end
 				},
 				LoadFont("_v 26px bold black")..{
 					Text="Excellents",
 					Condition=getenv("ShowStats"..ToEnumShortString(pn)) >= 2,
-					InitCommand=function(self) self:rotationz(-90):addx(barCenter+(barWidth[bgNum]+barSpace[bgNum])*1):addy(-20):shadowlength(0):queuecommand("FadeOn") end,
+					InitCommand=function(self) self:rotationz(-90):addx(barCenter+barOffset[bgNum][2]+(barWidth[bgNum]+barSpace[bgNum])*1):addy(-20):shadowlength(0):queuecommand("FadeOn") end,
 					FadeOnCommand=function(self) self:sleep(2.25):linear(1):diffusealpha(0) end
 				},
 				LoadFont("_v 26px bold black")..{
 					Text="Greats",
 					Condition=getenv("ShowStats"..ToEnumShortString(pn)) >= 3,
-					InitCommand=function(self) self:rotationz(-90):addx(barCenter+(barWidth[bgNum]+barSpace[bgNum])*2):addy(-20):shadowlength(0):queuecommand("FadeOn") end,
+					InitCommand=function(self) self:rotationz(-90):addx(barCenter+barOffset[bgNum][3]+(barWidth[bgNum]+barSpace[bgNum])*2):addy(-20):shadowlength(0):queuecommand("FadeOn") end,
 					FadeOnCommand=function(self) self:sleep(2.5):linear(1):diffusealpha(0) end
 				},
 				LoadFont("_v 26px bold black")..{
 					Text="Decents",
 					Condition=getenv("ShowStats"..ToEnumShortString(pn)) >= 4,
-					InitCommand=function(self) self:rotationz(-90):addx(barCenter+(barWidth[bgNum]+barSpace[bgNum])*3):addy(-20):shadowlength(0):queuecommand("FadeOn") end,
+					InitCommand=function(self) self:rotationz(-90):addx(barCenter+barOffset[bgNum][4]+(barWidth[bgNum]+barSpace[bgNum])*3):addy(-20):shadowlength(0):queuecommand("FadeOn") end,
 					FadeOnCommand=function(self) self:sleep(2.5):linear(1):diffusealpha(0) end
 				},
 				LoadFont("_v 26px bold black")..{
 					Text="Way-Offs",
 					Condition=getenv("ShowStats"..ToEnumShortString(pn)) >= 5,
-					InitCommand=function(self) self:rotationz(-90):addx(barCenter+(barWidth[bgNum]+barSpace[bgNum])*4):addy(-20):shadowlength(0):queuecommand("FadeOn") end,
+					InitCommand=function(self) self:rotationz(-90):addx(barCenter+barOffset[bgNum][5]+(barWidth[bgNum]+barSpace[bgNum])*4):addy(-20):shadowlength(0):queuecommand("FadeOn") end,
 					FadeOnCommand=function(self) self:sleep(2.5):linear(1):diffusealpha(0) end
 				},
 				LoadFont("_v 26px bold black")..{
 					Text="Misses",
 					Condition=getenv("ShowStats"..ToEnumShortString(pn)) >= 6,
-					InitCommand=function(self) self:rotationz(-90):addx(barCenter+(barWidth[bgNum]+barSpace[bgNum])*5):addy(-20):shadowlength(0):queuecommand("FadeOn") end,
+					InitCommand=function(self) self:rotationz(-90):addx(barCenter+barOffset[bgNum][6]+(barWidth[bgNum]+barSpace[bgNum])*5):addy(-20):shadowlength(0):queuecommand("FadeOn") end,
 					FadeOnCommand=function(self) self:sleep(2.5):linear(1):diffusealpha(0) end
 				}
 			},
 			LoadActor("../w1")..{
-				InitCommand=function(self) self:vertalign(bottom):addx(barCenter):addy(86):zoomx(0.01*barWidth[bgNum]):zoomy(0) end,
+				InitCommand=function(self) self:vertalign(bottom):addx(barCenter+barOffset[bgNum][1]):addy(86):zoomx(0.01*barWidth[bgNum]):zoomy(0) end,
 				Condition=getenv("ShowStats"..ToEnumShortString(pn)) >= 1,
 				JudgmentMessageCommand=function(self,param)
 					if param.Player == pn then
@@ -263,7 +267,7 @@ return Def.ActorFrame{
 				end
 			},
 			LoadActor("../w2")..{
-				InitCommand=function(self) self:vertalign(bottom):addx(barCenter+(barWidth[bgNum]+barSpace[bgNum])*1):addy(86):zoomx(0.01*barWidth[bgNum]):zoomy(0) end,
+				InitCommand=function(self) self:vertalign(bottom):addx(barCenter+barOffset[bgNum][2]+(barWidth[bgNum]+barSpace[bgNum])*1):addy(86):zoomx(0.01*barWidth[bgNum]):zoomy(0) end,
 				Condition=getenv("ShowStats"..ToEnumShortString(pn)) >= 2,
 				JudgmentMessageCommand=function(self,param)
 					if param.Player == pn then
@@ -278,7 +282,7 @@ return Def.ActorFrame{
 				end
 			},
 			LoadActor("../w3")..{
-				InitCommand=function(self) self:vertalign(bottom):addx(barCenter+(barWidth[bgNum]+barSpace[bgNum])*2):addy(86):zoomx(0.01*barWidth[bgNum]):zoomy(0) end,
+				InitCommand=function(self) self:vertalign(bottom):addx(barCenter+barOffset[bgNum][3]+(barWidth[bgNum]+barSpace[bgNum])*2):addy(86):zoomx(0.01*barWidth[bgNum]):zoomy(0) end,
 				Condition=getenv("ShowStats"..ToEnumShortString(pn)) >= 3,
 				JudgmentMessageCommand=function(self,param)
 					if param.Player == pn then
@@ -293,7 +297,7 @@ return Def.ActorFrame{
 				end
 			},
 			LoadActor("../w4")..{
-				InitCommand=function(self) self:vertalign(bottom):addx(barCenter+(barWidth[bgNum]+barSpace[bgNum])*3):addy(86):zoomx(0.01*barWidth[bgNum]):zoomy(0) end,
+				InitCommand=function(self) self:vertalign(bottom):addx(barCenter+barOffset[bgNum][4]+(barWidth[bgNum]+barSpace[bgNum])*3):addy(86):zoomx(0.01*barWidth[bgNum]):zoomy(0) end,
 				Condition=getenv("ShowStats"..ToEnumShortString(pn)) >= 4,
 				JudgmentMessageCommand=function(self,param)
 					if param.Player == pn then
@@ -308,7 +312,7 @@ return Def.ActorFrame{
 				end
 			},
 			LoadActor("../w5")..{
-				InitCommand=function(self) self:vertalign(bottom):addx(barCenter+(barWidth[bgNum]+barSpace[bgNum])*4):addy(86):zoomx(0.01*barWidth[bgNum]):zoomy(0) end,
+				InitCommand=function(self) self:vertalign(bottom):addx(barCenter+barOffset[bgNum][5]+(barWidth[bgNum]+barSpace[bgNum])*4):addy(86):zoomx(0.01*barWidth[bgNum]):zoomy(0) end,
 				Condition=getenv("ShowStats"..ToEnumShortString(pn)) >= 5,
 				JudgmentMessageCommand=function(self,param)
 					if param.Player == pn then
@@ -323,7 +327,7 @@ return Def.ActorFrame{
 				end
 			},
 			LoadActor("../w6")..{
-				InitCommand=function(self) self:vertalign(bottom):addx(barCenter+(barWidth[bgNum]+barSpace[bgNum])*5):addy(86):zoomx(0.01*barWidth[bgNum]):zoomy(0) end,
+				InitCommand=function(self) self:vertalign(bottom):addx(barCenter+barOffset[bgNum][6]+(barWidth[bgNum]+barSpace[bgNum])*5):addy(86):zoomx(0.01*barWidth[bgNum]):zoomy(0) end,
 				Condition=getenv("ShowStats"..ToEnumShortString(pn)) >= 6,
 				JudgmentMessageCommand=function(self,param)
 					if param.Player == pn then
@@ -371,10 +375,10 @@ return Def.ActorFrame{
 					FadeOnCommand=function(self) self:sleep(2.5):linear(1):diffusealpha(0) end
 				}
 			},
-			LoadFont("ScreenGameplay judgment")..{
+			LoadFont("_z bold gray 36px")..{
 				Name="Pacemaker",
 				Text="Pacemaker",
-				OnCommand=function(self) self:horizalign(center):zoom(0.75):shadowlength(0):addy(-145) end
+				OnCommand=function(self) self:horizalign(center):zoom(0.5):shadowlength(0):addy(-145) end
 			},
 			LoadFont("ScreenGameplay judgment")..{
 				Name="PlayerName",
@@ -386,7 +390,7 @@ return Def.ActorFrame{
 				Text="Target:",
 				OnCommand=function(self) self:maxwidth(125):horizalign(left):zoom(0.75):shadowlength(0):addy(125):addx(-100) end
 			},
-			LoadFont("ScreenGameplay judgment")..{
+			LoadFont("_z numbers")..{
 				Name="PlayerPoints",
 				Text="0",
 				OnCommand=function(self)
@@ -402,7 +406,7 @@ return Def.ActorFrame{
 					self:settext(STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):GetActualDancePoints())
 				end
 			},
-			LoadFont("ScreenGameplay judgment")..{
+			LoadFont("_z numbers")..{
 				Name="TargetPoints",
 				Text="0",
 				OnCommand=function(self)
@@ -412,10 +416,10 @@ return Def.ActorFrame{
 				end
 			},
 
-			LoadFont("ScreenGameplay judgment")..{
+			LoadFont("_z numbers")..{
 				Name="PlayerHighscoreDifference",
 				OnCommand=function(self)
-					self:diffuse(color("#00FF00FF")):maxwidth(125):horizalign(left):zoom(0.375):shadowlength(0):addy(140):addx(100)
+					self:diffuse(color("#00FF00FF")):maxwidth(90):horizalign(left):zoom(0.3):shadowlength(0):addy(140):addx(100)
 					if topscore ~= nil then self:settextf( "%+04d", 0 ) end
 				end,
 				JudgmentMessageCommand=function(self,param)
@@ -429,10 +433,10 @@ return Def.ActorFrame{
 					self:settextf( "%+04d", (curPlayerDP-curHighscoreDP) )
 				end
 			},
-			LoadFont("ScreenGameplay judgment")..{
+			LoadFont("_z numbers")..{
 				Name="PlayerTargetDifference",
 				OnCommand=function(self)
-					self:diffuse(color("#FF0000FF")):maxwidth(125):horizalign(left):zoom(0.375):shadowlength(0):addy(150):addx(100):settextf( "%+04d", 0 )
+					self:diffuse(color("#FF0000FF")):maxwidth(90):horizalign(left):zoom(0.3):shadowlength(0):addy(150):addx(100):settextf( "%+04d", 0 )
 				end,
 				JudgmentMessageCommand=function(self,param)
 					if param.Player == pn then

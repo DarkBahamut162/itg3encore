@@ -148,27 +148,27 @@ else
 			OnCommand=function(self) self:sleep(0.5):decelerate(0.8):diffusealpha(1) end,
 			OffCommand=function(self) if AnyPlayerFullComboed() then self:sleep(1) end self:accelerate(0.8):diffusealpha(0) end,
 			LoadFont("ScreenGameplay judgment")..{
-				InitCommand=function(self) self:y(SCREEN_TOP+92+15*0-SCREEN_HEIGHT/2):zoom(0.5):horizalign(center):diffuse(color("#60B5C7")):settext("F") end,
+				InitCommand=function(self) self:shadowlength(1):y(SCREEN_TOP+92+15*0-SCREEN_HEIGHT/2):zoom(0.5):horizalign(center):diffuse(color("#60B5C7")):settext("F") end,
 				Condition=getenv("ShowStatsP1") >= 1 or getenv("ShowStatsP2") >= 1
 			},
 			LoadFont("ScreenGameplay judgment")..{
-				InitCommand=function(self) self:y(SCREEN_TOP+92+15*1-SCREEN_HEIGHT/2):zoom(0.5):horizalign(center):diffuse(color("#FEA859")):settext("E") end,
+				InitCommand=function(self) self:shadowlength(1):y(SCREEN_TOP+92+15*1-SCREEN_HEIGHT/2):zoom(0.5):horizalign(center):diffuse(color("#FEA859")):settext("E") end,
 				Condition=getenv("ShowStatsP1") >= 2 or getenv("ShowStatsP2") >= 2
 			},
 			LoadFont("ScreenGameplay judgment")..{
-				InitCommand=function(self) self:y(SCREEN_TOP+92+15*2-SCREEN_HEIGHT/2):zoom(0.5):horizalign(center):diffuse(color("#4AB812")):settext("G") end,
+				InitCommand=function(self) self:shadowlength(1):y(SCREEN_TOP+92+15*2-SCREEN_HEIGHT/2):zoom(0.5):horizalign(center):diffuse(color("#4AB812")):settext("G") end,
 				Condition=getenv("ShowStatsP1") >= 3 or getenv("ShowStatsP2") >= 3
 			},
 			LoadFont("ScreenGameplay judgment")..{
-				InitCommand=function(self) self:y(SCREEN_TOP+92+15*3-SCREEN_HEIGHT/2):zoom(0.5):horizalign(center):diffuse(color("#D064FB")):settext("D") end,
+				InitCommand=function(self) self:shadowlength(1):y(SCREEN_TOP+92+15*3-SCREEN_HEIGHT/2):zoom(0.5):horizalign(center):diffuse(color("#D064FB")):settext("D") end,
 				Condition=getenv("ShowStatsP1") >= 4 or getenv("ShowStatsP2") >= 4
 			},
 			LoadFont("ScreenGameplay judgment")..{
-				InitCommand=function(self) self:y(SCREEN_TOP+92+15*4-SCREEN_HEIGHT/2):zoom(0.5):horizalign(center):diffuse(color("#F76D47")):settext("W") end,
+				InitCommand=function(self) self:shadowlength(1):y(SCREEN_TOP+92+15*4-SCREEN_HEIGHT/2):zoom(0.5):horizalign(center):diffuse(color("#F76D47")):settext("W") end,
 				Condition=getenv("ShowStatsP1") >= 5 or getenv("ShowStatsP2") >= 5
 			},
 			LoadFont("ScreenGameplay judgment")..{
-				InitCommand=function(self) self:y(SCREEN_TOP+92+15*5-SCREEN_HEIGHT/2):zoom(0.5):horizalign(center):diffuse(color("#FB0808")):settext("M") end,
+				InitCommand=function(self) self:shadowlength(1):y(SCREEN_TOP+92+15*5-SCREEN_HEIGHT/2):zoom(0.5):horizalign(center):diffuse(color("#FB0808")):settext("M") end,
 				Condition=getenv("ShowStatsP1") >= 6 or getenv("ShowStatsP2") >= 6
 			}
 		}
@@ -185,10 +185,12 @@ else
 						self:RunCommandsOnChildren(function(self) self:queuecommand("Update") end)
 					end
 				end,
-				LoadFont("ScreenGameplay judgment")..{
-					InitCommand=function(self) self:x(pn == PLAYER_1 and -8 or 8):y(SCREEN_TOP+92+15*0-SCREEN_HEIGHT/2):zoom(0.6):maxwidth(SCREEN_WIDTH/4.5):horizalign(pn == PLAYER_1 and right or left):settext("0") end,
+				LoadFont("_z numbers")..{
+					InitCommand=function(self) self:x(pn == PLAYER_1 and -8 or 8):y(SCREEN_TOP+92+15*0-SCREEN_HEIGHT/2)
+						:zoom(0.6):maxwidth(SCREEN_WIDTH/4.5):horizalign(pn == PLAYER_1 and right or left):queuecommand("Update") end,
 					Condition=getenv("ShowStatsP1") >= 1 or getenv("ShowStatsP2") >= 1,
 					UpdateCommand=function(self)
+						self:diffuse(PlayerColor(pn))
 						if getenv("ShowStats"..ToEnumShortString(pn)) < 1 and getenv("ShowStats"..ToEnumShortString(pn == PLAYER_1 and PLAYER_2 or PLAYER_1)) >= 1 then
 							self:settext("?")
 						else
@@ -198,10 +200,12 @@ else
 						end
 					end
 				},
-				LoadFont("ScreenGameplay judgment")..{
-					InitCommand=function(self) self:x(pn == PLAYER_1 and -8 or 8):y(SCREEN_TOP+92+15*1-SCREEN_HEIGHT/2):zoom(0.6):maxwidth(SCREEN_WIDTH/5):horizalign(pn == PLAYER_1 and right or left):settext("0") end,
+				LoadFont("_z numbers")..{
+					InitCommand=function(self) self:x(pn == PLAYER_1 and -8 or 8):y(SCREEN_TOP+92+15*1-SCREEN_HEIGHT/2)
+						:zoom(0.6):maxwidth(SCREEN_WIDTH/5):horizalign(pn == PLAYER_1 and right or left):queuecommand("Update") end,
 					Condition=getenv("ShowStatsP1") >= 2 or getenv("ShowStatsP2") >= 2,
 					UpdateCommand=function(self)
+						self:diffuse(PlayerColor(pn))
 						if getenv("ShowStats"..ToEnumShortString(pn)) < 2 and getenv("ShowStats"..ToEnumShortString(pn == PLAYER_1 and PLAYER_2 or PLAYER_1)) >= 2 then
 							self:settext("?")
 						else
@@ -211,10 +215,12 @@ else
 						end
 					end
 				},
-				LoadFont("ScreenGameplay judgment")..{
-					InitCommand=function(self) self:x(pn == PLAYER_1 and -8 or 8):y(SCREEN_TOP+92+15*2-SCREEN_HEIGHT/2):zoom(0.6):maxwidth(SCREEN_WIDTH/5):horizalign(pn == PLAYER_1 and right or left):settext("0") end,
+				LoadFont("_z numbers")..{
+					InitCommand=function(self) self:x(pn == PLAYER_1 and -8 or 8):y(SCREEN_TOP+92+15*2-SCREEN_HEIGHT/2)
+						:zoom(0.6):maxwidth(SCREEN_WIDTH/5):horizalign(pn == PLAYER_1 and right or left):queuecommand("Update") end,
 					Condition=getenv("ShowStatsP1") >= 3 or getenv("ShowStatsP2") >= 3,
 					UpdateCommand=function(self)
+						self:diffuse(PlayerColor(pn))
 						if getenv("ShowStats"..ToEnumShortString(pn)) < 3 and getenv("ShowStats"..ToEnumShortString(pn == PLAYER_1 and PLAYER_2 or PLAYER_1)) >= 3 then
 							self:settext("?")
 						else
@@ -224,10 +230,12 @@ else
 						end
 					end
 				},
-				LoadFont("ScreenGameplay judgment")..{
-					InitCommand=function(self) self:x(pn == PLAYER_1 and -8 or 8):y(SCREEN_TOP+92+15*3-SCREEN_HEIGHT/2):zoom(0.6):maxwidth(SCREEN_WIDTH/5):horizalign(pn == PLAYER_1 and right or left):settext("0") end,
+				LoadFont("_z numbers")..{
+					InitCommand=function(self) self:x(pn == PLAYER_1 and -8 or 8):y(SCREEN_TOP+92+15*3-SCREEN_HEIGHT/2)
+						:zoom(0.6):maxwidth(SCREEN_WIDTH/5):horizalign(pn == PLAYER_1 and right or left):queuecommand("Update") end,
 					Condition=getenv("ShowStatsP1") >= 4 or getenv("ShowStatsP2") >= 4,
 					UpdateCommand=function(self)
+						self:diffuse(PlayerColor(pn))
 						if getenv("ShowStats"..ToEnumShortString(pn)) < 4 and getenv("ShowStats"..ToEnumShortString(pn == PLAYER_1 and PLAYER_2 or PLAYER_1)) >= 4 then
 							self:settext("?")
 						else
@@ -237,10 +245,12 @@ else
 						end
 					end
 				},
-				LoadFont("ScreenGameplay judgment")..{
-					InitCommand=function(self) self:x(pn == PLAYER_1 and -8 or 8):y(SCREEN_TOP+92+15*4-SCREEN_HEIGHT/2):zoom(0.6):maxwidth(SCREEN_WIDTH/5):horizalign(pn == PLAYER_1 and right or left):settext("0") end,
+				LoadFont("_z numbers")..{
+					InitCommand=function(self) self:x(pn == PLAYER_1 and -8 or 8):y(SCREEN_TOP+92+15*4-SCREEN_HEIGHT/2)
+						:zoom(0.6):maxwidth(SCREEN_WIDTH/5):horizalign(pn == PLAYER_1 and right or left):queuecommand("Update") end,
 					Condition=getenv("ShowStatsP1") >= 5 or getenv("ShowStatsP2") >= 5,
 					UpdateCommand=function(self)
+						self:diffuse(PlayerColor(pn))
 						if getenv("ShowStats"..ToEnumShortString(pn)) < 5 and getenv("ShowStats"..ToEnumShortString(pn == PLAYER_1 and PLAYER_2 or PLAYER_1)) >= 5 then
 							self:settext("?")
 						else
@@ -250,10 +260,12 @@ else
 						end
 					end
 				},
-				LoadFont("ScreenGameplay judgment")..{
-					InitCommand=function(self) self:x(pn == PLAYER_1 and -8 or 8):y(SCREEN_TOP+92+15*5-SCREEN_HEIGHT/2):zoom(0.6):maxwidth(SCREEN_WIDTH/5):horizalign(pn == PLAYER_1 and right or left):settext("0") end,
+				LoadFont("_z numbers")..{
+					InitCommand=function(self) self:x(pn == PLAYER_1 and -8 or 8):y(SCREEN_TOP+92+15*5-SCREEN_HEIGHT/2)
+						:zoom(0.6):maxwidth(SCREEN_WIDTH/5):horizalign(pn == PLAYER_1 and right or left):queuecommand("Update") end,
 					Condition=getenv("ShowStatsP1") >= 6 or getenv("ShowStatsP2") >= 6,
 					UpdateCommand=function(self)
+						self:diffuse(PlayerColor(pn))
 						if getenv("ShowStats"..ToEnumShortString(pn)) < 6 and getenv("ShowStats"..ToEnumShortString(pn == PLAYER_1 and PLAYER_2 or PLAYER_1)) >= 6 then
 							self:settext("?")
 						else
@@ -328,10 +340,10 @@ else
 					FadeOnCommand=function(self) self:sleep(3):linear(1):diffusealpha(0) end
 				}
 			},
-			LoadFont("ScreenGameplay judgment")..{
+			LoadFont("_z bold gray 36px")..{
 				Name="Pacemaker",
 				Text="Pacemaker",
-				OnCommand=function(self) self:horizalign(center):zoom(0.75):shadowlength(0):addy(-145) end
+				OnCommand=function(self) self:horizalign(center):zoom(0.5):shadowlength(0):addy(-145) end
 			},
 			LoadFont("ScreenGameplay judgment")..{
 				Name="PlayerName",
@@ -344,11 +356,11 @@ else
 				OnCommand=function(self) self:maxwidth(125):horizalign(center):zoom(0.75):shadowlength(0):addy(125) end
 			},
 
-			LoadFont("ScreenGameplay judgment")..{
+			LoadFont("_z numbers")..{
 				Name="PlayerPointsP1",
 				Text="0",
 				OnCommand=function(self)
-					self:maxwidth(125):horizalign(left):zoom(0.75):shadowlength(0):addy(145):addx(-100)
+					self:maxwidth(90):horizalign(left):zoom(0.75):shadowlength(0):addy(145):addx(-100)
 					:settext(STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_1):GetActualDancePoints())
 				end,
 				JudgmentMessageCommand=function(self,param)
@@ -360,20 +372,20 @@ else
 					self:settext(STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_1):GetActualDancePoints())
 				end
 			},
-			LoadFont("ScreenGameplay judgment")..{
+			LoadFont("_z numbers")..{
 				Name="TargetPointsP1",
 				Text="0",
 				OnCommand=function(self)
-					self:maxwidth(125):horizalign(left):zoom(0.75):shadowlength(0):addy(125):addx(-100)
+					self:maxwidth(90):horizalign(left):zoom(0.75):shadowlength(0):addy(125):addx(-100)
 					local target = THEME:GetMetric("PlayerStageStats", "GradePercentTier" .. string.format("%02d", 17-getenv("SetPacemaker"..ToEnumShortString(PLAYER_1))))
 					self:settext(math.ceil(target*STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_1):GetPossibleDancePoints()))
 				end
 			},
-			LoadFont("ScreenGameplay judgment")..{
+			LoadFont("_z numbers")..{
 				Name="PlayerPointsP2",
 				Text="0",
 				OnCommand=function(self)
-					self:maxwidth(125):horizalign(right):zoom(0.75):shadowlength(0):addy(145):addx(100)
+					self:maxwidth(90):horizalign(right):zoom(0.75):shadowlength(0):addy(145):addx(100)
 					:settext(STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_2):GetActualDancePoints())
 				end,
 				JudgmentMessageCommand=function(self,param)
@@ -385,20 +397,20 @@ else
 					self:settext(STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_2):GetActualDancePoints())
 				end
 			},
-			LoadFont("ScreenGameplay judgment")..{
+			LoadFont("_z numbers")..{
 				Name="TargetPointsP2",
 				Text="0",
 				OnCommand=function(self)
-					self:maxwidth(125):horizalign(right):zoom(0.75):shadowlength(0):addy(125):addx(100)
+					self:maxwidth(90):horizalign(right):zoom(0.75):shadowlength(0):addy(125):addx(100)
 					local target = THEME:GetMetric("PlayerStageStats", "GradePercentTier" .. string.format("%02d", 17-getenv("SetPacemaker"..ToEnumShortString(PLAYER_2))))
 					self:settext(math.ceil(target*STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_2):GetPossibleDancePoints()))
 				end
 			},
 
-			LoadFont("ScreenGameplay judgment")..{
+			LoadFont("_z numbers")..{
 				Name="PlayerHighscoreDifferenceP1",
 				OnCommand=function(self)
-					self:diffuse(color("#00FF00FF")):maxwidth(125):horizalign(right):zoom(0.375):shadowlength(0):addy(140):addx(-100)
+					self:diffuse(color("#00FF00FF")):maxwidth(75):horizalign(right):zoom(0.375):shadowlength(0):addy(140):addx(-100)
 					if topscore[PLAYER_1] ~= nil then self:settextf( "%+04d", 0 ) end
 				end,
 				JudgmentMessageCommand=function(self,param)
@@ -412,10 +424,10 @@ else
 					self:settextf( "%+04d", (curPlayerDP-curHighscoreDP) )
 				end
 			},
-			LoadFont("ScreenGameplay judgment")..{
+			LoadFont("_z numbers")..{
 				Name="PlayerTargetDifferenceP1",
 				OnCommand=function(self)
-					self:diffuse(color("#FF0000FF")):maxwidth(125):horizalign(right):zoom(0.375):shadowlength(0):addy(150):addx(-100):settextf( "%+04d", 0 )
+					self:diffuse(color("#FF0000FF")):maxwidth(75):horizalign(right):zoom(0.375):shadowlength(0):addy(150):addx(-100):settextf( "%+04d", 0 )
 				end,
 				JudgmentMessageCommand=function(self,param)
 					if param.Player == PLAYER_1 then
@@ -429,10 +441,10 @@ else
 					self:settextf( "%+04d", (curPlayerDP-curTargetDP) )
 				end
 			},
-			LoadFont("ScreenGameplay judgment")..{
+			LoadFont("_z numbers")..{
 				Name="PlayerHighscoreDifferenceP2",
 				OnCommand=function(self)
-					self:diffuse(color("#00FF00FF")):maxwidth(125):horizalign(left):zoom(0.375):shadowlength(0):addy(140):addx(100)
+					self:diffuse(color("#00FF00FF")):maxwidth(75):horizalign(left):zoom(0.375):shadowlength(0):addy(140):addx(100)
 					if topscore[PLAYER_2] ~= nil then self:settextf( "%+04d", 0 ) end
 				end,
 				JudgmentMessageCommand=function(self,param)
@@ -446,10 +458,10 @@ else
 					self:settextf( "%+04d", (curPlayerDP-curHighscoreDP) )
 				end
 			},
-			LoadFont("ScreenGameplay judgment")..{
+			LoadFont("_z numbers")..{
 				Name="PlayerTargetDifferenceP2",
 				OnCommand=function(self)
-					self:diffuse(color("#FF0000FF")):maxwidth(125):horizalign(left):zoom(0.375):shadowlength(0):addy(150):addx(100):settextf( "%+04d", 0 )
+					self:diffuse(color("#FF0000FF")):maxwidth(75):horizalign(left):zoom(0.375):shadowlength(0):addy(150):addx(100):settextf( "%+04d", 0 )
 				end,
 				JudgmentMessageCommand=function(self,param)
 					if param.Player == PLAYER_2 then
