@@ -126,9 +126,9 @@ return Def.ActorFrame{
 		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y-142) end,
 		LoadFont("_v 26px bold shadow")..{
 			Text="TIME & DATE",
-			SetCommand=function(self) self:settext( string.format('%02i:%02i:%02i %s %02i %04i', Hour(), Minute(), Second(), MonthToString(MonthOfYear()), DayOfMonth(), Year()) ) end,
-			InitCommand=function(self) self:y(-48):shadowlength(2):horizalign(center):zoom(0.5):playcommand("Set") end,
-			OnCommand=function(self) self:diffusealpha(0):sleep(3):linear(0.8):diffusealpha(1) end,
+			SetCommand=function(self) self:settext( string.format('%02i:%02i:%02i %s %02i %04i', Hour(), Minute(), Second(), MonthToString(MonthOfYear()), DayOfMonth(), Year()) ):sleep(1/6):queuecommand("Set") end,
+			InitCommand=function(self) self:y(-48):shadowlength(2):horizalign(center) end,
+			OnCommand=function(self) self:diffusealpha(0):sleep(3):zoom(0.5):playcommand("Set"):linear(0.8):diffusealpha(1) end,
 			OffCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(0) end
 		}
 	},
