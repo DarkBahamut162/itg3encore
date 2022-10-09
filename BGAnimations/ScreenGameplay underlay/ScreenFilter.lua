@@ -44,11 +44,7 @@ if numPlayers == 1 then
 			elseif getenv("RotationUpsideDownP"..pNum) then
 				self:y(SCREEN_CENTER_Y+20)
 			elseif getenv("RotationSoloP"..pNum) then
-				if pNum == 1 then
-					self:x(SCREEN_CENTER_X)
-				elseif pNum == 2 then
-					self:x(SCREEN_CENTER_X)
-				end
+				self:CenterX()
 			end
 
 			if getenv("EffectVibrateP"..pNum) then

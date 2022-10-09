@@ -8,10 +8,10 @@ return Def.ActorFrame{
 		OnCommand=function(self) self:sleep(0.2):decelerate(0.30):zoomx(0.99):diffusealpha(1) end
 	},
 	LoadActor("mask")..{
-		InitCommand=function(self) self:CenterX():y(SCREEN_BOTTOM+2):zwrite(true):blend('BlendMode_NoEffect'):vertalign(bottom) end
+		InitCommand=function(self) self:CenterX():y(SCREEN_BOTTOM+2):zwrite(true):blend(Blend.NoEffect):vertalign(bottom) end
 	},
 	Def.Quad{
-		InitCommand=function(self) self:CenterX():y(SCREEN_TOP):valign(0):zoomto(SCREEN_WIDTH,78):zwrite(true):blend('BlendMode_NoEffect') end
+		InitCommand=function(self) self:CenterX():y(SCREEN_TOP):valign(0):zoomto(SCREEN_WIDTH,78):zwrite(true):blend(Blend.NoEffect) end
 	},
 	LoadActor("center")..{
 		InitCommand=function(self) self:x(SCREEN_CENTER_X-120):y(SCREEN_TOP+4):vertalign(top) end

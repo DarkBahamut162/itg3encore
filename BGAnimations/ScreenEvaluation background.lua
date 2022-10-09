@@ -9,7 +9,7 @@ return Def.ActorFrame{
 		InitCommand=function(self)
 			self:LoadFromSongBackground(GAMESTATE:GetCurrentSong())
 			self:FullScreen()
-			self:blend("BlendMode_Add")
+			self:blend(Blend.Add)
 			self:diffusealpha(0.25)
 		end,
 		OnCommand=function(self) self:fadeleft(0.2):faderight(0.2):Center():zoomtowidth(SCREEN_WIDTH):zoomtoheight(SCREEN_WIDTH/16*10) end

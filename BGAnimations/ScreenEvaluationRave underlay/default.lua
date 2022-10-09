@@ -12,7 +12,7 @@ return Def.ActorFrame{
 		SlowCommand=function(self) self:SetUpdateRate(1.5) end
 	},
 	LoadActor("../ScreenEvaluation underlay/evaluation banner mask")..{
-		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+135):zbuffer(true):blend('BlendMode_NoEffect'):diffusealpha(0) end,
+		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+135):zbuffer(true):blend(Blend.NoEffect):diffusealpha(0) end,
 		OnCommand=function(self) self:sleep(2.8):diffusealpha(1) end,
 		OffCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(0) end
 	},
@@ -29,7 +29,7 @@ return Def.ActorFrame{
 	},
 	Def.ActorFrame{
 		LoadActor("frame")..{
-			InitCommand=function(self) self:x(SCREEN_CENTER_X):y(SCREEN_CENTER_Y-30):zoomx(0.80):zoomy(1.005):addy(SCREEN_HEIGHT) end,
+			InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y-30):zoomx(0.80):zoomy(1.005):addy(SCREEN_HEIGHT) end,
 			OnCommand=function(self) self:sleep(3):decelerate(0.3):addy(-SCREEN_HEIGHT) end,
 			OffCommand=function(self) self:accelerate(0.3):addy(SCREEN_HEIGHT) end
 		},

@@ -23,7 +23,7 @@ return Def.ActorFrame{
 		end
 	},
 	LoadActor("_flaremask")..{
-		InitCommand=function(self) self:Center():FullScreen():zbuffer(true):blend('BlendMode_NoEffect') end
+		InitCommand=function(self) self:Center():FullScreen():zbuffer(true):blend(Blend.NoEffect) end
 	},
 	LoadActor(THEME:GetPathB("ScreenStageInformation","in/_flares"))..{
 		InitCommand=function(self) self:Center():ztest(true):diffusealpha(1):zoom(1) end,

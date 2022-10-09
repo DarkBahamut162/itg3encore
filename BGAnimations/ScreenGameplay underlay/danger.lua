@@ -11,7 +11,7 @@ return Def.ActorFrame{
 			end,
 			HealthStateChangedMessageCommand=function(self, param)
 				if param.PlayerNumber == PLAYER_1 then
-					if param.HealthState == "HealthState_Danger" then
+					if param.HealthState == Health.Danger then
 						self:RunCommandsOnChildren(function(self) self:playcommand("Show") end)
 					else
 						self:RunCommandsOnChildren(function(self) self:playcommand("Hide") end)
@@ -52,7 +52,7 @@ return Def.ActorFrame{
 			end,
 			HealthStateChangedMessageCommand=function(self, param)
 				if param.PlayerNumber == GAMESTATE:GetMasterPlayerNumber() then
-					if param.HealthState == "HealthState_Danger" then
+					if param.HealthState == Health.Danger then
 						self:RunCommandsOnChildren(function(self) self:playcommand("Show") end)
 					else
 						self:RunCommandsOnChildren(function(self) self:playcommand("Hide") end)
@@ -70,12 +70,12 @@ return Def.ActorFrame{
 				HideCommand=function(self) self:stopeffect():stoptweening():linear(0.5):diffusealpha(0) end
 			},
 			LoadActor(THEME:GetPathB("_shared","danger/_danger text"))..{
-				InitCommand=function(self) self:x(SCREEN_CENTER_X):y(SCREEN_CENTER_Y+140):diffusealpha(0) end,
+				InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+140):diffusealpha(0) end,
 				ShowCommand=function(self) self:linear(0.3):diffusealpha(1) end,
 				HideCommand=function(self) self:stopeffect():stoptweening():linear(0.5):diffusealpha(0) end
 			},
 			LoadActor(THEME:GetPathB("_shared","danger/_danger glow"))..{
-				InitCommand=function(self) self:x(SCREEN_CENTER_X):y(SCREEN_CENTER_Y+140):cropleft(-0.3):cropright(1):faderight(0.1):fadeleft(0.1) end,
+				InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+140):cropleft(-0.3):cropright(1):faderight(0.1):fadeleft(0.1) end,
 				ShowCommand=function(self) self:sleep(0.5):linear(0.7):cropleft(1):cropright(-0.3):sleep(0.8):queuecommand("Show") end,
 				HideCommand=function(self) self:stopeffect():stoptweening():linear(0.5):diffusealpha(0) end
 			}
@@ -93,7 +93,7 @@ return Def.ActorFrame{
 			end,
 			HealthStateChangedMessageCommand=function(self, param)
 				if param.PlayerNumber == PLAYER_2 then
-					if param.HealthState == "HealthState_Danger" then
+					if param.HealthState == Health.Danger then
 						self:RunCommandsOnChildren(function(self) self:playcommand("Show") end)
 					else
 						self:RunCommandsOnChildren(function(self) self:playcommand("Hide") end)

@@ -16,7 +16,7 @@ end
 
 return Def.ActorFrame{
 	LoadActor("bluebeam")..{
-		InitCommand=function(self) self:blend("BlendMode_Add"):x(GetPosition(pn)):y(SCREEN_CENTER_Y-SCREEN_HEIGHT/9+15):diffusealpha(0):zoom(0.3):cropleft(0.5):cropright(0.5) end,
+		InitCommand=function(self) self:blend(Blend.Add):x(GetPosition(pn)):y(SCREEN_CENTER_Y-SCREEN_HEIGHT/9+15):diffusealpha(0):zoom(0.3):cropleft(0.5):cropright(0.5) end,
 		OffCommand=function(self) if PlayerFullComboed(pn) then self:queuecommand("CheckScore") end end,
 		CheckScoreCommand=function(self)
 			local fct = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn)
@@ -82,7 +82,7 @@ return Def.ActorFrame{
 		end
 	},
 	LoadActor("_fan")..{
-		InitCommand=function(self) self:x(GetPosition(pn)):y(SCREEN_HEIGHT/2):zoomx(1.25):blend("BlendMode_Add"):cropleft(0.5):cropright(0.5):faderight(0.5):fadeleft(0.5):zoomtoheight(SCREEN_HEIGHT*1.5):diffusealpha(0) end,
+		InitCommand=function(self) self:x(GetPosition(pn)):y(SCREEN_HEIGHT/2):zoomx(1.25):blend(Blend.Add):cropleft(0.5):cropright(0.5):faderight(0.5):fadeleft(0.5):zoomtoheight(SCREEN_HEIGHT*1.5):diffusealpha(0) end,
 		OffCommand=function(self) if PlayerFullComboed(pn) then self:queuecommand("CheckScore") end end,
 		CheckScoreCommand=function(self)
 			local fct = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn)
@@ -107,7 +107,7 @@ return Def.ActorFrame{
 		end
 	},
 	LoadActor("_fan")..{
-		InitCommand=function(self) self:x(GetPosition(pn)):y(SCREEN_HEIGHT/2):blend("BlendMode_Add"):fadetop(0.1):fadebottom(0.5):zoomtoheight(SCREEN_HEIGHT*2):diffusealpha(0) end,
+		InitCommand=function(self) self:x(GetPosition(pn)):y(SCREEN_HEIGHT/2):blend(Blend.Add):fadetop(0.1):fadebottom(0.5):zoomtoheight(SCREEN_HEIGHT*2):diffusealpha(0) end,
 		OffCommand=function(self) if PlayerFullComboed(pn) then self:queuecommand("CheckScore") end end,
 		CheckScoreCommand=function(self)
 			local fct = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn)
@@ -127,7 +127,7 @@ return Def.ActorFrame{
 		end
 	},
 	LoadActor(THEME:GetPathG("","blueflare.png"))..{
-		InitCommand=function(self) self:x(GetPosition(pn)):blend("BlendMode_Add"):y(SCREEN_CENTER_Y-SCREEN_HEIGHT/9+15):diffusealpha(0):zoom(0.3) end,
+		InitCommand=function(self) self:x(GetPosition(pn)):blend(Blend.Add):y(SCREEN_CENTER_Y-SCREEN_HEIGHT/9+15):diffusealpha(0):zoom(0.3) end,
 		OffCommand=function(self) if PlayerFullComboed(pn) then self:queuecommand("CheckScore") end end,
 		CheckScoreCommand=function(self)
 			local fct = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn)
@@ -149,7 +149,7 @@ return Def.ActorFrame{
 	},
 
 	LoadActor("orangebeam")..{
-		InitCommand=function(self) self:blend("BlendMode_Add"):x(GetPosition(pn)):y(SCREEN_CENTER_Y-SCREEN_HEIGHT/9+15):diffusealpha(0):zoom(0.3):cropleft(0.5):cropright(0.5) end,
+		InitCommand=function(self) self:blend(Blend.Add):x(GetPosition(pn)):y(SCREEN_CENTER_Y-SCREEN_HEIGHT/9+15):diffusealpha(0):zoom(0.3):cropleft(0.5):cropright(0.5) end,
 		OffCommand=function(self) if PlayerFullComboed(pn) then self:queuecommand("CheckScore") end end,
 		CheckScoreCommand=function(self)
 			local fct = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn)
@@ -215,7 +215,7 @@ return Def.ActorFrame{
 		end
 	},
 	LoadActor("_ex")..{
-		InitCommand=function(self) self:x(GetPosition(pn)):y(SCREEN_HEIGHT/2):zoomx(1.25):blend("BlendMode_Add"):cropleft(0.5):cropright(0.5):faderight(0.5):fadeleft(0.5):zoomtoheight(SCREEN_HEIGHT*1.5):diffusealpha(0) end,
+		InitCommand=function(self) self:x(GetPosition(pn)):y(SCREEN_HEIGHT/2):zoomx(1.25):blend(Blend.Add):cropleft(0.5):cropright(0.5):faderight(0.5):fadeleft(0.5):zoomtoheight(SCREEN_HEIGHT*1.5):diffusealpha(0) end,
 		OffCommand=function(self) if PlayerFullComboed(pn) then self:queuecommand("CheckScore") end end,
 		CheckScoreCommand=function(self)
 			local fct = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn)
@@ -240,7 +240,7 @@ return Def.ActorFrame{
 		end
 	},
 	LoadActor("_ex")..{
-		InitCommand=function(self) self:x(GetPosition(pn)):y(SCREEN_HEIGHT/2):blend("BlendMode_Add"):fadetop(0.1):fadebottom(0.5):zoomtoheight(SCREEN_HEIGHT*2):diffusealpha(0) end,
+		InitCommand=function(self) self:x(GetPosition(pn)):y(SCREEN_HEIGHT/2):blend(Blend.Add):fadetop(0.1):fadebottom(0.5):zoomtoheight(SCREEN_HEIGHT*2):diffusealpha(0) end,
 		OffCommand=function(self) if PlayerFullComboed(pn) then self:queuecommand("CheckScore") end end,
 		CheckScoreCommand=function(self)
 			local fct = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn)
@@ -260,7 +260,7 @@ return Def.ActorFrame{
 		end
 	},
 	LoadActor("orangeflare")..{
-		InitCommand=function(self) self:x(GetPosition(pn)):blend("BlendMode_Add"):y(SCREEN_CENTER_Y-SCREEN_HEIGHT/9+15):diffusealpha(0):zoom(0.3) end,
+		InitCommand=function(self) self:x(GetPosition(pn)):blend(Blend.Add):y(SCREEN_CENTER_Y-SCREEN_HEIGHT/9+15):diffusealpha(0):zoom(0.3) end,
 		OffCommand=function(self) if PlayerFullComboed(pn) then self:queuecommand("CheckScore") end end,
 		CheckScoreCommand=function(self)
 			local fct = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn)
@@ -282,7 +282,7 @@ return Def.ActorFrame{
 	},
 
 	LoadActor("greenbeam")..{
-		InitCommand=function(self) self:blend("BlendMode_Add"):x(GetPosition(pn)):y(SCREEN_CENTER_Y-SCREEN_HEIGHT/9+15):diffusealpha(0):zoom(0.3):cropleft(0.5):cropright(0.5) end,
+		InitCommand=function(self) self:blend(Blend.Add):x(GetPosition(pn)):y(SCREEN_CENTER_Y-SCREEN_HEIGHT/9+15):diffusealpha(0):zoom(0.3):cropleft(0.5):cropright(0.5) end,
 		OffCommand=function(self) if PlayerFullComboed(pn) then self:queuecommand("CheckScore") end end,
 		CheckScoreCommand=function(self)
 			local fct = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn)
@@ -348,7 +348,7 @@ return Def.ActorFrame{
 		end
 	},
 	LoadActor("_great")..{
-		InitCommand=function(self) self:x(GetPosition(pn)):y(SCREEN_HEIGHT/2):zoomx(1.25):blend("BlendMode_Add"):cropleft(0.5):cropright(0.5):faderight(0.5):fadeleft(0.5):zoomtoheight(SCREEN_HEIGHT*1.5):diffusealpha(0) end,
+		InitCommand=function(self) self:x(GetPosition(pn)):y(SCREEN_HEIGHT/2):zoomx(1.25):blend(Blend.Add):cropleft(0.5):cropright(0.5):faderight(0.5):fadeleft(0.5):zoomtoheight(SCREEN_HEIGHT*1.5):diffusealpha(0) end,
 		OffCommand=function(self) if PlayerFullComboed(pn) then self:queuecommand("CheckScore") end end,
 		CheckScoreCommand=function(self)
 			local fct = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn)
@@ -373,7 +373,7 @@ return Def.ActorFrame{
 		end
 	},
 	LoadActor("_great")..{
-		InitCommand=function(self) self:x(GetPosition(pn)):y(SCREEN_HEIGHT/2):blend("BlendMode_Add"):fadetop(0.1):fadebottom(0.5):zoomtoheight(SCREEN_HEIGHT*2):diffusealpha(0) end,
+		InitCommand=function(self) self:x(GetPosition(pn)):y(SCREEN_HEIGHT/2):blend(Blend.Add):fadetop(0.1):fadebottom(0.5):zoomtoheight(SCREEN_HEIGHT*2):diffusealpha(0) end,
 		OffCommand=function(self) if PlayerFullComboed(pn) then self:queuecommand("CheckScore") end end,
 		CheckScoreCommand=function(self)
 			local fct = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn)
@@ -393,7 +393,7 @@ return Def.ActorFrame{
 		end
 	},
 	LoadActor("greenflare")..{
-		InitCommand=function(self) self:x(GetPosition(pn)):blend("BlendMode_Add"):y(SCREEN_CENTER_Y-SCREEN_HEIGHT/9+15):diffusealpha(0):zoom(0.3) end,
+		InitCommand=function(self) self:x(GetPosition(pn)):blend(Blend.Add):y(SCREEN_CENTER_Y-SCREEN_HEIGHT/9+15):diffusealpha(0):zoom(0.3) end,
 		OffCommand=function(self) if PlayerFullComboed(pn) then self:queuecommand("CheckScore") end end,
 		CheckScoreCommand=function(self)
 			local fct = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn)

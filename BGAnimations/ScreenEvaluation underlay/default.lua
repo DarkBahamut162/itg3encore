@@ -26,17 +26,17 @@ return Def.ActorFrame{
 		SlowCommand=function(self) self:SetUpdateRate(1.5) end
 	},
 	LoadActor("evaluation banner mask")..{
-		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+135):zbuffer(true):blend('BlendMode_NoEffect'):diffusealpha(0) end,
+		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+135):zbuffer(true):blend(Blend.NoEffect):diffusealpha(0) end,
 		OnCommand=function(self) self:sleep(2.8):diffusealpha(1) end,
 		OffCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(0) end
 	},
 	LoadActor("mask")..{
-		InitCommand=function(self) self:x(SCREEN_CENTER_X-200):y(SCREEN_CENTER_Y+151):addx(-EvalTweenDistance()):zbuffer(true):blend('BlendMode_NoEffect') end,
+		InitCommand=function(self) self:x(SCREEN_CENTER_X-200):y(SCREEN_CENTER_Y+151):addx(-EvalTweenDistance()):zbuffer(true):blend(Blend.NoEffect) end,
 		OnCommand=function(self) self:sleep(3):decelerate(0.3):addx(EvalTweenDistance()) end,
 		OffCommand=function(self) self:accelerate(0.3):addx(-EvalTweenDistance()) end
 	},
 	LoadActor("mask")..{
-		InitCommand=function(self) self:x(SCREEN_CENTER_X+200):y(SCREEN_CENTER_Y+151):addx(EvalTweenDistance()):zbuffer(true):blend('BlendMode_NoEffect'):zoomx(-1) end,
+		InitCommand=function(self) self:x(SCREEN_CENTER_X+200):y(SCREEN_CENTER_Y+151):addx(EvalTweenDistance()):zbuffer(true):blend(Blend.NoEffect):zoomx(-1) end,
 		OnCommand=function(self) self:sleep(3):decelerate(0.3):addx(-EvalTweenDistance()) end,
 		OffCommand=function(self) self:accelerate(0.3):addx(EvalTweenDistance()) end
 	},

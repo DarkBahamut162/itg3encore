@@ -3,7 +3,7 @@ return Def.ActorFrame{
 	LoadActor(THEME:GetPathB("ScreenWithMenuElements","underlay/_sides")),
 	LoadActor(THEME:GetPathB("ScreenWithMenuElements","underlay/_normaltop")),
 	LoadActor("name entry banner mask")..{
-		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+138):zbuffer(true):blend('BlendMode_NoEffect'):addy(-200) end,
+		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+138):zbuffer(true):blend(Blend.NoEffect):addy(-200) end,
 		OnCommand=function(self) self:decelerate(0.3):addy(200) end
 	},
 	Def.ActorFrame{

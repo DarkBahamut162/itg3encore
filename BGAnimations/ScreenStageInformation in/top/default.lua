@@ -12,7 +12,7 @@ return Def.ActorFrame{
 		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y-77) end,
 		OnCommand=function(self) self:linear(1):y(SCREEN_CENTER_Y-44) end,
 		LoadActor("_banner mask")..{
-			InitCommand=function(self) self:zbuffer(true):blend('BlendMode_NoEffect') end
+			InitCommand=function(self) self:zbuffer(true):blend(Blend.NoEffect) end
 		},
 		Def.Banner{
 			InitCommand=function(self) self:diffusealpha(0):ztest(true) end,

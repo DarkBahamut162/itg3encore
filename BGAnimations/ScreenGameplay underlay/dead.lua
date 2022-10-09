@@ -7,7 +7,7 @@ return Def.ActorFrame{
 			self:visible( styleType ~= "StyleType_OnePlayerTwoSides" and styleType ~= "StyleType_TwoPlayersSharedSides" )
 		end,
 		HealthStateChangedMessageCommand=function(self, param)
-			if param.HealthState == "HealthState_Dead" then
+			if param.HealthState == Health.Dead then
 				local dead = self:GetChild("Dead"..ToEnumShortString(param.PlayerNumber))
 				dead:playcommand("Show")
 			end
@@ -32,7 +32,7 @@ return Def.ActorFrame{
 			self:visible( styleType == "StyleType_OnePlayerTwoSides" or styleType == "StyleType_TwoPlayersSharedSides" )
 		end,
 		HealthStateChangedMessageCommand=function(self, param)
-			if param.HealthState == "HealthState_Dead" then
+			if param.HealthState == Health.Dead then
 				self:RunCommandsOnChildren(function(self) self:playcommand("Show") end)
 			end
 		end,

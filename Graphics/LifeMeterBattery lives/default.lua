@@ -16,7 +16,7 @@ return Def.ActorFrame{
 		end,
 		HealthStateChangedMessageCommand=function(self, param)
 			local State = GAMESTATE:GetPlayerState(player)
-			if State:GetHealthState() == "HealthState_Dead" then
+			if State:GetHealthState() == Health.Dead then
 				self:accelerate(0.8):addx(player == PLAYER_1 and -100 or 100)
 			end
 		end,
@@ -62,7 +62,7 @@ return Def.ActorFrame{
 		OffCommand=function(self) self:accelerate(0.8):addx(player == PLAYER_1 and -100 or 100) end,
 		HealthStateChangedMessageCommand=function(self, param)
 			local State = GAMESTATE:GetPlayerState(player)
-			if State:GetHealthState() == "HealthState_Dead" then
+			if State:GetHealthState() == Health.Dead then
 				self:accelerate(0.8):addx(player == PLAYER_1 and -100 or 100)
 			end
 		end,

@@ -4,11 +4,11 @@ local t = Def.ActorFrame{
 		OnCommand=function(self) self:diffusealpha(0):linear(0.5):diffusealpha(1):sleep(0.5) end
 	},
 	LoadActor("updatecoin") .. {
-		InitCommand=function(self) self:Center():blend("BlendMode_Add") end,
+		InitCommand=function(self) self:Center():blend(Blend.Add) end,
 		OnCommand=function(self) self:zoom(0):diffusealpha(0):rotationz(-20):linear(0.5):zoom(18):diffusealpha(1):rotationz(150) end
 	},
 	LoadActor("updatecoin") .. {
-		InitCommand=function(self) self:Center():blend("BlendMode_Add") end,
+		InitCommand=function(self) self:Center():blend(Blend.Add) end,
 		OnCommand=function(self) self:zoom(0):diffusealpha(0):rotationz(20):linear(0.5):zoom(18):diffusealpha(1):rotationz(-70) end
 	}
 }

@@ -25,6 +25,6 @@ return Def.ActorFrame{
 		OffCommand=function(self) self:linear(0.4):diffusealpha(0) end
 	},
 	LoadActor("_textmask")..{
-		InitCommand=function(self) self:x(-77+100):y(130):zbuffer(true):blend('BlendMode_NoEffect') end
+		InitCommand=function(self) self:x(-77+100):y(130):zbuffer(true):blend(Blend.NoEffect) end
 	}
 }

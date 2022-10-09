@@ -4,7 +4,7 @@ return Def.ActorFrame{
 		OnCommand=function(self) self:diffusealpha(0):sleep(5):zoomtowidth(SCREEN_WIDTH*2):zoomtoheight(SCREEN_HEIGHT*2):linear(10):diffusealpha(1):zoomtowidth(SCREEN_WIDTH*1.9):zoomtoheight(SCREEN_HEIGHT*1.9):linear(70):zoomtowidth(SCREEN_WIDTH):zoomtoheight(SCREEN_HEIGHT):linear(5):diffusealpha(0) end
     },
     LoadActor("masktest")..{
-		InitCommand=function(self) self:Center():zoomtoheight(SCREEN_HEIGHT):zoomtowidth(SCREEN_WIDTH):blend("BlendMode_NoEffect"):zwrite(1) end,
+		InitCommand=function(self) self:Center():zoomtoheight(SCREEN_HEIGHT):zoomtowidth(SCREEN_WIDTH):blend(Blend.NoEffect):zwrite(1) end,
 		OnCommand=function(self) self:diffusealpha(1):sleep(5):zoomtowidth(SCREEN_WIDTH*2):zoomtoheight(SCREEN_HEIGHT*2):linear(10):diffusealpha(1):zoomtowidth(SCREEN_WIDTH*1.9):zoomtoheight(SCREEN_HEIGHT*1.9):linear(70):zoomtowidth(SCREEN_WIDTH):zoomtoheight(SCREEN_HEIGHT):linear(5):diffusealpha(0) end
 	},
     LoadActor("865_jumpback")..{

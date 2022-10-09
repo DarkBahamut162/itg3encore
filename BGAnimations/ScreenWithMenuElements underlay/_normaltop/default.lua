@@ -15,7 +15,7 @@ return Def.ActorFrame{
 		OffCommand=function(self) self:accelerate(0.5):addy(-100) end
 	},
 	LoadActor("_lmask")..{
-		InitCommand=function(self) self:x(SCREEN_LEFT):halign(0):valign(0):blend('BlendMode_NoEffect'):zwrite(true):draworder(110) end,
+		InitCommand=function(self) self:x(SCREEN_LEFT):halign(0):valign(0):blend(Blend.NoEffect):zwrite(true):draworder(110) end,
 		OnCommand=function(self) self:y(SCREEN_TOP-100):decelerate(0.8):y(SCREEN_TOP) end,
 		OffCommand=function(self) self:accelerate(0.5):addy(-100) end
 	},

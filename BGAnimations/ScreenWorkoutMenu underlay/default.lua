@@ -39,10 +39,10 @@ return Def.ActorFrame{
 			end
 		},
 		LoadActor("shared-frame")..{
-			OnCommand=function(self) self:x(SCREEN_CENTER_X):y(SCREEN_CENTER_Y+36) end
+			OnCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+36) end
 		},
 		LoadActor("explanation-frame")..{
-			OnCommand=function(self) self:x(SCREEN_CENTER_X):y(SCREEN_CENTER_Y+118) end
+			OnCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+118) end
 		}
 	}
 }
