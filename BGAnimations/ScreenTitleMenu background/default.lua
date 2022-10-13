@@ -17,7 +17,6 @@ end
 
 return Def.ActorFrame{
 	OnCommand=function(self)
-		InitOptions()
 		GAMESTATE:UpdateDiscordGameMode(GAMESTATE:GetCurrentGame():GetName())
 		GAMESTATE:UpdateDiscordScreenInfo("Title Menu","",1)
 	end,

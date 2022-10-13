@@ -1,3 +1,5 @@
+InitOptions()
+
 return Def.ActorFrame{
 	LoadFont("_r bold shadow 30px")..{
 		InitCommand=function(self) self:CenterX():y(SCREEN_BOTTOM-100):shadowlength(0):zoomx(0.8):zoomy(0.7):settext("PRESS") end
