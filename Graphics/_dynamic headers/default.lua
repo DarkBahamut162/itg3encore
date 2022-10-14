@@ -1,11 +1,7 @@
 local LabelName = ...
-
 local NameCase = setmetatable(
 	{
 		matches = {
-			["ScreenSelectMusic"] = "ScreenSelectMusic",
-			["ScreenSelectNumPlayers"] = "ScreenSelectStyle",
-			["ScreenSelectStyleWorkout"] = "ScreenSelectStyle",
 			["ScreenEvaluationNormal"] = "ScreenEvaluation",
 			["ScreenEvaluationRave"] = "ScreenEvaluation",
 			["ScreenEvaluationNonstop"] = "ScreenEvaluation",
@@ -13,9 +9,14 @@ local NameCase = setmetatable(
 			["ScreenEvaluationSummary"] = "ScreenEvaluation",
 			["ScreenEvaluationWorkout"] = "ScreenEvaluation",
 			["ScreenEvaluationCourseWorkout"] = "ScreenEvaluation",
-			["ScreenOptionsMapping"] = "null",
-			["ScreenSetBGFit"] = "null",
-			["ScreenOverscanConfig"] = "null"
+			["ScreenPlayerOptions"] = "ScreenPlayerOptions",
+			["ScreenPlayerOptionsRestricted"] = "ScreenPlayerOptions",
+			["ScreenSelectCourse"] = "ScreenSelectCourse",
+			["ScreenSelectMusic"] = "ScreenSelectMusic",
+			["ScreenSelectNumPlayers"] = "ScreenSelectStyle",
+			["ScreenSelectPlayMode"] = "ScreenSelectPlayMode",
+			["ScreenSelectStyle"] = "ScreenSelectStyle",
+			["ScreenSelectStyleWorkout"] = "ScreenSelectStyle"
 		}
 	},
 	{
@@ -23,7 +24,7 @@ local NameCase = setmetatable(
 			if this.matches[ item ] then
 				return this.matches[ item ]
 			end
-			return item
+			return "null"
 		end
 	}
 )
