@@ -48,3 +48,13 @@ function DifficultyToColor( dc )
 	if dc == 'Difficulty_Nightmare'		then return CustomDifficultyToColor("Challenge") end
 	return color("1,1,1,1")
 end
+
+function TapNoteScoreToColor( tns )
+	if tns == "TapNoteScore_W1"		then return color("#7BE8FF") end
+	if tns == "TapNoteScore_W2"		then return color("#FFA959") end
+	if tns == "TapNoteScore_W3"		then return color("#67FF19") end
+	if tns == "TapNoteScore_W4"		then return color("#D366FF") end
+	if tns == "TapNoteScore_W5"		then return color("#FF7149") end
+	if tns == "TapNoteScore_Miss"	then return color("#FF0808") end
+	return color("1,1,1,1")
+end
