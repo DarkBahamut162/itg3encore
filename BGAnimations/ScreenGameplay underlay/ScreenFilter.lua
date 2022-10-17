@@ -1,8 +1,8 @@
-local numPlayers = GAMESTATE:GetNumPlayersEnabled()
+if Var "LoadingScreen" == "ScreenDemonstration2" then return Def.ActorFrame{} end
 
+local numPlayers = GAMESTATE:GetNumPlayersEnabled()
 local padding = 4*2
 local arrowWidth = 64
-
 local filterColor = color("0.135,0.135,0.135,1")
 local filterAlphas = {
 	PlayerNumber_P1 = 1,
@@ -11,7 +11,6 @@ local filterAlphas = {
 }
 
 local t = Def.ActorFrame{}
-
 local style = GAMESTATE:GetCurrentStyle()
 local cols = style:ColumnsPerPlayer()
 local styleType = ToEnumShortString(style:GetStyleType())
