@@ -19,32 +19,28 @@ local TNSFrames = {
 	TapNoteScore_Miss = 5
 }
 
+local judgment = not GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentSteps(player):GetDifficulty() == 'Difficulty_Beginner' and "_beginner" or "_judgments"
+
 return Def.ActorFrame {
-	LoadActor("_judgments") .. {
+	LoadActor(judgment) .. {
 		Name="Judgment",
 		InitCommand=function(self) self:pause():visible(false) end,
 		ResetCommand=function(self) self:finishtweening():x(0):y(0):stopeffect():visible(false) end
 	},
-	InitCommand = function(self)
-		c = self:GetChildren()
-	end,
+	InitCommand = function(self) c = self:GetChildren() end,
 	JudgmentMessageCommand=function(self, param)
 		if param.Player ~= player then return end
 		if not param.TapNoteScore then return end
 		if param.HoldNoteScore then return end
 		local tns = param.TapNoteScore
-
 		local iNumStates = c.Judgment:GetNumStates()
 		local iFrame = TNSFrames[tns]
 		if not iFrame then return end
 		if iNumStates == 12 then
 			iFrame = iFrame * 2
-			if not param.Early then
-				iFrame = iFrame + 1
-			end
+			if not param.Early then iFrame = iFrame + 1 end
 		end
 		self:playcommand("Reset")
-
 		if tns == 'TapNoteScore_Miss' then
 			c.Judgment:rotationz(30 * StepEvenOdd(param.Player))
 		else
