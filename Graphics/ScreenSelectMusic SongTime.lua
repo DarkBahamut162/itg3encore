@@ -1,25 +1,29 @@
-return LoadFont("_r bold bevel numbers")..{
-	SetCommand=function(self)
-		local curSelection = nil
-		local length = 0.0
-		if GAMESTATE:IsCourseMode() then
-			curSelection = GAMESTATE:GetCurrentCourse()
-			if curSelection then
-				local trail = GAMESTATE:GetCurrentTrail(GAMESTATE:GetMasterPlayerNumber())
-				if trail then
-					length = TrailUtil.GetTotalSeconds(trail)
+return Def.ActorFrame{
+	LoadFont("titlemenu")..{
+		Text="Time:",
+		InitCommand=function(self) self:x(-103):zoom(1.05):halign(1) end
+	},
+	LoadFont("_r bold bevel numbers")..{
+		SetCommand=function(self)
+			local curSelection = nil
+			local length = 0.0
+			if GAMESTATE:IsCourseMode() then
+				curSelection = GAMESTATE:GetCurrentCourse()
+				if curSelection then
+					local trail = GAMESTATE:GetCurrentTrail(GAMESTATE:GetMasterPlayerNumber())
+					if trail then
+						length = TrailUtil.GetTotalSeconds(trail)
+					end
+				end
+			else
+				curSelection = GAMESTATE:GetCurrentSong()
+				if curSelection then
+					length = curSelection:MusicLengthSeconds()
 				end
 			end
-		else
-			curSelection = GAMESTATE:GetCurrentSong()
-			if curSelection then
-				length = curSelection:MusicLengthSeconds()
-			end
-		end
-		self:settext( SecondsToMMSSMsMs(length) )
-	end,
-	CurrentSongChangedMessageCommand=function(self) self:queuecommand("Set") end,
-	CurrentCourseChangedMessageCommand=function(self) self:queuecommand("Set") end,
-	CurrentTrailP1ChangedMessageCommand=function(self) self:queuecommand("Set") end,
-	CurrentTrailP2ChangedMessageCommand=function(self) self:queuecommand("Set") end
+			self:settext( SecondsToMMSSMsMs(length) )
+		end,
+		CurrentSongChangedMessageCommand=function(self) self:queuecommand("Set") end,
+		CurrentCourseChangedMessageCommand=function(self) self:queuecommand("Set") end
+	}
 }

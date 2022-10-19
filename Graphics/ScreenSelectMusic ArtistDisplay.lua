@@ -1,4 +1,8 @@
 return Def.ActorFrame{
+	LoadFont("_v 26px bold white")..{
+		Text="ARTIST:",
+		InitCommand=function(self) self:shadowlength(2.5):zoom(0.5):y(-17.5):halign(0) end
+	},
 	LoadFont("_r bold shadow 30px")..{
 		InitCommand=function(self) self:zoom(0.66):maxwidth(350):halign(0) end,
 		CurrentSongChangedMessageCommand=function(self) self:playcommand("Set") end,

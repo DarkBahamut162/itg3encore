@@ -1,4 +1,8 @@
 return Def.ActorFrame{
+	LoadFont("_v 26px bold white")..{
+		Text="BPM:",
+		InitCommand=function(self) self:shadowlength(2.5):zoom(0.5):y(-17.5):halign(1) end
+	},
 	Def.BPMDisplay{
 		Name="BPMDisplay",
 		Font="BPMDisplay bpm",
