@@ -21,8 +21,8 @@ return Def.ActorFrame {
 		end
 	end,
 	OnCommand=function(self)
-		self:playcommand("UpdateDiscordInfo")
-		if Var "LoadingScreen" == "ScreenGameplay" then
+		if Var "LoadingScreen" ~= "ScreenDemonstration2" then
+			self:playcommand("UpdateDiscordInfo")
 			for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
 				if (PREFSMAN:GetPreference("Center1Player") and GAMESTATE:GetNumPlayersEnabled() == 1) and
 				ToEnumShortString(GAMESTATE:GetCurrentStyle():GetStyleType()) == "OnePlayerOneSide" then
