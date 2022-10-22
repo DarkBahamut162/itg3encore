@@ -345,7 +345,7 @@ return Def.ActorFrame{
 		Def.ActorFrame{
 			Name="PaneDisplayP1",
 			InitCommand=function(self) self:x(SCREEN_LEFT+SCREEN_WIDTH/5.415):player(PLAYER_1) end,
-			LoadActor(THEME:GetPathG("_pane","icons")),
+			LoadActor(THEME:GetPathG("_pane","icons"),PLAYER_1),
 			LoadActor(THEME:GetPathG("_pane","fill"),PLAYER_1),
 			LoadActor(THEME:GetPathG("_pane","steps"),PLAYER_1),
 			LoadActor(THEME:GetPathG("_player","scores"),PLAYER_1)
@@ -353,7 +353,7 @@ return Def.ActorFrame{
 		Def.ActorFrame{
 			Name="PaneDisplayP2",
 			InitCommand=function(self) self:x(SCREEN_RIGHT-SCREEN_WIDTH/5.415):player(PLAYER_2) end,
-			LoadActor(THEME:GetPathG("_pane","icons")),
+			LoadActor(THEME:GetPathG("_pane","icons"),PLAYER_2),
 			LoadActor(THEME:GetPathG("_pane","fill"),PLAYER_2),
 			LoadActor(THEME:GetPathG("_pane","steps"),PLAYER_2),
 			LoadActor(THEME:GetPathG("_player","scores"),PLAYER_2)
