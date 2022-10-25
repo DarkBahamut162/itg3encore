@@ -64,13 +64,13 @@ return Def.ActorFrame{
 			OffCommand=function(self) self:accelerate(0.3):addx(-EvalTweenDistance()) end
 		},
 		LoadFont("_v 26px bold shadow")..{
-			Text="DECENT",
+			Text=GAMESTATE:GetCurrentSteps(PLAYER_1):GetDifficulty() == 'Difficulty_Beginner' and "TOO EARLY" or "DECENT",
 			InitCommand=function(self) self:x(SCREEN_CENTER_X-269):y(SCREEN_CENTER_Y-108+16.5*3):horizalign(left):addx(-EvalTweenDistance()) end,
 			OnCommand=function(self) self:zoomx(0.65):zoomy(0.5):diffusebottomedge(color("#BBB9FB")):sleep(3):decelerate(0.3):addx(EvalTweenDistance()) end,
 			OffCommand=function(self) self:accelerate(0.3):addx(-EvalTweenDistance()) end
 		},
 		LoadFont("_v 26px bold shadow")..{
-			Text="WAY OFF",
+			Text=GAMESTATE:GetCurrentSteps(PLAYER_1):GetDifficulty() == 'Difficulty_Beginner' and "WAY EARLY" or "WAY OFF",
 			InitCommand=function(self) self:x(SCREEN_CENTER_X-269):y(SCREEN_CENTER_Y-108+16.5*4):horizalign(left):addx(-EvalTweenDistance()) end,
 			OnCommand=function(self) self:zoomx(0.65):zoomy(0.5):diffusebottomedge(color("#BBB9FB")):sleep(3):decelerate(0.3):addx(EvalTweenDistance()) end,
 			OffCommand=function(self) self:accelerate(0.3):addx(-EvalTweenDistance()) end
@@ -138,13 +138,13 @@ return Def.ActorFrame{
 			OffCommand=function(self) self:accelerate(0.3):addx(EvalTweenDistance()) end
 		},
 		LoadFont("_v 26px bold shadow")..{
-			Text="DECENT",
+			Text=GAMESTATE:GetCurrentSteps(PLAYER_2):GetDifficulty() == 'Difficulty_Beginner' and "TOO EARLY" or "DECENT",
 			InitCommand=function(self) self:x(SCREEN_CENTER_X+93):y(SCREEN_CENTER_Y-108+16.5*3):horizalign(left):addx(EvalTweenDistance()) end,
 			OnCommand=function(self) self:zoomx(0.65):zoomy(0.5):diffusebottomedge(color("#BBB9FB")):sleep(3):decelerate(0.3):addx(-EvalTweenDistance()) end,
 			OffCommand=function(self) self:accelerate(0.3):addx(EvalTweenDistance()) end
 		},
 		LoadFont("_v 26px bold shadow")..{
-			Text="WAY OFF",
+			Text=GAMESTATE:GetCurrentSteps(PLAYER_2):GetDifficulty() == 'Difficulty_Beginner' and "WAY EARLY" or "WAY OFF",
 			InitCommand=function(self) self:x(SCREEN_CENTER_X+93):y(SCREEN_CENTER_Y-108+16.5*4):horizalign(left):addx(EvalTweenDistance()) end,
 			OnCommand=function(self) self:zoomx(0.65):zoomy(0.5):diffusebottomedge(color("#BBB9FB")):sleep(3):decelerate(0.3):addx(-EvalTweenDistance()) end,
 			OffCommand=function(self) self:accelerate(0.3):addx(EvalTweenDistance()) end

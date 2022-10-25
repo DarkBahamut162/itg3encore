@@ -24,7 +24,6 @@ return Def.ActorFrame{
 		end
 	},
 	LoadFont("_z bold gray 36px")..{
-		Text="",
 		CurrentSongChangedMessageCommand=function(self) self:playcommand("Set") end,
 		SetCommand=function(self)
 			local curStage = GAMESTATE:GetCurrentStage()
