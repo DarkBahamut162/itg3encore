@@ -109,9 +109,9 @@ return Def.ActorFrame{
 							end
 						end
 						if false then -- check on OutFox's LastSecondHint fix for wrong cache data
-							local totalsecond = GAMESTATE:GetCurrentSong():MusicLengthSeconds()
-							local firstsecond = GAMESTATE:GetCurrentSong():GetFirstSecond()
-							local lastsecond = GAMESTATE:GetCurrentSong():GetLastSecond()
+							local totalsecond = curSelection:MusicLengthSeconds()
+							local firstsecond = curSelection:GetFirstSecond()
+							local lastsecond = curSelection:GetLastSecond()
 							local difference = totalsecond - lastsecond
 							local trueFirstSecond = LoadFromCache(curStep,"TrueFirstSecond")
 							local trueLastSecond = LoadFromCache(curStep,"TrueLastSecond")
@@ -124,18 +124,18 @@ return Def.ActorFrame{
 						if false then --Calculate Difficulty
 							local totalSeconds = LoadFromCache(curStep,"TrueLastSecond") - LoadFromCache(curStep,"TrueFirstSecond")
 							local stepCounter,stepSum = getStepCounter(curStep),0
-							local avg_bps_OLD= GAMESTATE:GetCurrentSong():GetLastBeat() / GAMESTATE:GetCurrentSong():MusicLengthSeconds()
+							local avg_bps_OLD= curSelection:GetLastBeat() / curSelection:MusicLengthSeconds()
 							local avg_bps_NEW= LoadModule("Config.Load.lua")("TrueLastBeat",getStepCacheFile(curStep)) / totalSeconds
 							local stream_OLD = curStep:GetRadarValues(GAMESTATE:GetMasterPlayerNumber()):GetValue('RadarCategory_Stream')
-							local stream_NEW = stream_OLD * GAMESTATE:GetCurrentSong():MusicLengthSeconds() / totalSeconds
+							local stream_NEW = stream_OLD * curSelection:MusicLengthSeconds() / totalSeconds
 							local voltage_OLD = curStep:GetRadarValues(GAMESTATE:GetMasterPlayerNumber()):GetValue('RadarCategory_Voltage')
 							local voltage_NEW = voltage_OLD / avg_bps_OLD * avg_bps_NEW
 							local air_OLD = curStep:GetRadarValues(GAMESTATE:GetMasterPlayerNumber()):GetValue('RadarCategory_Air')
-							local air_NEW = air_OLD * GAMESTATE:GetCurrentSong():MusicLengthSeconds() / totalSeconds
+							local air_NEW = air_OLD * curSelection:MusicLengthSeconds() / totalSeconds
 							local freeze_OLD = curStep:GetRadarValues(GAMESTATE:GetMasterPlayerNumber()):GetValue('RadarCategory_Freeze')
-							local freeze_NEW = freeze_OLD * GAMESTATE:GetCurrentSong():MusicLengthSeconds() / totalSeconds
+							local freeze_NEW = freeze_OLD * curSelection:MusicLengthSeconds() / totalSeconds
 							local chaos_OLD = curStep:GetRadarValues(GAMESTATE:GetMasterPlayerNumber()):GetValue('RadarCategory_Chaos')
-							local chaos_NEW = chaos_OLD * GAMESTATE:GetCurrentSong():MusicLengthSeconds() / totalSeconds
+							local chaos_NEW = chaos_OLD * curSelection:MusicLengthSeconds() / totalSeconds
 							for i=1,#stepCounter do if stepCounter[i] then stepSum = stepSum + stepCounter[i] end end
 							stepSum = math.round( ( stepSum / totalSeconds ) * (#stepCounter/2) )
 
