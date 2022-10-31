@@ -290,14 +290,9 @@ function GetMinSecondsToStep()
 	local firstSec, firstBeat = 1.55, 999
 	local firstBpm, offset = 60, 0
 	local BGCHANGES = GetSMParameter(song,"BGCHANGES")
-	local FGCHANGES = GetSMParameter(song,"FGCHANGES")
 	local firstOffset = 0
 	if #BGCHANGES > 0 then
 		firstOffset = tonumber(split('=', split(',', BGCHANGES)[1])[1])
-		if firstOffset < firstBeat then firstBeat = firstOffset end
-	end
-	if #FGCHANGES > 0 then
-		firstOffset = tonumber(split('=', split(',', FGCHANGES)[1])[1])
 		if firstOffset < firstBeat then firstBeat = firstOffset end
 	end
 	local BPMS = GetSMParameter(song,"BPMS")
