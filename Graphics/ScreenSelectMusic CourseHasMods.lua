@@ -67,7 +67,7 @@ return Def.ActorFrame{
 
 									if lastSet then
 										duration = (currentSet[1]-lastSet[1]) / lastSet[2] * 60
-										if math.abs(lastSet[2]/currentSet[2]) >= 0.98 and math.abs(lastSet[2]/currentSet[2]) <= 1.02 then
+										if math.abs(1-lastSet[2]/currentSet[2]) <= 0.02 then
 											duration = duration + lastDuration
 											if truebpms[1] <= currentSet[2] and truebpms[2] >= currentSet[2] then
 												if fastestBPM < currentSet[2] then fastestBPM = currentSet[2] end
@@ -78,30 +78,23 @@ return Def.ActorFrame{
 												if fastestBPM < lastSet[2] then fastestBPM = lastSet[2] end
 											end
 											if truebpms[1] <= currentSet[2] and truebpms[2] >= currentSet[2] then
-												if math.abs(lastSet[2]/currentSet[2]) >= 0.98 and math.abs(lastSet[2]/currentSet[2]) <= 1.02 then
+												if math.abs(1-lastSet[2]/currentSet[2]) <= 0.02 then
 													if fastestBPM < currentSet[2] then fastestBPM = currentSet[2] end
 												end
 											end
 										end
 									end
-									lastSet = currentSet
-									lastDuration = duration
+									lastSet, lastDuration = currentSet, duration
 								end
 
 								duration = (curSelection:GetLastBeat()-lastSet[1]) / lastSet[2] * 60
-								if math.abs(lastSet[2]/currentSet[2]) >= 0.98 and math.abs(lastSet[2]/currentSet[2]) <= 1.02 then
-									--duration = duration + lastDuration
-								end
+								--if math.abs(1-lastSet[2]/currentSet[2]) <= 0.02 then duration = duration + lastDuration end
 								if duration >= 4 then
 									if truebpms[1] <= lastSet[2] and truebpms[2] >= lastSet[2] then
 										if fastestBPM < lastSet[2] then fastestBPM = lastSet[2] end
 									end
 								end
-
-								if math.abs(fastestBPM/truebpms[2]) >= 0.96 and math.abs(fastestBPM/truebpms[2]) <= 1.04 then
-									fastestBPM = truebpms[2]
-								end
-
+								if math.abs(1-fastestBPM/truebpms[2]) <= 0.04 then fastestBPM = truebpms[2] end
 								if fastestBPM == truebpms[1] then
 									if truebpms[1] ~= truebpms[2] then
 										if text ~= "" then text = text.."\n" end text = text .. "BPM: "..truebpms[1] .. " (" .. truebpms[2] .. ")"
