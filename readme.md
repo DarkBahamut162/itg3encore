@@ -41,6 +41,7 @@ What has been fixed so far:
 * Removed **D-Pad** Modifier since it breaks other Modifiers (like the new SpeedMod)
 * Better and sorted **ScreenPlayerOptions**
 * Added **MOD** & **BPM range** within **Name Badges** inside **ScreenPlayerOptions**
+* Added **TimingData** Display next to **_panes**
 * Better **StatsDisplay/ShowStats** going from a range of 1-6 instead of just 3
   * Added option for a fully functional IIDX pacemaker with selectable target meter
     * For 2 Player VS, both players need to choose IIDX
@@ -48,6 +49,8 @@ What has been fixed so far:
   * Fixed/Better **Song List**
   * Displays **_panes** & **StepArtists** and correctly calculate their difficulty color
   * Fixed **LifeMeterBar/LifeMeterTime** *(except for Marathon Mode?)*
+  * Added **LifeMeterBattery** for Courses with Lives
+    * Looks and functions similar to **Pump It Up Pro 2**
   * Re-Added stuff in **Course Mode**
     * **Song Time** & **HAS MODS**
       * Introduced **HAS LUA**
@@ -65,8 +68,9 @@ The following has been re-introduced from OpenITG's ITG3Encore Theme:
 * **CustomMods** and **ScreenFilter**
 * **Encore "Folders"**
 * **OptionsList** *(Mostly functional)*
-* **Fitness/Workout Mode** *(Singleplay only)*
+* **Fitness/Workout Mode** *(1 Player only)*
 
 
 Stuff still needs to get fixed, even if the fixed and re-introduced list/code are quite long/big.
+
 Also: This Theme has been optimized for **Project OutFox**! It might work incorrectly when used in StepMania 5!
