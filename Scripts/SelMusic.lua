@@ -296,10 +296,10 @@ function GetMinSecondsToStep()
 		if firstOffset < firstBeat then firstBeat = firstOffset end
 	end
 	local BPMS = GetSMParameter(song,"BPMS")
-	if #BPMS > 0 then firstBpm = tonumber(split('=', split(',', BPMS)[1])[2]) end
+	if #BPMS > 0 then firstBpm = split('=', split(',', BPMS)[1])[2] end
 	local OFFSET = GetSMParameter(song,"OFFSET")
-	if #OFFSET > 0 then offset = tonumber(OFFSET) end
-	if firstBeat < 999 then firstSec = math.max(firstBeat * 60 / firstBpm, -1) end
+	if #OFFSET > 0 then offset = OFFSET end
+	if firstBeat < 999 then firstSec = firstBeat * 60 / firstBpm end
 	firstSec = song:GetFirstSecond() - firstSec + offset + 0.05
 	return math.max(firstSec, 1.55)
 end
