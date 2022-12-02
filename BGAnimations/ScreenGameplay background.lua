@@ -3,7 +3,7 @@ return Def.ActorFrame {
 	UpdateDiscordInfoCommand=function()
 		local player = GAMESTATE:GetMasterPlayerNumber()
 		if GAMESTATE:GetCurrentSong() then
-			local title = PREFSMAN:GetPreference("ShowNativeLanguage") and GAMESTATE:GetCurrentSong():GetDisplayMainTitle() or GAMESTATE:GetCurrentSong():GetTranslitFullTitle()
+			local title = PREFSMAN:GetPreference("ShowNativeLanguage") and GAMESTATE:GetCurrentSong():GetDisplayFullTitle() or GAMESTATE:GetCurrentSong():GetTranslitFullTitle()
 			local songname = title .. " - " .. GAMESTATE:GetCurrentSong():GetGroupName()
 			local state = GAMESTATE:IsDemonstration() and "Watching Song" or "Playing Song"
 			GAMESTATE:UpdateDiscordProfile(GAMESTATE:GetPlayerDisplayName(player))
