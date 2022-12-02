@@ -4,13 +4,17 @@ return Def.ActorFrame{
 		local SongOrCourse = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentCourse() or GAMESTATE:GetCurrentSong()
 		local StepOrTrails = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentTrail(player) or GAMESTATE:GetCurrentSteps(player)
 		if GAMESTATE:GetCurrentSong() then
-			local details = GAMESTATE:IsCourseMode() and SongOrCourse:GetTranslitFullTitle() or (PREFSMAN:GetPreference("ShowNativeLanguage") and SongOrCourse:GetDisplayMainTitle() or SongOrCourse:GetTranslitFullTitle() .. " - " .. GAMESTATE:GetCurrentSong():GetGroupName())
-			details = string.len(details) < 128 and details or string.sub(details, 1, 124) .. "..."
+			local lengthFull = string.len(GAMESTATE:GetCurrentSong():GetDisplayFullTitle()) + 3 + string.len(GAMESTATE:GetCurrentSong():GetGroupName())
+			local lengthMain = string.len(GAMESTATE:GetCurrentSong():GetDisplayMainTitle()) + 3 + string.len(GAMESTATE:GetCurrentSong():GetGroupName())
+			local title = lengthFull < 128 and GAMESTATE:GetCurrentSong():GetDisplayFullTitle() or
+						--string.sub(GAMESTATE:GetCurrentSong():GetDisplayFullTitle(),1,122-string.len(GAMESTATE:GetCurrentSong():GetGroupName())) .. "..."
+						lengthMain < 128 and GAMESTATE:GetCurrentSong():GetDisplayMainTitle() or string.sub(GAMESTATE:GetCurrentSong():GetDisplayMainTitle(),1,122-string.len(GAMESTATE:GetCurrentSong():GetGroupName())) .. "..."
+			local songname = title .. " - " .. GAMESTATE:GetCurrentSong():GetGroupName()
 			local Difficulty = ToEnumShortString( StepOrTrails:GetDifficulty() ) .. " " .. StepOrTrails:GetMeter()
 			local Percentage = STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetPercentDancePoints()
 			local states = Difficulty .. " (".. string.format( "%.2f%%", Percentage*100) .. ")"
 			GAMESTATE:UpdateDiscordProfile(GAMESTATE:GetPlayerDisplayName(player))
-			GAMESTATE:UpdateDiscordScreenInfo(details,states,1)
+			GAMESTATE:UpdateDiscordScreenInfo(songname,states,1)
 		end
 	end,
 	LoadActor(THEME:GetPathB("ScreenWithMenuElements","underlay/_base"))..{
