@@ -187,7 +187,6 @@ function cacheStep(Step)
 	local shockArrows = ""
 	local arrows = GAMESTATE:GetCurrentStyle():ColumnsPerPlayer()
 	local temp = ""
-	local lastSecondHint = GetSMParameter(GAMESTATE:GetCurrentSong(),"LASTSECONDHINT")
 
 	for k,v in pairs( GAMESTATE:GetCurrentSong():GetAllSteps() ) do
 		if v == Step then
@@ -202,10 +201,6 @@ function cacheStep(Step)
 	end
 
 	noteCounter = split(",",temp)
-
-	if lastSecondHint ~= "" then
-		lastBeat = Step:GetTimingData():GetBeatFromElapsedTime(lastSecondHint)
-	end
 
 	local timingData = Step:GetTimingData()
 	local warps = timingData:GetWarps()
@@ -241,9 +236,9 @@ function cacheStep(Step)
 		if not ignore then
 			if allowednotes[ v[3] ] then
 				if v["length"] then
-					if currentBeat + v["length"] > lastBeat and lastSecondHint == "" then lastBeat = currentBeat + v["length"] end
+					if currentBeat + v["length"] > lastBeat then lastBeat = currentBeat + v["length"] end
 				else
-					if currentBeat > lastBeat and lastSecondHint == "" then lastBeat = currentBeat end
+					if currentBeat > lastBeat then lastBeat = currentBeat end
 				end
 				if currentBeat < firstBeat then firstBeat = currentBeat end
 				currentNotes = currentNotes + 1
