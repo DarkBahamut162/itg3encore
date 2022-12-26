@@ -1,7 +1,7 @@
 local t = LoadFallbackB()
 
 if ShowStandardDecoration("StepsDisplay") then
-	for pn in ivalues(PlayerNumber) do
+	for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
 		if (GAMESTATE:IsPlayerEnabled(pn) or isRave()) and Var "LoadingScreen" ~= "ScreenEvaluationSummary" then
 			local t2 = Def.ActorFrame{
 				InitCommand=function(self) self:player(pn) end,
@@ -31,7 +31,7 @@ if ShowStandardDecoration("StepsDisplay") then
 	end
 end
 
-for pn in ivalues(PlayerNumber) do
+for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
 	if GAMESTATE:IsPlayerEnabled(pn) then
 		t[#t+1] = LoadActor(THEME:GetPathG(Var "LoadingScreen", "MachineRecord"), pn ) .. {
 			InitCommand=function(self)
@@ -42,7 +42,7 @@ for pn in ivalues(PlayerNumber) do
 	end
 end
 
-for pn in ivalues(PlayerNumber) do
+for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
 	if GAMESTATE:IsPlayerEnabled(pn) then
 		t[#t+1] = LoadActor(THEME:GetPathG(Var "LoadingScreen", "PersonalRecord"), pn)..{
 			InitCommand=function(self)
@@ -66,7 +66,7 @@ local function GraphDisplay(pn)
 end
 
 if ShowStandardDecoration("GraphDisplay") then
-	for pn in ivalues(PlayerNumber) do
+	for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
 		if GAMESTATE:IsPlayerEnabled(pn) then
 			t[#t+1] = StandardDecorationFromTable("GraphDisplay"..ToEnumShortString(pn), GraphDisplay(pn))
 		end
@@ -86,7 +86,7 @@ local function ComboGraph( pn )
 end
 
 if ShowStandardDecoration("ComboGraph") then
-	for pn in ivalues(PlayerNumber) do
+	for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
 		if GAMESTATE:IsPlayerEnabled(pn) then
 			t[#t+1] = StandardDecorationFromTable("ComboGraph"..ToEnumShortString(pn), ComboGraph(pn))
 		end
@@ -102,7 +102,7 @@ local function StageAward( pn )
 end
 
 if ShowStandardDecoration("StageAward") then
-	for pn in ivalues(PlayerNumber) do
+	for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
 		if GAMESTATE:IsPlayerEnabled(pn) then
 			t[#t+1] = StandardDecorationFromTable("StageAward"..ToEnumShortString(pn), StageAward(pn))
 		end
@@ -118,7 +118,7 @@ local function PeakComboAward( pn )
 end
 
 if ShowStandardDecoration("PeakComboAward") then
-	for pn in ivalues(PlayerNumber) do
+	for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
 		if GAMESTATE:IsPlayerEnabled(pn) then
 			t[#t+1] = StandardDecorationFromTable("PeakComboAward"..ToEnumShortString(pn), PeakComboAward(pn))
 		end
