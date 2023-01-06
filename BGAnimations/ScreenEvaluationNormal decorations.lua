@@ -39,14 +39,15 @@ for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
 				ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen")
 			end
 		}
-	end
-end
-
-for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
-	if GAMESTATE:IsPlayerEnabled(pn) then
 		t[#t+1] = LoadActor(THEME:GetPathG(Var "LoadingScreen", "PersonalRecord"), pn)..{
 			InitCommand=function(self)
 				self:player(pn):name("PersonalRecord" .. PlayerNumberToString(pn))
+				ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen")
+			end
+		}
+		t[#t+1] = LoadActor(THEME:GetPathG(Var "LoadingScreen", "PacemakerRecord"), pn)..{
+			InitCommand=function(self)
+				self:player(pn):name("PacemakerRecord" .. PlayerNumberToString(pn))
 				ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen")
 			end
 		}
