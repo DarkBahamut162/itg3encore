@@ -1,3 +1,35 @@
+function ChoiceSingle()
+	if IsGame("be-mu") then
+		return "single7"
+	elseif IsGame("po-mu") then
+		return "po-mu-nine"
+	else
+		return "single"
+	end
+end
+
+function ChoiceVersus()
+	if IsGame("be-mu") then
+		return "versus7"
+	elseif IsGame("po-mu") then
+		return "po-mu-nine-versus"
+	else
+		return "versus"
+	end
+end
+
+function ChoiceDouble()
+	if IsGame("be-mu") then
+		return "double7"
+	elseif IsGame("po-mu") then
+		return "po-mu-nine-double"
+	elseif IsGame("smx") then
+		return "double10"
+	else
+		return "double"
+	end
+end
+
 function SongMods()
 	local pm = GAMESTATE:GetPlayMode()
 	local style = GAMESTATE:GetCurrentStyle()

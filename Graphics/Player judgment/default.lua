@@ -32,6 +32,9 @@ return Def.ActorFrame {
 		if param.Player ~= player then return end
 		if not param.TapNoteScore then return end
 		if param.HoldNoteScore then return end
+		if self:GetName() ~= "Judgment" then
+			if param.FirstTrack ~= tonumber(ToEnumShortString(self:GetName())) then return end
+		end
 		local tns = param.TapNoteScore
 		local iNumStates = c.Judgment:GetNumStates()
 		local iFrame = TNSFrames[tns]

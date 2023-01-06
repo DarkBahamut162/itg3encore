@@ -1,8 +1,6 @@
 if Var "LoadingScreen" == "ScreenDemonstration2" then return Def.ActorFrame{} end
 
 local numPlayers = GAMESTATE:GetNumPlayersEnabled()
-local padding = 4*2
-local arrowWidth = 64
 local filterColor = color("0.135,0.135,0.135,1")
 local filterAlphas = {
 	PlayerNumber_P1 = 1,
@@ -12,9 +10,7 @@ local filterAlphas = {
 
 local t = Def.ActorFrame{}
 local style = GAMESTATE:GetCurrentStyle()
-local cols = style:ColumnsPerPlayer()
 local styleType = ToEnumShortString(style:GetStyleType())
-local filterWidth = (arrowWidth * cols)
 
 if numPlayers == 1 then
 	local player = GAMESTATE:GetMasterPlayerNumber()
@@ -23,8 +19,21 @@ if numPlayers == 1 then
 
 	local mlevel = GAMESTATE:IsCourseMode() and "ModsLevel_Stage" or "ModsLevel_Preferred"
 	local currentMini = 1-math.round(GAMESTATE:GetPlayerState(player):GetPlayerOptions(mlevel):Mini()*50) / 100
-	filterWidth = (filterWidth + padding) * currentMini
+	local filterWidth = GAMESTATE:GetStyleFieldSize(pNum-1) * currentMini
 
+	if string.find(style:GetName(),"double") then
+		if IsGame("be-mu") then
+			filterWidth = filterWidth * 1.8
+		elseif IsGame("pump") then
+			filterWidth = filterWidth * 1.35
+		elseif IsGame("smx") then
+			filterWidth = filterWidth * 1.45
+		elseif IsGame("po-mu") then
+			filterWidth = filterWidth * 1.65
+		else
+			filterWidth = filterWidth * 1.4
+		end
+	end
 	if getenv("EffectVibrateP"..pNum) then
 		filterWidth = filterWidth + (30 * currentMini)
 	end
@@ -77,7 +86,7 @@ else
 
 		local mlevel = GAMESTATE:IsCourseMode() and "ModsLevel_Stage" or "ModsLevel_Preferred"
 		local currentMini = 1-math.round(GAMESTATE:GetPlayerState(player):GetPlayerOptions(mlevel):Mini()*50) / 100
-		filterWidth = (filterWidth + padding) * currentMini
+		localfilterWidth = GAMESTATE:GetStyleFieldSize(pNum-1) * currentMini
 
 		if getenv("EffectVibrateP"..pNum) then
 			filterWidth = filterWidth + (30 * currentMini)
@@ -119,13 +128,12 @@ else
 		}
 	else
 		for i, player in ipairs(PlayerNumber) do
-			local filterWidth = (arrowWidth * cols)
 			local pNum = (player == PLAYER_1) and 1 or 2
 			filterAlphas[player] = tonumber(getenv("ScreenFilterP"..pNum))
 
 			local mlevel = GAMESTATE:IsCourseMode() and "ModsLevel_Stage" or "ModsLevel_Preferred"
 			local currentMini = 1-math.round(GAMESTATE:GetPlayerState(player):GetPlayerOptions(mlevel):Mini()*50) / 100
-			filterWidth = (filterWidth + padding) * currentMini
+			local filterWidth = GAMESTATE:GetStyleFieldSize(pNum-1) * currentMini
 
 			if getenv("EffectVibrateP"..pNum) then
 				filterWidth = filterWidth + (30 * currentMini)
