@@ -68,9 +68,14 @@ return Def.ActorFrame{
 		Name="JudgePane",
 		BeginCommand=function(self) self:visible(GAMESTATE:IsHumanPlayer(pn)) end,
 		OnCommand=function(self)
-			self:x(startX+(getenv("RotationSolo"..ToEnumShortString(pn)) and 64 or 0))
-			:y(getenv("RotationSolo"..ToEnumShortString(pn)) and 34 or 0)
-			:zoom(getenv("RotationSolo"..ToEnumShortString(pn)) and .75 or 1)
+			if IsGame("be-mu") then
+				self:x(startX+(getenv("RotationSolo"..ToEnumShortString(pn)) and 78 or 0))
+				self:y(getenv("RotationSolo"..ToEnumShortString(pn)) and SCREEN_HEIGHT/6 or 0)
+			else
+				self:x(startX+(getenv("RotationSolo"..ToEnumShortString(pn)) and 64 or 0))
+				self:y(getenv("RotationSolo"..ToEnumShortString(pn)) and 34 or 0)
+			end
+			self:zoom(getenv("RotationSolo"..ToEnumShortString(pn)) and .75 or 1)
 			:addx(GAMESTATE:GetMasterPlayerNumber() == PLAYER_1 and SCREEN_WIDTH/2 or -SCREEN_WIDTH/2)
 			:decelerate(1)
 			:addx(GAMESTATE:GetMasterPlayerNumber() == PLAYER_1 and -SCREEN_WIDTH/2 or SCREEN_WIDTH/2)

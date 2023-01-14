@@ -25,7 +25,7 @@ return Def.ActorFrame {
 	LoadActor(judgment) .. {
 		Name="Judgment",
 		InitCommand=function(self) self:pause():visible(false) end,
-		ResetCommand=function(self) self:finishtweening():x(0):y(0):stopeffect():visible(false) end
+		ResetCommand=function(self) self:finishtweening():x(0):y(IsGame("po-mu") and -45 or 0):stopeffect():visible(false) end
 	},
 	InitCommand = function(self) c = self:GetChildren() end,
 	JudgmentMessageCommand=function(self, param)
@@ -45,9 +45,9 @@ return Def.ActorFrame {
 		end
 		self:playcommand("Reset")
 		if tns == 'TapNoteScore_Miss' then
-			c.Judgment:rotationz(30 * StepEvenOdd(param.Player))
+			c.Judgment:rotationz(IsGame("po-mu") and -90 or 0 + (30 * StepEvenOdd(param.Player)))
 		else
-			c.Judgment:rotationz(math.min(math.abs(param.TapNoteOffset), PREFSMAN:GetPreference("TimingWindowSecondsW5")) * 10 / PREFSMAN:GetPreference("TimingWindowSecondsW5") * StepEvenOdd(param.Player))
+			c.Judgment:rotationz(IsGame("po-mu") and -90 or 0 + math.min(math.abs(param.TapNoteOffset), PREFSMAN:GetPreference("TimingWindowSecondsW5")) * 10 / PREFSMAN:GetPreference("TimingWindowSecondsW5") * StepEvenOdd(param.Player))
 		end
 		JudgeCmds[param.TapNoteScore](c.Judgment)
 		c.Judgment:setstate( iFrame )
