@@ -71,6 +71,9 @@ return Def.ActorFrame{
 			if IsGame("be-mu") then
 				self:x(startX+(getenv("RotationSolo"..ToEnumShortString(pn)) and 78 or 0))
 				self:y(getenv("RotationSolo"..ToEnumShortString(pn)) and SCREEN_HEIGHT/6 or 0)
+			elseif IsGame("po-mu") then
+				self:x(startX+(getenv("RotationSolo"..ToEnumShortString(pn)) and 72 or 0))
+				self:y(getenv("RotationSolo"..ToEnumShortString(pn)) and SCREEN_HEIGHT/6 or 0)
 			else
 				self:x(startX+(getenv("RotationSolo"..ToEnumShortString(pn)) and 64 or 0))
 				self:y(getenv("RotationSolo"..ToEnumShortString(pn)) and 34 or 0)

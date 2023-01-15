@@ -30,7 +30,16 @@ if getenv("ShowStatsP1") == nil or getenv("ShowStatsP2") == nil then return Def.
 		end
 	end
 
-	local t = Def.ActorFrame{ OnCommand=function(self) self:Center() if IsGame("be-mu") then self:zoomx(0.66) end end }
+	local t = Def.ActorFrame{
+		OnCommand=function(self)
+			self:Center()
+			if IsGame("be-mu") then
+				self:zoomx(0.66)
+			elseif IsGame("po-mu") then
+				self:zoomx(0.77)
+			end
+		end
+	}
 
 	if not isRave() and not IIDX then
 		for pn in ivalues(GAMESTATE:GetEnabledPlayers()) do
