@@ -64,7 +64,7 @@ function GetScreenSelectMusicHelpText()
 		end
 	end
 
-	if GAMESTATE:GetEnv("Workout") and IsHomeMode() then
+	if GAMESTATE:GetEnv("Workout") and IsHome() then
 		ret = ret .. "::" .. THEME:GetString( "ScreenSelectMusic", "WorkoutHelpTextAppend" )
 	end
 
@@ -345,14 +345,14 @@ function GetConvertDifficulty(Step)
 	tapspoint=math.round(tapspoint*52/songLength/5)
 	tapspoint=tapspoint*1.2
 	if songLength>300 then
-		tapspoint=tapspoint*1.14;
+		tapspoint=tapspoint*1.14
 	elseif songLength>150 then
-		tapspoint=tapspoint*1.09;
+		tapspoint=tapspoint*1.09
 	elseif songLength>120 then
-		tapspoint=tapspoint*1.05;
+		tapspoint=tapspoint*1.05
 	elseif songLength>100 then
-		tapspoint=tapspoint*1.02;
-	end;
+		tapspoint=tapspoint*1.02
+	end
 	--if songLength>60 then tapspoint=tapspoint*(1+((songLength-60)/30)*0.025) end
 	if tapspoint>=#tapsp2lv100*1.98 then
 		tapspoint=#tapsp2lv100
