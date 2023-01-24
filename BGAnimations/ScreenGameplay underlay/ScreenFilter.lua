@@ -1,4 +1,4 @@
-if Var "LoadingScreen" == "ScreenDemonstration2" then return Def.ActorFrame{} end
+if Var "LoadingScreen" == "ScreenDemonstration2" or Var "LoadingScreen" == "ScreenDemonstration" then return Def.ActorFrame{} end
 
 local numPlayers = GAMESTATE:GetNumPlayersEnabled()
 local filterColor = color("0.135,0.135,0.135,1")
