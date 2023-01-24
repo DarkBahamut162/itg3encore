@@ -79,7 +79,7 @@ return Def.ActorFrame{
 		Name="Holds",
 		InitCommand=function(self) self:x(-102+100):y(125+17):valign(1):zoomto(24,0):diffusealpha(0):blend(Blend.Add) end,
 		BeginCommand=function(self) self:stoptweening():playcommand("Set") end,
-		OnCommand=function(self) self:sleep(0.3):decelerate(0.1):diffusealpha(0.5) end,
+		OnCommand=function(self) self:sleep(0.4):decelerate(0.1):diffusealpha(0.5) end,
 		SetCommand=function(self)
 			local yZoom = 0
 			local numSongs = 1
@@ -131,7 +131,7 @@ return Def.ActorFrame{
 		Name="Mines",
 		InitCommand=function(self) self:x(-77+100):y(125+17):valign(1):zoomto(24,0):diffusealpha(0):blend(Blend.Add) end,
 		BeginCommand=function(self) self:stoptweening():playcommand("Set") end,
-		OnCommand=function(self) self:sleep(0.3):decelerate(0.1):diffusealpha(0.5) end,
+		OnCommand=function(self) self:sleep(0.5):decelerate(0.1):diffusealpha(0.5) end,
 		SetCommand=function(self)
 			local yZoom = 0
 			local numSongs = 1
@@ -183,7 +183,7 @@ return Def.ActorFrame{
 		Name="Hands",
 		InitCommand=function(self) self:x(-52+100):y(125+17):valign(1):zoomto(24,0):diffusealpha(0):blend(Blend.Add) end,
 		BeginCommand=function(self) self:stoptweening():playcommand("Set") end,
-		OnCommand=function(self) self:sleep(0.3):decelerate(0.1):diffusealpha(0.5) end,
+		OnCommand=function(self) self:sleep(0.6):decelerate(0.1):diffusealpha(0.5) end,
 		SetCommand=function(self)
 			local yZoom = 0
 			local numSongs = 1
@@ -235,7 +235,7 @@ return Def.ActorFrame{
 		Name="Rolls",
 		InitCommand=function(self) self:x(-27+100):y(125+17):valign(1):zoomto(24,0):diffusealpha(0):blend(Blend.Add) end,
 		BeginCommand=function(self) self:stoptweening():playcommand("Set") end,
-		OnCommand=function(self) self:sleep(0.3):decelerate(0.1):diffusealpha(0.5) end,
+		OnCommand=function(self) self:sleep(0.7):decelerate(0.1):diffusealpha(0.5) end,
 		SetCommand=function(self)
 			local yZoom = 0
 			local numSongs = 1
