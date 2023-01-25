@@ -71,6 +71,11 @@ return Def.ActorFrame{
 				mine = rv:GetValue('RadarCategory_Mines') > 0
 				hand = rv:GetValue('RadarCategory_Hands') > 0
 				roll = rv:GetValue('RadarCategory_Rolls') > 0
+				stream = rv:GetValue('RadarCategory_Stream')
+				voltage = rv:GetValue('RadarCategory_Voltage')
+				air = rv:GetValue('RadarCategory_Air')
+				freeze = rv:GetValue('RadarCategory_Freeze')
+				chaos = rv:GetValue('RadarCategory_Chaos')
 			end
 		end
 		self:RunCommandsOnChildren(function(self) self:playcommand("Set") end)
