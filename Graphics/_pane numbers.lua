@@ -42,8 +42,7 @@ return Def.ActorFrame{
 			if song then
 				local steps = GAMESTATE:GetCurrentSteps(player)
 				if steps then
-					local rv = steps:GetRadarValues(player)
-					num = rv:GetValue('RadarCategory_Jumps')
+					num = steps:GetRadarValues(player):GetValue('RadarCategory_Jumps')
 				end
 			elseif course then
 				local trail = GAMESTATE:GetCurrentTrail(player)
@@ -97,8 +96,7 @@ return Def.ActorFrame{
 			if song then
 				local steps = GAMESTATE:GetCurrentSteps(player)
 				if steps then
-					local rv = steps:GetRadarValues(player)
-					num = rv:GetValue('RadarCategory_Holds')
+					num = steps:GetRadarValues(player):GetValue('RadarCategory_Holds')
 				end
 			elseif course then
 				local trail = GAMESTATE:GetCurrentTrail(player)
@@ -152,8 +150,7 @@ return Def.ActorFrame{
 			if song then
 				local steps = GAMESTATE:GetCurrentSteps(player)
 				if steps then
-					local rv = steps:GetRadarValues(player)
-					num = rv:GetValue('RadarCategory_Mines')
+					num = steps:GetRadarValues(player):GetValue('RadarCategory_Mines')
 				end
 			elseif course then
 				local trail = GAMESTATE:GetCurrentTrail(player)
@@ -207,8 +204,7 @@ return Def.ActorFrame{
 			if song then
 				local steps = GAMESTATE:GetCurrentSteps(player)
 				if steps then
-					local rv = steps:GetRadarValues(player)
-					num = rv:GetValue('RadarCategory_Hands')
+					num = steps:GetRadarValues(player):GetValue('RadarCategory_Hands')
 				end
 			elseif course then
 				local trail = GAMESTATE:GetCurrentTrail(player)
@@ -262,8 +258,7 @@ return Def.ActorFrame{
 			if song then
 				local steps = GAMESTATE:GetCurrentSteps(player)
 				if steps then
-					local rv = steps:GetRadarValues(player)
-					num = rv:GetValue('RadarCategory_Rolls')
+					num = steps:GetRadarValues(player):GetValue('RadarCategory_Rolls')
 				end
 			elseif course then
 				local trail = GAMESTATE:GetCurrentTrail(player)

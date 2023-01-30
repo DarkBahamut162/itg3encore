@@ -50,6 +50,7 @@ return Def.ActorFrame{
 		OffCommand=function(self) self:linear(0.4):diffusealpha(0) end,
 		SetCommand=function(self)
 			local val = 0
+			local add = ""
 			local song = GAMESTATE:GetCurrentSong()
 			local course = GAMESTATE:GetCurrentCourse()
 			local numSongs = 1
@@ -57,8 +58,8 @@ return Def.ActorFrame{
 				if song then
 					local steps = GAMESTATE:GetCurrentSteps(player)
 					if steps then
-						local rv = steps:GetRadarValues(player)
-						val = rv:GetValue('RadarCategory_TapsAndHolds')
+						val = steps:GetRadarValues(player):GetValue('RadarCategory_TapsAndHolds')
+						if steps:GetRadarValues(player):GetValue('RadarCategory_Fakes') > 0 then add = "?" end
 					else
 						val = 0
 					end
@@ -66,6 +67,7 @@ return Def.ActorFrame{
 					local trail = GAMESTATE:GetCurrentTrail(player)
 					if trail then
 						val = trail:GetRadarValues(player):GetValue('RadarCategory_TapsAndHolds')
+						if trail:GetRadarValues(player):GetValue('RadarCategory_Fakes') > 0 then add = "?" end
 						numSongs = TrailUtil.GetNumSongs(trail)
 					else
 						val = 0
@@ -107,7 +109,7 @@ return Def.ActorFrame{
 				self:diffusebottomedge(color("#ffffff"))
 				val = "?"
 			end
-			self:settext(val)
+			self:settext(val..add)
 			self:maxwidth(150)
 		end,
 		CurrentSongChangedMessageCommand=function(self) self:playcommand("Set") end,
