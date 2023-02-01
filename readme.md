@@ -1,9 +1,16 @@
-# In The Groove 3 Encore
-![In The Groove 3 Encore](https://user-images.githubusercontent.com/83576877/176179247-61a15786-5992-4a2e-ba08-4eec7ed4613f.png)
+# In The Groove 3 Encore X Final Theme
+![In The Groove 3 Encore X Final Theme](https://user-images.githubusercontent.com/83576877/215728137-8d637c6c-af76-46e2-bca3-2b58b0f2f013.png)
 
 The following project has been in-officially taken over by me (DarkBahamut162).
 
 It's sources have being displayed down below.
+
+## Warning:
+This Theme has been optimized for **Project OutFox** and has some additional *(but optional)* features that only work there!
+**ITGmania** might be your second pick since .mp4 background videos work in here without much issue. It might work incorrectly when used anywhere else!
+
+## Information:
+To switch from *normal* to *final encore*, go into the theme's metrics.ini and set the **EnableFinalTheme** value inside **[Preferences]** to **true**
 
 ---
 
@@ -31,6 +38,15 @@ It's sources have being displayed down below.
 **Description:** In The Groove is a dance and rhythm video game, it enters the simulation category inspired by Dance Dance Revolution. Add new forms of games, skins, options, etc.
 
 **Date:**  Jan 7th 2018
+
+---
+
+[In The Groove 3 Encore Final (OpenITG)](https://www.youtube.com/watch?v=n1HvKWturOI)
+---
+
+**Description:** ?
+
+**Date:** April 8th 2018
 
 ---
 I could have actually forked it but I didn't. My reasoning was that it wasn't going to be ITG3 anymore but it was being turned into ITG3Encore (something else while starting off using the same code).
@@ -61,8 +77,9 @@ What has been fixed so far:
 * Fixed **Rounds/Songs Display**
 * Added back **Rotation** to **Judgments** & **Holds** during Gameplay
 * Shows **ProductFamily**
+* Added most **Final Theme** stuff while adding/adjusting a few other things.
 
-The following has been re-introduced from OpenITG's ITG3Encore Theme:
+The following has been re-introduced from **OpenITG's ITG3Encore Theme**:
 * **BPM Display** *(Disabled in Battle Mode)*
 * **Full Combo Splash Animation**
 * **CustomMods** and **ScreenFilter**
@@ -70,7 +87,4 @@ The following has been re-introduced from OpenITG's ITG3Encore Theme:
 * **OptionsList** *(Mostly functional)*
 * **Fitness/Workout Mode** *(1 Player only)*
 
-
 Stuff still needs to get fixed, even if the fixed and re-introduced list/code are quite long/big.
-
-Also: This Theme has been optimized for **Project OutFox**! It might work incorrectly when used in StepMania 5!

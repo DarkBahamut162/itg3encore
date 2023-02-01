@@ -32,9 +32,13 @@ return Def.ActorFrame{
 				if curSelection then
 					if curStep then
 						if false then -- load cache HasLua
-							if tobool(LoadFromCache(curStep,"HasLua")) then text = "HAS LUA" end
+							if isOutFox() then
+								if tobool(LoadFromCache(curStep,"HasLua")) then text = "HAS LUA" end
+							else
+								if HasLuaCheck() then text = "HAS LUA" end
+							end
 						end
-						if false then -- load cache StepCounter
+						if false and isOutFox() then -- load cache StepCounter
 							if text ~= "" then text = text .. "\n" end text = text .. table.concat(getStepCounter(curStep),"|")
 						end
 						if false then -- Get true BPM range
@@ -133,7 +137,7 @@ return Def.ActorFrame{
 								end
 							end
 						end
-						if false then -- check on OutFox's LastSecondHint fix for wrong cache data
+						if false and isOutFox() then -- check on OutFox's LastSecondHint fix for wrong cache data
 							local totalsecond = curSelection:MusicLengthSeconds()
 							local firstsecond = curSelection:GetFirstSecond()
 							local lastsecond = curSelection:GetLastSecond()
@@ -147,74 +151,65 @@ return Def.ActorFrame{
 								"\nDIFF/TRUE sec: "..string.format("%0.3f",difference).."/"..string.format("%0.3f",totalsecond-trueLastSecond)
 						end
 						if false then --Calculate Difficulty
-							local totalSeconds = LoadFromCache(curStep,"TrueLastSecond") - LoadFromCache(curStep,"TrueFirstSecond")
-							local stepCounter,stepSum = getStepCounter(curStep),0
-							for i=1,#stepCounter do if stepCounter[i] then stepSum = stepSum + (stepCounter[i] * i) end end
-							stepSum = math.round( ( stepSum / totalSeconds ) * (#stepCounter/2) )
-
-							if text ~= "" then text = text.."\n" end text = text .. "Calc'd Difficulty (DB162): "..stepSum
-							if text ~= "" then text = text.."\n" end text = text .. "Calc'd Difficulty (WAIEI): "..GetConvertDifficulty(curStep)
-
-							local lastSec = 0
-							local stepsPerSec = {}
-							local currentSPS = 0
-							local timingData = curStep:GetTimingData()
-							local allowednotes = {
-								["TapNoteType_Tap"] = true,
-								["TapNoteSubType_Hold"] = true,
-								["TapNoteSubType_Roll"] = true
-							}
-							local chartint = 1
-							for k,v in pairs( GAMESTATE:GetCurrentSong():GetAllSteps() ) do
-								if v == curStep then
-									chartint = k
-									break
-								end
+							local totalSeconds = isOutFox() and (LoadFromCache(curStep,"TrueLastSecond") - LoadFromCache(curStep,"TrueFirstSecond")) or (curSelection:GetLastSecond() - curSelection:GetFirstSecond())
+							local stepCounter = isOutFox() and getStepCounter(curStep)
+							local stepSum = isOutFox() and 0 or math.round(curStep:GetRadarValues(GAMESTATE:GetMasterPlayerNumber()):GetValue('RadarCategory_TapsAndHolds') / totalSeconds * GAMESTATE:GetCurrentStyle():ColumnsPerPlayer() / 2)
+							if isOutFox() then
+								for i=1,#stepCounter do if stepCounter[i] then stepSum = stepSum + (stepCounter[i] * i) end end
+								stepSum = math.round( ( stepSum / totalSeconds ) * (#stepCounter/2) )
 							end
-							for k,v in pairs( GAMESTATE:GetCurrentSong():GetNoteData(chartint) ) do
-								if allowednotes[ v[3] ] then
-									local currentSec = timingData:GetElapsedTimeFromBeat(v[1] )
-									if lastSec > 0 then
-										if lastSec < currentSec then
-											currentSPS = 1 / (currentSec - lastSec)
-											if stepsPerSec[currentSPS] then
-												stepsPerSec[currentSPS] = stepsPerSec[currentSPS] + 1
-											else
-												stepsPerSec[currentSPS] = 1
+
+							if text ~= "" then text = text.."\n" end text = text .. "Calc'd Difficulty (DB9): "..stepSum
+							if text ~= "" then text = text.."\n" end text = text .. "Calc'd Difficulty (Y&A): "..GetConvertDifficulty(curStep)
+							if isOutFox() then
+								local lastSec = 0
+								local stepsPerSec = {}
+								local currentSPS = 0
+								local timingData = curStep:GetTimingData()
+								local allowednotes = {
+									["TapNoteType_Tap"] = true,
+									["TapNoteSubType_Hold"] = true,
+									["TapNoteSubType_Roll"] = true
+								}
+								local chartint = 1
+								for k,v in pairs( GAMESTATE:GetCurrentSong():GetAllSteps() ) do
+									if v == curStep then
+										chartint = k
+										break
+									end
+								end
+								for k,v in pairs( GAMESTATE:GetCurrentSong():GetNoteData(chartint) ) do
+									if allowednotes[ v[3] ] then
+										local currentSec = timingData:GetElapsedTimeFromBeat(v[1] )
+										if lastSec > 0 then
+											if lastSec < currentSec then
+												currentSPS = 1 / (currentSec - lastSec)
+												if stepsPerSec[currentSPS] then
+													stepsPerSec[currentSPS] = stepsPerSec[currentSPS] + 1
+												else
+													stepsPerSec[currentSPS] = 1
+												end
+												lastSec = currentSec
+											elseif lastSec == currentSec then
+												if stepsPerSec[currentSPS] then
+													stepsPerSec[currentSPS] = stepsPerSec[currentSPS] + 1
+												else
+													stepsPerSec[currentSPS] = 1
+												end
 											end
+										else
 											lastSec = currentSec
-										elseif lastSec == currentSec then
-											if stepsPerSec[currentSPS] then
-												stepsPerSec[currentSPS] = stepsPerSec[currentSPS] + 1
-											else
-												stepsPerSec[currentSPS] = 1
-											end
 										end
-									else
-										lastSec = currentSec
 									end
 								end
-							end
-							local total, times = 0, 0
-							local function pairsByKeys (t, f)
-								local a = {}
-								for n in pairs(t) do table.insert(a, n) end
-								table.sort(a, f)
-								local i = 0
-								local iter = function()
-									i = i + 1
-									if a[i] == nil then return nil
-									else return a[i], t[ a[i] ]
-									end
+								local total, times = 0, 0
+								for _sps, _times in pairs(stepsPerSec) do
+									total = total + (_sps * _times)
+									times = times + _times
 								end
-								return iter
+								total = total / times * 2
+								if text ~= "" then text = text.."\n" end text = text .. "Calc'd Difficulty (SPS): "..math.round(total)
 							end
-							for _sps, _times in pairsByKeys(stepsPerSec) do
-								total = total + (_sps * _times)
-								times = times + _times
-							end
-							total = total / times * 2
-							if text ~= "" then text = text.."\n" end text = text .. "Calc'd Difficulty (SPS): "..math.round(total)
 						end
 					end
 				end

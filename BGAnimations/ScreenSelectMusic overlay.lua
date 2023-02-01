@@ -25,65 +25,7 @@ return Def.ActorFrame{
 			end
 		end
 	end,
-	LoadActor(THEME:GetPathB("ScreenWithMenuElements","underlay/_sides"))..{
-		InitCommand=function(self) self:ztest(true) end
-	},
-	LoadActor(THEME:GetPathB("ScreenWithMenuElements","underlay/_base")),
-	LoadActor(THEME:GetPathB("ScreenWithMenuElements","underlay/_expandtop")),
-	StandardDecorationFromFileOptional("StyleIcon","StyleIcon"),
-	StandardDecorationFromFileOptional("StageDisplay","StageDisplay"),
 
-	Def.ActorFrame{
-		Name="SelButtonMenu",
-		InitCommand=function(self) self:y(SCREEN_BOTTOM-54):visible(DifficultyChangingAvailable()) end,
-		LoadFont("_v 26px bold white")..{
-			Text="&START; Change Sort",
-			InitCommand=function(self) self:CenterX():zoomx(0.3):zoomy(0.6):diffusealpha(0):shadowlength(2) end,
-			OffCommand=function(self) self:linear(0.3):diffusealpha(0) end,
-			SelectMenuOpenedMessageCommand=function(self) self:stoptweening():bounceend(0.2):diffusealpha(1):zoomx(0.6) end,
-			SelectMenuClosedMessageCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(0):zoomx(0.3) end
-		},
-		Def.ActorFrame{
-			Name="Easier",
-			InitCommand=function(self)
-				self:x(SCREEN_CENTER_X-100)
-			end,
-			LoadFont("_v 26px bold black")..{
-				Text="&MENULEFT;",
-				OnCommand=function(self) self:addy(36):x(-5):horizalign(right):zoomx(0.5):zoomy(0.7):diffusealpha(0):shadowlength(0) end,
-				OffCommand=function(self) self:linear(0.3):diffusealpha(0) end,
-				SelectMenuOpenedMessageCommand=function(self) self:stoptweening():bounceend(0.2):diffusealpha(1):zoomx(0.7) end,
-				SelectMenuClosedMessageCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(0):zoomx(0.5) end
-			},
-			LoadFont("_v 26px bold black")..{
-				Text="Easier",
-				OnCommand=function(self) self:addy(36):x(0):horizalign(left):zoomx(0.5):zoomy(0.7):diffusealpha(0):diffuseramp():effectperiod(1):effectoffset(0.20):effectclock('beat'):effectcolor1(color("#FFFFFF")):effectcolor2(color("#20D020")):shadowlength(0) end,
-				OffCommand=function(self) self:linear(0.3):diffusealpha(0) end,
-				SelectMenuOpenedMessageCommand=function(self) self:stoptweening():bounceend(0.2):diffusealpha(1):zoomx(0.7) end,
-				SelectMenuClosedMessageCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(0):zoomx(0.5) end
-			}
-		},
-		Def.ActorFrame{
-			Name="Harder",
-			InitCommand=function(self)
-				self:x(SCREEN_CENTER_X+100)
-			end,
-			LoadFont("_v 26px bold black")..{
-				Text="Harder",
-				OnCommand=function(self) self:addy(36):x(0):horizalign(right):zoomx(0.5):zoomy(0.7):diffusealpha(0):diffuseramp():effectperiod(1):effectoffset(0.20):effectclock('beat'):effectcolor1(color("#FFFFFF")):effectcolor2(color("#E06060")):shadowlength(0) end,
-				OffCommand=function(self) self:linear(0.3):diffusealpha(0) end,
-				SelectMenuOpenedMessageCommand=function(self) self:stoptweening():bounceend(0.2):diffusealpha(1):zoomx(0.7) end,
-				SelectMenuClosedMessageCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(0):zoomx(0.5) end
-			},
-			LoadFont("_v 26px bold black")..{
-				Text="&MENURIGHT;",
-				OnCommand=function(self) self:addy(36):x(15):horizalign(center):zoomx(0.5):zoomy(0.7):diffusealpha(0):shadowlength(0) end,
-				OffCommand=function(self) self:linear(0.3):diffusealpha(0) end,
-				SelectMenuOpenedMessageCommand=function(self) self:stoptweening():bounceend(0.2):diffusealpha(1):zoomx(0.7) end,
-				SelectMenuClosedMessageCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(0):zoomx(0.5) end
-			}
-		}
-	},
 	Def.ActorFrame{
 		Name="StepArtistP1",
 		InitCommand=function(self) self:x(SCREEN_LEFT):y(SCREEN_BOTTOM-109):addx(-SCREEN_WIDTH):player(PLAYER_1):draworder(-2) end,
@@ -274,12 +216,12 @@ return Def.ActorFrame{
 			local isDouble = (styleType == 'StyleType_OnePlayerTwoSides' or styleType == 'StyleType_TwoPlayersSharedSides')
 			self:visible(GAMESTATE:IsPlayerEnabled(PLAYER_1) and not isDouble)
 		end,
-		LoadActor(THEME:GetPathG("_pane","elements/_lneon"))..{
+		LoadActor(THEME:GetPathG("_pane elements/_lneon",isFinal() and "final" or "normal"))..{
 			InitCommand=function(self) self:x(SCREEN_CENTER_X-90):y(SCREEN_BOTTOM-76):horizalign(right):vertalign(bottom):diffuseshift():effectcolor1(color("#bed0ff")):effectcolor2(color("#767676")):effectoffset(0):effectclock("beat") end,
 			OnCommand=function(self) self:addx(-SCREEN_WIDTH):decelerate(0.75):addx(SCREEN_WIDTH) end,
 			OffCommand=function(self) self:sleep(0.5):accelerate(0.75):addx(-SCREEN_WIDTH) end
 		},
-		LoadActor(THEME:GetPathG("_pane","elements/_neonwidth"))..{
+		LoadActor(THEME:GetPathG("_pane elements/_neonwidth",isFinal() and "final" or "normal"))..{
 			InitCommand=function(self) self:x(SCREEN_CENTER_X-146):y(SCREEN_BOTTOM-76):horizalign(right):vertalign(bottom):zoomtowidth(SCREEN_WIDTH/2):diffuseshift():effectcolor1(color("#bed0ff")):effectcolor2(color("#767676")):effectoffset(0):effectclock("beat") end,
 			OnCommand=function(self) self:addx(-SCREEN_WIDTH):decelerate(0.75):addx(SCREEN_WIDTH) end,
 			OffCommand=function(self) self:sleep(0.5):accelerate(0.75):addx(-SCREEN_WIDTH) end
@@ -293,12 +235,12 @@ return Def.ActorFrame{
 			local isDouble = (styleType == 'StyleType_OnePlayerTwoSides' or styleType == 'StyleType_TwoPlayersSharedSides')
 			self:visible(GAMESTATE:IsPlayerEnabled(PLAYER_2) and not isDouble)
 		end,
-		LoadActor(THEME:GetPathG("_pane","elements/_rneon"))..{
+		LoadActor(THEME:GetPathG("_pane elements/_rneon",isFinal() and "final" or "normal"))..{
 			InitCommand=function(self) self:x(SCREEN_CENTER_X+90):y(SCREEN_BOTTOM-76):horizalign(left):vertalign(bottom):diffuseshift():effectcolor1(color("#bed0ff")):effectcolor2(color("#767676")):effectoffset(0):effectclock("beat") end,
 			OnCommand=function(self) self:addx(SCREEN_WIDTH):decelerate(0.75):addx(-SCREEN_WIDTH) end,
 			OffCommand=function(self) self:sleep(0.5):accelerate(0.75):addx(SCREEN_WIDTH) end
 		},
-		LoadActor(THEME:GetPathG("_pane","elements/_neonwidth"))..{
+		LoadActor(THEME:GetPathG("_pane elements/_neonwidth",isFinal() and "final" or "normal"))..{
 			InitCommand=function(self) self:x(SCREEN_CENTER_X+146):y(SCREEN_BOTTOM-76):horizalign(left):vertalign(bottom):zoomtowidth(SCREEN_WIDTH/2):diffuseshift():effectcolor1(color("#bed0ff")):effectcolor2(color("#767676")):effectoffset(0):effectclock("beat") end,
 			OnCommand=function(self) self:addx(SCREEN_WIDTH):decelerate(0.75):addx(-SCREEN_WIDTH) end,
 			OffCommand=function(self) self:sleep(0.5):accelerate(0.75):addx(SCREEN_WIDTH) end
@@ -314,12 +256,12 @@ return Def.ActorFrame{
 		end,
 		Def.ActorFrame{
 			Name="LeftSide",
-			LoadActor(THEME:GetPathG("_pane","elements/_lneon"))..{
+			LoadActor(THEME:GetPathG("_pane elements/_lneon",isFinal() and "final" or "normal"))..{
 				InitCommand=function(self) self:x(SCREEN_CENTER_X-90):y(SCREEN_BOTTOM-76):horizalign(right):vertalign(bottom):diffuseshift():effectcolor1(color("#bed0ff")):effectcolor2(color("#767676")):effectoffset(0):effectclock("beat") end,
 				OnCommand=function(self) self:addx(-SCREEN_WIDTH):decelerate(0.75):addx(SCREEN_WIDTH) end,
 				OffCommand=function(self) self:sleep(0.5):accelerate(0.75):addx(-SCREEN_WIDTH) end
 			},
-			LoadActor(THEME:GetPathG("_pane","elements/_neonwidth"))..{
+			LoadActor(THEME:GetPathG("_pane elements/_neonwidth",isFinal() and "final" or "normal"))..{
 				InitCommand=function(self) self:x(SCREEN_CENTER_X-146):y(SCREEN_BOTTOM-76):horizalign(right):vertalign(bottom):zoomtowidth(SCREEN_WIDTH/2):diffuseshift():effectcolor1(color("#bed0ff")):effectcolor2(color("#767676")):effectoffset(0):effectclock("beat") end,
 				OnCommand=function(self) self:addx(-SCREEN_WIDTH):decelerate(0.75):addx(SCREEN_WIDTH) end,
 				OffCommand=function(self) self:sleep(0.5):accelerate(0.75):addx(-SCREEN_WIDTH) end
@@ -327,12 +269,12 @@ return Def.ActorFrame{
 		},
 		Def.ActorFrame{
 			Name="RightSide",
-			LoadActor(THEME:GetPathG("_pane","elements/_rneon"))..{
+			LoadActor(THEME:GetPathG("_pane elements/_rneon",isFinal() and "final" or "normal"))..{
 				InitCommand=function(self) self:x(SCREEN_CENTER_X+90):y(SCREEN_BOTTOM-76):horizalign(left):vertalign(bottom):diffuseshift():effectcolor1(color("#bed0ff")):effectcolor2(color("#767676")):effectoffset(0):effectclock("beat") end,
 				OnCommand=function(self) self:addx(SCREEN_WIDTH):decelerate(0.75):addx(-SCREEN_WIDTH) end,
 				OffCommand=function(self) self:sleep(0.5):accelerate(0.75):addx(SCREEN_WIDTH) end
 			},
-			LoadActor(THEME:GetPathG("_pane","elements/_neonwidth"))..{
+			LoadActor(THEME:GetPathG("_pane elements/_neonwidth",isFinal() and "final" or "normal"))..{
 			InitCommand=function(self) self:x(SCREEN_CENTER_X+146):y(SCREEN_BOTTOM-76):horizalign(left):vertalign(bottom):zoomtowidth(SCREEN_WIDTH/2):diffuseshift():effectcolor1(color("#bed0ff")):effectcolor2(color("#767676")):effectoffset(0):effectclock("beat") end,
 			OnCommand=function(self) self:addx(SCREEN_WIDTH):decelerate(0.75):addx(-SCREEN_WIDTH) end,
 			OffCommand=function(self) self:sleep(0.5):accelerate(0.75):addx(SCREEN_WIDTH) end
@@ -365,6 +307,65 @@ return Def.ActorFrame{
 	LoadActor(THEME:GetPathG("_pane","numbers"),PLAYER_2)..{
 		InitCommand=function(self) self:x(SCREEN_RIGHT-SCREEN_WIDTH/5.415):y(SCREEN_BOTTOM-54):player(PLAYER_2) end
 	},
+	LoadActor(THEME:GetPathB("ScreenWithMenuElements","underlay/_sides"))..{
+		InitCommand=function(self) self:ztest(true) end
+	},
+	LoadActor(THEME:GetPathB("ScreenWithMenuElements","underlay/_base")),
+	LoadActor(THEME:GetPathB("ScreenWithMenuElements","underlay/_expandtop")),
+	StandardDecorationFromFileOptional("StyleIcon","StyleIcon"),
+	StandardDecorationFromFileOptional("StageDisplay","StageDisplay"),
+
+	Def.ActorFrame{
+		Name="SelButtonMenu",
+		InitCommand=function(self) self:y(SCREEN_BOTTOM-54):visible(DifficultyChangingAvailable()) end,
+		LoadFont("_v 26px bold white")..{
+			Text="&START; Change Sort",
+			InitCommand=function(self) self:CenterX():zoomx(0.3):zoomy(0.6):diffusealpha(0):shadowlength(2) end,
+			OffCommand=function(self) self:linear(0.3):diffusealpha(0) end,
+			SelectMenuOpenedMessageCommand=function(self) self:stoptweening():bounceend(0.2):diffusealpha(1):zoomx(0.6) end,
+			SelectMenuClosedMessageCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(0):zoomx(0.3) end
+		},
+		Def.ActorFrame{
+			Name="Easier",
+			InitCommand=function(self)
+				self:x(SCREEN_CENTER_X-100)
+			end,
+			LoadFont("_v 26px bold black")..{
+				Text="&MENULEFT;",
+				OnCommand=function(self) self:addy(36):x(-5):horizalign(right):zoomx(0.5):zoomy(0.7):diffusealpha(0):shadowlength(0) end,
+				OffCommand=function(self) self:linear(0.3):diffusealpha(0) end,
+				SelectMenuOpenedMessageCommand=function(self) self:stoptweening():bounceend(0.2):diffusealpha(1):zoomx(0.7) end,
+				SelectMenuClosedMessageCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(0):zoomx(0.5) end
+			},
+			LoadFont("_v 26px bold black")..{
+				Text="Easier",
+				OnCommand=function(self) self:addy(36):x(0):horizalign(left):zoomx(0.5):zoomy(0.7):diffusealpha(0):diffuseramp():effectperiod(1):effectoffset(0.20):effectclock('beat'):effectcolor1(color("#FFFFFF")):effectcolor2(color("#20D020")):shadowlength(0) end,
+				OffCommand=function(self) self:linear(0.3):diffusealpha(0) end,
+				SelectMenuOpenedMessageCommand=function(self) self:stoptweening():bounceend(0.2):diffusealpha(1):zoomx(0.7) end,
+				SelectMenuClosedMessageCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(0):zoomx(0.5) end
+			}
+		},
+		Def.ActorFrame{
+			Name="Harder",
+			InitCommand=function(self)
+				self:x(SCREEN_CENTER_X+100)
+			end,
+			LoadFont("_v 26px bold black")..{
+				Text="Harder",
+				OnCommand=function(self) self:addy(36):x(0):horizalign(right):zoomx(0.5):zoomy(0.7):diffusealpha(0):diffuseramp():effectperiod(1):effectoffset(0.20):effectclock('beat'):effectcolor1(color("#FFFFFF")):effectcolor2(color("#E06060")):shadowlength(0) end,
+				OffCommand=function(self) self:linear(0.3):diffusealpha(0) end,
+				SelectMenuOpenedMessageCommand=function(self) self:stoptweening():bounceend(0.2):diffusealpha(1):zoomx(0.7) end,
+				SelectMenuClosedMessageCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(0):zoomx(0.5) end
+			},
+			LoadFont("_v 26px bold black")..{
+				Text="&MENURIGHT;",
+				OnCommand=function(self) self:addy(36):x(15):horizalign(center):zoomx(0.5):zoomy(0.7):diffusealpha(0):shadowlength(0) end,
+				OffCommand=function(self) self:linear(0.3):diffusealpha(0) end,
+				SelectMenuOpenedMessageCommand=function(self) self:stoptweening():bounceend(0.2):diffusealpha(1):zoomx(0.7) end,
+				SelectMenuClosedMessageCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(0):zoomx(0.5) end
+			}
+		}
+	},
 	LoadActor(THEME:GetPathG("ScreenSelectMusic","OptionsMessage"))..{
 		InitCommand=function(self) self:Center():pause():diffusealpha(0) end,
 		ShowPressStartForOptionsCommand=function(self) self:zoom(1.15):diffusealpha(0):decelerate(0.07):zoom(1):diffusealpha(1) end,
@@ -373,8 +374,8 @@ return Def.ActorFrame{
 	},
 	Def.ActorFrame{
 		Name="OptionsListBaseP1",
-		InitCommand=function(self) self:x(SCREEN_CENTER_X-220):y(SCREEN_CENTER_Y+22) end,
-		LoadActor(THEME:GetPathG("options","pane"))..{
+		InitCommand=function(self) self:x(SCREEN_CENTER_X-220):y(SCREEN_CENTER_Y+22):zoomx(isFinal() and 1.1 or 1) end,
+		LoadActor(THEME:GetPathG("options pane",isFinal() and "final" or "normal"))..{
 			InitCommand=function(self) self:diffusealpha(0):zoomx(0.6) end,
 			OptionsListOpenedMessageCommand=function(self,params)
 				if params.Player == PLAYER_1 then
@@ -387,7 +388,7 @@ return Def.ActorFrame{
 				end
 			end
 		},
-		LoadActor(THEME:GetPathG("options","pane"))..{
+		LoadActor(THEME:GetPathG("options pane",isFinal() and "final" or "normal"))..{
 			InitCommand=function(self) self:blend(Blend.Add):diffusealpha(0) end,
 			OptionsListOpenedMessageCommand=function(self,params)
 				if params.Player == PLAYER_1 then
@@ -408,8 +409,8 @@ return Def.ActorFrame{
 	},
 	Def.ActorFrame{
 		Name="OptionsListBaseP2",
-		InitCommand=function(self) self:x(SCREEN_CENTER_X+220):y(SCREEN_CENTER_Y+22) end,
-		LoadActor(THEME:GetPathG("options","pane"))..{
+		InitCommand=function(self) self:x(SCREEN_CENTER_X+220):y(SCREEN_CENTER_Y+22):zoomx(isFinal() and 1.1 or 1) end,
+		LoadActor(THEME:GetPathG("options pane",isFinal() and "final" or "normal"))..{
 			InitCommand=function(self) self:zoomx(-1):diffusealpha(0):zoomx(0.6) end,
 			OptionsListOpenedMessageCommand=function(self,params)
 				if params.Player == PLAYER_2 then
@@ -422,7 +423,7 @@ return Def.ActorFrame{
 				end
 			end
 		},
-		LoadActor(THEME:GetPathG("options","pane"))..{
+		LoadActor(THEME:GetPathG("options pane",isFinal() and "final" or "normal"))..{
 			InitCommand=function(self) self:zoomx(-1):blend(Blend.Add):diffusealpha(0) end,
 			OptionsListOpenedMessageCommand=function(self,params)
 				if params.Player == PLAYER_2 then

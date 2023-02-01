@@ -127,7 +127,7 @@ return Def.ActorFrame{
 	},
 	Def.ActorFrame{
 		Name="LabelFrame",
-		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y-142) end,
+		InitCommand=function(self) self:CenterX():y(isFinal() and SCREEN_CENTER_Y-130 or SCREEN_CENTER_Y-142) end,
 		LoadFont("_v 26px bold shadow")..{
 			Text="TIME & DATE",
 			SetCommand=function(self) self:settext( string.format('%02i:%02i:%02i %s %02i %04i', Hour(), Minute(), Second(), MonthToString(MonthOfYear()), DayOfMonth(), Year()) ):sleep(1/6):queuecommand("Set") end,

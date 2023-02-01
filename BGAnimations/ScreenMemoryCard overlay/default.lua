@@ -44,7 +44,7 @@ return Def.ActorFrame{
 			InitCommand=function(self) self:x(SCREEN_LEFT+120):y(SCREEN_CENTER_Y+155):croptop(0.5):cropbottom(0.5) end,
 			OnCommand=function(self) self:sleep(5.15):accelerate(0.15):croptop(0.25):cropbottom(0.25):decelerate(0.2):croptop(0):cropbottom(0):sleep(4.7):linear(0.5):diffusealpha(0) end
 		},
-		LoadActor(THEME:GetPathB("","_overlay/p1card"))..{
+		LoadActor(THEME:GetPathB("_overlay/p1card",isFinal() and "final" or "normal"))..{
 			InitCommand=function(self) self:x(SCREEN_LEFT+60):y(SCREEN_CENTER_Y+165):diffusealpha(0) end,
 			OnCommand=function(self) self:sleep(5.5):linear(0.3):diffusealpha(0.6):sleep(4.4):linear(0.5):diffusealpha(0) end
 		},

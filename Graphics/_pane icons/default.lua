@@ -35,19 +35,19 @@ return Def.ActorFrame{
 				mine = rv:GetValue('RadarCategory_Mines') > 0
 				hand = rv:GetValue('RadarCategory_Hands') > 0
 				roll = rv:GetValue('RadarCategory_Rolls') > 0
-				local totalSeconds = LoadFromCache(step,"TrueLastSecond") - LoadFromCache(step,"TrueFirstSecond")
+				local totalSeconds = isOutFox() and LoadFromCache(step,"TrueLastSecond") - LoadFromCache(step,"TrueFirstSecond") or 0
 				local avg_bps_OLD = song:GetLastBeat() / song:MusicLengthSeconds()
-				local avg_bps_NEW = LoadModule("Config.Load.lua")("TrueLastBeat",getStepCacheFile(step)) / totalSeconds
+				local avg_bps_NEW = isOutFox() and LoadModule("Config.Load.lua")("TrueLastBeat",getStepCacheFile(step)) / totalSeconds or 0
 				stream = rv:GetValue('RadarCategory_Stream')
-				stream = stream * song:MusicLengthSeconds() / totalSeconds
+				if isOutFox() then stream = stream * song:MusicLengthSeconds() / totalSeconds end
 				voltage = rv:GetValue('RadarCategory_Voltage')
-				voltage = voltage / avg_bps_OLD * avg_bps_NEW
+				if isOutFox() then voltage = voltage / avg_bps_OLD * avg_bps_NEW end
 				air = rv:GetValue('RadarCategory_Air')
-				air = air * song:MusicLengthSeconds() / totalSeconds
+				if isOutFox() then air = air * song:MusicLengthSeconds() / totalSeconds end
 				freeze = rv:GetValue('RadarCategory_Freeze')
-				freeze = freeze * song:MusicLengthSeconds() / totalSeconds
+				if isOutFox() then freeze = freeze * song:MusicLengthSeconds() / totalSeconds end
 				chaos = rv:GetValue('RadarCategory_Chaos')
-				chaos = chaos * song:MusicLengthSeconds() / totalSeconds
+				if isOutFox() then chaos = chaos * song:MusicLengthSeconds() / totalSeconds end
 			end
 		elseif course then
 			local trail = GAMESTATE:GetCurrentTrail(player)
@@ -76,6 +76,7 @@ return Def.ActorFrame{
 				air = rv:GetValue('RadarCategory_Air')
 				freeze = rv:GetValue('RadarCategory_Freeze')
 				chaos = rv:GetValue('RadarCategory_Chaos')
+				if IsCourseSecret() then stream,voltage,air,freeze,chaos = 0,0,0,0,0 end
 			end
 		end
 		self:RunCommandsOnChildren(function(self) self:playcommand("Set") end)

@@ -143,3 +143,27 @@ end
 function getProfileSongs( pn )
 	return "Played Songs:\n" .. PROFILEMAN:GetProfile(pn):GetTotalNumSongsPlayed()
 end
+
+function isFinal()
+	return tobool(THEME:GetMetric("Preferences", "EnableFinalTheme"))
+end
+
+function isScreenTitle()
+	if SCREENMAN:GetTopScreen() then
+		return SCREENMAN:GetTopScreen():GetName() == "ScreenTitleMenu" or SCREENMAN:GetTopScreen():GetName() == "ScreenTitleJoin"
+	else
+		return false
+	end
+end
+
+function isITGmania()
+	return ProductFamily() == "ITGmania"
+end
+
+function isOutFox()
+	return ProductFamily() == "OutFox"
+end
+
+function isStepMania()
+	return ProductFamily() == "StepMania"
+end

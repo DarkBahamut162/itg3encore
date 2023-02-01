@@ -18,11 +18,11 @@ return Def.ActorFrame {
 		Name="Number",
 		OnCommand=THEME:GetMetric("Combo", "NumberOnCommand")
 	},
-	LoadActor("_combo") .. {
+	LoadActor("_combo "..(isFinal() and "final" or "normal")) .. {
 		Name="ComboLabel",
 		OnCommand=THEME:GetMetric("Combo", "LabelOnCommand")
 	},
-	LoadActor("_misses") .. {
+	LoadActor("_misses "..(isFinal() and "final" or "normal")) .. {
 		Name="MissesLabel",
 		OnCommand=THEME:GetMetric("Combo", "LabelOnCommand")
 	},

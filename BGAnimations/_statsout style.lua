@@ -13,7 +13,7 @@ return Def.ActorFrame{
 			InitCommand=function(self) self:x(SCREEN_LEFT+120):y(SCREEN_CENTER_Y+155) end,
 			OnCommand=function(self) self:cropleft(0.5):cropright(0.5):sleep(1):accelerate(0.15):cropleft(0):cropright(0):accelerate(0.15):addy(43):decelerate(0.2):addy(43):diffusealpha(0) end
 		},
-		LoadActor(THEME:GetPathB("","_overlay/p2card"))..{
+		LoadActor(THEME:GetPathB("","_overlay/p2card "..(isFinal() and "final" or "normal")))..{
 			InitCommand=function(self) self:x(SCREEN_LEFT+60):y(SCREEN_CENTER_Y+165) end,
 			OnCommand=function(self) self:diffusealpha(0):sleep(1.5):linear(0.3):diffusealpha(0.6) end
 		},
@@ -50,7 +50,7 @@ return Def.ActorFrame{
 			InitCommand=function(self) self:x(SCREEN_RIGHT-120):y(SCREEN_CENTER_Y+155) end,
 			OnCommand=function(self) self:cropleft(0.5):cropright(0.5):sleep(1):accelerate(0.15):cropleft(0):cropright(0):accelerate(0.15):addy(43):decelerate(0.2):addy(43):diffusealpha(0) end
 		},
-		LoadActor(THEME:GetPathB("","_overlay/p2card"))..{
+		LoadActor(THEME:GetPathB("","_overlay/p2card "..(isFinal() and "final" or "normal")))..{
 			InitCommand=function(self) self:x(SCREEN_RIGHT-60):y(SCREEN_CENTER_Y+165) end,
 			OnCommand=function(self) self:diffusealpha(0):sleep(1.5):linear(0.3):diffusealpha(0.6) end
 		},

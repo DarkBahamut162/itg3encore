@@ -1,8 +1,8 @@
 return Def.ActorFrame{
-	LoadActor("itg")..{
+	LoadActor("inthegroove")..{
 		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y-80):zoom(0.7) end
 	},
-	LoadActor("outfox")..{
+	LoadActor(isOutFox() and "outfox" or (isITGmania() and "itgmania" or "stepmania"))..{
 		InitCommand=function(self) self:x(SCREEN_LEFT+192):y(WideScale(SCREEN_CENTER_Y+64,SCREEN_CENTER_Y+80)):zoom(0.65) end
 	},
 	LoadActor("bxrx")..{

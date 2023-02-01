@@ -2,15 +2,15 @@ return Def.ActorFrame{
 	InitCommand=function(self) self:fov(70) end,
 	LoadActor(THEME:GetPathB("","_thanks/_outfox/logo"))..{
 		InitCommand=function(self) self:x(-180) end,
-		OnCommand=function(self) self:pulse():effectclock("beat"):effectperiod(0.83):effectmagnitude(1,1.25,0):zoom(0.6) end
+		OnCommand=function(self) self:pulse():effectclock("beat"):effectperiod(0.83):effectmagnitude(1,1.25,0):zoomto(110,110) end
 	},
 	LoadActor(THEME:GetPathB("","_thanks/_outfox/text"))..{
-		OnCommand=function(self) self:x(120):zoom(0.6) end
+		OnCommand=function(self) self:x(120):zoomto(440,110) end
 	},
 	LoadActor(THEME:GetPathB("","_thanks/_outfox/text"))..{
 		Name="TextGlow",
 		InitCommand=function(self) self:blend(Blend.Add):diffusealpha(0.05) end,
-		OnCommand=function(self) self:x(120):glowshift():effectperiod(2.5):effectcolor1(color("1,1,1,0.25")):effectcolor2(color("1,1,1,1")):zoom(0.6) end
+		OnCommand=function(self) self:x(120):zoomto(440,110):glowshift():effectperiod(2.5):effectcolor1(color("1,1,1,0.25")):effectcolor2(color("1,1,1,1")) end
 	},
 	LoadFont("_v profile")..{
 		Text="Powered by",

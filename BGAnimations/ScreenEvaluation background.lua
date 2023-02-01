@@ -1,6 +1,6 @@
 return Def.ActorFrame{
-	LoadActor(THEME:GetPathB("ScreenSelectMusic","background/CJ126"))..{
-		InitCommand=function(self) self:Center():zoomtowidth(SCREEN_WIDTH):zoomtoheight(SCREEN_WIDTH/4*3) end
+	LoadActor(THEME:GetPathB("ScreenSelectMusic","background/CJ126 Eval "..(isFinal() and "Final" or "Normal")))..{
+		InitCommand=function(self) self:Center():zoomtowidth(SCREEN_WIDTH):zoomtoheight(SCREEN_WIDTH/4*3):diffusealpha(isFinal() and 0.2 or 1) end
 	},
 	Def.Sprite{
 		BeginCommand=function(self)
@@ -12,6 +12,9 @@ return Def.ActorFrame{
 			self:blend(Blend.Add)
 			self:diffusealpha(0.25)
 		end,
-		OnCommand=function(self) self:fadeleft(0.2):faderight(0.2):Center():zoomtowidth(SCREEN_WIDTH):zoomtoheight(SCREEN_WIDTH/16*10) end
+		OnCommand=function(self)
+			self:fadeleft(0.2):faderight(0.2):Center():zoomtowidth(SCREEN_WIDTH):zoomtoheight(SCREEN_WIDTH/16*10)
+			if isFinal() then self:diffuseshift():effectcolor1(color("#FFFFFF80")):effectcolor2(color("#FFFFFFFF")):effectperiod(12) end
+		end
 	}
 }

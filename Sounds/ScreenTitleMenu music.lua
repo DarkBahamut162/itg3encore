@@ -1,0 +1,1 @@
+return THEME:GetPathS("ScreenTitleMenu",(isFinal() and "final" or "normal").." music")

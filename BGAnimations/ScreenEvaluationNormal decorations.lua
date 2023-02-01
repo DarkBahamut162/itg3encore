@@ -5,7 +5,7 @@ if ShowStandardDecoration("StepsDisplay") then
 		if (GAMESTATE:IsPlayerEnabled(pn) or isRave()) and Var "LoadingScreen" ~= "ScreenEvaluationSummary" then
 			local t2 = Def.ActorFrame{
 				InitCommand=function(self) self:player(pn) end,
-				LoadActor(THEME:GetPathG("_difficulty","icons"))..{
+				LoadActor(THEME:GetPathG("_difficulty icons",isFinal() and "final" or "normal"))..{
 					InitCommand=function(self) self:zoomy(0.8):animate(0):zoomx((pn==PLAYER_2) and -0.8 or 0.8):playcommand("Update") end,
 					UpdateCommand=function(self)
 						local course = GAMESTATE:GetCurrentTrail(pn)
@@ -62,7 +62,36 @@ local function GraphDisplay(pn)
 				local ss = SCREENMAN:GetTopScreen():GetStageStats()
 				self:Set( ss, ss:GetPlayerStageStats(pn) ):player( pn )
 			end
-		}
+		},
+		LoadActor(THEME:GetPathB("ScreenEvaluation","underlay/FFC "..ToEnumShortString(pn)))..{
+			Condition=getenv("EvalCombo"..ToEnumShortString(pn)),
+			InitCommand=function(self)
+				if getenv("LastFantastic"..ToEnumShortString(pn)) > 0 then 
+					local length = GAMESTATE:IsCourseMode() and TrailUtil.GetTotalSeconds(GAMESTATE:GetCurrentTrail(pn)) or GAMESTATE:GetCurrentSong():MusicLengthSeconds()-GAMESTATE:GetCurrentSong():GetFirstSecond()
+					local lastSecond = GAMESTATE:IsCourseMode() and getenv("LastFantastic"..ToEnumShortString(pn)) or getenv("LastFantastic"..ToEnumShortString(pn))-GAMESTATE:GetCurrentSong():GetFirstSecond()
+					self:cropright(1-(lastSecond/length))
+				end
+				self:croptop(0.75)
+			end
+		},
+		LoadActor(THEME:GetPathB("ScreenEvaluation","underlay/FEC "..ToEnumShortString(pn)))..{
+			Condition=getenv("EvalCombo"..ToEnumShortString(pn)),
+			InitCommand=function(self)
+				local length = GAMESTATE:IsCourseMode() and TrailUtil.GetTotalSeconds(GAMESTATE:GetCurrentTrail(pn)) or GAMESTATE:GetCurrentSong():MusicLengthSeconds()-GAMESTATE:GetCurrentSong():GetFirstSecond()
+				local firstSecond = GAMESTATE:IsCourseMode() and getenv("LastFantastic"..ToEnumShortString(pn)) or getenv("LastFantastic"..ToEnumShortString(pn))-GAMESTATE:GetCurrentSong():GetFirstSecond()
+				local lastSecond = GAMESTATE:IsCourseMode() and getenv("LastPerfect"..ToEnumShortString(pn)) or getenv("LastPerfect"..ToEnumShortString(pn))-GAMESTATE:GetCurrentSong():GetFirstSecond()
+				self:croptop(0.75):cropleft(firstSecond/length):cropright(1-(lastSecond/length))
+			end
+		},
+		LoadActor(THEME:GetPathB("ScreenEvaluation","underlay/FGC "..ToEnumShortString(pn)))..{
+			Condition=getenv("EvalCombo"..ToEnumShortString(pn)),
+			InitCommand=function(self)
+				local length = GAMESTATE:IsCourseMode() and TrailUtil.GetTotalSeconds(GAMESTATE:GetCurrentTrail(pn)) or GAMESTATE:GetCurrentSong():MusicLengthSeconds()-GAMESTATE:GetCurrentSong():GetFirstSecond()
+				local firstSecond = GAMESTATE:IsCourseMode() and getenv("LastPerfect"..ToEnumShortString(pn)) or getenv("LastPerfect"..ToEnumShortString(pn))-GAMESTATE:GetCurrentSong():GetFirstSecond()
+				local lastSecond = GAMESTATE:IsCourseMode() and getenv("LastGreat"..ToEnumShortString(pn)) or getenv("LastGreat"..ToEnumShortString(pn))-GAMESTATE:GetCurrentSong():GetFirstSecond()
+				self:croptop(0.75):cropleft(firstSecond/length):cropright(1-(lastSecond/length))
+			end
+		},
 	}
 end
 

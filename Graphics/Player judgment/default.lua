@@ -21,6 +21,11 @@ local TNSFrames = {
 
 local judgment = not GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentSteps(player):GetDifficulty() == 'Difficulty_Beginner' and "_beginner" or "_judgments"
 
+local checkFantastics = true
+local checkPerfects = true
+local checkGreats = true
+local check = true
+
 return Def.ActorFrame {
 	LoadActor(judgment) .. {
 		Name="Judgment",
@@ -38,7 +43,25 @@ return Def.ActorFrame {
 		local tns = param.TapNoteScore
 		local iNumStates = c.Judgment:GetNumStates()
 		local iFrame = TNSFrames[tns]
+		if (GAMESTATE:GetPlayerState(player):GetPlayerController() == 'PlayerController_Autoplay') or (GAMESTATE:GetPlayerState(player):GetPlayerController() == 'PlayerController_Cpu') then
+			checkFantastics, checkPerfects, checkGreats, check = false, false, false, false
+			setenv("EvalCombo"..ToEnumShortString(player),false)
+		end
 		if not iFrame then return end
+		if check then
+			if checkFantastics and iFrame > 0 then
+				checkFantastics = false
+				setenv("LastFantastic"..ToEnumShortString(player),STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetAliveSeconds())
+			end
+			if checkPerfects and iFrame > 1 then
+				checkPerfects = false
+				setenv("LastPerfect"..ToEnumShortString(player),STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetAliveSeconds())
+			end
+			if checkGreats and iFrame > 2 then
+				checkGreats = false
+				setenv("LastGreat"..ToEnumShortString(player),STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetAliveSeconds())
+			end
+		end
 		if iNumStates == 12 then
 			iFrame = iFrame * 2
 			if not param.Early then iFrame = iFrame + 1 end

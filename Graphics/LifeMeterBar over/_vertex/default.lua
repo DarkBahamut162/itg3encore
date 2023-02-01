@@ -21,7 +21,15 @@ return Def.ActorFrame{
 		}
 	},
 
-	LoadActor("base")..{ InitCommand=function(self) self:addx(-5) if vertexOn then self:diffusecolor(color1) end end },
+	LoadActor("base "..(isFinal() and "final" or "normal"))..{
+		InitCommand=function(self) self:addx(-5) if vertexOn then self:diffusecolor(color1) end end
+	},
+	LoadActor("base glow final")..{
+		Condition=isFinal(),
+		InitCommand=function(self)
+			self:addx(-5):blend(Blend.Add) if vertexOn then self:diffusecolor(color1) end
+			self:diffuseramp():effectcolor1(color("#FFFFFF00")):effectcolor2(color("#FFFFFF")):effectperiod(0.5):effect_hold_at_full(0.5):effectclock('beat') end
+	},
 	LoadActor("streak")..{
 		InitCommand=function(self) self:addx(-155):addx(-100) if vertexOn then self:diffusecolor(color1) end end,
 		OnCommand=function(self) self:sleep(0.8):decelerate(0.6):addx(100) end

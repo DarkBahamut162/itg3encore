@@ -5,7 +5,7 @@ return Def.ActorFrame{
             InitCommand=function(self) self:x(SCREEN_LEFT+120):y(SCREEN_CENTER_Y+155) end,
             OnCommand=function(self) self:sleep(2):accelerate(0.3):addx(-300) end
         },
-		LoadActor(THEME:GetPathB("","_overlay/p1card"))..{
+		LoadActor(THEME:GetPathB("","_overlay/p1card "..(isFinal() and "final" or "normal")))..{
 			InitCommand=function(self) self:x(SCREEN_LEFT+60):y(SCREEN_CENTER_Y+165) end,
 			OnCommand=function(self) self:diffusealpha(0.6):sleep(2):accelerate(0.3):addx(-300) end
 		},
@@ -62,7 +62,7 @@ return Def.ActorFrame{
             InitCommand=function(self) self:x(SCREEN_RIGHT-120):y(SCREEN_CENTER_Y+155) end,
             OnCommand=function(self) self:sleep(2):accelerate(0.3):addx(300) end
         },
-		LoadActor(THEME:GetPathB("","_overlay/p2card"))..{
+		LoadActor(THEME:GetPathB("","_overlay/p2card "..(isFinal() and "final" or "normal")))..{
 			InitCommand=function(self) self:x(SCREEN_RIGHT-60):y(SCREEN_CENTER_Y+165) end,
 			OnCommand=function(self) self:diffusealpha(0.6):sleep(2):accelerate(0.3):addx(300) end
 		},

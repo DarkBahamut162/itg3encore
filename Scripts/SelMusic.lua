@@ -181,12 +181,10 @@ function cacheStep(Step)
 	local currentBeat = 0
 	local currentNotes = 0
 	local currentMines = 0
-	local noteCounter
+	local noteCounter = {}
 	local firstBeat = 999
 	local lastBeat = 0
 	local shockArrows = ""
-	local arrows = GAMESTATE:GetCurrentStyle():ColumnsPerPlayer()
-	local temp = ""
 
 	for k,v in pairs( GAMESTATE:GetCurrentSong():GetAllSteps() ) do
 		if v == Step then
@@ -195,12 +193,9 @@ function cacheStep(Step)
 		end
 	end
 
-	for i=1,arrows do
-		temp = temp .. "0"
-		if i < arrows then temp = temp .. "," end
+	for i=1,GAMESTATE:GetCurrentStyle():ColumnsPerPlayer() do
+		noteCounter[i] = 0
 	end
-
-	noteCounter = split(",",temp)
 
 	local timingData = Step:GetTimingData()
 	local warps = timingData:GetWarps()
@@ -244,7 +239,7 @@ function cacheStep(Step)
 				currentNotes = currentNotes + 1
 			elseif v[3] == "TapNoteType_Mine" then
 				currentMines = currentMines + 1
-				if currentMines == arrows then
+				if currentMines == GAMESTATE:GetCurrentStyle():ColumnsPerPlayer() then
 					if shockArrows ~= "" then
 						shockArrows = shockArrows .. "_"
 					end
@@ -324,21 +319,21 @@ local tapsp2lv100={
 }
 
 function GetConvertDifficulty(Step)
-	local songLength = LoadFromCache(Step,"TrueLastSecond") - LoadFromCache(Step,"TrueFirstSecond")
-	local voltage=Step:GetRadarValues(PLAYER_1):GetValue('RadarCategory_Voltage')*GAMESTATE:GetCurrentSong():MusicLengthSeconds()/songLength
-	local stream=Step:GetRadarValues(PLAYER_1):GetValue('RadarCategory_Stream')*GAMESTATE:GetCurrentSong():MusicLengthSeconds()/songLength
+	local songLength = isOutFox() and (LoadFromCache(Step,"TrueLastSecond") - LoadFromCache(Step,"TrueFirstSecond")) or (GAMESTATE:GetCurrentSong():GetLastSecond() - GAMESTATE:GetCurrentSong():GetFirstSecond())
+	local voltage=Step:GetRadarValues(GAMESTATE:GetMasterPlayerNumber()):GetValue('RadarCategory_Voltage')*GAMESTATE:GetCurrentSong():MusicLengthSeconds()/songLength
+	local stream=Step:GetRadarValues(GAMESTATE:GetMasterPlayerNumber()):GetValue('RadarCategory_Stream')*GAMESTATE:GetCurrentSong():MusicLengthSeconds()/songLength
 	local radar_voltage=voltage-0.5
 	local radar_stream=stream-0.5
 	local bpms=Step:GetTimingData():GetActualBPM()
-	local tapspoint=Step:GetRadarValues(PLAYER_1):GetValue('RadarCategory_TapsAndHolds')
-	tapspoint=Step:GetRadarValues(PLAYER_1):GetValue('RadarCategory_Jumps')/1.05+tapspoint
+	local tapspoint=Step:GetRadarValues(GAMESTATE:GetMasterPlayerNumber()):GetValue('RadarCategory_TapsAndHolds')
+	tapspoint=Step:GetRadarValues(GAMESTATE:GetMasterPlayerNumber()):GetValue('RadarCategory_Jumps')/1.05+tapspoint
 	tapspoint=((radar_stream>=0) and radar_stream*66 or radar_stream*50)+tapspoint
 	tapspoint=((radar_voltage>=0) and radar_voltage*80 or radar_voltage*50)+tapspoint
 	tapspoint=math.max(tapspoint-666,0)*1.05+tapspoint
-	tapspoint=Step:GetRadarValues(PLAYER_1):GetValue('RadarCategory_Mines')/8+tapspoint
-	tapspoint=Step:GetRadarValues(PLAYER_1):GetValue('RadarCategory_Holds')/8+tapspoint
-	tapspoint=Step:GetRadarValues(PLAYER_1):GetValue('RadarCategory_Rolls')+tapspoint
-	tapspoint=Step:GetRadarValues(PLAYER_1):GetValue('RadarCategory_Chaos')*10+tapspoint
+	tapspoint=Step:GetRadarValues(GAMESTATE:GetMasterPlayerNumber()):GetValue('RadarCategory_Mines')/8+tapspoint
+	tapspoint=Step:GetRadarValues(GAMESTATE:GetMasterPlayerNumber()):GetValue('RadarCategory_Holds')/8+tapspoint
+	tapspoint=Step:GetRadarValues(GAMESTATE:GetMasterPlayerNumber()):GetValue('RadarCategory_Rolls')+tapspoint
+	tapspoint=Step:GetRadarValues(GAMESTATE:GetMasterPlayerNumber()):GetValue('RadarCategory_Chaos')*10+tapspoint
 	tapspoint=25+tapspoint
 	tapspoint=math.max(130-bpms[1],0)+tapspoint
 	tapspoint=math.max(math.min(bpms[2],400)-160,0)/5+tapspoint

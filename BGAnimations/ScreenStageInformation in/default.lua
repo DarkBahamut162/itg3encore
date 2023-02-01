@@ -36,6 +36,13 @@ if getenv("ShowModsP1") or getenv("ShowModsP2") then
 	end
 end
 
+for i,pn in ipairs(GAMESTATE:GetEnabledPlayers()) do
+	setenv("EvalCombo"..ToEnumShortString(pn),true)
+	setenv("LastFantastic"..ToEnumShortString(pn),0)
+	setenv("LastPerfect"..ToEnumShortString(pn),0)
+	setenv("LastGreat"..ToEnumShortString(pn),0)
+end
+
 return Def.ActorFrame{
 	Def.Quad{
 		OnCommand=function(self) self:FullScreen():diffusecolor(Color.Black) end

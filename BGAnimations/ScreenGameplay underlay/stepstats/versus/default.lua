@@ -130,311 +130,325 @@ if getenv("ShowStatsP1") == nil or getenv("ShowStatsP2") == nil then return Def.
 		local totalWidth	= 202
 		for pn in ivalues(GAMESTATE:GetEnabledPlayers()) do barCenter[pn] = -totalWidth/2+barWidth[bgNum[pn]]/2 end
 		t[#t+1] = Def.ActorFrame{
-			OnCommand=function(self) self:zoomx(2/3) end,
-			LoadActor("../single/s_bg7"),
-			LoadActor("../single/s_bg_7"),
-			Def.ActorFrame{
-				Name="BarLabels",
-				InitCommand=function(self) self:visible(GAMESTATE:GetCurrentStageIndex()==0) end,
-				LoadFont("_v 26px bold black")..{
-					Text="Target P1",
-					InitCommand=function(self) self:rotationz(-90):addx(barCenter[PLAYER_1]):shadowlength(0):queuecommand("FadeOn") end,
-					FadeOnCommand=function(self) self:sleep(2):linear(1):diffusealpha(0) end
-				},
-				LoadFont("_v 26px bold black")..{
-					Condition=topscore[PLAYER_1] ~= nil,
-					Text="Highscore P1",
-					InitCommand=function(self) self:rotationz(-90):addx(barCenter[PLAYER_1]+(barWidth[bgNum[PLAYER_1]]+barSpace[bgNum[PLAYER_1]])*1):shadowlength(0):queuecommand("FadeOn") end,
-					FadeOnCommand=function(self) self:sleep(2.25):linear(1):diffusealpha(0) end
-				},
-				LoadFont("_v 26px bold black")..{
-					Text=PROFILEMAN:GetPlayerName(PLAYER_1),
-					InitCommand=function(self) self:rotationz(-90):addx(barCenter[PLAYER_1]+(barWidth[bgNum[PLAYER_1]]+barSpace[bgNum[PLAYER_1]])*(topscore[PLAYER_1] ~= nil and 2 or 1)):shadowlength(0):queuecommand("FadeOn") end,
-					FadeOnCommand=function(self) self:sleep(2.5):linear(1):diffusealpha(0) end
-				},
-				LoadFont("_v 26px bold black")..{
-					Text=PROFILEMAN:GetPlayerName(PLAYER_2),
-					InitCommand=function(self) self:rotationz(-90):addx(barCenter[PLAYER_2]+(barWidth[bgNum[PLAYER_2]]+barSpace[bgNum[PLAYER_2]])*(bgNum[PLAYER_2]/2)):shadowlength(0):queuecommand("FadeOn") end,
-					FadeOnCommand=function(self) self:sleep(2.5):linear(1):diffusealpha(0) end
-				},
-				LoadFont("_v 26px bold black")..{
-					Condition=topscore[PLAYER_2] ~= nil,
-					Text="Highscore P2",
-					InitCommand=function(self) self:rotationz(-90):addx(barCenter[PLAYER_2]+(barWidth[bgNum[PLAYER_2]]+barSpace[bgNum[PLAYER_2]])*(bgNum[PLAYER_2]/2+(topscore[PLAYER_2] ~= nil and 1 or 0))):shadowlength(0):queuecommand("FadeOn") end,
-					FadeOnCommand=function(self) self:sleep(2.75):linear(1):diffusealpha(0) end
-				},
-				LoadFont("_v 26px bold black")..{
-					Text="Target P2",
-					InitCommand=function(self) self:rotationz(-90):addx(barCenter[PLAYER_2]+(barWidth[bgNum[PLAYER_2]]+barSpace[bgNum[PLAYER_2]])*(bgNum[PLAYER_2]/2+(topscore[PLAYER_2] ~= nil and 2 or 1))):shadowlength(0):queuecommand("FadeOn") end,
-					FadeOnCommand=function(self) self:sleep(3):linear(1):diffusealpha(0) end
-				}
+			OnCommand=function(self) self:zoomx(isFinal() and 3/5 or 2/3) end,
+			LoadActor("../single/s_"..(isFinal() and "final" or "normal"))..{
+				InitCommand=function(self) self:y(isFinal() and -14 or 0):zoomy(isFinal() and 0.75 or 1) end
 			},
 			LoadFont("_z bold gray 36px")..{
 				Name="Pacemaker",
 				Text="Pacemaker",
 				OnCommand=function(self) self:horizalign(center):zoom(0.5):shadowlength(0):addy(-145) end
 			},
-			LoadFont("ScreenGameplay judgment")..{
-				Name="PlayerName",
-				OnCommand=function(self) self:maxwidth(125):horizalign(center):zoom(0.75):shadowlength(0):addy(145):settext("P"):diffuse(Color("Blue")) end
-			},
-			LoadFont("ScreenGameplay judgment")..{
-				Name="TargetName",
-				OnCommand=function(self) self:maxwidth(125):horizalign(center):zoom(0.75):shadowlength(0):addy(125):settext("T"):diffuse(Color("Red")) end
-			},
-
-			LoadFont("_z numbers")..{
-				Name="PlayerPointsP1",
-				Text="0",
-				OnCommand=function(self)
-					self:maxwidth(90):horizalign(left):zoom(0.75):shadowlength(0):addy(145):addx(-100):diffuse(PlayerColor(PLAYER_1))
-					:settext(STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_1):GetActualDancePoints())
-				end,
-				JudgmentMessageCommand=function(self,param) if param.Player == PLAYER_1 then self:queuecommand("Update") end end,
-				UpdateCommand=function(self) self:settext(STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_1):GetActualDancePoints()) end
-			},
-			LoadFont("_z numbers")..{
-				Name="TargetPointsP1",
-				Text="0",
-				OnCommand=function(self)
-					local target = THEME:GetMetric("PlayerStageStats", "GradePercentTier" .. string.format("%02d", 17-getenv("SetPacemaker"..ToEnumShortString(PLAYER_1))))
-					self:maxwidth(90):horizalign(left):zoom(0.75):shadowlength(0):addy(125):addx(-100):diffuse(PlayerColor(PLAYER_1))
-					:settext(math.ceil(target*STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_1):GetPossibleDancePoints()))
-				end
-			},
-			LoadFont("_z numbers")..{
-				Name="PlayerPointsP2",
-				Text="0",
-				OnCommand=function(self)
-					self:maxwidth(90):horizalign(right):zoom(0.75):shadowlength(0):addy(145):addx(100):diffuse(PlayerColor(PLAYER_2))
-					:settext(STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_2):GetActualDancePoints())
-				end,
-				JudgmentMessageCommand=function(self,param) if param.Player == PLAYER_2 then self:queuecommand("Update") end end,
-				UpdateCommand=function(self) self:settext(STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_2):GetActualDancePoints()) end
-			},
-			LoadFont("_z numbers")..{
-				Name="TargetPointsP2",
-				Text="0",
-				OnCommand=function(self)
-					local target = THEME:GetMetric("PlayerStageStats", "GradePercentTier" .. string.format("%02d", 17-getenv("SetPacemaker"..ToEnumShortString(PLAYER_2))))
-					self:maxwidth(90):horizalign(right):zoom(0.75):shadowlength(0):addy(125):addx(100):diffuse(PlayerColor(PLAYER_2))
-					:settext(math.ceil(target*STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_2):GetPossibleDancePoints()))
-				end
-			},
-
-			LoadFont("_z numbers")..{
-				Name="PlayerHighscoreDifferenceP1",
-				OnCommand=function(self)
-					self:diffuse(color("#00FF00FF")):maxwidth(75):horizalign(right):zoom(0.375):shadowlength(0):addy(142):addx(-100)
-					if topscore[PLAYER_1] ~= nil then self:settextf( "%+04d", 0 ) end
-				end,
-				JudgmentMessageCommand=function(self,param) if param.Player == PLAYER_1 and topscore[PLAYER_1] ~= nil then self:queuecommand("Update") end end,
-				UpdateCommand=function(self)
-					local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_1)
-					local DPCurMax = pss:GetCurrentPossibleDancePoints()
-					local curPlayerDP = pss:GetActualDancePoints()
-					local curHighscoreDP = math.ceil(DPCurMax*topscore[PLAYER_1]:GetPercentDP())
-					self:settextf( "%+04d", (curPlayerDP-curHighscoreDP) )
-				end
-			},
-			LoadFont("_z numbers")..{
-				Name="PlayerTargetDifferenceP1",
-				OnCommand=function(self)
-					self:diffuse(color("#FF0000FF")):maxwidth(75):horizalign(right):zoom(0.375):shadowlength(0):addy(148):addx(-100):settextf( "%+04d", 0 )
-					if topscore[PLAYER_1] == nil then self:addy(-3) end
-				end,
-				JudgmentMessageCommand=function(self,param) if param.Player == PLAYER_1 then self:queuecommand("Update") end end,
-				UpdateCommand=function(self)
-					local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_1)
-					local DPCurMax = pss:GetCurrentPossibleDancePoints()
-					local curPlayerDP = pss:GetActualDancePoints()
-					local target = THEME:GetMetric("PlayerStageStats", "GradePercentTier" .. string.format("%02d", 17-getenv("SetPacemaker"..ToEnumShortString(PLAYER_1))))
-					local curTargetDP = math.ceil(DPCurMax*target)
-					self:settextf( "%+04d", (curPlayerDP-curTargetDP) )
-				end
-			},
-			LoadFont("_z numbers")..{
-				Name="PlayerHighscoreDifferenceP2",
-				OnCommand=function(self)
-					self:diffuse(color("#00FF00FF")):maxwidth(75):horizalign(left):zoom(0.375):shadowlength(0):addy(142):addx(100)
-					if topscore[PLAYER_2] ~= nil then self:settextf( "%+04d", 0 ) end
-				end,
-				JudgmentMessageCommand=function(self,param) if param.Player == PLAYER_2 and topscore[PLAYER_2] ~= nil then self:queuecommand("Update") end end,
-				UpdateCommand=function(self)
-					local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_2)
-					local DPCurMax = pss:GetCurrentPossibleDancePoints()
-					local curPlayerDP = pss:GetActualDancePoints()
-					local curHighscoreDP = math.ceil(DPCurMax*topscore[PLAYER_2]:GetPercentDP())
-					self:settextf( "%+04d", (curPlayerDP-curHighscoreDP) )
-				end
-			},
-			LoadFont("_z numbers")..{
-				Name="PlayerTargetDifferenceP2",
-				OnCommand=function(self)
-					self:diffuse(color("#FF0000FF")):maxwidth(75):horizalign(left):zoom(0.375):shadowlength(0):addy(148):addx(100):settextf( "%+04d", 0 )
-					if topscore[PLAYER_2] == nil then self:addy(-3) end
-				end,
-				JudgmentMessageCommand=function(self,param) if param.Player == PLAYER_2 then self:queuecommand("Update") end end,
-				UpdateCommand=function(self)
-					local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_2)
-					local DPCurMax = pss:GetCurrentPossibleDancePoints()
-					local curPlayerDP = pss:GetActualDancePoints()
-					local target = THEME:GetMetric("PlayerStageStats", "GradePercentTier" .. string.format("%02d", 17-getenv("SetPacemaker"..ToEnumShortString(PLAYER_2))))
-					local curTargetDP = math.ceil(DPCurMax*target)
-					self:settextf( "%+04d", (curPlayerDP-curTargetDP) )
-				end
-			},
-
-			LoadActor("../w6")..{
-				OnCommand=function(self)
-					local target = THEME:GetMetric("PlayerStageStats", "GradePercentTier" .. string.format("%02d", 17-getenv("SetPacemaker"..ToEnumShortString(PLAYER_1))))
-					self:vertalign(bottom):addx(barCenter[PLAYER_1]):addy(barHeight/2):zoomx(0.01*barWidth[bgNum[PLAYER_1]]):zoomy(target*barHeight):diffusealpha(0.25)
-				end
-			},
-			LoadActor("../w3")..{
-				OnCommand=function(self)
-					self:vertalign(bottom):addx(barCenter[PLAYER_1]+(barWidth[bgNum[PLAYER_1]]+barSpace[bgNum[PLAYER_1]])*1):addy(barHeight/2):zoomx(0.01*barWidth[bgNum[PLAYER_1]]):zoomy(barHeight):diffusealpha(0.25)
-					if topscore[PLAYER_1] ~= nil then self:zoomy(topscore[PLAYER_1]:GetPercentDP()*barHeight) else self:cropright(0.5) end
-				end,
-				JudgmentMessageCommand=function(self,param) if param.Player == PLAYER_1 and topscore[PLAYER_1] == nil then self:queuecommand("Update") end end,
-				UpdateCommand=function(self)
-					local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_1)
-					local DPCurMax = pss:GetCurrentPossibleDancePoints()
-					local DPMax = pss:GetPossibleDancePoints()
-					local DP = pss:GetActualDancePoints()
-					self:zoomy(((DPMax-(DPCurMax-DP))/DPMax)*barHeight)
-				end
-			},
-			LoadActor("../w1")..{
-				OnCommand=function(self)
-					self:vertalign(bottom):addx(barCenter[PLAYER_1]+(barWidth[bgNum[PLAYER_1]]+barSpace[bgNum[PLAYER_1]])*(topscore[PLAYER_1] ~= nil and 2 or 1)):addy(barHeight/2):zoomx(0.01*barWidth[bgNum[PLAYER_1]]):zoomy(barHeight):diffusealpha(0.25)
-					if topscore[PLAYER_1] == nil then self:cropleft(0.5) end
-				end,
-				JudgmentMessageCommand=function(self,param) if param.Player == PLAYER_1 then self:queuecommand("Update") end end,
-				UpdateCommand=function(self)
-					local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_1)
-					local DPCurMax = pss:GetCurrentPossibleDancePoints()
-					local DPMax = pss:GetPossibleDancePoints()
-					local DP = pss:GetActualDancePoints()
-					self:zoomy(((DPMax-(DPCurMax-DP))/DPMax)*barHeight)
-				end
-			},
-			LoadActor("../w1")..{
-				OnCommand=function(self)
-					self:vertalign(bottom):addx(barCenter[PLAYER_2]+(barWidth[bgNum[PLAYER_2]]+barSpace[bgNum[PLAYER_2]])*bgNum[PLAYER_2]/2):addy(barHeight/2):zoomx(0.01*barWidth[bgNum[PLAYER_2]]):zoomy(barHeight):diffusealpha(0.25)
-					if topscore[PLAYER_2] == nil then self:cropright(0.5) end
-				end,
-				JudgmentMessageCommand=function(self,param) if param.Player == PLAYER_2 then self:queuecommand("Update") end end,
-				UpdateCommand=function(self)
-					local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_2)
-					local DPCurMax = pss:GetCurrentPossibleDancePoints()
-					local DPMax = pss:GetPossibleDancePoints()
-					local DP = pss:GetActualDancePoints()
-					self:zoomy(((DPMax-(DPCurMax-DP))/DPMax)*barHeight)
-				end
-			},
-			LoadActor("../w3")..{
-				OnCommand=function(self)
-					self:vertalign(bottom):addx(barCenter[PLAYER_2]+(barWidth[bgNum[PLAYER_2]]+barSpace[bgNum[PLAYER_2]])*(bgNum[PLAYER_2]/2+(topscore[PLAYER_2] ~= nil and 1 or 0))):addy(barHeight/2):zoomx(0.01*barWidth[bgNum[PLAYER_2]]):zoomy(barHeight):diffusealpha(0.25)
-					if topscore[PLAYER_2] ~= nil then self:zoomy(topscore[PLAYER_2]:GetPercentDP()*barHeight) else self:cropleft(0.5) end
-				end,
-				JudgmentMessageCommand=function(self,param) if param.Player == PLAYER_2 and topscore[PLAYER_2] == nil then self:queuecommand("Update") end end,
-				UpdateCommand=function(self)
-					local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_2)
-					local DPCurMax = pss:GetCurrentPossibleDancePoints()
-					local DPMax = pss:GetPossibleDancePoints()
-					local DP = pss:GetActualDancePoints()
-					self:zoomy(((DPMax-(DPCurMax-DP))/DPMax)*barHeight)
-				end
-			},
-			LoadActor("../w6")..{
-				OnCommand=function(self)
-					local target = THEME:GetMetric("PlayerStageStats", "GradePercentTier" .. string.format("%02d", 17-getenv("SetPacemaker"..ToEnumShortString(PLAYER_2))))
-					self:vertalign(bottom):addx(barCenter[PLAYER_2]+(barWidth[bgNum[PLAYER_2]]+barSpace[bgNum[PLAYER_2]])*(bgNum[PLAYER_2]/2+(topscore[PLAYER_2] ~= nil and 2 or 1))):addy(barHeight/2):zoomx(0.01*barWidth[bgNum[PLAYER_2]]):zoomy(target*barHeight):diffusealpha(0.25)
-				end
-			},
-
-			LoadActor("../w6")..{
-				InitCommand=function(self) self:vertalign(bottom):addx(barCenter[PLAYER_1]+(barWidth[bgNum[PLAYER_1]]+barSpace[bgNum[PLAYER_1]])*0):addy(barHeight/2):zoomx(0.01*barWidth[bgNum[PLAYER_1]]):zoomy(0) end,
-				JudgmentMessageCommand=function(self,param) if param.Player == PLAYER_1 then self:queuecommand("Update") end end,
-				UpdateCommand=function(self)
-					local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_1)
-					local DPCurMax = pss:GetCurrentPossibleDancePoints()
-					local DPMax = pss:GetPossibleDancePoints()
-					local target = THEME:GetMetric("PlayerStageStats", "GradePercentTier" .. string.format("%02d", 17-getenv("SetPacemaker"..ToEnumShortString(PLAYER_1))))
-					self:zoomy(DPCurMax/DPMax*target*barHeight)
-				end
-			},
-			LoadActor("../w3")..{
-				InitCommand=function(self)
-					self:vertalign(bottom):addx(barCenter[PLAYER_1]+(barWidth[bgNum[PLAYER_1]]+barSpace[bgNum[PLAYER_1]])*1):addy(barHeight/2):zoomx(0.01*barWidth[bgNum[PLAYER_1]]):zoomy(0)
-					if topscore[PLAYER_1] == nil then self:cropright(0.5) end
-				end,
-				JudgmentMessageCommand=function(self,param) if param.Player == PLAYER_1 then self:queuecommand("Update") end end,
-				UpdateCommand=function(self)
-					local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_1)
-					local DPCurMax = pss:GetCurrentPossibleDancePoints()
-					if topscore[PLAYER_1] then
+			
+			Def.ActorFrame{
+				InitCommand=function(self) self:y(isFinal() and -28 or 0):zoomy(isFinal() and 0.75 or 1) end,
+				LoadActor("../single/s_bg7"),
+				LoadActor("../single/s_bg_7")..{
+					InitCommand=function(self) self:cropleft(0.025):cropright(0.025):diffusealpha(0.5) end
+				},
+				LoadActor("../single/s_glow final")..{
+					Condition=isFinal(),
+					InitCommand=function(self) self:blend(Blend.Add):y(19):diffuseramp():effectcolor1(color("#FFFFFF00")):effectcolor2(color("#FFFFFF")):effectperiod(0.5):effect_hold_at_full(0.5):effectclock('beat') end
+				},
+				LoadActor("../w6")..{
+					OnCommand=function(self)
+						local target = THEME:GetMetric("PlayerStageStats", "GradePercentTier" .. string.format("%02d", 17-getenv("SetPacemaker"..ToEnumShortString(PLAYER_1))))
+						self:vertalign(bottom):addx(barCenter[PLAYER_1]):addy(barHeight/2):zoomx(0.01*barWidth[bgNum[PLAYER_1]]):zoomy(target*barHeight):diffusealpha(0.25)
+					end
+				},
+				LoadActor("../w3")..{
+					OnCommand=function(self)
+						self:vertalign(bottom):addx(barCenter[PLAYER_1]+(barWidth[bgNum[PLAYER_1]]+barSpace[bgNum[PLAYER_1]])*1):addy(barHeight/2):zoomx(0.01*barWidth[bgNum[PLAYER_1]]):zoomy(barHeight):diffusealpha(0.25)
+						if topscore[PLAYER_1] ~= nil then self:zoomy(topscore[PLAYER_1]:GetPercentDP()*barHeight) else self:cropright(0.5) end
+					end,
+					JudgmentMessageCommand=function(self,param) if param.Player == PLAYER_1 and topscore[PLAYER_1] == nil then self:queuecommand("Update") end end,
+					UpdateCommand=function(self)
+						local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_1)
+						local DPCurMax = pss:GetCurrentPossibleDancePoints()
 						local DPMax = pss:GetPossibleDancePoints()
-						self:zoomy(DPCurMax/DPMax*topscore[PLAYER_1]:GetPercentDP()*barHeight)
-					else
+						local DP = pss:GetActualDancePoints()
+						self:zoomy(((DPMax-(DPCurMax-DP))/DPMax)*barHeight)
+					end
+				},
+				LoadActor("../w1")..{
+					OnCommand=function(self)
+						self:vertalign(bottom):addx(barCenter[PLAYER_1]+(barWidth[bgNum[PLAYER_1]]+barSpace[bgNum[PLAYER_1]])*(topscore[PLAYER_1] ~= nil and 2 or 1)):addy(barHeight/2):zoomx(0.01*barWidth[bgNum[PLAYER_1]]):zoomy(barHeight):diffusealpha(0.25)
+						if topscore[PLAYER_1] == nil then self:cropleft(0.5) end
+					end,
+					JudgmentMessageCommand=function(self,param) if param.Player == PLAYER_1 then self:queuecommand("Update") end end,
+					UpdateCommand=function(self)
+						local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_1)
+						local DPCurMax = pss:GetCurrentPossibleDancePoints()
+						local DPMax = pss:GetPossibleDancePoints()
+						local DP = pss:GetActualDancePoints()
+						self:zoomy(((DPMax-(DPCurMax-DP))/DPMax)*barHeight)
+					end
+				},
+				LoadActor("../w1")..{
+					OnCommand=function(self)
+						self:vertalign(bottom):addx(barCenter[PLAYER_2]+(barWidth[bgNum[PLAYER_2]]+barSpace[bgNum[PLAYER_2]])*bgNum[PLAYER_2]/2):addy(barHeight/2):zoomx(0.01*barWidth[bgNum[PLAYER_2]]):zoomy(barHeight):diffusealpha(0.25)
+						if topscore[PLAYER_2] == nil then self:cropright(0.5) end
+					end,
+					JudgmentMessageCommand=function(self,param) if param.Player == PLAYER_2 then self:queuecommand("Update") end end,
+					UpdateCommand=function(self)
+						local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_2)
+						local DPCurMax = pss:GetCurrentPossibleDancePoints()
+						local DPMax = pss:GetPossibleDancePoints()
+						local DP = pss:GetActualDancePoints()
+						self:zoomy(((DPMax-(DPCurMax-DP))/DPMax)*barHeight)
+					end
+				},
+				LoadActor("../w3")..{
+					OnCommand=function(self)
+						self:vertalign(bottom):addx(barCenter[PLAYER_2]+(barWidth[bgNum[PLAYER_2]]+barSpace[bgNum[PLAYER_2]])*(bgNum[PLAYER_2]/2+(topscore[PLAYER_2] ~= nil and 1 or 0))):addy(barHeight/2):zoomx(0.01*barWidth[bgNum[PLAYER_2]]):zoomy(barHeight):diffusealpha(0.25)
+						if topscore[PLAYER_2] ~= nil then self:zoomy(topscore[PLAYER_2]:GetPercentDP()*barHeight) else self:cropleft(0.5) end
+					end,
+					JudgmentMessageCommand=function(self,param) if param.Player == PLAYER_2 and topscore[PLAYER_2] == nil then self:queuecommand("Update") end end,
+					UpdateCommand=function(self)
+						local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_2)
+						local DPCurMax = pss:GetCurrentPossibleDancePoints()
+						local DPMax = pss:GetPossibleDancePoints()
+						local DP = pss:GetActualDancePoints()
+						self:zoomy(((DPMax-(DPCurMax-DP))/DPMax)*barHeight)
+					end
+				},
+				LoadActor("../w6")..{
+					OnCommand=function(self)
+						local target = THEME:GetMetric("PlayerStageStats", "GradePercentTier" .. string.format("%02d", 17-getenv("SetPacemaker"..ToEnumShortString(PLAYER_2))))
+						self:vertalign(bottom):addx(barCenter[PLAYER_2]+(barWidth[bgNum[PLAYER_2]]+barSpace[bgNum[PLAYER_2]])*(bgNum[PLAYER_2]/2+(topscore[PLAYER_2] ~= nil and 2 or 1))):addy(barHeight/2):zoomx(0.01*barWidth[bgNum[PLAYER_2]]):zoomy(target*barHeight):diffusealpha(0.25)
+					end
+				},
+
+				LoadActor("../w6")..{
+					InitCommand=function(self) self:vertalign(bottom):addx(barCenter[PLAYER_1]+(barWidth[bgNum[PLAYER_1]]+barSpace[bgNum[PLAYER_1]])*0):addy(barHeight/2):zoomx(0.01*barWidth[bgNum[PLAYER_1]]):zoomy(0) end,
+					JudgmentMessageCommand=function(self,param) if param.Player == PLAYER_1 then self:queuecommand("Update") end end,
+					UpdateCommand=function(self)
+						local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_1)
+						local DPCurMax = pss:GetCurrentPossibleDancePoints()
+						local DPMax = pss:GetPossibleDancePoints()
+						local target = THEME:GetMetric("PlayerStageStats", "GradePercentTier" .. string.format("%02d", 17-getenv("SetPacemaker"..ToEnumShortString(PLAYER_1))))
+						self:zoomy(DPCurMax/DPMax*target*barHeight)
+					end
+				},
+				LoadActor("../w3")..{
+					InitCommand=function(self)
+						self:vertalign(bottom):addx(barCenter[PLAYER_1]+(barWidth[bgNum[PLAYER_1]]+barSpace[bgNum[PLAYER_1]])*1):addy(barHeight/2):zoomx(0.01*barWidth[bgNum[PLAYER_1]]):zoomy(0)
+						if topscore[PLAYER_1] == nil then self:cropright(0.5) end
+					end,
+					JudgmentMessageCommand=function(self,param) if param.Player == PLAYER_1 then self:queuecommand("Update") end end,
+					UpdateCommand=function(self)
+						local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_1)
+						local DPCurMax = pss:GetCurrentPossibleDancePoints()
+						if topscore[PLAYER_1] then
+							local DPMax = pss:GetPossibleDancePoints()
+							self:zoomy(DPCurMax/DPMax*topscore[PLAYER_1]:GetPercentDP()*barHeight)
+						else
+							local DP = pss:GetPercentDancePoints()
+							self:zoomy(DP*barHeight)
+						end
+					end
+				},
+				LoadActor("../w1")..{
+					InitCommand=function(self)
+						self:vertalign(bottom):addx(barCenter[PLAYER_1]+(barWidth[bgNum[PLAYER_1]]+barSpace[bgNum[PLAYER_1]])*(topscore[PLAYER_1] ~= nil and 2 or 1)):addy(barHeight/2):zoomx(0.01*barWidth[bgNum[PLAYER_1]]):zoomy(0)
+						if topscore[PLAYER_1] == nil then self:cropleft(0.5) end
+					end,
+					JudgmentMessageCommand=function(self,param) if param.Player == PLAYER_1 then self:queuecommand("Update") end end,
+					UpdateCommand=function(self)
+						local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_1)
 						local DP = pss:GetPercentDancePoints()
 						self:zoomy(DP*barHeight)
 					end
-				end
-			},
-			LoadActor("../w1")..{
-				InitCommand=function(self)
-					self:vertalign(bottom):addx(barCenter[PLAYER_1]+(barWidth[bgNum[PLAYER_1]]+barSpace[bgNum[PLAYER_1]])*(topscore[PLAYER_1] ~= nil and 2 or 1)):addy(barHeight/2):zoomx(0.01*barWidth[bgNum[PLAYER_1]]):zoomy(0)
-					if topscore[PLAYER_1] == nil then self:cropleft(0.5) end
-				end,
-				JudgmentMessageCommand=function(self,param) if param.Player == PLAYER_1 then self:queuecommand("Update") end end,
-				UpdateCommand=function(self)
-					local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_1)
-					local DP = pss:GetPercentDancePoints()
-					self:zoomy(DP*barHeight)
-				end
-			},
-			LoadActor("../w1")..{
-				InitCommand=function(self)
-					self:vertalign(bottom):addx(barCenter[PLAYER_2]+(barWidth[bgNum[PLAYER_2]]+barSpace[bgNum[PLAYER_2]])*(bgNum[PLAYER_2]/2)):addy(barHeight/2):zoomx(0.01*barWidth[bgNum[PLAYER_2]]):zoomy(0)
-					if topscore[PLAYER_2] == nil then self:cropright(0.5) end
-				end,
-				JudgmentMessageCommand=function(self,param) if param.Player == PLAYER_2 then self:queuecommand("Update") end end,
-				UpdateCommand=function(self)
-					local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_2)
-					local DP = pss:GetPercentDancePoints()
-					self:zoomy(DP*barHeight)
-				end
-			},
-			LoadActor("../w3")..{
-				InitCommand=function(self)
-					self:vertalign(bottom):addx(barCenter[PLAYER_2]+(barWidth[bgNum[PLAYER_2]]+barSpace[bgNum[PLAYER_2]])*(bgNum[PLAYER_2]/2+(topscore[PLAYER_2] ~= nil and 1 or 0))):addy(barHeight/2):zoomx(0.01*barWidth[bgNum[PLAYER_2]]):zoomy(0)
-					if topscore[PLAYER_2] == nil then self:cropleft(0.5) end
-				end,
-				JudgmentMessageCommand=function(self,param) if param.Player == PLAYER_2 then self:queuecommand("Update") end end,
-				UpdateCommand=function(self)
-					local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_2)
-					local DPCurMax = pss:GetCurrentPossibleDancePoints()
-					if topscore[PLAYER_2] then
-						local DPMax = pss:GetPossibleDancePoints()
-						self:zoomy(DPCurMax/DPMax*topscore[PLAYER_2]:GetPercentDP()*barHeight)
-					else
+				},
+				LoadActor("../w1")..{
+					InitCommand=function(self)
+						self:vertalign(bottom):addx(barCenter[PLAYER_2]+(barWidth[bgNum[PLAYER_2]]+barSpace[bgNum[PLAYER_2]])*(bgNum[PLAYER_2]/2)):addy(barHeight/2):zoomx(0.01*barWidth[bgNum[PLAYER_2]]):zoomy(0)
+						if topscore[PLAYER_2] == nil then self:cropright(0.5) end
+					end,
+					JudgmentMessageCommand=function(self,param) if param.Player == PLAYER_2 then self:queuecommand("Update") end end,
+					UpdateCommand=function(self)
+						local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_2)
 						local DP = pss:GetPercentDancePoints()
 						self:zoomy(DP*barHeight)
 					end
-				end
+				},
+				LoadActor("../w3")..{
+					InitCommand=function(self)
+						self:vertalign(bottom):addx(barCenter[PLAYER_2]+(barWidth[bgNum[PLAYER_2]]+barSpace[bgNum[PLAYER_2]])*(bgNum[PLAYER_2]/2+(topscore[PLAYER_2] ~= nil and 1 or 0))):addy(barHeight/2):zoomx(0.01*barWidth[bgNum[PLAYER_2]]):zoomy(0)
+						if topscore[PLAYER_2] == nil then self:cropleft(0.5) end
+					end,
+					JudgmentMessageCommand=function(self,param) if param.Player == PLAYER_2 then self:queuecommand("Update") end end,
+					UpdateCommand=function(self)
+						local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_2)
+						local DPCurMax = pss:GetCurrentPossibleDancePoints()
+						if topscore[PLAYER_2] then
+							local DPMax = pss:GetPossibleDancePoints()
+							self:zoomy(DPCurMax/DPMax*topscore[PLAYER_2]:GetPercentDP()*barHeight)
+						else
+							local DP = pss:GetPercentDancePoints()
+							self:zoomy(DP*barHeight)
+						end
+					end
+				},
+				LoadActor("../w6")..{
+					InitCommand=function(self) self:vertalign(bottom):addx(barCenter[PLAYER_2]+(barWidth[bgNum[PLAYER_2]]+barSpace[bgNum[PLAYER_2]])*(bgNum[PLAYER_2]/2+(topscore[PLAYER_2] ~= nil and 2 or 1))):addy(barHeight/2):zoomx(0.01*barWidth[bgNum[PLAYER_2]]):zoomy(0) end,
+					JudgmentMessageCommand=function(self,param) if param.Player == PLAYER_2 then self:queuecommand("Update") end end,
+					UpdateCommand=function(self)
+						local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_2)
+						local DPCurMax = pss:GetCurrentPossibleDancePoints()
+						local DPMax = pss:GetPossibleDancePoints()
+						local target = THEME:GetMetric("PlayerStageStats", "GradePercentTier" .. string.format("%02d", 17-getenv("SetPacemaker"..ToEnumShortString(PLAYER_2))))
+						self:zoomy(DPCurMax/DPMax*target*barHeight)
+					end
+				},
+				Def.ActorFrame{
+					Name="BarLabels",
+					InitCommand=function(self) self:visible(GAMESTATE:GetCurrentStageIndex()==0) end,
+					LoadFont("_v 26px bold black")..{
+						Text="Target P1",
+						InitCommand=function(self) self:rotationz(-90):addx(barCenter[PLAYER_1]):shadowlength(0):queuecommand("FadeOn") end,
+						FadeOnCommand=function(self) self:sleep(2):linear(1):diffusealpha(0) end
+					},
+					LoadFont("_v 26px bold black")..{
+						Condition=topscore[PLAYER_1] ~= nil,
+						Text="Highscore P1",
+						InitCommand=function(self) self:rotationz(-90):addx(barCenter[PLAYER_1]+(barWidth[bgNum[PLAYER_1]]+barSpace[bgNum[PLAYER_1]])*1):shadowlength(0):queuecommand("FadeOn") end,
+						FadeOnCommand=function(self) self:sleep(2.25):linear(1):diffusealpha(0) end
+					},
+					LoadFont("_v 26px bold black")..{
+						Text=PROFILEMAN:GetPlayerName(PLAYER_1),
+						InitCommand=function(self) self:rotationz(-90):addx(barCenter[PLAYER_1]+(barWidth[bgNum[PLAYER_1]]+barSpace[bgNum[PLAYER_1]])*(topscore[PLAYER_1] ~= nil and 2 or 1)):shadowlength(0):queuecommand("FadeOn") end,
+						FadeOnCommand=function(self) self:sleep(2.5):linear(1):diffusealpha(0) end
+					},
+					LoadFont("_v 26px bold black")..{
+						Text=PROFILEMAN:GetPlayerName(PLAYER_2),
+						InitCommand=function(self) self:rotationz(-90):addx(barCenter[PLAYER_2]+(barWidth[bgNum[PLAYER_2]]+barSpace[bgNum[PLAYER_2]])*(bgNum[PLAYER_2]/2)):shadowlength(0):queuecommand("FadeOn") end,
+						FadeOnCommand=function(self) self:sleep(2.5):linear(1):diffusealpha(0) end
+					},
+					LoadFont("_v 26px bold black")..{
+						Condition=topscore[PLAYER_2] ~= nil,
+						Text="Highscore P2",
+						InitCommand=function(self) self:rotationz(-90):addx(barCenter[PLAYER_2]+(barWidth[bgNum[PLAYER_2]]+barSpace[bgNum[PLAYER_2]])*(bgNum[PLAYER_2]/2+(topscore[PLAYER_2] ~= nil and 1 or 0))):shadowlength(0):queuecommand("FadeOn") end,
+						FadeOnCommand=function(self) self:sleep(2.75):linear(1):diffusealpha(0) end
+					},
+					LoadFont("_v 26px bold black")..{
+						Text="Target P2",
+						InitCommand=function(self) self:rotationz(-90):addx(barCenter[PLAYER_2]+(barWidth[bgNum[PLAYER_2]]+barSpace[bgNum[PLAYER_2]])*(bgNum[PLAYER_2]/2+(topscore[PLAYER_2] ~= nil and 2 or 1))):shadowlength(0):queuecommand("FadeOn") end,
+						FadeOnCommand=function(self) self:sleep(3):linear(1):diffusealpha(0) end
+					}
+				}
 			},
-			LoadActor("../w6")..{
-				InitCommand=function(self) self:vertalign(bottom):addx(barCenter[PLAYER_2]+(barWidth[bgNum[PLAYER_2]]+barSpace[bgNum[PLAYER_2]])*(bgNum[PLAYER_2]/2+(topscore[PLAYER_2] ~= nil and 2 or 1))):addy(barHeight/2):zoomx(0.01*barWidth[bgNum[PLAYER_2]]):zoomy(0) end,
-				JudgmentMessageCommand=function(self,param) if param.Player == PLAYER_2 then self:queuecommand("Update") end end,
-				UpdateCommand=function(self)
-					local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_2)
-					local DPCurMax = pss:GetCurrentPossibleDancePoints()
-					local DPMax = pss:GetPossibleDancePoints()
-					local target = THEME:GetMetric("PlayerStageStats", "GradePercentTier" .. string.format("%02d", 17-getenv("SetPacemaker"..ToEnumShortString(PLAYER_2))))
-					self:zoomy(DPCurMax/DPMax*target*barHeight)
-				end
+			Def.ActorFrame{
+				InitCommand=function(self) self:y(isFinal() and -50 or 0) end,
+				LoadFont("ScreenGameplay judgment")..{
+					Name="PlayerName",
+					OnCommand=function(self) self:maxwidth(125):horizalign(center):zoom(0.75):shadowlength(0):addy(145):settext("P"):diffuse(Color("Blue")) end
+				},
+				LoadFont("ScreenGameplay judgment")..{
+					Name="TargetName",
+					OnCommand=function(self) self:maxwidth(125):horizalign(center):zoom(0.75):shadowlength(0):addy(125):settext("T"):diffuse(Color("Red")) end
+				},
+
+				LoadFont("_z numbers")..{
+					Name="PlayerPointsP1",
+					Text="0",
+					OnCommand=function(self)
+						self:maxwidth(90):horizalign(left):zoom(0.75):shadowlength(0):addy(145):addx(-100):diffuse(PlayerColor(PLAYER_1))
+						:settext(STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_1):GetActualDancePoints())
+					end,
+					JudgmentMessageCommand=function(self,param) if param.Player == PLAYER_1 then self:queuecommand("Update") end end,
+					UpdateCommand=function(self) self:settext(STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_1):GetActualDancePoints()) end
+				},
+				LoadFont("_z numbers")..{
+					Name="TargetPointsP1",
+					Text="0",
+					OnCommand=function(self)
+						local target = THEME:GetMetric("PlayerStageStats", "GradePercentTier" .. string.format("%02d", 17-getenv("SetPacemaker"..ToEnumShortString(PLAYER_1))))
+						self:maxwidth(90):horizalign(left):zoom(0.75):shadowlength(0):addy(125):addx(-100):diffuse(PlayerColor(PLAYER_1))
+						:settext(math.ceil(target*STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_1):GetPossibleDancePoints()))
+					end
+				},
+				LoadFont("_z numbers")..{
+					Name="PlayerPointsP2",
+					Text="0",
+					OnCommand=function(self)
+						self:maxwidth(90):horizalign(right):zoom(0.75):shadowlength(0):addy(145):addx(100):diffuse(PlayerColor(PLAYER_2))
+						:settext(STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_2):GetActualDancePoints())
+					end,
+					JudgmentMessageCommand=function(self,param) if param.Player == PLAYER_2 then self:queuecommand("Update") end end,
+					UpdateCommand=function(self) self:settext(STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_2):GetActualDancePoints()) end
+				},
+				LoadFont("_z numbers")..{
+					Name="TargetPointsP2",
+					Text="0",
+					OnCommand=function(self)
+						local target = THEME:GetMetric("PlayerStageStats", "GradePercentTier" .. string.format("%02d", 17-getenv("SetPacemaker"..ToEnumShortString(PLAYER_2))))
+						self:maxwidth(90):horizalign(right):zoom(0.75):shadowlength(0):addy(125):addx(100):diffuse(PlayerColor(PLAYER_2))
+						:settext(math.ceil(target*STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_2):GetPossibleDancePoints()))
+					end
+				},
+				LoadFont("_z numbers")..{
+					Name="PlayerHighscoreDifferenceP1",
+					OnCommand=function(self)
+						self:diffuse(color("#00FF00FF")):maxwidth(75):horizalign(right):zoom(0.375):shadowlength(0):addy(142):addx(-100)
+						if topscore[PLAYER_1] ~= nil then self:settextf( "%+04d", 0 ) end
+					end,
+					JudgmentMessageCommand=function(self,param) if param.Player == PLAYER_1 and topscore[PLAYER_1] ~= nil then self:queuecommand("Update") end end,
+					UpdateCommand=function(self)
+						local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_1)
+						local DPCurMax = pss:GetCurrentPossibleDancePoints()
+						local curPlayerDP = pss:GetActualDancePoints()
+						local curHighscoreDP = math.ceil(DPCurMax*topscore[PLAYER_1]:GetPercentDP())
+						self:settextf( "%+04d", (curPlayerDP-curHighscoreDP) )
+					end
+				},
+				LoadFont("_z numbers")..{
+					Name="PlayerTargetDifferenceP1",
+					OnCommand=function(self)
+						self:diffuse(color("#FF0000FF")):maxwidth(75):horizalign(right):zoom(0.375):shadowlength(0):addy(148):addx(-100):settextf( "%+04d", 0 )
+						if topscore[PLAYER_1] == nil then self:addy(-3) end
+					end,
+					JudgmentMessageCommand=function(self,param) if param.Player == PLAYER_1 then self:queuecommand("Update") end end,
+					UpdateCommand=function(self)
+						local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_1)
+						local DPCurMax = pss:GetCurrentPossibleDancePoints()
+						local curPlayerDP = pss:GetActualDancePoints()
+						local target = THEME:GetMetric("PlayerStageStats", "GradePercentTier" .. string.format("%02d", 17-getenv("SetPacemaker"..ToEnumShortString(PLAYER_1))))
+						local curTargetDP = math.ceil(DPCurMax*target)
+						self:settextf( "%+04d", (curPlayerDP-curTargetDP) )
+					end
+				},
+				LoadFont("_z numbers")..{
+					Name="PlayerHighscoreDifferenceP2",
+					OnCommand=function(self)
+						self:diffuse(color("#00FF00FF")):maxwidth(75):horizalign(left):zoom(0.375):shadowlength(0):addy(142):addx(100)
+						if topscore[PLAYER_2] ~= nil then self:settextf( "%+04d", 0 ) end
+					end,
+					JudgmentMessageCommand=function(self,param) if param.Player == PLAYER_2 and topscore[PLAYER_2] ~= nil then self:queuecommand("Update") end end,
+					UpdateCommand=function(self)
+						local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_2)
+						local DPCurMax = pss:GetCurrentPossibleDancePoints()
+						local curPlayerDP = pss:GetActualDancePoints()
+						local curHighscoreDP = math.ceil(DPCurMax*topscore[PLAYER_2]:GetPercentDP())
+						self:settextf( "%+04d", (curPlayerDP-curHighscoreDP) )
+					end
+				},
+				LoadFont("_z numbers")..{
+					Name="PlayerTargetDifferenceP2",
+					OnCommand=function(self)
+						self:diffuse(color("#FF0000FF")):maxwidth(75):horizalign(left):zoom(0.375):shadowlength(0):addy(148):addx(100):settextf( "%+04d", 0 )
+						if topscore[PLAYER_2] == nil then self:addy(-3) end
+					end,
+					JudgmentMessageCommand=function(self,param) if param.Player == PLAYER_2 then self:queuecommand("Update") end end,
+					UpdateCommand=function(self)
+						local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_2)
+						local DPCurMax = pss:GetCurrentPossibleDancePoints()
+						local curPlayerDP = pss:GetActualDancePoints()
+						local target = THEME:GetMetric("PlayerStageStats", "GradePercentTier" .. string.format("%02d", 17-getenv("SetPacemaker"..ToEnumShortString(PLAYER_2))))
+						local curTargetDP = math.ceil(DPCurMax*target)
+						self:settextf( "%+04d", (curPlayerDP-curTargetDP) )
+					end
+				}
 			}
 		}
 	end
