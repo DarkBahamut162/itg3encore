@@ -1,10 +1,10 @@
 return Def.ActorFrame{
 	LoadActor("_bottom")..{
-		InitCommand=function(self) self:Center():FullScreen():diffusealpha(0) end,
+		InitCommand=function(self) self:FullScreen():diffusealpha(0) end,
 		OnCommand=function(self) self:accelerate(0.3):diffusealpha(1) end
 	},
 	LoadActor("lines")..{
-		InitCommand=function(self) self:Center():FullScreen():diffusealpha(0) end,
+		InitCommand=function(self) self:FullScreen():diffusealpha(0) end,
 		OnCommand=function(self) self:accelerate(0.3):diffusealpha(1) end
 	},
 	Def.Banner{
@@ -23,7 +23,7 @@ return Def.ActorFrame{
 		end
 	},
 	LoadActor("_flaremask")..{
-		InitCommand=function(self) self:Center():FullScreen():zbuffer(true):blend(Blend.NoEffect) end
+		InitCommand=function(self) self:FullScreen():zbuffer(true):blend(Blend.NoEffect) end
 	},
 	LoadActor(THEME:GetPathB("ScreenStageInformation","in/_flares"))..{
 		InitCommand=function(self) self:Center():ztest(true):diffusealpha(1):zoom(1) end,

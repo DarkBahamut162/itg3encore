@@ -1,14 +1,14 @@
 return Def.ActorFrame{
 	Def.Quad{
-		InitCommand=function(self) self:Center():FullScreen():draworder(100):diffuse(color("0,0,0,0")) end,
+		InitCommand=function(self) self:FullScreen():draworder(100):diffuse(color("0,0,0,0")) end,
 		OnCommand=function(self) self:linear(0.1):diffuse(color("1,1,1,1")) end
 	},
 	Def.Quad{
-		InitCommand=function(self) self:Center():FullScreen():draworder(152):diffuse(color("0,0,0,0")) end,
+		InitCommand=function(self) self:FullScreen():draworder(152):diffuse(color("0,0,0,0")) end,
 		OnCommand=function(self) self:sleep(2):linear(0.4):diffuse(color("#000000")) end
 	},
 	Def.Quad{
-		InitCommand=function(self) self:Center():FullScreen():draworder(150):diffuse(color("0,0,0,0")) end,
+		InitCommand=function(self) self:FullScreen():draworder(150):diffuse(color("0,0,0,0")) end,
 		OnCommand=function(self) self:sleep(1):linear(0.6):diffuse(color("0,0,0,0")) end
 	},
 	LoadActor("_itg3")..{

@@ -71,9 +71,9 @@ return Def.ActorFrame{
 		Def.ActorFrame{
 			Condition=GAMESTATE:IsPlayerEnabled(PLAYER_1) or isRave(),
 			Name="Player1",
-			OnCommand=function(self) self:x(SCREEN_CENTER_X-256):y(SCREEN_TOP+32):addx(-SCREEN_WIDTH/3) end,
-			TweenOnCommand=function(self) self:sleep(1.5):decelerate(0.5):addx(SCREEN_WIDTH/3) end,
-			TweenOffCommand=function(self) self:accelerate(0.8):addx(-SCREEN_WIDTH/3) end,
+			OnCommand=function(self) self:x(SCREEN_CENTER_X-256):y(SCREEN_TOP+32):addx(-SCREEN_WIDTH/2) end,
+			TweenOnCommand=function(self) self:sleep(1.5):decelerate(0.5):addx(SCREEN_WIDTH/2) end,
+			TweenOffCommand=function(self) self:accelerate(0.8):addx(-SCREEN_WIDTH/2) end,
 			LoadActor("_difficulty icons")..{
 				InitCommand=function(self) self:pause():playcommand("Update") end,
 				UpdateCommand=function(self)
@@ -110,9 +110,9 @@ return Def.ActorFrame{
 		Def.ActorFrame{
 			Condition=GAMESTATE:IsPlayerEnabled(PLAYER_2) or isRave(),
 			Name="Player2",
-			OnCommand=function(self) self:x(SCREEN_CENTER_X+256):y(SCREEN_TOP+32):addx(SCREEN_WIDTH/3) end,
-			TweenOnCommand=function(self) self:sleep(1.5):decelerate(0.5):addx(-SCREEN_WIDTH/3) end,
-			TweenOffCommand=function(self) self:accelerate(0.8):addx(SCREEN_WIDTH/3) end,
+			OnCommand=function(self) self:x(SCREEN_CENTER_X+256):y(SCREEN_TOP+32):addx(SCREEN_WIDTH/2) end,
+			TweenOnCommand=function(self) self:sleep(1.5):decelerate(0.5):addx(-SCREEN_WIDTH/2) end,
+			TweenOffCommand=function(self) self:accelerate(0.8):addx(SCREEN_WIDTH/2) end,
 			LoadActor("_difficulty icons")..{
 				InitCommand=function(self) self:pause():zoomx(-1):playcommand("Update") end,
 				UpdateCommand=function(self)

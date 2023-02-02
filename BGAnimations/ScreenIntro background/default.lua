@@ -1,5 +1,5 @@
 return Def.ActorFrame{
-	LoadActor("Intro by Angel")..{ InitCommand=function(self) self:Center():FullScreen():zoomy(1.2):rate(0.92):sleep(35):diffusealpha(0) end },
+	LoadActor("Intro by Angel")..{ InitCommand=function(self) self:FullScreen():zoomy(1.2):rate(0.92):sleep(35):diffusealpha(0) end },
 	Def.ActorFrame{
 		InitCommand=function(self) self:Center() end,
 		LoadActor("swoosh")..{
@@ -81,7 +81,7 @@ return Def.ActorFrame{
 	LoadActor("courses"),
 	LoadActor("mods"),
 	Def.Quad{
-		InitCommand=function(self) self:Center():FullScreen():diffusealpha(0) end,
+		InitCommand=function(self) self:FullScreen():diffusealpha(0) end,
 		OnCommand=function(self) self:hibernate(34.5):linear(0.5):diffusealpha(1):linear(0.5):diffusealpha(0) end
 	}
 }

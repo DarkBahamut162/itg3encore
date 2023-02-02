@@ -24,7 +24,7 @@ return Def.ActorFrame{
 		OffCommand=function(self) self:accelerate(0.5):addy(100) end
 	},
 	LoadActor("base "..(isFinal() and "final" or "normal"))..{
-		InitCommand=function(self) self:CenterX():y(SCREEN_BOTTOM+97):valign(1) end,
+		InitCommand=function(self) self:CenterX():y(SCREEN_BOTTOM+97):valign(1) if isFinal() then self:zoomtowidth(SCREEN_WIDTH) end end,
 		OnCommand=function(self) self:decelerate(0.6):y(SCREEN_BOTTOM) end,
 		OffCommand=function(self) self:accelerate(0.5):addy(100) end
 	}

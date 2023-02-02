@@ -10,7 +10,7 @@ if width_field > 400 then posX, posX_now = SCREEN_CENTER_X, SCREEN_WIDTH/8*7 end
 
 return Def.ActorFrame{
 	LoadActor(THEME:GetPathB("ScreenGameplay","overlay/demonstration gradient"))..{
-		InitCommand=function(self) self:Center():FullScreen():diffusealpha(0.8) end
+		InitCommand=function(self) self:FullScreen():diffusealpha(0.8) end
 	},
 	LoadFont("_v tutorial")..{
 		Text="Colored Arrows\nscroll from\nlow to high.",
@@ -100,7 +100,7 @@ return Def.ActorFrame{
 		end
 	},
 	Def.Quad{
-		InitCommand=function(self) self:Center():FullScreen():diffuse(color("0,0,0,1")) end,
+		InitCommand=function(self) self:FullScreen():diffuse(color("0,0,0,1")) end,
 		OnCommand=function(self) self:sleep(3.5):linear(0.5):diffusealpha(0) end
 	},
 	Def.ActorFrame{

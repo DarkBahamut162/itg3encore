@@ -1,7 +1,7 @@
 return Def.ActorFrame{
 	Def.ActorFrame{
 		Def.Quad{
-			InitCommand=function(self) self:Center():FullScreen():diffuse(color("#00000000")) end,
+			InitCommand=function(self) self:FullScreen():diffuse(color("#00000000")) end,
 			StartTransitioningCommand=function(self) self:queuecommand("Check"):linear(0.3):diffusealpha(1):sleep(1) end,
 			CheckCommand=function(self) if AnyPlayerFullComboed() then SOUND:PlayOnce( THEME:GetPathS( '', "FullComboSplash" ) ) self:hibernate(3) end end
 		},

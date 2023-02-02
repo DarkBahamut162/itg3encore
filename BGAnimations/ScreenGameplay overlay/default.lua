@@ -23,7 +23,7 @@ local t = Def.ActorFrame{
 		}
 	},
 	Def.Quad{
-		InitCommand=function(self) self:Center():FullScreen():diffuse(color("0,0,0,1")) end,
+		InitCommand=function(self) self:FullScreen():diffuse(color("0,0,0,1")) end,
 		OnCommand=function(self) self:linear(0.3):diffusealpha(0) end
 	},
 	Def.ActorFrame{
@@ -175,7 +175,7 @@ local t = Def.ActorFrame{
 			OnCommand=function(self) self:pulse():effectmagnitude(1.0,0.95,0):effectclock('beat'):effectperiod(1) end
 		},
 		LoadActor("demonstration gradient")..{
-			InitCommand=function(self) self:Center():FullScreen():diffusealpha(0.8) end
+			InitCommand=function(self) self:FullScreen():diffusealpha(0.8) end
 		}
 	}
 }

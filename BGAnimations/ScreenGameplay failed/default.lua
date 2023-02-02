@@ -1,6 +1,6 @@
 return Def.ActorFrame{
 	Def.Quad{
-		InitCommand=function(self) self:Center():FullScreen():diffuse(color("#00000000")) end,
+		InitCommand=function(self) self:FullScreen():diffuse(color("#00000000")) end,
 		StartTransitioningCommand=function(self) self:linear(1.5):diffusealpha(1) end
 	},
 	LoadActor("_stage")..{
@@ -32,7 +32,7 @@ return Def.ActorFrame{
 		}
 	},
 	Def.Quad{
-		InitCommand=function(self) self:Center():FullScreen():diffuse(color("#00000000")) end,
+		InitCommand=function(self) self:FullScreen():diffuse(color("#00000000")) end,
 		StartTransitioningCommand=function(self) self:sleep(3):linear(0.3):diffusealpha(1) end
 	},
 	LoadActor( "bleh.ogg" ) .. {

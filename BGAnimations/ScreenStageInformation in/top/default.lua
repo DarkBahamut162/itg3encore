@@ -1,6 +1,6 @@
 return Def.ActorFrame{
 	LoadActor("_top")..{
-		InitCommand=function(self) self:Center():FullScreen():diffusealpha(0) end,
+		InitCommand=function(self) self:FullScreen():diffusealpha(0) end,
 		OnCommand=function(self) self:accelerate(0.3):diffusealpha(1) end
 	},
 	LoadActor("_shadow")..{

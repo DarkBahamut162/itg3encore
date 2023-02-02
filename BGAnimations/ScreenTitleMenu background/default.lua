@@ -18,7 +18,7 @@ end
 return Def.ActorFrame{
 	OffCommand=function(self) if SCREENMAN:GetTopScreen():GetName() == 'ScreenTitleJoin' then SOUND:StopMusic() end end,
 	LoadActor(THEME:GetPathB("ScreenSelectMusic","background/CJ126 "..(isFinal() and "Final" or "Normal")))..{
-		InitCommand=function(self) self:Center():FullScreen():diffusealpha(0) end,
+		InitCommand=function(self) self:FullScreen():diffusealpha(0) end,
 		OnCommand=function(self) self:linear(1.5):diffusealpha(1) end
 	},
 	LoadActor("_lower")..{
@@ -76,7 +76,7 @@ return Def.ActorFrame{
 		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y-10):halign(0.5):valign(0.5) end,
 		OnCommand=function(self) if IsHome() and isScreenTitle() then self:CenterX():sleep(0.6):x(SCREEN_CENTER_X-142/3) end end,
 		SetCommand=function(self) if IsHome() and isScreenTitle() then self:x(SCREEN_CENTER_X-142/3) else self:CenterX() end end,
-		ZoomCommand=function(self) if true or SCREEN_WIDTH < 680 then self:zoom(SCREEN_WIDTH / (680+142)) end end,
+		ZoomCommand=function(self) if true or SCREEN_WIDTH < 680 then self:zoom(math.min(1,SCREEN_HEIGHT / (350+34))) end end,
 		ScreenChangedMessageCommand=function(self) self:playcommand("Set"):playcommand("Zoom") end,
 		Def.ActorFrame{
 			Name="LogoFrame",
@@ -237,12 +237,12 @@ return Def.ActorFrame{
 		},
 		LoadActor("up")..{
 			Condition=isFinal(),
-			InitCommand=function(self) self:CenterX():y(SCREEN_TOP-500):valign(0) end,
+			InitCommand=function(self) self:CenterX():y(SCREEN_TOP-500):valign(0):zoomtowidth(SCREEN_WIDTH) end,
 			OnCommand=function(self) self:decelerate(0.4):y(SCREEN_TOP) end,
 			OffCommand=function(self) self:accelerate(0.5):addy(-500) end
 		},
 		LoadActor("base "..(isFinal() and "final" or "normal"))..{
-			InitCommand=function(self) self:CenterX():y(SCREEN_BOTTOM+100):valign(1) end,
+			InitCommand=function(self) self:CenterX():y(SCREEN_BOTTOM+100):valign(1) if isFinal() then self:zoomtowidth(SCREEN_WIDTH) end end,
 			OnCommand=function(self) self:decelerate(0.4):y(SCREEN_BOTTOM) end,
 			OffCommand=function(self) self:accelerate(0.5):addy(100) end
 		}
@@ -283,7 +283,7 @@ return Def.ActorFrame{
 	},
 	LoadActor("icon")..{ OffCommand=function(self) self:accelerate(0.5):addy(-100) end },
 	Def.Quad{
-		InitCommand=function(self) self:Center():FullScreen() end,
+		InitCommand=function(self) self:FullScreen() end,
 		OnCommand=function(self) self:diffusealpha(0):sleep(0.1):accelerate(0.5):diffusealpha(1):sleep(0.2):decelerate(0.5):diffusealpha(0) end
 	},
 	LoadActor(THEME:GetPathS("","_logo"))..{

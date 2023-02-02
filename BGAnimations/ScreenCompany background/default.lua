@@ -1,15 +1,15 @@
 return Def.ActorFrame{
 	LoadActor("roxor video")..{
 		Condition=not isFinal(),
-		InitCommand=function(self) self:Center():zoom(4/3) end
+		InitCommand=function(self) self:FullScreen() end
 	},
 	LoadActor("bga")..{
 		Condition=isFinal(),
-		InitCommand=function(self) self:Center():zoomtoheight(SCREEN_HEIGHT) end
+		InitCommand=function(self) self:FullScreen() end
 	},
 	LoadActor("particle")..{
 		Condition=isFinal(),
-		InitCommand=function(self) self:Center():zoomtoheight(SCREEN_HEIGHT):blend(Blend.Add) end
+		InitCommand=function(self) self:FullScreen():blend(Blend.Add) end
 	},
 	LoadActor("roxor logo")..{
 		Condition=isFinal(),

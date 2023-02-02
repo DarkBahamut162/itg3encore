@@ -10,7 +10,7 @@ return Def.ActorFrame{
 	},
 	LoadActor(THEME:GetPathB("","lolhi"))..{
 		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y-80):fadeleft(0.3):faderight(0.3):cropleft(1.3):cropright(-0.3):zoom(0.3) end,
-		OnCommand=function(self) self:linear(1):cropleft(-0.3):zoom(2):linear(15):zoom(1.2) end,
+		OnCommand=function(self) self:linear(1):cropleft(-0.3):zoom(2):linear(15):zoomy(1.2) end,
 		OffCommand=function(self) self:stoptweening():linear(0.5):cropright(1.3):zoom(0.5) end
 	},
 	LoadActor("usecard")..{
@@ -29,8 +29,8 @@ return Def.ActorFrame{
 		OffCommand=function(self) self:stoptweening():accelerate(0.5):addx(SCREEN_WIDTH*1.5) end
 	},
 	LoadActor("usb icon")..{
-		InitCommand=function(self) self:x(SCREEN_CENTER_X+500):y(SCREEN_CENTER_Y-80):glow(color("1,1,1,1")) end,
-		OnCommand=function(self) self:sleep(1.0):decelerate(0.5):x(SCREEN_CENTER_X-220):glowshift():effectclock("beat"):effectoffset(1):effectperiod(2):sleep(10.8):accelerate(0.5):addx(-SCREEN_WIDTH) end,
+		InitCommand=function(self) self:x(SCREEN_CENTER_X-220):y(SCREEN_CENTER_Y-80):glow(color("1,1,1,1")):addx(SCREEN_WIDTH) end,
+		OnCommand=function(self) self:sleep(1.0):decelerate(0.5):addx(-SCREEN_WIDTH):glowshift():effectclock("beat"):effectoffset(1):effectperiod(2):sleep(10.8):accelerate(0.5):addx(-SCREEN_WIDTH) end,
 		OffCommand=function(self) self:stoptweening():accelerate(0.5):addx(-SCREEN_WIDTH*1.5) end
 	},
 	LoadActor("usb glow")..{
