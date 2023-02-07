@@ -2,6 +2,7 @@ local player = ...
 assert(player,"[Graphics/_player scores] player required")
 
 return Def.ActorFrame{
+	InitCommand=function(self) if isWidescreen() and isOutFox() then self:x(player == PLAYER_1 and 48 or -48) end end,
 	Def.ActorFrame{
 		Name="MachineScore",
 		InitCommand=function(self) self:x(-55) end,

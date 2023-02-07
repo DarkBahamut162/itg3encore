@@ -167,3 +167,7 @@ end
 function isStepMania()
 	return ProductFamily() == "StepMania"
 end
+
+function isWidescreen()
+	return SCREEN_WIDTH / SCREEN_HEIGHT >= 1.7
+end

@@ -1,5 +1,21 @@
 local t = LoadFallbackB()
 
+t[#t+1] = LoadFont("_v 26px bold shadow") .. {
+	InitCommand=function(self) self:x(SCREEN_CENTER_X+140):y(SCREEN_TOP+80):zoom(0.5) end,
+	OnCommand=function(self) self:addx(SCREEN_WIDTH):decelerate(0.75):addx(-SCREEN_WIDTH) end,
+	OffCommand=function(self) self:accelerate(0.75):addx(SCREEN_WIDTH) end,
+	BeginCommand=function(self) self:playcommand("Set") end,
+	SortOrderChangedMessageCommand=function(self) self:playcommand("Set") end,
+	SetCommand=function(self)
+		local s = GAMESTATE:GetSortOrder()
+		if s ~= nil then
+			local s = SortOrderToLocalizedString( s )
+			self:settext( "SORT: " .. string.upper( s ) )
+			self:playcommand("Sort")
+		else return end
+	end
+}
+
 t[#t+1] = StandardDecorationFromFile("BannerReflection","BannerReflection")
 t[#t+1] = StandardDecorationFromFile("Triangle","Triangle")
 
@@ -124,6 +140,51 @@ t[#t+1] = LoadActor(THEME:GetPathS("ScreenSelectMusic","select down"))..{
 	RefreshCommand=function(self)
 		self:play()
 	end
+}
+
+local function CDTitleUpdate(self)
+	local song = GAMESTATE:GetCurrentSong()
+	local cdtitle = self:GetChild("CDTitle")
+	local height = cdtitle:GetHeight()
+	local width = cdtitle:GetWidth()
+	local size = 100
+
+	if song then
+		if song:HasCDTitle() then
+			cdtitle:visible(true)
+			cdtitle:Load(song:GetCDTitlePath())
+		else
+			cdtitle:visible(false)
+		end
+	else
+		cdtitle:visible(false)
+	end
+
+	if height >= size and width >= size then
+		if height >= width then
+			cdtitle:zoom(size/height)
+		else
+			cdtitle:zoom(size/width)
+		end
+	elseif height >= size then
+		cdtitle:zoom(size/height)
+	elseif width >= size then
+		cdtitle:zoom(size/width)
+	else 
+		cdtitle:zoom(1)
+	end
+end
+
+t[#t+1] = Def.ActorFrame {
+	Condition=isWidescreen(),
+	InitCommand=function(self) self:x(SCREEN_CENTER_X+302):y(SCREEN_CENTER_Y-88):SetUpdateFunction(CDTitleUpdate) end,
+	OnCommand=function(self) self:rotationz(90):addx(SCREEN_WIDTH):zoom(0):decelerate(0.75):zoom(1):addx(-SCREEN_WIDTH) end,
+	OffCommand=function(self) self:bouncebegin(0.15):zoomx(0) end,
+	Def.Sprite {
+		Name="CDTitle",
+		InitCommand=function(self) self:vertalign(bottom) end,
+		OnCommand=function(self) self:effectclock('beat'):diffuseramp():effectoffset(0.2):effectcolor1(color("#808080FF")):effectcolor2(color("#FFFFFFFF")):effectperiod(1):diffusealpha(0):linear(0.4):diffusealpha(1) end
+	}
 }
 
 t[#t+1] = Def.ActorFrame{

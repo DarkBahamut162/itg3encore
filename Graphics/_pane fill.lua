@@ -23,6 +23,7 @@ local function getValue(val0, val1, val2)
 end
 
 return Def.ActorFrame{
+	InitCommand=function(self) self:y(-1) if isWidescreen() and isOutFox() then self:x(player == PLAYER_1 and 48 or -48) end end,
 	Def.Quad{
 		Name="Jumps",
 		InitCommand=function(self) self:x(-127+100):y(125+17):valign(1):zoomto(24,0):diffusealpha(0):blend(Blend.Add) end,
