@@ -276,9 +276,9 @@ return Def.ActorFrame{
 				OffCommand=function(self) self:sleep(0.5):accelerate(0.75):addx(SCREEN_WIDTH) end
 			},
 			LoadActor(THEME:GetPathG("_pane elements/_neonwidth",isFinal() and "final" or "normal"))..{
-			InitCommand=function(self) self:x(SCREEN_CENTER_X+146):y(SCREEN_BOTTOM-76):horizalign(left):vertalign(bottom):zoomtowidth(SCREEN_WIDTH/2):diffuseshift():effectcolor1(color("#bed0ff")):effectcolor2(color("#767676")):effectoffset(0):effectclock("beat") end,
-			OnCommand=function(self) self:addx(SCREEN_WIDTH):decelerate(0.75):addx(-SCREEN_WIDTH) end,
-			OffCommand=function(self) self:sleep(0.5):accelerate(0.75):addx(SCREEN_WIDTH) end
+				InitCommand=function(self) self:x(SCREEN_CENTER_X+146):y(SCREEN_BOTTOM-76):horizalign(left):vertalign(bottom):zoomtowidth(SCREEN_WIDTH/2):diffuseshift():effectcolor1(color("#bed0ff")):effectcolor2(color("#767676")):effectoffset(0):effectclock("beat") end,
+				OnCommand=function(self) self:addx(SCREEN_WIDTH):decelerate(0.75):addx(-SCREEN_WIDTH) end,
+				OffCommand=function(self) self:sleep(0.5):accelerate(0.75):addx(SCREEN_WIDTH) end
 			}
 		}
 	},
@@ -292,7 +292,7 @@ return Def.ActorFrame{
 			LoadActor(THEME:GetPathG("_pane","icons"),PLAYER_1),
 			LoadActor(THEME:GetPathG("_pane","fill"),PLAYER_1),
 			LoadActor(THEME:GetPathG("_pane","steps"),PLAYER_1),
-			LoadActor(THEME:GetPathG("_pane","numbers"),PLAYER_1)..{ InitCommand=function(self) self:y(SCREEN_BOTTOM-54) end },
+			LoadActor(THEME:GetPathG("_pane","numbers"),PLAYER_1)..{ InitCommand=function(self) self:y(129) end },
 			LoadActor(THEME:GetPathG("_pane","avatar"),PLAYER_1),
 			LoadActor(THEME:GetPathG("_player","scores"),PLAYER_1)
 		},
@@ -303,7 +303,7 @@ return Def.ActorFrame{
 			LoadActor(THEME:GetPathG("_pane","icons"),PLAYER_2),
 			LoadActor(THEME:GetPathG("_pane","fill"),PLAYER_2),
 			LoadActor(THEME:GetPathG("_pane","steps"),PLAYER_2),
-			LoadActor(THEME:GetPathG("_pane","numbers"),PLAYER_2)..{ InitCommand=function(self) self:y(SCREEN_BOTTOM-54) end },
+			LoadActor(THEME:GetPathG("_pane","numbers"),PLAYER_2)..{ InitCommand=function(self) self:y(129) end },
 			LoadActor(THEME:GetPathG("_pane","avatar"),PLAYER_2),
 			LoadActor(THEME:GetPathG("_player","scores"),PLAYER_2)
 		}

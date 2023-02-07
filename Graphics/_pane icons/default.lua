@@ -191,31 +191,31 @@ return Def.ActorFrame{
 	Def.ActorFrame{
 		LoadActor("_long")..{
 			InitCommand=function(self) self:x(-39+25*0):y(114):shadowlength(1):halign(0) end,
-			OnCommand=function(self) self:addx(player == PLAYER_1 and -SCREEN_CENTER_X or SCREEN_CENTER_X):sleep(0.7):decelerate(0.3):addx(player == PLAYER_1 and SCREEN_CENTER_X or SCREEN_CENTER_X) end,
+			OnCommand=function(self) self:addx(player == PLAYER_1 and -SCREEN_CENTER_X or SCREEN_CENTER_X):sleep(0.7):decelerate(0.3):addx(player == PLAYER_1 and SCREEN_CENTER_X or -SCREEN_CENTER_X) end,
 			OffCommand=function(self) self:linear(0.4):diffusealpha(0) end,
 			SetCommand=function(self) if stream > 0 then self:diffuse(color("#FFFFFF")) else self:diffuse(color("#808080")) end end
 		},
 		LoadActor("_long")..{
 			InitCommand=function(self) self:x(-39+25*1):y(114):shadowlength(1):halign(0) end,
-			OnCommand=function(self) self:addx(player == PLAYER_1 and -SCREEN_CENTER_X or SCREEN_CENTER_X):sleep(0.7):decelerate(0.3):addx(player == PLAYER_1 and SCREEN_CENTER_X or SCREEN_CENTER_X) end,
+			OnCommand=function(self) self:addx(player == PLAYER_1 and -SCREEN_CENTER_X or SCREEN_CENTER_X):sleep(0.7):decelerate(0.3):addx(player == PLAYER_1 and SCREEN_CENTER_X or -SCREEN_CENTER_X) end,
 			OffCommand=function(self) self:linear(0.4):diffusealpha(0) end,
 			SetCommand=function(self) if voltage > 0 then self:diffuse(color("#FFFFFF")) else self:diffuse(color("#808080")) end end
 		},
 		LoadActor("_long")..{
 			InitCommand=function(self) self:x(-39+25*2):y(114):shadowlength(1):halign(0) end,
-			OnCommand=function(self) self:addx(player == PLAYER_1 and -SCREEN_CENTER_X or SCREEN_CENTER_X):sleep(0.7):decelerate(0.3):addx(player == PLAYER_1 and SCREEN_CENTER_X or SCREEN_CENTER_X) end,
+			OnCommand=function(self) self:addx(player == PLAYER_1 and -SCREEN_CENTER_X or SCREEN_CENTER_X):sleep(0.7):decelerate(0.3):addx(player == PLAYER_1 and SCREEN_CENTER_X or -SCREEN_CENTER_X) end,
 			OffCommand=function(self) self:linear(0.4):diffusealpha(0) end,
 			SetCommand=function(self) if air > 0 then self:diffuse(color("#FFFFFF")) else self:diffuse(color("#808080")) end end
 		},
 		LoadActor("_long")..{
 			InitCommand=function(self) self:x(-39+25*3):y(114):shadowlength(1):halign(0) end,
-			OnCommand=function(self) self:addx(player == PLAYER_1 and -SCREEN_CENTER_X or SCREEN_CENTER_X):sleep(0.7):decelerate(0.3):addx(player == PLAYER_1 and SCREEN_CENTER_X or SCREEN_CENTER_X) end,
+			OnCommand=function(self) self:addx(player == PLAYER_1 and -SCREEN_CENTER_X or SCREEN_CENTER_X):sleep(0.7):decelerate(0.3):addx(player == PLAYER_1 and SCREEN_CENTER_X or -SCREEN_CENTER_X) end,
 			OffCommand=function(self) self:linear(0.4):diffusealpha(0) end,
 			SetCommand=function(self) if freeze > 0 then self:diffuse(color("#FFFFFF")) else self:diffuse(color("#808080")) end end
 		},
 		LoadActor("_long")..{
 			InitCommand=function(self) self:x(-39+25*4):y(114):shadowlength(1):halign(0) end,
-			OnCommand=function(self) self:addx(player == PLAYER_1 and -SCREEN_CENTER_X or SCREEN_CENTER_X):sleep(0.7):decelerate(0.3):addx(player == PLAYER_1 and SCREEN_CENTER_X or SCREEN_CENTER_X) end,
+			OnCommand=function(self) self:addx(player == PLAYER_1 and -SCREEN_CENTER_X or SCREEN_CENTER_X):sleep(0.7):decelerate(0.3):addx(player == PLAYER_1 and SCREEN_CENTER_X or -SCREEN_CENTER_X) end,
 			OffCommand=function(self) self:linear(0.4):diffusealpha(0) end,
 			SetCommand=function(self) if chaos > 0 then self:diffuse(color("#FFFFFF")) else self:diffuse(color("#808080")) end end
 		},
