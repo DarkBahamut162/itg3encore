@@ -69,7 +69,6 @@ local function GraphDisplay(pn)
 				local length = GAMESTATE:IsCourseMode() and TrailUtil.GetTotalSeconds(GAMESTATE:GetCurrentTrail(pn)) or GAMESTATE:GetCurrentSong():GetLastSecond()
 				local lastSecond = GAMESTATE:IsCourseMode() and getenv("LastFantastic"..ToEnumShortString(pn)) or getenv("LastFantastic"..ToEnumShortString(pn))-GAMESTATE:GetCurrentSong():GetFirstSecond()
 				self:croptop(0.75) if lastSecond > 0 then self:cropright(1-(lastSecond/length)) end
-				
 			end
 		},
 		LoadActor(THEME:GetPathB("ScreenEvaluation","underlay/FEC "..ToEnumShortString(pn)))..{

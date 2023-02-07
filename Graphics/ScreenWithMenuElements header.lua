@@ -7,7 +7,7 @@ return Def.ActorFrame{
 	},
 	LoadFont("_z bold gray 36px")..{
 		InitCommand=function(self)
-			self:x(isFinal() and SCREEN_CENTER_X or SCREEN_RIGHT-20):y(28):shadowlength(2):halign(isFinal() and 0.5 or 1)
+			self:x(isFinal() and SCREEN_CENTER_X or SCREEN_RIGHT-20):y(isFinal() and 32 or 28):shadowlength(2):halign(isFinal() and 0.5 or 1)
 			:zoom(0.5):cropright(1.3):faderight(0.1):settext(THEME:GetString(Var "LoadingScreen","HeaderText"))
 			if isFinal() then self:wrapwidthpixels(600) end
 		end,

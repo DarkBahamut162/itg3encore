@@ -1,20 +1,22 @@
 return Def.ActorFrame{
 	OnCommand = function(self)
-		local player = GAMESTATE:GetMasterPlayerNumber()
-		local SongOrCourse = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentCourse() or GAMESTATE:GetCurrentSong()
-		local StepOrTrails = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentTrail(player) or GAMESTATE:GetCurrentSteps(player)
-		if GAMESTATE:GetCurrentSong() then
-			local lengthFull = string.len(GAMESTATE:GetCurrentSong():GetDisplayFullTitle()) + 3 + string.len(GAMESTATE:GetCurrentSong():GetGroupName())
-			local lengthMain = string.len(GAMESTATE:GetCurrentSong():GetDisplayMainTitle()) + 3 + string.len(GAMESTATE:GetCurrentSong():GetGroupName())
-			local title = lengthFull < 128 and GAMESTATE:GetCurrentSong():GetDisplayFullTitle() or
-						--string.sub(GAMESTATE:GetCurrentSong():GetDisplayFullTitle(),1,122-string.len(GAMESTATE:GetCurrentSong():GetGroupName())) .. "..."
-						lengthMain < 128 and GAMESTATE:GetCurrentSong():GetDisplayMainTitle() or string.sub(GAMESTATE:GetCurrentSong():GetDisplayMainTitle(),1,122-string.len(GAMESTATE:GetCurrentSong():GetGroupName())) .. "..."
-			local songname = title .. " - " .. GAMESTATE:GetCurrentSong():GetGroupName()
-			local Difficulty = ToEnumShortString( StepOrTrails:GetDifficulty() ) .. " " .. StepOrTrails:GetMeter()
-			local Percentage = STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetPercentDancePoints()
-			local states = Difficulty .. " (".. string.format( "%.2f%%", Percentage*100) .. ")"
-			GAMESTATE:UpdateDiscordProfile(GAMESTATE:GetPlayerDisplayName(player))
-			GAMESTATE:UpdateDiscordScreenInfo(songname,states,1)
+		if isOutFox() then
+			local player = GAMESTATE:GetMasterPlayerNumber()
+			local SongOrCourse = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentCourse() or GAMESTATE:GetCurrentSong()
+			local StepOrTrails = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentTrail(player) or GAMESTATE:GetCurrentSteps(player)
+			if GAMESTATE:GetCurrentSong() then
+				local lengthFull = string.len(GAMESTATE:GetCurrentSong():GetDisplayFullTitle()) + 3 + string.len(GAMESTATE:GetCurrentSong():GetGroupName())
+				local lengthMain = string.len(GAMESTATE:GetCurrentSong():GetDisplayMainTitle()) + 3 + string.len(GAMESTATE:GetCurrentSong():GetGroupName())
+				local title = lengthFull < 128 and GAMESTATE:GetCurrentSong():GetDisplayFullTitle() or
+							--string.sub(GAMESTATE:GetCurrentSong():GetDisplayFullTitle(),1,122-string.len(GAMESTATE:GetCurrentSong():GetGroupName())) .. "..."
+							lengthMain < 128 and GAMESTATE:GetCurrentSong():GetDisplayMainTitle() or string.sub(GAMESTATE:GetCurrentSong():GetDisplayMainTitle(),1,122-string.len(GAMESTATE:GetCurrentSong():GetGroupName())) .. "..."
+				local songname = title .. " - " .. GAMESTATE:GetCurrentSong():GetGroupName()
+				local Difficulty = ToEnumShortString( StepOrTrails:GetDifficulty() ) .. " " .. StepOrTrails:GetMeter()
+				local Percentage = STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetPercentDancePoints()
+				local states = Difficulty .. " (".. string.format( "%.2f%%", Percentage*100) .. ")"
+				GAMESTATE:UpdateDiscordProfile(GAMESTATE:GetPlayerDisplayName(player))
+				GAMESTATE:UpdateDiscordScreenInfo(songname,states,1)
+			end
 		end
 	end,
 	LoadActor(THEME:GetPathB("ScreenWithMenuElements","underlay/_base"))..{
@@ -74,13 +76,11 @@ return Def.ActorFrame{
 		OffCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(0) end
 	},
 	LoadFont("_v 26px bold shadow")..{
-		Text="",
 		InitCommand=function(self) if GAMESTATE:IsPlayerEnabled(PLAYER_1) then self:settext(DisplayCustomModifiersText(PLAYER_1)) end self:maxwidth(350):zoom(0.5):x(SCREEN_CENTER_X-9-2):y(SCREEN_CENTER_Y+9):horizalign(right):shadowlength(0):diffusebottomedge(color("#BBB9FB")) end,
 		OnCommand=function(self) self:diffusealpha(0):sleep(3):linear(0.8):diffusealpha(1) end,
 		OffCommand=function(self) self:linear(0.2):diffusealpha(0) end
 	},
 	LoadFont("_v 26px bold shadow")..{
-		Text="",
 		InitCommand=function(self) if GAMESTATE:IsPlayerEnabled(PLAYER_2) then self:settext(DisplayCustomModifiersText(PLAYER_2)) end self:maxwidth(350):zoom(0.5):x(SCREEN_CENTER_X+10-2):y(SCREEN_CENTER_Y+9):horizalign(left):shadowlength(0):diffusebottomedge(color("#BBB9FB")) end,
 		OnCommand=function(self) self:diffusealpha(0):sleep(3):linear(0.8):diffusealpha(1) end,
 		OffCommand=function(self) self:linear(0.2):diffusealpha(0) end
@@ -150,22 +150,14 @@ return Def.ActorFrame{
 	},
 	LoadFont("_angel glow")..{
 		Condition=Var "LoadingScreen" ~= "ScreenEvaluationSummary",
-		Text="Song Title",
-		InitCommand=function(self) self:x(SCREEN_CENTER_X-300):halign(0):y(SCREEN_TOP+74,animate,0):maxwidth(700):zoom(0.6):shadowlength(0):playcommand("Update") end,
+		InitCommand=function(self) self:x(isFinal() and SCREEN_CENTER_X or SCREEN_CENTER_X-300):halign(isFinal() and 0.5 or 0):y(SCREEN_TOP+74):maxwidth(isFinal() and 1000 or 700):zoom(0.6):shadowlength(0):playcommand("Update") end,
 		OnCommand=function(self) self:diffusealpha(0):sleep(3):linear(0.3):diffusealpha(1) end,
 		OffCommand=function(self) self:linear(0.2):diffusealpha(0) end,
 		UpdateCommand=function(self)
 			local song = GAMESTATE:GetCurrentSong()
 			local course = GAMESTATE:GetCurrentCourse()
-			local text = ""
-			if song then
-				text = song:GetDisplayFullTitle()
-			end
-			if course then
-				text = course:GetDisplayFullTitle()
-			end
-
-			self:settext( text )
+			if song then self:settext( song:GetDisplayFullTitle() ) end
+			if course then self:settext( course:GetDisplayFullTitle() ) end
 		end
 	}
 }

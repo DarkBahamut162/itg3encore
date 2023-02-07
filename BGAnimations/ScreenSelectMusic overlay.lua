@@ -1,15 +1,16 @@
 return Def.ActorFrame{
 	OnCommand=function(self)
-		local player = GAMESTATE:GetMasterPlayerNumber()
-		GAMESTATE:UpdateDiscordProfile(GAMESTATE:GetPlayerDisplayName(player))
-		if GAMESTATE:IsCourseMode() then
-			GAMESTATE:UpdateDiscordScreenInfo("Selecting Course","",1)
-		else
-			if GAMESTATE:IsEventMode() then
-				GAMESTATE:UpdateDiscordScreenInfo("Selecting Song (Event Mode)","",1)
+		if isOutFox() then
+			GAMESTATE:UpdateDiscordProfile(GAMESTATE:GetPlayerDisplayName(GAMESTATE:GetMasterPlayerNumber()))
+			if GAMESTATE:IsCourseMode() then
+				GAMESTATE:UpdateDiscordScreenInfo("Selecting Course","",1)
 			else
-				local StageIndex = GAMESTATE:GetCurrentStageIndex()
-				GAMESTATE:UpdateDiscordScreenInfo("Selecting Song (Stage ".. StageIndex+1 .. ")	","",1)
+				if GAMESTATE:IsEventMode() then
+					GAMESTATE:UpdateDiscordScreenInfo("Selecting Song (Event Mode)","",1)
+				else
+					local StageIndex = GAMESTATE:GetCurrentStageIndex()
+					GAMESTATE:UpdateDiscordScreenInfo("Selecting Song (Stage ".. StageIndex+1 .. ")	","",1)
+				end
 			end
 		end
 	end,
@@ -292,7 +293,7 @@ return Def.ActorFrame{
 			LoadActor(THEME:GetPathG("_pane","fill"),PLAYER_1),
 			LoadActor(THEME:GetPathG("_pane","steps"),PLAYER_1),
 			LoadActor(THEME:GetPathG("_pane","numbers"),PLAYER_1)..{ InitCommand=function(self) self:y(SCREEN_BOTTOM-54) end },
-			LoadActor(THEME:GetPathG("_pane","avatar"),PLAYER_1)..{ Condition=isWidescreen() and isOutFox() },
+			LoadActor(THEME:GetPathG("_pane","avatar"),PLAYER_1),
 			LoadActor(THEME:GetPathG("_player","scores"),PLAYER_1)
 		},
 		Def.ActorFrame{
@@ -303,7 +304,7 @@ return Def.ActorFrame{
 			LoadActor(THEME:GetPathG("_pane","fill"),PLAYER_2),
 			LoadActor(THEME:GetPathG("_pane","steps"),PLAYER_2),
 			LoadActor(THEME:GetPathG("_pane","numbers"),PLAYER_2)..{ InitCommand=function(self) self:y(SCREEN_BOTTOM-54) end },
-			LoadActor(THEME:GetPathG("_pane","avatar"),PLAYER_2)..{ Condition=isWidescreen() and isOutFox() },
+			LoadActor(THEME:GetPathG("_pane","avatar"),PLAYER_2),
 			LoadActor(THEME:GetPathG("_player","scores"),PLAYER_2)
 		}
 	},

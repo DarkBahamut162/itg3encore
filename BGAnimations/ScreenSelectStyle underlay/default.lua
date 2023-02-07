@@ -1,7 +1,5 @@
 return Def.ActorFrame{
-	OnCommand=function(self)
-		GAMESTATE:UpdateDiscordScreenInfo("Selecting Style","",1)
-	end,
+	OnCommand=function(self) if isOutFox() then GAMESTATE:UpdateDiscordScreenInfo("Selecting Style","",1) end end,
 	LoadActor(THEME:GetPathB("ScreenWithMenuElements","underlay/_base")),
 	LoadActor(THEME:GetPathB("ScreenWithMenuElements","underlay/_sides")),
 	Def.ActorFrame{
@@ -20,10 +18,6 @@ return Def.ActorFrame{
 		MadeChoiceP2MessageCommand=function(self) self:playcommand("GoOff") end,
 		GoOffCommand=function(self) self:sleep(0.2):linear(0.3):diffusealpha(0) end
 	},
-	LoadActor(THEME:GetPathB("_shared","underlay arrows"))..{
-		InitCommand=function(self) self:x(184) end
-	},
-	LoadActor(THEME:GetPathB("ScreenWithMenuElements","underlay/fore"))..{
-		OnCommand=function(self) self:playcommand("DoOn") end
-	}
+	LoadActor(THEME:GetPathB("_shared","underlay arrows"))..{ InitCommand=function(self) self:x(184) end },
+	LoadActor(THEME:GetPathB("ScreenWithMenuElements","underlay/fore"))..{ OnCommand=function(self) self:playcommand("DoOn") end }
 }

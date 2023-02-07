@@ -1,7 +1,5 @@
 return Def.ActorFrame{
-	OnCommand=function(self)
-		GAMESTATE:UpdateDiscordScreenInfo("Selecting Workout","",1)
-	end,
+	OnCommand=function(self) if isOutFox() then GAMESTATE:UpdateDiscordScreenInfo("Selecting Workout","",1) end end,
 	LoadActor(THEME:GetPathB("ScreenWithMenuElements","underlay")),
 	LoadActor(THEME:GetPathG("_name","badge"),PLAYER_1)..{
 		Condition=not GAMESTATE:IsHumanPlayer(PLAYER_1),
