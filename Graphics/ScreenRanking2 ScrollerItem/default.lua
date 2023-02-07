@@ -10,7 +10,7 @@ local t = Def.ActorFrame{
 		end
 	},
 	LoadFont("_v 26px bold white")..{
-		InitCommand=function(self) self:x(-292):halign(0):zoom(0.6):shadowlength(1):wrapwidthpixels(264) end,
+		InitCommand=function(self) self:x(-292):halign(0):zoom(0.6):shadowlength(1):wrapwidthpixels(264):maxwidth(264):maxheight(58) end,
 		SetCommand=function(self, params)
 			if params.Course then
 				self:settext( params.Course:GetDisplayFullTitle() )
@@ -45,6 +45,7 @@ Scores.SetCommand=function(self,param)
 		if item then
 			local hsl = profile:GetHighScoreList(sel, item)
 			local hs = hsl and hsl:GetHighScores()
+			local hss = param.Course:GetCourseType() == "CourseType_Survival"
 
 			assert(c["Name"..i])
 			assert(c["Score"..i])
@@ -53,10 +54,18 @@ Scores.SetCommand=function(self,param)
 			c["Score"..i]:visible(true)
 			if hs and #hs > 0 then
 				c["Name"..i]:settext( hs[1]:GetName() )
-				c["Score"..i]:settext( FormatPercentScore( hs[1]:GetPercentDP() ) )
+				if hss then
+					c["Score"..i]:settext( FormatPercentScore( hs[1]:GetPercentDP() ) .. " " .. SecondsToMSSMsMs( hs[1]:GetSurvivalSeconds() ) )
+				else
+					c["Score"..i]:settext( FormatPercentScore( hs[1]:GetPercentDP() ) )
+				end
 			else
 				c["Name"..i]:settext( "-----" )
-				c["Score"..i]:settext( FormatPercentScore( 0 ) )
+				if hss then
+					c["Score"..i]:settext( FormatPercentScore( 0 ) .. " " .. SecondsToMSSMsMs( 0 ) )
+				else
+					c["Score"..i]:settext( FormatPercentScore( 0 ) )
+				end
 			end
 		end
 	end

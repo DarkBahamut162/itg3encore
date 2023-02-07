@@ -1,11 +1,12 @@
+local ColumnStepsType1 = THEME:GetMetric(Var "LoadingScreen","ColumnStepsType1")
+local stepsType = THEME:GetString("StepsType",ToEnumShortString(ColumnStepsType1))
+
 return Def.ActorFrame{
 	LoadActor(THEME:GetPathB("ScreenRanking","underlay/back frame"))..{
-		InitCommand=function(self) self:x(SCREEN_CENTER_X-1):CenterY():diffusealpha(0):zoomtowidth(228) end,
-		OnCommand=function(self) self:decelerate(0.30):zoomx(1):diffusealpha(1) end
+		InitCommand=function(self) self:x(SCREEN_CENTER_X-1):CenterY() end
 	},
 	LoadActor(THEME:GetPathB("ScreenRanking","underlay/horiz-line"))..{
-		InitCommand=function(self) self:CenterX():y(SCREEN_BOTTOM-34):diffusealpha(0):zoomtowidth(0) end,
-		OnCommand=function(self) self:sleep(0.2):decelerate(0.30):zoomx(0.99):diffusealpha(1) end
+		InitCommand=function(self) self:CenterX():y(SCREEN_BOTTOM-34):zoomx(0.99) end
 	},
 	LoadActor(THEME:GetPathB("ScreenRanking","underlay/mask"))..{
 		InitCommand=function(self) self:CenterX():y(SCREEN_BOTTOM+2):zwrite(true):blend(Blend.NoEffect):vertalign(bottom) end
@@ -24,6 +25,8 @@ return Def.ActorFrame{
 	},
 	Def.ActorFrame{
 		Name="Icons",
+		OnCommand=function(self) if stepsType == "Single" then self:diffusealpha(0):linear(0.5):diffusealpha(1) end end,
+		OffCommand=function(self) if stepsType == "Double" then self:linear(0.5):diffusealpha(0) end end,
 		LoadActor("dgrades")..{
 			InitCommand=function(self) self:x(SCREEN_CENTER_X+100):y(SCREEN_TOP+56) end
 		},
