@@ -113,7 +113,5 @@ return Def.ActorFrame{
 			OnCommand=function(self) self:linear(1):cropleft(1):cropright(-0.3) end
 		}
 	},
-	LoadActor(THEME:GetPathB("ScreenAttract","overlay"))..{
-		InitCommand=function(self) self:y(40) end
-	}
+	LoadActor(THEME:GetPathB("ScreenAttract","overlay"))
 }

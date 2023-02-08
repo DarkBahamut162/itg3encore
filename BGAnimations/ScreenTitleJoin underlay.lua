@@ -2,11 +2,11 @@ InitOptions()
 
 return Def.ActorFrame{
 	LoadFont("_r bold shadow 30px")..{
-		InitCommand=function(self) self:CenterX():y(SCREEN_BOTTOM-100):shadowlength(0):zoomx(0.8):zoomy(0.7):settext("PRESS") end
+		InitCommand=function(self) self:CenterX():y(SCREEN_BOTTOM-110):shadowlength(0):zoomx(0.8):zoomy(0.7):settext("PRESS") end
 	},
 	Def.ActorFrame{
 		Name="StartButton",
-		InitCommand=function(self) self:CenterX():y(SCREEN_BOTTOM-75) end,
+		InitCommand=function(self) self:CenterX():y(SCREEN_BOTTOM-85) end,
 		LoadActor(THEME:GetPathG("_common","base start button"))..{
 			InitCommand=function(self) self:shadowlength(0):zoom(0.7) end
 		},

@@ -293,37 +293,45 @@ return Def.ActorFrame{
 		InitCommand=function(self) self:CenterX():y(isFinal() and SCREEN_BOTTOM-60+100 or SCREEN_BOTTOM-34+100):diffusealpha(0):horizalign(center):shadowlength(0):zoom(0.5) end,
 		OnCommand=function(self) self:decelerate(0.4):addy(-100):diffusealpha(1):playcommand("Refresh") end,
 		OffCommand=function(self) self:accelerate(0.5):addy(100):diffusealpha(0) end,
+		ScreenChangedMessageCommand=function(self) self:playcommand("Refresh") end,
 		RefreshCommand=function(self)
-			if isFinal() then
-				self:settext("In The Groove 3 Encore Final?")
-			else
-				self:settext("In The Groove 3 Encore r35?")
+			if SCREENMAN:GetTopScreen():GetName() ~= "ScreenLogo" then 
+				if isFinal() then
+					self:settext("In The Groove 3 Encore Final?")
+				else
+					self:settext("In The Groove 3 Encore r35?")
+				end
 			end
 		end
 	},
 	LoadFont("ScreenOptions serial number")..{
 		InitCommand=function(self) self:x(SCREEN_CENTER_X+110):y(isFinal() and SCREEN_BOTTOM-50 or SCREEN_BOTTOM-42):shadowlength(2):horizalign(left):maxwidth((IsHome() and isScreenTitle()) and SCREEN_WIDTH/9*5 or SCREEN_WIDTH/3*2):zoom(0.5) end,
 		OnCommand=function(self) self:diffusealpha(0):sleep(0.5):linear(0.5):diffusealpha(1):playcommand("Refresh") end,
-		OnInstantCommand=function(self) self:diffusealpha(1):playcommand("Refresh") end,
-		ScreenChangedMessageCommand=function(self) self:stoptweening():playcommand("Init"):playcommand("OnInstant") end,
+		ScreenChangedMessageCommand=function(self) self:playcommand("Refresh") end,
 		RefreshCommand=function(self)
-			if isFinal() then
-				self:settext("ITG-(?/?)-20XX/XX/XX-ITG3-Final-Encore")
-			else
-				self:settext("ITG-(?/?)-20XX/XX/XX-ITG3-r35-Encore")
+			if SCREENMAN:GetTopScreen():GetName() ~= "ScreenLogo" then 
+				if isFinal() then
+					self:settext("ITG-(?/?)-20XX/XX/XX-ITG3-Final-Encore")
+				else
+					self:settext("ITG-(?/?)-20XX/XX/XX-ITG3-r35-Encore")
+				end
 			end
 		end
 	},
 	LoadFont("ScreenOptions serial number")..{
 		InitCommand=function(self) self:x(SCREEN_LEFT+25):y(isFinal() and SCREEN_BOTTOM-50 or SCREEN_BOTTOM-42):shadowlength(2):horizalign(left):maxwidth(SCREEN_WIDTH/3*2):zoom(0.5) end,
 		OnCommand=function(self) self:diffusealpha(0):sleep(0.5):linear(0.5):diffusealpha(1):playcommand("Refresh") end,
+		ScreenChangedMessageCommand=function(self) self:playcommand("Refresh") end,
 		RefreshCommand=function(self)
-			self:settext(ProductFamily() .. " " .. ProductVersion() .. " (" .. VersionDate() .. ")")
+			if SCREENMAN:GetTopScreen():GetName() ~= "ScreenLogo" then 
+				self:settext(ProductFamily() .. " " .. ProductVersion() .. " (" .. VersionDate() .. ")")
+			end
 		end
 	},
 	LoadFont("_r bold 30px")..{
-		InitCommand=function(self) self:x(isFinal() and SCREEN_CENTER_X+5 or SCREEN_LEFT+35):y(isFinal() and SCREEN_TOP+69 or SCREEN_TOP+59):shadowlength(2):halign(isFinal() and 0.5 or 0):maxwidth(isFinal() and 650 or SCREEN_WIDTH):zoom(0.6) end,
+		InitCommand=function(self) self:x(isFinal() and SCREEN_CENTER_X+5 or SCREEN_LEFT+35):y(isFinal() and SCREEN_TOP+69 or SCREEN_TOP+59):shadowlength(2):halign(isFinal() and 0.5 or 0):maxwidth(isFinal() and SCREEN_WIDTH/4*3 or SCREEN_WIDTH):zoom(0.6) end,
 		OnCommand=function(self) self:diffusealpha(0):sleep(0.5):linear(0.5):diffusealpha(1):playcommand("Refresh") end,
+		ScreenChangedMessageCommand=function(self) self:playcommand("Refresh") end,
 		RefreshCommand=function(self)
 			local songs = SONGMAN:GetAllSongs()
 			local songsSingle = 0
@@ -340,8 +348,10 @@ return Def.ActorFrame{
 				if courses[i]:GetCourseType() == "CourseType_Nonstop" then coursesMarathon = coursesMarathon + 1 end
 				if courses[i]:GetCourseType() == "CourseType_Oni" or courses[i]:GetCourseType() == "CourseType_Survival" then coursesSurvival = coursesSurvival + 1 end
 			end
-			self:settext("Songs: "..songsSingle.." singles & "..songsDouble.." doubles in "..groups.." groups\n"
-						.."Courses: "..coursesMarathon.." marathons & "..coursesSurvival.." survivals")
+			if SCREENMAN:GetTopScreen():GetName() ~= "ScreenLogo" then 
+				self:settext("Songs: "..songsSingle.." singles & "..songsDouble.." doubles in "..groups.." groups\n"
+							.."Courses: "..coursesMarathon.." marathons & "..coursesSurvival.." survivals")
+			end
 		end
 	}
 }

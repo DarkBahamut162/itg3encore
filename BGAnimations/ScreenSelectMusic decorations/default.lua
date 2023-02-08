@@ -1,9 +1,9 @@
 local t = LoadFallbackB()
 
 t[#t+1] = LoadFont("_v 26px bold shadow") .. {
-	InitCommand=function(self) self:x(SCREEN_CENTER_X+140):y(SCREEN_TOP+80):zoom(0.5) end,
-	OnCommand=function(self) self:addx(SCREEN_WIDTH):decelerate(0.75):addx(-SCREEN_WIDTH) end,
-	OffCommand=function(self) self:accelerate(0.75):addx(SCREEN_WIDTH) end,
+	InitCommand=function(self) self:x(isFinal() and SCREEN_CENTER_X+140 or SCREEN_CENTER_X + SCREEN_WIDTH/22):y(isFinal() and SCREEN_TOP+80 or SCREEN_TOP+78):zoom(0.5) end,
+	OnCommand=function(self) if isFinal() then self:addx(SCREEN_WIDTH) else self:addy(-100) end self:decelerate(0.75) if isFinal() then self:addx(-SCREEN_WIDTH) else self:addy(100) end end,
+	OffCommand=function(self) self:accelerate(0.75) if isFinal() then self:addx(SCREEN_WIDTH) else self:addy(-100) end  end,
 	BeginCommand=function(self) self:playcommand("Set") end,
 	SortOrderChangedMessageCommand=function(self) self:playcommand("Set") end,
 	SetCommand=function(self)

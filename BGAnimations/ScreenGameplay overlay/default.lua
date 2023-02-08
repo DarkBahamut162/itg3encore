@@ -135,7 +135,7 @@ local t = Def.ActorFrame{
 		}
 	},
 	LoadFont("_r bold 30px")..{
-		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+147):maxwidth(SCREEN_WIDTH/8*7):shadowlength(2):horizalign(center):zoom(0.5):diffusealpha(1) end,
+		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+127):maxwidth(SCREEN_WIDTH/8*7):shadowlength(2):horizalign(center):zoom(0.5):diffusealpha(1) end,
 		SetCommand=function(self)
 			local song = GAMESTATE:GetCurrentSong()
 			local text
@@ -149,7 +149,7 @@ local t = Def.ActorFrame{
 		OnCommand=function(self) self:playcommand("Set"):sleep(1.5):linear(1):diffusealpha(0) end
 	},
 	LoadFont("_r bold 30px")..{
-		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+167):maxwidth(SCREEN_WIDTH/8*6.8):shadowlength(2):horizalign(center):zoom(0.4):diffusealpha(1) end,
+		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+147):maxwidth(SCREEN_WIDTH/8*6.8):shadowlength(2):horizalign(center):zoom(0.4):diffusealpha(1) end,
 		SetCommand=function(self)
 			local song = GAMESTATE:GetCurrentSong()
 			local text
@@ -177,7 +177,8 @@ local t = Def.ActorFrame{
 		LoadActor("demonstration gradient")..{
 			InitCommand=function(self) self:FullScreen():diffusealpha(0.8) end
 		}
-	}
+	},
+	LoadActor(THEME:GetPathB("","_coins"))..{ InitCommand=function(self) self:visible(not GAMESTATE:IsDemonstration()) end }
 }
 
 for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
