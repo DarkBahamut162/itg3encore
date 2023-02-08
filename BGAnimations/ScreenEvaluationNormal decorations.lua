@@ -67,7 +67,7 @@ local function GraphDisplay(pn)
 			Condition=getenv("EvalCombo"..ToEnumShortString(pn)),
 			InitCommand=function(self)
 				local length = GAMESTATE:IsCourseMode() and TrailUtil.GetTotalSeconds(GAMESTATE:GetCurrentTrail(pn)) or GAMESTATE:GetCurrentSong():GetLastSecond()
-				local lastSecond = GAMESTATE:IsCourseMode() and getenv("LastFantastic"..ToEnumShortString(pn)) or getenv("LastFantastic"..ToEnumShortString(pn))-GAMESTATE:GetCurrentSong():GetFirstSecond()
+				local lastSecond = GAMESTATE:IsCourseMode() and getenv("LastFantastic"..ToEnumShortString(pn)) or getenv("LastFantastic"..ToEnumShortString(pn))+(GAMESTATE:GetCurrentSteps(pn):GetTimingData():GetElapsedTimeFromBeat(0)-GAMESTATE:GetCurrentSong():GetFirstSecond())
 				self:croptop(0.75) if lastSecond > 0 then self:cropright(1-(lastSecond/length)) end
 			end
 		},
@@ -75,8 +75,8 @@ local function GraphDisplay(pn)
 			Condition=getenv("EvalCombo"..ToEnumShortString(pn)),
 			InitCommand=function(self)
 				local length = GAMESTATE:IsCourseMode() and TrailUtil.GetTotalSeconds(GAMESTATE:GetCurrentTrail(pn)) or GAMESTATE:GetCurrentSong():GetLastSecond()
-				local firstSecond = GAMESTATE:IsCourseMode() and getenv("LastFantastic"..ToEnumShortString(pn)) or getenv("LastFantastic"..ToEnumShortString(pn))-GAMESTATE:GetCurrentSong():GetFirstSecond()
-				local lastSecond = GAMESTATE:IsCourseMode() and getenv("LastPerfect"..ToEnumShortString(pn)) or getenv("LastPerfect"..ToEnumShortString(pn))-GAMESTATE:GetCurrentSong():GetFirstSecond()
+				local firstSecond = GAMESTATE:IsCourseMode() and getenv("LastFantastic"..ToEnumShortString(pn)) or getenv("LastFantastic"..ToEnumShortString(pn))+(GAMESTATE:GetCurrentSteps(pn):GetTimingData():GetElapsedTimeFromBeat(0)-GAMESTATE:GetCurrentSong():GetFirstSecond())
+				local lastSecond = GAMESTATE:IsCourseMode() and getenv("LastPerfect"..ToEnumShortString(pn)) or getenv("LastPerfect"..ToEnumShortString(pn))+(GAMESTATE:GetCurrentSteps(pn):GetTimingData():GetElapsedTimeFromBeat(0)-GAMESTATE:GetCurrentSong():GetFirstSecond())
 				self:croptop(0.75):cropleft(1-(length-firstSecond)/length) if lastSecond > 0 then self:cropright(1-(lastSecond/length)) end
 			end
 		},
@@ -84,8 +84,8 @@ local function GraphDisplay(pn)
 			Condition=getenv("EvalCombo"..ToEnumShortString(pn)),
 			InitCommand=function(self)
 				local length = GAMESTATE:IsCourseMode() and TrailUtil.GetTotalSeconds(GAMESTATE:GetCurrentTrail(pn)) or GAMESTATE:GetCurrentSong():GetLastSecond()
-				local firstSecond = GAMESTATE:IsCourseMode() and getenv("LastPerfect"..ToEnumShortString(pn)) or getenv("LastPerfect"..ToEnumShortString(pn))-GAMESTATE:GetCurrentSong():GetFirstSecond()
-				local lastSecond = GAMESTATE:IsCourseMode() and getenv("LastGreat"..ToEnumShortString(pn)) or getenv("LastGreat"..ToEnumShortString(pn))-GAMESTATE:GetCurrentSong():GetFirstSecond()
+				local firstSecond = GAMESTATE:IsCourseMode() and getenv("LastPerfect"..ToEnumShortString(pn)) or getenv("LastPerfect"..ToEnumShortString(pn))+(GAMESTATE:GetCurrentSteps(pn):GetTimingData():GetElapsedTimeFromBeat(0)-GAMESTATE:GetCurrentSong():GetFirstSecond())
+				local lastSecond = GAMESTATE:IsCourseMode() and getenv("LastGreat"..ToEnumShortString(pn)) or getenv("LastGreat"..ToEnumShortString(pn))+(GAMESTATE:GetCurrentSteps(pn):GetTimingData():GetElapsedTimeFromBeat(0)-GAMESTATE:GetCurrentSong():GetFirstSecond())
 				self:croptop(0.75):cropleft(1-(length-firstSecond)/length) if lastSecond > 0 then self:cropright(1-(lastSecond/length)) end
 			end
 		},

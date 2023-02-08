@@ -3,7 +3,7 @@ assert(player,"[ScreenEvaluation PersonalRecord] requires player")
 
 local PacemakerRecord = ""
 local total =  GAMESTATE:GetNumPlayersEnabled()
-if (total == 1 and (getenv("ShowStatsP1") == 7 or getenv("ShowStatsP1") == 7)) or (total == 2 and (getenv("ShowStatsP1") == 7 and getenv("ShowStatsP1") == 7)) then
+if (total == 1 and (getenv("ShowStatsP1") == 7 or getenv("ShowStatsP2") == 7)) or (total == 2 and (getenv("ShowStatsP1") == 7 and getenv("ShowStatsP2") == 7)) then
 	local SongOrCourse,StepsOrTrail,scorelist,topscore
 	local DPCurrent = STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetActualDancePoints()
 	local target = THEME:GetMetric("PlayerStageStats","GradePercentTier"..string.format("%02d",17-getenv("SetPacemaker"..ToEnumShortString(player))))
@@ -13,27 +13,21 @@ if (total == 1 and (getenv("ShowStatsP1") == 7 or getenv("ShowStatsP1") == 7)) o
 	if GAMESTATE:IsCourseMode() then SongOrCourse,StepsOrTrail = GAMESTATE:GetCurrentCourse(),GAMESTATE:GetCurrentTrail(player) else SongOrCourse,StepsOrTrail = GAMESTATE:GetCurrentSong(),GAMESTATE:GetCurrentSteps(player) end
 	if not scorelist then scorelist = PROFILEMAN:GetMachineProfile():GetHighScoreList(SongOrCourse,StepsOrTrail) end
 	if not scorelist then scorelist = PROFILEMAN:GetProfile(player):GetHighScoreList(SongOrCourse,StepsOrTrail) end
-	if scorelist then
-		topscore = scorelist:GetHighScores()[1]
-	end
-	if topscore then
-		HighScore = math.ceil(topscore:GetPercentDP()*STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetPossibleDancePoints())
-	end
-
-	if not STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetFailed() then
-		if HighScore > 0 and DPCurrent >= HighScore and DPCurrent >= Target then
-			PacemakerRecord = "HIGHSCORE & TARGET MET"
-		elseif HighScore > 0 and DPCurrent < HighScore and DPCurrent >= Target then
-			PacemakerRecord = "HIGHSCORE FAILED | TARGET MET"
-		elseif HighScore > 0 and DPCurrent >= HighScore and DPCurrent < Target then
-			PacemakerRecord = "HIGHSCORE PASSED | TARGET MISSED"
-		elseif HighScore > 0 and DPCurrent < HighScore and DPCurrent < Target then
-			PacemakerRecord = "HIGHSCORE & TARGET MISSED"
-		elseif HighScore == 0 and DPCurrent >= Target then
-			PacemakerRecord = "TARGET MET"
-		elseif HighScore == 0 and DPCurrent < Target then
-			PacemakerRecord = "TARGET MISSED"
-		end
+	if scorelist then topscore = scorelist:GetHighScores()[1] end
+	if topscore then HighScore = math.ceil(topscore:GetPercentDP()*STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetPossibleDancePoints()) end
+	local first = (DPCurrent == HighScore or HighScore == 0)
+	if DPCurrent > HighScore and not first and DPCurrent >= Target then
+		PacemakerRecord = "HIGHSCORE & TARGET MET"
+	elseif DPCurrent < HighScore and not first and DPCurrent >= Target then
+		PacemakerRecord = "HIGHSCORE FAILED | TARGET MET"
+	elseif DPCurrent > HighScore and not first and DPCurrent < Target then
+		PacemakerRecord = "HIGHSCORE PASSED | TARGET MISSED"
+	elseif DPCurrent < HighScore and not first and DPCurrent < Target then
+		PacemakerRecord = "HIGHSCORE & TARGET MISSED"
+	elseif first and DPCurrent >= Target then
+		PacemakerRecord = "TARGET MET"
+	elseif first and DPCurrent < Target then
+		PacemakerRecord = "TARGET MISSED"
 	end
 end
 

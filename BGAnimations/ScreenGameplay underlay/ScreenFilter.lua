@@ -19,7 +19,7 @@ if numPlayers == 1 then
 
 	local mlevel = GAMESTATE:IsCourseMode() and "ModsLevel_Stage" or "ModsLevel_Preferred"
 	local currentMini = 1-math.round(GAMESTATE:GetPlayerState(player):GetPlayerOptions(mlevel):Mini()*50) / 100
-	local filterWidth = GAMESTATE:GetStyleFieldSize(pNum-1) * currentMini
+	local filterWidth = isOutFox() and GAMESTATE:GetStyleFieldSize(pNum-1) * currentMini or 64 * 4 * currentMini
 
 	if string.find(style:GetName(),"double") then
 		if IsGame("be-mu") then

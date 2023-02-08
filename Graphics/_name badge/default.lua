@@ -29,11 +29,11 @@ end
 
 local function checkInitSpeedMods()
 	local playeroptions = GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Preferred")
-	if playeroptions:MMod()			then pX = playeroptions:MMod() pXmod = "m"
-	elseif playeroptions:AMod()		then pX = playeroptions:AMod() pXmod = "a"
-	elseif playeroptions:CAMod()	then pX = playeroptions:CAMod() pXmod = "ca"
-	elseif playeroptions:XMod()		then pX = playeroptions:XMod() * 100 pXmod = "x"
-	elseif playeroptions:CMod()		then pX = playeroptions:CMod() pXmod = "C" end
+	if playeroptions:MMod()						then pX = playeroptions:MMod() pXmod = "m"
+	elseif isOutFox() and playeroptions:AMod()	then pX = playeroptions:AMod() pXmod = "a"
+	elseif isOutFox() and playeroptions:CAMod()	then pX = playeroptions:CAMod() pXmod = "ca"
+	elseif playeroptions:XMod()					then pX = playeroptions:XMod() * 100 pXmod = "x"
+	elseif playeroptions:CMod()					then pX = playeroptions:CMod() pXmod = "C" end
 end
 
 local function modifiedBPM(speed,mode)
