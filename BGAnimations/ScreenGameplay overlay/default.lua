@@ -30,23 +30,23 @@ local t = Def.ActorFrame{
 		Name="ScreenStageHoldovers",
 		InitCommand=function(self) self:visible(not GAMESTATE:IsDemonstration() and not GAMESTATE:IsCourseMode()) end,
 		LoadActor(THEME:GetPathB("ScreenStageInformation","in/bottom/bar"))..{
-			InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+156):zoomtowidth(SCREEN_WIDTH):faderight(0.8):fadeleft(0.8) end,
+			InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+136):zoomtowidth(SCREEN_WIDTH):faderight(0.8):fadeleft(0.8) end,
 			OnCommand=function(self) self:sleep(2.25):cropright(0):linear(0.6):cropleft(1) end
 		},
 		Def.ActorFrame{
 			Name="InfoP1",
 			InitCommand=function(self) self:visible(GAMESTATE:IsPlayerEnabled(PLAYER_1)) end,
 			LoadActor(THEME:GetPathB("ScreenStageInformation","in/_left gradient"))..{
-				InitCommand=function(self) self:x(SCREEN_LEFT):y(SCREEN_CENTER_Y+150):horizalign(left) end,
+				InitCommand=function(self) self:x(SCREEN_LEFT):y(SCREEN_CENTER_Y+130):horizalign(left) end,
 				OnCommand=function(self) self:sleep(1):linear(1):diffusealpha(0) end
 			},
 			LoadActor(THEME:GetPathB("ScreenStageInformation","in/_p1"))..{
-				InitCommand=function(self) self:x(SCREEN_LEFT):y(SCREEN_CENTER_Y+150):horizalign(left) end,
+				InitCommand=function(self) self:x(SCREEN_LEFT):y(SCREEN_CENTER_Y+130):horizalign(left) end,
 				OnCommand=function(self) self:sleep(1):linear(1):diffusealpha(0) end
 			},
 			LoadFont("_r bold 30px")..{
 				Text="Step Artist:",
-				InitCommand=function(self) self:x(SCREEN_LEFT+5):y(SCREEN_CENTER_Y+172):zoom(0.6):halign(0):shadowlength(2) end,
+				InitCommand=function(self) self:x(SCREEN_LEFT+5):y(SCREEN_CENTER_Y+152):zoom(0.6):halign(0):shadowlength(2) end,
 				BeginCommand=function(self)
 					local pm = GAMESTATE:GetPlayMode()
 					local show = (pm == 'PlayMode_Regular' or pm == 'PlayMode_Rave')
@@ -56,7 +56,7 @@ local t = Def.ActorFrame{
 			},
 			LoadFont("_r bold 30px")..{
 				Name="AuthorText",
-				InitCommand=function(self) self:x(SCREEN_LEFT+100):y(SCREEN_CENTER_Y+172):shadowlength(2):halign(0):zoom(0.6) end,
+				InitCommand=function(self) self:x(SCREEN_LEFT+100):y(SCREEN_CENTER_Y+152):shadowlength(2):halign(0):zoom(0.6) end,
 				BeginCommand=function(self)
 					local song = GAMESTATE:GetCurrentSong()
 					local text
@@ -76,7 +76,7 @@ local t = Def.ActorFrame{
 			},
 			LoadFont("_r bold 30px")..{
 				Name="PlayerName",
-				InitCommand=function(self) self:x(SCREEN_LEFT+44):y(SCREEN_CENTER_Y+142):shadowlength(2):halign(0):zoom(0.8) end,
+				InitCommand=function(self) self:x(SCREEN_LEFT+44):y(SCREEN_CENTER_Y+122):shadowlength(2):halign(0):zoom(0.8) end,
 				BeginCommand=function(self)
 					self:settext( PROFILEMAN:GetPlayerName(PLAYER_1) )
 				end,
@@ -87,16 +87,16 @@ local t = Def.ActorFrame{
 			Name="InfoP2",
 			InitCommand=function(self) self:visible(GAMESTATE:IsPlayerEnabled(PLAYER_2)) end,
 			LoadActor(THEME:GetPathB("ScreenStageInformation","in/_right gradient"))..{
-				InitCommand=function(self) self:x(SCREEN_RIGHT):y(SCREEN_CENTER_Y+150):horizalign(right) end,
+				InitCommand=function(self) self:x(SCREEN_RIGHT):y(SCREEN_CENTER_Y+130):horizalign(right) end,
 				OnCommand=function(self) self:sleep(1):linear(1):diffusealpha(0) end
 			},
 			LoadActor(THEME:GetPathB("ScreenStageInformation","in/_p2"))..{
-				InitCommand=function(self) self:x(SCREEN_RIGHT):y(SCREEN_CENTER_Y+150):horizalign(right) end,
+				InitCommand=function(self) self:x(SCREEN_RIGHT):y(SCREEN_CENTER_Y+130):horizalign(right) end,
 				OnCommand=function(self) self:sleep(1):linear(1):diffusealpha(0) end
 			},
 			LoadFont("_r bold 30px")..{
 				Text=":Step Artist",
-				InitCommand=function(self) self:x(SCREEN_RIGHT-5):y(SCREEN_CENTER_Y+172):zoom(0.6):halign(1):shadowlength(2) end,
+				InitCommand=function(self) self:x(SCREEN_RIGHT-5):y(SCREEN_CENTER_Y+152):zoom(0.6):halign(1):shadowlength(2) end,
 				BeginCommand=function(self)
 					local pm = GAMESTATE:GetPlayMode()
 					local show = (pm == 'PlayMode_Regular' or pm == 'PlayMode_Rave')
@@ -106,7 +106,7 @@ local t = Def.ActorFrame{
 			},
 			LoadFont("_r bold 30px")..{
 				Name="AuthorText",
-				InitCommand=function(self) self:x(SCREEN_RIGHT-100):y(SCREEN_CENTER_Y+172):shadowlength(2):halign(1):zoom(0.6) end,
+				InitCommand=function(self) self:x(SCREEN_RIGHT-100):y(SCREEN_CENTER_Y+152):shadowlength(2):halign(1):zoom(0.6) end,
 				BeginCommand=function(self)
 					local song = GAMESTATE:GetCurrentSong()
 					local text
@@ -126,7 +126,7 @@ local t = Def.ActorFrame{
 			},
 			LoadFont("_r bold 30px")..{
 				Name="PlayerName",
-				InitCommand=function(self) self:x(SCREEN_RIGHT-44):y(SCREEN_CENTER_Y+142):shadowlength(2):halign(1):zoom(0.8) end,
+				InitCommand=function(self) self:x(SCREEN_RIGHT-44):y(SCREEN_CENTER_Y+122):shadowlength(2):halign(1):zoom(0.8) end,
 				BeginCommand=function(self)
 					self:settext( PROFILEMAN:GetPlayerName(PLAYER_2) )
 				end,
