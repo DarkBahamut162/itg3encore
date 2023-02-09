@@ -1,31 +1,11 @@
 return Def.ActorFrame{
-	LoadActor(THEME:GetPathB("ScreenWithMenuElements","underlay/_base"))..{
-		OnCommand=function(self) self:playcommand("DoOff"):finishtweening():playcommand("Slow"):queuecommand("DoOn") end,
-		SlowCommand=function(self) self:SetUpdateRate(1.5) end
-	},
-	LoadActor(THEME:GetPathB("ScreenWithMenuElements","underlay/_sides"))..{
-		OnCommand=function(self) self:playcommand("DoOff"):finishtweening():playcommand("Slow"):queuecommand("DoOn") end,
-		SlowCommand=function(self) self:SetUpdateRate(1.5) end
-	},
-	LoadActor(THEME:GetPathB("ScreenWithMenuElements","underlay/_expandtop"))..{
-		OnCommand=function(self) self:playcommand("DoOff"):finishtweening():playcommand("Slow"):queuecommand("DoOn") end,
-		SlowCommand=function(self) self:SetUpdateRate(1.5) end
-	},
+	LoadActor(THEME:GetPathB("ScreenWithMenuElements","underlay/_base")),
+	LoadActor(THEME:GetPathB("ScreenWithMenuElements","underlay/_sides")),
+	LoadActor(THEME:GetPathB("ScreenWithMenuElements","underlay/_expandtop")),
 	LoadActor("../ScreenEvaluation underlay/evaluation banner mask")..{
 		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+135):zbuffer(true):blend(Blend.NoEffect):diffusealpha(0) end,
 		OnCommand=function(self) self:sleep(2.8):diffusealpha(1) end,
 		OffCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(0) end
-	},
-	Def.ActorFrame{
-		Name="LabelFrame",
-		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y-142) end,
-		LoadFont("_v 26px bold shadow")..{
-			Text="TIME & DATE",
-			SetCommand=function(self) self:settext( string.format('%02i:%02i:%02i %s %02i %04i', Hour(), Minute(), Second(), MonthToString(MonthOfYear()), DayOfMonth(), Year()) ):sleep(1/6):queuecommand("Set") end,
-			InitCommand=function(self) self:y(-48):shadowlength(2):horizalign(center):zoom(0.5) end,
-			OnCommand=function(self) self:diffusealpha(0):sleep(3):playcommand("Set"):linear(0.8):diffusealpha(1) end,
-			OffCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(0) end
-		}
 	},
 	Def.ActorFrame{
 		LoadActor("frame")..{

@@ -164,7 +164,7 @@ local t = Def.ActorFrame{
 	},
 	Def.ActorFrame{
 		Name="DemonstrationFrame",
-		BeginCommand=function(self) self:visible(GAMESTATE:IsDemonstration() and SCREENMAN:GetTopScreen():GetName() ~= 'ScreenJukebox') end,
+		BeginCommand=function(self) self:visible(GAMESTATE:IsDemonstration() and not isTopScreen('ScreenJukebox')) end,
 		LoadActor(THEME:GetPathB("_metallic","streak"))..{
 			InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+43):zoomtowidth(SCREEN_WIDTH) end,
 			OnCommand=function(self) self:diffusealpha(0.9):fadeleft(1):faderight(1) end

@@ -19,18 +19,9 @@ return Def.ActorFrame{
 			end
 		end
 	end,
-	LoadActor(THEME:GetPathB("ScreenWithMenuElements","underlay/_base"))..{
-		OnCommand=function(self) self:playcommand("DoOff"):finishtweening():playcommand("Slow"):queuecommand("DoOn") end,
-		SlowCommand=function(self) self:SetUpdateRate(1.5) end
-	},
-	LoadActor(THEME:GetPathB("ScreenWithMenuElements","underlay/_sides"))..{
-		OnCommand=function(self) self:playcommand("DoOff"):finishtweening():playcommand("Slow"):queuecommand("DoOn") end,
-		SlowCommand=function(self) self:SetUpdateRate(1.5) end
-	},
-	LoadActor(THEME:GetPathB("ScreenWithMenuElements","underlay/_expandtop"))..{
-		OnCommand=function(self) self:playcommand("DoOff"):finishtweening():playcommand("Slow"):queuecommand("DoOn") end,
-		SlowCommand=function(self) self:SetUpdateRate(1.5) end
-	},
+	LoadActor(THEME:GetPathB("ScreenWithMenuElements","underlay/_base")),
+	LoadActor(THEME:GetPathB("ScreenWithMenuElements","underlay/_sides")),
+	LoadActor(THEME:GetPathB("ScreenWithMenuElements","underlay/_expandtop")),
 	LoadActor("evaluation banner mask")..{
 		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+135):zbuffer(true):blend(Blend.NoEffect):diffusealpha(0) end,
 		OnCommand=function(self) self:sleep(2.8):diffusealpha(1) end,
@@ -126,17 +117,6 @@ return Def.ActorFrame{
 		}
 	},
 	Def.ActorFrame{
-		Name="LabelFrame",
-		InitCommand=function(self) self:CenterX():y(isFinal() and SCREEN_CENTER_Y-130 or SCREEN_CENTER_Y-142) end,
-		LoadFont("_v 26px bold shadow")..{
-			Text="TIME & DATE",
-			SetCommand=function(self) self:settext( string.format('%02i:%02i:%02i %s %02i %04i', Hour(), Minute(), Second(), MonthToString(MonthOfYear()), DayOfMonth(), Year()) ):sleep(1/6):queuecommand("Set") end,
-			InitCommand=function(self) self:y(-48):shadowlength(2):horizalign(center) end,
-			OnCommand=function(self) self:diffusealpha(0):sleep(3):zoom(0.5):playcommand("Set"):linear(0.8):diffusealpha(1) end,
-			OffCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(0) end
-		}
-	},
-	Def.ActorFrame{
 		LoadActor(THEME:GetPathG("ScreenEvaluation","GraphFrame p1/_base"))..{
 			InitCommand=function(self) self:player(PLAYER_1):x(THEME:GetMetric("ScreenEvaluation","GradeFrameP1X")-55):y(THEME:GetMetric("ScreenEvaluation","GradeFrameP1Y")+101):addx(-EvalTweenDistance()) end,
 			OnCommand=function(self) self:sleep(3):decelerate(0.3):addx(EvalTweenDistance()) end,
@@ -149,7 +129,7 @@ return Def.ActorFrame{
 		}
 	},
 	LoadFont("_angel glow")..{
-		Condition=Var "LoadingScreen" ~= "ScreenEvaluationSummary",
+		Condition=not isTopScreen("ScreenEvaluationSummary"),
 		InitCommand=function(self) self:x(isFinal() and SCREEN_CENTER_X or SCREEN_CENTER_X-300):halign(isFinal() and 0.5 or 0):y(SCREEN_TOP+74):maxwidth(isFinal() and 1000 or 700):zoom(0.6):shadowlength(0):playcommand("Update") end,
 		OnCommand=function(self) self:diffusealpha(0):sleep(3):linear(0.3):diffusealpha(1) end,
 		OffCommand=function(self) self:linear(0.2):diffusealpha(0) end,

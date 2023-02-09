@@ -16,7 +16,7 @@ for group in ivalues(groups) do
 end
 
 return Def.ActorFrame{
-	OffCommand=function(self) if SCREENMAN:GetTopScreen():GetName() == 'ScreenTitleJoin' then SOUND:StopMusic() end end,
+	OffCommand=function(self) if isTopScreen('ScreenTitleJoin') then SOUND:StopMusic() end end,
 	LoadActor(THEME:GetPathB("ScreenSelectMusic","background/CJ126 "..(isFinal() and "Final" or "Normal")))..{
 		InitCommand=function(self) self:FullScreen():diffusealpha(0) end,
 		OnCommand=function(self) self:linear(1.5):diffusealpha(1) end
@@ -295,7 +295,7 @@ return Def.ActorFrame{
 		OffCommand=function(self) self:accelerate(0.5):addy(100):diffusealpha(0) end,
 		ScreenChangedMessageCommand=function(self) self:playcommand("Refresh") end,
 		RefreshCommand=function(self)
-			if SCREENMAN:GetTopScreen():GetName() ~= "ScreenLogo" then 
+			if not isTopScreen("ScreenLogo") then 
 				if isFinal() then
 					self:settext("In The Groove 3 Encore Final?")
 				else
@@ -309,7 +309,7 @@ return Def.ActorFrame{
 		OnCommand=function(self) self:diffusealpha(0):sleep(0.5):linear(0.5):diffusealpha(1):playcommand("Refresh") end,
 		ScreenChangedMessageCommand=function(self) self:playcommand("Refresh") end,
 		RefreshCommand=function(self)
-			if SCREENMAN:GetTopScreen():GetName() ~= "ScreenLogo" then 
+			if not isTopScreen("ScreenLogo") then 
 				if isFinal() then
 					self:settext("ITG-(?/?)-20XX/XX/XX-ITG3-Final-Encore")
 				else
@@ -323,7 +323,7 @@ return Def.ActorFrame{
 		OnCommand=function(self) self:diffusealpha(0):sleep(0.5):linear(0.5):diffusealpha(1):playcommand("Refresh") end,
 		ScreenChangedMessageCommand=function(self) self:playcommand("Refresh") end,
 		RefreshCommand=function(self)
-			if SCREENMAN:GetTopScreen():GetName() ~= "ScreenLogo" then 
+			if not isTopScreen("ScreenLogo") then 
 				self:settext(ProductFamily() .. " " .. ProductVersion() .. " (" .. VersionDate() .. ")")
 			end
 		end
@@ -348,10 +348,21 @@ return Def.ActorFrame{
 				if courses[i]:GetCourseType() == "CourseType_Nonstop" then coursesMarathon = coursesMarathon + 1 end
 				if courses[i]:GetCourseType() == "CourseType_Oni" or courses[i]:GetCourseType() == "CourseType_Survival" then coursesSurvival = coursesSurvival + 1 end
 			end
-			if SCREENMAN:GetTopScreen():GetName() ~= "ScreenLogo" then 
+			if not isTopScreen("ScreenLogo") then 
 				self:settext("Songs: "..songsSingle.." singles & "..songsDouble.." doubles in "..groups.." groups\n"
 							.."Courses: "..coursesMarathon.." marathons & "..coursesSurvival.." survivals")
 			end
 		end
+	},
+	Def.ActorFrame{
+		Name="TIME & DATE",
+		InitCommand=function(self) self:CenterX():y(SCREEN_BOTTOM+11) end,
+		LoadFont("_v 26px bold black")..{
+			SetCommand=function(self) self:settext( string.format('%02i:%02i:%02i %s %02i %04i', Hour(), Minute(), Second(), string.sub(MonthToString(MonthOfYear()),1,3), DayOfMonth(), Year()) ):sleep(1/6):queuecommand("Set") end,
+			InitCommand=function(self) self:y(-48):shadowlength(2):horizalign(center):zoom(0.5):diffusealpha(0) end,
+			OnCommand=function(self) self:linear(0.8):diffusealpha(1) end,
+			OffCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(0) end,
+			ScreenChangedMessageCommand=function(self) if not isTopScreen("ScreenLogo") then self:playcommand("Set") end end,
+		}
 	}
 }

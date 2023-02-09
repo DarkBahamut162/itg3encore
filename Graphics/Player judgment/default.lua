@@ -24,7 +24,9 @@ local judgment = not GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentSteps(play
 local checkFantastics = true
 local checkPerfects = true
 local checkGreats = true
-local check = true
+local check = false
+local preCheck = true
+setenv("EvalCombo"..ToEnumShortString(player),false)
 
 return Def.ActorFrame {
 	LoadActor(judgment) .. {
@@ -43,6 +45,10 @@ return Def.ActorFrame {
 		local tns = param.TapNoteScore
 		local iNumStates = c.Judgment:GetNumStates()
 		local iFrame = TNSFrames[tns]
+		if iFrame and preCheck then
+			preCheck, check = false, true
+			setenv("EvalCombo"..ToEnumShortString(player),true)
+		end
 		if (GAMESTATE:GetPlayerState(player):GetPlayerController() == 'PlayerController_Autoplay') or (GAMESTATE:GetPlayerState(player):GetPlayerController() == 'PlayerController_Cpu') then
 			checkFantastics, checkPerfects, checkGreats, check = false, false, false, false
 			setenv("EvalCombo"..ToEnumShortString(player),false)

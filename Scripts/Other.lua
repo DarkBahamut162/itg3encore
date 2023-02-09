@@ -149,11 +149,11 @@ function isFinal()
 end
 
 function isScreenTitle()
-	if SCREENMAN:GetTopScreen() then
-		return SCREENMAN:GetTopScreen():GetName() == "ScreenTitleMenu" or SCREENMAN:GetTopScreen():GetName() == "ScreenTitleJoin"
-	else
-		return false
-	end
+	return isTopScreen("ScreenTitleMenu") or isTopScreen("ScreenTitleJoin")
+end
+
+function isGamePlay()
+	return isTopScreen('ScreenGameplay') or isTopScreen('ScreenGameplayWorkout') or isTopScreen('ScreenDemonstration') or isTopScreen('ScreenJukebox')
 end
 
 function isITGmania()
@@ -170,4 +170,12 @@ end
 
 function isWidescreen()
 	return SCREEN_WIDTH / SCREEN_HEIGHT >= 1.7
+end
+
+function isTopScreen(screen)
+	if SCREENMAN:GetTopScreen() then
+		return SCREENMAN:GetTopScreen():GetName() == screen
+	else
+		return Var "LoadingScreen" == screen
+	end
 end

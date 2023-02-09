@@ -66,7 +66,7 @@ local function modifiedBPM(speed,mode)
 	end
 end
 
-if Var "LoadingScreen" ~= "ScreenJukeboxMenu" then
+if not isTopScreen("ScreenJukeboxMenu") then
 	return Def.ActorFrame{
 		LoadActor(THEME:GetPathG("_name","frame"))..{ InitCommand=function(self) self:zoomx(1.75):xy(-205.5,5) end },
 		LoadFont("_v 26px bold white")..{

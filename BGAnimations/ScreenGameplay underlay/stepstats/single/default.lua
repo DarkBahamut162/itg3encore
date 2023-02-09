@@ -1,4 +1,4 @@
-if Var "LoadingScreen" == "ScreenDemonstration2" then return Def.ActorFrame{} end
+if isTopScreen("ScreenDemonstration2") then return Def.ActorFrame{} end
 
 local pn = GAMESTATE:GetMasterPlayerNumber()
 local startX = GAMESTATE:GetMasterPlayerNumber() == PLAYER_1 and SCREEN_WIDTH/4 or -SCREEN_WIDTH/4

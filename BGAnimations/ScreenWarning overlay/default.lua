@@ -51,6 +51,5 @@ return Def.ActorFrame{
 		AnimCommand=function(self) self:sleep(0.5):decelerate(0.4):addx(-SCREEN_WIDTH/1.2):decelerate(9):addx(-40) end,
 		OffCommand=function(self) self:stoptweening():accelerate(0.2):x(-SCREEN_LEFT-150) end
 	},
-	LoadActor(THEME:GetPathB("_join","overlay")),
-	LoadActor(THEME:GetPathB("","_coins"))
+	LoadActor(THEME:GetPathB("_join","overlay"))
 }

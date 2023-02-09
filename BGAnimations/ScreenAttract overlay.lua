@@ -4,10 +4,7 @@ return Def.ActorFrame{
 		OnCommand=function(self) self:playcommand("Refresh") end,
 		CoinModeChangedMessageCommand=function(self) self:playcommand("Refresh") end,
 		RefreshCommand=function(self)
-			if GAMESTATE:GetCoinMode()=='CoinMode_Home' then
-				self:settext('')
-				return
-			end
+			if GAMESTATE:GetCoinMode()=='CoinMode_Home' then self:settext('') return end
 			local coins=GAMESTATE:GetCoins()
 			local coinsPerCredit=PREFSMAN:GetPreference('CoinsPerCredit')
 			if coins >= coinsPerCredit or GAMESTATE:GetCoinMode()=='CoinMode_Free' then
@@ -24,10 +21,7 @@ return Def.ActorFrame{
 		OnCommand=function(self) self:playcommand("Refresh") end,
 		CoinModeChangedMessageCommand=function(self) self:playcommand("Refresh") end,
 		RefreshCommand=function(self)
-			if GAMESTATE:GetCoinMode()=='CoinMode_Home' then
-				self:settext('')
-				return
-			end
+			if GAMESTATE:GetCoinMode()=='CoinMode_Home' then self:settext('') return end
 			local coins=GAMESTATE:GetCoins()
 			local coinsPerCredit=PREFSMAN:GetPreference('CoinsPerCredit')
 			if coins >= coinsPerCredit or GAMESTATE:GetCoinMode()=='CoinMode_Free' then

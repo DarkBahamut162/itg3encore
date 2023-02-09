@@ -177,9 +177,9 @@ end
 
 t[#t+1] = Def.ActorFrame {
 	Condition=isWidescreen(),
-	InitCommand=function(self) self:x(SCREEN_CENTER_X+302):y(SCREEN_CENTER_Y-88):SetUpdateFunction(CDTitleUpdate) end,
-	OnCommand=function(self) self:rotationz(90):addx(SCREEN_WIDTH):zoom(0):decelerate(0.75):zoom(1):addx(-SCREEN_WIDTH) end,
-	OffCommand=function(self) self:bouncebegin(0.15):zoomx(0) end,
+	InitCommand=function(self) self:x(SCREEN_CENTER_X+302):y(SCREEN_CENTER_Y-88):rotationz(90):SetUpdateFunction(CDTitleUpdate) end,
+	OnCommand=function(self) self:addx(SCREEN_WIDTH):decelerate(0.75):addx(-SCREEN_WIDTH) end,
+	OffCommand=function(self) self:accelerate(0.75):addx(SCREEN_WIDTH) end,
 	Def.Sprite {
 		Name="CDTitle",
 		InitCommand=function(self) self:vertalign(bottom) end,
