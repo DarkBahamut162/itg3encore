@@ -162,53 +162,7 @@ return Def.ActorFrame{
 							if text ~= "" then text = text.."\n" end text = text .. "Calc'd Difficulty (DB9): "..stepSum
 							if text ~= "" then text = text.."\n" end text = text .. "Calc'd Difficulty (Y&A): "..GetConvertDifficulty(curStep)
 							if isOutFox() then
-								local lastSec = 0
-								local stepsPerSec = {}
-								local currentSPS = 0
-								local timingData = curStep:GetTimingData()
-								local allowednotes = {
-									["TapNoteType_Tap"] = true,
-									["TapNoteSubType_Hold"] = true,
-									["TapNoteSubType_Roll"] = true
-								}
-								local chartint = 1
-								for k,v in pairs( GAMESTATE:GetCurrentSong():GetAllSteps() ) do
-									if v == curStep then
-										chartint = k
-										break
-									end
-								end
-								for k,v in pairs( GAMESTATE:GetCurrentSong():GetNoteData(chartint) ) do
-									if allowednotes[ v[3] ] then
-										local currentSec = timingData:GetElapsedTimeFromBeat(v[1] )
-										if lastSec > 0 then
-											if lastSec < currentSec then
-												currentSPS = 1 / (currentSec - lastSec)
-												if stepsPerSec[currentSPS] then
-													stepsPerSec[currentSPS] = stepsPerSec[currentSPS] + 1
-												else
-													stepsPerSec[currentSPS] = 1
-												end
-												lastSec = currentSec
-											elseif lastSec == currentSec then
-												if stepsPerSec[currentSPS] then
-													stepsPerSec[currentSPS] = stepsPerSec[currentSPS] + 1
-												else
-													stepsPerSec[currentSPS] = 1
-												end
-											end
-										else
-											lastSec = currentSec
-										end
-									end
-								end
-								local total, times = 0, 0
-								for _sps, _times in pairs(stepsPerSec) do
-									total = total + (_sps * _times)
-									times = times + _times
-								end
-								total = total / times * 2
-								if text ~= "" then text = text.."\n" end text = text .. "Calc'd Difficulty (SPS): "..math.round(total)
+								if text ~= "" then text = text.."\n" end text = text .. "Calc'd Difficulty (SPS): "..math.round(tonumber(LoadFromCache(curStep,"StepsPerSecond")))
 							end
 						end
 					end

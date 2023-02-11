@@ -61,18 +61,8 @@ return Def.ActorFrame{
 			self:zoomy(yZoom)
 		end,
 		CurrentSongChangedMessageCommand=function(self) self:stoptweening():playcommand("Set") end,
-		CurrentStepsP1ChangedMessageCommand=function(self)
-			if player == PLAYER_1 then self:stoptweening():playcommand("Set") end
-		end,
-		CurrentTrailP1ChangedMessageCommand=function(self)
-			if player == PLAYER_1 then self:stoptweening():playcommand("Set") end
-		end,
-		CurrentStepsP2ChangedMessageCommand=function(self)
-			if player == PLAYER_2 then self:stoptweening():playcommand("Set") end
-		end,
-		CurrentTrailP2ChangedMessageCommand=function(self)
-			if player == PLAYER_2 then self:stoptweening():playcommand("Set") end
-		end,
+		["CurrentSteps".. ToEnumShortString(player) .."ChangedMessageCommand"]=function(self) self:stoptweening():playcommand("Set") end,
+		["CurrentTrail".. ToEnumShortString(player) .."ChangedMessageCommand"]=function(self) self:stoptweening():playcommand("Set") end,
 		OffCommand=function(self) self:accelerate(0.2):diffusealpha(0) end
 	},
 	Def.Quad{
@@ -112,18 +102,8 @@ return Def.ActorFrame{
 			self:zoomy(yZoom)
 		end,
 		CurrentSongChangedMessageCommand=function(self) self:stoptweening():playcommand("Set") end,
-		CurrentStepsP1ChangedMessageCommand=function(self)
-			if player == PLAYER_1 then self:stoptweening():playcommand("Set") end
-		end,
-		CurrentTrailP1ChangedMessageCommand=function(self)
-			if player == PLAYER_1 then self:stoptweening():playcommand("Set") end
-		end,
-		CurrentStepsP2ChangedMessageCommand=function(self)
-			if player == PLAYER_2 then self:stoptweening():playcommand("Set") end
-		end,
-		CurrentTrailP2ChangedMessageCommand=function(self)
-			if player == PLAYER_2 then self:stoptweening():playcommand("Set") end
-		end,
+		["CurrentSteps".. ToEnumShortString(player) .."ChangedMessageCommand"]=function(self) self:stoptweening():playcommand("Set") end,
+		["CurrentTrail".. ToEnumShortString(player) .."ChangedMessageCommand"]=function(self) self:stoptweening():playcommand("Set") end,
 		OffCommand=function(self) self:accelerate(0.2):diffusealpha(0) end
 	},
 	Def.Quad{
@@ -163,18 +143,8 @@ return Def.ActorFrame{
 			self:zoomy(yZoom)
 		end,
 		CurrentSongChangedMessageCommand=function(self) self:stoptweening():playcommand("Set") end,
-		CurrentStepsP1ChangedMessageCommand=function(self)
-			if player == PLAYER_1 then self:stoptweening():playcommand("Set") end
-		end,
-		CurrentTrailP1ChangedMessageCommand=function(self)
-			if player == PLAYER_1 then self:stoptweening():playcommand("Set") end
-		end,
-		CurrentStepsP2ChangedMessageCommand=function(self)
-			if player == PLAYER_2 then self:stoptweening():playcommand("Set") end
-		end,
-		CurrentTrailP2ChangedMessageCommand=function(self)
-			if player == PLAYER_2 then self:stoptweening():playcommand("Set") end
-		end,
+		["CurrentSteps".. ToEnumShortString(player) .."ChangedMessageCommand"]=function(self) self:stoptweening():playcommand("Set") end,
+		["CurrentTrail".. ToEnumShortString(player) .."ChangedMessageCommand"]=function(self) self:stoptweening():playcommand("Set") end,
 		OffCommand=function(self) self:accelerate(0.2):diffusealpha(0) end
 	},
 	Def.Quad{
@@ -214,18 +184,8 @@ return Def.ActorFrame{
 			self:zoomy(yZoom)
 		end,
 		CurrentSongChangedMessageCommand=function(self) self:stoptweening():playcommand("Set") end,
-		CurrentStepsP1ChangedMessageCommand=function(self)
-			if player == PLAYER_1 then self:stoptweening():playcommand("Set") end
-		end,
-		CurrentTrailP1ChangedMessageCommand=function(self)
-			if player == PLAYER_1 then self:stoptweening():playcommand("Set") end
-		end,
-		CurrentStepsP2ChangedMessageCommand=function(self)
-			if player == PLAYER_2 then self:stoptweening():playcommand("Set") end
-		end,
-		CurrentTrailP2ChangedMessageCommand=function(self)
-			if player == PLAYER_2 then self:stoptweening():playcommand("Set") end
-		end,
+		["CurrentSteps".. ToEnumShortString(player) .."ChangedMessageCommand"]=function(self) self:stoptweening():playcommand("Set") end,
+		["CurrentTrail".. ToEnumShortString(player) .."ChangedMessageCommand"]=function(self) self:stoptweening():playcommand("Set") end,
 		OffCommand=function(self) self:accelerate(0.2):diffusealpha(0) end
 	},
 	Def.Quad{
@@ -265,18 +225,8 @@ return Def.ActorFrame{
 			self:zoomy(yZoom)
 		end,
 		CurrentSongChangedMessageCommand=function(self) self:stoptweening():playcommand("Set") end,
-		CurrentStepsP1ChangedMessageCommand=function(self)
-			if player == PLAYER_1 then self:stoptweening():playcommand("Set") end
-		end,
-		CurrentTrailP1ChangedMessageCommand=function(self)
-			if player == PLAYER_1 then self:stoptweening():playcommand("Set") end
-		end,
-		CurrentStepsP2ChangedMessageCommand=function(self)
-			if player == PLAYER_2 then self:stoptweening():playcommand("Set") end
-		end,
-		CurrentTrailP2ChangedMessageCommand=function(self)
-			if player == PLAYER_2 then self:stoptweening():playcommand("Set") end
-		end,
+		["CurrentSteps".. ToEnumShortString(player) .."ChangedMessageCommand"]=function(self) self:stoptweening():playcommand("Set") end,
+		["CurrentTrail".. ToEnumShortString(player) .."ChangedMessageCommand"]=function(self) self:stoptweening():playcommand("Set") end,
 		OffCommand=function(self) self:accelerate(0.2):diffusealpha(0) end
 	}
 }

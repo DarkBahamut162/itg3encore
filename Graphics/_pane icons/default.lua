@@ -9,10 +9,8 @@ return Def.ActorFrame{
 	InitCommand=function(self) self:y(-1) if isWidescreen() and isOutFox() then self:x(player == PLAYER_1 and 48 or -48) end end,
 	CurrentSongChangedMessageCommand=function(self) self:playcommand("Set") end,
 	CurrentCourseChangedMessageCommand=function(self) self:playcommand("Set") end,
-	CurrentStepsP1ChangedMessageCommand=function(self) if player == PLAYER_1 then self:playcommand("Set") end end,
-	CurrentTrailP1ChangedMessageCommand=function(self) if player == PLAYER_1 then self:playcommand("Set") end end,
-	CurrentStepsP2ChangedMessageCommand=function(self) if player == PLAYER_2 then self:playcommand("Set") end end,
-	CurrentTrailP2ChangedMessageCommand=function(self) if player == PLAYER_2 then self:playcommand("Set") end end,
+	["CurrentSteps".. ToEnumShortString(player) .."ChangedMessageCommand"]=function(self) self:playcommand("Set") end,
+	["CurrentTrail".. ToEnumShortString(player) .."ChangedMessageCommand"]=function(self) self:playcommand("Set") end,
 	SetCommand=function(self)
 		song,course = GAMESTATE:GetCurrentSong(),GAMESTATE:GetCurrentCourse()
 		bpm,stop,delay,warp,scroll,speed,fake,attack,jump,hold,mine,hand,roll = false,false,false,false,false,false,false,false,false,false,false,false,false
@@ -86,105 +84,105 @@ return Def.ActorFrame{
 		LoadActor("_null")..{
 			InitCommand=function(self) self:x(-32+15.666*0):y(145):shadowlength(1):zoom(0.6) end,
 			OnCommand=function(self) self:addy(100):sleep(0.4):decelerate(0.3):addy(-100) end,
-			OffCommand=function(self) self:linear(0.4):diffusealpha(0) end,
+			OffCommand=function(self) self:accelerate(0.2):diffusealpha(0) end,
 			SetCommand=function(self) if bpm then self:diffuse(color("#00C0FF")) else self:diffuse(color("#808080")) end end
 		},
 		LoadFont("_z bold gray 36px")..{
 			Text="BPM",
 			InitCommand=function(self) self:x(-32+15.666*0):y(145):shadowlength(1):zoom(0.2):maxwidth(60) end,
 			OnCommand=function(self) self:addy(100):sleep(0.4):decelerate(0.3):addy(-100) end,
-			OffCommand=function(self) self:linear(0.4):diffusealpha(0) end,
+			OffCommand=function(self) self:accelerate(0.2):diffusealpha(0) end,
 			SetCommand=function(self) if bpm then self:diffuse(color("#00FFFF")) else self:diffuse(color("#808080")) end end
 		},
 		LoadActor("_null")..{
 			InitCommand=function(self) self:x(-32+15.666*1):y(145):shadowlength(1):zoom(0.6) end,
 			OnCommand=function(self) self:addy(100):sleep(0.45):decelerate(0.3):addy(-100) end,
-			OffCommand=function(self) self:linear(0.4):diffusealpha(0) end,
+			OffCommand=function(self) self:accelerate(0.2):diffusealpha(0) end,
 			SetCommand=function(self) if stop then self:diffuse(color("#FF0000")) else self:diffuse(color("#808080")) end end
 		},
 		LoadFont("_z bold gray 36px")..{
 			Text="S",
 			InitCommand=function(self) self:x(-32+15.666*1):y(145):shadowlength(1):zoom(0.2):maxwidth(60) end,
 			OnCommand=function(self) self:addy(100):sleep(0.45):decelerate(0.3):addy(-100) end,
-			OffCommand=function(self) self:linear(0.4):diffusealpha(0) end,
+			OffCommand=function(self) self:accelerate(0.2):diffusealpha(0) end,
 			SetCommand=function(self) if stop then self:diffuse(color("#FF0000")) else self:diffuse(color("#808080")) end end
 		},
 		LoadActor("_null")..{
 			InitCommand=function(self) self:x(-32+15.666*2):y(145):shadowlength(1):zoom(0.6) end,
 			OnCommand=function(self) self:addy(100):sleep(0.5):decelerate(0.3):addy(-100) end,
-			OffCommand=function(self) self:linear(0.4):diffusealpha(0) end,
+			OffCommand=function(self) self:accelerate(0.2):diffusealpha(0) end,
 			SetCommand=function(self) if delay then self:diffuse(color("#0000FF")) else self:diffuse(color("#808080")) end end
 		},
 		LoadFont("_z bold gray 36px")..{
 			Text="D",
 			InitCommand=function(self) self:x(-32+15.666*2):y(145):shadowlength(1):zoom(0.2):maxwidth(60) end,
 			OnCommand=function(self) self:addy(100):sleep(0.5):decelerate(0.3):addy(-100) end,
-			OffCommand=function(self) self:linear(0.4):diffusealpha(0) end,
+			OffCommand=function(self) self:accelerate(0.2):diffusealpha(0) end,
 			SetCommand=function(self) if delay then self:diffuse(color("#0000FF")) else self:diffuse(color("#808080")) end end
 		},
 		LoadActor("_null")..{
 			InitCommand=function(self) self:x(-32+15.666*3):y(145):shadowlength(1):zoom(0.6) end,
 			OnCommand=function(self) self:addy(100):sleep(0.55):decelerate(0.3):addy(-100) end,
-			OffCommand=function(self) self:linear(0.4):diffusealpha(0) end,
+			OffCommand=function(self) self:accelerate(0.2):diffusealpha(0) end,
 			SetCommand=function(self) if warp then self:diffuse(color("#C000FF")) else self:diffuse(color("#808080")) end end
 		},
 		LoadFont("_z bold gray 36px")..{
 			Text="W",
 			InitCommand=function(self) self:x(-32+15.666*3):y(145):shadowlength(1):zoom(0.2):maxwidth(60) end,
 			OnCommand=function(self) self:addy(100):sleep(0.55):decelerate(0.3):addy(-100) end,
-			OffCommand=function(self) self:linear(0.4):diffusealpha(0) end,
+			OffCommand=function(self) self:accelerate(0.2):diffusealpha(0) end,
 			SetCommand=function(self) if warp then self:diffuse(color("#C000FF")) else self:diffuse(color("#808080")) end end
 		},
 		LoadActor("_null")..{
 			InitCommand=function(self) self:x(-32+15.666*4):y(145):shadowlength(1):zoom(0.6) end,
 			OnCommand=function(self) self:addy(100):sleep(0.6):decelerate(0.3):addy(-100) end,
-			OffCommand=function(self) self:linear(0.4):diffusealpha(0) end,
+			OffCommand=function(self) self:accelerate(0.2):diffusealpha(0) end,
 			SetCommand=function(self) if scroll then self:diffuse(color("#00FF00")) else self:diffuse(color("#808080")) end end
 		},
 		LoadFont("_z bold gray 36px")..{
 			Text="SC",
 			InitCommand=function(self) self:x(-32+15.666*4):y(145):shadowlength(1):zoom(0.2):maxwidth(60) end,
 			OnCommand=function(self) self:addy(100):sleep(0.6):decelerate(0.3):addy(-100) end,
-			OffCommand=function(self) self:linear(0.4):diffusealpha(0) end,
+			OffCommand=function(self) self:accelerate(0.2):diffusealpha(0) end,
 			SetCommand=function(self) if scroll then self:diffuse(color("#00FF00")) else self:diffuse(color("#808080")) end end
 		},
 		LoadActor("_null")..{
 			InitCommand=function(self) self:x(-32+15.666*5):y(145):shadowlength(1):zoom(0.6) end,
 			OnCommand=function(self) self:addy(100):sleep(0.65):decelerate(0.3):addy(-100) end,
-			OffCommand=function(self) self:linear(0.4):diffusealpha(0) end,
+			OffCommand=function(self) self:accelerate(0.2):diffusealpha(0) end,
 			SetCommand=function(self) if speed then self:diffuse(color("#FF8000")) else self:diffuse(color("#808080")) end end
 		},
 		LoadFont("_z bold gray 36px")..{
 			Text="SP",
 			InitCommand=function(self) self:x(-32+15.666*5):y(145):shadowlength(1):zoom(0.2):maxwidth(60) end,
 			OnCommand=function(self) self:addy(100):sleep(0.65):decelerate(0.3):addy(-100) end,
-			OffCommand=function(self) self:linear(0.4):diffusealpha(0) end,
+			OffCommand=function(self) self:accelerate(0.2):diffusealpha(0) end,
 			SetCommand=function(self) if speed then self:diffuse(color("#FF8000")) else self:diffuse(color("#808080")) end end
 		},
 		LoadActor("_null")..{
 			InitCommand=function(self) self:x(-32+15.666*6):y(145):shadowlength(1):zoom(0.6) end,
 			OnCommand=function(self) self:addy(100):sleep(0.7):decelerate(0.3):addy(-100) end,
-			OffCommand=function(self) self:linear(0.4):diffusealpha(0) end,
+			OffCommand=function(self) self:accelerate(0.2):diffusealpha(0) end,
 			SetCommand=function(self) if fake then self:diffuse(color("#FFFFFF")) else self:diffuse(color("#808080")) end end
 		},
 		LoadFont("_z bold gray 36px")..{
 			Text="F",
 			InitCommand=function(self) self:x(-32+15.666*6):y(145):shadowlength(1):zoom(0.2):maxwidth(60) end,
 			OnCommand=function(self) self:addy(100):sleep(0.7):decelerate(0.3):addy(-100) end,
-			OffCommand=function(self) self:linear(0.4):diffusealpha(0) end,
+			OffCommand=function(self) self:accelerate(0.2):diffusealpha(0) end,
 			SetCommand=function(self) if fake then self:diffuse(color("#FFFFFF")) else self:diffuse(color("#808080")) end end
 		},
 		LoadActor("_null")..{
 			InitCommand=function(self) self:x(-32+15.666*7):y(145):shadowlength(1):zoom(0.6) end,
 			OnCommand=function(self) self:addy(100):sleep(0.75):decelerate(0.3):addy(-100) end,
-			OffCommand=function(self) self:linear(0.4):diffusealpha(0) end,
+			OffCommand=function(self) self:accelerate(0.2):diffusealpha(0) end,
 			SetCommand=function(self) if attack then self:diffuse(color("#FFFF00")) else self:diffuse(color("#808080")) end end
 		},
 		LoadFont("_z bold gray 36px")..{
 			Text="A",
 			InitCommand=function(self) self:x(-32+15.666*7):y(145):shadowlength(1):zoom(0.2):maxwidth(60) end,
 			OnCommand=function(self) self:addy(100):sleep(0.75):decelerate(0.3):addy(-100) end,
-			OffCommand=function(self) self:linear(0.4):diffusealpha(0) end,
+			OffCommand=function(self) self:accelerate(0.2):diffusealpha(0) end,
 			SetCommand=function(self) if attack then self:diffuse(color("#FFFF00")) else self:diffuse(color("#808080")) end end
 		}
 	},
@@ -192,31 +190,31 @@ return Def.ActorFrame{
 		LoadActor("_long")..{
 			InitCommand=function(self) self:x(-39+25*0):y(114):shadowlength(1):halign(0) end,
 			OnCommand=function(self) self:addx(player == PLAYER_1 and -SCREEN_CENTER_X or SCREEN_CENTER_X):sleep(0.7):decelerate(0.3):addx(player == PLAYER_1 and SCREEN_CENTER_X or -SCREEN_CENTER_X) end,
-			OffCommand=function(self) self:linear(0.4):diffusealpha(0) end,
+			OffCommand=function(self) self:accelerate(0.2):diffusealpha(0) end,
 			SetCommand=function(self) if stream > 0 then self:diffuse(color("#FFFFFF")) else self:diffuse(color("#808080")) end end
 		},
 		LoadActor("_long")..{
 			InitCommand=function(self) self:x(-39+25*1):y(114):shadowlength(1):halign(0) end,
 			OnCommand=function(self) self:addx(player == PLAYER_1 and -SCREEN_CENTER_X or SCREEN_CENTER_X):sleep(0.7):decelerate(0.3):addx(player == PLAYER_1 and SCREEN_CENTER_X or -SCREEN_CENTER_X) end,
-			OffCommand=function(self) self:linear(0.4):diffusealpha(0) end,
+			OffCommand=function(self) self:accelerate(0.2):diffusealpha(0) end,
 			SetCommand=function(self) if voltage > 0 then self:diffuse(color("#FFFFFF")) else self:diffuse(color("#808080")) end end
 		},
 		LoadActor("_long")..{
 			InitCommand=function(self) self:x(-39+25*2):y(114):shadowlength(1):halign(0) end,
 			OnCommand=function(self) self:addx(player == PLAYER_1 and -SCREEN_CENTER_X or SCREEN_CENTER_X):sleep(0.7):decelerate(0.3):addx(player == PLAYER_1 and SCREEN_CENTER_X or -SCREEN_CENTER_X) end,
-			OffCommand=function(self) self:linear(0.4):diffusealpha(0) end,
+			OffCommand=function(self) self:accelerate(0.2):diffusealpha(0) end,
 			SetCommand=function(self) if air > 0 then self:diffuse(color("#FFFFFF")) else self:diffuse(color("#808080")) end end
 		},
 		LoadActor("_long")..{
 			InitCommand=function(self) self:x(-39+25*3):y(114):shadowlength(1):halign(0) end,
 			OnCommand=function(self) self:addx(player == PLAYER_1 and -SCREEN_CENTER_X or SCREEN_CENTER_X):sleep(0.7):decelerate(0.3):addx(player == PLAYER_1 and SCREEN_CENTER_X or -SCREEN_CENTER_X) end,
-			OffCommand=function(self) self:linear(0.4):diffusealpha(0) end,
+			OffCommand=function(self) self:accelerate(0.2):diffusealpha(0) end,
 			SetCommand=function(self) if freeze > 0 then self:diffuse(color("#FFFFFF")) else self:diffuse(color("#808080")) end end
 		},
 		LoadActor("_long")..{
 			InitCommand=function(self) self:x(-39+25*4):y(114):shadowlength(1):halign(0) end,
 			OnCommand=function(self) self:addx(player == PLAYER_1 and -SCREEN_CENTER_X or SCREEN_CENTER_X):sleep(0.7):decelerate(0.3):addx(player == PLAYER_1 and SCREEN_CENTER_X or -SCREEN_CENTER_X) end,
-			OffCommand=function(self) self:linear(0.4):diffusealpha(0) end,
+			OffCommand=function(self) self:accelerate(0.2):diffusealpha(0) end,
 			SetCommand=function(self) if chaos > 0 then self:diffuse(color("#FFFFFF")) else self:diffuse(color("#808080")) end end
 		},
 		Def.Quad{
@@ -234,11 +232,9 @@ return Def.ActorFrame{
 				end
 			end,
 			CurrentSongChangedMessageCommand=function(self) self:stoptweening():playcommand("Set") end,
-			CurrentStepsP1ChangedMessageCommand=function(self) if player == PLAYER_1 then self:stoptweening():playcommand("Set") end end,
-			CurrentTrailP1ChangedMessageCommand=function(self) if player == PLAYER_1 then self:stoptweening():playcommand("Set") end end,
-			CurrentStepsP2ChangedMessageCommand=function(self) if player == PLAYER_2 then self:stoptweening():playcommand("Set") end end,
-			CurrentTrailP2ChangedMessageCommand=function(self) if player == PLAYER_2 then self:stoptweening():playcommand("Set") end end,
-			OffCommand=function(self) self:linear(0.4):diffusealpha(0) end,
+			["CurrentSteps".. ToEnumShortString(player) .."ChangedMessageCommand"]=function(self) self:stoptweening():playcommand("Set") end,
+			["CurrentTrail".. ToEnumShortString(player) .."ChangedMessageCommand"]=function(self) self:stoptweening():playcommand("Set") end,
+			OffCommand=function(self) self:accelerate(0.2):diffusealpha(0) end,
 		},
 		Def.Quad{
 			Name="VOLTAGE",
@@ -255,11 +251,9 @@ return Def.ActorFrame{
 				end
 			end,
 			CurrentSongChangedMessageCommand=function(self) self:stoptweening():playcommand("Set") end,
-			CurrentStepsP1ChangedMessageCommand=function(self) if player == PLAYER_1 then self:stoptweening():playcommand("Set") end end,
-			CurrentTrailP1ChangedMessageCommand=function(self) if player == PLAYER_1 then self:stoptweening():playcommand("Set") end end,
-			CurrentStepsP2ChangedMessageCommand=function(self) if player == PLAYER_2 then self:stoptweening():playcommand("Set") end end,
-			CurrentTrailP2ChangedMessageCommand=function(self) if player == PLAYER_2 then self:stoptweening():playcommand("Set") end end,
-			OffCommand=function(self) self:linear(0.4):diffusealpha(0) end
+			["CurrentSteps".. ToEnumShortString(player) .."ChangedMessageCommand"]=function(self) self:stoptweening():playcommand("Set") end,
+			["CurrentTrail".. ToEnumShortString(player) .."ChangedMessageCommand"]=function(self) self:stoptweening():playcommand("Set") end,
+			OffCommand=function(self) self:accelerate(0.2):diffusealpha(0) end
 		},
 		Def.Quad{
 			Name="AIR",
@@ -276,11 +270,9 @@ return Def.ActorFrame{
 				end
 			end,
 			CurrentSongChangedMessageCommand=function(self) self:stoptweening():playcommand("Set") end,
-			CurrentStepsP1ChangedMessageCommand=function(self) if player == PLAYER_1 then self:stoptweening():playcommand("Set") end end,
-			CurrentTrailP1ChangedMessageCommand=function(self) if player == PLAYER_1 then self:stoptweening():playcommand("Set") end end,
-			CurrentStepsP2ChangedMessageCommand=function(self) if player == PLAYER_2 then self:stoptweening():playcommand("Set") end end,
-			CurrentTrailP2ChangedMessageCommand=function(self) if player == PLAYER_2 then self:stoptweening():playcommand("Set") end end,
-			OffCommand=function(self) self:linear(0.4):diffusealpha(0) end
+			["CurrentSteps".. ToEnumShortString(player) .."ChangedMessageCommand"]=function(self) self:stoptweening():playcommand("Set") end,
+			["CurrentTrail".. ToEnumShortString(player) .."ChangedMessageCommand"]=function(self) self:stoptweening():playcommand("Set") end,
+			OffCommand=function(self) self:accelerate(0.2):diffusealpha(0) end
 		},
 		Def.Quad{
 			Name="FREEZE",
@@ -297,11 +289,9 @@ return Def.ActorFrame{
 				end
 			end,
 			CurrentSongChangedMessageCommand=function(self) self:stoptweening():playcommand("Set") end,
-			CurrentStepsP1ChangedMessageCommand=function(self) if player == PLAYER_1 then self:stoptweening():playcommand("Set") end end,
-			CurrentTrailP1ChangedMessageCommand=function(self) if player == PLAYER_1 then self:stoptweening():playcommand("Set") end end,
-			CurrentStepsP2ChangedMessageCommand=function(self) if player == PLAYER_2 then self:stoptweening():playcommand("Set") end end,
-			CurrentTrailP2ChangedMessageCommand=function(self) if player == PLAYER_2 then self:stoptweening():playcommand("Set") end end,
-			OffCommand=function(self) self:linear(0.4):diffusealpha(0) end
+			["CurrentSteps".. ToEnumShortString(player) .."ChangedMessageCommand"]=function(self) self:stoptweening():playcommand("Set") end,
+			["CurrentTrail".. ToEnumShortString(player) .."ChangedMessageCommand"]=function(self) self:stoptweening():playcommand("Set") end,
+			OffCommand=function(self) self:accelerate(0.2):diffusealpha(0) end
 		},
 		Def.Quad{
 			Name="CHAOS",
@@ -318,11 +308,9 @@ return Def.ActorFrame{
 				end
 			end,
 			CurrentSongChangedMessageCommand=function(self) self:stoptweening():playcommand("Set") end,
-			CurrentStepsP1ChangedMessageCommand=function(self) if player == PLAYER_1 then self:stoptweening():playcommand("Set") end end,
-			CurrentTrailP1ChangedMessageCommand=function(self) if player == PLAYER_1 then self:stoptweening():playcommand("Set") end end,
-			CurrentStepsP2ChangedMessageCommand=function(self) if player == PLAYER_2 then self:stoptweening():playcommand("Set") end end,
-			CurrentTrailP2ChangedMessageCommand=function(self) if player == PLAYER_2 then self:stoptweening():playcommand("Set") end end,
-			OffCommand=function(self) self:linear(0.4):diffusealpha(0) end
+			["CurrentSteps".. ToEnumShortString(player) .."ChangedMessageCommand"]=function(self) self:stoptweening():playcommand("Set") end,
+			["CurrentTrail".. ToEnumShortString(player) .."ChangedMessageCommand"]=function(self) self:stoptweening():playcommand("Set") end,
+			OffCommand=function(self) self:accelerate(0.2):diffusealpha(0) end
 		},
 		LoadFont("_z bold gray 36px")..{
 			InitCommand=function(self) self:x(-27+25*0):y(113):shadowlength(1):zoom(0.2):diffusealpha(0):maxwidth(120) end,
@@ -359,31 +347,31 @@ return Def.ActorFrame{
 		LoadActor("_jump")..{
 			InitCommand=function(self) self:x(-27+25*0):y(230):shadowlength(2) end,
 			OnCommand=function(self) self:decelerate(0.3):y(130) end,
-			OffCommand=function(self) self:linear(0.4):diffusealpha(0) end,
+			OffCommand=function(self) self:accelerate(0.2):diffusealpha(0) end,
 			SetCommand=function(self) if jump then self:diffuse(color("#FFFFFF")) else self:diffuse(color("#808080")) end end
 		},
 		LoadActor("_hold")..{
 			InitCommand=function(self) self:x(-27+25*1):y(230):shadowlength(2) end,
 			OnCommand=function(self) self:sleep(0.1):decelerate(0.3):y(130) end,
-			OffCommand=function(self) self:linear(0.4):diffusealpha(0) end,
+			OffCommand=function(self) self:accelerate(0.2):diffusealpha(0) end,
 			SetCommand=function(self) if hold then self:diffuse(color("#FFFFFF")) else self:diffuse(color("#808080")) end end
 		},
 		LoadActor("_mine")..{
 			InitCommand=function(self) self:x(-27+25*2):y(230):shadowlength(2) end,
 			OnCommand=function(self) self:sleep(0.2):decelerate(0.3):y(130) end,
-			OffCommand=function(self) self:linear(0.4):diffusealpha(0) end,
+			OffCommand=function(self) self:accelerate(0.2):diffusealpha(0) end,
 			SetCommand=function(self) if mine then self:diffuse(color("#FFFFFF")) else self:diffuse(color("#808080")) end end
 		},
 		LoadActor("_hand")..{
 			InitCommand=function(self) self:x(-27+25*3):y(230):shadowlength(2) end,
 			OnCommand=function(self) self:sleep(0.3):decelerate(0.3):y(130) end,
-			OffCommand=function(self) self:linear(0.4):diffusealpha(0) end,
+			OffCommand=function(self) self:accelerate(0.2):diffusealpha(0) end,
 			SetCommand=function(self) if hand then self:diffuse(color("#FFFFFF")) else self:diffuse(color("#808080")) end end
 		},
 		LoadActor("_roll")..{
 			InitCommand=function(self) self:x(-27+25*4):y(230):shadowlength(2) end,
 			OnCommand=function(self) self:sleep(0.4):decelerate(0.3):y(130) end,
-			OffCommand=function(self) self:linear(0.4):diffusealpha(0) end,
+			OffCommand=function(self) self:accelerate(0.2):diffusealpha(0) end,
 			SetCommand=function(self) if roll then self:diffuse(color("#FFFFFF")) else self:diffuse(color("#808080")) end end
 		},
 		LoadActor("_textmask")..{

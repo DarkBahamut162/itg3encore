@@ -24,27 +24,15 @@ return Def.ActorFrame{
 		Name="Jumps",
 		InitCommand=function(self) self:x(-127+100):diffusealpha(0):horizalign(center):maxwidth(22) end,
 		CurrentSongChangedMessageCommand=function(self) self:playcommand("Set") end,
-		CurrentStepsP1ChangedMessageCommand=function(self)
-			if player == PLAYER_1 then self:playcommand("Set") end
-		end,
-		CurrentTrailP1ChangedMessageCommand=function(self)
-			if player == PLAYER_1 then self:playcommand("Set") end
-		end,
-		CurrentStepsP2ChangedMessageCommand=function(self)
-			if player == PLAYER_2 then self:playcommand("Set") end
-		end,
-		CurrentTrailP2ChangedMessageCommand=function(self)
-			if player == PLAYER_2 then self:playcommand("Set") end
-		end,
+		["CurrentSteps".. ToEnumShortString(player) .."ChangedMessageCommand"]=function(self) self:playcommand("Set") end,
+		["CurrentTrail".. ToEnumShortString(player) .."ChangedMessageCommand"]=function(self) self:playcommand("Set") end,
 		SetCommand=function(self)
 			local song = GAMESTATE:GetCurrentSong()
 			local course = GAMESTATE:GetCurrentCourse()
 			local num, numSongs = 0, 1
 			if song then
 				local steps = GAMESTATE:GetCurrentSteps(player)
-				if steps then
-					num = steps:GetRadarValues(player):GetValue('RadarCategory_Jumps')
-				end
+				if steps then num = steps:GetRadarValues(player):GetValue('RadarCategory_Jumps') end
 			elseif course then
 				local trail = GAMESTATE:GetCurrentTrail(player)
 				if trail then
@@ -78,27 +66,15 @@ return Def.ActorFrame{
 		Name="Holds",
 		InitCommand=function(self) self:x(-102+100):diffusealpha(0):horizalign(center):maxwidth(22) end,
 		CurrentSongChangedMessageCommand=function(self) self:playcommand("Set") end,
-		CurrentStepsP1ChangedMessageCommand=function(self)
-			if player == PLAYER_1 then self:playcommand("Set") end
-		end,
-		CurrentTrailP1ChangedMessageCommand=function(self)
-			if player == PLAYER_1 then self:playcommand("Set") end
-		end,
-		CurrentStepsP2ChangedMessageCommand=function(self)
-			if player == PLAYER_2 then self:playcommand("Set") end
-		end,
-		CurrentTrailP2ChangedMessageCommand=function(self)
-			if player == PLAYER_2 then self:playcommand("Set") end
-		end,
+		["CurrentSteps".. ToEnumShortString(player) .."ChangedMessageCommand"]=function(self) self:playcommand("Set") end,
+		["CurrentTrail".. ToEnumShortString(player) .."ChangedMessageCommand"]=function(self) self:playcommand("Set") end,
 		SetCommand=function(self)
 			local song = GAMESTATE:GetCurrentSong()
 			local course = GAMESTATE:GetCurrentCourse()
 			local num, numSongs = 0, 1
 			if song then
 				local steps = GAMESTATE:GetCurrentSteps(player)
-				if steps then
-					num = steps:GetRadarValues(player):GetValue('RadarCategory_Holds')
-				end
+				if steps then num = steps:GetRadarValues(player):GetValue('RadarCategory_Holds') end
 			elseif course then
 				local trail = GAMESTATE:GetCurrentTrail(player)
 				if trail then
@@ -132,27 +108,15 @@ return Def.ActorFrame{
 		Name="Mines",
 		InitCommand=function(self) self:x(-77+100):diffusealpha(0):horizalign(center):maxwidth(22) end,
 		CurrentSongChangedMessageCommand=function(self) self:playcommand("Set") end,
-		CurrentStepsP1ChangedMessageCommand=function(self)
-			if player == PLAYER_1 then self:playcommand("Set") end
-		end,
-		CurrentTrailP1ChangedMessageCommand=function(self)
-			if player == PLAYER_1 then self:playcommand("Set") end
-		end,
-		CurrentStepsP2ChangedMessageCommand=function(self)
-			if player == PLAYER_2 then self:playcommand("Set") end
-		end,
-		CurrentTrailP2ChangedMessageCommand=function(self)
-			if player == PLAYER_2 then self:playcommand("Set") end
-		end,
+		["CurrentSteps".. ToEnumShortString(player) .."ChangedMessageCommand"]=function(self) self:playcommand("Set") end,
+		["CurrentTrail".. ToEnumShortString(player) .."ChangedMessageCommand"]=function(self) self:playcommand("Set") end,
 		SetCommand=function(self)
 			local song = GAMESTATE:GetCurrentSong()
 			local course = GAMESTATE:GetCurrentCourse()
 			local num, numSongs = 0, 1
 			if song then
 				local steps = GAMESTATE:GetCurrentSteps(player)
-				if steps then
-					num = steps:GetRadarValues(player):GetValue('RadarCategory_Mines')
-				end
+				if steps then num = steps:GetRadarValues(player):GetValue('RadarCategory_Mines') end
 			elseif course then
 				local trail = GAMESTATE:GetCurrentTrail(player)
 				if trail then
@@ -186,27 +150,15 @@ return Def.ActorFrame{
 		Name="Hands",
 		InitCommand=function(self) self:x(-52+100):diffusealpha(0):horizalign(center):maxwidth(22) end,
 		CurrentSongChangedMessageCommand=function(self) self:playcommand("Set") end,
-		CurrentStepsP1ChangedMessageCommand=function(self)
-			if player == PLAYER_1 then self:playcommand("Set") end
-		end,
-		CurrentTrailP1ChangedMessageCommand=function(self)
-			if player == PLAYER_1 then self:playcommand("Set") end
-		end,
-		CurrentStepsP2ChangedMessageCommand=function(self)
-			if player == PLAYER_2 then self:playcommand("Set") end
-		end,
-		CurrentTrailP2ChangedMessageCommand=function(self)
-			if player == PLAYER_2 then self:playcommand("Set") end
-		end,
+		["CurrentSteps".. ToEnumShortString(player) .."ChangedMessageCommand"]=function(self) self:playcommand("Set") end,
+		["CurrentTrail".. ToEnumShortString(player) .."ChangedMessageCommand"]=function(self) self:playcommand("Set") end,
 		SetCommand=function(self)
 			local song = GAMESTATE:GetCurrentSong()
 			local course = GAMESTATE:GetCurrentCourse()
 			local num, numSongs = 0, 1
 			if song then
 				local steps = GAMESTATE:GetCurrentSteps(player)
-				if steps then
-					num = steps:GetRadarValues(player):GetValue('RadarCategory_Hands')
-				end
+				if steps then num = steps:GetRadarValues(player):GetValue('RadarCategory_Hands') end
 			elseif course then
 				local trail = GAMESTATE:GetCurrentTrail(player)
 				if trail then
@@ -240,27 +192,15 @@ return Def.ActorFrame{
 		Name="Rolls",
 		InitCommand=function(self) self:x(-27+100):diffusealpha(0):horizalign(center):maxwidth(22) end,
 		CurrentSongChangedMessageCommand=function(self) self:playcommand("Set") end,
-		CurrentStepsP1ChangedMessageCommand=function(self)
-			if player == PLAYER_1 then self:playcommand("Set") end
-		end,
-		CurrentTrailP1ChangedMessageCommand=function(self)
-			if player == PLAYER_1 then self:playcommand("Set") end
-		end,
-		CurrentStepsP2ChangedMessageCommand=function(self)
-			if player == PLAYER_2 then self:playcommand("Set") end
-		end,
-		CurrentTrailP2ChangedMessageCommand=function(self)
-			if player == PLAYER_2 then self:playcommand("Set") end
-		end,
+		["CurrentSteps".. ToEnumShortString(player) .."ChangedMessageCommand"]=function(self) self:playcommand("Set") end,
+		["CurrentTrail".. ToEnumShortString(player) .."ChangedMessageCommand"]=function(self) self:playcommand("Set") end,
 		SetCommand=function(self)
 			local song = GAMESTATE:GetCurrentSong()
 			local course = GAMESTATE:GetCurrentCourse()
 			local num, numSongs = 0, 1
 			if song then
 				local steps = GAMESTATE:GetCurrentSteps(player)
-				if steps then
-					num = steps:GetRadarValues(player):GetValue('RadarCategory_Rolls')
-				end
+				if steps then num = steps:GetRadarValues(player):GetValue('RadarCategory_Rolls') end
 			elseif course then
 				local trail = GAMESTATE:GetCurrentTrail(player)
 				if trail then

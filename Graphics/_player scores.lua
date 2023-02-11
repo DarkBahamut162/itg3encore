@@ -56,18 +56,8 @@ return Def.ActorFrame{
 			score:settext(scoreText)
 		end,
 		CurrentSongChangedMessageCommand=function(self) self:playcommand("Set") end,
-		CurrentStepsP1ChangedMessageCommand=function(self)
-			if player == PLAYER_1 then self:playcommand("Set") end
-		end,
-		CurrentStepsP2ChangedMessageCommand=function(self)
-			if player == PLAYER_2 then self:playcommand("Set") end
-		end,
-		CurrentTrailP1ChangedMessageCommand=function(self)
-			if player == PLAYER_1 then self:playcommand("Set") end
-		end,
-		CurrentTrailP2ChangedMessageCommand=function(self)
-			if player == PLAYER_2 then self:playcommand("Set") end
-		end,
+		["CurrentSteps".. ToEnumShortString(player) .."ChangedMessageCommand"]=function(self) self:playcommand("Set") end,
+		["CurrentTrail".. ToEnumShortString(player) .."ChangedMessageCommand"]=function(self) self:playcommand("Set") end,
 		LoadFont("_z 36px shadowx")..{
 			Name="ScoreName",
 			Text="MACH",
@@ -132,18 +122,8 @@ return Def.ActorFrame{
 			score:settext(scoreText)
 		end,
 		CurrentSongChangedMessageCommand=function(self) self:playcommand("Set") end,
-		CurrentStepsP1ChangedMessageCommand=function(self)
-			if player == PLAYER_1 then self:playcommand("Set") end
-		end,
-		CurrentStepsP2ChangedMessageCommand=function(self)
-			if player == PLAYER_2 then self:playcommand("Set") end
-		end,
-		CurrentTrailP1ChangedMessageCommand=function(self)
-			if player == PLAYER_1 then self:playcommand("Set") end
-		end,
-		CurrentTrailP2ChangedMessageCommand=function(self)
-			if player == PLAYER_2 then self:playcommand("Set") end
-		end,
+		["CurrentSteps".. ToEnumShortString(player) .."ChangedMessageCommand"]=function(self) self:playcommand("Set") end,
+		["CurrentTrail".. ToEnumShortString(player) .."ChangedMessageCommand"]=function(self) self:playcommand("Set") end,
 		LoadFont("_z 36px shadowx")..{
 			Name="ScoreName",
 			Text="CARD",

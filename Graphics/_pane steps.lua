@@ -48,7 +48,7 @@ return Def.ActorFrame{
 		Name="StepCount",
 		InitCommand=function(self) self:x(-67):y(120+4):horizalign(center):zoom(0.35):diffusealpha(0) end,
 		OnCommand=function(self) self:sleep(0.4):linear(0.2):diffusealpha(1):shadowlength(2) end,
-		OffCommand=function(self) self:linear(0.4):diffusealpha(0) end,
+		OffCommand=function(self) self:accelerate(0.2):diffusealpha(0) end,
 		SetCommand=function(self)
 			local val = 0
 			local add = ""
@@ -114,23 +114,13 @@ return Def.ActorFrame{
 			self:maxwidth(150)
 		end,
 		CurrentSongChangedMessageCommand=function(self) self:playcommand("Set") end,
-		CurrentStepsP1ChangedMessageCommand=function(self)
-			if player == PLAYER_1 then self:playcommand("Set") end
-		end,
-		CurrentTrailP1ChangedMessageCommand=function(self)
-			if player == PLAYER_1 then self:playcommand("Set") end
-		end,
-		CurrentStepsP2ChangedMessageCommand=function(self)
-			if player == PLAYER_2 then self:playcommand("Set") end
-		end,
-		CurrentTrailP2ChangedMessageCommand=function(self)
-			if player == PLAYER_2 then self:playcommand("Set") end
-		end
+		["CurrentSteps".. ToEnumShortString(player) .."ChangedMessageCommand"]=function(self) self:playcommand("Set") end,
+		["CurrentTrail".. ToEnumShortString(player) .."ChangedMessageCommand"]=function(self) self:playcommand("Set") end
 	},
 	LoadFont("_v 26px bold white")..{
 		Name="Label",
 		InitCommand=function(self) self:x(-67):y(120+17):settext("STEPS"):shadowlength(2):zoomx(0.45):zoomy(0.4):horizalign(center):diffusealpha(0) end,
 		OnCommand=function(self) self:sleep(0.85):linear(0.2):diffusebottomedge(color("#8F8F8F")):diffusealpha(1) end,
-		OffCommand=function(self) self:linear(0.4):diffusealpha(0) end
+		OffCommand=function(self) self:accelerate(0.2):diffusealpha(0) end
 	}
 }

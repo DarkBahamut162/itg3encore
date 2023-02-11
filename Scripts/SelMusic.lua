@@ -165,15 +165,8 @@ local allowednotes = {
 }
 
 function getStepCacheFile(Step)
-	local hashOld = false
-	local cache = ""
-	if hashOld then
-		cache = "Cache/Steps/"..Step:GetHash()
-	else
-		local filename = split("/",Step:GetFilename())
-		cache = "Cache/Steps/Steps_"..filename[3].."_"..filename[4].."_"..ToEnumShortString(Step:GetStepsType()).."_"..ToEnumShortString(Step:GetDifficulty())
-	end
-	return cache
+	local filename = split("/",Step:GetFilename())
+	return "Cache/Steps/Steps_"..filename[3].."_"..filename[4].."_"..ToEnumShortString(Step:GetStepsType()).."_"..ToEnumShortString(Step:GetDifficulty()).."_"..Step:GetHash()
 end
 
 function cacheStep(Step)
@@ -209,6 +202,10 @@ function cacheStep(Step)
 		end
 	end
 
+	local lastSec = 0
+	local stepsPerSec = {}
+	local currentSPS = 0
+
 	for k,v in pairs( GAMESTATE:GetCurrentSong():GetNoteData(chartint) ) do
 		ignore = false
 		if currentBeat < v[1] then
@@ -230,6 +227,26 @@ function cacheStep(Step)
 
 		if not ignore then
 			if allowednotes[ v[3] ] then
+				local currentSec = timingData:GetElapsedTimeFromBeat(v[1] )
+				if lastSec > 0 then
+					if lastSec < currentSec then
+						currentSPS = 1 / (currentSec - lastSec)
+						if stepsPerSec[currentSPS] then
+							stepsPerSec[currentSPS] = stepsPerSec[currentSPS] + 1
+						else
+							stepsPerSec[currentSPS] = 1
+						end
+						lastSec = currentSec
+					elseif lastSec == currentSec then
+						if stepsPerSec[currentSPS] then
+							stepsPerSec[currentSPS] = stepsPerSec[currentSPS] + 1
+						else
+							stepsPerSec[currentSPS] = 1
+						end
+					end
+				else
+					lastSec = currentSec
+				end
 				if v["length"] then
 					if currentBeat + v["length"] > lastBeat then lastBeat = currentBeat + v["length"] end
 				else
@@ -251,6 +268,12 @@ function cacheStep(Step)
 	if currentNotes ~= 0 then
 		noteCounter[currentNotes] = noteCounter[currentNotes] + 1
 	end
+	local total, times = 0, 0
+	for _sps, _times in pairs(stepsPerSec) do
+		total = total + (_sps * _times)
+		times = times + _times
+	end
+	total = total / times * 2
 
 	LoadModule("Config.Save.lua")("StepCounter",table.concat(noteCounter,"_"),getStepCacheFile(Step))
 	LoadModule("Config.Save.lua")("TrueFirstBeat",firstBeat,getStepCacheFile(Step))
@@ -259,6 +282,7 @@ function cacheStep(Step)
 	LoadModule("Config.Save.lua")("TrueLastSecond",Step:GetTimingData():GetElapsedTimeFromBeat(lastBeat),getStepCacheFile(Step))
 	LoadModule("Config.Save.lua")("HasLua",HasLuaCheck() and "true" or "false",getStepCacheFile(Step))
 	if shockArrows ~= "" then LoadModule("Config.Save.lua")("ShockArrows",shockArrows,getStepCacheFile(Step)) end
+	LoadModule("Config.Save.lua")("StepsPerSecond",total,getStepCacheFile(Step))
 end
 
 function LoadFromCache(Step,value)
