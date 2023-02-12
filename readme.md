@@ -57,9 +57,9 @@ What has been done so far:
 * Removed **D-Pad** Modifier since it breaks other Modifiers (like the new SpeedMod)
 * Better and sorted **ScreenPlayerOptions**
 * Added **MOD** & **BPM range** within **Name Badges** inside **ScreenPlayerOptions**
-* Added **TimingData** and **GrooveRadar** Display to **_panes**
-* Added **Player Avatar** to **_panes** *(Project OutFox AND WideScreen only)*
-* Added **CDTitle** next to **ScreenSelectMusic** *(WideScreen only)*
+* Added **TimingData** and **GrooveRadar** Display to **_panes** in **ScreenSelectMusic**
+* Added **Player Avatar** to **_panes** in **ScreenSelectMusic** *(Project OutFox AND WideScreen only)*
+* Added **CDTitle** next to **ScreenSelectMusic** banner frame *(WideScreen only)*
 * Better **StatsDisplay/ShowStats** going from a range of 1-6 instead of just 3
   * Added option for a fully functional IIDX pacemaker with selectable target meter
     * For 2 Player VS, both players need to choose IIDX
