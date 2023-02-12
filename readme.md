@@ -10,7 +10,7 @@ This Theme has been optimized for **Project OutFox** and has some additional *(b
 **ITGmania** might be your second pick since .mp4 background videos work in here without much issue. It might work incorrectly when used anywhere else!
 
 ## Information:
-To switch from *normal* to *final encore*, go into the theme's metrics.ini and set the **EnableFinalTheme** value inside **[Preferences]** to **true**
+To switch from **Normal Encore** to **Final Encore**, go into the theme's metrics.ini and set the **EnableFinalTheme** value inside **[Preferences]** to **true**
 
 ---
 
@@ -51,13 +51,15 @@ To switch from *normal* to *final encore*, go into the theme's metrics.ini and s
 ---
 I could have actually forked it but I didn't. My reasoning was that it wasn't going to be ITG3 anymore but it was being turned into ITG3Encore (something else while starting off using the same code).
 
-What has been fixed so far:
+What has been done so far:
 
 * All **cmd()** transformed to **function(self)**
 * Removed **D-Pad** Modifier since it breaks other Modifiers (like the new SpeedMod)
 * Better and sorted **ScreenPlayerOptions**
 * Added **MOD** & **BPM range** within **Name Badges** inside **ScreenPlayerOptions**
-* Added **TimingData** Display next to **_panes**
+* Added **TimingData** and **GrooveRadar** Display to **_panes**
+* Added **Player Avatar** to **_panes** *(Project OutFox AND WideScreen only)*
+* Added **CDTitle** next to **ScreenSelectMusic** *(WideScreen only)*
 * Better **StatsDisplay/ShowStats** going from a range of 1-6 instead of just 3
   * Added option for a fully functional IIDX pacemaker with selectable target meter
     * For 2 Player VS, both players need to choose IIDX
@@ -78,6 +80,8 @@ What has been fixed so far:
 * Added back **Rotation** to **Judgments** & **Holds** during Gameplay
 * Shows **ProductFamily**
 * Added most **Final Theme** stuff while adding/adjusting a few other things.
+* Tried to readd **marvelous/perfect/great color bar** on top of the **LifeGraph** in **ScreenEvaluation**
+* Added ability to switch between **Normal Score**, **Percentage** and **EX Score** via **Player Options**
 
 The following has been re-introduced from **OpenITG's ITG3Encore Theme**:
 * **BPM Display** *(Disabled in Battle Mode)*
