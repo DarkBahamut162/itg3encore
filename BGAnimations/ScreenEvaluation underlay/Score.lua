@@ -6,7 +6,7 @@ return Def.ActorFrame{
 		InitCommand=function(self)
 			self:diffuse(PlayerColor(player))
 			if isTopScreen("ScreenEvaluationWorkout") or isTopScreen("ScreenEvaluationCourseWorkout") then
-				self:x(player == PLAYER_1 and SCREEN_CENTER_X-56 or SCREEN_CENTER_X+56):y(SCREEN_CENTER_Y+86):zoom(1/3*2)
+				self:x(player == PLAYER_1 and SCREEN_CENTER_X-58 or SCREEN_CENTER_X+58):y(SCREEN_CENTER_Y+92):zoom(2/3)
 			elseif isTopScreen("ScreenEvaluationRave") then
 				self:x(player == PLAYER_1 and SCREEN_CENTER_X-199 or SCREEN_CENTER_X+199):y(SCREEN_CENTER_Y+175)
 			else
@@ -21,7 +21,8 @@ return Def.ActorFrame{
 				self:AddAttribute(0, {
 					Length = math.max(9-string.len(''..output), 0),
 					Diffuse = PlayerColorSemi(player),
-				}):zoomx(0.9)
+				})
+				if isTopScreen("ScreenEvaluationWorkout") or isTopScreen("ScreenEvaluationCourseWorkout") then self:zoomx(1/2) else self:zoomx(8/9) end
 			elseif scoreType == 2 then
 				self:settext(FormatPercentScore(pss:GetPercentDancePoints())) -- PERCENT
 			elseif scoreType == 3 then

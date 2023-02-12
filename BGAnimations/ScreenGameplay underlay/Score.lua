@@ -43,8 +43,8 @@ return Def.ActorFrame{
 	LoadFont("_r bold numbers") .. {
 		Name="Score"..ToEnumShortString(player),
 		InitCommand=function(self)
-			self:visible(not getenv("HideScore"..ToEnumShortString(player))):diffuse(PlayerColor(player))
-			self:x(math.floor(scale(player == PLAYER_1 and 0.25 or 0.75,0,1,SCREEN_LEFT,SCREEN_RIGHT))):y(SCREEN_TOP+61)
+			self:visible(not getenv("HideScore"..ToEnumShortString(player))):diffuse(PlayerColor(player)):x(math.floor(scale(player == PLAYER_1 and 0.25 or 0.75,0,1,SCREEN_LEFT,SCREEN_RIGHT)))
+			if GAMESTATE:Env()["Workout"] then self:y(SCREEN_TOP+51) else self:y(SCREEN_TOP+61) end
 			if scoreType == 1 then
 				self:settextf("%09d",0) -- SCORE
 				self:ClearAttributes()
