@@ -81,5 +81,10 @@ return Def.ActorFrame {
 		JudgeCmds[param.TapNoteScore](c.Judgment)
 		c.Judgment:setstate( iFrame )
 		c.Judgment:visible( true )
+	end,
+	OffCommand=function(self)
+		if checkFantastics then setenv("LastFantastic"..ToEnumShortString(player),STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetAliveSeconds()) end
+		if checkPerfects then setenv("LastPerfect"..ToEnumShortString(player),STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetAliveSeconds()) end
+		if checkGreats then setenv("LastGreat"..ToEnumShortString(player),STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetAliveSeconds()) end
 	end
 }
