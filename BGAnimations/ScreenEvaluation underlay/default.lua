@@ -139,5 +139,7 @@ return Def.ActorFrame{
 			if song then self:settext( song:GetDisplayFullTitle() ) end
 			if course then self:settext( course:GetDisplayFullTitle() ) end
 		end
-	}
+	},
+	LoadActor("Score",PLAYER_1)..{Condition=GAMESTATE:IsPlayerEnabled(PLAYER_1)},
+	LoadActor("Score",PLAYER_2)..{Condition=GAMESTATE:IsPlayerEnabled(PLAYER_2)}
 }

@@ -50,7 +50,7 @@ function SongMods()
 		options = options .. "10,11,"
 	end
 
-	options = options .. "12,13,14,7,M,A,15,19,28,25,"
+	options = options .. "12,13,14,7,M,A,15,19,28,S,25,"
 
 	-- differences 2 (should be "27,24," but timingscale is not in sm5)
 	if pm == 'PlayMode_Regular' then
@@ -68,7 +68,7 @@ function SongMods()
 	end
 
 	if pm == 'PlayMode_Rave' or pm == 'PlayMode_Oni' then
-		options = "1,3,28,20,P,21,"
+		options = "1,3,28,S,20,P,21,"
 	end
 
 	options = options .. "16"
@@ -141,6 +141,9 @@ function InitOptions()
 	setenv("ShowModsP1",false)
 	setenv("ShowModsP2",false)
 
+	setenv("SetScoreTypeP1",2)
+	setenv("SetScoreTypeP2",2)
+
 	setenv("ShowStatsP1",0)
 	setenv("ShowStatsP2",0)
 	setenv("SetPacemakerP1",0)
@@ -190,6 +193,35 @@ function OptionTournamentOptions()
 			setenv("HideScore"..ToEnumShortString(pn),list[1])
 			setenv("HideCombo"..ToEnumShortString(pn),list[2])
 			setenv("HideLife"..ToEnumShortString(pn),list[3])
+		end
+	}
+	setmetatable(t, t)
+	return t
+end
+
+function OptionSetScoreType()
+	local t = {
+		Name="SetScoreType",
+		LayoutType = "ShowAllInRow",
+		SelectType = "SelectOne",
+		OneChoiceForAllPlayers = false,
+		ExportOnChange = false,
+		Choices = { "Score","Percent","EX" },
+		LoadSelections = function(self, list, pn)
+			local selected = getenv("SetScoreType"..ToEnumShortString(pn))
+			if selected and selected ~= 0 then
+				list[selected] = true
+			else
+				list[1] = true
+			end
+		end,
+		SaveSelections = function(self, list, pn)
+			for i, choice in ipairs(self.Choices) do
+				if list[i] then
+					setenv("SetScoreType"..ToEnumShortString(pn),i)
+					break
+				end
+			end
 		end
 	}
 	setmetatable(t, t)
