@@ -48,8 +48,7 @@ local t = Def.ActorFrame{
 				Text="Step Artist:",
 				InitCommand=function(self) self:x(SCREEN_LEFT+5):y(SCREEN_CENTER_Y+152):zoom(0.6):halign(0):shadowlength(2) end,
 				BeginCommand=function(self)
-					local pm = GAMESTATE:GetPlayMode()
-					local show = (pm == 'PlayMode_Regular' or pm == 'PlayMode_Rave')
+					local show = (isPlayMode('PlayMode_Regular') or isPlayMode('PlayMode_Rave'))
 					self:visible(GAMESTATE:IsPlayerEnabled(PLAYER_1) and show)
 				end,
 				OnCommand=function(self) self:sleep(1):linear(1):diffusealpha(0) end
@@ -59,16 +58,10 @@ local t = Def.ActorFrame{
 				InitCommand=function(self) self:x(SCREEN_LEFT+100):y(SCREEN_CENTER_Y+152):shadowlength(2):halign(0):zoom(0.6) end,
 				BeginCommand=function(self)
 					local song = GAMESTATE:GetCurrentSong()
-					local text
+					local text = ""
 					if song then
 						local steps = GAMESTATE:GetCurrentSteps(PLAYER_1)
-						if steps then
-							text = steps:GetAuthorCredit()
-						else
-							text = ""
-						end
-					else
-						text = ""
+						if steps then text = steps:GetAuthorCredit() end
 					end
 					self:settext(text)
 				end,
@@ -98,8 +91,7 @@ local t = Def.ActorFrame{
 				Text=":Step Artist",
 				InitCommand=function(self) self:x(SCREEN_RIGHT-5):y(SCREEN_CENTER_Y+152):zoom(0.6):halign(1):shadowlength(2) end,
 				BeginCommand=function(self)
-					local pm = GAMESTATE:GetPlayMode()
-					local show = (pm == 'PlayMode_Regular' or pm == 'PlayMode_Rave')
+					local show = (isPlayMode('PlayMode_Regular') or isPlayMode('PlayMode_Rave'))
 					self:visible(GAMESTATE:IsPlayerEnabled(PLAYER_2) and show)
 				end,
 				OnCommand=function(self) self:sleep(1):linear(1):diffusealpha(0) end
@@ -109,16 +101,10 @@ local t = Def.ActorFrame{
 				InitCommand=function(self) self:x(SCREEN_RIGHT-100):y(SCREEN_CENTER_Y+152):shadowlength(2):halign(1):zoom(0.6) end,
 				BeginCommand=function(self)
 					local song = GAMESTATE:GetCurrentSong()
-					local text
+					local text = ""
 					if song then
 						local steps = GAMESTATE:GetCurrentSteps(PLAYER_2)
-						if steps then
-							text = steps:GetAuthorCredit()
-						else
-							text = ""
-						end
-					else
-						text = ""
+						if steps then text = steps:GetAuthorCredit() end
 					end
 					self:settext(text)
 				end,
@@ -138,12 +124,8 @@ local t = Def.ActorFrame{
 		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+127):maxwidth(SCREEN_WIDTH/8*7):shadowlength(2):horizalign(center):zoom(0.5):diffusealpha(1) end,
 		SetCommand=function(self)
 			local song = GAMESTATE:GetCurrentSong()
-			local text
-			if song then
-				text = song:GetDisplayFullTitle()
-			else
-				text = ""
-			end
+			local text = ""
+			if song then text = song:GetDisplayFullTitle() end
 			self:settext(text)
 		end,
 		OnCommand=function(self) self:playcommand("Set"):sleep(1.5):linear(1):diffusealpha(0) end
@@ -152,12 +134,8 @@ local t = Def.ActorFrame{
 		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+147):maxwidth(SCREEN_WIDTH/8*6.8):shadowlength(2):horizalign(center):zoom(0.4):diffusealpha(1) end,
 		SetCommand=function(self)
 			local song = GAMESTATE:GetCurrentSong()
-			local text
-			if song then
-				text = song:GetDisplayArtist()
-			else
-				text = ""
-			end
+			local text = ""
+			if song then text = song:GetDisplayArtist() end
 			self:settext(text)
 		end,
 		OnCommand=function(self) self:playcommand("Set"):sleep(1.5):linear(1):diffusealpha(0) end

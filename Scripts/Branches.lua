@@ -48,10 +48,9 @@ Branch.PostProfileSave = function()
 end
 
 Branch.PlayerOptions = function()
-	local pm = GAMESTATE:GetPlayMode()
-	local restricted = { PlayMode_Oni= true }
+	local restricted = { PlayMode_Oni = true }
 	local optionsScreen = "ScreenPlayerOptions"
-	if restricted[pm] then
+	if restricted[GAMESTATE:GetPlayMode()] then
 		optionsScreen = "ScreenPlayerOptionsRestricted"
 	end
 	if SCREENMAN:GetTopScreen():GetGoToOptions() then
@@ -71,7 +70,7 @@ end
 
 Branch.AfterGameplay = function()
 	if GAMESTATE:IsCourseMode() then
-		if GAMESTATE:GetPlayMode() == 'PlayMode_Nonstop' then
+		if isPlayMode('PlayMode_Nonstop') then
 			return "ScreenEvaluationNonstop"
 		else
 			return "ScreenEvaluationOni"
@@ -118,13 +117,13 @@ Branch.AfterStageInformation = function()
 end
 
 Branch.AfterGameplayWorkout = function()
-	if GAMESTATE:GetPlayMode() == "PlayMode_Nonstop" then return "ScreenEvaluationCourseWorkout" end
-	if GAMESTATE:GetPlayMode() == "PlayMode_Endless" then return "ScreenEvaluationCourseWorkout" end
+	if isPlayMode("PlayMode_Nonstop") then return "ScreenEvaluationCourseWorkout" end
+	if isPlayMode("PlayMode_Endless") then return "ScreenEvaluationCourseWorkout" end
 	return "ScreenEvaluationWorkout"
 end
 
 Branch.AfterEvaluationWorkout = function()
-	if GAMESTATE:GetPlayMode() == "PlayMode_Endless" then return "ScreenWorkoutMenu" end
+	if isPlayMode("PlayMode_Endless") then return "ScreenWorkoutMenu" end
 	return "ScreenSelectCourse"
 end
 

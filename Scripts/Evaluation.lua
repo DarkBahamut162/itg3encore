@@ -4,11 +4,11 @@ function EvalTweenDistance()
 end
 
 function isOni()
-	return GAMESTATE:GetPlayMode() == "PlayMode_Oni"
+	return isPlayMode("PlayMode_Oni")
 end
 
 function isRave()
-	return GAMESTATE:GetPlayMode() == "PlayMode_Rave"
+	return isPlayMode("PlayMode_Rave")
 end
 
 function isLifeline(player)

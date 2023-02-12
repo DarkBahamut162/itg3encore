@@ -181,12 +181,7 @@ return Def.ActorFrame{
 			local song = GAMESTATE:GetCurrentSong()
 			local course = GAMESTATE:GetCurrentCourse()
 			local text = ""
-			if song then
-				text = song:GetDisplayFullTitle()
-			end
-			if course then
-				text = course:GetDisplayFullTitle()
-			end
+			if song then text = song:GetDisplayFullTitle() elseif course then text = course:GetDisplayFullTitle() end
 
 			self:settext( text )
 		end

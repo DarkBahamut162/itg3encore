@@ -1,19 +1,13 @@
 function DifficultyChangingAvailable()
-	local pm = GAMESTATE:GetPlayMode()
-	local so = GAMESTATE:GetSortOrder()
-	return pm ~= 'PlayMode_Endless' and pm ~= 'PlayMode_Oni' and so ~= 'SortOrder_ModeMenu'
+	return not isPlayMode('PlayMode_Endless') and not isPlayMode('PlayMode_Oni') and GAMESTATE:GetSortOrder() ~= 'SortOrder_ModeMenu'
 end
 
 function SelectMenuAvailable()
-	local pm = GAMESTATE:GetPlayMode()
-	local so = GAMESTATE:GetSortOrder()
-	return pm ~= 'PlayMode_Endless' and so ~= 'SortOrder_ModeMenu'
+	return not isPlayMode('PlayMode_Endless') and GAMESTATE:GetSortOrder() ~= 'SortOrder_ModeMenu'
 end
 
 function ModeMenuAvailable()
-	local courseMode = GAMESTATE:IsCourseMode()
-	local sortOrder = GAMESTATE:GetSortOrder()
-	return (not courseMode) and (sortOrder ~= 'SortOrder_ModeMenu')
+	return (not GAMESTATE:IsCourseMode()) and (GAMESTATE:GetSortOrder() ~= 'SortOrder_ModeMenu')
 end
 
 function TextBannerAfterSet(self,param)

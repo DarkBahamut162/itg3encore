@@ -1,4 +1,3 @@
-local pm = GAMESTATE:GetPlayMode()
 local P1X = (getenv("RotationSoloP1") and GAMESTATE:GetNumPlayersEnabled() == 1) and SCREEN_CENTER_X or SCREEN_CENTER_X-SCREEN_WIDTH/4
 local P2X = (getenv("RotationSoloP2") and GAMESTATE:GetNumPlayersEnabled() == 1) and SCREEN_CENTER_X or SCREEN_CENTER_X+SCREEN_WIDTH/4
 local P1r = (getenv("RotationSoloP1") and GAMESTATE:GetNumPlayersEnabled()) and 0 or -20
@@ -10,8 +9,7 @@ return Def.ActorFrame{
 		Name="PlatformP1",
 		InitCommand=function(self) self:x(P1X):y(SCREEN_CENTER_Y+40):zoom(1.2):rotationx(P1r):fov(45):vanishpoint(SCREEN_CENTER_X-160,SCREEN_CENTER_Y+40) end,
 		BeginCommand=function(self)
-			local stepsDiff = GAMESTATE:GetCurrentSteps(PLAYER_1):GetDifficulty()
-			self:visible(stepsDiff=='Difficulty_Beginner' and pm == 'PlayMode_Regular')
+			self:visible(GAMESTATE:GetCurrentSteps(PLAYER_1):GetDifficulty()=='Difficulty_Beginner' and isPlayMode('PlayMode_Regular'))
 		end,
 		LoadActor("../platform")..{ InitCommand=function(self) self:y(7):diffuse(color("0.6,0.6,0.6,0.8")) end },
 		LoadActor("panelglow")..{
@@ -49,8 +47,7 @@ return Def.ActorFrame{
 		Name="PlatformP2",
 		InitCommand=function(self) self:x(P2X):y(SCREEN_CENTER_Y+40):zoom(1.2):rotationx(P2r):fov(45):vanishpoint(SCREEN_CENTER_X+160,SCREEN_CENTER_Y+40) end,
 		BeginCommand=function(self)
-			local stepsDiff = GAMESTATE:GetCurrentSteps(PLAYER_2):GetDifficulty()
-			self:visible(stepsDiff=='Difficulty_Beginner' and pm == 'PlayMode_Regular')
+			self:visible(GAMESTATE:GetCurrentSteps(PLAYER_2):GetDifficulty()=='Difficulty_Beginner' and isPlayMode('PlayMode_Regular'))
 		end,
 		LoadActor("../platform")..{ InitCommand=function(self) self:y(7):diffuse(color("0.6,0.6,0.6,0.8")) end },
 		LoadActor("panelglow")..{

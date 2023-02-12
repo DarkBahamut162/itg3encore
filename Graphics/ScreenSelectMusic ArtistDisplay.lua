@@ -32,8 +32,6 @@ return Def.ActorFrame{
 							end
 						end
 					end
-				else
-					text = ""
 				end
 			end
 			self:settext(text)

@@ -31,20 +31,19 @@ function ChoiceDouble()
 end
 
 function SongMods()
-	local pm = GAMESTATE:GetPlayMode()
 	local style = GAMESTATE:GetCurrentStyle()
 	local styleType = style:GetStyleType()
 	local doubles = (styleType == 'StyleType_OnePlayerTwoSides' or styleType == 'StyleType_TwoPlayersSharedSides')
 
 	local options = "1,2,4,F,3,5,RE,AE,17,9,"
 
-	if pm == 'PlayMode_Regular' then
+	if isPlayMode('PlayMode_Regular') then
 		if doubles then
 			options = options .. "23,10,11,"
 		else
 			options = options .. "22,23,10,11,"
 		end
-	elseif pm == 'PlayMode_Nonstop' then
+	elseif isPlayMode('PlayMode_Nonstop') then
 		options = options .. "22,23,"
 	else
 		options = options .. "10,11,"
@@ -53,13 +52,13 @@ function SongMods()
 	options = options .. "12,13,14,7,M,A,15,19,28,S,25,"
 
 	-- differences 2 (should be "27,24," but timingscale is not in sm5)
-	if pm == 'PlayMode_Regular' then
+	if isPlayMode('PlayMode_Regular') then
 		if HasLuaCheck() then
 			options = options .. "20,P,21,24,"
 		else
 			options = options .. "20,P,24,"
 		end
-	elseif pm == 'PlayMode_Nonstop' then
+	elseif isPlayMode('PlayMode_Nonstop') then
 		if IsCourseSecret() then
 			options = options .. "20,P,24,"
 		else
@@ -67,7 +66,7 @@ function SongMods()
 		end
 	end
 
-	if pm == 'PlayMode_Rave' or pm == 'PlayMode_Oni' then
+	if isPlayMode('PlayMode_Rave') or isPlayMode('PlayMode_Oni') then
 		options = "1,3,28,S,20,P,21,"
 	end
 

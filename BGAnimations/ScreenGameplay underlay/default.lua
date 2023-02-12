@@ -8,7 +8,7 @@ end
 
 t[#t+1] = Def.ActorFrame{
 	LoadActor("ScreenFilter"),
-	LoadActor("beginner")..{ Condition=GAMESTATE:GetPlayMode() == 'PlayMode_Regular' and GAMESTATE:GetEasiestStepsDifficulty() == 'Difficulty_Beginner' and IsGame("dance") },
+	LoadActor("beginner")..{ Condition=isPlayMode('PlayMode_Regular') and GAMESTATE:GetEasiestStepsDifficulty() == 'Difficulty_Beginner' and IsGame("dance") },
 	LoadActor("stepstats")..{ Condition=stats },
 	LoadActor("danger")..{ Condition=not isOni() },
 	LoadActor("dead")

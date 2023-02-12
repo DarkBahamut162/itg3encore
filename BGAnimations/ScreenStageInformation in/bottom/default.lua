@@ -37,12 +37,8 @@ return Def.ActorFrame{
 		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+127):maxwidth(SCREEN_WIDTH/8*7):shadowlength(2):horizalign(center):zoom(0.5):diffusealpha(0) end,
 		SetCommand=function(self)
 			local song = GAMESTATE:GetCurrentSong()
-			local text
-			if song then
-				text = song:GetDisplayFullTitle()
-			else
-				text = ""
-			end
+			local text = ""
+			if song then text = song:GetDisplayFullTitle() end
 			self:settext(text)
 		end,
 		OnCommand=function(self) self:playcommand("Set"):sleep(0.1):linear(0.3):diffusealpha(1) end
@@ -51,12 +47,8 @@ return Def.ActorFrame{
 		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+147):maxwidth(SCREEN_WIDTH/8*6.8):shadowlength(2):horizalign(center):zoom(0.4):diffusealpha(0) end,
 		SetCommand=function(self)
 			local song = GAMESTATE:GetCurrentSong()
-			local text
-			if song then
-				text = song:GetDisplayArtist()
-			else
-				text = ""
-			end
+			local text = ""
+			if song then text = song:GetDisplayArtist() end
 			self:settext(text)
 		end,
 		OnCommand=function(self) self:playcommand("Set"):sleep(0.1):linear(0.3):diffusealpha(1) end

@@ -156,6 +156,10 @@ function isGamePlay()
 	return isTopScreen('ScreenGameplay') or isTopScreen('ScreenGameplayWorkout') or isTopScreen('ScreenDemonstration') or isTopScreen('ScreenJukebox')
 end
 
+function isPlayMode(mode)
+	return GAMESTATE:GetPlayMode() == mode
+end
+
 function isITGmania()
 	return ProductFamily() == "ITGmania"
 end
