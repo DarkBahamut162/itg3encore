@@ -22,7 +22,7 @@ local weight = {
 }
 
 for w,v in pairs(weight) do
-    weight[w] = tonumber(THEME:GetMetric('ScoreKeeperNormal', 'PercentScoreWeight'..w))
+	if not isOutFox() and string.find(w,"Pro") then else weight[w] = tonumber(THEME:GetMetric('ScoreKeeperNormal', 'PercentScoreWeight'..w)) end
 end
 
 function animateScore(currentScore,fakeScore)
