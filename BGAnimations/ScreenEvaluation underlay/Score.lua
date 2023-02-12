@@ -21,12 +21,6 @@ return Def.ActorFrame{
 				self:AddAttribute(0, {
 					Length = math.max(9-string.len(''..output), 0),
 					Diffuse = PlayerColorSemi(player),
-				})
-				self:settextf("%09d",0) -- SCORE
-				self:ClearAttributes()
-				self:AddAttribute(0, {
-					Length = math.max(8, 0),
-					Diffuse = PlayerColorSemi(player),
 				}):zoomx(0.9)
 			elseif scoreType == 2 then
 				self:settext(FormatPercentScore(pss:GetPercentDancePoints())) -- PERCENT
