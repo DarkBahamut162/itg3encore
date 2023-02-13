@@ -20,12 +20,12 @@ return Def.ActorFrame{
 					self:settext(GetDisplayNameFromProfileOrMemoryCard(PLAYER_1))
 				end
 			end,
-			OnCommand=function(self) self:diffusetopedge(color("#fff000")):diffusebottomedge(color("#ffa500")):shadowlength(2):horizalign(center):zoom(0.8):sleep(1):accelerate(0.3):addx(-300) end
+			OnCommand=function(self) self:diffusetopedge(color("#fff000")):diffusebottomedge(color("#ffa500")):shadowlength(2):zoom(0.8):sleep(1):accelerate(0.3):addx(-300) end
 		},
 		LoadFont("_v profile")..{
 			Text=getProfileSongs(PLAYER_1),
 			InitCommand=function(self) self:x(SCREEN_LEFT+148):y(SCREEN_CENTER_Y+162) end,
-			OnCommand=function(self) self:shadowlength(2):horizalign(center):zoom(0.8):linear(0.2):diffusealpha(1):sleep(0.8):accelerate(0.3):addx(-300) end
+			OnCommand=function(self) self:shadowlength(2):zoom(0.8):linear(0.2):diffusealpha(1):sleep(0.8):accelerate(0.3):addx(-300) end
 		},
 		LoadActor(THEME:GetPathB("","_overlay/profileload"))..{
 			InitCommand=function(self) self:x(SCREEN_LEFT+120):y(SCREEN_CENTER_Y+155) end,
@@ -53,12 +53,12 @@ return Def.ActorFrame{
 					self:settext(GetDisplayNameFromProfileOrMemoryCard(PLAYER_2))
 				end
 			end,
-			OnCommand=function(self) self:diffusetopedge(color("#fffb81")):diffusebottomedge(color("#bcff04")):shadowlength(2):horizalign(center):zoom(0.8):sleep(1):accelerate(0.3):addx(300) end
+			OnCommand=function(self) self:diffusetopedge(color("#fffb81")):diffusebottomedge(color("#bcff04")):shadowlength(2):zoom(0.8):sleep(1):accelerate(0.3):addx(300) end
 		},
 		LoadFont("_v profile")..{
 			Text=getProfileSongs(PLAYER_2),
 			InitCommand=function(self) self:x(SCREEN_RIGHT-148):y(SCREEN_CENTER_Y+162) end,
-			OnCommand=function(self) self:shadowlength(2):horizalign(center):zoom(0.8):linear(0.2):diffusealpha(1):sleep(0.8):accelerate(0.3):addx(300) end
+			OnCommand=function(self) self:shadowlength(2):zoom(0.8):linear(0.2):diffusealpha(1):sleep(0.8):accelerate(0.3):addx(300) end
 		},
 		LoadActor(THEME:GetPathB("","_overlay/profileload"))..{
 			InitCommand=function(self) self:x(SCREEN_RIGHT-120):y(SCREEN_CENTER_Y+155) end,

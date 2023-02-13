@@ -28,12 +28,12 @@ return Def.ActorFrame{
 					self:settext("Player 1")
 				end
 			end,
-			OnCommand=function(self) self:diffusetopedge(color("#fff000")):diffusebottomedge(color("#ffa500")):shadowlength(2):horizalign(center):zoom(0.8):diffusealpha(0):sleep(1.4):linear(0.2):diffusealpha(1) end
+			OnCommand=function(self) self:diffusetopedge(color("#fff000")):diffusebottomedge(color("#ffa500")):shadowlength(2):zoom(0.8):diffusealpha(0):sleep(1.4):linear(0.2):diffusealpha(1) end
 		},
 		LoadFont("_v profile")..{
 			Text="Checking for\nsaved profiles...",
 			InitCommand=function(self) self:x(SCREEN_LEFT+148):y(SCREEN_CENTER_Y+162) end,
-			OnCommand=function(self) self:shadowlength(2):horizalign(center):zoom(0.8):diffusealpha(0):sleep(1.65):linear(0.2):diffusealpha(1) end
+			OnCommand=function(self) self:shadowlength(2):zoom(0.8):diffusealpha(0):sleep(1.65):linear(0.2):diffusealpha(1) end
 		}
 	},
 	Def.ActorFrame{
@@ -65,12 +65,12 @@ return Def.ActorFrame{
 					self:settext("Player 2")
 				end
 			end,
-			OnCommand=function(self) self:diffusetopedge(color("#fffb81")):diffusebottomedge(color("#bcff04")):shadowlength(2):horizalign(center):zoom(0.8):diffusealpha(0):sleep(1.4):linear(0.2):diffusealpha(1) end
+			OnCommand=function(self) self:diffusetopedge(color("#fffb81")):diffusebottomedge(color("#bcff04")):shadowlength(2):zoom(0.8):diffusealpha(0):sleep(1.4):linear(0.2):diffusealpha(1) end
 		},
 		LoadFont("_v profile")..{
 			Text="Checking for\nsaved profiles...",
 			InitCommand=function(self) self:x(SCREEN_RIGHT-148):y(SCREEN_CENTER_Y+162) end,
-			OnCommand=function(self) self:shadowlength(2):horizalign(center):zoom(0.8):diffusealpha(0):sleep(1.65):linear(0.2):diffusealpha(1) end
+			OnCommand=function(self) self:shadowlength(2):zoom(0.8):diffusealpha(0):sleep(1.65):linear(0.2):diffusealpha(1) end
 		}
 	}
 }

@@ -58,12 +58,12 @@ return Def.ActorFrame{
 		},
 		LoadFont("_r bold 30px")..{
 			Text="Player Name",
-			InitCommand=function(self) self:x(SCREEN_LEFT+120):y(SCREEN_CENTER_Y+87):diffusetopedge(color("#fff000")):diffusebottomedge(color("#ffa500")):shadowlength(2):horizalign(center):zoom(0.8):diffusealpha(0) end,
+			InitCommand=function(self) self:x(SCREEN_LEFT+120):y(SCREEN_CENTER_Y+87):diffusetopedge(color("#fff000")):diffusebottomedge(color("#ffa500")):shadowlength(2):zoom(0.8):diffusealpha(0) end,
 			OnCommand=function(self) self:sleep(5.4):linear(0.2):diffusealpha(1):sleep(4.4):linear(0.5):diffusealpha(0) end
 		},
 		LoadFont("_v profile")..{
 			Text="Number of\nplayed songs",
-			InitCommand=function(self) self:x(SCREEN_LEFT+148):y(SCREEN_CENTER_Y+162):shadowlength(2):horizalign(center):zoom(0.8):diffusealpha(0) end,
+			InitCommand=function(self) self:x(SCREEN_LEFT+148):y(SCREEN_CENTER_Y+162):shadowlength(2):zoom(0.8):diffusealpha(0) end,
 			OnCommand=function(self) self:sleep(5.65):linear(0.2):diffusealpha(1):sleep(4.2):linear(0.5):diffusealpha(0) end
 		},
 		LoadActor(THEME:GetPathB("","_overlay/achpane"))..{
@@ -73,22 +73,22 @@ return Def.ActorFrame{
 		Def.ActorFrame{
 			Name="StarIcons",
 			LoadActor(THEME:GetPathB("","_overlay/awards"))..{
-				InitCommand=function(self) self:x(SCREEN_LEFT+238):y(SCREEN_CENTER_Y+103+34*0):horizalign(center):animate(0):zoom(0) end,
+				InitCommand=function(self) self:x(SCREEN_LEFT+238):y(SCREEN_CENTER_Y+103+34*0):animate(0):zoom(0) end,
 				OnCommand=function(self) self:sleep(5.35+.6):playcommand("Update") end,
 				UpdateCommand=function(self) self:setstate(4):bounceend(0.4):zoom(0.55):sleep(0.3):linear(0.3):diffusealpha(0) end
 			},
 			LoadActor(THEME:GetPathB("","_overlay/awards"))..{
-				InitCommand=function(self) self:x(SCREEN_LEFT+238):y(SCREEN_CENTER_Y+103+34*0):horizalign(center):animate(0):diffusealpha(0) end,
+				InitCommand=function(self) self:x(SCREEN_LEFT+238):y(SCREEN_CENTER_Y+103+34*0):animate(0):diffusealpha(0) end,
 				OnCommand=function(self) self:sleep(5.35+.5):playcommand("Update") end,
 				UpdateCommand=function(self) self:setstate(5):zoom(0.55):sleep(0.9):linear(0.3):diffusealpha(1):sleep(0.3):linear(0.3):diffusealpha(0) end
 			},
 			LoadActor(THEME:GetPathB("","_overlay/awards"))..{
-				InitCommand=function(self) self:x(SCREEN_LEFT+238):y(SCREEN_CENTER_Y+103+34*0):horizalign(center):animate(0):diffusealpha(0) end,
+				InitCommand=function(self) self:x(SCREEN_LEFT+238):y(SCREEN_CENTER_Y+103+34*0):animate(0):diffusealpha(0) end,
 				OnCommand=function(self) self:sleep(5.35+.5):playcommand("Update") end,
 				UpdateCommand=function(self) self:setstate(6):zoom(0.55):sleep(1.55):linear(0.3):diffusealpha(1):sleep(0.4):linear(0.3):diffusealpha(0) end
 			},
 			LoadActor(THEME:GetPathB("","_overlay/awards"))..{
-				InitCommand=function(self) self:x(SCREEN_LEFT+238):y(SCREEN_CENTER_Y+103+34*0):horizalign(center):animate(0):diffusealpha(0) end,
+				InitCommand=function(self) self:x(SCREEN_LEFT+238):y(SCREEN_CENTER_Y+103+34*0):animate(0):diffusealpha(0) end,
 				OnCommand=function(self) self:sleep(5.35+.5):playcommand("Update") end,
 				UpdateCommand=function(self) self:setstate(7):zoom(0.55):sleep(2.25):linear(0.3):diffusealpha(1):sleep(0.4):linear(0.3):diffusealpha(0) end
 			}
@@ -96,22 +96,22 @@ return Def.ActorFrame{
 		Def.ActorFrame{
 			Name="ThreeIcons",
 			LoadActor(THEME:GetPathB("","_overlay/awards"))..{
-				InitCommand=function(self) self:x(SCREEN_LEFT+238):y(SCREEN_CENTER_Y+103+34*1):horizalign(center):animate(0):zoom(0) end,
+				InitCommand=function(self) self:x(SCREEN_LEFT+238):y(SCREEN_CENTER_Y+103+34*1):animate(0):zoom(0) end,
 				OnCommand=function(self) self:sleep(5.40+.6):playcommand("Update") end,
 				UpdateCommand=function(self) self:setstate(8):bounceend(0.4):zoom(0.55):sleep(0.3):linear(0.3):diffusealpha(0) end
 			},
 			LoadActor(THEME:GetPathB("","_overlay/awards"))..{
-				InitCommand=function(self) self:x(SCREEN_LEFT+238):y(SCREEN_CENTER_Y+103+34*1):horizalign(center):animate(0):diffusealpha(0) end,
+				InitCommand=function(self) self:x(SCREEN_LEFT+238):y(SCREEN_CENTER_Y+103+34*1):animate(0):diffusealpha(0) end,
 				OnCommand=function(self) self:sleep(5.40+.5):playcommand("Update") end,
 				UpdateCommand=function(self) self:setstate(9):zoom(0.55):sleep(0.9):linear(0.3):diffusealpha(1):sleep(0.3):linear(0.3):diffusealpha(0) end
 			},
 			LoadActor(THEME:GetPathB("","_overlay/awards"))..{
-				InitCommand=function(self) self:x(SCREEN_LEFT+238):y(SCREEN_CENTER_Y+103+34*1):horizalign(center):animate(0):diffusealpha(0) end,
+				InitCommand=function(self) self:x(SCREEN_LEFT+238):y(SCREEN_CENTER_Y+103+34*1):animate(0):diffusealpha(0) end,
 				OnCommand=function(self) self:sleep(5.40+.5):playcommand("Update") end,
 				UpdateCommand=function(self) self:setstate(10):zoom(0.55):sleep(1.55):linear(0.3):diffusealpha(1):sleep(0.3):linear(0.3):diffusealpha(0) end
 			},
 			LoadActor(THEME:GetPathB("","_overlay/awards"))..{
-				InitCommand=function(self) self:x(SCREEN_LEFT+238):y(SCREEN_CENTER_Y+103+34*1):horizalign(center):animate(0):diffusealpha(0) end,
+				InitCommand=function(self) self:x(SCREEN_LEFT+238):y(SCREEN_CENTER_Y+103+34*1):animate(0):diffusealpha(0) end,
 				OnCommand=function(self) self:sleep(5.40+.5):playcommand("Update") end,
 				UpdateCommand=function(self) self:setstate(11):zoom(0.55):sleep(2.25):linear(0.3):diffusealpha(1):sleep(0.3):linear(0.3):diffusealpha(0) end
 			}
@@ -119,22 +119,22 @@ return Def.ActorFrame{
 		Def.ActorFrame{
 			Name="ArrowIcons",
 			LoadActor(THEME:GetPathB("","_overlay/awards"))..{
-				InitCommand=function(self) self:x(SCREEN_LEFT+238):y(SCREEN_CENTER_Y+103+34*2):horizalign(center):animate(0):zoom(0) end,
+				InitCommand=function(self) self:x(SCREEN_LEFT+238):y(SCREEN_CENTER_Y+103+34*2):animate(0):zoom(0) end,
 				OnCommand=function(self) self:sleep(5.45+.6):playcommand("Update") end,
 				UpdateCommand=function(self) self:setstate(0):bounceend(0.4):zoom(0.55):sleep(0.3):linear(0.3):diffusealpha(0) end
 			},
 			LoadActor(THEME:GetPathB("","_overlay/awards"))..{
-				InitCommand=function(self) self:x(SCREEN_LEFT+238):y(SCREEN_CENTER_Y+103+34*2):horizalign(center):animate(0):diffusealpha(0) end,
+				InitCommand=function(self) self:x(SCREEN_LEFT+238):y(SCREEN_CENTER_Y+103+34*2):animate(0):diffusealpha(0) end,
 				OnCommand=function(self) self:sleep(5.45+.5):playcommand("Update") end,
 				UpdateCommand=function(self) self:setstate(1):zoom(0.55):sleep(0.9):linear(0.3):diffusealpha(1):sleep(0.3):linear(0.3):diffusealpha(0) end
 			},
 			LoadActor(THEME:GetPathB("","_overlay/awards"))..{
-				InitCommand=function(self) self:x(SCREEN_LEFT+238):y(SCREEN_CENTER_Y+103+34*2):horizalign(center):animate(0):diffusealpha(0) end,
+				InitCommand=function(self) self:x(SCREEN_LEFT+238):y(SCREEN_CENTER_Y+103+34*2):animate(0):diffusealpha(0) end,
 				OnCommand=function(self) self:sleep(5.45+.5):playcommand("Update") end,
 				UpdateCommand=function(self) self:setstate(2):zoom(0.55):sleep(1.55):linear(0.3):diffusealpha(1):sleep(0.3):linear(0.3):diffusealpha(0) end
 			},
 			LoadActor(THEME:GetPathB("","_overlay/awards"))..{
-				InitCommand=function(self) self:x(SCREEN_LEFT+238):y(SCREEN_CENTER_Y+103+34*2):horizalign(center):animate(0):diffusealpha(0) end,
+				InitCommand=function(self) self:x(SCREEN_LEFT+238):y(SCREEN_CENTER_Y+103+34*2):animate(0):diffusealpha(0) end,
 				OnCommand=function(self) self:sleep(5.45+.5):playcommand("Update") end,
 				UpdateCommand=function(self) self:setstate(3):zoom(0.55):sleep(2.25):linear(0.3):diffusealpha(1):sleep(0.3):linear(0.3):diffusealpha(0) end
 			}
@@ -142,22 +142,22 @@ return Def.ActorFrame{
 		Def.ActorFrame{
 			Name="PlusIcons",
 			LoadActor(THEME:GetPathB("","_overlay/awards"))..{
-				InitCommand=function(self) self:x(SCREEN_LEFT+238):y(SCREEN_CENTER_Y+103+34*3):horizalign(center):animate(0):zoom(0) end,
+				InitCommand=function(self) self:x(SCREEN_LEFT+238):y(SCREEN_CENTER_Y+103+34*3):animate(0):zoom(0) end,
 				OnCommand=function(self) self:sleep(5.5+.6):playcommand("Update") end,
 				UpdateCommand=function(self) self:setstate(12):bounceend(0.4):zoom(0.55):sleep(0.3):linear(0.3):diffusealpha(0) end
 			},
 			LoadActor(THEME:GetPathB("","_overlay/awards"))..{
-				InitCommand=function(self) self:x(SCREEN_LEFT+238):y(SCREEN_CENTER_Y+103+34*3):horizalign(center):animate(0):diffusealpha(0) end,
+				InitCommand=function(self) self:x(SCREEN_LEFT+238):y(SCREEN_CENTER_Y+103+34*3):animate(0):diffusealpha(0) end,
 				OnCommand=function(self) self:sleep(5.5+.5):playcommand("Update") end,
 				UpdateCommand=function(self) self:setstate(13):zoom(0.55):sleep(0.9):linear(0.3):diffusealpha(1):sleep(0.3):linear(0.3):diffusealpha(0) end
 			},
 			LoadActor(THEME:GetPathB("","_overlay/awards"))..{
-				InitCommand=function(self) self:x(SCREEN_LEFT+238):y(SCREEN_CENTER_Y+103+34*3):horizalign(center):animate(0):diffusealpha(0) end,
+				InitCommand=function(self) self:x(SCREEN_LEFT+238):y(SCREEN_CENTER_Y+103+34*3):animate(0):diffusealpha(0) end,
 				OnCommand=function(self) self:sleep(5.5+.5):playcommand("Update") end,
 				UpdateCommand=function(self) self:setstate(14):zoom(0.55):sleep(1.55):linear(0.3):diffusealpha(1):sleep(0.3):linear(0.3):diffusealpha(0) end
 			},
 			LoadActor(THEME:GetPathB("","_overlay/awards"))..{
-				InitCommand=function(self) self:x(SCREEN_LEFT+238):y(SCREEN_CENTER_Y+103+34*3):horizalign(center):animate(0):diffusealpha(0) end,
+				InitCommand=function(self) self:x(SCREEN_LEFT+238):y(SCREEN_CENTER_Y+103+34*3):animate(0):diffusealpha(0) end,
 				OnCommand=function(self) self:sleep(5.5+.5):playcommand("Update") end,
 				UpdateCommand=function(self) self:setstate(15):zoom(0.55):sleep(2.25):linear(0.3):diffusealpha(1):sleep(0.3):linear(0.3):diffusealpha(0) end
 			}

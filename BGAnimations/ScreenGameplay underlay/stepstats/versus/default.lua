@@ -80,7 +80,7 @@ if getenv("ShowStatsP1") == nil or getenv("ShowStatsP2") == nil then return Def.
 		local texts = {"F","E","G","D","W","M"}
 		for i = 1,math.max(bgNum[PLAYER_1],bgNum[PLAYER_2]) do
 			Judgments[#Judgments+1] = LoadFont("ScreenGameplay judgment")..{
-				InitCommand=function(self) self:shadowlength(1):y(SCREEN_TOP+92+15*(i-1)-SCREEN_HEIGHT/2):zoom(0.5):horizalign(center):diffuse(diffuses[i]):settext(texts[i]) end
+				InitCommand=function(self) self:shadowlength(1):y(SCREEN_TOP+92+15*(i-1)-SCREEN_HEIGHT/2):zoom(0.5):diffuse(diffuses[i]):settext(texts[i]) end
 			}
 		end
 
@@ -137,7 +137,7 @@ if getenv("ShowStatsP1") == nil or getenv("ShowStatsP2") == nil then return Def.
 			LoadFont("_z bold gray 36px")..{
 				Name="Pacemaker",
 				Text="Pacemaker",
-				OnCommand=function(self) self:horizalign(center):zoom(0.5):shadowlength(0):addy(-145) end
+				OnCommand=function(self) self:zoom(0.5):shadowlength(0):addy(-145) end
 			},
 			
 			Def.ActorFrame{
@@ -342,11 +342,11 @@ if getenv("ShowStatsP1") == nil or getenv("ShowStatsP2") == nil then return Def.
 				InitCommand=function(self) self:y(isFinal() and -50 or 0) end,
 				LoadFont("ScreenGameplay judgment")..{
 					Name="PlayerName",
-					OnCommand=function(self) self:maxwidth(125):horizalign(center):zoom(0.75):shadowlength(0):addy(145):settext("P"):diffuse(Color("Blue")) end
+					OnCommand=function(self) self:maxwidth(125):zoom(0.75):shadowlength(0):addy(145):settext("P"):diffuse(Color("Blue")) end
 				},
 				LoadFont("ScreenGameplay judgment")..{
 					Name="TargetName",
-					OnCommand=function(self) self:maxwidth(125):horizalign(center):zoom(0.75):shadowlength(0):addy(125):settext("T"):diffuse(Color("Red")) end
+					OnCommand=function(self) self:maxwidth(125):zoom(0.75):shadowlength(0):addy(125):settext("T"):diffuse(Color("Red")) end
 				},
 
 				LoadFont("_z numbers")..{

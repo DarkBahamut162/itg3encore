@@ -2,7 +2,7 @@ return Def.ActorFrame{
 	OffCommand=function(self) self:linear(0.3):diffusealpha(0) end,
 	LoadFont("_r bold glow 30px")..{
 		Text="One Player uses 8 Panels",
-		InitCommand=function(self) self:x(SCREEN_CENTER_X+100):y(SCREEN_CENTER_Y+138):zoom(0.68):maxwidth(840):horizalign(center):shadowlength(0) end,
+		InitCommand=function(self) self:x(SCREEN_CENTER_X+100):y(SCREEN_CENTER_Y+138):zoom(0.68):maxwidth(840):shadowlength(0) end,
 		GainFocusCommand=function(self) self:visible(true):finishtweening():cropright(1):linear(0.5):cropright(0) end,
 		LoseFocusCommand=function(self) self:visible(false) end
 	},

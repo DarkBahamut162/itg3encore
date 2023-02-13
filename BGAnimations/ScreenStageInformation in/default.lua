@@ -133,11 +133,11 @@ return Def.ActorFrame{
 			Name="Main",
 			InitCommand=function(self) self:y(SCREEN_CENTER_Y+60) end,
 			LoadActor(THEME:GetPathG("_gameplay","stage "..curStage))..{
-				InitCommand=function(self) self:horizalign(center):cropright(1.3) end,
+				InitCommand=function(self) self:cropright(1.3) end,
 				OnCommand=function(self) self:sleep(0.22):linear(1):cropright(-0.3) end
 			},
 			LoadActor(THEME:GetPathG("_white","gameplay stage "..curStage))..{
-				InitCommand=function(self) self:horizalign(center):cropleft(-0.3):cropright(1):faderight(0.1):fadeleft(0.1) end,
+				InitCommand=function(self) self:cropleft(-0.3):cropright(1):faderight(0.1):fadeleft(0.1) end,
 				OnCommand=function(self) self:sleep(0.22):linear(1):cropleft(1):cropright(-0.3) end
 			}
 		},
@@ -145,7 +145,7 @@ return Def.ActorFrame{
 			Name="Reflect",
 			InitCommand=function(self) self:y(SCREEN_CENTER_Y+86) end,
 			LoadActor(THEME:GetPathG("_gameplay","stage "..curStage))..{
-				InitCommand=function(self) self:horizalign(center):rotationz(180):zoomx(-1):diffusealpha(0.6):fadetop(2):cropright(1.3) end,
+				InitCommand=function(self) self:rotationz(180):zoomx(-1):diffusealpha(0.6):fadetop(2):cropright(1.3) end,
 				OnCommand=function(self) self:linear(1.225):cropright(-0.3) end
 			}
 		}
@@ -167,11 +167,11 @@ return Def.ActorFrame{
 			Name="Main",
 			InitCommand=function(self) self:y(SCREEN_CENTER_Y+60) end,
 			LoadActor(THEME:GetPathG("_gameplay","course song 1"))..{
-				InitCommand=function(self) self:horizalign(center):cropright(1.3) end,
+				InitCommand=function(self) self:cropright(1.3) end,
 				OnCommand=function(self) self:sleep(0.07):linear(1):cropright(-0.3) end
 			},
 			LoadActor(THEME:GetPathG("_white","gameplay course song 1"))..{
-				InitCommand=function(self) self:horizalign(center):cropleft(-0.3):cropright(1):faderight(0.1):fadeleft(0.1) end,
+				InitCommand=function(self) self:cropleft(-0.3):cropright(1):faderight(0.1):fadeleft(0.1) end,
 				OnCommand=function(self) self:sleep(0.07):linear(1):cropleft(1):cropright(-0.3) end
 			}
 		},
@@ -179,7 +179,7 @@ return Def.ActorFrame{
 			Name="Reflect",
 			InitCommand=function(self) self:y(SCREEN_CENTER_Y+86) end,
 			LoadActor(THEME:GetPathG("_gameplay","course song 1"))..{
-				InitCommand=function(self) self:horizalign(center):rotationz(180):zoomx(-1):diffusealpha(0.6):fadetop(2):cropright(1.3) end,
+				InitCommand=function(self) self:rotationz(180):zoomx(-1):diffusealpha(0.6):fadetop(2):cropright(1.3) end,
 				OnCommand=function(self) self:linear(1.225):cropright(-0.3) end
 			}
 		}

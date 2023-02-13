@@ -34,7 +34,7 @@ return Def.ActorFrame{
 		OnCommand=function(self) self:linear(0.7):cropright(0) end
 	},
 	LoadFont("_r bold 30px")..{
-		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+127):maxwidth(SCREEN_WIDTH/8*7):shadowlength(2):horizalign(center):zoom(0.5):diffusealpha(0) end,
+		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+127):maxwidth(SCREEN_WIDTH/8*7):shadowlength(2):zoom(0.5):diffusealpha(0) end,
 		SetCommand=function(self)
 			local song = GAMESTATE:GetCurrentSong()
 			local text = ""
@@ -44,7 +44,7 @@ return Def.ActorFrame{
 		OnCommand=function(self) self:playcommand("Set"):sleep(0.1):linear(0.3):diffusealpha(1) end
 	},
 	LoadFont("_r bold 30px")..{
-		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+147):maxwidth(SCREEN_WIDTH/8*6.8):shadowlength(2):horizalign(center):zoom(0.4):diffusealpha(0) end,
+		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+147):maxwidth(SCREEN_WIDTH/8*6.8):shadowlength(2):zoom(0.4):diffusealpha(0) end,
 		SetCommand=function(self)
 			local song = GAMESTATE:GetCurrentSong()
 			local text = ""

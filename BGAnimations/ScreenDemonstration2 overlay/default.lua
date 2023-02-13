@@ -18,7 +18,7 @@ return Def.ActorFrame{
 		OnCommand=function(self) self:sleep(5):decelerate(0.5):addx(-SCREEN_WIDTH/2):sleep(5):linear(0.3):diffusealpha(0) end
 	},
 	LoadActor("focus square")..{
-		InitCommand=function(self) self:x(posX):y(SCREEN_CENTER_Y+60):horizalign(center):zoomx(width_field/width_square):zoomy(1.05):diffuseblink():effectperiod(0.5):diffusealpha(0) end,
+		InitCommand=function(self) self:x(posX):y(SCREEN_CENTER_Y+60):zoomx(width_field/width_square):zoomy(1.05):diffuseblink():effectperiod(0.5):diffusealpha(0) end,
 		OnCommand=function(self) self:sleep(6):linear(0.3):diffusealpha(1):sleep(4):linear(0.3):diffusealpha(0) end
 	},
 	LoadFont("_v tutorial")..{
@@ -27,7 +27,7 @@ return Def.ActorFrame{
 		OnCommand=function(self) self:sleep(11):decelerate(0.5):addx(-SCREEN_WIDTH):sleep(5):linear(0.3):diffusealpha(0) end
 	},
 	LoadActor("focus rect")..{
-		InitCommand=function(self) self:x(posX):y(SCREEN_CENTER_Y-124):horizalign(center):zoomx(width_field/width_square):zoomy(0.8):diffuseblink():effectperiod(0.5):diffusealpha(0) end,
+		InitCommand=function(self) self:x(posX):y(SCREEN_CENTER_Y-124):zoomx(width_field/width_square):zoomy(0.8):diffuseblink():effectperiod(0.5):diffusealpha(0) end,
 		OnCommand=function(self) self:sleep(12):linear(0.3):diffusealpha(1):sleep(4):linear(0.3):diffusealpha(0) end
 	},
 	LoadFont("_v tutorial")..{
@@ -36,7 +36,7 @@ return Def.ActorFrame{
 		OnCommand=function(self) self:sleep(17):decelerate(0.5):addx(-SCREEN_WIDTH/2):sleep(5):linear(0.3):diffusealpha(0) end
 	},
 	LoadActor("focus rect")..{
-		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+15):horizalign(center):zoomx(1.0):zoomy(1):rotationz(90):diffuseblink():effectperiod(0.5):diffusealpha(0) end,
+		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+15):zoomx(1.0):zoomy(1):rotationz(90):diffuseblink():effectperiod(0.5):diffusealpha(0) end,
 		OnCommand=function(self) self:sleep(18):linear(0.3):diffusealpha(1):sleep(4):linear(0.3):diffusealpha(0) end
 	},
 	LoadFont("_v tutorial")..{
@@ -87,7 +87,7 @@ return Def.ActorFrame{
 		}
 	},
 	LoadFont("_v profile")..{
-		InitCommand=function(self) self:x(posX_now):y(SCREEN_HEIGHT/8*7):halign(0.5):valign(0.5):zoom(0.7):maxwidth(300) end,
+		InitCommand=function(self) self:x(posX_now):y(SCREEN_HEIGHT/8*7):zoom(0.7):maxwidth(300) end,
 		BeginCommand=function(self)
 			local song = GAMESTATE:GetCurrentSong()
 			local text = ""

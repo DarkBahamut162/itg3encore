@@ -8,7 +8,7 @@ return Def.ActorFrame{
 		},
 		LoadFont("_v 26px bold black")..{
 			Text=PREFSMAN:GetPreference('SongsPerPlay'),
-			InitCommand=function(self) self:x(SCREEN_RIGHT-200+1):y(isFinal() and SCREEN_TOP+19 or SCREEN_TOP+27):horizalign(center):zoom(0.8) end,
+			InitCommand=function(self) self:x(SCREEN_RIGHT-200+1):y(isFinal() and SCREEN_TOP+19 or SCREEN_TOP+27):zoom(0.8) end,
 			OnCommand=function(self)
 				self:diffusealpha(0):sleep(0.7):linear(0.4):diffusealpha(1)
 				if GAMESTATE:IsEventMode() then self:settext("∞") end
@@ -274,7 +274,7 @@ return Def.ActorFrame{
 		},
 		LoadFont("_v 26px bold black")..{
 			Text="USB",
-			InitCommand=function(self) self:x(SCREEN_RIGHT-200+53*3):y(isFinal() and SCREEN_TOP+19 or SCREEN_TOP+27):horizalign(center):zoom(0.6) end,
+			InitCommand=function(self) self:x(SCREEN_RIGHT-200+53*3):y(isFinal() and SCREEN_TOP+19 or SCREEN_TOP+27):zoom(0.6) end,
 			OnCommand=function(self) self:diffusealpha(0):sleep(0.7):linear(0.4):diffusealpha(1) end
 		},
 		LoadFont("_v 26px bold black")..{

@@ -46,7 +46,7 @@ return Def.ActorFrame{
 	InitCommand=function(self) self:y(-1) if isWidescreen() and isOutFox() then self:x(player == PLAYER_1 and 48 or -48) end end,
 	LoadFont("_z 36px shadowx")..{
 		Name="StepCount",
-		InitCommand=function(self) self:x(-67):y(120+4):horizalign(center):zoom(0.35):diffusealpha(0) end,
+		InitCommand=function(self) self:x(-67):y(120+4):zoom(0.35):diffusealpha(0) end,
 		OnCommand=function(self) self:sleep(0.4):linear(0.2):diffusealpha(1):shadowlength(2) end,
 		OffCommand=function(self) self:accelerate(0.2):diffusealpha(0) end,
 		SetCommand=function(self)
@@ -119,7 +119,7 @@ return Def.ActorFrame{
 	},
 	LoadFont("_v 26px bold white")..{
 		Name="Label",
-		InitCommand=function(self) self:x(-67):y(120+17):settext("STEPS"):shadowlength(2):zoomx(0.45):zoomy(0.4):horizalign(center):diffusealpha(0) end,
+		InitCommand=function(self) self:x(-67):y(120+17):settext("STEPS"):shadowlength(2):zoomx(0.45):zoomy(0.4):diffusealpha(0) end,
 		OnCommand=function(self) self:sleep(0.85):linear(0.2):diffusebottomedge(color("#8F8F8F")):diffusealpha(1) end,
 		OffCommand=function(self) self:accelerate(0.2):diffusealpha(0) end
 	}

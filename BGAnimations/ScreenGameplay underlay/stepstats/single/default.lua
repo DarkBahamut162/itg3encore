@@ -99,7 +99,7 @@ return Def.ActorFrame{
 				Condition=isFinal(),
 				Name="Statistics",
 				Text="Statistics",
-				OnCommand=function(self) self:horizalign(center):zoom(0.5):shadowlength(0):addy(isFinal() and -174 or -164.5) end
+				OnCommand=function(self) self:zoom(0.5):shadowlength(0):addy(isFinal() and -174 or -164.5) end
 			},
 			Def.ActorFrame{
 				OnCommand=function(self)
@@ -187,7 +187,7 @@ return Def.ActorFrame{
 			LoadFont("_z bold gray 36px")..{
 				Name="Pacemaker",
 				Text="Pacemaker",
-				OnCommand=function(self) self:horizalign(center):zoom(0.5):shadowlength(0):addy(isFinal() and -154.5 or -145) end
+				OnCommand=function(self) self:zoom(0.5):shadowlength(0):addy(isFinal() and -154.5 or -145) end
 			},
 			Def.ActorFrame{
 				InitCommand=function(self) self:y(isFinal() and (topscore and -35 or 20) or 0):zoomy(isFinal() and (topscore and 1.33 or 1) or 1) end,

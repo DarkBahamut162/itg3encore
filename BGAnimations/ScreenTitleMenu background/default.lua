@@ -73,7 +73,7 @@ return Def.ActorFrame{
 		AnimCommand=function(self) self:cropright(-0.8):cropleft(1):fadeleft(0.45):faderight(0.45):sleep(0.4):diffusealpha(1):linear(3):cropright(1):cropleft(-0.8):sleep(0.2):queuecommand("Anim") end
 	},
 	Def.ActorFrame{
-		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y-10):halign(0.5):valign(0.5) end,
+		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y-10) end,
 		OnCommand=function(self) if IsHome() and isScreenTitle() then self:CenterX():sleep(0.6):x(SCREEN_CENTER_X-142/3) end end,
 		SetCommand=function(self) if IsHome() and isScreenTitle() then self:x(SCREEN_CENTER_X-142/3) else self:CenterX() end end,
 		ZoomCommand=function(self) if true or SCREEN_WIDTH < 680 then self:zoom(math.min(1,SCREEN_HEIGHT / (350+34))) end end,
@@ -107,11 +107,11 @@ return Def.ActorFrame{
 		},
 		LoadActor("encore "..(isFinal() and "final" or "normal"))..{
 			InitCommand=function(self) self:x(103):y(isFinal() and 115 or 105) end,
-			OnCommand=function(self) self:horizalign(center):cropright(1.3):sleep(0.7):linear(1):cropright(-0.3) end
+			OnCommand=function(self) self:cropright(1.3):sleep(0.7):linear(1):cropright(-0.3) end
 		},
 		LoadActor("encore glow "..(isFinal() and "final" or "normal"))..{
 			InitCommand=function(self) self:x(103):y(isFinal() and 115 or 105) end,
-			OnCommand=function(self) self:horizalign(center):cropleft(-0.3):cropright(1):faderight(0.1):fadeleft(0.1):sleep(0.7):linear(1):cropleft(1):cropright(-0.3) end
+			OnCommand=function(self) self:cropleft(-0.3):cropright(1):faderight(0.1):fadeleft(0.1):sleep(0.7):linear(1):cropleft(1):cropright(-0.3) end
 		}
 	},
 	Def.ActorFrame{
@@ -290,7 +290,7 @@ return Def.ActorFrame{
 		OnCommand=function(self) self:play() end
 	},
 	LoadFont("_v 26px bold black")..{
-		InitCommand=function(self) self:CenterX():y(isFinal() and SCREEN_BOTTOM-60+100 or SCREEN_BOTTOM-34+100):diffusealpha(0):horizalign(center):shadowlength(0):zoom(0.5) end,
+		InitCommand=function(self) self:CenterX():y(isFinal() and SCREEN_BOTTOM-60+100 or SCREEN_BOTTOM-34+100):diffusealpha(0):shadowlength(0):zoom(0.5) end,
 		OnCommand=function(self) self:decelerate(0.4):addy(-100):diffusealpha(1):playcommand("Refresh") end,
 		OffCommand=function(self) self:accelerate(0.5):addy(100):diffusealpha(0) end,
 		ScreenChangedMessageCommand=function(self) self:playcommand("Refresh") end,
@@ -359,7 +359,7 @@ return Def.ActorFrame{
 		InitCommand=function(self) self:CenterX():y(SCREEN_BOTTOM+11) end,
 		LoadFont("_v 26px bold black")..{
 			SetCommand=function(self) self:settext( string.format('%02i:%02i:%02i %s %02i %04i', Hour(), Minute(), Second(), string.sub(MonthToString(MonthOfYear()),1,3), DayOfMonth(), Year()) ):sleep(1/6):queuecommand("Set") end,
-			InitCommand=function(self) self:y(-48):shadowlength(2):horizalign(center):zoom(0.5):diffusealpha(0) end,
+			InitCommand=function(self) self:y(-48):shadowlength(2):zoom(0.5):diffusealpha(0) end,
 			OnCommand=function(self) self:linear(0.8):diffusealpha(1) end,
 			OffCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(0) end,
 			ScreenChangedMessageCommand=function(self) if not isTopScreen("ScreenLogo") then self:playcommand("Set") end end,

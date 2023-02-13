@@ -76,7 +76,7 @@ return Def.ActorFrame{
 				local glifemeter = screen:GetLifeMeter(player)
 				self:settext(glifemeter:GetTotalLives())
 				self:x(-1):y(-5):maxwidth(28)
-				self:valign(1):halign(0.5)
+				self:valign(1)
 			end,
 			LifeChangedMessageCommand=function(self,params)
 				if params.Player == player then
@@ -88,7 +88,6 @@ return Def.ActorFrame{
 			BeginCommand=function(self)
 				self:settext("_")
 				self:x(-1):y(-12)
-				self:valign(0.5):halign(0.5)
 				self:zoomx(2)
 			end
 		},
@@ -98,7 +97,7 @@ return Def.ActorFrame{
 				local glifemeter = screen:GetLifeMeter(player)
 				self:settext(glifemeter:GetTotalLives())
 				self:x(-1):y(5):maxwidth(28)
-				self:valign(0):halign(0.5)
+				self:valign(0)
 			end
 		}
 	}

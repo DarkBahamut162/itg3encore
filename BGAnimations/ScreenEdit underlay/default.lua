@@ -61,6 +61,6 @@ return Def.ActorFrame{
 	},
 	LoadFont("_r bold 30px")..{
 		Text="Press F1\nfor commands.\n\nPress Start\nfor the Edit Menu",
-		InitCommand=function(self) self:horizalign(center):shadowlength(2):zoom(0.6):x(SCREEN_LEFT+74):y(SCREEN_BOTTOM-90) end
+		InitCommand=function(self) self:shadowlength(2):zoom(0.6):x(SCREEN_LEFT+74):y(SCREEN_BOTTOM-90) end
 	}
 }

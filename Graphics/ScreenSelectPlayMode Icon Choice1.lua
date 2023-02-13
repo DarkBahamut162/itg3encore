@@ -2,7 +2,7 @@ return Def.ActorFrame{
 	OffCommand=function(self) self:linear(0.3):diffusealpha(0) end,
 	LoadFont("_r bold glow 30px")..{
 		Text="Good clean dancing fun\nfor all players",
-		InitCommand=function(self) self:x(SCREEN_CENTER_X-55-34):y(SCREEN_CENTER_Y+125):zoomx(0.8):zoomy(0.7):maxwidth(300):horizalign(center):shadowlength(0) end,
+		InitCommand=function(self) self:x(SCREEN_CENTER_X-55-34):y(SCREEN_CENTER_Y+125):zoomx(0.8):zoomy(0.7):maxwidth(300):shadowlength(0) end,
 		GainFocusCommand=function(self) self:visible(true):finishtweening():cropright(1):linear(0.5):cropright(0) end,
 		LoseFocusCommand=function(self) self:visible(false) end
 	},

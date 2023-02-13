@@ -360,7 +360,7 @@ return Def.ActorFrame{
 			},
 			LoadFont("_v 26px bold black")..{
 				Text="&MENURIGHT;",
-				OnCommand=function(self) self:addy(36):x(15):horizalign(center):zoomx(0.5):zoomy(0.7):diffusealpha(0):shadowlength(0) end,
+				OnCommand=function(self) self:addy(36):x(15):zoomx(0.5):zoomy(0.7):diffusealpha(0):shadowlength(0) end,
 				OffCommand=function(self) self:linear(0.3):diffusealpha(0) end,
 				SelectMenuOpenedMessageCommand=function(self) self:stoptweening():bounceend(0.2):diffusealpha(1):zoomx(0.7) end,
 				SelectMenuClosedMessageCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(0):zoomx(0.5) end
