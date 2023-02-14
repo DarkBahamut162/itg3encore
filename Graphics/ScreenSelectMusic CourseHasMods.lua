@@ -7,20 +7,19 @@ return Def.ActorFrame{
 		CurrentTrailP2ChangedMessageCommand=function(self) self:playcommand("Set") end,
 		SetCommand=function(self)
 			local curSelection = nil
-			local text = ""
+			local output = ""
 			if GAMESTATE:IsCourseMode() then
 				curSelection = GAMESTATE:GetCurrentCourse()
 				if curSelection then
 					if curSelection:HasMods() or curSelection:HasTimedMods() then
-						text = "HAS MODS"
+						output = addToOutput(output,"HAS MODS","\n")
 					end
 					local trail = GAMESTATE:GetCurrentTrail(GAMESTATE:GetMasterPlayerNumber())
 					if trail then
 						local entries = trail:GetTrailEntries()
 						for i=1,#entries do
 							if entries[i]:GetNormalModifiers() ~= "" then
-								if text ~= "" then text = text.."\n" end
-								text = text.."HAS SONG MODS"
+								output = addToOutput(output,"HAS SONG MODS","\n")
 								break
 							end
 						end
@@ -33,13 +32,13 @@ return Def.ActorFrame{
 					if curStep then
 						if false then -- load cache HasLua
 							if isOutFox() then
-								if tobool(LoadFromCache(curStep,"HasLua")) then text = "HAS LUA" end
+								if tobool(LoadFromCache(curStep,"HasLua")) then output = addToOutput(output,"HAS LUA","\n") end
 							else
-								if HasLuaCheck() then text = "HAS LUA" end
+								if HasLuaCheck() then output = addToOutput(output,"HAS LUA","\n") end
 							end
 						end
 						if false and isOutFox() then -- load cache StepCounter
-							if text ~= "" then text = text .. "\n" end text = text .. table.concat(getStepCounter(curStep),"|")
+							output = addToOutput(output,table.concat(getStepCounter(curStep),"|"),"\n")
 						end
 						if false then -- Get true BPM range
 							local timingdata = curStep:GetTimingData()
@@ -57,7 +56,7 @@ return Def.ActorFrame{
 							end
 
 							if bpms[1] == truebpms[1] and bpms[2] == truebpms[2] and bpms[1] == bpms[2] then
-								if text ~= "" then text = text.."\n" end text = text .. "BPM: "..truebpms[1]
+								output = addToOutput(output,"BPM: "..truebpms[1],"\n")
 							else
 								local sets = timingdata:GetBPMsAndTimes()
 								local currentSet, lastSet
@@ -126,14 +125,14 @@ return Def.ActorFrame{
 								]]--
 								if fastestBPM == truebpms[1] or fastestBPM == 0 then
 									if truebpms[1] ~= truebpms[2] then
-										if text ~= "" then text = text.."\n" end text = text .. "BPM: "..truebpms[1] .. " (" .. truebpms[2] .. ")"
+										output = addToOutput(output,"BPM: "..truebpms[1] .. " (" .. truebpms[2] .. ")","\n")
 									else
-										if text ~= "" then text = text.."\n" end text = text .. "BPM: "..truebpms[1]
+										output = addToOutput(output,"BPM: "..truebpms[1],"\n")
 									end
 								elseif fastestBPM < truebpms[2] then
-									if text ~= "" then text = text.."\n" end text = text .. "BPM: "..truebpms[1] .. " - " .. fastestBPM .. " (" .. truebpms[2] .. ")"
+									output = addToOutput(output,"BPM: "..truebpms[1] .. " - " .. fastestBPM .. " (" .. truebpms[2] .. ")","\n")
 								else
-									if text ~= "" then text = text.."\n" end text = text .. "BPM: "..truebpms[1] .. " - " .. truebpms[2]
+									output = addToOutput(output,"BPM: "..truebpms[1] .. " - " .. truebpms[2],"\n")
 								end
 							end
 						end
@@ -144,11 +143,9 @@ return Def.ActorFrame{
 							local difference = totalsecond - lastsecond
 							local trueFirstSecond = LoadFromCache(curStep,"TrueFirstSecond")
 							local trueLastSecond = LoadFromCache(curStep,"TrueLastSecond")
-							if text ~= "" then text = text.."\n" end
-							text = text ..
-								"FIRST/TRUE sec: "..string.format("%0.3f",firstsecond).."/"..string.format("%0.3f",trueFirstSecond)..
+							output = addToOutput(output,"FIRST/TRUE sec: "..string.format("%0.3f",firstsecond).."/"..string.format("%0.3f",trueFirstSecond)..
 								"\nLAST/TRUE sec: "..string.format("%0.3f",lastsecond).."/"..string.format("%0.3f",trueLastSecond)..
-								"\nDIFF/TRUE sec: "..string.format("%0.3f",difference).."/"..string.format("%0.3f",totalsecond-trueLastSecond)
+								"\nDIFF/TRUE sec: "..string.format("%0.3f",difference).."/"..string.format("%0.3f",totalsecond-trueLastSecond),"\n")
 						end
 						if false then --Calculate Difficulty
 							local totalSeconds = isOutFox() and (LoadFromCache(curStep,"TrueLastSecond") - LoadFromCache(curStep,"TrueFirstSecond")) or (curSelection:GetLastSecond() - curSelection:GetFirstSecond())
@@ -158,17 +155,14 @@ return Def.ActorFrame{
 								for i=1,#stepCounter do if stepCounter[i] then stepSum = stepSum + (stepCounter[i] * i) end end
 								stepSum = math.round( ( stepSum / totalSeconds ) * (#stepCounter/2) )
 							end
-
-							if text ~= "" then text = text.."\n" end text = text .. "Calc'd Difficulty (DB9): "..stepSum
-							if text ~= "" then text = text.."\n" end text = text .. "Calc'd Difficulty (Y&A): "..GetConvertDifficulty(curStep)
-							if isOutFox() then
-								if text ~= "" then text = text.."\n" end text = text .. "Calc'd Difficulty (SPS): "..math.round(tonumber(LoadFromCache(curStep,"StepsPerSecond")))
-							end
+							output = addToOutput(output,"Calc'd Difficulty (DB9): "..stepSum,"\n")
+							output = addToOutput(output,"Calc'd Difficulty (Y&A): "..GetConvertDifficulty(curStep),"\n")
+							if isOutFox() then output = addToOutput(output,"Calc'd Difficulty (SPS): "..math.round(tonumber(LoadFromCache(curStep,"StepsPerSecond"))),"\n") end
 						end
 					end
 				end
 			end
-			self:settext( text ):valign(1)
+			self:settext(output):valign(1)
 		end
 	}
 }

@@ -423,46 +423,46 @@ function GetRateMod()
 end
 
 function DisplayCustomModifiersText(pn)
-	local t = ""
+	local output = ""
 
 	if getenv("UnderCombo"..ToEnumShortString(pn)) and getenv("UnderTapJudgments"..ToEnumShortString(pn)) and getenv("UnderHoldJudgments"..ToEnumShortString(pn)) then
-		if t == "" then t = "Under All" else t = t .. ", Under All" end
+		output = addToOutput(output,"Under All",", ")
 	else
 		if getenv("UnderTapJudgments"..ToEnumShortString(pn)) and getenv("UnderHoldJudgments"..ToEnumShortString(pn)) then
-			if t == "" then t = "Under Judgments" else t = t .. ", Under Judgments" end
+			output = addToOutput(output,"Under Judgments",", ")
 		else
-			if getenv("UnderCombo"..ToEnumShortString(pn)) then if t == "" then t = "Under Combo" else t = t .. ", Under Combo" end end
-			if getenv("UnderTapJudgments"..ToEnumShortString(pn)) then if t == "" then t = "Under Tap Judgments" else t = t .. ", Under Tap Judgments" end end
-			if getenv("UnderHoldJudgments"..ToEnumShortString(pn)) then if t == "" then t = "Under Hold Judgments" else t = t .. ", Under Hold Judgments" end end
+			if getenv("UnderCombo"..ToEnumShortString(pn)) then output = addToOutput(output,"Under Combo",", ") end
+			if getenv("UnderTapJudgments"..ToEnumShortString(pn)) then output = addToOutput(output,"Under Tap Judgments",", ") end
+			if getenv("UnderHoldJudgments"..ToEnumShortString(pn)) then output = addToOutput(output,"Under Hold Judgments",", ") end
 		end
 	end
 
 	if getenv("HideScore"..ToEnumShortString(pn)) and getenv("HideLife"..ToEnumShortString(pn)) and getenv("HideCombo"..ToEnumShortString(pn)) then
-		if t == "" then t = "Hide All" else t = t .. ", Hide All" end
+		output = addToOutput(output,"Hide All",", ")
 	else
-		if getenv("HideScore"..ToEnumShortString(pn)) then if t == "" then t = "Hide Score" else t = t .. ", Hide Score" end end
-		if getenv("HideLife"..ToEnumShortString(pn)) then if t == "" then t = "Hide Life" else t = t .. ", Hide Life" end end
-		if getenv("HideCombo"..ToEnumShortString(pn)) then if t == "" then t = "Hide Combo" else t = t .. ", Hide Combo" end end
+		if getenv("HideScore"..ToEnumShortString(pn)) then output = addToOutput(output,"Hide Score",", ") end
+		if getenv("HideLife"..ToEnumShortString(pn)) then output = addToOutput(output,"Hide Life",", ") end
+		if getenv("HideCombo"..ToEnumShortString(pn)) then output = addToOutput(output,"Hide Combo",", ") end
 	end
 
-	if getenv("RotationLeft"..ToEnumShortString(pn)) then if t == "" then t = "Rotated Left" else t = t .. ", Rotated Left" end end
-	if getenv("RotationRight"..ToEnumShortString(pn)) then if t == "" then t = "Rotated Right" else t = t .. ", Rotated Right" end end
-	if getenv("RotationUpsideDown"..ToEnumShortString(pn)) then if t == "" then t = "Rotated Downward" else t = t .. ", Rotated Downward" end end
-	if getenv("RotationSolo"..ToEnumShortString(pn)) then if t == "" then t = "Centered" else t = t .. ", Centered" end end
+	if getenv("RotationLeft"..ToEnumShortString(pn)) then output = addToOutput(output,"Rotated Left",", ") end
+	if getenv("RotationRight"..ToEnumShortString(pn)) then output = addToOutput(output,"Rotated Right",", ") end
+	if getenv("RotationUpsideDown"..ToEnumShortString(pn)) then output = addToOutput(output,"Rotated Downward",", ") end
+	if getenv("RotationSolo"..ToEnumShortString(pn)) then output = addToOutput(output,"Centered",", ") end
 
-	if getenv("EffectWag"..ToEnumShortString(pn)) then if t == "" then t = "Wag" else t = t .. ", Wag" end
-	elseif getenv("EffectPulse"..ToEnumShortString(pn)) then if t == "" then t = "Pulse" else t = t .. ", Pulse" end
-	elseif getenv("EffectBounce"..ToEnumShortString(pn)) then if t == "" then t = "Bounce" else t = t .. ", Bounce" end
-	elseif getenv("EffectSpinReverse"..ToEnumShortString(pn)) then if t == "" then t = "Spin Left" else t = t .. ", Spin Left" end
-	elseif getenv("EffectSpin"..ToEnumShortString(pn)) then if t == "" then t = "Spin Right" else t = t .. ", Spin Right" end
-	elseif getenv("EffectVibrate"..ToEnumShortString(pn)) then if t == "" then t = "Vibrate" else t = t .. ", Vibrate" end end
+	if getenv("EffectWag"..ToEnumShortString(pn)) then output = addToOutput(output,"Wag",", ")
+	elseif getenv("EffectPulse"..ToEnumShortString(pn)) then output = addToOutput(output,"Pulse",", ")
+	elseif getenv("EffectBounce"..ToEnumShortString(pn)) then output = addToOutput(output,"Bounce",", ")
+	elseif getenv("EffectSpinReverse"..ToEnumShortString(pn)) then output = addToOutput(output,"Spin Left",", ")
+	elseif getenv("EffectSpin"..ToEnumShortString(pn)) then output = addToOutput(output,"Spin Right",", ")
+	elseif getenv("EffectVibrate"..ToEnumShortString(pn)) then output = addToOutput(output,"Vibrate",", ") end
 
-	if getenv("ShowMods"..ToEnumShortString(pn)) then if t == "" then t = "Show Mods" else t = t .. ", Show Mods" end end
-	if getenv("ShowStats"..ToEnumShortString(pn)) > 0 then if t == "" then t = "Show Stats" else t = t .. ", Show Stats" end end
+	if getenv("ShowMods"..ToEnumShortString(pn)) then output = addToOutput(output,"Show Mods",", ") end
+	if getenv("ShowStats"..ToEnumShortString(pn)) > 0 then output = addToOutput(output,"Show Stats",", ") end
 
-	if getenv("ScreenFilter"..ToEnumShortString(pn)) > 0 then if t == "" then t = "Screen Filter ("..(getenv("ScreenFilter"..ToEnumShortString(pn))*100).."%)" else t = t .. ", Screen Filter ("..(getenv("ScreenFilter"..ToEnumShortString(pn))*100).."%)" end end
+	if getenv("ScreenFilter"..ToEnumShortString(pn)) > 0 then output = addToOutput(output,"Screen Filter ("..(getenv("ScreenFilter"..ToEnumShortString(pn))*100).."%)",", ") end
 
-	if GetRateMod() ~= '' then if t == "" then t = GetRateMod() else t = t .. ", " .. GetRateMod() end end
+	if GetRateMod() ~= '' then output = addToOutput(output,GetRateMod(),", ") end
 
-	return t
+	return output
 end

@@ -183,3 +183,11 @@ function isTopScreen(screen)
 		return Var "LoadingScreen" == screen
 	end
 end
+
+function addToOutput(output,add,pre)
+	if string.len(output) == 0 then
+		return add
+	else
+		return output..pre..add
+	end
+end
