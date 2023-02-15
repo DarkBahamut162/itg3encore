@@ -13,10 +13,11 @@ t[#t+1] = Def.ActorFrame{
 	LoadActor("danger")..{ Condition=not isOni() },
 	LoadActor("dead")
 }
-
-for player in ivalues(GAMESTATE:GetHumanPlayers()) do
-	t[#t+1] = LoadActor("DeltaSeconds", player)..{ Condition=isOni() and not isLifeline(player) }
-	t[#t+1] = LoadActor("Score", player)..{ Condition=not isOni() or isLifeline(player) }
+if isGamePlay() then
+	for player in ivalues(GAMESTATE:GetHumanPlayers()) do
+		t[#t+1] = LoadActor("DeltaSeconds", player)..{ Condition=isOni() and not isLifeline(player) }
+		t[#t+1] = LoadActor("Score", player)..{ Condition=not isOni() or isLifeline(player) }
+	end
 end
 
 return t

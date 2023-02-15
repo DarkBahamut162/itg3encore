@@ -1,5 +1,5 @@
 local player = ...
-local scoreType = getenv("SetScoreType"..ToEnumShortString(player))
+local scoreType = getenv("SetScoreType"..ToEnumShortString(player)) or 2
 local displayScore = 0
 local weight = {
     CheckpointHit = 0,
