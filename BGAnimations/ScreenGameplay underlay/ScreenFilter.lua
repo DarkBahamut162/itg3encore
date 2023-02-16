@@ -57,23 +57,15 @@ if numPlayers == 1 then
 
 			if getenv("EffectVibrateP"..pNum) then
 			elseif getenv("EffectSpinP"..pNum) then
-				self:spin()
-				self:effectclock('beat')
-				self:effectmagnitude(0,0,45*currentMini)
+				self:spin():effectclock('beat'):effectmagnitude(0,0,45*currentMini)
 			elseif getenv("EffectSpinReverseP"..pNum) then
-				self:spin()
-				self:effectclock('beat')
-				self:effectmagnitude(0,0,-45*currentMini)
+				self:spin():effectclock('beat'):effectmagnitude(0,0,-45*currentMini)
 			elseif getenv("EffectBounceP"..pNum) then
-				self:bob()
-				self:effectclock('beat')
-				self:effectmagnitude(30*currentMini,30*currentMini,30*currentMini)
+				self:bob():effectclock('beat'):effectmagnitude(30*currentMini,30*currentMini,30*currentMini)
 			elseif getenv("EffectPulseP"..pNum) then
-				self:pulse()
-				self:effectclock('beat')
+				self:pulse():effectclock('beat')
 			elseif getenv("EffectWagP"..pNum) then
-				self:wag()
-				self:effectclock('beat')
+				self:wag():effectclock('beat')
 			end
 		end
 	}
@@ -86,7 +78,7 @@ else
 
 		local mlevel = GAMESTATE:IsCourseMode() and "ModsLevel_Stage" or "ModsLevel_Preferred"
 		local currentMini = 1-math.round(GAMESTATE:GetPlayerState(player):GetPlayerOptions(mlevel):Mini()*50) / 100
-		localfilterWidth = GAMESTATE:GetStyleFieldSize(pNum-1) * currentMini
+		local filterWidth = isOutFox() and GAMESTATE:GetStyleFieldSize(pNum-1) * currentMini or 64 * 4 * currentMini
 
 		if getenv("EffectVibrateP"..pNum) then
 			filterWidth = filterWidth + (30 * currentMini)
@@ -106,23 +98,15 @@ else
 
 				if getenv("EffectVibrateP"..pNum) then
 				elseif getenv("EffectSpinP"..pNum) then
-					self:spin()
-					self:effectclock('beat')
-					self:effectmagnitude(0,0,45*currentMini)
+					self:spin():effectclock('beat'):effectmagnitude(0,0,45*currentMini)
 				elseif getenv("EffectSpinReverseP"..pNum) then
-					self:spin()
-					self:effectclock('beat')
-					self:effectmagnitude(0,0,-45*currentMini)
+					self:spin():effectclock('beat'):effectmagnitude(0,0,-45*currentMini)
 				elseif getenv("EffectBounceP"..pNum) then
-					self:bob()
-					self:effectclock('beat')
-					self:effectmagnitude(30*currentMini,30*currentMini,30*currentMini)
+					self:bob():effectclock('beat'):effectmagnitude(30*currentMini,30*currentMini,30*currentMini)
 				elseif getenv("EffectPulseP"..pNum) then
-					self:pulse()
-					self:effectclock('beat')
+					self:pulse():effectclock('beat')
 				elseif getenv("EffectWagP"..pNum) then
-					self:wag()
-					self:effectclock('beat')
+					self:wag():effectclock('beat')
 				end
 			end
 		}
@@ -133,7 +117,7 @@ else
 
 			local mlevel = GAMESTATE:IsCourseMode() and "ModsLevel_Stage" or "ModsLevel_Preferred"
 			local currentMini = 1-math.round(GAMESTATE:GetPlayerState(player):GetPlayerOptions(mlevel):Mini()*50) / 100
-			local filterWidth = GAMESTATE:GetStyleFieldSize(pNum-1) * currentMini
+			local filterWidth = isOutFox() and GAMESTATE:GetStyleFieldSize(pNum-1) * currentMini or 64 * 4 * currentMini
 
 			if getenv("EffectVibrateP"..pNum) then
 				filterWidth = filterWidth + (30 * currentMini)
@@ -155,23 +139,15 @@ else
 
 					if getenv("EffectVibrateP"..pNum) then
 					elseif getenv("EffectSpinP"..pNum) then
-						self:spin()
-						self:effectclock('beat')
-						self:effectmagnitude(0,0,45*currentMini)
+						self:spin():effectclock('beat'):effectmagnitude(0,0,45*currentMini)
 					elseif getenv("EffectSpinReverseP"..pNum) then
-						self:spin()
-						self:effectclock('beat')
-						self:effectmagnitude(0,0,-45*currentMini)
+						self:spin():effectclock('beat'):effectmagnitude(0,0,-45*currentMini)
 					elseif getenv("EffectBounceP"..pNum) then
-						self:bob()
-						self:effectclock('beat')
-						self:effectmagnitude(30*currentMini,30*currentMini,30*currentMini)
+						self:bob():effectclock('beat'):effectmagnitude(30*currentMini,30*currentMini,30*currentMini)
 					elseif getenv("EffectPulseP"..pNum) then
-						self:pulse()
-						self:effectclock('beat')
+						self:pulse():effectclock('beat')
 					elseif getenv("EffectWagP"..pNum) then
-						self:wag()
-						self:effectclock('beat')
+						self:wag():effectclock('beat')
 					end
 				end
 			}
