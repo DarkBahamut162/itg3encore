@@ -50,54 +50,34 @@ return Def.ActorFrame{
 			UpdateCommand=function(self)
 				local song = GAMESTATE:GetCurrentSong()
 				local course = GAMESTATE:GetCurrentCourse()
-				local artist = ""
-				local result = ""
+				local output = ""
 				if song then
 					local steps = GAMESTATE:GetCurrentSteps(PLAYER_1)
-					if steps ~= nil then
-						result = "Stepartist: " .. steps:GetAuthorCredit()
-					else
-						result = "Stepartist: Unknown"
-					end
+					if steps ~= nil then output = steps:GetAuthorCredit() end
 				elseif course then
 					local trail = GAMESTATE:GetCurrentTrail(PLAYER_1)
 					if trail then
 						local entries = trail:GetTrailEntries()
 						for i=1,#entries do
-							if not string.find(artist,entries[i]:GetSteps():GetAuthorCredit()) then
-								if i == 1 then
-									artist = entries[i]:GetSteps():GetAuthorCredit()
-								elseif i < #entries then
-									artist = artist .. ", " .. entries[i]:GetSteps():GetAuthorCredit()
-								end
-								if string.len(artist) >= 50 then
-									artist = "Various"
-									break
-								end
+							if not string.find(output,entries[i]:GetSteps():GetAuthorCredit()) then
+								output = addToOutput(output,entries[i]:GetSteps():GetAuthorCredit(),", ")
+								if string.len(output) >= 50 then output = "Various" break end
 							end
 						end
-						if artist then
-							result = "Stepartist: " .. artist
-						else
-							result = "Stepartist: Unknown"
-						end
-					else
-						result = "Stepartist: Unknown"
 					end
 				else
 					self:playcommand("SelectMenuClosedMessageCommand")
 				end
 
-				if string.find(artist, "C. Foy") or string.find(artist, "Foy") then
-					self:diffuseshift()
-					self:effectclock("beat")
-					self:effectcolor1(color("1,0.9,0.9,1"))
-					self:effectcolor2(color("1,0.75,0.75,1"))
+				if output ~= "" then output = "Stepartist: " .. output else output = "Stepartist: Unknown" end
+
+				if string.find(output, "C. Foy") or string.find(output, "Foy") then
+					self:diffuseshift():effectclock("beat"):effectcolor1(color("1,0.9,0.9,1")):effectcolor2(color("1,0.75,0.75,1"))
 				else
 					self:stopeffect()
 				end
 
-				self:settext(result)
+				self:settext(output)
 			end
 		}
 	},
@@ -124,54 +104,34 @@ return Def.ActorFrame{
 			UpdateCommand=function(self)
 				local song = GAMESTATE:GetCurrentSong()
 				local course = GAMESTATE:GetCurrentCourse()
-				local artist = ""
-				local result = ""
+				local output = ""
 				if song then
 					local steps = GAMESTATE:GetCurrentSteps(PLAYER_2)
-					if steps ~= nil then
-						result = "Stepartist: " .. steps:GetAuthorCredit()
-					else
-						result = "Stepartist: Unknown"
-					end
+					if steps ~= nil then output = steps:GetAuthorCredit() end
 				elseif course then
 					local trail = GAMESTATE:GetCurrentTrail(PLAYER_2)
 					if trail then
 						local entries = trail:GetTrailEntries()
 						for i=1,#entries do
-							if not string.find(artist,entries[i]:GetSteps():GetAuthorCredit()) then
-								if i == 1 then
-									artist = entries[i]:GetSteps():GetAuthorCredit()
-								elseif i < #entries then
-									artist = artist .. ", " .. entries[i]:GetSteps():GetAuthorCredit()
-								end
-								if string.len(artist) >= 50 then
-									artist = "Various"
-									break
-								end
+							if not string.find(output,entries[i]:GetSteps():GetAuthorCredit()) then
+								output = addToOutput(output,entries[i]:GetSteps():GetAuthorCredit(),", ")
+								if string.len(output) >= 50 then output = "Various" break end
 							end
 						end
-						if artist then
-							result = "Stepartist: " .. artist
-						else
-							result = "Stepartist: Unknown"
-						end
-					else
-						result = "Stepartist: Unknown"
 					end
 				else
 					self:playcommand("SelectMenuClosedMessageCommand")
 				end
 
-				if string.find(artist, "C. Foy") or string.find(artist, "Foy") then
-					self:diffuseshift()
-					self:effectclock("beat")
-					self:effectcolor1(color("1,0.9,0.9,1"))
-					self:effectcolor2(color("1,0.75,0.75,1"))
+				if output ~= "" then output = "Stepartist: " .. output else output = "Stepartist: Unknown" end
+
+				if string.find(output, "C. Foy") or string.find(output, "Foy") then
+					self:diffuseshift():effectclock("beat"):effectcolor1(color("1,0.9,0.9,1")):effectcolor2(color("1,0.75,0.75,1"))
 				else
 					self:stopeffect()
 				end
 
-				self:settext(result)
+				self:settext(output)
 			end
 		}
 	},

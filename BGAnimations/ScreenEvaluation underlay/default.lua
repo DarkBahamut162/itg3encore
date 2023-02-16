@@ -43,8 +43,7 @@ return Def.ActorFrame{
 			local style = GAMESTATE:GetCurrentStyle()
 			local styleType = style:GetStyleType()
 			local doubles = (styleType == 'StyleType_OnePlayerTwoSides' or styleType == 'StyleType_TwoPlayersSharedSides')
-			local validMode = (isPlayMode('PlayMode_Regular') or isPlayMode('PlayMode_Nonstop') or isPlayMode('PlayMode_Oni'))
-			self:visible(not doubles and validMode)
+			self:visible(not doubles and not isRave())
 		end,
 		OnCommand=function(self) self:sleep(3.5):linear(0.8):diffusealpha(1):diffuseramp():effectperiod(2):effectoffset(0.20):effectclock("beat"):effectcolor1(color("#FFFFFF00")):effectcolor2(color("#FFFFFFFF")) end,
 		OffCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(0) end

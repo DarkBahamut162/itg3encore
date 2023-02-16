@@ -156,8 +156,8 @@ return Def.ActorFrame{
 								stepSum = math.round( ( stepSum / totalSeconds ) * (#stepCounter/2) )
 							end
 							output = addToOutput(output,"Calc'd Difficulty (DB9): "..stepSum,"\n")
-							output = addToOutput(output,"Calc'd Difficulty (Y&A): "..GetConvertDifficulty(curStep),"\n")
-							if isOutFox() then output = addToOutput(output,"Calc'd Difficulty (SPS): "..math.round(tonumber(LoadFromCache(curStep,"StepsPerSecond"))),"\n") end
+							output = addToOutput(output,"Calc'd Difficulty (Y&A): "..math.round(GetConvertDifficulty(curStep)*GAMESTATE:GetCurrentStyle():ColumnsPerPlayer()/4),"\n")
+							if isOutFox() then output = addToOutput(output,"Calc'd Difficulty (SPS): "..math.round(tonumber(LoadFromCache(curStep,"StepsPerSecond"))*GAMESTATE:GetCurrentStyle():ColumnsPerPlayer()/4),"\n") end
 						end
 					end
 				end

@@ -62,8 +62,7 @@ return Def.ActorFrame{
 			Text="Step Artist:",
 			InitCommand=function(self) self:x(SCREEN_LEFT+5):y(SCREEN_CENTER_Y+152):zoom(0.6):halign(0):shadowlength(2) end,
 			BeginCommand=function(self)
-				local show = (isPlayMode('PlayMode_Regular') or isPlayMode('PlayMode_Rave'))
-				self:visible(GAMESTATE:IsPlayerEnabled(PLAYER_1) and show)
+				self:visible(GAMESTATE:IsPlayerEnabled(PLAYER_1) and (isRegular() or isRave()))
 			end
 		},
 		LoadFont("_r bold 30px")..{
@@ -98,8 +97,7 @@ return Def.ActorFrame{
 			Text=":Step Artist",
 			InitCommand=function(self) self:x(SCREEN_RIGHT-5):y(SCREEN_CENTER_Y+152):zoom(0.6):halign(1):shadowlength(2) end,
 			BeginCommand=function(self)
-				local show = (isPlayMode('PlayMode_Regular') or isPlayMode('PlayMode_Rave'))
-				self:visible(GAMESTATE:IsPlayerEnabled(PLAYER_2) and show)
+				self:visible(GAMESTATE:IsPlayerEnabled(PLAYER_2) and (isRegular() or isRave()))
 			end
 		},
 		LoadFont("_r bold 30px")..{

@@ -39,7 +39,7 @@ local function UpdateScore(self)
 end
 
 return Def.ActorFrame{
-	OnCommand=function(self) if isGamePlay() and scoreType ~= 2 then self:SetUpdateFunction(UpdateScore) end end,
+	OnCommand=function(self) if isGamePlay() and scoreType ~= 2 then self:SetUpdateFunction(UpdateScore) end self:visible(isGamePlay()) end,
 	LoadFont("_r bold numbers") .. {
 		Name="Score"..ToEnumShortString(player),
 		InitCommand=function(self)

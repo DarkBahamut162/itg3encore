@@ -37,13 +37,13 @@ function SongMods()
 
 	local options = "1,2,4,F,3,5,RE,AE,17,9,"
 
-	if isPlayMode('PlayMode_Regular') then
+	if isRegular() then
 		if doubles then
 			options = options .. "23,10,11,"
 		else
 			options = options .. "22,23,10,11,"
 		end
-	elseif isPlayMode('PlayMode_Nonstop') then
+	elseif isNonstop() then
 		options = options .. "22,23,"
 	else
 		options = options .. "10,11,"
@@ -52,13 +52,13 @@ function SongMods()
 	options = options .. "12,13,14,7,M,A,15,19,28,S,25,"
 
 	-- differences 2 (should be "27,24," but timingscale is not in sm5)
-	if isPlayMode('PlayMode_Regular') then
+	if isRegular() then
 		if HasLuaCheck() then
 			options = options .. "20,P,21,24,"
 		else
 			options = options .. "20,P,24,"
 		end
-	elseif isPlayMode('PlayMode_Nonstop') then
+	elseif isNonstop() then
 		if IsCourseSecret() then
 			options = options .. "20,P,24,"
 		else
@@ -66,7 +66,9 @@ function SongMods()
 		end
 	end
 
-	if isPlayMode('PlayMode_Rave') or isPlayMode('PlayMode_Oni') then
+	if isRave() or (isOni() and not isLifeline(GAMESTATE:GetMasterPlayerNumber())) then
+		options = "1,3,28,20,P,21,"
+	elseif isOni() then
 		options = "1,3,28,S,20,P,21,"
 	end
 

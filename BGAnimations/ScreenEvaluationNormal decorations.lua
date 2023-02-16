@@ -69,19 +69,19 @@ local function GraphDisplay(pn)
 			end
 		},
 		LoadActor(THEME:GetPathB("ScreenEvaluation","underlay/FFC "..ToEnumShortString(pn)))..{
-			Condition=getenv("EvalCombo"..ToEnumShortString(pn)) and not (isOni() and not isLifeline(player)),
+			Condition=not isRave() and getenv("EvalCombo"..ToEnumShortString(pn)) and not (isOni() and not isLifeline(player)),
 			InitCommand=function(self)
 				self:croptop(0.75) if lastMarvelousSecond > 0 then self:cropright(1-(lastMarvelousSecond/length)) end
 			end
 		},
 		LoadActor(THEME:GetPathB("ScreenEvaluation","underlay/FEC "..ToEnumShortString(pn)))..{
-			Condition=getenv("EvalCombo"..ToEnumShortString(pn)) and lastMarvelousSecond > 0 and not (isOni() and not isLifeline(player)),
+			Condition=not isRave() and getenv("EvalCombo"..ToEnumShortString(pn)) and lastMarvelousSecond > 0 and not (isOni() and not isLifeline(player)),
 			InitCommand=function(self)
 				self:croptop(0.75):cropleft(1-(length-lastMarvelousSecond)/length) if lastPerfectSecond > 0 then self:cropright(1-(lastPerfectSecond/length)) end
 			end
 		},
 		LoadActor(THEME:GetPathB("ScreenEvaluation","underlay/FGC "..ToEnumShortString(pn)))..{
-			Condition=getenv("EvalCombo"..ToEnumShortString(pn)) and lastPerfectSecond > 0 and not (isOni() and not isLifeline(player)),
+			Condition=not isRave() and getenv("EvalCombo"..ToEnumShortString(pn)) and lastPerfectSecond > 0 and not (isOni() and not isLifeline(player)),
 			InitCommand=function(self)
 				self:croptop(0.75):cropleft(1-(length-lastPerfectSecond)/length) if lastGreatSecond > 0 then self:cropright(1-(lastGreatSecond/length)) end
 			end

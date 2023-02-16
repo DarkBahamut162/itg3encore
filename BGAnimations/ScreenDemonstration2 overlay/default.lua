@@ -90,9 +90,7 @@ return Def.ActorFrame{
 		InitCommand=function(self) self:x(posX_now):y(SCREEN_HEIGHT/8*7):zoom(0.7):maxwidth(300) end,
 		BeginCommand=function(self)
 			local song = GAMESTATE:GetCurrentSong()
-			local text = ""
-			if song then text = "Now playing:\n" ..song:GetDisplayFullTitle().."\nby "..song:GetDisplayArtist() end
-			self:settext(text)
+			if song then self:settext("Now playing:\n" ..song:GetDisplayFullTitle().."\nby "..song:GetDisplayArtist()) end
 		end
 	},
 	Def.Quad{

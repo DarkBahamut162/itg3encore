@@ -77,11 +77,8 @@ return Def.ActorFrame{
 			OnCommand=function(self) self:addy(3):zoom(0.5):shadowlength(2):zoomy(0):sleep(2):decelerate(0.3):zoomy(0.45):animate(0):playcommand("Update") end,
 			CurrentSongChangedMessageCommand=function(self) self:playcommand("Update") end,
 			UpdateCommand=function(self)
-				local text = ""
-				local song = GAMESTATE:GetCurrentSong()
-				local course = GAMESTATE:GetCurrentCourse()
-				if song then text = song:GetDisplayFullTitle() elseif course then text = course:GetDisplayFullTitle() .. " - " .. text end
-				self:settext(text)
+				local SongOrCourse = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentCourse() or GAMESTATE:GetCurrentSong()
+				if SongOrCourse then self:settext(SongOrCourse:GetDisplayFullTitle()) end
 			end
 		}
 	},

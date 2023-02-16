@@ -1,5 +1,5 @@
 function DifficultyChangingAvailable()
-	return not isPlayMode('PlayMode_Endless') and not isPlayMode('PlayMode_Oni') and GAMESTATE:GetSortOrder() ~= 'SortOrder_ModeMenu'
+	return not isPlayMode('PlayMode_Endless') and not isOni() and GAMESTATE:GetSortOrder() ~= 'SortOrder_ModeMenu'
 end
 
 function SelectMenuAvailable()

@@ -70,7 +70,7 @@ end
 
 Branch.AfterGameplay = function()
 	if GAMESTATE:IsCourseMode() then
-		if isPlayMode('PlayMode_Nonstop') then
+		if isNonstop() then
 			return "ScreenEvaluationNonstop"
 		else
 			return "ScreenEvaluationOni"
@@ -117,7 +117,7 @@ Branch.AfterStageInformation = function()
 end
 
 Branch.AfterGameplayWorkout = function()
-	if isPlayMode("PlayMode_Nonstop") then return "ScreenEvaluationCourseWorkout" end
+	if isNonstop() then return "ScreenEvaluationCourseWorkout" end
 	if isPlayMode("PlayMode_Endless") then return "ScreenEvaluationCourseWorkout" end
 	return "ScreenEvaluationWorkout"
 end

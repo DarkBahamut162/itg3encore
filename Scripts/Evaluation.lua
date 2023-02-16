@@ -3,6 +3,14 @@ function EvalTweenDistance()
 	return Distance
 end
 
+function isRegular()
+	return isPlayMode("PlayMode_Regular")
+end
+
+function isNonstop()
+	return isPlayMode("PlayMode_Nonstop")
+end
+
 function isOni()
 	return isPlayMode("PlayMode_Oni")
 end

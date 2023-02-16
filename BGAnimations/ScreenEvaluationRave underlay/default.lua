@@ -178,12 +178,8 @@ return Def.ActorFrame{
 		OnCommand=function(self) self:diffusealpha(0):sleep(3):linear(0.3):diffusealpha(1) end,
 		OffCommand=function(self) self:linear(0.2):diffusealpha(0) end,
 		UpdateCommand=function(self)
-			local song = GAMESTATE:GetCurrentSong()
-			local course = GAMESTATE:GetCurrentCourse()
-			local text = ""
-			if song then text = song:GetDisplayFullTitle() elseif course then text = course:GetDisplayFullTitle() end
-
-			self:settext( text )
+			local SongOrCourse = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentCourse() or GAMESTATE:GetCurrentSong()
+			if SongOrCourse then self:settext(SongOrCourse:GetDisplayFullTitle()) end
 		end
 	}
 }

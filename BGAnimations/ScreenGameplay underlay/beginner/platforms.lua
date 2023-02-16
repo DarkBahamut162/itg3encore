@@ -9,7 +9,7 @@ return Def.ActorFrame{
 		Name="PlatformP1",
 		InitCommand=function(self) self:x(P1X):y(SCREEN_CENTER_Y+40):zoom(1.2):rotationx(P1r):fov(45):vanishpoint(SCREEN_CENTER_X-160,SCREEN_CENTER_Y+40) end,
 		BeginCommand=function(self)
-			self:visible(GAMESTATE:GetCurrentSteps(PLAYER_1):GetDifficulty()=='Difficulty_Beginner' and isPlayMode('PlayMode_Regular'))
+			self:visible(GAMESTATE:GetCurrentSteps(PLAYER_1):GetDifficulty()=='Difficulty_Beginner' and isRegular())
 		end,
 		LoadActor("../platform")..{ InitCommand=function(self) self:y(7):diffuse(color("0.6,0.6,0.6,0.8")) end },
 		LoadActor("panelglow")..{
@@ -47,7 +47,7 @@ return Def.ActorFrame{
 		Name="PlatformP2",
 		InitCommand=function(self) self:x(P2X):y(SCREEN_CENTER_Y+40):zoom(1.2):rotationx(P2r):fov(45):vanishpoint(SCREEN_CENTER_X+160,SCREEN_CENTER_Y+40) end,
 		BeginCommand=function(self)
-			self:visible(GAMESTATE:GetCurrentSteps(PLAYER_2):GetDifficulty()=='Difficulty_Beginner' and isPlayMode('PlayMode_Regular'))
+			self:visible(GAMESTATE:GetCurrentSteps(PLAYER_2):GetDifficulty()=='Difficulty_Beginner' and isRegular())
 		end,
 		LoadActor("../platform")..{ InitCommand=function(self) self:y(7):diffuse(color("0.6,0.6,0.6,0.8")) end },
 		LoadActor("panelglow")..{
