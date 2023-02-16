@@ -1,10 +1,11 @@
+local centerCheck = getenv("RotationSolo"..ToEnumShortString(GAMESTATE:GetMasterPlayerNumber()))
 return Def.ActorFrame{
 	Def.ActorFrame{
 		Name="DeadSingle",
 		BeginCommand=function(self)
 			local style = GAMESTATE:GetCurrentStyle()
 			local styleType = style:GetStyleType()
-			self:visible( styleType ~= "StyleType_OnePlayerTwoSides" and styleType ~= "StyleType_TwoPlayersSharedSides" )
+			self:visible( styleType ~= "StyleType_OnePlayerTwoSides" and styleType ~= "StyleType_TwoPlayersSharedSides" and not centerCheck )
 		end,
 		HealthStateChangedMessageCommand=function(self, param)
 			if param.HealthState == Health.Dead then
@@ -29,7 +30,7 @@ return Def.ActorFrame{
 		BeginCommand=function(self)
 			local style = GAMESTATE:GetCurrentStyle()
 			local styleType = style:GetStyleType()
-			self:visible( styleType == "StyleType_OnePlayerTwoSides" or styleType == "StyleType_TwoPlayersSharedSides" )
+			self:visible( styleType == "StyleType_OnePlayerTwoSides" or styleType == "StyleType_TwoPlayersSharedSides" or centerCheck )
 		end,
 		HealthStateChangedMessageCommand=function(self, param)
 			if param.HealthState == Health.Dead then
@@ -37,7 +38,7 @@ return Def.ActorFrame{
 			end
 		end,
 		Def.Quad{
-			InitCommand=function(self) self:diffuse(color("0,0,0,0.5")):fadeleft(0.2):faderight(0.2):FullScreen():diffusealpha(0) end,
+			InitCommand=function(self) self:cropleft(centerCheck and 0.25 or 0):cropright(centerCheck and 0.25 or 0):diffuse(color("0,0,0,0.5")):fadeleft(0.2):faderight(0.2):FullScreen():diffusealpha(0) end,
 			ShowCommand=function(self) self:linear(0.2):diffusealpha(0.5) end
 		}
 	}
