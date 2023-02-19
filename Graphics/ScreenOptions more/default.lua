@@ -35,7 +35,7 @@ return Def.ActorFrame{
 			ExitUnselectedP1Command=function(self) self:finishtweening():diffusealpha(0) end,
 			OffCommand=function(self) self:stoptweening():linear(0.1):diffusealpha(0) end
 		},
-		LoadActor(THEME:GetPathG("","blueflare.png"))..{
+		LoadActor(THEME:GetPathG("","blueflare"))..{
 			InitCommand=function(self) self:y(52):diffusealpha(0):zoomx(5):blend(Blend.Add) end,
 			ExitSelectedP1Command=function(self) self:stoptweening():zoomy(3):linear(0.1):diffusealpha(1):decelerate(0.3):zoomy(0):diffusealpha(0) end,
 			ExitUnselectedP1Command=function(self) self:stoptweening():diffusealpha(0) end,
@@ -69,7 +69,7 @@ return Def.ActorFrame{
 			ExitUnselectedP2Command=function(self) self:finishtweening():diffusealpha(0) end,
 			OffCommand=function(self) self:stoptweening():linear(0.1):diffusealpha(0) end
 		},
-		LoadActor(THEME:GetPathG("","blueflare.png"))..{
+		LoadActor(THEME:GetPathG("","blueflare"))..{
 			InitCommand=function(self) self:y(52):diffusealpha(0):zoomx(5):blend(Blend.Add) end,
 			ExitSelectedP2Command=function(self) self:stoptweening():zoomy(3):linear(0.1):diffusealpha(1):decelerate(0.3):zoomy(0):diffusealpha(0) end,
 			ExitUnselectedP2Command=function(self) self:stoptweening():diffusealpha(0) end,

@@ -62,7 +62,7 @@ return Def.ActorFrame{
 			Text="Step Artist:",
 			InitCommand=function(self) self:x(SCREEN_LEFT+5):y(SCREEN_CENTER_Y+152):zoom(0.6):halign(0):shadowlength(2) end,
 			BeginCommand=function(self)
-				self:visible(GAMESTATE:IsPlayerEnabled(PLAYER_1) and (isRegular() or isRave()))
+				self:visible(GAMESTATE:IsPlayerEnabled(PLAYER_1) and isRegular() or isRave())
 			end
 		},
 		LoadFont("_r bold 30px")..{
@@ -83,7 +83,11 @@ return Def.ActorFrame{
 			Name="PlayerName",
 			InitCommand=function(self) self:x(SCREEN_LEFT+44):y(SCREEN_CENTER_Y+122):shadowlength(2):halign(0):zoom(0.8) end,
 			SetCommand=function(self)
-				self:settext( PROFILEMAN:GetPlayerName(PLAYER_1) )
+				if GAMESTATE:IsHumanPlayer(PLAYER_1) then
+					self:settext(GetDisplayNameFromProfileOrMemoryCard(PLAYER_1))
+				elseif isRave() then
+					self:settext("CPU")
+				end
 			end,
 			OnCommand=function(self) self:playcommand("Set") end
 		}
@@ -97,7 +101,7 @@ return Def.ActorFrame{
 			Text=":Step Artist",
 			InitCommand=function(self) self:x(SCREEN_RIGHT-5):y(SCREEN_CENTER_Y+152):zoom(0.6):halign(1):shadowlength(2) end,
 			BeginCommand=function(self)
-				self:visible(GAMESTATE:IsPlayerEnabled(PLAYER_2) and (isRegular() or isRave()))
+				self:visible(GAMESTATE:IsPlayerEnabled(PLAYER_2) and isRegular() or isRave())
 			end
 		},
 		LoadFont("_r bold 30px")..{
@@ -118,7 +122,11 @@ return Def.ActorFrame{
 			Name="PlayerName",
 			InitCommand=function(self) self:x(SCREEN_RIGHT-44):y(SCREEN_CENTER_Y+122):shadowlength(2):halign(1):zoom(0.8) end,
 			SetCommand=function(self)
-				self:settext( PROFILEMAN:GetPlayerName(PLAYER_2) )
+				if GAMESTATE:IsHumanPlayer(PLAYER_2) then
+					self:settext(GetDisplayNameFromProfileOrMemoryCard(PLAYER_2))
+				elseif isRave() then
+					self:settext("CPU")
+				end
 			end,
 			OnCommand=function(self) self:playcommand("Set") end
 		}
@@ -182,7 +190,7 @@ return Def.ActorFrame{
 			}
 		}
 	},
-	LoadActor(THEME:GetPathG("","blueflare.png"))..{
+	LoadActor(THEME:GetPathG("","blueflare"))..{
 		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+12.5):blend(Blend.Add):draworder(115) end,
 		OnCommand=function(self) self:zoomx(15):zoomtoheight(SCREEN_HEIGHT+SCREEN_HEIGHT/4):linear(1):zoomtoheight(0):diffusealpha(0.0) end
 	},

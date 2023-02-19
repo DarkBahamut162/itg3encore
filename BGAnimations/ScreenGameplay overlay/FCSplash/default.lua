@@ -126,7 +126,7 @@ return Def.ActorFrame{
 			end
 		end
 	},
-	LoadActor(THEME:GetPathG("","blueflare.png"))..{
+	LoadActor(THEME:GetPathG("","blueflare"))..{
 		InitCommand=function(self) self:x(GetPosition(pn)):blend(Blend.Add):y(SCREEN_CENTER_Y-SCREEN_HEIGHT/9+15):diffusealpha(0):zoom(0.3) end,
 		OffCommand=function(self) if PlayerFullComboed(pn) then self:queuecommand("CheckScore") end end,
 		CheckScoreCommand=function(self)
@@ -259,7 +259,7 @@ return Def.ActorFrame{
 			end
 		end
 	},
-	LoadActor("orangeflare")..{
+	LoadActor(THEME:GetPathG("","orangeflare"))..{
 		InitCommand=function(self) self:x(GetPosition(pn)):blend(Blend.Add):y(SCREEN_CENTER_Y-SCREEN_HEIGHT/9+15):diffusealpha(0):zoom(0.3) end,
 		OffCommand=function(self) if PlayerFullComboed(pn) then self:queuecommand("CheckScore") end end,
 		CheckScoreCommand=function(self)
@@ -392,7 +392,7 @@ return Def.ActorFrame{
 			end
 		end
 	},
-	LoadActor("greenflare")..{
+	LoadActor(THEME:GetPathG("","greenflare"))..{
 		InitCommand=function(self) self:x(GetPosition(pn)):blend(Blend.Add):y(SCREEN_CENTER_Y-SCREEN_HEIGHT/9+15):diffusealpha(0):zoom(0.3) end,
 		OffCommand=function(self) if PlayerFullComboed(pn) then self:queuecommand("CheckScore") end end,
 		CheckScoreCommand=function(self)

@@ -22,11 +22,11 @@ return Def.ActorFrame{
 			InitCommand=function(self) self:Center():zoom(0.7):cropright(1.3):faderight(0.1) end,
 			OnCommand=function(self) self:sleep(0.25):linear(0.7):cropright(-0.3) end
 		},
-		LoadActor(THEME:GetPathG("","blueflarerojo"))..{
+		LoadActor(THEME:GetPathG("","redflare"))..{
 			InitCommand=function(self) self:draworder(115):blend(Blend.Add):Center():zoomx(15):zoomtoheight(SCREEN_HEIGHT+SCREEN_HEIGHT/4) end,
 			OnCommand=function(self) self:decelerate(0.9):zoomtoheight(0):diffusealpha(0.5) end
 		},
-		LoadActor(THEME:GetPathG("","blueflarerojo"))..{
+		LoadActor(THEME:GetPathG("","redflare"))..{
 			InitCommand=function(self) self:draworder(115):blend(Blend.Add):Center():zoomx(15):zoomtoheight(SCREEN_HEIGHT+SCREEN_HEIGHT/4) end,
 			OnCommand=function(self) self:decelerate(0.9):zoomtoheight(0):diffusealpha(0.5) end
 		},
@@ -53,7 +53,7 @@ return Def.ActorFrame{
 			InitCommand=function(self) self:x(SCREEN_CENTER_X-120):CenterY():diffusealpha(0) end,
 			OnCommand=function(self) self:spin():diffusealpha(1) end
 		},
-		LoadActor(THEME:GetPathG("","blueflare.png"))..{
+		LoadActor(THEME:GetPathG("","blueflare"))..{
 			InitCommand=function(self) self:draworder(115):blend(Blend.Add):Center():zoomx(15):zoomtoheight(SCREEN_HEIGHT+SCREEN_HEIGHT/4) end,
 			OnCommand=function(self) self:decelerate(0.9):zoomtoheight(0):diffusealpha(0.5) end
 		},

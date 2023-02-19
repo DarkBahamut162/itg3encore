@@ -17,7 +17,7 @@ return Def.ActorFrame{
 		OffCommand=function(self) self:stoptweening():decelerate(0.3):diffusealpha(0) end,
 		CurrentSongChangedMessageCommand=function(self) self:stoptweening():linear(0.15):x(10):decelerate(0.3):x(0) end
 	},
-	LoadActor(THEME:GetPathG("","blueflare.png"))..{
+	LoadActor(THEME:GetPathG("","blueflare"))..{
 		InitCommand=function(self) self:diffusealpha(0):blend(Blend.Add) end,
 		OnCommand=function(self) self:playcommand("Refresh") end,
 		RefreshCommand=function(self) self:stoptweening(1):zoom(0):diffusealpha(1):sleep(0.6):accelerate(0.5):zoom(5):diffusealpha(0) end,
