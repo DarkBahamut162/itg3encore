@@ -13,6 +13,8 @@ local ComboW3 = THEME:GetMetric("Combo","FullComboW3Command")
 local ComboNormal = THEME:GetMetric("Combo","FullComboBrokenCommand")
 local ComboMiss = THEME:GetMetric("Combo","MissComboCommand")
 
+local LastSeenCombo = 0
+
 return Def.ActorFrame {
 	LoadFont( "Combo", "numbers" ) .. {
 		Name="Number",
@@ -26,6 +28,8 @@ return Def.ActorFrame {
 		Name="MissesLabel",
 		OnCommand=THEME:GetMetric("Combo", "LabelOnCommand")
 	},
+	LoadActor( THEME:GetPathG("Combo","100Milestone") )..{ Name="OneHundredMilestone" },
+	LoadActor( THEME:GetPathG("Combo","1000Milestone") )..{ Name="OneThousandMilestone" },
 	InitCommand = function(self)
 		c = self:GetChildren()
 		c.Number:visible(false)
@@ -38,7 +42,12 @@ return Def.ActorFrame {
 			c.Number:visible(false)
 			c.ComboLabel:visible(false)
 			c.MissesLabel:visible(false)
+			LastSeenCombo = param.Combo
 			return
+		end
+		if param.Combo then
+			if (LastSeenCombo % 100) > (param.Combo % 100) then c.OneHundredMilestone:playcommand("Milestone") end
+			LastSeenCombo = param.Combo
 		end
 
 		local Label
