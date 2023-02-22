@@ -39,9 +39,6 @@ return Def.ActorFrame {
 		if param.Player ~= player then return end
 		if not param.TapNoteScore then return end
 		if param.HoldNoteScore then return end
-		if self:GetName() ~= "Judgment" then
-			if param.FirstTrack ~= tonumber(ToEnumShortString(self:GetName())) then return end
-		end
 		local tns = param.TapNoteScore
 		local iNumStates = c.Judgment:GetNumStates()
 		local iFrame = TNSFrames[tns]
@@ -68,6 +65,7 @@ return Def.ActorFrame {
 				setenv("LastGreat"..ToEnumShortString(player),STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetAliveSeconds())
 			end
 		end
+		if self:GetName() ~= "Judgment" then if param.FirstTrack ~= tonumber(ToEnumShortString(self:GetName())) then return end end
 		if iNumStates == 12 then
 			iFrame = iFrame * 2
 			if not param.Early then iFrame = iFrame + 1 end
