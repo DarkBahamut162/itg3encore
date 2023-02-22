@@ -290,8 +290,8 @@ return Def.ActorFrame{
 		OnCommand=function(self) self:play() end
 	},
 	LoadFont("_v 26px bold black")..{
-		InitCommand=function(self) self:CenterX():y(isFinal() and SCREEN_BOTTOM-60+100 or SCREEN_BOTTOM-34+100):diffusealpha(0):shadowlength(0):zoom(0.5) end,
-		OnCommand=function(self) self:decelerate(0.4):addy(-100):diffusealpha(1):playcommand("Refresh") end,
+		InitCommand=function(self) self:CenterX():y(isFinal() and SCREEN_BOTTOM-60 or SCREEN_BOTTOM-34):diffusealpha(0):shadowlength(0):zoom(0.5) end,
+		OnCommand=function(self) self:sleep(0.5):linear(0.5):diffusealpha(1):playcommand("Refresh") end,
 		OffCommand=function(self) self:accelerate(0.5):addy(100):diffusealpha(0) end,
 		ScreenChangedMessageCommand=function(self) self:playcommand("Refresh") end,
 		RefreshCommand=function(self)
@@ -360,9 +360,9 @@ return Def.ActorFrame{
 		LoadFont("_v 26px bold black")..{
 			SetCommand=function(self) self:settext( string.format('%02i:%02i:%02i %s %02i %04i', Hour(), Minute(), Second(), string.sub(MonthToString(MonthOfYear()),1,3), DayOfMonth(), Year()) ):sleep(1/6):queuecommand("Set") end,
 			InitCommand=function(self) self:y(-48):shadowlength(2):zoom(0.5):diffusealpha(0) end,
-			OnCommand=function(self) self:linear(0.8):diffusealpha(1) end,
-			OffCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(0) end,
-			ScreenChangedMessageCommand=function(self) if not isTopScreen("ScreenLogo") then self:playcommand("Set") end end,
+			OnCommand=function(self) self:sleep(0.5):playcommand("Set"):linear(0.5):diffusealpha(1) end,
+			OffCommand=function(self) self:stoptweening():accelerate(0.5):addy(100) end,
+			ScreenChangedMessageCommand=function(self) if not isTopScreen("ScreenLogo") then self:visible(true):playcommand("Set") else self:visible(false) end end,
 		}
 	}
 }
