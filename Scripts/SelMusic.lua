@@ -222,21 +222,15 @@ function cacheStep(Step)
 		if not ignore then
 			if allowednotes[ v[3] ] then
 				local currentSec = timingData:GetElapsedTimeFromBeat(v[1] )
+				currentNotes = currentNotes + 1
 				if lastSec > 0 then
 					if lastSec < currentSec then
 						currentSPS = 1 / (currentSec - lastSec)
-						if stepsPerSec[currentSPS] then
-							stepsPerSec[currentSPS] = stepsPerSec[currentSPS] + 1
-						else
-							stepsPerSec[currentSPS] = 1
-						end
+						if stepsPerSec[currentSPS] then stepsPerSec[currentSPS] = stepsPerSec[currentSPS] + 1 else stepsPerSec[currentSPS] = 1 end
 						lastSec = currentSec
 					elseif lastSec == currentSec then
-						if stepsPerSec[currentSPS] then
-							stepsPerSec[currentSPS] = stepsPerSec[currentSPS] + 1
-						else
-							stepsPerSec[currentSPS] = 1
-						end
+						local currentSPS_ = currentSPS * currentNotes
+						if stepsPerSec[currentSPS_] then stepsPerSec[currentSPS_] = stepsPerSec[currentSPS_] + 1 else stepsPerSec[currentSPS_] = 1 end
 					end
 				else
 					lastSec = currentSec
@@ -247,7 +241,6 @@ function cacheStep(Step)
 					if currentBeat > lastBeat then lastBeat = currentBeat end
 				end
 				if currentBeat < firstBeat then firstBeat = currentBeat end
-				currentNotes = currentNotes + 1
 			elseif v[3] == "TapNoteType_Mine" then
 				currentMines = currentMines + 1
 				if currentMines == GAMESTATE:GetCurrentStyle():ColumnsPerPlayer() then
