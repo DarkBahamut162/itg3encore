@@ -372,11 +372,11 @@ function GetConvertDifficulty(Step)
 
 	local meter
 	if tapsp2lv100[tapspoint]<25 then
-		meter=math.round(12*math.sin(tapsp2lv100[tapspoint]*math.pi*0.5/25))
+		meter=12*math.sin(tapsp2lv100[tapspoint]*math.pi*0.5/25)
 	elseif tapsp2lv100[tapspoint]<35 then
-		meter=math.round((tapsp2lv100[tapspoint]-25)*3/10+12)
+		meter=(tapsp2lv100[tapspoint]-25)*3/10+12
 	else
-		meter=math.round((tapsp2lv100[tapspoint]-35)*5/15+15)
+		meter=(tapsp2lv100[tapspoint]-35)*5/15+15
 	end
 	return meter
 end
