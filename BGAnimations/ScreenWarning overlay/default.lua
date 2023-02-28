@@ -1,12 +1,5 @@
-local coinMode = GAMESTATE:GetCoinMode()
-
-local platformType
-if coinMode == 'CoinMode_Home' then platformType = "home"
-else platformType = "arcade"
-end
-
 return Def.ActorFrame{
-	LoadActor(platformType)..{
+	LoadActor(IsHome() and "home" or "arcade")..{
 		InitCommand=function(self) self:rotationx(5) end
 	},
 	LoadActor(THEME:GetPathB("","lolhi"))..{
