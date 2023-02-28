@@ -1,5 +1,5 @@
 local player = ...
-local scoreType = getenv("SetScoreType"..ToEnumShortString(player)) or 2
+local scoreType = getenv("SetScoreType"..pname(player)) or 2
 local displayScore = 0
 local weight = {
     CheckpointHit = 0,
@@ -35,15 +35,15 @@ function animateScore(currentScore,fakeScore)
 end
 
 local function UpdateScore(self)
-	self:GetChild("Score"..ToEnumShortString(player)):queuecommand("RedrawScore")
+	self:GetChild("Score"..pname(player)):queuecommand("RedrawScore")
 end
 
 return Def.ActorFrame{
 	OnCommand=function(self) if isGamePlay() and scoreType ~= 2 then self:SetUpdateFunction(UpdateScore) end self:visible(isGamePlay()) end,
 	LoadFont("_r bold numbers") .. {
-		Name="Score"..ToEnumShortString(player),
+		Name="Score"..pname(player),
 		InitCommand=function(self)
-			self:visible(not getenv("HideScore"..ToEnumShortString(player))):diffuse(PlayerColor(player)):x(math.floor(scale(player == PLAYER_1 and 0.25 or 0.75,0,1,SCREEN_LEFT,SCREEN_RIGHT)))
+			self:visible(not getenv("HideScore"..pname(player))):diffuse(PlayerColor(player)):x(math.floor(scale(player == PLAYER_1 and 0.25 or 0.75,0,1,SCREEN_LEFT,SCREEN_RIGHT)))
 			if GAMESTATE:Env()["Workout"] then self:y(SCREEN_TOP+51) else self:y(SCREEN_TOP+61) end
 			if scoreType == 1 then
 				self:settextf("%09d",0) -- SCORE

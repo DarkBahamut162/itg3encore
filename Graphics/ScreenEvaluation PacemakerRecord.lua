@@ -6,7 +6,7 @@ local total =  GAMESTATE:GetNumPlayersEnabled()
 if (total == 1 and (getenv("ShowStatsP1") == 7 or getenv("ShowStatsP2") == 7)) or (total == 2 and (getenv("ShowStatsP1") == 7 and getenv("ShowStatsP2") == 7)) then
 	local SongOrCourse,StepsOrTrail,scorelist,topscore
 	local DPCurrent = STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetActualDancePoints()
-	local target = THEME:GetMetric("PlayerStageStats","GradePercentTier"..string.format("%02d",17-getenv("SetPacemaker"..ToEnumShortString(player))))
+	local target = THEME:GetMetric("PlayerStageStats","GradePercentTier"..string.format("%02d",17-getenv("SetPacemaker"..pname(player))))
 	local HighScore = 0
 	local Target = math.ceil(target*STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetPossibleDancePoints())
 

@@ -24,8 +24,8 @@ return Def.ActorFrame{
 		Name="Jumps",
 		InitCommand=function(self) self:x(-127+100):diffusealpha(0):maxwidth(22) end,
 		CurrentSongChangedMessageCommand=function(self) self:playcommand("Set") end,
-		["CurrentSteps".. ToEnumShortString(player) .."ChangedMessageCommand"]=function(self) self:playcommand("Set") end,
-		["CurrentTrail".. ToEnumShortString(player) .."ChangedMessageCommand"]=function(self) self:playcommand("Set") end,
+		["CurrentSteps".. pname(player) .."ChangedMessageCommand"]=function(self) self:playcommand("Set") end,
+		["CurrentTrail".. pname(player) .."ChangedMessageCommand"]=function(self) self:playcommand("Set") end,
 		SetCommand=function(self)
 			local song = GAMESTATE:GetCurrentSong()
 			local course = GAMESTATE:GetCurrentCourse()
@@ -66,8 +66,8 @@ return Def.ActorFrame{
 		Name="Holds",
 		InitCommand=function(self) self:x(-102+100):diffusealpha(0):maxwidth(22) end,
 		CurrentSongChangedMessageCommand=function(self) self:playcommand("Set") end,
-		["CurrentSteps".. ToEnumShortString(player) .."ChangedMessageCommand"]=function(self) self:playcommand("Set") end,
-		["CurrentTrail".. ToEnumShortString(player) .."ChangedMessageCommand"]=function(self) self:playcommand("Set") end,
+		["CurrentSteps".. pname(player) .."ChangedMessageCommand"]=function(self) self:playcommand("Set") end,
+		["CurrentTrail".. pname(player) .."ChangedMessageCommand"]=function(self) self:playcommand("Set") end,
 		SetCommand=function(self)
 			local song = GAMESTATE:GetCurrentSong()
 			local course = GAMESTATE:GetCurrentCourse()
@@ -108,8 +108,8 @@ return Def.ActorFrame{
 		Name="Mines",
 		InitCommand=function(self) self:x(-77+100):diffusealpha(0):maxwidth(22) end,
 		CurrentSongChangedMessageCommand=function(self) self:playcommand("Set") end,
-		["CurrentSteps".. ToEnumShortString(player) .."ChangedMessageCommand"]=function(self) self:playcommand("Set") end,
-		["CurrentTrail".. ToEnumShortString(player) .."ChangedMessageCommand"]=function(self) self:playcommand("Set") end,
+		["CurrentSteps".. pname(player) .."ChangedMessageCommand"]=function(self) self:playcommand("Set") end,
+		["CurrentTrail".. pname(player) .."ChangedMessageCommand"]=function(self) self:playcommand("Set") end,
 		SetCommand=function(self)
 			local song = GAMESTATE:GetCurrentSong()
 			local course = GAMESTATE:GetCurrentCourse()
@@ -150,8 +150,8 @@ return Def.ActorFrame{
 		Name="Hands",
 		InitCommand=function(self) self:x(-52+100):diffusealpha(0):maxwidth(22) end,
 		CurrentSongChangedMessageCommand=function(self) self:playcommand("Set") end,
-		["CurrentSteps".. ToEnumShortString(player) .."ChangedMessageCommand"]=function(self) self:playcommand("Set") end,
-		["CurrentTrail".. ToEnumShortString(player) .."ChangedMessageCommand"]=function(self) self:playcommand("Set") end,
+		["CurrentSteps".. pname(player) .."ChangedMessageCommand"]=function(self) self:playcommand("Set") end,
+		["CurrentTrail".. pname(player) .."ChangedMessageCommand"]=function(self) self:playcommand("Set") end,
 		SetCommand=function(self)
 			local song = GAMESTATE:GetCurrentSong()
 			local course = GAMESTATE:GetCurrentCourse()
@@ -192,8 +192,8 @@ return Def.ActorFrame{
 		Name="Rolls",
 		InitCommand=function(self) self:x(-27+100):diffusealpha(0):maxwidth(22) end,
 		CurrentSongChangedMessageCommand=function(self) self:playcommand("Set") end,
-		["CurrentSteps".. ToEnumShortString(player) .."ChangedMessageCommand"]=function(self) self:playcommand("Set") end,
-		["CurrentTrail".. ToEnumShortString(player) .."ChangedMessageCommand"]=function(self) self:playcommand("Set") end,
+		["CurrentSteps".. pname(player) .."ChangedMessageCommand"]=function(self) self:playcommand("Set") end,
+		["CurrentTrail".. pname(player) .."ChangedMessageCommand"]=function(self) self:playcommand("Set") end,
 		SetCommand=function(self)
 			local song = GAMESTATE:GetCurrentSong()
 			local course = GAMESTATE:GetCurrentCourse()

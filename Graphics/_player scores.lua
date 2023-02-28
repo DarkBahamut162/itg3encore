@@ -56,8 +56,8 @@ return Def.ActorFrame{
 			score:settext(scoreText)
 		end,
 		CurrentSongChangedMessageCommand=function(self) self:playcommand("Set") end,
-		["CurrentSteps".. ToEnumShortString(player) .."ChangedMessageCommand"]=function(self) self:playcommand("Set") end,
-		["CurrentTrail".. ToEnumShortString(player) .."ChangedMessageCommand"]=function(self) self:playcommand("Set") end,
+		["CurrentSteps".. pname(player) .."ChangedMessageCommand"]=function(self) self:playcommand("Set") end,
+		["CurrentTrail".. pname(player) .."ChangedMessageCommand"]=function(self) self:playcommand("Set") end,
 		LoadFont("_z 36px shadowx")..{
 			Name="ScoreName",
 			Text="MACH",
@@ -122,8 +122,8 @@ return Def.ActorFrame{
 			score:settext(scoreText)
 		end,
 		CurrentSongChangedMessageCommand=function(self) self:playcommand("Set") end,
-		["CurrentSteps".. ToEnumShortString(player) .."ChangedMessageCommand"]=function(self) self:playcommand("Set") end,
-		["CurrentTrail".. ToEnumShortString(player) .."ChangedMessageCommand"]=function(self) self:playcommand("Set") end,
+		["CurrentSteps".. pname(player) .."ChangedMessageCommand"]=function(self) self:playcommand("Set") end,
+		["CurrentTrail".. pname(player) .."ChangedMessageCommand"]=function(self) self:playcommand("Set") end,
 		LoadFont("_z 36px shadowx")..{
 			Name="ScoreName",
 			Text="CARD",

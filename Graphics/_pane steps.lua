@@ -114,8 +114,8 @@ return Def.ActorFrame{
 			self:maxwidth(150)
 		end,
 		CurrentSongChangedMessageCommand=function(self) self:playcommand("Set") end,
-		["CurrentSteps".. ToEnumShortString(player) .."ChangedMessageCommand"]=function(self) self:playcommand("Set") end,
-		["CurrentTrail".. ToEnumShortString(player) .."ChangedMessageCommand"]=function(self) self:playcommand("Set") end
+		["CurrentSteps".. pname(player) .."ChangedMessageCommand"]=function(self) self:playcommand("Set") end,
+		["CurrentTrail".. pname(player) .."ChangedMessageCommand"]=function(self) self:playcommand("Set") end
 	},
 	LoadFont("_v 26px bold white")..{
 		Name="Label",

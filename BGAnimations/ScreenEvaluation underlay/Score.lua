@@ -1,8 +1,8 @@
 local player = ...
-local scoreType = getenv("SetScoreType"..ToEnumShortString(player))
+local scoreType = getenv("SetScoreType"..pname(player))
 return Def.ActorFrame{
 	LoadFont("_r bold numbers") .. {
-		Name="Score"..ToEnumShortString(player),
+		Name="Score"..pname(player),
 		InitCommand=function(self)
 			self:diffuse(PlayerColor(player))
 			if isTopScreen("ScreenEvaluationWorkout") or isTopScreen("ScreenEvaluationCourseWorkout") then

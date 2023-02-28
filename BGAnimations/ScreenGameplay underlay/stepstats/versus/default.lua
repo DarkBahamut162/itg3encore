@@ -25,7 +25,7 @@ if getenv("ShowStatsP1") == nil or getenv("ShowStatsP2") == nil then return Def.
 			if topscore[pn] == nil then bgNum[pn] = 4 else bgNum[pn] = 6 end
 			IIDX, barCenter[pn] = true, -totalWidth/2+barWidth[bgNum[pn]]/2
 		else
-			bgNum[pn] = math.min(6,getenv("ShowStats"..ToEnumShortString(pn)))
+			bgNum[pn] = math.min(6,getenv("ShowStats"..pname(pn)))
 			if bgNum[pn] > 0 then barCenter[pn] = -totalWidth/2+barWidth[bgNum[pn]]/2 end
 		end
 	end
@@ -61,7 +61,7 @@ if getenv("ShowStatsP1") == nil or getenv("ShowStatsP2") == nil then return Def.
 			end
 
 			t[#t+1] = Def.ActorFrame{
-				Name="Player"..ToEnumShortString(pn),
+				Name="Player"..pname(pn),
 				InitCommand=function(self)
 					self:x(pn == PLAYER_1 and SCREEN_LEFT+20-SCREEN_WIDTH/2 or SCREEN_RIGHT-20-SCREEN_WIDTH/2)
 					:addx(pn == PLAYER_1 and -100 or 100)
@@ -114,7 +114,7 @@ if getenv("ShowStatsP1") == nil or getenv("ShowStatsP2") == nil then return Def.
 			end
 
 			t[#t+1] = Def.ActorFrame{
-				Name="Numbers"..ToEnumShortString(pn),
+				Name="Numbers"..pname(pn),
 				InitCommand=function(self) self:y(isRave() and -10 or 0):diffusealpha(0) end,
 				Condition=bgNum[PLAYER_1] > 0 or bgNum[PLAYER_2] > 0,
 				OnCommand=function(self) self:sleep(0.5):decelerate(0.8):diffusealpha(1) end,
@@ -152,7 +152,7 @@ if getenv("ShowStatsP1") == nil or getenv("ShowStatsP2") == nil then return Def.
 				},
 				LoadActor("../w6")..{
 					OnCommand=function(self)
-						local target = THEME:GetMetric("PlayerStageStats", "GradePercentTier" .. string.format("%02d", 17-getenv("SetPacemaker"..ToEnumShortString(PLAYER_1))))
+						local target = THEME:GetMetric("PlayerStageStats", "GradePercentTier" .. string.format("%02d", 17-getenv("SetPacemaker"..pname(PLAYER_1))))
 						self:vertalign(bottom):addx(barCenter[PLAYER_1]):addy(barHeight/2):zoomx(0.01*barWidth[bgNum[PLAYER_1]]):zoomy(target*barHeight):diffusealpha(0.25)
 					end
 				},
@@ -214,7 +214,7 @@ if getenv("ShowStatsP1") == nil or getenv("ShowStatsP2") == nil then return Def.
 				},
 				LoadActor("../w6")..{
 					OnCommand=function(self)
-						local target = THEME:GetMetric("PlayerStageStats", "GradePercentTier" .. string.format("%02d", 17-getenv("SetPacemaker"..ToEnumShortString(PLAYER_2))))
+						local target = THEME:GetMetric("PlayerStageStats", "GradePercentTier" .. string.format("%02d", 17-getenv("SetPacemaker"..pname(PLAYER_2))))
 						self:vertalign(bottom):addx(barCenter[PLAYER_2]+(barWidth[bgNum[PLAYER_2]]+barSpace[bgNum[PLAYER_2]])*(bgNum[PLAYER_2]/2+(topscore[PLAYER_2] ~= nil and 2 or 1))):addy(barHeight/2):zoomx(0.01*barWidth[bgNum[PLAYER_2]]):zoomy(target*barHeight):diffusealpha(0.25)
 					end
 				},
@@ -226,7 +226,7 @@ if getenv("ShowStatsP1") == nil or getenv("ShowStatsP2") == nil then return Def.
 						local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_1)
 						local DPCurMax = pss:GetCurrentPossibleDancePoints()
 						local DPMax = pss:GetPossibleDancePoints()
-						local target = THEME:GetMetric("PlayerStageStats", "GradePercentTier" .. string.format("%02d", 17-getenv("SetPacemaker"..ToEnumShortString(PLAYER_1))))
+						local target = THEME:GetMetric("PlayerStageStats", "GradePercentTier" .. string.format("%02d", 17-getenv("SetPacemaker"..pname(PLAYER_1))))
 						self:zoomy(DPCurMax/DPMax*target*barHeight)
 					end
 				},
@@ -297,7 +297,7 @@ if getenv("ShowStatsP1") == nil or getenv("ShowStatsP2") == nil then return Def.
 						local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_2)
 						local DPCurMax = pss:GetCurrentPossibleDancePoints()
 						local DPMax = pss:GetPossibleDancePoints()
-						local target = THEME:GetMetric("PlayerStageStats", "GradePercentTier" .. string.format("%02d", 17-getenv("SetPacemaker"..ToEnumShortString(PLAYER_2))))
+						local target = THEME:GetMetric("PlayerStageStats", "GradePercentTier" .. string.format("%02d", 17-getenv("SetPacemaker"..pname(PLAYER_2))))
 						self:zoomy(DPCurMax/DPMax*target*barHeight)
 					end
 				},
@@ -363,7 +363,7 @@ if getenv("ShowStatsP1") == nil or getenv("ShowStatsP2") == nil then return Def.
 					Name="TargetPointsP1",
 					Text="0",
 					OnCommand=function(self)
-						local target = THEME:GetMetric("PlayerStageStats", "GradePercentTier" .. string.format("%02d", 17-getenv("SetPacemaker"..ToEnumShortString(PLAYER_1))))
+						local target = THEME:GetMetric("PlayerStageStats", "GradePercentTier" .. string.format("%02d", 17-getenv("SetPacemaker"..pname(PLAYER_1))))
 						self:maxwidth(90):horizalign(left):zoom(0.75):shadowlength(0):addy(125):addx(-100):diffuse(PlayerColor(PLAYER_1))
 						:settext(math.ceil(target*STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_1):GetPossibleDancePoints()))
 					end
@@ -382,7 +382,7 @@ if getenv("ShowStatsP1") == nil or getenv("ShowStatsP2") == nil then return Def.
 					Name="TargetPointsP2",
 					Text="0",
 					OnCommand=function(self)
-						local target = THEME:GetMetric("PlayerStageStats", "GradePercentTier" .. string.format("%02d", 17-getenv("SetPacemaker"..ToEnumShortString(PLAYER_2))))
+						local target = THEME:GetMetric("PlayerStageStats", "GradePercentTier" .. string.format("%02d", 17-getenv("SetPacemaker"..pname(PLAYER_2))))
 						self:maxwidth(90):horizalign(right):zoom(0.75):shadowlength(0):addy(125):addx(100):diffuse(PlayerColor(PLAYER_2))
 						:settext(math.ceil(target*STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_2):GetPossibleDancePoints()))
 					end
@@ -413,7 +413,7 @@ if getenv("ShowStatsP1") == nil or getenv("ShowStatsP2") == nil then return Def.
 						local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_1)
 						local DPCurMax = pss:GetCurrentPossibleDancePoints()
 						local curPlayerDP = pss:GetActualDancePoints()
-						local target = THEME:GetMetric("PlayerStageStats", "GradePercentTier" .. string.format("%02d", 17-getenv("SetPacemaker"..ToEnumShortString(PLAYER_1))))
+						local target = THEME:GetMetric("PlayerStageStats", "GradePercentTier" .. string.format("%02d", 17-getenv("SetPacemaker"..pname(PLAYER_1))))
 						local curTargetDP = math.ceil(DPCurMax*target)
 						self:settextf( "%+04d", (curPlayerDP-curTargetDP) )
 					end
@@ -444,7 +444,7 @@ if getenv("ShowStatsP1") == nil or getenv("ShowStatsP2") == nil then return Def.
 						local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_2)
 						local DPCurMax = pss:GetCurrentPossibleDancePoints()
 						local curPlayerDP = pss:GetActualDancePoints()
-						local target = THEME:GetMetric("PlayerStageStats", "GradePercentTier" .. string.format("%02d", 17-getenv("SetPacemaker"..ToEnumShortString(PLAYER_2))))
+						local target = THEME:GetMetric("PlayerStageStats", "GradePercentTier" .. string.format("%02d", 17-getenv("SetPacemaker"..pname(PLAYER_2))))
 						local curTargetDP = math.ceil(DPCurMax*target)
 						self:settextf( "%+04d", (curPlayerDP-curTargetDP) )
 					end

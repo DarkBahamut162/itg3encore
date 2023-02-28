@@ -12,18 +12,18 @@ if not scorelist then scorelist = PROFILEMAN:GetMachineProfile():GetHighScoreLis
 if not scorelist then scorelist = PROFILEMAN:GetProfile(pn):GetHighScoreList(SongOrCourse,StepsOrTrail) end
 if scorelist then topscore = scorelist:GetHighScores()[1] end
 
-local bgNum = getenv("ShowStats"..ToEnumShortString(pn))
+local bgNum = getenv("ShowStats"..pname(pn))
 if bgNum == 7 then if topscore == nil then bgNum = 2 else bgNum = 3 end end
 if bgNum > 0 then barCenter	= -totalWidth/2+barWidth[bgNum]/2 end
 
 local Bars = Def.ActorFrame{}
 
-if getenv("ShowStats"..ToEnumShortString(pn)) < 7 then
-	for i = 1,math.min(6,getenv("ShowStats"..ToEnumShortString(pn))) do
+if getenv("ShowStats"..pname(pn)) < 7 then
+	for i = 1,math.min(6,getenv("ShowStats"..pname(pn))) do
 		local score = i < 6 and "W"..i or "Miss"
 		Bars[#Bars+1] = LoadActor("../w"..i)..{
 			InitCommand=function(self) self:vertalign(bottom):x(barCenter+barWidth[bgNum]*(i-1)):y(164):zoomx(0.01*barWidth[bgNum]):zoomy(0) end,
-			Condition=getenv("ShowStats"..ToEnumShortString(pn)) >= i,
+			Condition=getenv("ShowStats"..pname(pn)) >= i,
 			JudgmentMessageCommand=function(self,param) if param.Player == pn then self:queuecommand("Update") end end,
 			UpdateCommand=function(self)
 				local TotalSteps = StepsOrTrail:GetRadarValues(pn):GetValue('RadarCategory_TapsAndHolds')
@@ -44,11 +44,11 @@ return Def.ActorFrame{
 		OffCommand=function(self) if AnyPlayerFullComboed() then self:sleep(1) end self:accelerate(0.8):addx(GAMESTATE:GetMasterPlayerNumber() == PLAYER_1 and 100 or -100) end,
 		LoadActor("d_bg"),
 		Def.ActorFrame{
-			Condition=getenv("ShowStats"..ToEnumShortString(pn)) < 7,
+			Condition=getenv("ShowStats"..pname(pn)) < 7,
 			Bars
 		},
 		Def.ActorFrame{
-			Condition=getenv("ShowStats"..ToEnumShortString(pn)) == 7,
+			Condition=getenv("ShowStats"..pname(pn)) == 7,
 			LoadActor("../w1")..{
 				OnCommand=function(self)
 					self:vertalign(bottom):x(barCenter):y(164):zoomx(0.01*barWidth[bgNum]):zoomy(barHeight):diffusealpha(0.25)
@@ -79,7 +79,7 @@ return Def.ActorFrame{
 			},
 			LoadActor("../w6")..{
 				OnCommand=function(self)
-					local target = THEME:GetMetric("PlayerStageStats", "GradePercentTier" .. string.format("%02d", 17-getenv("SetPacemaker"..ToEnumShortString(pn))))
+					local target = THEME:GetMetric("PlayerStageStats", "GradePercentTier" .. string.format("%02d", 17-getenv("SetPacemaker"..pname(pn))))
 					self:vertalign(bottom):x(barCenter+(barWidth[bgNum])*(topscore ~= nil and 2 or 1)):y(164):zoomx(0.01*barWidth[bgNum]):zoomy(target*barHeight):diffusealpha(0.25)
 				end
 			},
@@ -116,7 +116,7 @@ return Def.ActorFrame{
 				InitCommand=function(self) self:vertalign(bottom):x(barCenter+barWidth[bgNum]*(topscore ~= nil and 2 or 1)):y(164):zoomx(0.01*barWidth[bgNum]):zoomy(0) end,
 				JudgmentMessageCommand=function(self,param) if param.Player == pn then self:queuecommand("Update") end end,
 				UpdateCommand=function(self)
-					local target = THEME:GetMetric("PlayerStageStats", "GradePercentTier" .. string.format("%02d", 17-getenv("SetPacemaker"..ToEnumShortString(pn))))
+					local target = THEME:GetMetric("PlayerStageStats", "GradePercentTier" .. string.format("%02d", 17-getenv("SetPacemaker"..pname(pn))))
 					local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn)
 					local DPCurMax = pss:GetCurrentPossibleDancePoints()
 					local DPMax = pss:GetPossibleDancePoints()

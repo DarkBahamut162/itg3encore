@@ -6,7 +6,7 @@ local curFeatNumber = {
 }
 
 for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
-	if not getenv("HighScoreable"..ToEnumShortString(pn)) then
+	if not getenv("HighScoreable"..pname(pn)) then
 		t[#t+1] = LoadActor(THEME:GetPathG("ScreenNameEntryTraditional","OutOfRanking"))..{
 			InitCommand=function(self)
 				self:player(pn)
@@ -76,7 +76,7 @@ end
 t[#t+1] = StandardDecorationFromFile("Banner","Banner")
 
 for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
-	if getenv("HighScoreable"..ToEnumShortString(pn)) then
+	if getenv("HighScoreable"..pname(pn)) then
 		t[#t+1] = Def.Actor{
 			Name="MasterController",
 			BeginCommand=function(self)

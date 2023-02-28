@@ -163,14 +163,14 @@ function OptionUnderFieldOptions()
 		ExportOnChange = false,
 		Choices = { "Combo", "Tap Judgments", "Hold Judgments" },
 		LoadSelections = function(self, list, pn)
-			list[1] = getenv("UnderCombo"..ToEnumShortString(pn))
-			list[2] = getenv("UnderTapJudgments"..ToEnumShortString(pn))
-			list[3] = getenv("UnderHoldJudgments"..ToEnumShortString(pn))
+			list[1] = getenv("UnderCombo"..pname(pn))
+			list[2] = getenv("UnderTapJudgments"..pname(pn))
+			list[3] = getenv("UnderHoldJudgments"..pname(pn))
 		end,
 		SaveSelections = function(self, list, pn)
-			setenv("UnderCombo"..ToEnumShortString(pn),list[1])
-			setenv("UnderTapJudgments"..ToEnumShortString(pn),list[2])
-			setenv("UnderHoldJudgments"..ToEnumShortString(pn),list[3])
+			setenv("UnderCombo"..pname(pn),list[1])
+			setenv("UnderTapJudgments"..pname(pn),list[2])
+			setenv("UnderHoldJudgments"..pname(pn),list[3])
 		end
 	}
 	setmetatable(t, t)
@@ -186,14 +186,14 @@ function OptionTournamentOptions()
 		ExportOnChange = false,
 		Choices = { "Hide Score", "Hide Combo", "Hide Lifebar" },
 		LoadSelections = function(self, list, pn)
-			list[1] = getenv("HideScore"..ToEnumShortString(pn))
-			list[2] = getenv("HideCombo"..ToEnumShortString(pn))
-			list[3] = getenv("HideLife"..ToEnumShortString(pn))
+			list[1] = getenv("HideScore"..pname(pn))
+			list[2] = getenv("HideCombo"..pname(pn))
+			list[3] = getenv("HideLife"..pname(pn))
 		end,
 		SaveSelections = function(self, list, pn)
-			setenv("HideScore"..ToEnumShortString(pn),list[1])
-			setenv("HideCombo"..ToEnumShortString(pn),list[2])
-			setenv("HideLife"..ToEnumShortString(pn),list[3])
+			setenv("HideScore"..pname(pn),list[1])
+			setenv("HideCombo"..pname(pn),list[2])
+			setenv("HideLife"..pname(pn),list[3])
 		end
 	}
 	setmetatable(t, t)
@@ -209,7 +209,7 @@ function OptionSetScoreType()
 		ExportOnChange = false,
 		Choices = { "Score","Percent","EX" },
 		LoadSelections = function(self, list, pn)
-			local selected = getenv("SetScoreType"..ToEnumShortString(pn))
+			local selected = getenv("SetScoreType"..pname(pn))
 			if selected and selected ~= 0 then
 				list[selected] = true
 			else
@@ -219,7 +219,7 @@ function OptionSetScoreType()
 		SaveSelections = function(self, list, pn)
 			for i, choice in ipairs(self.Choices) do
 				if list[i] then
-					setenv("SetScoreType"..ToEnumShortString(pn),i)
+					setenv("SetScoreType"..pname(pn),i)
 					break
 				end
 			end
@@ -238,7 +238,7 @@ function OptionShowStats()
 		ExportOnChange = false,
 		Choices = { "Off","W1","W2","W3","W4","W5","Miss","IIDX" },
 		LoadSelections = function(self, list, pn)
-			local selected = getenv("ShowStats"..ToEnumShortString(pn))+1
+			local selected = getenv("ShowStats"..pname(pn))+1
 			if selected and selected ~= 0 then
 				list[selected] = true
 			else
@@ -248,7 +248,7 @@ function OptionShowStats()
 		SaveSelections = function(self, list, pn)
 			for i, choice in ipairs(self.Choices) do
 				if list[i] then
-					setenv("ShowStats"..ToEnumShortString(pn),i-1)
+					setenv("ShowStats"..pname(pn),i-1)
 					break
 				end
 			end
@@ -267,7 +267,7 @@ function OptionSetPacemaker()
 		ExportOnChange = false,
 		Choices = {'C-','C','C+','B-','B','B+','A-','A','A+','S-','S','S+','★','★★','★★★','★★★★'},
 		LoadSelections = function(self, list, pn)
-			local selected = getenv("SetPacemaker"..ToEnumShortString(pn))
+			local selected = getenv("SetPacemaker"..pname(pn))
 			if selected and selected ~= 0 then
 				list[selected] = true
 			else
@@ -277,7 +277,7 @@ function OptionSetPacemaker()
 		SaveSelections = function(self, list, pn)
 			for i, choice in ipairs(self.Choices) do
 				if list[i] then
-					setenv("SetPacemaker"..ToEnumShortString(pn),i)
+					setenv("SetPacemaker"..pname(pn),i)
 					break
 				end
 			end
@@ -296,10 +296,10 @@ function OptionShowModifiers()
 		ExportOnChange = false,
 		Choices = { "Show Active Modifiers" },
 		LoadSelections = function(self, list, pn)
-			list[1] = getenv("ShowMods"..ToEnumShortString(pn))
+			list[1] = getenv("ShowMods"..pname(pn))
 		end,
 		SaveSelections = function(self, list, pn)
-			setenv("ShowMods"..ToEnumShortString(pn),list[1])
+			setenv("ShowMods"..pname(pn),list[1])
 		end
 	}
 	setmetatable(t, t)
@@ -321,18 +321,18 @@ function OptionOrientation()
 		ExportOnChange = false,
 		Choices = AvailableArrowDirections(),
 		LoadSelections = function(self, list, pn)
-			list[1] = getenv("RotationNormal"..ToEnumShortString(pn))
-			list[2] = getenv("RotationLeft"..ToEnumShortString(pn))
-			list[3] = getenv("RotationRight"..ToEnumShortString(pn))
-			list[4] = getenv("RotationUpsideDown"..ToEnumShortString(pn))
-			if GAMESTATE:GetNumPlayersEnabled() == 1 then list[5] = getenv("RotationSolo"..ToEnumShortString(pn)) end
+			list[1] = getenv("RotationNormal"..pname(pn))
+			list[2] = getenv("RotationLeft"..pname(pn))
+			list[3] = getenv("RotationRight"..pname(pn))
+			list[4] = getenv("RotationUpsideDown"..pname(pn))
+			if GAMESTATE:GetNumPlayersEnabled() == 1 then list[5] = getenv("RotationSolo"..pname(pn)) end
 		end,
 		SaveSelections = function(self, list, pn)
-			setenv("RotationNormal"..ToEnumShortString(pn),list[1])
-			setenv("RotationLeft"..ToEnumShortString(pn),list[2])
-			setenv("RotationRight"..ToEnumShortString(pn),list[3])
-			setenv("RotationUpsideDown"..ToEnumShortString(pn),list[4])
-			if GAMESTATE:GetNumPlayersEnabled() == 1 then setenv("RotationSolo"..ToEnumShortString(pn),list[5]) end
+			setenv("RotationNormal"..pname(pn),list[1])
+			setenv("RotationLeft"..pname(pn),list[2])
+			setenv("RotationRight"..pname(pn),list[3])
+			setenv("RotationUpsideDown"..pname(pn),list[4])
+			if GAMESTATE:GetNumPlayersEnabled() == 1 then setenv("RotationSolo"..pname(pn),list[5]) end
 		end
 	}
 	setmetatable(t, t)
@@ -348,20 +348,20 @@ function OptionPlayfield()
 		ExportOnChange = false,
 		Choices = { "Vibrate", "Spin Right", "Spin Left", "Bob", "Pulse", "Wag" },
 		LoadSelections = function(self, list, pn)
-			list[1] = getenv("EffectVibrate"..ToEnumShortString(pn))
-			list[2] = getenv("EffectSpin"..ToEnumShortString(pn))
-			list[3] = getenv("EffectSpinReverse"..ToEnumShortString(pn))
-			list[4] = getenv("EffectBounce"..ToEnumShortString(pn))
-			list[5] = getenv("EffectPulse"..ToEnumShortString(pn))
-			list[6] = getenv("EffectWag"..ToEnumShortString(pn))
+			list[1] = getenv("EffectVibrate"..pname(pn))
+			list[2] = getenv("EffectSpin"..pname(pn))
+			list[3] = getenv("EffectSpinReverse"..pname(pn))
+			list[4] = getenv("EffectBounce"..pname(pn))
+			list[5] = getenv("EffectPulse"..pname(pn))
+			list[6] = getenv("EffectWag"..pname(pn))
 		end,
 		SaveSelections = function(self, list, pn)
-			setenv("EffectVibrate"..ToEnumShortString(pn),list[1])
-			setenv("EffectSpin"..ToEnumShortString(pn),list[2])
-			setenv("EffectSpinReverse"..ToEnumShortString(pn),list[3])
-			setenv("EffectBounce"..ToEnumShortString(pn),list[4])
-			setenv("EffectPulse"..ToEnumShortString(pn),list[5])
-			setenv("EffectWag"..ToEnumShortString(pn),list[6])
+			setenv("EffectVibrate"..pname(pn),list[1])
+			setenv("EffectSpin"..pname(pn),list[2])
+			setenv("EffectSpinReverse"..pname(pn),list[3])
+			setenv("EffectBounce"..pname(pn),list[4])
+			setenv("EffectPulse"..pname(pn),list[5])
+			setenv("EffectWag"..pname(pn),list[6])
 		end
 	}
 	setmetatable(t, t)
@@ -377,12 +377,12 @@ function OptionRowScreenFilter()
 		ExportOnChange = false,
 		Choices = getPercentValues(),
 		LoadSelections = function(self, list, pn)
-			local filterValue = getenv("ScreenFilter"..ToEnumShortString(pn))
+			local filterValue = getenv("ScreenFilter"..pname(pn))
 			if filterValue ~= nil then
 				local val = filterValue*10+1
 				list[val] = true
 			else
-				setenv("ScreenFilter"..ToEnumShortString(pn),0)
+				setenv("ScreenFilter"..pname(pn),0)
 				list[1] = true
 			end
 		end,
@@ -391,7 +391,7 @@ function OptionRowScreenFilter()
 			for i=1,#list do
 				if list[i] then val = (i-1)/10 end
 			end
-			setenv("ScreenFilter"..ToEnumShortString(pn),val)
+			setenv("ScreenFilter"..pname(pn),val)
 		end
 	}
 	setmetatable(t, t)
@@ -427,42 +427,42 @@ end
 function DisplayCustomModifiersText(pn)
 	local output = ""
 
-	if getenv("UnderCombo"..ToEnumShortString(pn)) and getenv("UnderTapJudgments"..ToEnumShortString(pn)) and getenv("UnderHoldJudgments"..ToEnumShortString(pn)) then
+	if getenv("UnderCombo"..pname(pn)) and getenv("UnderTapJudgments"..pname(pn)) and getenv("UnderHoldJudgments"..pname(pn)) then
 		output = addToOutput(output,"Under All",", ")
 	else
-		if getenv("UnderTapJudgments"..ToEnumShortString(pn)) and getenv("UnderHoldJudgments"..ToEnumShortString(pn)) then
+		if getenv("UnderTapJudgments"..pname(pn)) and getenv("UnderHoldJudgments"..pname(pn)) then
 			output = addToOutput(output,"Under Judgments",", ")
 		else
-			if getenv("UnderCombo"..ToEnumShortString(pn)) then output = addToOutput(output,"Under Combo",", ") end
-			if getenv("UnderTapJudgments"..ToEnumShortString(pn)) then output = addToOutput(output,"Under Tap Judgments",", ") end
-			if getenv("UnderHoldJudgments"..ToEnumShortString(pn)) then output = addToOutput(output,"Under Hold Judgments",", ") end
+			if getenv("UnderCombo"..pname(pn)) then output = addToOutput(output,"Under Combo",", ") end
+			if getenv("UnderTapJudgments"..pname(pn)) then output = addToOutput(output,"Under Tap Judgments",", ") end
+			if getenv("UnderHoldJudgments"..pname(pn)) then output = addToOutput(output,"Under Hold Judgments",", ") end
 		end
 	end
 
-	if getenv("HideScore"..ToEnumShortString(pn)) and getenv("HideLife"..ToEnumShortString(pn)) and getenv("HideCombo"..ToEnumShortString(pn)) then
+	if getenv("HideScore"..pname(pn)) and getenv("HideLife"..pname(pn)) and getenv("HideCombo"..pname(pn)) then
 		output = addToOutput(output,"Hide All",", ")
 	else
-		if getenv("HideScore"..ToEnumShortString(pn)) then output = addToOutput(output,"Hide Score",", ") end
-		if getenv("HideLife"..ToEnumShortString(pn)) then output = addToOutput(output,"Hide Life",", ") end
-		if getenv("HideCombo"..ToEnumShortString(pn)) then output = addToOutput(output,"Hide Combo",", ") end
+		if getenv("HideScore"..pname(pn)) then output = addToOutput(output,"Hide Score",", ") end
+		if getenv("HideLife"..pname(pn)) then output = addToOutput(output,"Hide Life",", ") end
+		if getenv("HideCombo"..pname(pn)) then output = addToOutput(output,"Hide Combo",", ") end
 	end
 
-	if getenv("RotationLeft"..ToEnumShortString(pn)) then output = addToOutput(output,"Rotated Left",", ") end
-	if getenv("RotationRight"..ToEnumShortString(pn)) then output = addToOutput(output,"Rotated Right",", ") end
-	if getenv("RotationUpsideDown"..ToEnumShortString(pn)) then output = addToOutput(output,"Rotated Downward",", ") end
-	if getenv("RotationSolo"..ToEnumShortString(pn)) then output = addToOutput(output,"Centered",", ") end
+	if getenv("RotationLeft"..pname(pn)) then output = addToOutput(output,"Rotated Left",", ") end
+	if getenv("RotationRight"..pname(pn)) then output = addToOutput(output,"Rotated Right",", ") end
+	if getenv("RotationUpsideDown"..pname(pn)) then output = addToOutput(output,"Rotated Downward",", ") end
+	if getenv("RotationSolo"..pname(pn)) then output = addToOutput(output,"Centered",", ") end
 
-	if getenv("EffectWag"..ToEnumShortString(pn)) then output = addToOutput(output,"Wag",", ")
-	elseif getenv("EffectPulse"..ToEnumShortString(pn)) then output = addToOutput(output,"Pulse",", ")
-	elseif getenv("EffectBounce"..ToEnumShortString(pn)) then output = addToOutput(output,"Bounce",", ")
-	elseif getenv("EffectSpinReverse"..ToEnumShortString(pn)) then output = addToOutput(output,"Spin Left",", ")
-	elseif getenv("EffectSpin"..ToEnumShortString(pn)) then output = addToOutput(output,"Spin Right",", ")
-	elseif getenv("EffectVibrate"..ToEnumShortString(pn)) then output = addToOutput(output,"Vibrate",", ") end
+	if getenv("EffectWag"..pname(pn)) then output = addToOutput(output,"Wag",", ")
+	elseif getenv("EffectPulse"..pname(pn)) then output = addToOutput(output,"Pulse",", ")
+	elseif getenv("EffectBounce"..pname(pn)) then output = addToOutput(output,"Bounce",", ")
+	elseif getenv("EffectSpinReverse"..pname(pn)) then output = addToOutput(output,"Spin Left",", ")
+	elseif getenv("EffectSpin"..pname(pn)) then output = addToOutput(output,"Spin Right",", ")
+	elseif getenv("EffectVibrate"..pname(pn)) then output = addToOutput(output,"Vibrate",", ") end
 
-	if getenv("ShowMods"..ToEnumShortString(pn)) then output = addToOutput(output,"Show Mods",", ") end
-	if getenv("ShowStats"..ToEnumShortString(pn)) > 0 then output = addToOutput(output,"Show Stats",", ") end
+	if getenv("ShowMods"..pname(pn)) then output = addToOutput(output,"Show Mods",", ") end
+	if getenv("ShowStats"..pname(pn)) > 0 then output = addToOutput(output,"Show Stats",", ") end
 
-	if getenv("ScreenFilter"..ToEnumShortString(pn)) > 0 then output = addToOutput(output,"Screen Filter ("..(getenv("ScreenFilter"..ToEnumShortString(pn))*100).."%)",", ") end
+	if getenv("ScreenFilter"..pname(pn)) > 0 then output = addToOutput(output,"Screen Filter ("..(getenv("ScreenFilter"..pname(pn))*100).."%)",", ") end
 
 	if GetRateMod() ~= '' then output = addToOutput(output,GetRateMod(),", ") end
 

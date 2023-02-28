@@ -9,8 +9,8 @@ return Def.ActorFrame{
 	InitCommand=function(self) self:y(-1) if IsUsingWideScreen() and isOutFox() then self:x(player == PLAYER_1 and 48 or -48) end end,
 	CurrentSongChangedMessageCommand=function(self) self:playcommand("Set") end,
 	CurrentCourseChangedMessageCommand=function(self) self:playcommand("Set") end,
-	["CurrentSteps".. ToEnumShortString(player) .."ChangedMessageCommand"]=function(self) self:playcommand("Set") end,
-	["CurrentTrail".. ToEnumShortString(player) .."ChangedMessageCommand"]=function(self) self:playcommand("Set") end,
+	["CurrentSteps".. pname(player) .."ChangedMessageCommand"]=function(self) self:playcommand("Set") end,
+	["CurrentTrail".. pname(player) .."ChangedMessageCommand"]=function(self) self:playcommand("Set") end,
 	SetCommand=function(self)
 		song,course = GAMESTATE:GetCurrentSong(),GAMESTATE:GetCurrentCourse()
 		bpm,stop,delay,warp,scroll,speed,fake,attack,jump,hold,mine,hand,roll = false,false,false,false,false,false,false,false,false,false,false,false,false
@@ -232,8 +232,8 @@ return Def.ActorFrame{
 				end
 			end,
 			CurrentSongChangedMessageCommand=function(self) self:stoptweening():playcommand("Set") end,
-			["CurrentSteps".. ToEnumShortString(player) .."ChangedMessageCommand"]=function(self) self:stoptweening():playcommand("Set") end,
-			["CurrentTrail".. ToEnumShortString(player) .."ChangedMessageCommand"]=function(self) self:stoptweening():playcommand("Set") end,
+			["CurrentSteps".. pname(player) .."ChangedMessageCommand"]=function(self) self:stoptweening():playcommand("Set") end,
+			["CurrentTrail".. pname(player) .."ChangedMessageCommand"]=function(self) self:stoptweening():playcommand("Set") end,
 			OffCommand=function(self) self:accelerate(0.2):diffusealpha(0) end,
 		},
 		Def.Quad{
@@ -251,8 +251,8 @@ return Def.ActorFrame{
 				end
 			end,
 			CurrentSongChangedMessageCommand=function(self) self:stoptweening():playcommand("Set") end,
-			["CurrentSteps".. ToEnumShortString(player) .."ChangedMessageCommand"]=function(self) self:stoptweening():playcommand("Set") end,
-			["CurrentTrail".. ToEnumShortString(player) .."ChangedMessageCommand"]=function(self) self:stoptweening():playcommand("Set") end,
+			["CurrentSteps".. pname(player) .."ChangedMessageCommand"]=function(self) self:stoptweening():playcommand("Set") end,
+			["CurrentTrail".. pname(player) .."ChangedMessageCommand"]=function(self) self:stoptweening():playcommand("Set") end,
 			OffCommand=function(self) self:accelerate(0.2):diffusealpha(0) end
 		},
 		Def.Quad{
@@ -270,8 +270,8 @@ return Def.ActorFrame{
 				end
 			end,
 			CurrentSongChangedMessageCommand=function(self) self:stoptweening():playcommand("Set") end,
-			["CurrentSteps".. ToEnumShortString(player) .."ChangedMessageCommand"]=function(self) self:stoptweening():playcommand("Set") end,
-			["CurrentTrail".. ToEnumShortString(player) .."ChangedMessageCommand"]=function(self) self:stoptweening():playcommand("Set") end,
+			["CurrentSteps".. pname(player) .."ChangedMessageCommand"]=function(self) self:stoptweening():playcommand("Set") end,
+			["CurrentTrail".. pname(player) .."ChangedMessageCommand"]=function(self) self:stoptweening():playcommand("Set") end,
 			OffCommand=function(self) self:accelerate(0.2):diffusealpha(0) end
 		},
 		Def.Quad{
@@ -289,8 +289,8 @@ return Def.ActorFrame{
 				end
 			end,
 			CurrentSongChangedMessageCommand=function(self) self:stoptweening():playcommand("Set") end,
-			["CurrentSteps".. ToEnumShortString(player) .."ChangedMessageCommand"]=function(self) self:stoptweening():playcommand("Set") end,
-			["CurrentTrail".. ToEnumShortString(player) .."ChangedMessageCommand"]=function(self) self:stoptweening():playcommand("Set") end,
+			["CurrentSteps".. pname(player) .."ChangedMessageCommand"]=function(self) self:stoptweening():playcommand("Set") end,
+			["CurrentTrail".. pname(player) .."ChangedMessageCommand"]=function(self) self:stoptweening():playcommand("Set") end,
 			OffCommand=function(self) self:accelerate(0.2):diffusealpha(0) end
 		},
 		Def.Quad{
@@ -308,8 +308,8 @@ return Def.ActorFrame{
 				end
 			end,
 			CurrentSongChangedMessageCommand=function(self) self:stoptweening():playcommand("Set") end,
-			["CurrentSteps".. ToEnumShortString(player) .."ChangedMessageCommand"]=function(self) self:stoptweening():playcommand("Set") end,
-			["CurrentTrail".. ToEnumShortString(player) .."ChangedMessageCommand"]=function(self) self:stoptweening():playcommand("Set") end,
+			["CurrentSteps".. pname(player) .."ChangedMessageCommand"]=function(self) self:stoptweening():playcommand("Set") end,
+			["CurrentTrail".. pname(player) .."ChangedMessageCommand"]=function(self) self:stoptweening():playcommand("Set") end,
 			OffCommand=function(self) self:accelerate(0.2):diffusealpha(0) end
 		},
 		LoadFont("_z bold gray 36px")..{

@@ -1,4 +1,4 @@
-local centerCheck = getenv("RotationSolo"..ToEnumShortString(GAMESTATE:GetMasterPlayerNumber())) or 0
+local centerCheck = getenv("RotationSolo"..pname(GAMESTATE:GetMasterPlayerNumber())) or 0
 return Def.ActorFrame{
 	Def.ActorFrame{
 		Name="DeadSingle",
@@ -9,7 +9,7 @@ return Def.ActorFrame{
 		end,
 		HealthStateChangedMessageCommand=function(self, param)
 			if param.HealthState == Health.Dead then
-				local dead = self:GetChild("Dead"..ToEnumShortString(param.PlayerNumber))
+				local dead = self:GetChild("Dead"..pname(param.PlayerNumber))
 				dead:playcommand("Show")
 			end
 		end,

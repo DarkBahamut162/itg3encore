@@ -1,5 +1,5 @@
 function OffsetLifebarHeight(pn)
-	if getenv("RotationLeft"..ToEnumShortString(pn)) or getenv("RotationRight"..ToEnumShortString(pn)) then
+	if getenv("RotationLeft"..pname(pn)) or getenv("RotationRight"..pname(pn)) then
 		return SCREEN_CENTER_Y
 	else
 		return SCREEN_CENTER_Y+30
@@ -76,7 +76,7 @@ function AllowOptionsMenu()
 end
 
 function GetComboXOffset(pn)
-	if getenv("HideCombo" .. ToEnumShortString(pn)) then
+	if getenv("HideCombo" .. pname(pn)) then
 		return "SCREEN_WIDTH*2"
 	else
 		return 0

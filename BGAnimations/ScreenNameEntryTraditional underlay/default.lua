@@ -10,7 +10,7 @@ return Def.ActorFrame{
 		Name="P1Side",
 		InitCommand=function(self) self:visible(GAMESTATE:IsHumanPlayer(PLAYER_1)) end,
 		LoadActor("name frame")..{
-			Condition=getenv("HighScoreable"..ToEnumShortString(PLAYER_1)),
+			Condition=getenv("HighScoreable"..pname(PLAYER_1)),
 			InitCommand=function(self) self:x(SCREEN_CENTER_X-157):y(SCREEN_CENTER_Y+72) end,
 			OnCommand=function(self) self:addx(-SCREEN_WIDTH/2):decelerate(0.3):addx(SCREEN_WIDTH/2) end
 		},
@@ -27,7 +27,7 @@ return Def.ActorFrame{
 		Name="P2Side",
 		InitCommand=function(self) self:visible(GAMESTATE:IsHumanPlayer(PLAYER_2)) end,
 		LoadActor("name frame")..{
-			Condition=getenv("HighScoreable"..ToEnumShortString(PLAYER_2)),
+			Condition=getenv("HighScoreable"..pname(PLAYER_2)),
 			InitCommand=function(self) self:zoomx(-1):x(SCREEN_CENTER_X+156):y(SCREEN_CENTER_Y+72) end,
 			OnCommand=function(self) self:addx(SCREEN_WIDTH/2):decelerate(0.3):addx(-SCREEN_WIDTH/2) end
 		},

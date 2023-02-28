@@ -26,7 +26,7 @@ local checkPerfects = true
 local checkGreats = true
 local check = false
 local preCheck = true
-setenv("EvalCombo"..ToEnumShortString(player),false)
+setenv("EvalCombo"..pname(player),false)
 
 return Def.ActorFrame {
 	LoadActor(judgment) .. {
@@ -44,25 +44,25 @@ return Def.ActorFrame {
 		local iFrame = TNSFrames[tns]
 		if iFrame and preCheck then
 			preCheck, check = false, true
-			setenv("EvalCombo"..ToEnumShortString(player),true)
+			setenv("EvalCombo"..pname(player),true)
 		end
 		if (GAMESTATE:GetPlayerState(player):GetPlayerController() == 'PlayerController_Autoplay') or (GAMESTATE:GetPlayerState(player):GetPlayerController() == 'PlayerController_Cpu') then
 			checkFantastics, checkPerfects, checkGreats, check = false, false, false, false
-			setenv("EvalCombo"..ToEnumShortString(player),false)
+			setenv("EvalCombo"..pname(player),false)
 		end
 		if not iFrame then return end
 		if check then
 			if checkFantastics and iFrame > 0 then
 				checkFantastics = false
-				setenv("LastFantastic"..ToEnumShortString(player),STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetAliveSeconds())
+				setenv("LastFantastic"..pname(player),STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetAliveSeconds())
 			end
 			if checkPerfects and iFrame > 1 then
 				checkPerfects = false
-				setenv("LastPerfect"..ToEnumShortString(player),STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetAliveSeconds())
+				setenv("LastPerfect"..pname(player),STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetAliveSeconds())
 			end
 			if checkGreats and iFrame > 2 then
 				checkGreats = false
-				setenv("LastGreat"..ToEnumShortString(player),STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetAliveSeconds())
+				setenv("LastGreat"..pname(player),STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetAliveSeconds())
 			end
 		end
 		if self:GetName() ~= "Judgment" then if param.FirstTrack ~= tonumber(ToEnumShortString(self:GetName())) then return end end
@@ -81,8 +81,8 @@ return Def.ActorFrame {
 		c.Judgment:visible( true )
 	end,
 	OffCommand=function(self)
-		if checkFantastics then setenv("LastFantastic"..ToEnumShortString(player),STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetAliveSeconds()) end
-		if checkPerfects then setenv("LastPerfect"..ToEnumShortString(player),STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetAliveSeconds()) end
-		if checkGreats then setenv("LastGreat"..ToEnumShortString(player),STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetAliveSeconds()) end
+		if checkFantastics then setenv("LastFantastic"..pname(player),STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetAliveSeconds()) end
+		if checkPerfects then setenv("LastPerfect"..pname(player),STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetAliveSeconds()) end
+		if checkGreats then setenv("LastGreat"..pname(player),STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetAliveSeconds()) end
 	end
 }

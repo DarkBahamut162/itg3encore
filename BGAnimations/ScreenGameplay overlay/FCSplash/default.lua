@@ -1,7 +1,7 @@
 local pn = ...
 assert(pn)
 
-local IsUsingSoloSingles = getenv("RotationSolo"..ToEnumShortString(pn))
+local IsUsingSoloSingles = getenv("RotationSolo"..pname(pn))
 local NumPlayers = GAMESTATE:GetNumPlayersEnabled()
 local NumSides = GAMESTATE:GetNumSidesJoined()
 
@@ -11,7 +11,7 @@ local function GetPosition(pn)
 	local strPlayer = (NumPlayers == 1) and "OnePlayer" or "TwoPlayers"
 	local strSide = (NumSides == 1) and "OneSide" or "TwoSides"
 
-	return THEME:GetMetric("ScreenGameplay","Player".. ToEnumShortString(pn) .. strPlayer .. strSide .."X")
+	return THEME:GetMetric("ScreenGameplay","Player".. pname(pn) .. strPlayer .. strSide .."X")
 end
 
 return Def.ActorFrame{

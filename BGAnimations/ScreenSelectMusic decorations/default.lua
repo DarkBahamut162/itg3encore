@@ -71,8 +71,8 @@ local function StepsDisplay(pn)
 			local song = GAMESTATE:GetCurrentSong()
 			self:visible(song ~= nil)
 		end,
-		["CurrentSteps".. ToEnumShortString(pn) .."ChangedMessageCommand"]=function(self) set(self, pn) end,
-		["CurrentTrail".. ToEnumShortString(pn) .."ChangedMessageCommand"]=function(self) set(self, pn) end
+		["CurrentSteps".. pname(pn) .."ChangedMessageCommand"]=function(self) set(self, pn) end,
+		["CurrentTrail".. pname(pn) .."ChangedMessageCommand"]=function(self) set(self, pn) end
 	}
 end
 

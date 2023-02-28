@@ -37,10 +37,10 @@ if getenv("ShowModsP1") or getenv("ShowModsP2") then
 end
 
 for i,pn in ipairs(GAMESTATE:GetEnabledPlayers()) do
-	setenv("EvalCombo"..ToEnumShortString(pn),true)
-	setenv("LastFantastic"..ToEnumShortString(pn),0)
-	setenv("LastPerfect"..ToEnumShortString(pn),0)
-	setenv("LastGreat"..ToEnumShortString(pn),0)
+	setenv("EvalCombo"..pname(pn),true)
+	setenv("LastFantastic"..pname(pn),0)
+	setenv("LastPerfect"..pname(pn),0)
+	setenv("LastGreat"..pname(pn),0)
 end
 
 return Def.ActorFrame{

@@ -4,7 +4,7 @@ local record = STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetMachin
 local hasMachineRecord = (record ~= -1) and record <= 10
 
 if hasMachineRecord and not STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetFailed() then
-	setenv("HighScoreable"..ToEnumShortString(player),true)
+	setenv("HighScoreable"..pname(player),true)
 end
 
 return Def.ActorFrame{

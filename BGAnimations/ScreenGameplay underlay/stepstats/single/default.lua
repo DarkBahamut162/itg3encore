@@ -28,15 +28,15 @@ if StepsOrTrail then
 	holdsAndRolls = holds + rolls
 end
 
-local bgNum = getenv("ShowStats"..ToEnumShortString(pn))
+local bgNum = getenv("ShowStats"..pname(pn))
 if bgNum == 7 then if topscore == nil then bgNum = 2 else bgNum = 3 end end
 if bgNum > 0 then barCenter	= -totalWidth/2+barWidth[bgNum]/2 end
 
 local BarLabelTexts = {"Fantastics","Excellents","Greats","Decents","Way-Offs","Misses"}
 local Numbers,BarLabels,Bars = Def.ActorFrame{},Def.ActorFrame{},Def.ActorFrame{}
 
-if getenv("ShowStats"..ToEnumShortString(pn)) < 7 then
-	for i = 1,math.min(6,getenv("ShowStats"..ToEnumShortString(pn))) do
+if getenv("ShowStats"..pname(pn)) < 7 then
+	for i = 1,math.min(6,getenv("ShowStats"..pname(pn))) do
 		local score = i < 6 and "W"..i or "Miss"
 		Numbers[#Numbers+1] = LoadFont("ScreenGameplay judgment")..{
 			Name="Numbers"..score,
@@ -51,7 +51,7 @@ if getenv("ShowStats"..ToEnumShortString(pn)) < 7 then
 		}
 		Bars[#Bars+1] = LoadActor("../w"..i)..{
 			InitCommand=function(self) self:vertalign(bottom):addx(barCenter+barOffset[bgNum][i]+(barWidth[bgNum]+barSpace[bgNum])*(i-1)):addy(86):zoomx(0.01*barWidth[bgNum]):zoomy(0) end,
-			Condition=getenv("ShowStats"..ToEnumShortString(pn)) >= i,
+			Condition=getenv("ShowStats"..pname(pn)) >= i,
 			JudgmentMessageCommand=function(self,param) if param.Player == pn then self:queuecommand("Update") end end,
 			UpdateCommand=function(self)
 				local TotalSteps = StepsOrTrail:GetRadarValues(pn):GetValue('RadarCategory_TapsAndHolds')
@@ -69,16 +69,16 @@ return Def.ActorFrame{
 		BeginCommand=function(self) self:visible(GAMESTATE:IsHumanPlayer(pn)) end,
 		OnCommand=function(self)
 			if IsGame("be-mu") then
-				self:x(startX+(getenv("RotationSolo"..ToEnumShortString(pn)) and 78 or 0))
-				self:y(getenv("RotationSolo"..ToEnumShortString(pn)) and SCREEN_HEIGHT/6 or 0)
+				self:x(startX+(getenv("RotationSolo"..pname(pn)) and 78 or 0))
+				self:y(getenv("RotationSolo"..pname(pn)) and SCREEN_HEIGHT/6 or 0)
 			elseif IsGame("po-mu") then
-				self:x(startX+(getenv("RotationSolo"..ToEnumShortString(pn)) and 72 or 0))
-				self:y(getenv("RotationSolo"..ToEnumShortString(pn)) and SCREEN_HEIGHT/6 or 0)
+				self:x(startX+(getenv("RotationSolo"..pname(pn)) and 72 or 0))
+				self:y(getenv("RotationSolo"..pname(pn)) and SCREEN_HEIGHT/6 or 0)
 			else
-				self:x(startX+(getenv("RotationSolo"..ToEnumShortString(pn)) and 64 or 0))
-				self:y(getenv("RotationSolo"..ToEnumShortString(pn)) and 34 or 0)
+				self:x(startX+(getenv("RotationSolo"..pname(pn)) and 64 or 0))
+				self:y(getenv("RotationSolo"..pname(pn)) and 34 or 0)
 			end
-			self:zoom(getenv("RotationSolo"..ToEnumShortString(pn)) and .75 or 1)
+			self:zoom(getenv("RotationSolo"..pname(pn)) and .75 or 1)
 			:addx(GAMESTATE:GetMasterPlayerNumber() == PLAYER_1 and SCREEN_WIDTH/2 or -SCREEN_WIDTH/2)
 			:decelerate(1)
 			:addx(GAMESTATE:GetMasterPlayerNumber() == PLAYER_1 and -SCREEN_WIDTH/2 or SCREEN_WIDTH/2)
@@ -88,13 +88,13 @@ return Def.ActorFrame{
 			self:accelerate(0.8):addx(GAMESTATE:GetMasterPlayerNumber() == PLAYER_1 and SCREEN_WIDTH/2 or -SCREEN_WIDTH/2)
 		end,
 		LoadActor("s_"..(isFinal() and "final" or "normal")),
-		LoadActor("s_bg"..getenv("ShowStats"..ToEnumShortString(pn))),
+		LoadActor("s_bg"..getenv("ShowStats"..pname(pn))),
 		LoadActor("s_glow final")..{
 			Condition=isFinal(),
 			InitCommand=function(self) self:blend(Blend.Add):diffuseramp():effectcolor1(color("#FFFFFF00")):effectcolor2(color("#FFFFFF")):effectperiod(0.5):effect_hold_at_full(0.5):effectclock('beat') end
 		},
 		Def.ActorFrame{
-			Condition=getenv("ShowStats"..ToEnumShortString(pn)) < 7,
+			Condition=getenv("ShowStats"..pname(pn)) < 7,
 			LoadFont("_z bold gray 36px")..{
 				Condition=isFinal(),
 				Name="Statistics",
@@ -155,7 +155,7 @@ return Def.ActorFrame{
 			Bars
 		},
 		Def.ActorFrame{
-			Condition=getenv("ShowStats"..ToEnumShortString(pn)) == 7,
+			Condition=getenv("ShowStats"..pname(pn)) == 7,
 			InitCommand=function(self) self:y(isFinal() and -19 or 0) end,
 			LoadActor("s_bg_7")..{
 				InitCommand=function(self) self:cropleft(0.025):cropright(0.025):diffusealpha(0.5) end
@@ -236,7 +236,7 @@ return Def.ActorFrame{
 				LoadFont("_z numbers")..{
 					Name="TargetPoints",
 					OnCommand=function(self)
-						local target = THEME:GetMetric("PlayerStageStats","GradePercentTier"..string.format("%02d",17-getenv("SetPacemaker"..ToEnumShortString(pn))))
+						local target = THEME:GetMetric("PlayerStageStats","GradePercentTier"..string.format("%02d",17-getenv("SetPacemaker"..pname(pn))))
 						self:maxwidth(125):horizalign(right):zoom(0.75):shadowlength(0):addy(125+2.5):addx(100):diffuse(PlayerColor(pn)):settext(math.ceil(target*STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):GetPossibleDancePoints()))
 						if topscore then self:maxheight(15):addy(-0.5) end
 					end
@@ -266,7 +266,7 @@ return Def.ActorFrame{
 						local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn)
 						local DPCurMax = pss:GetCurrentPossibleDancePoints()
 						local curPlayerDP = pss:GetActualDancePoints()
-						local target = THEME:GetMetric("PlayerStageStats","GradePercentTier"..string.format("%02d",17-getenv("SetPacemaker"..ToEnumShortString(pn))))
+						local target = THEME:GetMetric("PlayerStageStats","GradePercentTier"..string.format("%02d",17-getenv("SetPacemaker"..pname(pn))))
 						local curTargetDP = math.ceil(DPCurMax*target)
 						self:settextf("%+04d",(curPlayerDP-curTargetDP))
 					end
@@ -302,7 +302,7 @@ return Def.ActorFrame{
 			},
 			LoadActor("../w6")..{
 				OnCommand=function(self)
-					local target = THEME:GetMetric("PlayerStageStats","GradePercentTier"..string.format("%02d",17-getenv("SetPacemaker"..ToEnumShortString(pn))))
+					local target = THEME:GetMetric("PlayerStageStats","GradePercentTier"..string.format("%02d",17-getenv("SetPacemaker"..pname(pn))))
 					self:vertalign(bottom):addy(barHeight/2):addx(barCenter+(barWidth[bgNum]+barSpace[bgNum])*(topscore ~= nil and 2 or 1)):zoomx(0.01*barWidth[bgNum]):zoomy(target*barHeight):diffusealpha(0.25)
 				end
 			},
@@ -344,7 +344,7 @@ return Def.ActorFrame{
 					local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn)
 					local DPCurMax = pss:GetCurrentPossibleDancePoints()
 					local DPMax = pss:GetPossibleDancePoints()
-					local target = THEME:GetMetric("PlayerStageStats","GradePercentTier"..string.format("%02d",17-getenv("SetPacemaker"..ToEnumShortString(pn))))
+					local target = THEME:GetMetric("PlayerStageStats","GradePercentTier"..string.format("%02d",17-getenv("SetPacemaker"..pname(pn))))
 					self:zoomy(DPCurMax/DPMax*target*barHeight)
 				end
 			}
