@@ -6,7 +6,7 @@ return Def.ActorFrame{
 			OnCommand=function(self) self:y(-35):diffusealpha(0):zoom(0.8):sleep(0.25):linear(0.125):diffusealpha(1):linear(2.75):zoom(0.82):accelerate(0.2):diffusealpha(0) end
 		},
 		LoadActor("itg3/rain_name")..{
-			OnCommand=function(self) self:hibernate(0.2):horizalign(center):addx(14):addx(-SCREEN_WIDTH):addy(200):decelerate(0.5):addx(SCREEN_WIDTH):linear(2.46):addx(-12):linear(0.5):addx(-3):addx(-5):diffusealpha(0) end
+			OnCommand=function(self) self:hibernate(0.2):addx(14):addx(-SCREEN_WIDTH):addy(200):decelerate(0.5):addx(SCREEN_WIDTH):linear(2.46):addx(-12):linear(0.5):addx(-3):addx(-5):diffusealpha(0) end
 		}
 	},
     Def.ActorFrame{
@@ -16,7 +16,7 @@ return Def.ActorFrame{
 			OnCommand=function(self) self:y(-35):diffusealpha(0):zoom(0.8):sleep(0.25):linear(0.125):diffusealpha(1):linear(2.75):zoom(0.82):accelerate(0.2):diffusealpha(0) end
 		},
 		LoadActor("itg3/kung_name")..{
-			OnCommand=function(self) self:hibernate(0.2):horizalign(center):addx(14):addx(-SCREEN_WIDTH):addy(200):decelerate(0.5):addx(SCREEN_WIDTH):linear(2.46):addx(-12):linear(0.5):addx(-3):addx(-5):diffusealpha(0) end
+			OnCommand=function(self) self:hibernate(0.2):addx(14):addx(-SCREEN_WIDTH):addy(200):decelerate(0.5):addx(SCREEN_WIDTH):linear(2.46):addx(-12):linear(0.5):addx(-3):addx(-5):diffusealpha(0) end
 		}
 	},
     Def.ActorFrame{
@@ -26,7 +26,7 @@ return Def.ActorFrame{
 			OnCommand=function(self) self:y(-35):diffusealpha(0):zoom(0.8):sleep(0.25):linear(0.125):diffusealpha(1):linear(2.75):zoom(0.82):accelerate(0.2):diffusealpha(0) end
 		},
 		LoadActor("itg3/jason_name")..{
-			OnCommand=function(self) self:hibernate(0.2):horizalign(center):addx(14):addx(-SCREEN_WIDTH):addy(200):decelerate(0.5):addx(SCREEN_WIDTH):linear(2.46):addx(-12):linear(0.5):addx(-3):addx(-5):diffusealpha(0) end
+			OnCommand=function(self) self:hibernate(0.2):addx(14):addx(-SCREEN_WIDTH):addy(200):decelerate(0.5):addx(SCREEN_WIDTH):linear(2.46):addx(-12):linear(0.5):addx(-3):addx(-5):diffusealpha(0) end
 		}
 	},
     Def.ActorFrame{
@@ -36,7 +36,7 @@ return Def.ActorFrame{
 			OnCommand=function(self) self:y(-35):diffusealpha(0):zoom(0.8):sleep(0.25):linear(0.125):diffusealpha(1):linear(2.75):zoom(0.82):accelerate(0.2):diffusealpha(0) end
 		},
 		LoadActor("itg3/skin_name")..{
-			OnCommand=function(self) self:hibernate(0.2):horizalign(center):addx(14):addx(-SCREEN_WIDTH):addy(200):decelerate(0.5):addx(SCREEN_WIDTH):linear(2.46):addx(-12):linear(0.5):addx(-3):addx(-5):diffusealpha(0) end
+			OnCommand=function(self) self:hibernate(0.2):addx(14):addx(-SCREEN_WIDTH):addy(200):decelerate(0.5):addx(SCREEN_WIDTH):linear(2.46):addx(-12):linear(0.5):addx(-3):addx(-5):diffusealpha(0) end
 		}
 	},
     Def.ActorFrame{
@@ -46,7 +46,7 @@ return Def.ActorFrame{
 			OnCommand=function(self) self:y(-35):diffusealpha(0):zoom(0.8):sleep(0.25):linear(0.125):diffusealpha(1):linear(2.75):zoom(0.82):accelerate(0.2):diffusealpha(0) end
 		},
 		LoadActor("itg3/angel_name")..{
-			OnCommand=function(self) self:hibernate(0.2):horizalign(center):addx(14):addx(-SCREEN_WIDTH):addy(200):decelerate(0.5):addx(SCREEN_WIDTH):linear(2.46):addx(-12):linear(0.5):addx(-3):addx(-5):diffusealpha(0) end
+			OnCommand=function(self) self:hibernate(0.2):addx(14):addx(-SCREEN_WIDTH):addy(200):decelerate(0.5):addx(SCREEN_WIDTH):linear(2.46):addx(-12):linear(0.5):addx(-3):addx(-5):diffusealpha(0) end
 		}
 	},
     Def.ActorFrame{
@@ -56,7 +56,7 @@ return Def.ActorFrame{
 			OnCommand=function(self) self:y(-35):diffusealpha(0):zoom(0.8):sleep(0.25):linear(0.125):diffusealpha(1):linear(2.75):zoom(0.82):accelerate(0.2):diffusealpha(0) end
 		},
 		LoadActor("itg3/gutter_name")..{
-			OnCommand=function(self) self:hibernate(0.2):horizalign(center):addx(14):addx(-SCREEN_WIDTH):addy(200):decelerate(0.5):addx(SCREEN_WIDTH):linear(2.46):addx(-12):linear(0.5):addx(-3):addx(-5):diffusealpha(0) end
+			OnCommand=function(self) self:hibernate(0.2):addx(14):addx(-SCREEN_WIDTH):addy(200):decelerate(0.5):addx(SCREEN_WIDTH):linear(2.46):addx(-12):linear(0.5):addx(-3):addx(-5):diffusealpha(0) end
 		}
 	},
     Def.ActorFrame{
@@ -66,7 +66,7 @@ return Def.ActorFrame{
 			OnCommand=function(self) self:y(-35):diffusealpha(0):zoom(0.8):sleep(0.25):linear(0.125):diffusealpha(1):linear(2.75):zoom(0.82):accelerate(0.2):diffusealpha(0) end
 		},
 		LoadActor("itg3/phrek_name")..{
-			OnCommand=function(self) self:hibernate(0.2):horizalign(center):addx(14):addx(-SCREEN_WIDTH):addy(200):decelerate(0.5):addx(SCREEN_WIDTH):linear(2.46):addx(-12):linear(0.5):addx(-3):addx(-5):diffusealpha(0) end
+			OnCommand=function(self) self:hibernate(0.2):addx(14):addx(-SCREEN_WIDTH):addy(200):decelerate(0.5):addx(SCREEN_WIDTH):linear(2.46):addx(-12):linear(0.5):addx(-3):addx(-5):diffusealpha(0) end
 		}
 	},
     Def.ActorFrame{
@@ -76,7 +76,7 @@ return Def.ActorFrame{
 			OnCommand=function(self) self:y(-35):diffusealpha(0):zoom(0.8):sleep(0.25):linear(0.125):diffusealpha(1):linear(2.75):zoom(0.82):accelerate(0.2):diffusealpha(0) end
 		},
 		LoadActor("itg3/jbean_name")..{
-			OnCommand=function(self) self:hibernate(0.2):horizalign(center):addx(14):addx(-SCREEN_WIDTH):addy(200):decelerate(0.5):addx(SCREEN_WIDTH):linear(2.46):addx(-12):linear(0.5):addx(-3):addx(-5):diffusealpha(0) end
+			OnCommand=function(self) self:hibernate(0.2):addx(14):addx(-SCREEN_WIDTH):addy(200):decelerate(0.5):addx(SCREEN_WIDTH):linear(2.46):addx(-12):linear(0.5):addx(-3):addx(-5):diffusealpha(0) end
 		}
 	},
     Def.ActorFrame{
@@ -86,7 +86,7 @@ return Def.ActorFrame{
 			OnCommand=function(self) self:y(-35):diffusealpha(0):zoom(0.8):sleep(0.25):linear(0.125):diffusealpha(1):linear(2.75):zoom(0.82):accelerate(0.2):diffusealpha(0) end
 		},
 		LoadActor("itg3/kyle_name")..{
-			OnCommand=function(self) self:hibernate(0.2):horizalign(center):addx(14):addx(-SCREEN_WIDTH):addy(200):decelerate(0.5):addx(SCREEN_WIDTH):linear(2.46):addx(-12):linear(0.5):addx(-3):addx(-5):diffusealpha(0) end
+			OnCommand=function(self) self:hibernate(0.2):addx(14):addx(-SCREEN_WIDTH):addy(200):decelerate(0.5):addx(SCREEN_WIDTH):linear(2.46):addx(-12):linear(0.5):addx(-3):addx(-5):diffusealpha(0) end
 		}
 	},
     Def.ActorFrame{
@@ -96,7 +96,7 @@ return Def.ActorFrame{
 			OnCommand=function(self) self:y(-35):diffusealpha(0):zoom(0.8):sleep(0.25):linear(0.125):diffusealpha(1):linear(2.75):zoom(0.82):accelerate(0.2):diffusealpha(0) end
 		},
 		LoadActor("itg3/mj_name")..{
-			OnCommand=function(self) self:hibernate(0.2):horizalign(center):addx(14):addx(-SCREEN_WIDTH):addy(200):decelerate(0.5):addx(SCREEN_WIDTH):linear(2.46):addx(-12):linear(0.5):addx(-3):addx(-5):diffusealpha(0) end
+			OnCommand=function(self) self:hibernate(0.2):addx(14):addx(-SCREEN_WIDTH):addy(200):decelerate(0.5):addx(SCREEN_WIDTH):linear(2.46):addx(-12):linear(0.5):addx(-3):addx(-5):diffusealpha(0) end
 		}
 	},
     Def.ActorFrame{
@@ -106,7 +106,7 @@ return Def.ActorFrame{
 			OnCommand=function(self) self:y(-35):diffusealpha(0):zoom(0.8):sleep(0.25):linear(0.125):diffusealpha(1):linear(2.75):zoom(0.82):accelerate(0.2):diffusealpha(0) end
 		},
 		LoadActor("itg3/foy_name")..{
-			OnCommand=function(self) self:hibernate(0.2):horizalign(center):addx(14):addx(-SCREEN_WIDTH):addy(200):decelerate(0.5):addx(SCREEN_WIDTH):linear(2.46):addx(-12):linear(0.5):addx(-3):addx(-5):diffusealpha(0) end
+			OnCommand=function(self) self:hibernate(0.2):addx(14):addx(-SCREEN_WIDTH):addy(200):decelerate(0.5):addx(SCREEN_WIDTH):linear(2.46):addx(-12):linear(0.5):addx(-3):addx(-5):diffusealpha(0) end
 		}
 	},
     Def.ActorFrame{
@@ -116,7 +116,7 @@ return Def.ActorFrame{
 			OnCommand=function(self) self:y(-35):diffusealpha(0):zoom(0.8):sleep(0.25):linear(0.125):diffusealpha(1):linear(2.75):zoom(0.82):accelerate(0.2):diffusealpha(0) end
 		},
 		LoadActor("itg3/ryan_name")..{
-			OnCommand=function(self) self:hibernate(0.2):horizalign(center):addx(14):addx(-SCREEN_WIDTH):addy(200):decelerate(0.5):addx(SCREEN_WIDTH):linear(2.46):addx(-12):linear(0.5):addx(-3):addx(-5):diffusealpha(0) end
+			OnCommand=function(self) self:hibernate(0.2):addx(14):addx(-SCREEN_WIDTH):addy(200):decelerate(0.5):addx(SCREEN_WIDTH):linear(2.46):addx(-12):linear(0.5):addx(-3):addx(-5):diffusealpha(0) end
 		}
 	},
     Def.ActorFrame{
@@ -126,7 +126,7 @@ return Def.ActorFrame{
 			OnCommand=function(self) self:y(-35):diffusealpha(0):zoom(0.8):sleep(0.25):linear(0.125):diffusealpha(1):linear(2.75):zoom(0.82):accelerate(0.2):diffusealpha(0) end
 		},
 		LoadActor("itg3/derek_name")..{
-			OnCommand=function(self) self:hibernate(0.2):horizalign(center):addx(14):addx(-SCREEN_WIDTH):addy(200):decelerate(0.5):addx(SCREEN_WIDTH):linear(2.46):addx(-12):linear(0.5):addx(-3):addx(-5):diffusealpha(0) end
+			OnCommand=function(self) self:hibernate(0.2):addx(14):addx(-SCREEN_WIDTH):addy(200):decelerate(0.5):addx(SCREEN_WIDTH):linear(2.46):addx(-12):linear(0.5):addx(-3):addx(-5):diffusealpha(0) end
 		}
 	},
     Def.ActorFrame{
@@ -136,7 +136,7 @@ return Def.ActorFrame{
 			OnCommand=function(self) self:y(-35):diffusealpha(0):zoom(0.8):sleep(0.25):linear(0.125):diffusealpha(1):linear(2.75):zoom(0.82):accelerate(0.2):diffusealpha(0) end
 		},
 		LoadActor("itg3/novus_name")..{
-			OnCommand=function(self) self:hibernate(0.2):horizalign(center):addx(14):addx(-SCREEN_WIDTH):addy(200):decelerate(0.5):addx(SCREEN_WIDTH):linear(2.46):addx(-12):linear(0.5):addx(-3):addx(-5):diffusealpha(0) end
+			OnCommand=function(self) self:hibernate(0.2):addx(14):addx(-SCREEN_WIDTH):addy(200):decelerate(0.5):addx(SCREEN_WIDTH):linear(2.46):addx(-12):linear(0.5):addx(-3):addx(-5):diffusealpha(0) end
 		}
 	},
     Def.ActorFrame{
@@ -146,7 +146,7 @@ return Def.ActorFrame{
 			OnCommand=function(self) self:y(-35):diffusealpha(0):zoom(0.8):sleep(0.25):linear(0.125):diffusealpha(1):linear(2.75):zoom(0.82):accelerate(0.2):diffusealpha(0) end
 		},
 		LoadActor("itg3/grim_name")..{
-			OnCommand=function(self) self:hibernate(0.2):horizalign(center):addx(14):addx(-SCREEN_WIDTH):addy(200):decelerate(0.5):addx(SCREEN_WIDTH):linear(2.46):addx(-12):linear(0.5):addx(-3):addx(-5):diffusealpha(0) end
+			OnCommand=function(self) self:hibernate(0.2):addx(14):addx(-SCREEN_WIDTH):addy(200):decelerate(0.5):addx(SCREEN_WIDTH):linear(2.46):addx(-12):linear(0.5):addx(-3):addx(-5):diffusealpha(0) end
 		}
 	},
     Def.ActorFrame{
@@ -156,7 +156,7 @@ return Def.ActorFrame{
 			OnCommand=function(self) self:y(-35):diffusealpha(0):zoom(0.8):sleep(0.25):linear(0.125):diffusealpha(1):linear(2.75):zoom(0.82):accelerate(0.2):diffusealpha(0) end
 		},
 		LoadActor("itg3/eric_name")..{
-			OnCommand=function(self) self:hibernate(0.2):horizalign(center):addx(14):addx(-SCREEN_WIDTH):addy(200):decelerate(0.5):addx(SCREEN_WIDTH):linear(2.46):addx(-12):linear(0.5):addx(-3):addx(-5):diffusealpha(0) end
+			OnCommand=function(self) self:hibernate(0.2):addx(14):addx(-SCREEN_WIDTH):addy(200):decelerate(0.5):addx(SCREEN_WIDTH):linear(2.46):addx(-12):linear(0.5):addx(-3):addx(-5):diffusealpha(0) end
 		}
 	},
     Def.ActorFrame{
@@ -166,7 +166,7 @@ return Def.ActorFrame{
 			OnCommand=function(self) self:y(-35):diffusealpha(0):zoom(0.8):sleep(0.25):linear(0.125):diffusealpha(1):linear(2.75):zoom(0.82):accelerate(0.2):diffusealpha(0) end
 		},
 		LoadActor("itg3/link_name")..{
-			OnCommand=function(self) self:hibernate(0.2):horizalign(center):addx(14):addx(-SCREEN_WIDTH):addy(200):decelerate(0.5):addx(SCREEN_WIDTH):linear(2.46):addx(-12):linear(0.5):addx(-3):addx(-5):diffusealpha(0) end
+			OnCommand=function(self) self:hibernate(0.2):addx(14):addx(-SCREEN_WIDTH):addy(200):decelerate(0.5):addx(SCREEN_WIDTH):linear(2.46):addx(-12):linear(0.5):addx(-3):addx(-5):diffusealpha(0) end
 		}
 	},
     Def.ActorFrame{
@@ -176,7 +176,7 @@ return Def.ActorFrame{
 			OnCommand=function(self) self:y(-35):diffusealpha(0):zoom(0.8):sleep(0.25):linear(0.125):diffusealpha(1):linear(2.75):zoom(0.82):accelerate(0.2):diffusealpha(0) end
 		},
 		LoadActor("itg3/mike_name")..{
-			OnCommand=function(self) self:hibernate(0.2):horizalign(center):addx(14):addx(-SCREEN_WIDTH):addy(200):decelerate(0.5):addx(SCREEN_WIDTH):linear(2.46):addx(-12):linear(0.5):addx(-3):addx(-5):diffusealpha(0) end
+			OnCommand=function(self) self:hibernate(0.2):addx(14):addx(-SCREEN_WIDTH):addy(200):decelerate(0.5):addx(SCREEN_WIDTH):linear(2.46):addx(-12):linear(0.5):addx(-3):addx(-5):diffusealpha(0) end
 		}
 	},
     Def.ActorFrame{
@@ -186,7 +186,7 @@ return Def.ActorFrame{
 			OnCommand=function(self) self:y(-35):diffusealpha(0):zoom(0.8):sleep(0.25):linear(0.125):diffusealpha(1):linear(2.75):zoom(0.82):accelerate(0.2):diffusealpha(0) end
 		},
 		LoadActor("itg3/groovrbgt_name")..{
-			OnCommand=function(self) self:hibernate(0.2):horizalign(center):addx(14):addx(-SCREEN_WIDTH):addy(200):decelerate(0.5):addx(SCREEN_WIDTH):linear(2.46):addx(-12):linear(0.5):addx(-3):addx(-5):diffusealpha(0) end
+			OnCommand=function(self) self:hibernate(0.2):addx(14):addx(-SCREEN_WIDTH):addy(200):decelerate(0.5):addx(SCREEN_WIDTH):linear(2.46):addx(-12):linear(0.5):addx(-3):addx(-5):diffusealpha(0) end
 		}
 	},
     Def.ActorFrame{
@@ -196,7 +196,7 @@ return Def.ActorFrame{
 			OnCommand=function(self) self:y(-35):diffusealpha(0):zoom(0.8):sleep(0.25):linear(0.125):diffusealpha(1):linear(2.75):zoom(0.82):accelerate(0.2):diffusealpha(0) end
 		},
 		LoadActor("itg3/tilt_name")..{
-			OnCommand=function(self) self:hibernate(0.2):horizalign(center):addx(14):addx(-SCREEN_WIDTH):addy(200):decelerate(0.5):addx(SCREEN_WIDTH):linear(2.46):addx(-12):linear(0.5):addx(-3):addx(-5):diffusealpha(0) end
+			OnCommand=function(self) self:hibernate(0.2):addx(14):addx(-SCREEN_WIDTH):addy(200):decelerate(0.5):addx(SCREEN_WIDTH):linear(2.46):addx(-12):linear(0.5):addx(-3):addx(-5):diffusealpha(0) end
 		}
 	},
     Def.ActorFrame{
@@ -206,7 +206,7 @@ return Def.ActorFrame{
 			OnCommand=function(self) self:y(-35):diffusealpha(0):zoom(0.8):sleep(0.25):linear(0.125):diffusealpha(1):linear(2.75):zoom(0.82):accelerate(0.2):diffusealpha(0) end
 		},
 		LoadActor("itg3/npch_name")..{
-			OnCommand=function(self) self:hibernate(0.2):horizalign(center):addx(14):addx(-SCREEN_WIDTH):addy(200):decelerate(0.5):addx(SCREEN_WIDTH):linear(2.46):addx(-12):linear(0.5):addx(-3):addx(-5):diffusealpha(0) end
+			OnCommand=function(self) self:hibernate(0.2):addx(14):addx(-SCREEN_WIDTH):addy(200):decelerate(0.5):addx(SCREEN_WIDTH):linear(2.46):addx(-12):linear(0.5):addx(-3):addx(-5):diffusealpha(0) end
 		}
 	},
     Def.ActorFrame{
@@ -216,7 +216,7 @@ return Def.ActorFrame{
 			OnCommand=function(self) self:y(-35):diffusealpha(0):zoom(0.8):sleep(0.25):linear(0.125):diffusealpha(1):linear(2.75):zoom(0.82):accelerate(0.2):diffusealpha(0) end
 		},
 		LoadActor("itg3/ozo_name")..{
-			OnCommand=function(self) self:hibernate(0.2):horizalign(center):addx(14):addx(-SCREEN_WIDTH):addy(200):decelerate(0.5):addx(SCREEN_WIDTH):linear(2.46):addx(-12):linear(0.5):addx(-3):addx(-5):diffusealpha(0) end
+			OnCommand=function(self) self:hibernate(0.2):addx(14):addx(-SCREEN_WIDTH):addy(200):decelerate(0.5):addx(SCREEN_WIDTH):linear(2.46):addx(-12):linear(0.5):addx(-3):addx(-5):diffusealpha(0) end
 		}
 	},
     Def.ActorFrame{
@@ -226,7 +226,7 @@ return Def.ActorFrame{
 			OnCommand=function(self) self:y(-35):diffusealpha(0):zoom(0.8):sleep(0.25):linear(0.125):diffusealpha(1):linear(2.75):zoom(0.82):accelerate(0.2):diffusealpha(0) end
 		},
 		LoadActor("itg3/lght_name")..{
-			OnCommand=function(self) self:hibernate(0.2):horizalign(center):addx(14):addx(-SCREEN_WIDTH):addy(200):decelerate(0.5):addx(SCREEN_WIDTH):linear(2.46):addx(-12):linear(0.5):addx(-3):addx(-5):diffusealpha(0) end
+			OnCommand=function(self) self:hibernate(0.2):addx(14):addx(-SCREEN_WIDTH):addy(200):decelerate(0.5):addx(SCREEN_WIDTH):linear(2.46):addx(-12):linear(0.5):addx(-3):addx(-5):diffusealpha(0) end
 		}
 	},
     Def.ActorFrame{
@@ -236,7 +236,7 @@ return Def.ActorFrame{
 			OnCommand=function(self) self:y(-35):diffusealpha(0):zoom(0.8):sleep(0.25):linear(0.125):diffusealpha(1):linear(2.75):zoom(0.82):accelerate(0.2):diffusealpha(0) end
 		},
 		LoadActor("itg3/gz_name")..{
-			OnCommand=function(self) self:hibernate(0.2):horizalign(center):addx(14):addx(-SCREEN_WIDTH):addy(200):decelerate(0.5):addx(SCREEN_WIDTH):linear(2.46):addx(-12):linear(0.5):addx(-3):addx(-5):diffusealpha(0) end
+			OnCommand=function(self) self:hibernate(0.2):addx(14):addx(-SCREEN_WIDTH):addy(200):decelerate(0.5):addx(SCREEN_WIDTH):linear(2.46):addx(-12):linear(0.5):addx(-3):addx(-5):diffusealpha(0) end
 		}
 	},
     Def.ActorFrame{
@@ -246,7 +246,7 @@ return Def.ActorFrame{
 			OnCommand=function(self) self:y(-35):diffusealpha(0):zoom(0.8):sleep(0.25):linear(0.125):diffusealpha(1):linear(2.75):zoom(0.82):accelerate(0.2):diffusealpha(0) end
 		},
 		LoadActor("itg3/ddm_name")..{
-			OnCommand=function(self) self:hibernate(0.2):horizalign(center):addx(14):addx(-SCREEN_WIDTH):addy(200):decelerate(0.5):addx(SCREEN_WIDTH):linear(2.46):addx(-12):linear(0.5):addx(-3):addx(-5):diffusealpha(0) end
+			OnCommand=function(self) self:hibernate(0.2):addx(14):addx(-SCREEN_WIDTH):addy(200):decelerate(0.5):addx(SCREEN_WIDTH):linear(2.46):addx(-12):linear(0.5):addx(-3):addx(-5):diffusealpha(0) end
 		}
 	}
 }

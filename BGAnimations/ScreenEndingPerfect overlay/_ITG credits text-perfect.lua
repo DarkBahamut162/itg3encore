@@ -31,23 +31,23 @@ local creditsDiffuse = {
 	[207] = color("#ddf3ff")
 }
 
-credits[#credits+1] = LoadFont("_v credit")..{Text="", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
+credits[#credits+1] = LoadFont("_v credit")
 credits[#credits+1] = LoadFont("_v credit")..{Text="In The Groove 3", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
 credits[#credits+1] = LoadFont("_v credit")..{Text="Open Groove Team", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
-credits[#credits+1] = LoadFont("_v credit")..{Text="", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
-credits[#credits+1] = LoadFont("_v credit")..{Text="", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
+credits[#credits+1] = LoadFont("_v credit")
+credits[#credits+1] = LoadFont("_v credit")
 credits[#credits+1] = LoadFont("_v credit")..{Text="Theme Graphics/Coding", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
 credits[#credits+1] = LoadFont("_v credit")..{Text="Dominick Renzetti", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
 credits[#credits+1] = LoadFont("_v credit")..{Text="Felipe Valladares", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
 credits[#credits+1] = LoadFont("_v credit")..{Text="A.J. Kung", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
 credits[#credits+1] = LoadFont("_v credit")..{Text="Jason Bolt", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
-credits[#credits+1] = LoadFont("_v credit")..{Text="", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
-credits[#credits+1] = LoadFont("_v credit")..{Text="", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
+credits[#credits+1] = LoadFont("_v credit")
+credits[#credits+1] = LoadFont("_v credit")
 credits[#credits+1] = LoadFont("_v credit")..{Text="Original UI Concept", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
 credits[#credits+1] = LoadFont("_v credit")..{Text="Ryan McKanna", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
 credits[#credits+1] = LoadFont("_v credit")..{Text="John Schlemmer", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
-credits[#credits+1] = LoadFont("_v credit")..{Text="", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
-credits[#credits+1] = LoadFont("_v credit")..{Text="", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
+credits[#credits+1] = LoadFont("_v credit")
+credits[#credits+1] = LoadFont("_v credit")
 credits[#credits+1] = LoadFont("_v credit")..{Text="Song/Course Graphics", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
 credits[#credits+1] = LoadFont("_v credit")..{Text="Dominick Renzetti", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
 credits[#credits+1] = LoadFont("_v credit")..{Text="N. Colley", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
@@ -55,22 +55,22 @@ credits[#credits+1] = LoadFont("_v credit")..{Text="M.J. Quigley", OnCommand=fun
 credits[#credits+1] = LoadFont("_v credit")..{Text="Ryan McKanna", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
 credits[#credits+1] = LoadFont("_v credit")..{Text="Matt Puls", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
 credits[#credits+1] = LoadFont("_v credit")..{Text="Heather Dority", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
-credits[#credits+1] = LoadFont("_v credit")..{Text="", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
-credits[#credits+1] = LoadFont("_v credit")..{Text="", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
+credits[#credits+1] = LoadFont("_v credit")
+credits[#credits+1] = LoadFont("_v credit")
 credits[#credits+1] = LoadFont("_v credit")..{Text="Audio", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
 credits[#credits+1] = LoadFont("_v credit")..{Text="Kyle Ward", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
 credits[#credits+1] = LoadFont("_v credit")..{Text="John Mendenhall", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
 credits[#credits+1] = LoadFont("_v credit")..{Text="Scott Brown", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
 credits[#credits+1] = LoadFont("_v credit")..{Text="Renard Queenston", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
-credits[#credits+1] = LoadFont("_v credit")..{Text="", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
-credits[#credits+1] = LoadFont("_v credit")..{Text="", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
+credits[#credits+1] = LoadFont("_v credit")
+credits[#credits+1] = LoadFont("_v credit")
 credits[#credits+1] = LoadFont("_v credit")..{Text="Programming", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
 credits[#credits+1] = LoadFont("_v credit")..{Text="Glenn Maynard", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
 credits[#credits+1] = LoadFont("_v credit")..{Text="Chris Danford", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
 credits[#credits+1] = LoadFont("_v credit")..{Text="Mark Cannon", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
 credits[#credits+1] = LoadFont("_v credit")..{Text="Pat McIlroy", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
-credits[#credits+1] = LoadFont("_v credit")..{Text="", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
-credits[#credits+1] = LoadFont("_v credit")..{Text="", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
+credits[#credits+1] = LoadFont("_v credit")
+credits[#credits+1] = LoadFont("_v credit")
 credits[#credits+1] = LoadFont("_v credit")..{Text="Step Artists", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
 credits[#credits+1] = LoadFont("_v credit")..{Text="Donnie D'Amato", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
 credits[#credits+1] = LoadFont("_v credit")..{Text="Matthew Emirzian", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
@@ -96,25 +96,25 @@ credits[#credits+1] = LoadFont("_v credit")..{Text="Derek Bauer", OnCommand=func
 credits[#credits+1] = LoadFont("_v credit")..{Text="Brandon Bauer", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
 credits[#credits+1] = LoadFont("_v credit")..{Text="M.J. Quigley", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
 credits[#credits+1] = LoadFont("_v credit")..{Text="Eric Holniker", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
-credits[#credits+1] = LoadFont("_v credit")..{Text="", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
-credits[#credits+1] = LoadFont("_v credit")..{Text="", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
+credits[#credits+1] = LoadFont("_v credit")
+credits[#credits+1] = LoadFont("_v credit")
 credits[#credits+1] = LoadFont("_v credit")..{Text="Courses", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
 credits[#credits+1] = LoadFont("_v credit")..{Text="Barry Knapp-Tabbernor", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
 credits[#credits+1] = LoadFont("_v credit")..{Text="Gabriel Marchan", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
-credits[#credits+1] = LoadFont("_v credit")..{Text="", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
-credits[#credits+1] = LoadFont("_v credit")..{Text="", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
+credits[#credits+1] = LoadFont("_v credit")
+credits[#credits+1] = LoadFont("_v credit")
 credits[#credits+1] = LoadFont("_v credit")..{Text="Producer", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
-credits[#credits+1] = LoadFont("_v credit")..{Text="", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
+credits[#credits+1] = LoadFont("_v credit")
 credits[#credits+1] = LoadActor(THEME:GetPathB("","_thanks/_br"))..{OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
-credits[#credits+1] = LoadFont("_v credit")..{Text="", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
+credits[#credits+1] = LoadFont("_v credit")
 credits[#credits+1] = LoadFont("_v credit")..{Text="PressX", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
 credits[#credits+1] = LoadFont("_v credit")..{Text="KholdFuzion", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
 credits[#credits+1] = LoadFont("_v credit")..{Text="AJ 197", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
 credits[#credits+1] = LoadFont("_v credit")..{Text="Infamouspat", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
 credits[#credits+1] = LoadFont("_v credit")..{Text="vdl", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
 credits[#credits+1] = LoadFont("_v credit")..{Text="vyhd", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
-credits[#credits+1] = LoadFont("_v credit")..{Text="", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
-credits[#credits+1] = LoadFont("_v credit")..{Text="", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
+credits[#credits+1] = LoadFont("_v credit")
+credits[#credits+1] = LoadFont("_v credit")
 credits[#credits+1] = LoadFont("_v credit")..{Text="OpenGroove", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
 credits[#credits+1] = LoadFont("_v credit")..{Text="r0dent", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
 credits[#credits+1] = LoadFont("_v credit")..{Text="Edgar131", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
@@ -124,8 +124,8 @@ credits[#credits+1] = LoadFont("_v credit")..{Text="Kalek", OnCommand=function(s
 credits[#credits+1] = LoadFont("_v credit")..{Text="Lightning", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
 credits[#credits+1] = LoadFont("_v credit")..{Text="NX-306", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
 credits[#credits+1] = LoadFont("_v credit")..{Text="xjen0vax", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
-credits[#credits+1] = LoadFont("_v credit")..{Text="", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
-credits[#credits+1] = LoadFont("_v credit")..{Text="", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
+credits[#credits+1] = LoadFont("_v credit")
+credits[#credits+1] = LoadFont("_v credit")
 credits[#credits+1] = LoadFont("_v credit")..{Text="Honorary members", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
 credits[#credits+1] = LoadFont("_v credit")..{Text="sherl0k", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
 credits[#credits+1] = LoadFont("_v credit")..{Text="bacon", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
@@ -134,8 +134,8 @@ credits[#credits+1] = LoadFont("_v credit")..{Text="SonGohanX", OnCommand=functi
 credits[#credits+1] = LoadFont("_v credit")..{Text="Rubbinnexx", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
 credits[#credits+1] = LoadFont("_v credit")..{Text="Kung", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
 credits[#credits+1] = LoadFont("_v credit")..{Text="Midiman", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
-credits[#credits+1] = LoadFont("_v credit")..{Text="", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
-credits[#credits+1] = LoadFont("_v credit")..{Text="", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
+credits[#credits+1] = LoadFont("_v credit")
+credits[#credits+1] = LoadFont("_v credit")
 credits[#credits+1] = LoadFont("_v credit")..{Text="Test Locations", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
 credits[#credits+1] = LoadFont("_v credit")..{Text="Divertonicos Kripton - Bogota", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
 credits[#credits+1] = LoadFont("_v credit")..{Text="Lightning's basement - PA", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
@@ -147,8 +147,8 @@ credits[#credits+1] = LoadFont("_v credit")..{Text="Game Zone - KS", OnCommand=f
 credits[#credits+1] = LoadFont("_v credit")..{Text="Players - MD", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
 credits[#credits+1] = LoadFont("_v credit")..{Text="Corner Pocket - PA", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
 credits[#credits+1] = LoadFont("_v credit")..{Text="Funland - Trocadero Centre, UK", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
-credits[#credits+1] = LoadFont("_v credit")..{Text="", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
-credits[#credits+1] = LoadFont("_v credit")..{Text="", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
+credits[#credits+1] = LoadFont("_v credit")
+credits[#credits+1] = LoadFont("_v credit")
 credits[#credits+1] = LoadFont("_v credit")..{Text="Test Team", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
 credits[#credits+1] = LoadFont("_v credit")..{Text="G. PolloxxX", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
 credits[#credits+1] = LoadFont("_v credit")..{Text="Lil Lion", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
@@ -193,65 +193,65 @@ credits[#credits+1] = LoadFont("_v credit")..{Text="Jordan Miller", OnCommand=fu
 credits[#credits+1] = LoadFont("_v credit")..{Text="Damien Diehl", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
 credits[#credits+1] = LoadFont("_v credit")..{Text="Jason 'TheGreat' Gilleece", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
 credits[#credits+1] = LoadFont("_v credit")..{Text="Justin 'Pags' Pagano", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
-credits[#credits+1] = LoadFont("_v credit")..{Text="", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
-credits[#credits+1] = LoadFont("_v credit")..{Text="", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
+credits[#credits+1] = LoadFont("_v credit")
+credits[#credits+1] = LoadFont("_v credit")
 credits[#credits+1] = LoadFont("_v credit")..{Text="Hardware Support", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
 credits[#credits+1] = LoadFont("_v credit")..{Text="Mark Cannon", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
 credits[#credits+1] = LoadFont("_v credit")..{Text="Pat McIlroy", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
 credits[#credits+1] = LoadFont("_v credit")..{Text="Andrzej Poetek", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
 credits[#credits+1] = LoadFont("_v credit")..{Text="Jason Bolt", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
-credits[#credits+1] = LoadFont("_v credit")..{Text="", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
-credits[#credits+1] = LoadFont("_v credit")..{Text="", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
+credits[#credits+1] = LoadFont("_v credit")
+credits[#credits+1] = LoadFont("_v credit")
 credits[#credits+1] = LoadFont("_v credit")..{Text="Special Thanks to:", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
-credits[#credits+1] = LoadFont("_v credit")..{Text="", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
+credits[#credits+1] = LoadFont("_v credit")
 credits[#credits+1] = LoadActor(THEME:GetPathB("","_thanks/_bx"))..{OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
 credits[#credits+1] = LoadFont("_v credit")..{Text="Boxorroxors", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
 credits[#credits+1] = LoadFont("_v credit")..{Text="www.boxorroxors.net", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
-credits[#credits+1] = LoadFont("_v credit")..{Text="", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
-credits[#credits+1] = LoadFont("_v credit")..{Text="", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
-credits[#credits+1] = LoadFont("_v credit")..{Text="", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
+credits[#credits+1] = LoadFont("_v credit")
+credits[#credits+1] = LoadFont("_v credit")
+credits[#credits+1] = LoadFont("_v credit")
 credits[#credits+1] = LoadActor(THEME:GetPathB("","_thanks/_sci/perfect"))..{OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
-credits[#credits+1] = LoadFont("_v credit")..{Text="", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
-credits[#credits+1] = LoadFont("_v credit")..{Text="", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
+credits[#credits+1] = LoadFont("_v credit")
+credits[#credits+1] = LoadFont("_v credit")
 credits[#credits+1] = LoadFont("_v credit")..{Text="SCI Recordings!", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
 credits[#credits+1] = LoadFont("_v credit")..{Text="www.scirecordings.com", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
-credits[#credits+1] = LoadFont("_v credit")..{Text="", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
-credits[#credits+1] = LoadFont("_v credit")..{Text="", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
+credits[#credits+1] = LoadFont("_v credit")
+credits[#credits+1] = LoadFont("_v credit")
 credits[#credits+1] = LoadActor(THEME:GetPathB("","_thanks/_itgf"))..{OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
-credits[#credits+1] = LoadFont("_v credit")..{Text="", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
+credits[#credits+1] = LoadFont("_v credit")
 credits[#credits+1] = LoadFont("_v credit")..{Text="ITGfreak/Rhythmatic.net", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
 credits[#credits+1] = LoadFont("_v credit")..{Text="www.rhythmatic.net", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
-credits[#credits+1] = LoadFont("_v credit")..{Text="", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
-credits[#credits+1] = LoadFont("_v credit")..{Text="", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
+credits[#credits+1] = LoadFont("_v credit")
+credits[#credits+1] = LoadFont("_v credit")
 credits[#credits+1] = LoadActor(THEME:GetPathB("","_thanks/_gs"))..{OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
-credits[#credits+1] = LoadFont("_v credit")..{Text="", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
+credits[#credits+1] = LoadFont("_v credit")
 credits[#credits+1] = LoadFont("_v credit")..{Text="GrooveStats", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
 credits[#credits+1] = LoadFont("_v credit")..{Text="www.groovestats.com", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
-credits[#credits+1] = LoadFont("_v credit")..{Text="", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
-credits[#credits+1] = LoadFont("_v credit")..{Text="", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
+credits[#credits+1] = LoadFont("_v credit")
+credits[#credits+1] = LoadFont("_v credit")
 credits[#credits+1] = LoadActor(THEME:GetPathB("","_thanks/_n3k"))..{OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
-credits[#credits+1] = LoadFont("_v credit")..{Text="", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
+credits[#credits+1] = LoadFont("_v credit")
 credits[#credits+1] = LoadFont("_v credit")..{Text="Naota3k", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
 credits[#credits+1] = LoadFont("_v credit")..{Text="www.naota3k.com", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
-credits[#credits+1] = LoadFont("_v credit")..{Text="", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
-credits[#credits+1] = LoadFont("_v credit")..{Text="", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
+credits[#credits+1] = LoadFont("_v credit")
+credits[#credits+1] = LoadFont("_v credit")
 credits[#credits+1] = LoadActor(THEME:GetPathB("","_thanks/_rx"))..{OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
-credits[#credits+1] = LoadFont("_v credit")..{Text="", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
+credits[#credits+1] = LoadFont("_v credit")
 credits[#credits+1] = LoadFont("_v credit")..{Text="RoXoR", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
 credits[#credits+1] = LoadFont("_v credit")..{Text="www.roxorgames.com", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
-credits[#credits+1] = LoadFont("_v credit")..{Text="", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
-credits[#credits+1] = LoadFont("_v credit")..{Text="", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
-credits[#credits+1] = LoadFont("_v credit")..{Text="", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
-credits[#credits+1] = LoadFont("_v credit")..{Text="", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
-credits[#credits+1] = LoadFont("_v credit")..{Text="", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
-credits[#credits+1] = LoadFont("_v credit")..{Text="", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
-credits[#credits+1] = LoadFont("_v credit")..{Text="", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
-credits[#credits+1] = LoadFont("_v credit")..{Text="", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
-credits[#credits+1] = LoadFont("_v credit")..{Text="", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
-credits[#credits+1] = LoadFont("_v credit")..{Text="", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
-credits[#credits+1] = LoadFont("_v credit")..{Text="", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
-credits[#credits+1] = LoadFont("_v credit")..{Text="", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
-credits[#credits+1] = LoadFont("_v credit")..{Text="", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
+credits[#credits+1] = LoadFont("_v credit")
+credits[#credits+1] = LoadFont("_v credit")
+credits[#credits+1] = LoadFont("_v credit")
+credits[#credits+1] = LoadFont("_v credit")
+credits[#credits+1] = LoadFont("_v credit")
+credits[#credits+1] = LoadFont("_v credit")
+credits[#credits+1] = LoadFont("_v credit")
+credits[#credits+1] = LoadFont("_v credit")
+credits[#credits+1] = LoadFont("_v credit")
+credits[#credits+1] = LoadFont("_v credit")
+credits[#credits+1] = LoadFont("_v credit")
+credits[#credits+1] = LoadFont("_v credit")
+credits[#credits+1] = LoadFont("_v credit")
 
 return Def.ActorScroller{
 	SecondsPerItem=0.3475,
@@ -259,9 +259,7 @@ return Def.ActorScroller{
 	OnCommand=function(self) self:SetLoop(false):ScrollThroughAllItems():SetCurrentAndDestinationItem(-44):SetDestinationItem(#credits):horizalign(left):shadowlength(1.25) end,
 	TransformFunction=function(self,offset,itemIndex,numItems)
 		self:y(offset*24):zoom(0.7)
-		if creditsDiffuse[itemIndex] then
-			self:diffuse(creditsDiffuse[itemIndex])
-		end
+		if creditsDiffuse[itemIndex] then self:diffuse(creditsDiffuse[itemIndex]) end
 	end,
 	children = credits
 }

@@ -153,7 +153,7 @@ function isScreenTitle()
 end
 
 function isGamePlay()
-	return isTopScreen('ScreenGameplay') or isTopScreen('ScreenGameplayWorkout') or isTopScreen('ScreenDemonstration') or isTopScreen('ScreenJukebox')
+	return isTopScreen('ScreenGameplay') or isTopScreen('ScreenCreditsGameplay') or isTopScreen('ScreenGameplayWorkout') or isTopScreen('ScreenDemonstration') or isTopScreen('ScreenJukebox')
 end
 
 function isPlayMode(mode)

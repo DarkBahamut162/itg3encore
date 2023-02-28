@@ -16,104 +16,104 @@ local creditsDiffuse = {
 	[182] = color("#ddf3ff")
 }
 
-credits[#credits+1] = LoadFont("_r bold 30px")..{Text=""}
-credits[#credits+1] = LoadFont("_r bold 30px")..{Text=""}
-credits[#credits+1] = LoadFont("_r bold 30px")..{Text=""}
-credits[#credits+1] = LoadFont("_r bold 30px")..{Text=""}
-credits[#credits+1] = LoadFont("_r bold 30px")..{Text=""}
-credits[#credits+1] = LoadFont("_r bold 30px")..{Text=""}
-credits[#credits+1] = LoadFont("_r bold 30px")..{Text=""}
-credits[#credits+1] = LoadFont("_r bold 30px")..{Text=""}
+credits[#credits+1] = LoadFont("_r bold 30px")
+credits[#credits+1] = LoadFont("_r bold 30px")
+credits[#credits+1] = LoadFont("_r bold 30px")
+credits[#credits+1] = LoadFont("_r bold 30px")
+credits[#credits+1] = LoadFont("_r bold 30px")
+credits[#credits+1] = LoadFont("_r bold 30px")
+credits[#credits+1] = LoadFont("_r bold 30px")
+credits[#credits+1] = LoadFont("_r bold 30px")
 credits[#credits+1] = LoadActor("lightning")
-credits[#credits+1] = LoadFont("_r bold 30px")..{Text=""}
-credits[#credits+1] = LoadFont("_r bold 30px")..{Text=""}
-credits[#credits+1] = LoadFont("_r bold 30px")..{Text=""}
-credits[#credits+1] = LoadFont("_r bold 30px")..{Text=""}
+credits[#credits+1] = LoadFont("_r bold 30px")
+credits[#credits+1] = LoadFont("_r bold 30px")
+credits[#credits+1] = LoadFont("_r bold 30px")
+credits[#credits+1] = LoadFont("_r bold 30px")
 credits[#credits+1] = LoadActor("kung")
-credits[#credits+1] = LoadFont("_r bold 30px")..{Text=""}
-credits[#credits+1] = LoadFont("_r bold 30px")..{Text=""}
-credits[#credits+1] = LoadFont("_r bold 30px")..{Text=""}
-credits[#credits+1] = LoadFont("_r bold 30px")..{Text=""}
+credits[#credits+1] = LoadFont("_r bold 30px")
+credits[#credits+1] = LoadFont("_r bold 30px")
+credits[#credits+1] = LoadFont("_r bold 30px")
+credits[#credits+1] = LoadFont("_r bold 30px")
 credits[#credits+1] = LoadActor("albeiro")
-credits[#credits+1] = LoadFont("_r bold 30px")..{Text=""}
-credits[#credits+1] = LoadFont("_r bold 30px")..{Text=""}
-credits[#credits+1] = LoadFont("_r bold 30px")..{Text=""}
-credits[#credits+1] = LoadFont("_r bold 30px")..{Text=""}
+credits[#credits+1] = LoadFont("_r bold 30px")
+credits[#credits+1] = LoadFont("_r bold 30px")
+credits[#credits+1] = LoadFont("_r bold 30px")
+credits[#credits+1] = LoadFont("_r bold 30px")
 credits[#credits+1] = LoadActor("angel")
-credits[#credits+1] = LoadFont("_r bold 30px")..{Text=""}
-credits[#credits+1] = LoadFont("_r bold 30px")..{Text=""}
-credits[#credits+1] = LoadFont("_r bold 30px")..{Text=""}
-credits[#credits+1] = LoadFont("_r bold 30px")..{Text=""}
+credits[#credits+1] = LoadFont("_r bold 30px")
+credits[#credits+1] = LoadFont("_r bold 30px")
+credits[#credits+1] = LoadFont("_r bold 30px")
+credits[#credits+1] = LoadFont("_r bold 30px")
 credits[#credits+1] = LoadActor("skin")
-credits[#credits+1] = LoadFont("_r bold 30px")..{Text=""}
-credits[#credits+1] = LoadFont("_r bold 30px")..{Text=""}
-credits[#credits+1] = LoadFont("_r bold 30px")..{Text=""}
-credits[#credits+1] = LoadFont("_r bold 30px")..{Text=""}
+credits[#credits+1] = LoadFont("_r bold 30px")
+credits[#credits+1] = LoadFont("_r bold 30px")
+credits[#credits+1] = LoadFont("_r bold 30px")
+credits[#credits+1] = LoadFont("_r bold 30px")
 credits[#credits+1] = LoadActor("rain")
-credits[#credits+1] = LoadFont("_r bold 30px")..{Text=""}
-credits[#credits+1] = LoadFont("_r bold 30px")..{Text=""}
-credits[#credits+1] = LoadFont("_r bold 30px")..{Text=""}
-credits[#credits+1] = LoadFont("_r bold 30px")..{Text=""}
+credits[#credits+1] = LoadFont("_r bold 30px")
+credits[#credits+1] = LoadFont("_r bold 30px")
+credits[#credits+1] = LoadFont("_r bold 30px")
+credits[#credits+1] = LoadFont("_r bold 30px")
 credits[#credits+1] = LoadActor("phrek")
-credits[#credits+1] = LoadFont("_r bold 30px")..{Text=""}
-credits[#credits+1] = LoadFont("_r bold 30px")..{Text=""}
-credits[#credits+1] = LoadFont("_r bold 30px")..{Text=""}
-credits[#credits+1] = LoadFont("_r bold 30px")..{Text=""}
+credits[#credits+1] = LoadFont("_r bold 30px")
+credits[#credits+1] = LoadFont("_r bold 30px")
+credits[#credits+1] = LoadFont("_r bold 30px")
+credits[#credits+1] = LoadFont("_r bold 30px")
 credits[#credits+1] = LoadActor("gutter")
-credits[#credits+1] = LoadFont("_r bold 30px")..{Text=""}
-credits[#credits+1] = LoadFont("_r bold 30px")..{Text=""}
-credits[#credits+1] = LoadFont("_r bold 30px")..{Text=""}
-credits[#credits+1] = LoadFont("_r bold 30px")..{Text=""}
+credits[#credits+1] = LoadFont("_r bold 30px")
+credits[#credits+1] = LoadFont("_r bold 30px")
+credits[#credits+1] = LoadFont("_r bold 30px")
+credits[#credits+1] = LoadFont("_r bold 30px")
 credits[#credits+1] = LoadActor("jbean")
-credits[#credits+1] = LoadFont("_r bold 30px")..{Text=""}
-credits[#credits+1] = LoadFont("_r bold 30px")..{Text=""}
-credits[#credits+1] = LoadFont("_r bold 30px")..{Text=""}
-credits[#credits+1] = LoadFont("_r bold 30px")..{Text=""}
+credits[#credits+1] = LoadFont("_r bold 30px")
+credits[#credits+1] = LoadFont("_r bold 30px")
+credits[#credits+1] = LoadFont("_r bold 30px")
+credits[#credits+1] = LoadFont("_r bold 30px")
 credits[#credits+1] = LoadActor("mj")
-credits[#credits+1] = LoadFont("_r bold 30px")..{Text=""}
-credits[#credits+1] = LoadFont("_r bold 30px")..{Text=""}
-credits[#credits+1] = LoadFont("_r bold 30px")..{Text=""}
-credits[#credits+1] = LoadFont("_r bold 30px")..{Text=""}
+credits[#credits+1] = LoadFont("_r bold 30px")
+credits[#credits+1] = LoadFont("_r bold 30px")
+credits[#credits+1] = LoadFont("_r bold 30px")
+credits[#credits+1] = LoadFont("_r bold 30px")
 credits[#credits+1] = LoadActor("foy")
-credits[#credits+1] = LoadFont("_r bold 30px")..{Text=""}
-credits[#credits+1] = LoadFont("_r bold 30px")..{Text=""}
-credits[#credits+1] = LoadFont("_r bold 30px")..{Text=""}
-credits[#credits+1] = LoadFont("_r bold 30px")..{Text=""}
+credits[#credits+1] = LoadFont("_r bold 30px")
+credits[#credits+1] = LoadFont("_r bold 30px")
+credits[#credits+1] = LoadFont("_r bold 30px")
+credits[#credits+1] = LoadFont("_r bold 30px")
 credits[#credits+1] = LoadActor("kyle")
-credits[#credits+1] = LoadFont("_r bold 30px")..{Text=""}
-credits[#credits+1] = LoadFont("_r bold 30px")..{Text=""}
-credits[#credits+1] = LoadFont("_r bold 30px")..{Text=""}
-credits[#credits+1] = LoadFont("_r bold 30px")..{Text=""}
+credits[#credits+1] = LoadFont("_r bold 30px")
+credits[#credits+1] = LoadFont("_r bold 30px")
+credits[#credits+1] = LoadFont("_r bold 30px")
+credits[#credits+1] = LoadFont("_r bold 30px")
 credits[#credits+1] = LoadActor("plague")
-credits[#credits+1] = LoadFont("_r bold 30px")..{Text=""}
-credits[#credits+1] = LoadFont("_r bold 30px")..{Text=""}
-credits[#credits+1] = LoadFont("_r bold 30px")..{Text=""}
-credits[#credits+1] = LoadFont("_r bold 30px")..{Text=""}
+credits[#credits+1] = LoadFont("_r bold 30px")
+credits[#credits+1] = LoadFont("_r bold 30px")
+credits[#credits+1] = LoadFont("_r bold 30px")
+credits[#credits+1] = LoadFont("_r bold 30px")
 credits[#credits+1] = LoadActor("eric")
-credits[#credits+1] = LoadFont("_r bold 30px")..{Text=""}
-credits[#credits+1] = LoadFont("_r bold 30px")..{Text=""}
-credits[#credits+1] = LoadFont("_r bold 30px")..{Text=""}
-credits[#credits+1] = LoadFont("_r bold 30px")..{Text=""}
+credits[#credits+1] = LoadFont("_r bold 30px")
+credits[#credits+1] = LoadFont("_r bold 30px")
+credits[#credits+1] = LoadFont("_r bold 30px")
+credits[#credits+1] = LoadFont("_r bold 30px")
 credits[#credits+1] = LoadActor("gact")
-credits[#credits+1] = LoadFont("_r bold 30px")..{Text=""}
-credits[#credits+1] = LoadFont("_r bold 30px")..{Text=""}
-credits[#credits+1] = LoadFont("_r bold 30px")..{Text=""}
-credits[#credits+1] = LoadFont("_r bold 30px")..{Text=""}
+credits[#credits+1] = LoadFont("_r bold 30px")
+credits[#credits+1] = LoadFont("_r bold 30px")
+credits[#credits+1] = LoadFont("_r bold 30px")
+credits[#credits+1] = LoadFont("_r bold 30px")
 credits[#credits+1] = LoadActor("link")
-credits[#credits+1] = LoadFont("_r bold 30px")..{Text=""}
-credits[#credits+1] = LoadFont("_r bold 30px")..{Text=""}
-credits[#credits+1] = LoadFont("_r bold 30px")..{Text=""}
-credits[#credits+1] = LoadFont("_r bold 30px")..{Text=""}
+credits[#credits+1] = LoadFont("_r bold 30px")
+credits[#credits+1] = LoadFont("_r bold 30px")
+credits[#credits+1] = LoadFont("_r bold 30px")
+credits[#credits+1] = LoadFont("_r bold 30px")
 credits[#credits+1] = LoadActor("vyhd")
-credits[#credits+1] = LoadFont("_r bold 30px")..{Text=""}
-credits[#credits+1] = LoadFont("_r bold 30px")..{Text=""}
-credits[#credits+1] = LoadFont("_r bold 30px")..{Text=""}
-credits[#credits+1] = LoadFont("_r bold 30px")..{Text=""}
+credits[#credits+1] = LoadFont("_r bold 30px")
+credits[#credits+1] = LoadFont("_r bold 30px")
+credits[#credits+1] = LoadFont("_r bold 30px")
+credits[#credits+1] = LoadFont("_r bold 30px")
 credits[#credits+1] = LoadActor("pat")
-credits[#credits+1] = LoadFont("_r bold 30px")..{Text=""}
-credits[#credits+1] = LoadFont("_r bold 30px")..{Text=""}
-credits[#credits+1] = LoadFont("_r bold 30px")..{Text=""}
-credits[#credits+1] = LoadFont("_r bold 30px")..{Text=""}
+credits[#credits+1] = LoadFont("_r bold 30px")
+credits[#credits+1] = LoadFont("_r bold 30px")
+credits[#credits+1] = LoadFont("_r bold 30px")
+credits[#credits+1] = LoadFont("_r bold 30px")
 credits[#credits+1] = LoadFont("_r bold 30px")..{Text="Test Team"}
 credits[#credits+1] = LoadFont("_r bold 30px")..{Text="G. PolloxxX"}
 credits[#credits+1] = LoadFont("_r bold 30px")..{Text="Lil Lion"}
@@ -159,61 +159,61 @@ credits[#credits+1] = LoadFont("_r bold 30px")..{Text="Jordan Miller"}
 credits[#credits+1] = LoadFont("_r bold 30px")..{Text="Damien Diehl"}
 credits[#credits+1] = LoadFont("_r bold 30px")..{Text="Jason 'TheGreat' Gilleece"}
 credits[#credits+1] = LoadFont("_r bold 30px")..{Text="Justin 'Pags' Pagano"}
-credits[#credits+1] = LoadFont("_r bold 30px")..{Text=""}
-credits[#credits+1] = LoadFont("_r bold 30px")..{Text=""}
-credits[#credits+1] = LoadFont("_r bold 30px")..{Text=""}
+credits[#credits+1] = LoadFont("_r bold 30px")
+credits[#credits+1] = LoadFont("_r bold 30px")
+credits[#credits+1] = LoadFont("_r bold 30px")
 credits[#credits+1] = LoadFont("_r bold 30px")..{Text="Special Thanks to:"}
-credits[#credits+1] = LoadFont("_r bold 30px")..{Text=""}
+credits[#credits+1] = LoadFont("_r bold 30px")
 credits[#credits+1] = LoadActor(THEME:GetPathB("","_thanks/_bx"))
 credits[#credits+1] = LoadFont("_r bold 30px")..{Text="Boxorroxors"}
 credits[#credits+1] = LoadFont("_r bold 30px")..{Text="www.boxorroxors.net"}
-credits[#credits+1] = LoadFont("_r bold 30px")..{Text=""}
-credits[#credits+1] = LoadFont("_r bold 30px")..{Text=""}
-credits[#credits+1] = LoadFont("_r bold 30px")..{Text=""}
+credits[#credits+1] = LoadFont("_r bold 30px")
+credits[#credits+1] = LoadFont("_r bold 30px")
+credits[#credits+1] = LoadFont("_r bold 30px")
 credits[#credits+1] = LoadActor(THEME:GetPathB("","_thanks/_sci"))
-credits[#credits+1] = LoadFont("_r bold 30px")..{Text=""}
-credits[#credits+1] = LoadFont("_r bold 30px")..{Text=""}
+credits[#credits+1] = LoadFont("_r bold 30px")
+credits[#credits+1] = LoadFont("_r bold 30px")
 credits[#credits+1] = LoadFont("_r bold 30px")..{Text="SCI Recordings!"}
 credits[#credits+1] = LoadFont("_r bold 30px")..{Text="www.scirecordings.com"}
-credits[#credits+1] = LoadFont("_r bold 30px")..{Text=""}
-credits[#credits+1] = LoadFont("_r bold 30px")..{Text=""}
+credits[#credits+1] = LoadFont("_r bold 30px")
+credits[#credits+1] = LoadFont("_r bold 30px")
 credits[#credits+1] = LoadActor(THEME:GetPathB("","_thanks/_itgf"))
-credits[#credits+1] = LoadFont("_r bold 30px")..{Text=""}
+credits[#credits+1] = LoadFont("_r bold 30px")
 credits[#credits+1] = LoadFont("_r bold 30px")..{Text="ITGfreak/Rhythmatic.net"}
 credits[#credits+1] = LoadFont("_r bold 30px")..{Text="www.rhythmatic.net"}
-credits[#credits+1] = LoadFont("_r bold 30px")..{Text=""}
-credits[#credits+1] = LoadFont("_r bold 30px")..{Text=""}
+credits[#credits+1] = LoadFont("_r bold 30px")
+credits[#credits+1] = LoadFont("_r bold 30px")
 credits[#credits+1] = LoadActor(THEME:GetPathB("","_thanks/_gs"))
-credits[#credits+1] = LoadFont("_r bold 30px")..{Text=""}
+credits[#credits+1] = LoadFont("_r bold 30px")
 credits[#credits+1] = LoadFont("_r bold 30px")..{Text="GrooveStats"}
 credits[#credits+1] = LoadFont("_r bold 30px")..{Text="www.groovestats.com"}
-credits[#credits+1] = LoadFont("_r bold 30px")..{Text=""}
-credits[#credits+1] = LoadFont("_r bold 30px")..{Text=""}
+credits[#credits+1] = LoadFont("_r bold 30px")
+credits[#credits+1] = LoadFont("_r bold 30px")
 credits[#credits+1] = LoadActor(THEME:GetPathB("","_thanks/_n3k"))
-credits[#credits+1] = LoadFont("_r bold 30px")..{Text=""}
+credits[#credits+1] = LoadFont("_r bold 30px")
 credits[#credits+1] = LoadFont("_r bold 30px")..{Text="Naota3k"}
 credits[#credits+1] = LoadFont("_r bold 30px")..{Text="www.naota3k.com"}
-credits[#credits+1] = LoadFont("_r bold 30px")..{Text=""}
-credits[#credits+1] = LoadFont("_r bold 30px")..{Text=""}
+credits[#credits+1] = LoadFont("_r bold 30px")
+credits[#credits+1] = LoadFont("_r bold 30px")
 credits[#credits+1] = LoadActor(THEME:GetPathB("","_thanks/_rx"))
-credits[#credits+1] = LoadFont("_r bold 30px")..{Text=""}
+credits[#credits+1] = LoadFont("_r bold 30px")
 credits[#credits+1] = LoadFont("_r bold 30px")..{Text="RoXoR"}
 credits[#credits+1] = LoadFont("_r bold 30px")..{Text="www.roxorgames.com"}
-credits[#credits+1] = LoadFont("_r bold 30px")..{Text=""}
-credits[#credits+1] = LoadFont("_r bold 30px")..{Text=""}
-credits[#credits+1] = LoadFont("_r bold 30px")..{Text=""}
-credits[#credits+1] = LoadFont("_r bold 30px")..{Text=""}
-credits[#credits+1] = LoadFont("_r bold 30px")..{Text=""}
-credits[#credits+1] = LoadFont("_r bold 30px")..{Text=""}
-credits[#credits+1] = LoadFont("_r bold 30px")..{Text=""}
-credits[#credits+1] = LoadFont("_r bold 30px")..{Text=""}
-credits[#credits+1] = LoadFont("_r bold 30px")..{Text=""}
+credits[#credits+1] = LoadFont("_r bold 30px")
+credits[#credits+1] = LoadFont("_r bold 30px")
+credits[#credits+1] = LoadFont("_r bold 30px")
+credits[#credits+1] = LoadFont("_r bold 30px")
+credits[#credits+1] = LoadFont("_r bold 30px")
+credits[#credits+1] = LoadFont("_r bold 30px")
+credits[#credits+1] = LoadFont("_r bold 30px")
+credits[#credits+1] = LoadFont("_r bold 30px")
+credits[#credits+1] = LoadFont("_r bold 30px")
 credits[#credits+1] = LoadFont("_r bold 30px")..{Text="THANK YOU FOR PLAYING!"}
 
 return Def.ActorFrame{
     Def.ActorFrame{
 		OnCommand=function(self) self:Center() end,
-		LoadActor("credits frame")..{
+		LoadActor("../credits frame")..{
 			OnCommand=function(self) self:croptop(1):fadetop(1):sleep(3):linear(0.8):croptop(-1):fadetop(-1) end
 		},
 		Def.ActorScroller{
@@ -223,9 +223,7 @@ return Def.ActorFrame{
 			TransformFunction=function(self,offset,itemIndex,numItems)
 				self:y(offset*24):zoom(0.7):ztest(1)
 				if itemIndex <= 97 and itemIndex ~= 0 then self:zoom(1) end
-				if creditsDiffuse[itemIndex] then
-					self:diffuse(creditsDiffuse[itemIndex])
-				end
+				if creditsDiffuse[itemIndex] then self:diffuse(creditsDiffuse[itemIndex]) end
 			end,
 			children = credits
 		}
