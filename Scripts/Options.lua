@@ -49,7 +49,7 @@ function SongMods()
 		options = options .. "10,11,"
 	end
 
-	options = options .. "12,13,14,7,M,A,15,19,28,S,25,"
+	options = options .. "12,13,14,7,BGC,M,A,15,19,28,S,25,"
 
 	-- differences 2 (should be "27,24," but timingscale is not in sm5)
 	if isRegular() then
