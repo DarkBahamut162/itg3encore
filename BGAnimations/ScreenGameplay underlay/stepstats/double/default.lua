@@ -38,10 +38,10 @@ return Def.ActorFrame{
 	OnCommand=function(self) self:Center() end,
 	Def.ActorFrame{
 		Name="Player",
-		InitCommand=function(self) self:x(xPos):addx(GAMESTATE:GetMasterPlayerNumber() == PLAYER_1 and 100 or -100) end,
+		InitCommand=function(self) self:x(xPos):addx(pn == PLAYER_1 and 100 or -100) end,
 		BeginCommand=function(self) self:visible(GAMESTATE:IsHumanPlayer(pn)) end,
-		OnCommand=function(self) self:sleep(0.5):decelerate(0.8):addx(GAMESTATE:GetMasterPlayerNumber() == PLAYER_1 and -100 or 100) end,
-		OffCommand=function(self) if AnyPlayerFullComboed() then self:sleep(1) end self:accelerate(0.8):addx(GAMESTATE:GetMasterPlayerNumber() == PLAYER_1 and 100 or -100) end,
+		OnCommand=function(self) self:sleep(0.5):decelerate(0.8):addx(pn == PLAYER_1 and -100 or 100) end,
+		OffCommand=function(self) if AnyPlayerFullComboed() then self:sleep(1) end self:accelerate(0.8):addx(pn == PLAYER_1 and 100 or -100) end,
 		LoadActor("d_bg"),
 		Def.ActorFrame{
 			Condition=getenv("ShowStats"..pname(pn)) < 7,

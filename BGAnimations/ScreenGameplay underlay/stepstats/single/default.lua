@@ -1,7 +1,7 @@
 if isTopScreen("ScreenDemonstration2") then return Def.ActorFrame{} end
 
 local pn = GAMESTATE:GetMasterPlayerNumber()
-local startX = GAMESTATE:GetMasterPlayerNumber() == PLAYER_1 and SCREEN_WIDTH/4 or -SCREEN_WIDTH/4
+local startX = pn == PLAYER_1 and SCREEN_WIDTH/4 or -SCREEN_WIDTH/4
 local SongOrCourse,StepsOrTrail,scorelist,topscore
 local mines,holds,rolls,holdsAndRolls = 0,0,0,0
 
@@ -79,13 +79,13 @@ return Def.ActorFrame{
 				self:y(getenv("RotationSolo"..pname(pn)) and 34 or 0)
 			end
 			self:zoom(getenv("RotationSolo"..pname(pn)) and .75 or 1)
-			:addx(GAMESTATE:GetMasterPlayerNumber() == PLAYER_1 and SCREEN_WIDTH/2 or -SCREEN_WIDTH/2)
+			:addx(pn == PLAYER_1 and SCREEN_WIDTH/2 or -SCREEN_WIDTH/2)
 			:decelerate(1)
-			:addx(GAMESTATE:GetMasterPlayerNumber() == PLAYER_1 and -SCREEN_WIDTH/2 or SCREEN_WIDTH/2)
+			:addx(pn == PLAYER_1 and -SCREEN_WIDTH/2 or SCREEN_WIDTH/2)
 		end,
 		OffCommand=function(self)
 			if AnyPlayerFullComboed() then self:sleep(1) end
-			self:accelerate(0.8):addx(GAMESTATE:GetMasterPlayerNumber() == PLAYER_1 and SCREEN_WIDTH/2 or -SCREEN_WIDTH/2)
+			self:accelerate(0.8):addx(pn == PLAYER_1 and SCREEN_WIDTH/2 or -SCREEN_WIDTH/2)
 		end,
 		LoadActor("s_"..(isFinal() and "final" or "normal")),
 		LoadActor("s_bg"..getenv("ShowStats"..pname(pn))),
@@ -168,7 +168,7 @@ return Def.ActorFrame{
 				Name="BarLabels",
 				InitCommand=function(self) self:visible(GAMESTATE:GetCurrentStageIndex()==0) end,
 				LoadFont("_v 26px bold black")..{
-					Text=PROFILEMAN:GetPlayerName(GAMESTATE:GetMasterPlayerNumber()),
+					Text=PROFILEMAN:GetPlayerName(pn),
 					InitCommand=function(self) self:rotationz(-90):addx(barCenter):shadowlength(0):queuecommand("FadeOn") end,
 					FadeOnCommand=function(self) self:sleep(2):linear(1):diffusealpha(0) end
 				},
