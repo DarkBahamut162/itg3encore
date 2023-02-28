@@ -29,7 +29,7 @@ Branch.AfterSelectStyleCheck = function()
 end
 
 Branch.AfterSelectStyle = function()
-	if GAMESTATE:Env()["Workout"] then return "ScreenWorkoutMenu" end
+	if getenv("Workout") then return "ScreenWorkoutMenu" end
 	if GAMESTATE:IsCourseMode() then return "ScreenSelectCourse" end
 	if IsNetSMOnline() then return SMOnlineScreen() end
 	if IsNetConnected() then return "ScreenNetSelectMusic" end
@@ -112,7 +112,7 @@ Branch.AfterSaveSummary = function()
 end
 
 Branch.AfterStageInformation = function()
-	if GAMESTATE:Env()["Workout"] then return "ScreenGameplayWorkout" end
+	if getenv("Workout") then return "ScreenGameplayWorkout" end
 	return "ScreenGameplay"
 end
 
@@ -128,6 +128,6 @@ Branch.AfterEvaluationWorkout = function()
 end
 
 Branch.ScreenSelectMusicPrevScreen = function()
-	if GAMESTATE:Env()["Workout"] then return "ScreenWorkoutMenu" end
+	if getenv("Workout") then return "ScreenWorkoutMenu" end
 	return Branch.TitleScreen()
 end

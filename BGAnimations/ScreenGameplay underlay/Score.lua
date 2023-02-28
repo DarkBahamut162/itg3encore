@@ -44,7 +44,7 @@ return Def.ActorFrame{
 		Name="Score"..pname(player),
 		InitCommand=function(self)
 			self:visible(not getenv("HideScore"..pname(player))):diffuse(PlayerColor(player)):x(math.floor(scale(player == PLAYER_1 and 0.25 or 0.75,0,1,SCREEN_LEFT,SCREEN_RIGHT)))
-			if GAMESTATE:Env()["Workout"] then self:y(SCREEN_TOP+51) else self:y(SCREEN_TOP+61) end
+			if getenv("Workout") then self:y(SCREEN_TOP+51) else self:y(SCREEN_TOP+61) end
 			if scoreType == 1 then
 				self:settextf("%09d",0) -- SCORE
 				self:ClearAttributes()
