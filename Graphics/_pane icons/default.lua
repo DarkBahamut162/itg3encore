@@ -6,7 +6,7 @@ local stream,voltage,air,freeze,chaos = 0,0,0,0,0
 local song,course
 
 return Def.ActorFrame{
-	InitCommand=function(self) self:y(-1) if isWidescreen() and isOutFox() then self:x(player == PLAYER_1 and 48 or -48) end end,
+	InitCommand=function(self) self:y(-1) if IsUsingWideScreen() and isOutFox() then self:x(player == PLAYER_1 and 48 or -48) end end,
 	CurrentSongChangedMessageCommand=function(self) self:playcommand("Set") end,
 	CurrentCourseChangedMessageCommand=function(self) self:playcommand("Set") end,
 	["CurrentSteps".. ToEnumShortString(player) .."ChangedMessageCommand"]=function(self) self:playcommand("Set") end,

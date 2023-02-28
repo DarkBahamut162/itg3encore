@@ -172,10 +172,6 @@ function isStepMania()
 	return ProductFamily() == "StepMania"
 end
 
-function isWidescreen()
-	return SCREEN_WIDTH / SCREEN_HEIGHT >= 1.7
-end
-
 function isTopScreen(screen)
 	if SCREENMAN:GetTopScreen() then
 		return SCREENMAN:GetTopScreen():GetName() == screen

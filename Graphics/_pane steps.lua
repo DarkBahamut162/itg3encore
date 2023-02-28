@@ -43,7 +43,7 @@ end
 
 
 return Def.ActorFrame{
-	InitCommand=function(self) self:y(-1) if isWidescreen() and isOutFox() then self:x(player == PLAYER_1 and 48 or -48) end end,
+	InitCommand=function(self) self:y(-1) if IsUsingWideScreen() and isOutFox() then self:x(player == PLAYER_1 and 48 or -48) end end,
 	LoadFont("_z 36px shadowx")..{
 		Name="StepCount",
 		InitCommand=function(self) self:x(-67):y(120+4):zoom(0.35):diffusealpha(0) end,

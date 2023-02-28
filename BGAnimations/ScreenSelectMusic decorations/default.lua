@@ -154,7 +154,7 @@ local function CDTitleUpdate(self)
 end
 
 t[#t+1] = Def.ActorFrame {
-	Condition=isWidescreen(),
+	Condition=IsUsingWideScreen(),
 	InitCommand=function(self) self:x(SCREEN_CENTER_X+302):y(SCREEN_CENTER_Y-88):rotationz(90):SetUpdateFunction(CDTitleUpdate) end,
 	OnCommand=function(self) self:addx(SCREEN_WIDTH):decelerate(0.75):addx(-SCREEN_WIDTH) end,
 	OffCommand=function(self) self:accelerate(0.75):addx(SCREEN_WIDTH) end,
