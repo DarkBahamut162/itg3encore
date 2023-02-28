@@ -168,6 +168,14 @@ function isOutFox()
 	return ProductFamily() == "OutFox"
 end
 
+function hasAvatar(pn)
+	if isOutFox() then
+		return Basename(LoadModule("Options.GetProfileData.lua")(pn)["Image"]) ~= "UserProfile generic icon.png"
+	else
+		return false
+	end
+end
+
 function isStepMania()
 	return ProductFamily() == "StepMania"
 end

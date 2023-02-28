@@ -19,7 +19,7 @@ local colors = {
 }
 
 return Def.ActorFrame{
-	InitCommand=function(self) self:y(-1) if IsUsingWideScreen() and isOutFox() then self:x(player == PLAYER_1 and 48 or -48) end end,
+	InitCommand=function(self) self:y(-1) if IsUsingWideScreen() and hasAvatar(player) then self:x(player == PLAYER_1 and 48 or -48) end end,
 	LoadFont("smallnumbers")..{
 		Name="Jumps",
 		InitCommand=function(self) self:x(-127+100):diffusealpha(0):maxwidth(22) end,

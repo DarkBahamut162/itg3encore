@@ -2,7 +2,7 @@ local player = ...
 assert(player,"[Graphics/_pane icons] player required")
 
 return Def.ActorFrame{
-	Condition=IsUsingWideScreen() and isOutFox(),
+	Condition=IsUsingWideScreen() and hasAvatar(player),
 	InitCommand=function(self) self:y(-1) end,
 	Def.Sprite{
 		InitCommand=function(self) self:xy(player == PLAYER_1 and -96 or 96,110):CropTo(58,58):Load(LoadModule("Options.GetProfileData.lua")(player)["Image"]) end,
