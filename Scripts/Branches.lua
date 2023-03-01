@@ -56,13 +56,21 @@ Branch.PlayerOptions = function()
 	if SCREENMAN:GetTopScreen():GetGoToOptions() then
 		return optionsScreen
 	else
-		return "ScreenStageInformation"
+		return Branch.BeforeGameplay()
 	end
 end
 
 Branch.SongOptions = function()
 	if SCREENMAN:GetTopScreen():GetGoToOptions() then
 		return "ScreenSongOptions"
+	else
+		return Branch.BeforeGameplay()
+	end
+end
+
+Branch.BeforeGameplay = function()
+	if isOutFox() then
+		return "ScreenLoadGameplayElements"
 	else
 		return "ScreenStageInformation"
 	end

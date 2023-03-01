@@ -43,6 +43,14 @@ for i,pn in ipairs(GAMESTATE:GetEnabledPlayers()) do
 	setenv("LastGreat"..pname(pn),0)
 end
 
+local showBar = {
+	["be-mu"] = true,
+	["gddm"] = true,
+	["gdgf"] = true,
+	["kbx"] = true,
+	["po-mu"] = true
+}
+
 return Def.ActorFrame{
 	Def.Quad{
 		OnCommand=function(self) self:FullScreen():diffusecolor(Color.Black) end
@@ -201,6 +209,22 @@ return Def.ActorFrame{
 	LoadActor("shot")..{
 		InitCommand=function(self) self:diffusealpha(0):blend(Blend.Add) end,
 		OnCommand=function(self) self:CenterY():zoomx(2):zoomy(4):diffusealpha(1):CenterX():linear(0.9):diffusealpha(0):zoomy(0):x(SCREEN_CENTER_X+250) end
+	},
+	Def.ActorFrame{
+		Condition=showBar[GAMESTATE:GetCurrentGame():GetName()],
+		Def.Quad{
+			InitCommand=function(self) self:stretchto(0,SCREEN_CENTER_Y+104,SCREEN_WIDTH,SCREEN_CENTER_Y+168):diffusecolor(Color.White):blend(Blend.Add) end,
+			OnCommand=function(self) self:cropright(1):faderight(0.8):fadeleft(0.8) end,
+			LoadingKeysoundMessageCommand=function(self,params)
+				if params.File ~= "" then self:cropright(1-params.Percent/100) end
+			end
+		},
+		LoadFont("_z bold 19px")..{
+			InitCommand=function(self)  self:CenterX():y(SCREEN_CENTER_Y+192):vertspacing(-13):valign(1):zoom(0.5):maxwidth(SCREEN_WIDTH*2) end,
+			LoadingKeysoundMessageCommand=function(self,params)
+				if params.File ~= "" then self:settext(Basename(params.File).."\n"..string.format("%.0f", params.Percent).."%") end
+			end
+		}
 	},
 	SOUND:PlayOnce( THEME:GetPathS( '', "_ok" ) )
 }
