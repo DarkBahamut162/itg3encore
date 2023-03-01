@@ -15,7 +15,7 @@ return Def.ActorFrame{
 		LoseFocusCommand=function(self) self:stoptweening():linear(0.15):y(16):croptop(0.07):cropbottom(0.6) end
 	},
 	Def.ActorFrame{
-		InitCommand=function(self) self:x(-228+40) end,
+		InitCommand=function(self) self:x(-228+40):y(isTopScreen("ScreenWorkoutMenu") and 24 or 0) end,
 		BeginCommand=function(self) self:visible(GAMESTATE:IsPlayerEnabled(PLAYER_1)) end,
 		LoadActor("1")..{
 			InitCommand=function(self) self:y(42):diffusealpha(0) end,
