@@ -262,18 +262,24 @@ function cacheStep(Step)
 	end
 	total = total / times * 2
 
+	LoadModule("Config.Save.lua")("Version","0.22",getStepCacheFile(Step))
+	LoadModule("Config.Save.lua")("HasLua",HasLuaCheck() and "true" or "false",getStepCacheFile(Step))
+	if shockArrows ~= "" then LoadModule("Config.Save.lua")("ShockArrows",shockArrows,getStepCacheFile(Step)) end
 	LoadModule("Config.Save.lua")("StepCounter",table.concat(noteCounter,"_"),getStepCacheFile(Step))
+	LoadModule("Config.Save.lua")("StepsPerSecond",total,getStepCacheFile(Step))
 	LoadModule("Config.Save.lua")("TrueFirstBeat",firstBeat,getStepCacheFile(Step))
 	LoadModule("Config.Save.lua")("TrueFirstSecond",Step:GetTimingData():GetElapsedTimeFromBeat(firstBeat),getStepCacheFile(Step))
 	LoadModule("Config.Save.lua")("TrueLastBeat",lastBeat,getStepCacheFile(Step))
 	LoadModule("Config.Save.lua")("TrueLastSecond",Step:GetTimingData():GetElapsedTimeFromBeat(lastBeat),getStepCacheFile(Step))
-	LoadModule("Config.Save.lua")("HasLua",HasLuaCheck() and "true" or "false",getStepCacheFile(Step))
-	if shockArrows ~= "" then LoadModule("Config.Save.lua")("ShockArrows",shockArrows,getStepCacheFile(Step)) end
-	LoadModule("Config.Save.lua")("StepsPerSecond",total,getStepCacheFile(Step))
 end
 
 function LoadFromCache(Step,value)
-	if not LoadModule("Config.Exists.lua")(value,getStepCacheFile(Step)) then cacheStep(Step) end
+	local version = LoadModule("Config.Load.lua")("Version",getStepCacheFile(Step))
+	if not LoadModule("Config.Exists.lua")(value,getStepCacheFile(Step)) then
+		cacheStep(Step)
+	elseif not version or version ~= "0.22" then
+		cacheStep(Step)
+	end
 	return LoadModule("Config.Load.lua")(value,getStepCacheFile(Step))
 end
 
