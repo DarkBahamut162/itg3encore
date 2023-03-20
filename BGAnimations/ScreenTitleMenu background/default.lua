@@ -364,7 +364,7 @@ return Def.ActorFrame{
 	},
 	Def.ActorFrame{
 		Name="TIME & DATE",
-		InitCommand=function(self) self:CenterX():y(SCREEN_BOTTOM+11) end,
+		InitCommand=function(self) self:CenterX():y(isFinal() and SCREEN_BOTTOM+11 or SCREEN_BOTTOM-6) end,
 		LoadFont("_v 26px bold black")..{
 			SetCommand=function(self) self:settext( string.format('%02i:%02i:%02i %s %02i %04i', Hour(), Minute(), Second(), string.sub(MonthToString(MonthOfYear()),1,3), DayOfMonth(), Year()) ):sleep(1/6):queuecommand("Set") end,
 			InitCommand=function(self) self:y(-48*WideScreenDiff()):shadowlength(2):zoom(0.5*WideScreenDiff()):diffusealpha(0) end,
