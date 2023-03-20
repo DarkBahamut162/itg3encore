@@ -27,7 +27,7 @@ function GetSongFrame()
 	local songDir = song:GetSongDir()
 	local frame
 	if string.find(songDir,"Dance Dance Revolution 8th Mix") or string.find(songDir,"Dance Dance Revolution Extreme") then
-		frame = "_extreme"
+		frame = "_disconnect"
 	elseif string.find(songTitle,"VerTex") then
 		frame = "_vertex"
 	elseif string.find(songTitle,"Dream to Nightmare") then
