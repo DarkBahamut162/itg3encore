@@ -20,9 +20,7 @@ if ShowStandardDecoration("StepsDisplay") then
 				Def.StepsDisplay {
 					InitCommand=function(self) self:Load("StepsDisplayEvaluation",pn):SetFromGameState(pn) end,
 					UpdateNetEvalStatsMessageCommand=function(self,param)
-						if GAMESTATE:IsPlayerEnabled(pn) or isRave() then
-							self:SetFromSteps(param.Steps)
-						end
+						if GAMESTATE:IsPlayerEnabled(pn) or isRave() then self:SetFromSteps(param.Steps) end
 					end
 				}
 			}
@@ -119,9 +117,7 @@ end
 
 local function StageAward( pn )
 	return LoadActor(THEME:GetPathG("ScreenEvaluation", "StageAward"), pn)..{
-		InitCommand=function(self)
-			self:player(pn):name("StageAward"..pname(pn))
-		end
+		InitCommand=function(self) self:player(pn):name("StageAward"..pname(pn)) end
 	}
 end
 
@@ -135,9 +131,7 @@ end
 
 local function PeakComboAward( pn )
 	return LoadActor( THEME:GetPathG(Var "LoadingScreen", "PeakComboAward"), pn ) .. {
-		InitCommand=function(self)
-			self:player(pn):name("PeakComboAward"..pname(pn))
-		end
+		InitCommand=function(self) self:player(pn):name("PeakComboAward"..pname(pn)) end
 	}
 end
 

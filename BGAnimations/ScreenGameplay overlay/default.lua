@@ -2,11 +2,11 @@ local t = Def.ActorFrame{
 	LoadActor(GetSongFrame()),
 	Def.ActorFrame{
 		Name="RaveNames",
-		InitCommand=function(self) self:CenterX():y(SCREEN_TOP+58):visible(isRave()) end,
+		InitCommand=function(self) self:CenterX():y(SCREEN_TOP+58*WideScreenDiff()):visible(isRave()) end,
 		OnCommand=function(self) self:addy(-100):sleep(0.5):decelerate(0.8):addy(100) end,
 		OffCommand=function(self) self:accelerate(0.8):addy(-100) end,
 		LoadFont("_v 26px bold black")..{
-			InitCommand=function(self) self:x(-254):zoom(0.55):shadowlength(0):maxwidth(160) end,
+			InitCommand=function(self) self:x(-254*WideScreenDiff()):zoom(0.55*WideScreenDiff()):shadowlength(0):maxwidth(160) end,
 			BeginCommand=function(self)
 				if GAMESTATE:IsHumanPlayer(PLAYER_1) then
 					self:settext(GetDisplayNameFromProfileOrMemoryCard(PLAYER_1))
@@ -16,7 +16,7 @@ local t = Def.ActorFrame{
 			end
 		},
 		LoadFont("_v 26px bold black")..{
-			InitCommand=function(self) self:x(254):zoom(0.55):shadowlength(0):maxwidth(160) end,
+			InitCommand=function(self) self:x(254*WideScreenDiff()):zoom(0.55*WideScreenDiff()):shadowlength(0):maxwidth(160) end,
 			BeginCommand=function(self)
 				if GAMESTATE:IsHumanPlayer(PLAYER_2) then
 					self:settext(GetDisplayNameFromProfileOrMemoryCard(PLAYER_2))
@@ -34,23 +34,23 @@ local t = Def.ActorFrame{
 		Name="ScreenStageHoldovers",
 		InitCommand=function(self) self:visible(not GAMESTATE:IsDemonstration() and not GAMESTATE:IsCourseMode()) end,
 		LoadActor(THEME:GetPathB("ScreenStageInformation","in/bottom/bar"))..{
-			InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+136):zoomtowidth(SCREEN_WIDTH):faderight(0.8):fadeleft(0.8) end,
+			InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+136*WideScreenDiff()):zoomy(WideScreenDiff()):zoomtowidth(SCREEN_WIDTH):faderight(0.8):fadeleft(0.8) end,
 			OnCommand=function(self) self:sleep(2.25):cropright(0):linear(0.6):cropleft(1) end
 		},
 		Def.ActorFrame{
 			Name="InfoP1",
 			InitCommand=function(self) self:visible(GAMESTATE:IsPlayerEnabled(PLAYER_1)) end,
 			LoadActor(THEME:GetPathB("ScreenStageInformation","in/_left gradient"))..{
-				InitCommand=function(self) self:x(SCREEN_LEFT):y(SCREEN_CENTER_Y+130):horizalign(left) end,
+				InitCommand=function(self) self:x(SCREEN_LEFT):y(SCREEN_CENTER_Y+130*WideScreenDiff()):zoom(WideScreenDiff()):horizalign(left) end,
 				OnCommand=function(self) self:sleep(1):linear(1):diffusealpha(0) end
 			},
 			LoadActor(THEME:GetPathB("ScreenStageInformation","in/_p1"))..{
-				InitCommand=function(self) self:x(SCREEN_LEFT):y(SCREEN_CENTER_Y+130):horizalign(left) end,
+				InitCommand=function(self) self:x(SCREEN_LEFT):y(SCREEN_CENTER_Y+130*WideScreenDiff()):zoom(WideScreenDiff()):horizalign(left) end,
 				OnCommand=function(self) self:sleep(1):linear(1):diffusealpha(0) end
 			},
 			LoadFont("_r bold 30px")..{
 				Text="Step Artist:",
-				InitCommand=function(self) self:x(SCREEN_LEFT+5):y(SCREEN_CENTER_Y+152):zoom(0.6):halign(0):shadowlength(2) end,
+				InitCommand=function(self) self:x(SCREEN_LEFT+5*WideScreenDiff()):y(SCREEN_CENTER_Y+152*WideScreenDiff()):zoom(0.6*WideScreenDiff()):halign(0):shadowlength(2*WideScreenDiff()) end,
 				BeginCommand=function(self)
 					self:visible(GAMESTATE:IsPlayerEnabled(PLAYER_1) and isRegular() or isRave())
 				end,
@@ -58,7 +58,7 @@ local t = Def.ActorFrame{
 			},
 			LoadFont("_r bold 30px")..{
 				Name="AuthorText",
-				InitCommand=function(self) self:x(SCREEN_LEFT+100):y(SCREEN_CENTER_Y+152):shadowlength(2):halign(0):zoom(0.6) end,
+				InitCommand=function(self) self:x(SCREEN_LEFT+100*WideScreenDiff()):y(SCREEN_CENTER_Y+152*WideScreenDiff()):shadowlength(2*WideScreenDiff()):halign(0):zoom(0.6*WideScreenDiff()) end,
 				BeginCommand=function(self)
 					local song = GAMESTATE:GetCurrentSong()
 					local text = ""
@@ -72,7 +72,7 @@ local t = Def.ActorFrame{
 			},
 			LoadFont("_r bold 30px")..{
 				Name="PlayerName",
-				InitCommand=function(self) self:x(SCREEN_LEFT+44):y(SCREEN_CENTER_Y+122):shadowlength(2):halign(0):zoom(0.8) end,
+				InitCommand=function(self) self:x(SCREEN_LEFT+44*WideScreenDiff()):y(SCREEN_CENTER_Y+122*WideScreenDiff()):shadowlength(2*WideScreenDiff()):halign(0):zoom(0.8*WideScreenDiff()) end,
 				BeginCommand=function(self)
 					if GAMESTATE:IsHumanPlayer(PLAYER_1) then
 						self:settext(GetDisplayNameFromProfileOrMemoryCard(PLAYER_1))
@@ -87,16 +87,16 @@ local t = Def.ActorFrame{
 			Name="InfoP2",
 			InitCommand=function(self) self:visible(GAMESTATE:IsPlayerEnabled(PLAYER_2)) end,
 			LoadActor(THEME:GetPathB("ScreenStageInformation","in/_right gradient"))..{
-				InitCommand=function(self) self:x(SCREEN_RIGHT):y(SCREEN_CENTER_Y+130):horizalign(right) end,
+				InitCommand=function(self) self:x(SCREEN_RIGHT):y(SCREEN_CENTER_Y+130*WideScreenDiff()):zoom(WideScreenDiff()):horizalign(right) end,
 				OnCommand=function(self) self:sleep(1):linear(1):diffusealpha(0) end
 			},
 			LoadActor(THEME:GetPathB("ScreenStageInformation","in/_p2"))..{
-				InitCommand=function(self) self:x(SCREEN_RIGHT):y(SCREEN_CENTER_Y+130):horizalign(right) end,
+				InitCommand=function(self) self:x(SCREEN_RIGHT):y(SCREEN_CENTER_Y+130*WideScreenDiff()):zoom(WideScreenDiff()):horizalign(right) end,
 				OnCommand=function(self) self:sleep(1):linear(1):diffusealpha(0) end
 			},
 			LoadFont("_r bold 30px")..{
 				Text=":Step Artist",
-				InitCommand=function(self) self:x(SCREEN_RIGHT-5):y(SCREEN_CENTER_Y+152):zoom(0.6):halign(1):shadowlength(2) end,
+				InitCommand=function(self) self:x(SCREEN_RIGHT-5*WideScreenDiff()):y(SCREEN_CENTER_Y+152*WideScreenDiff()):zoom(0.6*WideScreenDiff()):halign(1):shadowlength(2*WideScreenDiff()) end,
 				BeginCommand=function(self)
 					self:visible(GAMESTATE:IsPlayerEnabled(PLAYER_2) and isRegular() or isRave())
 				end,
@@ -104,7 +104,7 @@ local t = Def.ActorFrame{
 			},
 			LoadFont("_r bold 30px")..{
 				Name="AuthorText",
-				InitCommand=function(self) self:x(SCREEN_RIGHT-100):y(SCREEN_CENTER_Y+152):shadowlength(2):halign(1):zoom(0.6) end,
+				InitCommand=function(self) self:x(SCREEN_RIGHT-100*WideScreenDiff()):y(SCREEN_CENTER_Y+152*WideScreenDiff()):shadowlength(2*WideScreenDiff()):halign(1):zoom(0.6*WideScreenDiff()) end,
 				BeginCommand=function(self)
 					local song = GAMESTATE:GetCurrentSong()
 					local text = ""
@@ -118,7 +118,7 @@ local t = Def.ActorFrame{
 			},
 			LoadFont("_r bold 30px")..{
 				Name="PlayerName",
-				InitCommand=function(self) self:x(SCREEN_RIGHT-44):y(SCREEN_CENTER_Y+122):shadowlength(2):halign(1):zoom(0.8) end,
+				InitCommand=function(self) self:x(SCREEN_RIGHT-44*WideScreenDiff()):y(SCREEN_CENTER_Y+122*WideScreenDiff()):shadowlength(2*WideScreenDiff()):halign(1):zoom(0.8*WideScreenDiff()) end,
 				BeginCommand=function(self)
 					if GAMESTATE:IsHumanPlayer(PLAYER_2) then
 						self:settext(GetDisplayNameFromProfileOrMemoryCard(PLAYER_2))
@@ -131,7 +131,7 @@ local t = Def.ActorFrame{
 		}
 	},
 	LoadFont("_r bold 30px")..{
-		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+127):maxwidth(SCREEN_WIDTH/8*7):shadowlength(2):zoom(0.5):diffusealpha(1) end,
+		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+127*WideScreenDiff()):maxwidth(SCREEN_WIDTH/8*7/WideScreenDiff()):shadowlength(2*WideScreenDiff()):zoom(0.5*WideScreenDiff()):diffusealpha(1) end,
 		SetCommand=function(self)
 			local song = GAMESTATE:GetCurrentSong()
 			local text = ""
@@ -141,7 +141,7 @@ local t = Def.ActorFrame{
 		OnCommand=function(self) self:playcommand("Set"):sleep(1.5):linear(1):diffusealpha(0) end
 	},
 	LoadFont("_r bold 30px")..{
-		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+147):maxwidth(SCREEN_WIDTH/8*6.8):shadowlength(2):zoom(0.4):diffusealpha(1) end,
+		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+147*WideScreenDiff()):maxwidth(SCREEN_WIDTH/8*6.8/WideScreenDiff()):shadowlength(2*WideScreenDiff()):zoom(0.4*WideScreenDiff()):diffusealpha(1) end,
 		SetCommand=function(self)
 			local song = GAMESTATE:GetCurrentSong()
 			local text = ""
@@ -154,12 +154,12 @@ local t = Def.ActorFrame{
 		Name="DemonstrationFrame",
 		BeginCommand=function(self) self:visible(GAMESTATE:IsDemonstration() and not isTopScreen('ScreenJukebox')) end,
 		LoadActor(THEME:GetPathB("_metallic","streak"))..{
-			InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+43):zoomtowidth(SCREEN_WIDTH) end,
+			InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+43*WideScreenDiff()):zoomtowidth(SCREEN_WIDTH) end,
 			OnCommand=function(self) self:diffusealpha(0.9):fadeleft(1):faderight(1) end
 		},
 		LoadFont("_z 36px black")..{
 			Text="DEMO",
-			InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+43):zoom(0.7) end,
+			InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+43*WideScreenDiff()):zoom(0.7*WideScreenDiff()) end,
 			OnCommand=function(self) self:pulse():effectmagnitude(1.0,0.95,0):effectclock('beat'):effectperiod(1) end
 		},
 		LoadActor("demonstration gradient")..{

@@ -8,18 +8,18 @@ return Def.ActorFrame{
 		},
 		LoadFont("_v 26px bold glow")..{
 			Text="RoXoR Games Presents",
-			InitCommand=function(self) self:blend(Blend.Add):cropright(1):faderight(1) end,
+			InitCommand=function(self) self:blend(Blend.Add):cropright(1):faderight(1):zoom(WideScreenSemiDiff()) end,
 			OnCommand=function(self) self:sleep(0.1):linear(0.2):cropright(0):faderight(0):sleep(2):linear(0.5):diffusealpha(0) end
 		},
 		LoadFont("_v credit")..{
 			Text="RoXoR Games Presents",
-			InitCommand=function(self) self:cropright(1):faderight(1) end,
+			InitCommand=function(self) self:cropright(1):faderight(1):zoom(WideScreenSemiDiff()) end,
 			OnCommand=function(self) self:sleep(0.1):linear(0.2):cropright(0):faderight(0):sleep(2):linear(0.5):diffusealpha(0) end
 		}
 	},
 	Def.ActorFrame{
 		Name="WaveLogo",
-		InitCommand=function(self) self:x(SCREEN_CENTER_X-30):y(SCREEN_CENTER_Y-30):addy(20):addx(30) end,
+		InitCommand=function(self) self:x(SCREEN_CENTER_X-30):y(SCREEN_CENTER_Y-30):addy(20):addx(30):zoom(WideScreenDiff()) end,
 		OnCommand=function(self) self:hibernate(3.2):linear(3.0):sleep(1.2):queuecommand("h") end,
 		hCommand=function(self) self:visible(false) end,
 		Def.ActorFrame{

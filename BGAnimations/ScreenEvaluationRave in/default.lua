@@ -1,11 +1,11 @@
 return Def.ActorFrame{
 	LoadActor(THEME:GetPathB("_fade in","normal")),
 	Def.Actor{
-		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y-75):diffusealpha(1) end,
+		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y-75*WideScreenDiff()):zoom(WideScreenDiff()):diffusealpha(1) end,
 		OnCommand=function(self) self:sleep(4):linear(0.3):diffuse(color("0,0,0,0")):addy(-30) end
 	},
 	Def.ActorFrame{
-		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+20) end,
+		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+20*WideScreenDiff()):zoom(WideScreenDiff()) end,
 		Def.ActorFrame{
 			Condition=GAMESTATE:IsWinner(PLAYER_1),
 			LoadActor("p1win text")..{

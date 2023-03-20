@@ -30,17 +30,17 @@ return Def.ActorFrame{
 				curStep = GAMESTATE:GetCurrentSteps(GAMESTATE:GetMasterPlayerNumber())
 				if curSelection then
 					if curStep then
-						if false then -- load cache HasLua
+						if true then -- load cache HasLua
 							if isOutFox() then
 								if tobool(LoadFromCache(curStep,"HasLua")) then output = addToOutput(output,"HAS LUA","\n") end
 							else
 								if HasLuaCheck() then output = addToOutput(output,"HAS LUA","\n") end
 							end
 						end
-						if false and isOutFox() then -- load cache StepCounter
+						if true and isOutFox() then -- load cache StepCounter
 							output = addToOutput(output,table.concat(getStepCounter(curStep),"|"),"\n")
 						end
-						if false then -- Get true BPM range
+						if true then -- Get true BPM range
 							local timingdata = curStep:GetTimingData()
 							local bpms = curStep:GetDisplayBpms()
 							local truebpms = timingdata:GetActualBPM()
@@ -147,7 +147,7 @@ return Def.ActorFrame{
 								"\nLAST/TRUE sec: "..string.format("%0.3f",lastsecond).."/"..string.format("%0.3f",trueLastSecond)..
 								"\nDIFF/TRUE sec: "..string.format("%0.3f",difference).."/"..string.format("%0.3f",totalsecond-trueLastSecond),"\n")
 						end
-						if false then --Calculate Difficulty
+						if true then --Calculate Difficulty
 							local totalSeconds = isOutFox() and (LoadFromCache(curStep,"TrueLastSecond") - LoadFromCache(curStep,"TrueFirstSecond")) or (curSelection:GetLastSecond() - curSelection:GetFirstSecond())
 							local stepCounter = isOutFox() and getStepCounter(curStep)
 							local stepSum = isOutFox() and 0 or math.round(curStep:GetRadarValues(GAMESTATE:GetMasterPlayerNumber()):GetValue('RadarCategory_TapsAndHolds') / totalSeconds * GAMESTATE:GetCurrentStyle():ColumnsPerPlayer() / 2)

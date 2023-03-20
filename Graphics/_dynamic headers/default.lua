@@ -34,8 +34,8 @@ return Def.ActorFrame{
 		Texture=NameCase(LabelName),
 		OnCommand=function(self)
 			local texwidth = self:GetWidth()
-			self:texcoordvelocity(0.45,0):zoomtowidth(SCREEN_WIDTH)
-			:customtexturerect(0,0,SCREEN_WIDTH/texwidth,1):ztest(true)
+			self:texcoordvelocity(0.45,0):zoomtowidth(SCREEN_WIDTH/WideScreenDiff())
+			:customtexturerect(0,0,SCREEN_WIDTH/texwidth/WideScreenDiff(),1):ztest(true)
 		end
 	}
 }

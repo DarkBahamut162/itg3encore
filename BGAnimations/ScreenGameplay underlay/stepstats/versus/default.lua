@@ -63,14 +63,14 @@ if getenv("ShowStatsP1") == nil or getenv("ShowStatsP2") == nil then return Def.
 			t[#t+1] = Def.ActorFrame{
 				Name="Player"..pname(pn),
 				InitCommand=function(self)
-					self:x(pn == PLAYER_1 and SCREEN_LEFT+20-SCREEN_WIDTH/2 or SCREEN_RIGHT-20-SCREEN_WIDTH/2)
+					self:x(pn == PLAYER_1 and SCREEN_LEFT+(isFinal() and 35 or 20)*WideScreenDiff()-SCREEN_WIDTH/2 or SCREEN_RIGHT-(isFinal() and 35 or 20)*WideScreenDiff()-SCREEN_WIDTH/2)
 					:addx(pn == PLAYER_1 and -100 or 100)
-					:zoomx(pn == PLAYER_1 and -1 or 1) end,
+					:zoomx(pn == PLAYER_1 and -1*WideScreenDiff() or 1*WideScreenDiff()) end,
 				Condition=GAMESTATE:IsHumanPlayer(pn) and bgNum[pn] > 0,
 				OnCommand=function(self) self:sleep(0.5):decelerate(0.8):addx(pn == PLAYER_1 and 100 or -100) end,
 				OffCommand=function(self) if AnyPlayerFullComboed() then self:sleep(1) end self:accelerate(0.8):addx(pn == PLAYER_1 and -100 or 100) end,
-				LoadActor("v_bg" .. bgNum[pn])..{ InitCommand=function(self) self:vertalign(bottom):y(-111+1) end },
-				LoadActor("v_bg" .. bgNum[pn])..{ InitCommand=function(self) self:vertalign(bottom):y(-111+1):diffuse(color("#00000080")) end },
+				LoadActor("v_bg" .. bgNum[pn])..{ InitCommand=function(self) self:vertalign(bottom):y(-110) end },
+				LoadActor("v_bg" .. bgNum[pn])..{ InitCommand=function(self) self:vertalign(bottom):y(-110):diffuse(color("#00000080")) end },
 				Bars
 			}
 		end
@@ -80,13 +80,13 @@ if getenv("ShowStatsP1") == nil or getenv("ShowStatsP2") == nil then return Def.
 		local texts = {"F","E","G","D","W","M"}
 		for i = 1,math.max(bgNum[PLAYER_1],bgNum[PLAYER_2]) do
 			Judgments[#Judgments+1] = LoadFont("ScreenGameplay judgment")..{
-				InitCommand=function(self) self:shadowlength(1):y(SCREEN_TOP+92+15*(i-1)-SCREEN_HEIGHT/2):zoom(0.5):diffuse(diffuses[i]):settext(texts[i]) end
+				InitCommand=function(self) self:shadowlength(1):y(SCREEN_TOP+(92+15*(i-1))*WideScreenDiff()-SCREEN_HEIGHT/2):zoom(0.5*WideScreenDiff()):diffuse(diffuses[i]):settext(texts[i]) end
 			}
 		end
 
 		t[#t+1] = Def.ActorFrame{
 			Name="Labels",
-			InitCommand=function(self) self:y(isRave() and -10 or 0):diffusealpha(0) end,
+			InitCommand=function(self) self:y(isRave() and -10*WideScreenDiff() or 0):diffusealpha(0) end,
 			Condition=bgNum[PLAYER_1] > 0 or bgNum[PLAYER_2] > 0,
 			OnCommand=function(self) self:sleep(0.5):decelerate(0.8):diffusealpha(1) end,
 			OffCommand=function(self) if AnyPlayerFullComboed() then self:sleep(1) end self:accelerate(0.8):diffusealpha(0) end,
@@ -98,8 +98,8 @@ if getenv("ShowStatsP1") == nil or getenv("ShowStatsP2") == nil then return Def.
 			for i = 1,math.max(bgNum[PLAYER_1],bgNum[PLAYER_2]) do
 				local score = i < 6 and "W"..i or "Miss"
 				Numbers[#Numbers+1] = LoadFont("_z numbers")..{
-					InitCommand=function(self) self:x(pn == PLAYER_1 and -8 or 8):y(SCREEN_TOP+92+15*(i-1)-SCREEN_HEIGHT/2)
-						:zoom(0.6):maxwidth(SCREEN_WIDTH/4.5):horizalign(pn == PLAYER_1 and right or left):queuecommand("Update") end,
+					InitCommand=function(self) self:x(pn == PLAYER_1 and -8*WideScreenDiff() or 8*WideScreenDiff()):y(SCREEN_TOP+(92+15*(i-1))*WideScreenDiff()-SCREEN_HEIGHT/2)
+						:zoom(0.6*WideScreenDiff()):maxwidth(SCREEN_WIDTH/4.5):horizalign(pn == PLAYER_1 and right or left):queuecommand("Update") end,
 					Condition=bgNum[PLAYER_1] >= i or bgNum[PLAYER_2] >= i,
 					UpdateCommand=function(self)
 						self:diffuse(PlayerColor(pn))

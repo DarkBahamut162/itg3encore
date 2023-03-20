@@ -7,10 +7,7 @@ return Def.ActorFrame{
 			self:visible( not GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentSong():GetBannerPath() )
 		end,
 		InitCommand=function(self)
-			self:LoadFromSongBackground(GAMESTATE:GetCurrentSong())
-			self:FullScreen()
-			self:blend(Blend.Add)
-			self:diffusealpha(0.25)
+			self:LoadFromSongBackground(GAMESTATE:GetCurrentSong()):FullScreen():blend(Blend.Add):diffusealpha(0.25)
 		end,
 		OnCommand=function(self)
 			self:fadeleft(0.2):faderight(0.2):FullScreen()

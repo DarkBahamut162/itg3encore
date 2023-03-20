@@ -14,6 +14,4 @@ elseif numPlayers == 2 then
 	statObject = "versus"
 end
 
-return Def.ActorFrame{
-	LoadActor(statObject)
-}
+return Def.ActorFrame{ LoadActor(statObject) }

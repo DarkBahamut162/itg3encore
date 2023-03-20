@@ -6,11 +6,11 @@ return Def.ActorFrame{
 		InitCommand=function(self)
 			self:diffuse(PlayerColor(player))
 			if isTopScreen("ScreenEvaluationWorkout") or isTopScreen("ScreenEvaluationCourseWorkout") then
-				self:x(player == PLAYER_1 and SCREEN_CENTER_X-58 or SCREEN_CENTER_X+58):y(SCREEN_CENTER_Y+92):zoom(2/3)
+				self:x(player == PLAYER_1 and SCREEN_CENTER_X-58*WideScreenDiff() or SCREEN_CENTER_X+58*WideScreenDiff()):y(SCREEN_CENTER_Y+92*WideScreenDiff()):zoom(2/3*WideScreenDiff())
 			elseif isTopScreen("ScreenEvaluationRave") then
-				self:x(player == PLAYER_1 and SCREEN_CENTER_X-199 or SCREEN_CENTER_X+199):y(SCREEN_CENTER_Y+175)
+				self:x(player == PLAYER_1 and SCREEN_CENTER_X-199*WideScreenDiff() or SCREEN_CENTER_X+199*WideScreenDiff()):y(SCREEN_CENTER_Y+175*WideScreenDiff()):zoom(WideScreenDiff())
 			else
-				self:x(player == PLAYER_1 and SCREEN_CENTER_X-199 or SCREEN_CENTER_X+199):y(SCREEN_CENTER_Y+52)
+				self:x(player == PLAYER_1 and SCREEN_CENTER_X-199*WideScreenDiff() or SCREEN_CENTER_X+199*WideScreenDiff()):y(SCREEN_CENTER_Y+52*WideScreenDiff()):zoom(WideScreenDiff())
 			end
 			local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(player)
 			local output = 0
@@ -22,7 +22,7 @@ return Def.ActorFrame{
 					Length = math.max(9-string.len(''..output), 0),
 					Diffuse = PlayerColorSemi(player),
 				})
-				if isTopScreen("ScreenEvaluationWorkout") or isTopScreen("ScreenEvaluationCourseWorkout") then self:zoomx(1/2) else self:zoomx(8/9) end
+				if isTopScreen("ScreenEvaluationWorkout") or isTopScreen("ScreenEvaluationCourseWorkout") then self:zoomx(1/2*WideScreenDiff()) else self:zoomx(8/9*WideScreenDiff()) end
 			elseif scoreType == 2 then
 				self:settext(FormatPercentScore(pss:GetPercentDancePoints())) -- PERCENT
 			elseif scoreType == 3 then

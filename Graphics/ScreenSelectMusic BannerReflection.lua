@@ -31,7 +31,7 @@ return Def.FadingBanner{
 				end
 			end
 		end
-		self:scaletoclipped(320,120)
+		self:scaletoclipped(320*WideScreenDiff(),120*WideScreenDiff())
 	end,
 	CurrentSongChangedMessageCommand=function(self) self:playcommand("Set") end,
 	CurrentCourseChangedMessageCommand=function(self) self:playcommand("Set") end,

@@ -4,13 +4,13 @@ return Def.ActorFrame{
 		OnCommand=function(self) self:accelerate(0.3):diffusealpha(1) end
 	},
 	LoadActor("_shadow")..{
-		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y-94) end,
-		OnCommand=function(self) self:linear(1):y(SCREEN_CENTER_Y-61) end
+		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y-94*WideScreenDiff()):zoom(WideScreenDiff()) end,
+		OnCommand=function(self) self:linear(1):y(SCREEN_CENTER_Y-61*WideScreenDiff()) end
 	},
 	Def.ActorFrame{
 		Name="BannerSection",
-		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y-77) end,
-		OnCommand=function(self) self:linear(1):y(SCREEN_CENTER_Y-44) end,
+		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y-77*WideScreenDiff()):zoom(WideScreenDiff()) end,
+		OnCommand=function(self) self:linear(1):y(SCREEN_CENTER_Y-77*WideScreenDiff()+33*WideScreenDiff()) end,
 		LoadActor("_banner mask")..{
 			InitCommand=function(self) self:zbuffer(true):blend(Blend.NoEffect) end
 		},
@@ -33,6 +33,6 @@ return Def.ActorFrame{
 	},
 	LoadActor(THEME:GetPathB("ScreenStageInformation","in/_flares"))..{
 		InitCommand=function(self) self:Center() end,
-		OnCommand=function(self) self:diffusealpha(1):zoom(1):linear(1):rotationz(250):diffusealpha(0) end
+		OnCommand=function(self) self:diffusealpha(1):zoom(WideScreenDiff()):linear(1):rotationz(250):diffusealpha(0) end
 	}
 }

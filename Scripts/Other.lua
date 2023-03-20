@@ -36,6 +36,45 @@ function GetRandomCourseNames(n)
 	return s
 end
 
+function GetStepChartFacts()
+	local diffCount = {0,0,0,0,0,0}
+	local diffNames = {"novice","easy","medium","hard","expert","edit"}
+	local output = ""
+	local songs = SONGMAN:GetAllSongs()
+	local currentGroup = ""
+	local currentDifficulty = ""
+	local diffTranslate = {
+		Difficulty_Beginner = 1,
+		Difficulty_Easy = 2,
+		Difficulty_Medium = 3,
+		Difficulty_Hard = 4,
+		Difficulty_Challenge = 5,
+		Difficulty_Edit = 6
+	}
+
+	for i=1,#songs do
+		if currentGroup ~= songs[i]:GetGroupName() then
+			output = addToOutput(output,currentGroup..":","\n")
+			for i2=1,#diffCount do
+				if diffCount[i2] > 0 then
+					output = addToOutput(output,"  "..diffCount[i2].." "..diffNames[i2],"\n")
+				end
+			end
+			currentGroup = songs[i]:GetGroupName()
+			diffCount = {0,0,0,0,0,0}
+		end
+		local steps = songs[i]:GetAllSteps()
+		for i3=1,#steps do
+			currentDifficulty = steps[i3]:GetDifficulty()
+			if diffTranslate[currentDifficulty] then
+				diffCount[diffTranslate[currentDifficulty]] = diffCount[diffTranslate[currentDifficulty]] + 1
+			end
+		end
+	end
+
+	return output
+end
+
 function GetRandomModifierNames(n)
 	local mods = {
 		"x1","x1.5","x2","x2.5","x3","3.5x","x4","x5","x6","x8","c300","c450",
@@ -194,4 +233,23 @@ function addToOutput(output,add,pre)
 	else
 		return output..pre..add
 	end
+end
+
+function Center1Player()
+	local styleType = GAMESTATE:GetCurrentStyle():GetStyleType()
+	if styleType == "StyleType_OnePlayerTwoSides" or styleType == "StyleType_TwoPlayersSharedSides" then
+		return false
+	elseif PREFSMAN:GetPreference("Center1Player") then
+		return styleType == "StyleType_OnePlayerOneSide"
+	else
+		return false
+	end
+end
+
+function WideScreenDiff()
+	return math.min(1,GetScreenAspectRatio() / (16/10))
+end
+
+function WideScreenSemiDiff()
+	return 1-(1-WideScreenDiff())*0.5
 end

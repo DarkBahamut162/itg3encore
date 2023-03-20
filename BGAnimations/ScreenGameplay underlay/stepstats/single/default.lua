@@ -69,16 +69,16 @@ return Def.ActorFrame{
 		BeginCommand=function(self) self:visible(GAMESTATE:IsHumanPlayer(pn)) end,
 		OnCommand=function(self)
 			if IsGame("be-mu") then
-				self:x(startX+(getenv("RotationSolo"..pname(pn)) and 78 or 0))
-				self:y(getenv("RotationSolo"..pname(pn)) and SCREEN_HEIGHT/6 or 0)
+				self:x(startX+(getenv("RotationSolo"..pname(pn)) and 78*WideScreenDiff() or 0))
+				self:y(getenv("RotationSolo"..pname(pn)) and SCREEN_HEIGHT/6*WideScreenDiff() or 0)
 			elseif IsGame("po-mu") then
-				self:x(startX+(getenv("RotationSolo"..pname(pn)) and 72 or 0))
-				self:y(getenv("RotationSolo"..pname(pn)) and SCREEN_HEIGHT/6 or 0)
+				self:x(startX+(getenv("RotationSolo"..pname(pn)) and 72*WideScreenDiff() or 0))
+				self:y(getenv("RotationSolo"..pname(pn)) and SCREEN_HEIGHT/6*WideScreenDiff() or 0)
 			else
-				self:x(startX+(getenv("RotationSolo"..pname(pn)) and 64 or 0))
-				self:y(getenv("RotationSolo"..pname(pn)) and 34 or 0)
+				self:x(startX+(getenv("RotationSolo"..pname(pn)) and 64*WideScreenDiff() or 0))
+				self:y(getenv("RotationSolo"..pname(pn)) and 34*WideScreenDiff() or 0)
 			end
-			self:zoom(getenv("RotationSolo"..pname(pn)) and .75 or 1)
+			self:zoom(getenv("RotationSolo"..pname(pn)) and 0.75*WideScreenDiff() or 1*WideScreenDiff())
 			:addx(pn == PLAYER_1 and SCREEN_WIDTH/2 or -SCREEN_WIDTH/2)
 			:decelerate(1)
 			:addx(pn == PLAYER_1 and -SCREEN_WIDTH/2 or SCREEN_WIDTH/2)

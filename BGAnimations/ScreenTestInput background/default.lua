@@ -18,7 +18,7 @@ return Def.ActorFrame{
 		InitCommand=function(self) self:FullScreen() end
 	},
 	Def.ActorFrame{
-		OnCommand=function(self) self:x(SCREEN_CENTER_X-180):CenterY() end,
+		OnCommand=function(self) self:x(SCREEN_CENTER_X-180*WideScreenDiff()):CenterY():zoom(WideScreenDiff()) end,
 		LoadActor("floor"),
 		LoadActor("red")..{
 			InitCommand=function(self) self:diffusealpha(0) end,
@@ -46,7 +46,7 @@ return Def.ActorFrame{
 		}
 	},
 	Def.ActorFrame{
-		OnCommand=function(self) self:x(SCREEN_CENTER_X+180):CenterY() end,
+		OnCommand=function(self) self:x(SCREEN_CENTER_X+180*WideScreenDiff()):CenterY():zoom(WideScreenDiff()) end,
 		LoadActor("floor"),
 		LoadActor("red")..{
 			InitCommand=function(self) self:diffusealpha(0) end,
@@ -74,7 +74,7 @@ return Def.ActorFrame{
 		}
 	},
 	Def.ActorFrame{
-		OnCommand=function(self) self:x(SCREEN_CENTER_X-20):y(SCREEN_CENTER_Y-72):zoom(0.6) end,
+		OnCommand=function(self) self:x(SCREEN_CENTER_X-20*WideScreenDiff()):y(SCREEN_CENTER_Y-72*WideScreenDiff()):zoom(0.6*WideScreenDiff()) end,
 		LoadActor("start button")..{ InitCommand=function(self) self:y(-30) end },
 		LoadActor("select button")..{ InitCommand=function(self) self:y(30) end },
 		LoadActor("right button")..{ InitCommand=function(self) self:x(70) end },
@@ -101,7 +101,7 @@ return Def.ActorFrame{
 		}
 	},
 	Def.ActorFrame{
-		OnCommand=function(self) self:x(SCREEN_CENTER_X+20):y(SCREEN_CENTER_Y+72):zoom(0.6) end,
+		OnCommand=function(self) self:x(SCREEN_CENTER_X+20*WideScreenDiff()):y(SCREEN_CENTER_Y+72*WideScreenDiff()):zoom(0.6*WideScreenDiff()) end,
 		LoadActor("start button")..{ InitCommand=function(self) self:y(-30) end },
 		LoadActor("select button")..{ InitCommand=function(self) self:y(30) end },
 		LoadActor("right button")..{ InitCommand=function(self) self:x(70) end },

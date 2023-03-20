@@ -5,14 +5,16 @@ return Def.ActorFrame{
 	Def.ActorFrame{
 		Name="Page",
 		InitCommand=function(self) self:Center() end,
-		LoadActor(THEME:GetPathG("_mapcontrollers","page")),
+		LoadActor(THEME:GetPathG("_mapcontrollers","page"))..{
+			InitCommand=function(self) self:zoom(WideScreenDiff()) end
+		},
 		LoadActor(THEME:GetPathG("_mapcontrollers","line"))..{
 			Name="LeftLine",
-			InitCommand=function(self) self:x(-64):y(-25) end
+			InitCommand=function(self) self:x(-64*WideScreenDiff()):y(-25*WideScreenDiff()):zoom(WideScreenDiff()) end
 		},
 		LoadActor(THEME:GetPathG("_mapcontrollers","line"))..{
 			Name="RightLine",
-			InitCommand=function(self) self:x(64):y(-25) end
+			InitCommand=function(self) self:x(64*WideScreenDiff()):y(-25*WideScreenDiff()):zoom(WideScreenDiff()) end
 		}
 	}
 }

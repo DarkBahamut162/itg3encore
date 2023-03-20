@@ -1,7 +1,7 @@
 return Def.ActorFrame{
 	LoadActor("OptionsList cursor normal") .. {
 		Condition=not isFinal(),
-		OnCommand=function(self) self:finishtweening():blend(Blend.Add):diffusealpha(0):zoomx(0.4) end,
+		OnCommand=function(self) self:finishtweening():blend(Blend.Add):diffusealpha(0):zoomx(0.4):zoomy(WideScreenDiff()) end,
 		OptionsListOpenedMessageCommand=function(self) self:finishtweening():linear(0.2):diffusealpha(1):zoomx(1) end,
 		OptionsListClosedMessageCommand=function(self) self:finishtweening():linear(0.2):diffusealpha(0):zoomx(0.4) end
 	},

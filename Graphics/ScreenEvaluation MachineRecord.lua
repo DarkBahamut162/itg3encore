@@ -9,7 +9,7 @@ end
 
 return Def.ActorFrame{
 	LoadFont("_v 26px bold white")..{
-		InitCommand=function(self) self:zoomx(0.6):zoomy(0.5):shadowlength(2):cropright(1):visible(hasMachineRecord) end,
+		InitCommand=function(self) self:zoomx(0.6*WideScreenDiff()):zoomy(0.5*WideScreenDiff()):shadowlength(2):cropright(1):visible(hasMachineRecord) end,
 		BeginCommand=function(self)
 			self:settext(string.format("Machine Record #%i",record+1))
 		end,

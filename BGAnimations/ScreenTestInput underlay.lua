@@ -5,13 +5,13 @@ return Def.ActorFrame {
 	Def.DeviceList {
 		Font="Common Normal",
 		InitCommand= function (self)
-			self:x(SCREEN_CENTER_X+280):y(SCREEN_BOTTOM-102):zoom(0.4):halign(1):valign(0):maxwidth(400)
+			self:x(SCREEN_CENTER_X+280*WideScreenDiff()):y(SCREEN_CENTER_Y+138*WideScreenDiff()):zoom(0.4*WideScreenDiff()):halign(1):valign(0):maxwidth(400)
 		end
 	},
 	Def.InputList {
 		Font="Common Normal",
 		InitCommand=function (self)
-			self:x(SCREEN_LEFT+145):CenterY():maxheight(SCREEN_CENTER_Y):zoom(1):halign(0):vertspacing(8):maxwidth(560)
+			self:x(SCREEN_LEFT+145*WideScreenDiff()):CenterY():maxheight(SCREEN_CENTER_Y):zoom(WideScreenDiff()):halign(0):vertspacing(8):maxwidth(560)
 		end
 	}
 }

@@ -1,8 +1,8 @@
 local t = Def.ActorFrame{
 	InitCommand=function(self) self:runcommandsonleaves(function(child) child:ztest(true) end) end,
-	LoadActor("_song frame"),
+	LoadActor("_song frame")..{InitCommand=function(self) self:zoom(WideScreenDiff()) end},
 	Def.Banner{
-		InitCommand=function(self) self:x(-276):halign(0):scaletoclipped(128,40):diffusealpha(0.5):fadeleft(0.25):faderight(0.25) end,
+		InitCommand=function(self) self:x(-276*WideScreenDiff()):halign(0):scaletoclipped(128*WideScreenDiff(),40*WideScreenDiff()):diffusealpha(0.5):fadeleft(0.25):faderight(0.25) end,
 		SetCommand=function(self, params)
 			if params.Song then
 				self:LoadFromSong( params.Song )
@@ -10,7 +10,7 @@ local t = Def.ActorFrame{
 		end
 	},
 	LoadFont("_v 26px bold white")..{
-		InitCommand=function(self) self:x(-292):halign(0):zoom(0.6):shadowlength(1):wrapwidthpixels(264):maxwidth(264):maxheight(58) end,
+		InitCommand=function(self) self:x(-292*WideScreenDiff()):halign(0):zoom(0.6*WideScreenDiff()):shadowlength(1):wrapwidthpixels(264):maxwidth(264):maxheight(58) end,
 		SetCommand=function(self, params)
 			if params.Song then
 				self:settext( params.Song:GetDisplayFullTitle() )
@@ -27,11 +27,11 @@ local Scores = Def.ActorFrame{
 for i=1,4 do
 	Scores[#Scores+1] = LoadFont("_v 26px bold black")..{
 		Name="Name"..i,
-		InitCommand=function(self) self:x(scale(i,1,4,-48,240)):y(-8):zoomx(0.875):zoomy(0.625):maxwidth(100) end
+		InitCommand=function(self) self:x(scale(i,1,4,-48*WideScreenDiff(),240*WideScreenDiff())):y(-8*WideScreenDiff()):zoomx(0.875*WideScreenDiff()):zoomy(0.625*WideScreenDiff()):maxwidth(100) end
 	}
 	Scores[#Scores+1] = LoadFont("_futurist numbers metallic")..{
 		Name="Score"..i,
-		InitCommand=function(self) self:x(scale(i,1,4,-48,240)):y(12):zoomx(0.5):zoomy(0.75) end
+		InitCommand=function(self) self:x(scale(i,1,4,-48*WideScreenDiff(),240*WideScreenDiff())):y(12*WideScreenDiff()):zoomx(0.5*WideScreenDiff()):zoomy(0.75*WideScreenDiff()) end
 	}
 end
 

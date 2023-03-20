@@ -3,9 +3,7 @@ local player = Var "Player"
 return Def.ActorFrame{
 	InitCommand=function(self)
 		self:zoom(0.5):x( _screen.cx - _screen.w/8 + 60 ):y(80 - 7.5)
-		if player == PLAYER_2 then
-			self:x( _screen.cx + _screen.w/3.4 + 60 )
-		end
+		if player == PLAYER_2 then self:x( _screen.cx + _screen.w/3.4 + 60 ) end
 	end,
 	Def.ActorFrame{
 		InitCommand=function(self) self:rotationz(-90):zoom(2):addx(player == PLAYER_1 and -100 or 100) end,
@@ -21,10 +19,10 @@ return Def.ActorFrame{
 			end
 		end,
 		LoadActor("meter black")..{
-			InitCommand=function(self) self:zoomx(1.04) end
+			InitCommand=function(self) self:zoomx(1.05) end
 		},
 		LoadActor("meter grad")..{
-			InitCommand=function(self) self:zoomx(1.04):cropright(1):sleep(1):decelerate(0.6):cropright(0) end,
+			InitCommand=function(self) self:zoomx(1.05):cropright(1):sleep(1):decelerate(0.6):cropright(0) end,
 			LifeChangedMessageCommand=function(self,params)
 				if params.Player == player then
 					local screen = SCREENMAN:GetTopScreen()
@@ -74,9 +72,7 @@ return Def.ActorFrame{
 			BeginCommand=function(self)
 				local screen = SCREENMAN:GetTopScreen()
 				local glifemeter = screen:GetLifeMeter(player)
-				self:settext(glifemeter:GetTotalLives())
-				self:x(-1):y(-5):maxwidth(28)
-				self:valign(1)
+				self:settext(glifemeter:GetTotalLives()):x(-1):y(-5):maxwidth(28):valign(1)
 			end,
 			LifeChangedMessageCommand=function(self,params)
 				if params.Player == player then
@@ -86,18 +82,14 @@ return Def.ActorFrame{
 		},
 		LoadFont("_angel glow")..{
 			BeginCommand=function(self)
-				self:settext("_")
-				self:x(-1):y(-12)
-				self:zoomx(2)
+				self:settext("_"):x(-1):y(-12):zoomx(2)
 			end
 		},
 		LoadFont("_angel glow")..{
 			BeginCommand=function(self)
 				local screen = SCREENMAN:GetTopScreen()
 				local glifemeter = screen:GetLifeMeter(player)
-				self:settext(glifemeter:GetTotalLives())
-				self:x(-1):y(5):maxwidth(28)
-				self:valign(0)
+				self:settext(glifemeter:GetTotalLives()):x(-1):y(5):maxwidth(28):valign(0)
 			end
 		}
 	}

@@ -58,7 +58,7 @@ function GetScreenSelectMusicHelpText()
 		end
 	end
 
-	if GAMESTATE:GetEnv("Workout") and IsHome() then
+	if getenv("Workout") and IsHome() then
 		ret = ret .. "::" .. THEME:GetString( "ScreenSelectMusic", "WorkoutHelpTextAppend" )
 	end
 

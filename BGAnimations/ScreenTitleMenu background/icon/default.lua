@@ -3,12 +3,12 @@ return Def.ActorFrame{
 		Name="Stages",
 		LoadActor("_icon")..{
 			Condition=not isFinal(),
-			InitCommand=function(self) self:x(SCREEN_RIGHT-200):y(isFinal() and SCREEN_TOP+24 or SCREEN_TOP+32) end,
+			InitCommand=function(self) self:x(SCREEN_RIGHT-200*WideScreenDiff()):y(isFinal() and SCREEN_TOP+24*WideScreenDiff() or SCREEN_TOP+32*WideScreenDiff()):zoom(WideScreenDiff()) end,
 			OnCommand=function(self) self:diffusealpha(0):sleep(0.7):linear(0.4):diffusealpha(1) end
 		},
 		LoadFont("_v 26px bold black")..{
 			Text=PREFSMAN:GetPreference('SongsPerPlay'),
-			InitCommand=function(self) self:x(SCREEN_RIGHT-200+1):y(isFinal() and SCREEN_TOP+19 or SCREEN_TOP+27):zoom(0.8) end,
+			InitCommand=function(self) self:x(SCREEN_RIGHT-199*WideScreenDiff()):y(isFinal() and SCREEN_TOP+19*WideScreenDiff() or SCREEN_TOP+27*WideScreenDiff()):zoom(0.8*WideScreenDiff()) end,
 			OnCommand=function(self)
 				self:diffusealpha(0):sleep(0.7):linear(0.4):diffusealpha(1)
 				if GAMESTATE:IsEventMode() then self:settext("∞") end
@@ -16,13 +16,13 @@ return Def.ActorFrame{
 		},
 		LoadFont("_v 26px bold black")..{
 			Text="ROUNDS",
-			InitCommand=function(self) self:x(SCREEN_RIGHT-200):y(isFinal() and SCREEN_TOP+36 or SCREEN_TOP+44):zoom(0.4) end,
+			InitCommand=function(self) self:x(SCREEN_RIGHT-200*WideScreenDiff()):y(isFinal() and SCREEN_TOP+36*WideScreenDiff() or SCREEN_TOP+42*WideScreenDiff()):zoom(0.4*WideScreenDiff()) end,
 			OnCommand=function(self) self:diffusealpha(0):sleep(0.7):linear(0.4):diffusealpha(1) end
 		}
 	},
 	Def.ActorFrame{
 		Name="Difficulty",
-		InitCommand=function(self) self:x(SCREEN_RIGHT-200+53*1) end,
+		InitCommand=function(self) self:x(SCREEN_RIGHT+(-200+53*1)*WideScreenDiff()):zoom(WideScreenDiff()) end,
 		LoadActor("_icon")..{
 			Condition=not isFinal(),
 			InitCommand=function(self) self:y(isFinal() and SCREEN_TOP+24 or SCREEN_TOP+32) end,
@@ -116,7 +116,7 @@ return Def.ActorFrame{
 	},
 	Def.ActorFrame{
 		Name="Timing",
-		InitCommand=function(self) self:x(SCREEN_RIGHT-200+53*2) end,
+		InitCommand=function(self) self:x(SCREEN_RIGHT+(-200+53*2)*WideScreenDiff()):zoom(WideScreenDiff()) end,
 		LoadActor("_icon")..{
 			Condition=not isFinal(),
 			InitCommand=function(self) self:y(isFinal() and SCREEN_TOP+24 or SCREEN_TOP+32) end,
@@ -238,29 +238,29 @@ return Def.ActorFrame{
 				line1:settext("JOINT")
 				line2:settext("PREMIUM")
 				line1:addy(1)
-				line1:zoom(0.6)
-				line2:zoomx(0.38)
-				line2:zoomy(0.4)
+				line1:zoom(0.6*WideScreenDiff())
+				line2:zoomx(0.38*WideScreenDiff())
+				line2:zoomy(0.4*WideScreenDiff())
 			elseif premium == 'Premium_DoubleFor1Credit' then
 				line1:settext("1 CREDIT")
 				line2:settext("DOUBLES")
-				line1:zoom(0.4)
-				line2:zoom(0.4)
+				line1:zoom(0.4*WideScreenDiff())
+				line2:zoom(0.4*WideScreenDiff())
 			end
 		end,
 		LoadActor("_icon")..{
 			Condition=not isFinal(),
-			InitCommand=function(self) self:x(SCREEN_RIGHT-200+53*3):y(isFinal() and SCREEN_TOP+24 or SCREEN_TOP+32) end,
+			InitCommand=function(self) self:x(SCREEN_RIGHT+(-200+53*3)*WideScreenDiff()):y(isFinal() and SCREEN_TOP+24 or SCREEN_TOP+32):zoom(WideScreenDiff()) end,
 			OnCommand=function(self) self:diffusealpha(0):sleep(0.7):linear(0.4):diffusealpha(1) end
 		},
 		LoadFont("_v 26px bold black")..{
 			Name="Line1",
-			InitCommand=function(self) self:x(SCREEN_RIGHT-199+53*3):y(isFinal() and SCREEN_TOP+18 or SCREEN_TOP+26) end,
+			InitCommand=function(self) self:x(SCREEN_RIGHT+(-199+53*3)*WideScreenDiff()):y(isFinal() and SCREEN_TOP+18 or SCREEN_TOP+26) end,
 			OnCommand=function(self) self:diffusealpha(0):sleep(0.7):linear(0.4):diffusealpha(1) end
 		},
 		LoadFont("_v 26px bold black")..{
 			Name="Line2",
-			InitCommand=function(self) self:x(SCREEN_RIGHT-199+53*3):y(isFinal() and SCREEN_TOP+30 or SCREEN_TOP+38) end,
+			InitCommand=function(self) self:x(SCREEN_RIGHT+(-199+53*3)*WideScreenDiff()):y(isFinal() and SCREEN_TOP+30 or SCREEN_TOP+38) end,
 			OnCommand=function(self) self:diffusealpha(0):sleep(0.7):linear(0.4):diffusealpha(1) end
 		}
 	},
@@ -269,17 +269,17 @@ return Def.ActorFrame{
 		InitCommand=function(self) self:visible(false) end,
 		LoadActor("_icon")..{
 			Condition=not isFinal(),
-			InitCommand=function(self) self:x(SCREEN_RIGHT-200+53*3):y(isFinal() and SCREEN_TOP+24 or SCREEN_TOP+32) end,
+			InitCommand=function(self) self:x(SCREEN_RIGHT+(-200+53*3)*WideScreenDiff()):y(isFinal() and SCREEN_TOP+24 or SCREEN_TOP+32):zoom(WideScreenDiff()) end,
 			OnCommand=function(self) self:diffusealpha(0):sleep(0.7):linear(0.4):diffusealpha(1) end
 		},
 		LoadFont("_v 26px bold black")..{
 			Text="USB",
-			InitCommand=function(self) self:x(SCREEN_RIGHT-200+53*3):y(isFinal() and SCREEN_TOP+19 or SCREEN_TOP+27):zoom(0.6) end,
+			InitCommand=function(self) self:x(SCREEN_RIGHT+(-200+53*3)*WideScreenDiff()):y(isFinal() and SCREEN_TOP+19 or SCREEN_TOP+27):zoom(0.6*WideScreenDiff()) end,
 			OnCommand=function(self) self:diffusealpha(0):sleep(0.7):linear(0.4):diffusealpha(1) end
 		},
 		LoadFont("_v 26px bold black")..{
 			Text="SONGS",
-			InitCommand=function(self) self:x(SCREEN_RIGHT-200+53*3):y(isFinal() and SCREEN_TOP+32 or SCREEN_TOP+40):zoom(0.4) end,
+			InitCommand=function(self) self:x(SCREEN_RIGHT+(-200+53*3)*WideScreenDiff()):y(isFinal() and SCREEN_TOP+32 or SCREEN_TOP+40):zoom(0.4*WideScreenDiff()) end,
 			OnCommand=function(self) self:diffusealpha(0):sleep(0.7):linear(0.4):diffusealpha(1) end
 		}
 	}

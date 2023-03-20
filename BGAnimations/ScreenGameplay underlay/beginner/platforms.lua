@@ -7,7 +7,7 @@ return Def.ActorFrame{
 	Def.ActorFrame{
 		Condition=GAMESTATE:IsHumanPlayer(PLAYER_1),
 		Name="PlatformP1",
-		InitCommand=function(self) self:x(P1X):y(SCREEN_CENTER_Y+40):zoom(1.2):rotationx(P1r):fov(45):vanishpoint(SCREEN_CENTER_X-160,SCREEN_CENTER_Y+40) end,
+		InitCommand=function(self) self:x(P1X):y(SCREEN_CENTER_Y+40*WideScreenDiff()):zoom(1.2*WideScreenDiff()):rotationx(P1r):fov(45):vanishpoint(SCREEN_CENTER_X-160,SCREEN_CENTER_Y+40) end,
 		BeginCommand=function(self)
 			self:visible(GAMESTATE:GetCurrentSteps(PLAYER_1):GetDifficulty()=='Difficulty_Beginner' and isRegular())
 		end,
@@ -45,7 +45,7 @@ return Def.ActorFrame{
 	Def.ActorFrame{
 		Condition=GAMESTATE:IsHumanPlayer(PLAYER_2),
 		Name="PlatformP2",
-		InitCommand=function(self) self:x(P2X):y(SCREEN_CENTER_Y+40):zoom(1.2):rotationx(P2r):fov(45):vanishpoint(SCREEN_CENTER_X+160,SCREEN_CENTER_Y+40) end,
+		InitCommand=function(self) self:x(P2X):y(SCREEN_CENTER_Y+40*WideScreenDiff()):zoom(1.2*WideScreenDiff()):rotationx(P2r):fov(45):vanishpoint(SCREEN_CENTER_X+160,SCREEN_CENTER_Y+40) end,
 		BeginCommand=function(self)
 			self:visible(GAMESTATE:GetCurrentSteps(PLAYER_2):GetDifficulty()=='Difficulty_Beginner' and isRegular())
 		end,

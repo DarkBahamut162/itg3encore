@@ -29,20 +29,20 @@ return Def.ActorFrame{
 
 	Def.ActorFrame{
 		Name="StepArtistP1",
-		InitCommand=function(self) self:x(SCREEN_LEFT):y(SCREEN_BOTTOM-109):addx(-SCREEN_WIDTH):player(PLAYER_1):draworder(-2) end,
+		InitCommand=function(self) self:x(SCREEN_LEFT):y(SCREEN_BOTTOM-109*WideScreenDiff()):addx(-SCREEN_WIDTH):player(PLAYER_1):draworder(-2) end,
 		OnCommand=function(self) self:decelerate(0.75):addx(SCREEN_WIDTH) end,
 		OffCommand=function(self) self:accelerate(0.75):addx(-SCREEN_WIDTH) end,
-		ShowCommand=function(self) self:stoptweening():decelerate(0.3):y(SCREEN_BOTTOM-127) end,
-		HideCommand=function(self) self:stoptweening():decelerate(0.3):y(SCREEN_BOTTOM-109) end,
+		ShowCommand=function(self) self:stoptweening():decelerate(0.3):y(SCREEN_BOTTOM-127*WideScreenDiff()) end,
+		HideCommand=function(self) self:stoptweening():decelerate(0.3):y(SCREEN_BOTTOM-109*WideScreenDiff()) end,
 		SelectMenuOpenedMessageCommand=function(self)
 			self:playcommand((GAMESTATE:GetCurrentSong() or GAMESTATE:GetCurrentCourse()) and "Show" or "Hide")
 		end,
 		SelectMenuClosedMessageCommand=function(self) self:playcommand("Hide") end,
 		LoadActor(THEME:GetPathG("_pane","elements/_artist"))..{
-			InitCommand=function(self) self:horizalign(left):zoom(0.5) end
+			InitCommand=function(self) self:horizalign(left):zoom(0.5*WideScreenDiff()) end
 		},
 		LoadFont("_v 26px bold white")..{
-			InitCommand=function(self) self:maxwidth(350):horizalign(left):x(20):y(2):shadowlength(0.5):zoom(0.5) end,
+			InitCommand=function(self) self:maxwidth(350):horizalign(left):x(20*WideScreenDiff()):y(2*WideScreenDiff()):shadowlength(0.5):zoom(0.5*WideScreenDiff()) end,
 			CurrentSongChangedMessageCommand=function(self) self:playcommand("Update") end,
 			CurrentCourseChangedMessageCommand=function(self) self:playcommand("Update") end,
 			CurrentStepsP1ChangedMessageCommand=function(self) self:playcommand("Update") end,
@@ -83,20 +83,20 @@ return Def.ActorFrame{
 	},
 	Def.ActorFrame{
 		Name="StepArtistP2",
-		InitCommand=function(self) self:x(SCREEN_RIGHT):y(SCREEN_BOTTOM-109):addx(SCREEN_WIDTH):player(PLAYER_2):draworder(-2) end,
+		InitCommand=function(self) self:x(SCREEN_RIGHT):y(SCREEN_BOTTOM-109*WideScreenDiff()):addx(SCREEN_WIDTH):player(PLAYER_2):draworder(-2) end,
 		OnCommand=function(self) self:decelerate(0.75):addx(-SCREEN_WIDTH) end,
 		OffCommand=function(self) self:accelerate(0.75):addx(SCREEN_WIDTH) end,
-		ShowCommand=function(self) self:stoptweening():decelerate(0.3):y(SCREEN_BOTTOM-127) end,
-		HideCommand=function(self) self:stoptweening():decelerate(0.3):y(SCREEN_BOTTOM-109) end,
+		ShowCommand=function(self) self:stoptweening():decelerate(0.3):y(SCREEN_BOTTOM-127*WideScreenDiff()) end,
+		HideCommand=function(self) self:stoptweening():decelerate(0.3):y(SCREEN_BOTTOM-109*WideScreenDiff()) end,
 		SelectMenuOpenedMessageCommand=function(self)
 			self:playcommand((GAMESTATE:GetCurrentSong() or GAMESTATE:GetCurrentCourse()) and "Show" or "Hide")
 		end,
 		SelectMenuClosedMessageCommand=function(self) self:playcommand("Hide") end,
 		LoadActor(THEME:GetPathG("_pane","elements/_artist"))..{
-			InitCommand=function(self) self:horizalign(left):zoomx(-.5):zoomy(0.5) end
+			InitCommand=function(self) self:horizalign(left):zoomx(-0.5*WideScreenDiff()):zoomy(0.5*WideScreenDiff()) end
 		},
 		LoadFont("_v 26px bold white")..{
-			InitCommand=function(self) self:maxwidth(350):horizalign(right):x(-20):y(2):shadowlength(0.5):zoom(0.5) end,
+			InitCommand=function(self) self:maxwidth(350):horizalign(right):x(-20*WideScreenDiff()):y(2*WideScreenDiff()):shadowlength(0.5):zoom(0.5*WideScreenDiff()) end,
 			CurrentSongChangedMessageCommand=function(self) self:playcommand("Update") end,
 			CurrentCourseChangedMessageCommand=function(self) self:playcommand("Update") end,
 			CurrentStepsP2ChangedMessageCommand=function(self) self:playcommand("Update") end,
@@ -139,32 +139,32 @@ return Def.ActorFrame{
 		Name="Pane",
 		InitCommand=function(self) self:draworder(-1) end,
 		LoadActor(THEME:GetPathG("_pane","elements/_ldifficulty"))..{
-			InitCommand=function(self) self:x(SCREEN_CENTER_X+12):y(SCREEN_BOTTOM-8):horizalign(right):vertalign(bottom):player(PLAYER_1) end,
+			InitCommand=function(self) self:x(SCREEN_CENTER_X+12*WideScreenDiff()):y(SCREEN_BOTTOM-8*WideScreenDiff()):zoom(WideScreenDiff()):horizalign(right):vertalign(bottom):player(PLAYER_1) end,
 			OnCommand=function(self) self:addx(-SCREEN_WIDTH):sleep(0.5):decelerate(0.75):addx(SCREEN_WIDTH) end,
 			OffCommand=function(self) self:accelerate(0.75):addx(-SCREEN_WIDTH) end
 		},
 		LoadActor(THEME:GetPathG("_pane","elements/_ldifficulty"))..{
-			InitCommand=function(self) self:x(SCREEN_CENTER_X-12):y(SCREEN_BOTTOM-8):zoomx(-1):horizalign(right):vertalign(bottom):player(PLAYER_2) end,
+			InitCommand=function(self) self:x(SCREEN_CENTER_X-12*WideScreenDiff()):y(SCREEN_BOTTOM-8*WideScreenDiff()):zoomx(-1*WideScreenDiff()):zoomy(WideScreenDiff()):horizalign(right):vertalign(bottom):player(PLAYER_2) end,
 			OnCommand=function(self) self:addx(SCREEN_WIDTH):sleep(0.5):decelerate(0.75):addx(-SCREEN_WIDTH) end,
 			OffCommand=function(self) self:accelerate(0.75):addx(SCREEN_WIDTH) end
 		},
 		LoadActor(THEME:GetPathG("_pane","elements/_lbase"))..{
-			InitCommand=function(self) self:x(SCREEN_CENTER_X+26):y(SCREEN_BOTTOM):horizalign(right):vertalign(bottom) end,
+			InitCommand=function(self) self:x(SCREEN_CENTER_X+26*WideScreenDiff()):y(SCREEN_BOTTOM):zoom(WideScreenDiff()):horizalign(right):vertalign(bottom) end,
 			OnCommand=function(self) self:addx(-SCREEN_WIDTH):decelerate(0.75):addx(SCREEN_WIDTH) end,
 			OffCommand=function(self) self:sleep(0.5):accelerate(0.75):addx(-SCREEN_WIDTH) end
 		},
 		LoadActor(THEME:GetPathG("_pane","elements/_basewidth"))..{
-			InitCommand=function(self) self:x(SCREEN_CENTER_X-174):y(SCREEN_BOTTOM):horizalign(right):vertalign(bottom):zoomtowidth(SCREEN_WIDTH/2) end,
+			InitCommand=function(self) self:x(SCREEN_CENTER_X-174*WideScreenDiff()):y(SCREEN_BOTTOM):zoom(WideScreenDiff()):horizalign(right):vertalign(bottom):zoomtowidth(SCREEN_WIDTH/2) end,
 			OnCommand=function(self) self:addx(-SCREEN_WIDTH):decelerate(0.75):addx(SCREEN_WIDTH) end,
 			OffCommand=function(self) self:sleep(0.5):accelerate(0.75):addx(-SCREEN_WIDTH) end
 		},
 		LoadActor(THEME:GetPathG("_pane","elements/_rbase"))..{
-			InitCommand=function(self) self:x(SCREEN_CENTER_X-26):y(SCREEN_BOTTOM):horizalign(left):vertalign(bottom) end,
+			InitCommand=function(self) self:x(SCREEN_CENTER_X-26*WideScreenDiff()):y(SCREEN_BOTTOM):zoom(WideScreenDiff()):horizalign(left):vertalign(bottom) end,
 			OnCommand=function(self) self:addx(SCREEN_WIDTH):decelerate(0.75):addx(-SCREEN_WIDTH) end,
 			OffCommand=function(self) self:sleep(0.5):accelerate(0.75):addx(SCREEN_WIDTH) end
 		},
 		LoadActor(THEME:GetPathG("_pane","elements/_basewidth"))..{
-			InitCommand=function(self) self:x(SCREEN_CENTER_X+174):y(SCREEN_BOTTOM):horizalign(left):vertalign(bottom):zoomtowidth(SCREEN_WIDTH/2) end,
+			InitCommand=function(self) self:x(SCREEN_CENTER_X+174*WideScreenDiff()):y(SCREEN_BOTTOM):zoom(WideScreenDiff()):horizalign(left):vertalign(bottom):zoomtowidth(SCREEN_WIDTH/2) end,
 			OnCommand=function(self) self:addx(SCREEN_WIDTH):decelerate(0.75):addx(-SCREEN_WIDTH) end,
 			OffCommand=function(self) self:sleep(0.5):accelerate(0.75):addx(SCREEN_WIDTH) end
 		}
@@ -178,12 +178,12 @@ return Def.ActorFrame{
 			self:visible(GAMESTATE:IsPlayerEnabled(PLAYER_1) and not isDouble)
 		end,
 		LoadActor(THEME:GetPathG("_pane elements/_lneon",isFinal() and "final" or "normal"))..{
-			InitCommand=function(self) self:x(SCREEN_CENTER_X-90):y(SCREEN_BOTTOM-76):horizalign(right):vertalign(bottom):diffuseshift():effectcolor1(color("#bed0ff")):effectcolor2(color("#767676")):effectoffset(0):effectclock("beat") end,
+			InitCommand=function(self) self:x(SCREEN_CENTER_X-90*WideScreenDiff()):y(SCREEN_BOTTOM-76*WideScreenDiff()):zoom(WideScreenDiff()):horizalign(right):vertalign(bottom):diffuseshift():effectcolor1(color("#bed0ff")):effectcolor2(color("#767676")):effectoffset(0):effectclock("beat") end,
 			OnCommand=function(self) self:addx(-SCREEN_WIDTH):decelerate(0.75):addx(SCREEN_WIDTH) end,
 			OffCommand=function(self) self:sleep(0.5):accelerate(0.75):addx(-SCREEN_WIDTH) end
 		},
 		LoadActor(THEME:GetPathG("_pane elements/_neonwidth",isFinal() and "final" or "normal"))..{
-			InitCommand=function(self) self:x(SCREEN_CENTER_X-146):y(SCREEN_BOTTOM-76):horizalign(right):vertalign(bottom):zoomtowidth(SCREEN_WIDTH/2):diffuseshift():effectcolor1(color("#bed0ff")):effectcolor2(color("#767676")):effectoffset(0):effectclock("beat") end,
+			InitCommand=function(self) self:x(SCREEN_CENTER_X-146*WideScreenDiff()):y(SCREEN_BOTTOM-76*WideScreenDiff()):zoom(WideScreenDiff()):horizalign(right):vertalign(bottom):zoomtowidth(SCREEN_WIDTH/2):diffuseshift():effectcolor1(color("#bed0ff")):effectcolor2(color("#767676")):effectoffset(0):effectclock("beat") end,
 			OnCommand=function(self) self:addx(-SCREEN_WIDTH):decelerate(0.75):addx(SCREEN_WIDTH) end,
 			OffCommand=function(self) self:sleep(0.5):accelerate(0.75):addx(-SCREEN_WIDTH) end
 		}
@@ -197,12 +197,12 @@ return Def.ActorFrame{
 			self:visible(GAMESTATE:IsPlayerEnabled(PLAYER_2) and not isDouble)
 		end,
 		LoadActor(THEME:GetPathG("_pane elements/_rneon",isFinal() and "final" or "normal"))..{
-			InitCommand=function(self) self:x(SCREEN_CENTER_X+90):y(SCREEN_BOTTOM-76):horizalign(left):vertalign(bottom):diffuseshift():effectcolor1(color("#bed0ff")):effectcolor2(color("#767676")):effectoffset(0):effectclock("beat") end,
+			InitCommand=function(self) self:x(SCREEN_CENTER_X+90*WideScreenDiff()):y(SCREEN_BOTTOM-76*WideScreenDiff()):zoom(WideScreenDiff()):horizalign(left):vertalign(bottom):diffuseshift():effectcolor1(color("#bed0ff")):effectcolor2(color("#767676")):effectoffset(0):effectclock("beat") end,
 			OnCommand=function(self) self:addx(SCREEN_WIDTH):decelerate(0.75):addx(-SCREEN_WIDTH) end,
 			OffCommand=function(self) self:sleep(0.5):accelerate(0.75):addx(SCREEN_WIDTH) end
 		},
 		LoadActor(THEME:GetPathG("_pane elements/_neonwidth",isFinal() and "final" or "normal"))..{
-			InitCommand=function(self) self:x(SCREEN_CENTER_X+146):y(SCREEN_BOTTOM-76):horizalign(left):vertalign(bottom):zoomtowidth(SCREEN_WIDTH/2):diffuseshift():effectcolor1(color("#bed0ff")):effectcolor2(color("#767676")):effectoffset(0):effectclock("beat") end,
+			InitCommand=function(self) self:x(SCREEN_CENTER_X+146*WideScreenDiff()):y(SCREEN_BOTTOM-76*WideScreenDiff()):zoom(WideScreenDiff()):horizalign(left):vertalign(bottom):zoomtowidth(SCREEN_WIDTH/2):diffuseshift():effectcolor1(color("#bed0ff")):effectcolor2(color("#767676")):effectoffset(0):effectclock("beat") end,
 			OnCommand=function(self) self:addx(SCREEN_WIDTH):decelerate(0.75):addx(-SCREEN_WIDTH) end,
 			OffCommand=function(self) self:sleep(0.5):accelerate(0.75):addx(SCREEN_WIDTH) end
 		}
@@ -218,12 +218,12 @@ return Def.ActorFrame{
 		Def.ActorFrame{
 			Name="LeftSide",
 			LoadActor(THEME:GetPathG("_pane elements/_lneon",isFinal() and "final" or "normal"))..{
-				InitCommand=function(self) self:x(SCREEN_CENTER_X-90):y(SCREEN_BOTTOM-76):horizalign(right):vertalign(bottom):diffuseshift():effectcolor1(color("#bed0ff")):effectcolor2(color("#767676")):effectoffset(0):effectclock("beat") end,
+				InitCommand=function(self) self:x(SCREEN_CENTER_X-90*WideScreenDiff()):y(SCREEN_BOTTOM-76*WideScreenDiff()):zoom(WideScreenDiff()):horizalign(right):vertalign(bottom):diffuseshift():effectcolor1(color("#bed0ff")):effectcolor2(color("#767676")):effectoffset(0):effectclock("beat") end,
 				OnCommand=function(self) self:addx(-SCREEN_WIDTH):decelerate(0.75):addx(SCREEN_WIDTH) end,
 				OffCommand=function(self) self:sleep(0.5):accelerate(0.75):addx(-SCREEN_WIDTH) end
 			},
 			LoadActor(THEME:GetPathG("_pane elements/_neonwidth",isFinal() and "final" or "normal"))..{
-				InitCommand=function(self) self:x(SCREEN_CENTER_X-146):y(SCREEN_BOTTOM-76):horizalign(right):vertalign(bottom):zoomtowidth(SCREEN_WIDTH/2):diffuseshift():effectcolor1(color("#bed0ff")):effectcolor2(color("#767676")):effectoffset(0):effectclock("beat") end,
+				InitCommand=function(self) self:x(SCREEN_CENTER_X-146*WideScreenDiff()):y(SCREEN_BOTTOM-76*WideScreenDiff()):zoom(WideScreenDiff()):horizalign(right):vertalign(bottom):zoomtowidth(SCREEN_WIDTH/2):diffuseshift():effectcolor1(color("#bed0ff")):effectcolor2(color("#767676")):effectoffset(0):effectclock("beat") end,
 				OnCommand=function(self) self:addx(-SCREEN_WIDTH):decelerate(0.75):addx(SCREEN_WIDTH) end,
 				OffCommand=function(self) self:sleep(0.5):accelerate(0.75):addx(-SCREEN_WIDTH) end
 			}
@@ -231,12 +231,12 @@ return Def.ActorFrame{
 		Def.ActorFrame{
 			Name="RightSide",
 			LoadActor(THEME:GetPathG("_pane elements/_rneon",isFinal() and "final" or "normal"))..{
-				InitCommand=function(self) self:x(SCREEN_CENTER_X+90):y(SCREEN_BOTTOM-76):horizalign(left):vertalign(bottom):diffuseshift():effectcolor1(color("#bed0ff")):effectcolor2(color("#767676")):effectoffset(0):effectclock("beat") end,
+				InitCommand=function(self) self:x(SCREEN_CENTER_X+90*WideScreenDiff()):y(SCREEN_BOTTOM-76*WideScreenDiff()):zoom(WideScreenDiff()):horizalign(left):vertalign(bottom):diffuseshift():effectcolor1(color("#bed0ff")):effectcolor2(color("#767676")):effectoffset(0):effectclock("beat") end,
 				OnCommand=function(self) self:addx(SCREEN_WIDTH):decelerate(0.75):addx(-SCREEN_WIDTH) end,
 				OffCommand=function(self) self:sleep(0.5):accelerate(0.75):addx(SCREEN_WIDTH) end
 			},
 			LoadActor(THEME:GetPathG("_pane elements/_neonwidth",isFinal() and "final" or "normal"))..{
-				InitCommand=function(self) self:x(SCREEN_CENTER_X+146):y(SCREEN_BOTTOM-76):horizalign(left):vertalign(bottom):zoomtowidth(SCREEN_WIDTH/2):diffuseshift():effectcolor1(color("#bed0ff")):effectcolor2(color("#767676")):effectoffset(0):effectclock("beat") end,
+				InitCommand=function(self) self:x(SCREEN_CENTER_X+146*WideScreenDiff()):y(SCREEN_BOTTOM-76*WideScreenDiff()):zoom(WideScreenDiff()):horizalign(left):vertalign(bottom):zoomtowidth(SCREEN_WIDTH/2):diffuseshift():effectcolor1(color("#bed0ff")):effectcolor2(color("#767676")):effectoffset(0):effectclock("beat") end,
 				OnCommand=function(self) self:addx(SCREEN_WIDTH):decelerate(0.75):addx(-SCREEN_WIDTH) end,
 				OffCommand=function(self) self:sleep(0.5):accelerate(0.75):addx(SCREEN_WIDTH) end
 			}
@@ -244,11 +244,11 @@ return Def.ActorFrame{
 	},
 	Def.ActorFrame{
 		Name="PaneDisplayArea",
-		InitCommand=function(self) self:y(SCREEN_BOTTOM-184) end,
+		InitCommand=function(self) self:y(SCREEN_BOTTOM-184*WideScreenDiff()):zoom(WideScreenDiff()) end,
 		Def.ActorFrame{
 			Name="PaneDisplayP1",
 			Condition=GAMESTATE:IsHumanPlayer(PLAYER_1),
-			InitCommand=function(self) self:x(SCREEN_LEFT+SCREEN_WIDTH/5.415):player(PLAYER_1) end,
+			InitCommand=function(self) self:x(SCREEN_LEFT+SCREEN_WIDTH/5.415/WideScreenDiff()):player(PLAYER_1) end,
 			LoadActor(THEME:GetPathG("_pane","icons"),PLAYER_1),
 			LoadActor(THEME:GetPathG("_pane","fill"),PLAYER_1),
 			LoadActor(THEME:GetPathG("_pane","steps"),PLAYER_1),
@@ -259,7 +259,7 @@ return Def.ActorFrame{
 		Def.ActorFrame{
 			Name="PaneDisplayP2",
 			Condition=GAMESTATE:IsHumanPlayer(PLAYER_2),
-			InitCommand=function(self) self:x(SCREEN_RIGHT-SCREEN_WIDTH/5.415):player(PLAYER_2) end,
+			InitCommand=function(self) self:x(SCREEN_RIGHT-SCREEN_WIDTH/5.415/WideScreenDiff()):player(PLAYER_2) end,
 			LoadActor(THEME:GetPathG("_pane","icons"),PLAYER_2),
 			LoadActor(THEME:GetPathG("_pane","fill"),PLAYER_2),
 			LoadActor(THEME:GetPathG("_pane","steps"),PLAYER_2),
@@ -268,9 +268,7 @@ return Def.ActorFrame{
 			LoadActor(THEME:GetPathG("_player","scores"),PLAYER_2)
 		}
 	},
-	LoadActor(THEME:GetPathB("ScreenWithMenuElements","underlay/_sides"))..{
-		InitCommand=function(self) self:ztest(true) end
-	},
+	LoadActor(THEME:GetPathB("ScreenWithMenuElements","underlay/_sides"))..{ InitCommand=function(self) self:ztest(true) end },
 	LoadActor(THEME:GetPathB("ScreenWithMenuElements","underlay/_base")),
 	LoadActor(THEME:GetPathB("ScreenWithMenuElements","underlay/_expandtop")),
 	StandardDecorationFromFileOptional("StyleIcon","StyleIcon"),
@@ -278,64 +276,58 @@ return Def.ActorFrame{
 
 	Def.ActorFrame{
 		Name="SelButtonMenu",
-		InitCommand=function(self) self:y(SCREEN_BOTTOM-54):visible(DifficultyChangingAvailable()) end,
+		InitCommand=function(self) self:y(SCREEN_BOTTOM-54*WideScreenDiff()):visible(DifficultyChangingAvailable()) end,
 		LoadFont("_v 26px bold white")..{
 			Text="&START; Change Sort",
-			InitCommand=function(self) self:CenterX():zoomx(0.3):zoomy(0.6):diffusealpha(0):shadowlength(2) end,
+			InitCommand=function(self) self:CenterX():zoomx(0.3*WideScreenDiff()):zoomy(0.6*WideScreenDiff()):diffusealpha(0):shadowlength(2) end,
 			OffCommand=function(self) self:linear(0.3):diffusealpha(0) end,
-			SelectMenuOpenedMessageCommand=function(self) self:stoptweening():bounceend(0.2):diffusealpha(1):zoomx(0.6) end,
-			SelectMenuClosedMessageCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(0):zoomx(0.3) end
+			SelectMenuOpenedMessageCommand=function(self) self:stoptweening():bounceend(0.2):diffusealpha(1):zoomx(0.6*WideScreenDiff()) end,
+			SelectMenuClosedMessageCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(0):zoomx(0.3*WideScreenDiff()) end
 		},
 		Def.ActorFrame{
-			Name="Easier",
-			InitCommand=function(self)
-				self:x(SCREEN_CENTER_X-100)
-			end,
+			InitCommand=function(self) self:x(SCREEN_CENTER_X-100*WideScreenDiff()) end,
 			LoadFont("_v 26px bold black")..{
 				Text="&MENULEFT;",
-				OnCommand=function(self) self:addy(36):x(-5):horizalign(right):zoomx(0.5):zoomy(0.7):diffusealpha(0):shadowlength(0) end,
+				OnCommand=function(self) self:addy(36*WideScreenDiff()):x(-5*WideScreenDiff()):horizalign(right):zoomx(0.5*WideScreenDiff()):zoomy(0.7*WideScreenDiff()):diffusealpha(0):shadowlength(0) end,
 				OffCommand=function(self) self:linear(0.3):diffusealpha(0) end,
-				SelectMenuOpenedMessageCommand=function(self) self:stoptweening():bounceend(0.2):diffusealpha(1):zoomx(0.7) end,
-				SelectMenuClosedMessageCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(0):zoomx(0.5) end
+				SelectMenuOpenedMessageCommand=function(self) self:stoptweening():bounceend(0.2):diffusealpha(1):zoomx(0.7*WideScreenDiff()) end,
+				SelectMenuClosedMessageCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(0):zoomx(0.5*WideScreenDiff()) end
 			},
 			LoadFont("_v 26px bold black")..{
 				Text="Easier",
-				OnCommand=function(self) self:addy(36):x(0):horizalign(left):zoomx(0.5):zoomy(0.7):diffusealpha(0):diffuseramp():effectperiod(1):effectoffset(0.20):effectclock('beat'):effectcolor1(color("#FFFFFF")):effectcolor2(color("#20D020")):shadowlength(0) end,
+				OnCommand=function(self) self:addy(36*WideScreenDiff()):x(0):horizalign(left):zoomx(0.5*WideScreenDiff()):zoomy(0.7*WideScreenDiff()):diffusealpha(0):diffuseramp():effectperiod(1):effectoffset(0.20):effectclock('beat'):effectcolor1(color("#FFFFFF")):effectcolor2(color("#20D020")):shadowlength(0) end,
 				OffCommand=function(self) self:linear(0.3):diffusealpha(0) end,
-				SelectMenuOpenedMessageCommand=function(self) self:stoptweening():bounceend(0.2):diffusealpha(1):zoomx(0.7) end,
-				SelectMenuClosedMessageCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(0):zoomx(0.5) end
+				SelectMenuOpenedMessageCommand=function(self) self:stoptweening():bounceend(0.2):diffusealpha(1):zoomx(0.7*WideScreenDiff()) end,
+				SelectMenuClosedMessageCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(0):zoomx(0.5*WideScreenDiff()) end
 			}
 		},
 		Def.ActorFrame{
-			Name="Harder",
-			InitCommand=function(self)
-				self:x(SCREEN_CENTER_X+100)
-			end,
+			InitCommand=function(self) self:x(SCREEN_CENTER_X+100*WideScreenDiff()) end,
 			LoadFont("_v 26px bold black")..{
 				Text="Harder",
-				OnCommand=function(self) self:addy(36):x(0):horizalign(right):zoomx(0.5):zoomy(0.7):diffusealpha(0):diffuseramp():effectperiod(1):effectoffset(0.20):effectclock('beat'):effectcolor1(color("#FFFFFF")):effectcolor2(color("#E06060")):shadowlength(0) end,
+				OnCommand=function(self) self:addy(36*WideScreenDiff()):x(0):horizalign(right):zoomx(0.5*WideScreenDiff()):zoomy(0.7*WideScreenDiff()):diffusealpha(0):diffuseramp():effectperiod(1):effectoffset(0.20):effectclock('beat'):effectcolor1(color("#FFFFFF")):effectcolor2(color("#E06060")):shadowlength(0) end,
 				OffCommand=function(self) self:linear(0.3):diffusealpha(0) end,
-				SelectMenuOpenedMessageCommand=function(self) self:stoptweening():bounceend(0.2):diffusealpha(1):zoomx(0.7) end,
-				SelectMenuClosedMessageCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(0):zoomx(0.5) end
+				SelectMenuOpenedMessageCommand=function(self) self:stoptweening():bounceend(0.2):diffusealpha(1):zoomx(0.7*WideScreenDiff()) end,
+				SelectMenuClosedMessageCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(0):zoomx(0.5*WideScreenDiff()) end
 			},
 			LoadFont("_v 26px bold black")..{
 				Text="&MENURIGHT;",
-				OnCommand=function(self) self:addy(36):x(15):zoomx(0.5):zoomy(0.7):diffusealpha(0):shadowlength(0) end,
+				OnCommand=function(self) self:addy(36*WideScreenDiff()):x(15*WideScreenDiff()):zoomx(0.5*WideScreenDiff()):zoomy(0.7*WideScreenDiff()):diffusealpha(0):shadowlength(0) end,
 				OffCommand=function(self) self:linear(0.3):diffusealpha(0) end,
-				SelectMenuOpenedMessageCommand=function(self) self:stoptweening():bounceend(0.2):diffusealpha(1):zoomx(0.7) end,
-				SelectMenuClosedMessageCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(0):zoomx(0.5) end
+				SelectMenuOpenedMessageCommand=function(self) self:stoptweening():bounceend(0.2):diffusealpha(1):zoomx(0.7*WideScreenDiff()) end,
+				SelectMenuClosedMessageCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(0):zoomx(0.5*WideScreenDiff()) end
 			}
 		}
 	},
 	LoadActor(THEME:GetPathG("ScreenSelectMusic","OptionsMessage"))..{
 		InitCommand=function(self) self:Center():pause():diffusealpha(0) end,
-		ShowPressStartForOptionsCommand=function(self) self:zoom(1.15):diffusealpha(0):decelerate(0.07):zoom(1):diffusealpha(1) end,
-		ShowEnteringOptionsCommand=function(self) self:stoptweening():zoomy(0):setstate(1):accelerate(0.07):zoomy(1) end,
+		ShowPressStartForOptionsCommand=function(self) self:zoom(1.15*WideScreenDiff()):diffusealpha(0):decelerate(0.07):zoom(WideScreenDiff()):diffusealpha(1) end,
+		ShowEnteringOptionsCommand=function(self) self:stoptweening():zoomy(0):setstate(1):accelerate(0.07):zoomy(WideScreenDiff()) end,
 		HidePressStartForOptionsCommandCommand=function(self) self:stoptweening():linear(0.3):cropleft(1.3) end
 	},
 	Def.ActorFrame{
 		Name="OptionsListBaseP1",
-		InitCommand=function(self) self:x(SCREEN_CENTER_X-220):y(SCREEN_CENTER_Y+22):zoomx(isFinal() and 1.1 or 1) end,
+		InitCommand=function(self) self:x(SCREEN_CENTER_X-220*WideScreenDiff()):y(SCREEN_CENTER_Y+22*WideScreenDiff()):zoomy(WideScreenDiff()):zoomx(isFinal() and 1.1*WideScreenDiff() or 1*WideScreenDiff()) end,
 		LoadActor(THEME:GetPathG("options pane",isFinal() and "final" or "normal"))..{
 			InitCommand=function(self) self:diffusealpha(0):zoomx(0.6) end,
 			OptionsListOpenedMessageCommand=function(self,params)
@@ -370,7 +362,7 @@ return Def.ActorFrame{
 	},
 	Def.ActorFrame{
 		Name="OptionsListBaseP2",
-		InitCommand=function(self) self:x(SCREEN_CENTER_X+220):y(SCREEN_CENTER_Y+22):zoomx(isFinal() and 1.1 or 1) end,
+		InitCommand=function(self) self:x(SCREEN_CENTER_X+220*WideScreenDiff()):y(SCREEN_CENTER_Y+22*WideScreenDiff()):zoomy(WideScreenDiff()):zoomx(isFinal() and 1.1*WideScreenDiff() or 1*WideScreenDiff()) end,
 		LoadActor(THEME:GetPathG("options pane",isFinal() and "final" or "normal"))..{
 			InitCommand=function(self) self:zoomx(-1):diffusealpha(0):zoomx(0.6) end,
 			OptionsListOpenedMessageCommand=function(self,params)

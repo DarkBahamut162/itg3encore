@@ -43,27 +43,10 @@ return Def.ActorFrame{
 	LoadFont("_r bold numbers") .. {
 		Name="Score"..pname(player),
 		InitCommand=function(self)
-			self:visible(not getenv("HideScore"..pname(player))):diffuse(PlayerColor(player)):x(math.floor(scale(player == PLAYER_1 and 0.25 or 0.75,0,1,SCREEN_LEFT,SCREEN_RIGHT)))
-			if getenv("Workout") then self:y(SCREEN_TOP+51) else self:y(SCREEN_TOP+61) end
-			if scoreType == 1 then
-				self:settextf("%09d",0) -- SCORE
-				self:ClearAttributes()
-				self:AddAttribute(0, {
-					Length = math.max(8, 0),
-					Diffuse = PlayerColorSemi(player),
-				})
-			elseif scoreType == 2 then
-				self:settext(FormatPercentScore(0)) -- PERCENT
-			elseif scoreType == 3 then
-				self:settextf("%04d",0) -- EX
-				self:ClearAttributes()
-				self:AddAttribute(0, {
-					Length = math.max(3, 0),
-					Diffuse = PlayerColorSemi(player),
-				})
-			end
+			self:visible(not getenv("HideScore"..pname(player))):diffuse(PlayerColor(player)):x(math.floor(scale(player == PLAYER_1 and 0.25 or 0.75,0,1,SCREEN_LEFT,SCREEN_RIGHT))):zoom(WideScreenDiff())
+			if getenv("Workout") then self:y(SCREEN_TOP+51*WideScreenDiff()) else self:y(SCREEN_TOP+61*WideScreenDiff()) end
 		end,
-		OnCommand=function(self) self:addy(-100):sleep(0.5):decelerate(0.8):addy(100) end,
+		OnCommand=function(self) self:queuecommand("RedrawScore"):addy(-100):sleep(0.5):decelerate(0.8):addy(100) end,
 		OffCommand=function(self) if AnyPlayerFullComboed() then self:sleep(1) end self:accelerate(0.8):addy(-100) end,
 		JudgmentMessageCommand=function(self,param)
 			local short = ToEnumShortString(param.TapNoteScore or param.HoldNoteScore)

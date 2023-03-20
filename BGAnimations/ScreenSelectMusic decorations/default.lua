@@ -1,7 +1,7 @@
 local t = LoadFallbackB()
 
 t[#t+1] = LoadFont("_v 26px bold shadow") .. {
-	InitCommand=function(self) self:x(isFinal() and SCREEN_CENTER_X+140 or SCREEN_CENTER_X + SCREEN_WIDTH/22):y(isFinal() and SCREEN_TOP+80 or SCREEN_TOP+78):zoom(0.5) end,
+	InitCommand=function(self) self:x(SCREEN_CENTER_X+140*WideScreenDiff()):y(SCREEN_CENTER_Y-160*WideScreenDiff()):zoom(0.5*WideScreenDiff()) end,
 	OnCommand=function(self) if isFinal() then self:addx(SCREEN_WIDTH) else self:addy(-100) end self:decelerate(0.75) if isFinal() then self:addx(-SCREEN_WIDTH) else self:addy(100) end end,
 	OffCommand=function(self) self:accelerate(0.75) if isFinal() then self:addx(SCREEN_WIDTH) else self:addy(-100) end  end,
 	BeginCommand=function(self) self:playcommand("Set") end,
@@ -20,7 +20,7 @@ t[#t+1] = StandardDecorationFromFile("BannerReflection","BannerReflection")
 t[#t+1] = StandardDecorationFromFile("Triangle","Triangle")
 
 t[#t+1] = Def.FadingBanner{
-	InitCommand=function(self) self:x(SCREEN_CENTER_X+160-20):y(SCREEN_TOP+160-11):addx(SCREEN_WIDTH):decelerate(0.75):addx(-SCREEN_WIDTH):ztest(true):vertalign(bottom):playcommand("Set") end,
+	InitCommand=function(self) self:x(SCREEN_CENTER_X+140*WideScreenDiff()):y(SCREEN_CENTER_Y-91*WideScreenDiff()):addx(SCREEN_WIDTH):decelerate(0.75):addx(-SCREEN_WIDTH):ztest(true):vertalign(bottom):playcommand("Set") end,
 	OffCommand=function(self) self:accelerate(0.75):addx(SCREEN_WIDTH) end,
 	SetCommand=function(self)
 		local song = GAMESTATE:GetCurrentSong()
@@ -55,7 +55,7 @@ t[#t+1] = Def.FadingBanner{
 				end
 			end
 		end
-		self:scaletoclipped(320,120)
+		self:scaletoclipped(320*WideScreenDiff(),120*WideScreenDiff())
 	end,
 	CurrentSongChangedMessageCommand=function(self) self:playcommand("Set") end,
 	CurrentCourseChangedMessageCommand=function(self) self:playcommand("Set") end,
@@ -67,10 +67,7 @@ local function StepsDisplay(pn)
 
 	return Def.StepsDisplay {
 		InitCommand=function(self) self:player(pn):Load("StepsDisplay",GAMESTATE:GetPlayerState(pn)) end,
-		CurrentSongChangedMessageCommand=function(self)
-			local song = GAMESTATE:GetCurrentSong()
-			self:visible(song ~= nil)
-		end,
+		CurrentSongChangedMessageCommand=function(self) self:visible(GAMESTATE:GetCurrentSong() ~= nil) end,
 		["CurrentSteps".. pname(pn) .."ChangedMessageCommand"]=function(self) set(self, pn) end,
 		["CurrentTrail".. pname(pn) .."ChangedMessageCommand"]=function(self) set(self, pn) end
 	}
@@ -79,8 +76,7 @@ end
 for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
 	t[#t+1] = StepsDisplay(pn) .. {
 		InitCommand=function(self)
-			self:player(pn)
-			self:name("StepsDisplay" .. PlayerNumberToString(pn))
+			self:player(pn):name("StepsDisplay" .. PlayerNumberToString(pn))
 			ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen")
 		end
 	}
@@ -95,28 +91,28 @@ t[#t+1] = LoadActor(THEME:GetPathS("OptionsList","closed"))..{
 }
 
 t[#t+1] = LoadActor(THEME:GetPathS("OptionsList","left"))..{
-	OptionsListRightMessageCommand=function(self) self:queuecommand("Refresh")end,
-	OptionsListLeftMessageCommand=function(self) self:queuecommand("Refresh")end,
-	OptionsListQuickChangeMessageCommand=function(self) self:queuecommand("Refresh")end,
+	OptionsListRightMessageCommand=function(self) self:queuecommand("Refresh") end,
+	OptionsListLeftMessageCommand=function(self) self:queuecommand("Refresh") end,
+	OptionsListQuickChangeMessageCommand=function(self) self:queuecommand("Refresh") end,
 	RefreshCommand=function(self)self:play() end
 }
 
 t[#t+1] = LoadActor(THEME:GetPathS("OptionsList","start"))..{
-	OptionsListStartMessageCommand=function(self) self:queuecommand("Refresh")end,
-	OptionsListResetMessageCommand=function(self) self:queuecommand("Refresh")end,
+	OptionsListStartMessageCommand=function(self) self:queuecommand("Refresh") end,
+	OptionsListResetMessageCommand=function(self) self:queuecommand("Refresh") end,
 	RefreshCommand=function(self) self:play() end
 }
 t[#t+1] = LoadActor(THEME:GetPathS("OptionsList","pop"))..{
-	OptionsListPopMessageCommand=function(self) self:queuecommand("Refresh")end,
+	OptionsListPopMessageCommand=function(self) self:queuecommand("Refresh") end,
 	RefreshCommand=function(self) self:play() end
 }
 t[#t+1] = LoadActor(THEME:GetPathS("OptionsList","push"))..{
-	OptionsListPushMessageCommand=function(self) self:queuecommand("Refresh")end,
+	OptionsListPushMessageCommand=function(self) self:queuecommand("Refresh") end,
 	RefreshCommand=function(self) self:play() end
 }
 
 t[#t+1] = LoadActor(THEME:GetPathS("ScreenSelectMusic","select down"))..{
-	SelectMenuOpenedMessageCommand=function(self) self:queuecommand("Refresh")end,
+	SelectMenuOpenedMessageCommand=function(self) self:queuecommand("Refresh") end,
 	RefreshCommand=function(self) self:play() end
 }
 
