@@ -35,34 +35,34 @@ function SongMods()
 	local styleType = style:GetStyleType()
 	local doubles = (styleType == 'StyleType_OnePlayerTwoSides' or styleType == 'StyleType_TwoPlayersSharedSides')
 
-	local options = "1,2,4,F,3,5,RE,AE,17,9,"
+	local options = "1,2,4,F,0,3,5,RE,RE2,AE,AE2,AE3,17,9,"
 
 	if isRegular() then
 		if doubles then
-			options = options .. "23,10,11,"
+			options = addToOutput(options,"23,10,11",",")
 		else
-			options = options .. "22,23,10,11,"
+			options = addToOutput(options,"22,23,10,11",",")
 		end
 	elseif isNonstop() then
-		options = options .. "22,23,"
+		options = addToOutput(options,"22,23",",")
 	else
-		options = options .. "10,11,"
+		options = addToOutput(options,"10,11",",")
 	end
 
-	options = options .. "12,13,14,7,BGC,M,A,15,19,28,S,25,"
+	options = addToOutput(options,"12,13,14,7,BGC,M,A,15,19,28,S,25",",")
 
 	-- differences 2 (should be "27,24," but timingscale is not in sm5)
 	if isRegular() then
 		if HasLuaCheck() then
-			options = options .. "20,P,21,24,"
+			options = addToOutput(options,"20,P,21,24",",")
 		else
-			options = options .. "20,P,24,"
+			options = addToOutput(options,"20,P,24",",")
 		end
 	elseif isNonstop() then
 		if IsCourseSecret() then
-			options = options .. "20,P,24,"
+			options = addToOutput(options,"20,P,24",",")
 		else
-			options = options .. "20,P,21,24,"
+			options = addToOutput(options,"20,P,21,24",",")
 		end
 	end
 
@@ -72,7 +72,7 @@ function SongMods()
 		options = "1,3,28,S,20,P,21,"
 	end
 
-	options = options .. "16"
+	options = addToOutput(options,"16",",")
 	return options
 end
 

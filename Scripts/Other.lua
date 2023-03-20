@@ -77,18 +77,38 @@ end
 
 function GetRandomModifierNames(n)
 	local mods = {
-		"x1","x1.5","x2","x2.5","x3","3.5x","x4","x5","x6","x8","c300","c450",
-		"Incoming","Overhead","Space","Hallway","Distant",
-		"Standard","Reverse","Split","Alternate","Cross","Centered",
-		"Accel","Decel","Wave","Expand","Boomerang","Bumpy",
-		"Dizzy","Drift","Mini","Flip","Invert","Tornado","Float","Beat",
-		"Fade&nbsp;In","Fade&nbsp;Out","Blink","Invisible","Beat","Bumpy",
-		"Mirror","Left","Right","Random","Blender",
-		"No&nbsp;Jumps","No&nbsp;Holds","No&nbsp;Rolls","No&nbsp;Hands","No&nbsp;Quads","No&nbsp;Mines",
-		"Simple","Stream","Wide","Quick","Skippy","Echo","Stomp",
-		"Planted","Floored","Twister","Add&nbsp;Mines","No&nbsp;Stretch&nbsp;Jumps",
-		"Hide&nbsp;Targets","Hide&nbsp;Judgment","Hide&nbsp;Background",
-		"Metal","Cel","Flat","Robot","Vivid"
+		"Xmod","Cmod","Mmod","Amod","CAmod","AVmod",
+		"Overhead","Hallway","Distant","Incoming","Space",
+		"Reverse","Split","Alternate","Cross","Centered",
+		"Fail Immediate","Fail at 30 Misses","Fail Off",
+		"NoteSkins",
+		"Accel","Decel","Wave","Expand","Boomerang","Random",
+		"BeatX","BeatY","BeatZ","Confusion","ConfusionX","ConfusionY",
+		"DrunkX","DrunkZ","Flip","Invert","Tipsy",
+		"AttenuateX","AttenuateY","AttenuateZ","Bounce","BounceZ","BumpyX","BumpyZ",
+		"Digital","DigitalZ","ParabolaX","ParabolaY","ParabolaZ","Sawtooth","SawtoothZ",
+		"Square","SquareZ","TornadoX","TornadoZ","XMode","Zigzag","ZigzagZ",
+		"Dizzy","Twirl","Roll",
+		"Fade Out","Fade In","Blink","Invisible","Vanish",
+		"Normal Orientation","Left Orientation","Right Orientation","Upside-Down Orientation","Solo-Centered Orientation",
+		"Vibrate","Spin Right","Spin Left","Bob","Pulse","Wag",
+		"Simple","No Jumps","No Hands","No Quads","No Fakes",
+		"No Holds","No Rolls","No Lifts","No Stretch Jumps",
+		"Mirror","Backwards","Left","Right","Shuffle","Super Shuffle","Soft Shuffle",
+		"Big","Quick","Skippy","Echo","Wide","Stomp","BMRize",
+		"Planted","Floored","Twister","Holds To Rolls","Holds To Lift Holds",
+		"Mini",
+		"Allow BackGroundChanges","No BackGroundChanges","Random BackGroundChanges",
+		"No Mines","Allow Mines","More Mines","Attack Mines",
+		"No Attacks","Allow Attacks","Random Attacks",
+		"Hide Targets","Hide Judgment","Hide Background",
+		"Hide Score","Hide Combo","Hide Lifebar",
+		"Under Combo","Under Tap Judgments","Under Hold Judgments",
+		"Normal Score","Percent Score","EX Score",
+		"Screen Filter",
+		"Show Stats",
+		"Pacemaker",
+		"Rate"
 	}
 	mods = tableshuffle( mods )
 	local s = ""
@@ -252,4 +272,59 @@ end
 
 function WideScreenSemiDiff()
 	return 1-(1-WideScreenDiff())*0.5
+end
+
+function GetLives(player)
+	local song, steps = nil, nil
+	local stepCounter, holdCounter, songInSeconds = 0, 0, 0
+	local lives = 1
+
+	if GAMESTATE:IsCourseMode() then
+		songs = GAMESTATE:GetCurrentCourse()
+		steps = GAMESTATE:GetCurrentTrail(player)
+		for entry in ivalues(steps:GetTrailEntries()) do
+			stepCounter = stepCounter + entry:GetSteps():GetRadarValues(player):GetValue('RadarCategory_TapsAndHolds')
+			holdCounter = holdCounter + entry:GetSteps():GetRadarValues(player):GetValue('RadarCategory_Holds')
+			songInSeconds = songInSeconds + (entry:GetSong():GetLastSecond() - entry:GetSong():GetFirstSecond())
+		end
+	else
+		songs = GAMESTATE:GetCurrentSong()
+		steps = GAMESTATE:GetCurrentSteps(player)
+		stepCounter = steps:GetRadarValues(player):GetValue('RadarCategory_TapsAndHolds')
+		holdCounter = steps:GetRadarValues(player):GetValue('RadarCategory_Holds')
+		songInSeconds = songInSeconds + (songs:GetLastSecond() - songs:GetFirstSecond())
+	end
+
+	if not GAMESTATE:IsCourseMode() then
+		if steps:GetDifficulty() == "Difficulty_Challenge" then
+			lives = 70
+		end
+		if steps:GetDescription() == 'Nonstop' then
+			lives = 5
+		end
+	end
+
+	if lives < 5 then
+		if holdCounter >= 15 and holdCounter < 25 then
+			lives = 25
+		elseif holdCounter >= 25 and holdCounter < 50 then
+			lives = 20
+		elseif holdCounter >= 50 and holdCounter < 100 then
+			lives = 10
+		elseif holdCounter >= 100 then
+			lives = 5
+		else
+			local calc = songInSeconds / stepCounter * 100
+			lives = math.ceil( calc / 5 ) * 5
+
+			if lives < 10 then
+				lives = 10
+			end
+			if lives > 60 then
+				lives = 60
+			end
+		end
+	end
+
+	return lives
 end

@@ -14,7 +14,9 @@ return Def.ActorFrame{
 			end
 			local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(player)
 			local output = 0
-			if scoreType == 1 then
+			if isSurvival(player) then
+				self:settext(SecondsToMSSMsMs(pss:GetSurvivalSeconds()-pss:GetLifeRemainingSeconds())) -- SURVIVAL
+			elseif scoreType == 1 then
 				output = pss:GetScore()
 				self:settextf("%09d",output) -- SCORE
 				self:ClearAttributes()

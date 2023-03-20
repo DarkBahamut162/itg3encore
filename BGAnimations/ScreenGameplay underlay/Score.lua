@@ -39,7 +39,7 @@ local function UpdateScore(self)
 end
 
 return Def.ActorFrame{
-	OnCommand=function(self) if isGamePlay() and scoreType ~= 2 then self:SetUpdateFunction(UpdateScore) end self:visible(isGamePlay()) end,
+	OnCommand=function(self) if isGamePlay() and (scoreType ~= 2 or isSurvival(player)) then self:SetUpdateFunction(UpdateScore) end self:visible(isGamePlay()) end,
 	LoadFont("_r bold numbers") .. {
 		Name="Score"..pname(player),
 		InitCommand=function(self)
@@ -56,7 +56,9 @@ return Def.ActorFrame{
 		RedrawScoreCommand=function(self)
 			local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(player)
 			local output = 0
-			if scoreType == 1 then
+			if isSurvival(player) then
+				self:settext(SecondsToMSSMsMs(pss:GetLifeRemainingSeconds())) -- SURVIVAL
+			elseif scoreType == 1 then
 				output = animateScore(pss:GetScore(),displayScore)
 				self:settextf("%09d",output) -- SCORE
 				self:ClearAttributes()

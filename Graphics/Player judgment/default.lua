@@ -1,5 +1,7 @@
 local c
 local player = Var "Player"
+local screen
+local glifemeter = 100
 
 local JudgeCmds = {
 	TapNoteScore_W1 = THEME:GetMetric( "Judgment", "JudgmentW1Command" ),
@@ -35,10 +37,21 @@ return Def.ActorFrame {
 		ResetCommand=function(self) self:finishtweening():x(0):y(IsGame("po-mu") and -45 or 0):stopeffect():visible(false) end
 	},
 	InitCommand = function(self) c = self:GetChildren() end,
+	OnCommand=function(self) screen = SCREENMAN:GetTopScreen() end,
 	JudgmentMessageCommand=function(self, param)
 		if param.Player ~= player then return end
 		if not param.TapNoteScore then return end
-		if param.HoldNoteScore then return end
+		if param.HoldNoteScore then
+			if isMGD(player) then
+				if param.HoldNoteScore == "HoldNoteScore_Held" then
+					glifemeter = screen:GetLifeMeter(player):GetLivesLeft()
+					if glifemeter < 100 then screen:GetLifeMeter(player):ChangeLives(1) end
+				elseif param.HoldNoteScore == "HoldNoteScore_LetGo" then
+					screen:GetLifeMeter(player):ChangeLives(-1)
+				end
+			end
+			return
+		end
 		local tns = param.TapNoteScore
 		local iNumStates = c.Judgment:GetNumStates()
 		local iFrame = TNSFrames[tns]
@@ -46,7 +59,8 @@ return Def.ActorFrame {
 			preCheck, check = false, true
 			setenv("EvalCombo"..pname(player),true)
 		end
-		if (GAMESTATE:GetPlayerState(player):GetPlayerController() == 'PlayerController_Autoplay') or (GAMESTATE:GetPlayerState(player):GetPlayerController() == 'PlayerController_Cpu') then
+		if (GAMESTATE:GetPlayerState(player):GetPlayerController() == 'PlayerController_Autoplay') or
+		(GAMESTATE:GetPlayerState(player):GetPlayerController() == 'PlayerController_Cpu') or isSurvival(player) then
 			checkFantastics, checkPerfects, checkGreats, check = false, false, false, false
 			setenv("EvalCombo"..pname(player),false)
 		end
