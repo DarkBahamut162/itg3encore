@@ -23,7 +23,6 @@ function GetSongFrame()
 	if GAMESTATE:IsCourseMode() then return "_normal" end
 	local song = GAMESTATE:GetCurrentSong()
 	local songTitle = song:GetDisplayFullTitle()
-	local songArtist = song:GetDisplayArtist()
 	local songDir = song:GetSongDir()
 	local frame
 	if string.find(songDir,"Dance Dance Revolution 8th Mix") or string.find(songDir,"Dance Dance Revolution Extreme") then
