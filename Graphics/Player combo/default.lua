@@ -1,5 +1,4 @@
 local c
-local player = Var "Player"
 local ShowComboAt = THEME:GetMetric("Combo", "ShowComboAt")
 local Pulse = THEME:GetMetric("Combo", "PulseCommand")
 
@@ -42,7 +41,7 @@ return Def.ActorFrame {
 			c.Number:visible(false)
 			c.ComboLabel:visible(false)
 			c.MissesLabel:visible(false)
-			LastSeenCombo = param.Combo
+			if param.Combo then LastSeenCombo = param.Combo else LastSeenCombo = 0 end
 			return
 		end
 		if param.Combo then
