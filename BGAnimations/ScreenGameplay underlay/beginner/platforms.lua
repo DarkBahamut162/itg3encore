@@ -1,7 +1,7 @@
 local P1X = (getenv("RotationSoloP1") and GAMESTATE:GetNumPlayersEnabled() == 1) and SCREEN_CENTER_X or SCREEN_CENTER_X-SCREEN_WIDTH/4
 local P2X = (getenv("RotationSoloP2") and GAMESTATE:GetNumPlayersEnabled() == 1) and SCREEN_CENTER_X or SCREEN_CENTER_X+SCREEN_WIDTH/4
-local P1r = (getenv("RotationSoloP1") and GAMESTATE:GetNumPlayersEnabled()) and 0 or -20
-local P2r = (getenv("RotationSoloP2") and GAMESTATE:GetNumPlayersEnabled()) and 0 or 20
+local P1r = (getenv("RotationSoloP1") and GAMESTATE:GetNumPlayersEnabled() == 1) and 0 or -20
+local P2r = (getenv("RotationSoloP2") and GAMESTATE:GetNumPlayersEnabled() == 1) and 0 or 20
 
 return Def.ActorFrame{
 	Def.ActorFrame{
