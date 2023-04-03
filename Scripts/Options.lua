@@ -34,6 +34,7 @@ function SongMods()
 	local style = GAMESTATE:GetCurrentStyle()
 	local styleType = style:GetStyleType()
 	local doubles = (styleType == 'StyleType_OnePlayerTwoSides' or styleType == 'StyleType_TwoPlayersSharedSides')
+	local add = (GAMESTATE:GetNumPlayersEnabled() == 2 and not doubles) and "" or "20T,"
 
 	local options = "1,2,4,F,0,3,5,RE,RE2,AE,AE2,AE3,17,9,"
 
@@ -54,22 +55,22 @@ function SongMods()
 	-- differences 2 (should be "27,24," but timingscale is not in sm5)
 	if isRegular() then
 		if HasLuaCheck() then
-			options = addToOutput(options,"20,P,21,24",",")
+			options = addToOutput(options,"20,"..add.."P,21,24",",")
 		else
-			options = addToOutput(options,"20,P,24",",")
+			options = addToOutput(options,"20,"..add.."P,24",",")
 		end
 	elseif isNonstop() then
 		if IsCourseSecret() then
-			options = addToOutput(options,"20,P,24",",")
+			options = addToOutput(options,"20,"..add.."P,24",",")
 		else
-			options = addToOutput(options,"20,P,21,24",",")
+			options = addToOutput(options,"20,"..add.."P,21,24",",")
 		end
 	end
 
 	if isRave() or (isOni() and not isLifeline(GAMESTATE:GetMasterPlayerNumber())) then
-		options = "1,3,28,20,P,21,"
+		options = "1,3,28,20,"..add.."P,21,"
 	elseif isOni() then
-		options = "1,3,28,S,20,P,21,"
+		options = "1,3,28,S,20,"..add.."P,21,"
 	end
 
 	options = addToOutput(options,"16",",")
@@ -114,10 +115,10 @@ function InitOptions()
 
 	setenv("HideScoreP1",false)
 	setenv("HideScoreP2",false)
-	setenv("HideLifeP1",false)
-	setenv("HideLifeP2",false)
 	setenv("HideComboP1",false)
 	setenv("HideComboP2",false)
+	setenv("HideLifeP1",false)
+	setenv("HideLifeP2",false)
 
 	setenv("RotationLeftP1",false)
 	setenv("RotationRightP1",false)
@@ -147,6 +148,8 @@ function InitOptions()
 
 	setenv("ShowStatsP1",0)
 	setenv("ShowStatsP2",0)
+	setenv("ShowStatsTypeP1",1)
+	setenv("ShowStatsTypeP2",1)
 	setenv("SetPacemakerP1",0)
 	setenv("SetPacemakerP2",0)
 
@@ -249,6 +252,35 @@ function OptionShowStats()
 			for i, choice in ipairs(self.Choices) do
 				if list[i] then
 					setenv("ShowStats"..pname(pn),i-1)
+					break
+				end
+			end
+		end
+	}
+	setmetatable(t, t)
+	return t
+end
+
+function OptionShowStatsType()
+	local t = {
+		Name="ShowStatsType",
+		LayoutType = "ShowAllInRow",
+		SelectType = "SelectOne",
+		OneChoiceForAllPlayers = false,
+		ExportOnChange = false,
+		Choices = { "Full","Mini" },
+		LoadSelections = function(self, list, pn)
+			local selected = getenv("ShowStatsType"..pname(pn))
+			if selected and selected ~= 0 then
+				list[selected] = true
+			else
+				list[1] = true
+			end
+		end,
+		SaveSelections = function(self, list, pn)
+			for i, choice in ipairs(self.Choices) do
+				if list[i] then
+					setenv("ShowStatsType"..pname(pn),i)
 					break
 				end
 			end
@@ -425,6 +457,9 @@ function GetRateMod()
 end
 
 function DisplayCustomModifiersText(pn)
+	local style = GAMESTATE:GetCurrentStyle()
+	local styleType = style:GetStyleType()
+	local doubles = (styleType == 'StyleType_OnePlayerTwoSides' or styleType == 'StyleType_TwoPlayersSharedSides')
 	local output = ""
 
 	if getenv("UnderCombo"..pname(pn)) and getenv("UnderTapJudgments"..pname(pn)) and getenv("UnderHoldJudgments"..pname(pn)) then
@@ -460,7 +495,15 @@ function DisplayCustomModifiersText(pn)
 	elseif getenv("EffectVibrate"..pname(pn)) then output = addToOutput(output,"Vibrate",", ") end
 
 	if getenv("ShowMods"..pname(pn)) then output = addToOutput(output,"Show Mods",", ") end
-	if getenv("ShowStats"..pname(pn)) > 0 then output = addToOutput(output,"Show Stats",", ") end
+	if getenv("ShowStats"..pname(pn)) > 0 then
+		if GAMESTATE:GetNumPlayersEnabled() == 2 and not doubles then
+			output = addToOutput(output,"Show Stats",", ")
+		elseif getenv("ShowStatsType"..pname(pn)) == 1 then
+			output = addToOutput(output,"Show Full Stats",", ")
+		elseif getenv("ShowStatsType"..pname(pn)) == 2 then
+			output = addToOutput(output,"Show Mini Stats",", ")
+		end
+	end
 
 	if getenv("ScreenFilter"..pname(pn)) > 0 then output = addToOutput(output,"Screen Filter ("..(getenv("ScreenFilter"..pname(pn))*100).."%)",", ") end
 

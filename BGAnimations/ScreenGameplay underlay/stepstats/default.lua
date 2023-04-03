@@ -4,8 +4,8 @@ local statObject = "single"
 if numPlayers == 1 then
 	local style = GAMESTATE:GetCurrentStyle()
 	if style:GetStyleType() == 'StyleType_OnePlayerTwoSides' or
-	GAMESTATE:GetMasterPlayerNumber() == PLAYER_1 and getenv("RotationRightP1") or
-	GAMESTATE:GetMasterPlayerNumber() == PLAYER_2 and getenv("RotationLeftP2") then
+	GAMESTATE:GetMasterPlayerNumber() == PLAYER_1 and (getenv("RotationRightP1") or getenv("ShowStatsTypeP1") == 2) or
+	GAMESTATE:GetMasterPlayerNumber() == PLAYER_2 and (getenv("RotationLeftP2") or getenv("ShowStatsTypeP2") == 2) then
 		statObject = "double"
 	else
 		statObject = "single"

@@ -1,7 +1,9 @@
-local pn = GAMESTATE:GetMasterPlayerNumber()
-local xPos = pn == PLAYER_1 and (SCREEN_RIGHT-20*WideScreenDiff()-SCREEN_WIDTH/2) or (SCREEN_LEFT+34*WideScreenDiff()-SCREEN_WIDTH/4*3)
-local yPos = (getenv("RotationLeft"..pname(pn)) or getenv("RotationRight"..pname(pn))) and SCREEN_CENTER_Y or SCREEN_CENTER_Y+30*WideScreenDiff()
+local player = ...
+local pn = player or GAMESTATE:GetMasterPlayerNumber()
+local xPos = pn == PLAYER_1 and (SCREEN_RIGHT-20*WideScreenDiff()-SCREEN_WIDTH/2) or (SCREEN_LEFT+20*WideScreenDiff()-SCREEN_WIDTH/2)
+if player then xPos = player == PLAYER_1 and -20*WideScreenDiff() or 20*WideScreenDiff() end
 local SongOrCourse, StepsOrTrail, scorelist, topscore
+local mines, holds, rolls, holdsAndRolls = 0, 0, 0, 0
 
 local barWidth		= {14,7,4+2/3,3+2/3,2.8,2+1/3}
 local barHeight		= 268
@@ -12,6 +14,12 @@ if GAMESTATE:IsCourseMode() then SongOrCourse,StepsOrTrail = GAMESTATE:GetCurren
 if not scorelist then scorelist = PROFILEMAN:GetMachineProfile():GetHighScoreList(SongOrCourse,StepsOrTrail) end
 if not scorelist then scorelist = PROFILEMAN:GetProfile(pn):GetHighScoreList(SongOrCourse,StepsOrTrail) end
 if scorelist then topscore = scorelist:GetHighScores()[1] end
+
+if StepsOrTrail then
+	local rv = StepsOrTrail:GetRadarValues(pn)
+	mines,holds,rolls = rv:GetValue('RadarCategory_Mines'),rv:GetValue('RadarCategory_Holds'),rv:GetValue('RadarCategory_Rolls')
+	holdsAndRolls = holds + rolls
+end
 
 local bgNum = getenv("ShowStats"..pname(pn))
 if bgNum == 7 then if topscore == nil then bgNum = 2 else bgNum = 3 end end
@@ -36,13 +44,26 @@ if getenv("ShowStats"..pname(pn)) < 7 then
 end
 
 return Def.ActorFrame{
-	OnCommand=function(self) self:CenterX():y(yPos) end,
+	OnCommand=function(self) self:Center() end,
 	Def.ActorFrame{
 		Name="Player",
-		InitCommand=function(self) self:x(xPos):addx(pn == PLAYER_1 and 100 or -100):zoom(WideScreenDiff()) end,
+		InitCommand=function(self) self:x(xPos):addx(pn == PLAYER_1 and 100*getenv("ShowStatsType"..pname(pn)) or -100*getenv("ShowStatsType"..pname(pn))):zoom(WideScreenDiff()) end,
 		BeginCommand=function(self) self:visible(GAMESTATE:IsHumanPlayer(pn)) end,
-		OnCommand=function(self) self:sleep(0.5):decelerate(0.8):addx(pn == PLAYER_1 and -100 or 100) end,
-		OffCommand=function(self) if AnyPlayerFullComboed() then self:sleep(1) end self:accelerate(0.8):addx(pn == PLAYER_1 and 100 or -100) end,
+		OnCommand=function(self)
+			if GAMESTATE:GetNumPlayersEnabled() == 2 and GAMESTATE:GetNumSidesJoined() == 2 then
+				self:addx(pn == PLAYER_1 and -100*getenv("ShowStatsType"..pname(pn)) or 100*getenv("ShowStatsType"..pname(pn))):diffusealpha(0):sleep(0.5):linear(0.8):diffusealpha(1)
+			else
+				self:sleep(0.5):decelerate(0.8):addx(pn == PLAYER_1 and -100*getenv("ShowStatsType"..pname(pn)) or 100*getenv("ShowStatsType"..pname(pn)))
+			end
+		end,
+		OffCommand=function(self)
+			if AnyPlayerFullComboed() then self:sleep(1) end
+			if GAMESTATE:GetNumPlayersEnabled() == 2 and GAMESTATE:GetNumSidesJoined() == 2 then
+				self:linear(0.8):diffusealpha(0)
+			else
+				self:accelerate(0.8):addx(pn == PLAYER_1 and 100*getenv("ShowStatsType"..pname(pn)) or -100*getenv("ShowStatsType"..pname(pn)))
+			end
+		end,
 		LoadActor("d_bg"),
 		Def.ActorFrame{
 			Condition=getenv("ShowStats"..pname(pn)) < 7,
@@ -124,6 +145,220 @@ return Def.ActorFrame{
 					self:zoomy(DPCurMax/DPMax*target*barHeight)
 				end
 			}
+		},
+		Def.ActorFrame{
+			Condition=getenv("ShowStatsType"..pname(pn)) == 2,
+			InitCommand=function(self) self:x(pn == PLAYER_1 and -62 or 62):y(154):zoom(0.33) end,
+			LoadActor("../single/s_"..(isFinal() and "final" or "normal")),
+			LoadActor("../single/s_glow final")..{
+				Condition=isFinal(),
+				InitCommand=function(self) self:blend(Blend.Add):diffuseramp():effectcolor1(color("#FFFFFF00")):effectcolor2(color("#FFFFFF")):effectperiod(0.5):effect_hold_at_full(0.5):effectclock('beat') end
+			},
+			Def.ActorFrame{
+				LoadFont("_z bold gray 36px")..{
+					Condition=getenv("ShowStats"..pname(pn)) ~= 7,
+					Name="Statistics",
+					Text="Statistics",
+					OnCommand=function(self) self:zoom(0.5):shadowlength(0):addy(isFinal() and -174 or -164.5) end
+				},
+				LoadFont("_z bold gray 36px")..{
+					Condition=getenv("ShowStats"..pname(pn)) == 7,
+					Name="Pacemaker",
+					Text="Pacemaker",
+					OnCommand=function(self) self:zoom(0.5):shadowlength(0):addy(isFinal() and -174 or -164.5) end
+				},
+				Def.ActorFrame{
+					Condition=getenv("ShowStats"..pname(pn)) ~= 7,
+					InitCommand=function(self) self:y(-110) end,
+					LoadFont("ScreenGameplay judgment")..{
+						Name="LabelW1",
+						Text="Fantastics",
+						InitCommand=function(self) self:maxwidth(125):horizalign(left):addy(0):addx(-125):shadowlength(0) end
+					},
+					LoadFont("ScreenGameplay judgment")..{
+						Name="LabelW2",
+						Text="Excellents",
+						InitCommand=function(self) self:maxwidth(125):horizalign(left):addy(30):addx(-125):shadowlength(0) end
+					},
+					LoadFont("ScreenGameplay judgment")..{
+						Name="LabelW3",
+						Text="Greats",
+						InitCommand=function(self) self:maxwidth(125):horizalign(left):addy(60):addx(-125):shadowlength(0) end
+					},
+					LoadFont("ScreenGameplay judgment")..{
+						Name="LabelW4",
+						Text="Decents",
+						InitCommand=function(self) self:maxwidth(125):horizalign(left):addy(90):addx(-125):shadowlength(0) end
+					},
+					LoadFont("ScreenGameplay judgment")..{
+						Name="LabelW5",
+						Text="Way-Offs",
+						InitCommand=function(self) self:maxwidth(125):horizalign(left):addy(120):addx(-125):shadowlength(0) end
+					},
+					LoadFont("ScreenGameplay judgment")..{
+						Name="LabelMiss",
+						Text="Misses",
+						InitCommand=function(self) self:maxwidth(125):horizalign(left):addy(150):addx(-125):shadowlength(0) end
+					},
+					LoadFont("_z numbers")..{
+						Name="NumbersW1",
+						InitCommand=function(self) self:maxwidth(125):horizalign(right):addy(0):addx(125):shadowlength(0):diffuse(TapNoteScoreToColor('TapNoteScore_W1')):queuecommand("Update") end,
+						JudgmentMessageCommand=function(self,param) if param.Player == pn then self:queuecommand("Update") end end,
+						UpdateCommand=function(self) self:settext(STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):GetTapNoteScores('TapNoteScore_W1')) end
+					},
+					LoadFont("_z numbers")..{
+						Name="NumbersW2",
+						InitCommand=function(self) self:maxwidth(125):horizalign(right):addy(30):addx(125):shadowlength(0):diffuse(TapNoteScoreToColor('TapNoteScore_W2')):queuecommand("Update") end,
+						JudgmentMessageCommand=function(self,param) if param.Player == pn then self:queuecommand("Update") end end,
+						UpdateCommand=function(self) self:settext(STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):GetTapNoteScores('TapNoteScore_W2')) end
+					},
+					LoadFont("_z numbers")..{
+						Name="NumbersW3",
+						InitCommand=function(self) self:maxwidth(125):horizalign(right):addy(60):addx(125):shadowlength(0):diffuse(TapNoteScoreToColor('TapNoteScore_W3')):queuecommand("Update") end,
+						JudgmentMessageCommand=function(self,param) if param.Player == pn then self:queuecommand("Update") end end,
+						UpdateCommand=function(self) self:settext(STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):GetTapNoteScores('TapNoteScore_W3')) end
+					},
+					LoadFont("_z numbers")..{
+						Name="NumbersW4",
+						InitCommand=function(self) self:maxwidth(125):horizalign(right):addy(90):addx(125):shadowlength(0):diffuse(TapNoteScoreToColor('TapNoteScore_W4')):queuecommand("Update") end,
+						JudgmentMessageCommand=function(self,param) if param.Player == pn then self:queuecommand("Update") end end,
+						UpdateCommand=function(self) self:settext(STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):GetTapNoteScores('TapNoteScore_W4')) end
+					},
+					LoadFont("_z numbers")..{
+						Name="NumbersW5",
+						InitCommand=function(self) self:maxwidth(125):horizalign(right):addy(120):addx(125):shadowlength(0):diffuse(TapNoteScoreToColor('TapNoteScore_W5')):queuecommand("Update") end,
+						JudgmentMessageCommand=function(self,param) if param.Player == pn then self:queuecommand("Update") end end,
+						UpdateCommand=function(self) self:settext(STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):GetTapNoteScores('TapNoteScore_W5')) end
+					},
+					LoadFont("_z numbers")..{
+						Name="NumbersMiss",
+						InitCommand=function(self) self:maxwidth(125):horizalign(right):addy(150):addx(125):shadowlength(0):diffuse(TapNoteScoreToColor('TapNoteScore_Miss')):queuecommand("Update") end,
+						JudgmentMessageCommand=function(self,param) if param.Player == pn then self:queuecommand("Update") end end,
+						UpdateCommand=function(self) self:settext(STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):GetTapNoteScores('TapNoteScore_Miss')) end
+					}
+				},
+				Def.ActorFrame{
+					Condition=getenv("ShowStats"..pname(pn)) == 7,
+					InitCommand=function(self) self:y(-110) end,
+					LoadFont("ScreenGameplay judgment")..{
+						Name="PlayerName",
+						Text="Player:",
+						OnCommand=function(self)
+							self:maxwidth(125):horizalign(left):shadowlength(0):addy(0):addx(-125):diffuse(TapNoteScoreToColor("TapNoteScore_W1"))
+						end
+					},
+					LoadFont("ScreenGameplay judgment")..{
+						Condition=topscore ~= nil,
+						Name="TargetName",
+						Text="Highscore:",
+						OnCommand=function(self)
+							self:maxwidth(125):horizalign(left):shadowlength(0):addy(120):addx(-125):diffuse(TapNoteScoreToColor("TapNoteScore_W3"))
+						end
+					},
+					LoadFont("ScreenGameplay judgment")..{
+						Name="TargetName",
+						Text="Target:",
+						OnCommand=function(self)
+							self:maxwidth(125):horizalign(left):shadowlength(0):addy(160):addx(-125):diffuse(TapNoteScoreToColor("TapNoteScore_Miss"))
+						end
+					},
+					LoadFont("_z numbers")..{
+						Name="PlayerPoints",
+						OnCommand=function(self)
+							self:maxwidth(125):horizalign(right):shadowlength(0):addy(0):addx(125):diffuse(PlayerColor(pn)):settext(STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):GetActualDancePoints())
+						end,
+						JudgmentMessageCommand=function(self,param) if param.Player == pn then self:queuecommand("Update") end end,
+						UpdateCommand=function(self) self:settext(STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):GetActualDancePoints()) end
+					},
+					LoadFont("_z numbers")..{
+						Condition=topscore ~= nil,
+						Name="HighscorePoints",
+						OnCommand=function(self)
+							self:maxwidth(125):horizalign(right):shadowlength(0):addy(120):addx(125):diffuse(PlayerColor(pn)):settext(math.ceil(topscore:GetPercentDP()*STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):GetPossibleDancePoints()))
+						end
+					},
+					LoadFont("_z numbers")..{
+						Name="TargetPoints",
+						OnCommand=function(self)
+							local target = THEME:GetMetric("PlayerStageStats","GradePercentTier"..string.format("%02d",17-getenv("SetPacemaker"..pname(pn))))
+							self:maxwidth(125):horizalign(right):shadowlength(0):addy(160):addx(125):diffuse(PlayerColor(pn)):settext(math.ceil(target*STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):GetPossibleDancePoints()))
+						end
+					},
+	
+					LoadFont("_z numbers")..{
+						Condition=topscore ~= nil,
+						Name="PlayerHighscoreDifference",
+						OnCommand=function(self) self:diffuse(color("#00FF00")):horizalign(right):shadowlength(0):addy(40):addx(125):queuecommand("Update") end,
+						JudgmentMessageCommand=function(self,param) if param.Player == pn and topscore ~= nil then self:queuecommand("Update") end end,
+						UpdateCommand=function(self)
+							local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn)
+							local DPCurMax = pss:GetCurrentPossibleDancePoints()
+							local curPlayerDP = pss:GetActualDancePoints()
+							local curHighscoreDP = math.ceil(DPCurMax*topscore:GetPercentDP())
+							self:settextf("%+04d",(curPlayerDP-curHighscoreDP))
+						end
+					},
+					LoadFont("_z numbers")..{
+						Name="PlayerTargetDifference",
+						OnCommand=function(self)
+							self:diffuse(color("#FF0000")):horizalign(right):shadowlength(0):addy(80):addx(125):queuecommand("Update")
+						end,
+						JudgmentMessageCommand=function(self,param) if param.Player == pn then self:queuecommand("Update") end end,
+						UpdateCommand=function(self)
+							local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn)
+							local DPCurMax = pss:GetCurrentPossibleDancePoints()
+							local curPlayerDP = pss:GetActualDancePoints()
+							local target = THEME:GetMetric("PlayerStageStats","GradePercentTier"..string.format("%02d",17-getenv("SetPacemaker"..pname(pn))))
+							local curTargetDP = math.ceil(DPCurMax*target)
+							self:settextf("%+04d",(curPlayerDP-curTargetDP))
+						end
+					},
+				},
+				Def.ActorFrame{
+					OnCommand=function(self)
+						if mines == 0 then
+							self:GetChild("MineName"):visible(false)
+							self:GetChild("MineCounter"):visible(false)
+						end
+						if holdsAndRolls == 0 then
+							self:GetChild("HoldName"):visible(false)
+							self:GetChild("HoldCounter"):visible(false)
+						else
+							if holds > 0 and rolls > 0 then
+								self:GetChild("HoldName"):settext("Holds/Rolls Dropped:")
+							elseif holds == 0 and rolls > 0 then
+								self:GetChild("HoldName"):settext("Rolls Dropped:")
+							end
+						end
+						self:queuecommand("Update")
+					end,
+					JudgmentMessageCommand=function(self,param) if param.Player == pn then self:queuecommand("Update") end end,
+					UpdateCommand=function(self)
+						local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn)
+						self:GetChild("MineCounter"):settext(pss:GetTapNoteScores('TapNoteScore_HitMine').."/"..mines)
+						self:GetChild("HoldCounter"):settext(pss:GetHoldNoteScores('HoldNoteScore_LetGo').."/"..holdsAndRolls)
+					end,
+					
+					LoadFont("ScreenGameplay judgment")..{
+						Name="HoldName",
+						Text="Holds Dropped:",
+						OnCommand=function(self) self:maxwidth(125):horizalign(left):shadowlength(0):addy(isFinal() and 155 or 145):addx(-125) end
+					},
+					LoadFont("ScreenGameplay judgment")..{
+						Name="MineName",
+						Text="Mines Hit: ",
+						OnCommand=function(self) self:maxwidth(125):horizalign(left):shadowlength(0):addy(isFinal() and 135 or 125):addx(-125) end
+					},
+					LoadFont("ScreenGameplay judgment")..{
+						Name="HoldCounter",
+						OnCommand=function(self) self:maxwidth(125):horizalign(right):shadowlength(0):addy(isFinal() and 155 or 145):addx(125) end
+					},
+					LoadFont("ScreenGameplay judgment")..{
+						Name="MineCounter",
+						OnCommand=function(self) self:maxwidth(125):horizalign(right):shadowlength(0):addy(isFinal() and 135 or 125):addx(125) end
+					}
+				},
+			},
 		}
 	}
 }
