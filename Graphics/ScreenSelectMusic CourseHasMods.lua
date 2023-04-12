@@ -1,3 +1,5 @@
+InitRotationOptions()
+
 return Def.ActorFrame{
 	LoadFont("_r bold stroke")..{
 		InitCommand=function(self) self:halign(0) end,
