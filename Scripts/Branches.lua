@@ -23,11 +23,6 @@ Branch.StartGame = function()
 	return "ScreenSelectGameMode"
 end
 
-Branch.AfterSelectStyleCheck = function()
-	if GAMESTATE:IsAnyHumanPlayerUsingMemoryCard() then return Branch.AfterSelectStyle() end
-	return "ScreenProfileLoad"
-end
-
 Branch.AfterSelectStyle = function()
 	if getenv("Workout") then return "ScreenWorkoutMenu" end
 	if GAMESTATE:IsCourseMode() then return "ScreenSelectCourse" end
