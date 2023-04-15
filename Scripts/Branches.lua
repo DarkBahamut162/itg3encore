@@ -85,28 +85,6 @@ Branch.AfterGameplay = function()
 	end
 end
 
-Branch.AfterEvaluation = function()
-	if GAMESTATE:GetSmallestNumStagesLeftForAnyHumanPlayer() >= 1 then
-		return "ScreenProfileSave"
-	elseif GAMESTATE:GetCurrentStage() == "Stage_Extra1" then
-		if STATSMAN:GetCurStageStats():AllFailed() then
-			if GAMESTATE:IsCourseMode() then
-				return "ScreenProfileSaveSummary"
-			else
-				return "ScreenEvaluationSummary"
-			end
-		else
-			return "ScreenProfileSave"
-		end
-	elseif STATSMAN:GetCurStageStats():AllFailed() then
-		return "ScreenEvaluationSummary"
-	elseif GAMESTATE:IsCourseMode() then
-		return "ScreenProfileSaveSummary"
-	else
-		return "ScreenEvaluationSummary"
-	end
-end
-
 Branch.AfterSaveSummary = function()
 	if STATSMAN:GetBestGrade() <= 0 then return "ScreenEndingPerfect"
 	elseif STATSMAN:GetBestGrade() <= 3 then return "ScreenEndingGood"
