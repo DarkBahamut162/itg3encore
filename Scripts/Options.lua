@@ -67,7 +67,9 @@ function SongMods()
 		end
 	end
 
-	if isRave() or (isOni() and not isLifeline(GAMESTATE:GetMasterPlayerNumber())) then
+	if isRave() then
+		options = "1,3,28,21,"
+	elseif isOni() and not isLifeline(GAMESTATE:GetMasterPlayerNumber()) then
 		options = "1,3,28,20,"..add.."P,21,"
 	elseif isOni() then
 		options = "1,3,28,S,20,"..add.."P,21,"
