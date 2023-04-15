@@ -7,10 +7,6 @@ return Def.ActorFrame{
 		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y-158):diffuse(color("#000000FF")):zoomto(SCREEN_WIDTH,SCREEN_HEIGHT/2) end,
 		OnCommand=function(self) self:sleep(0):linear(0.2):diffusealpha(0):zoomtoheight(SCREEN_HEIGHT/1.5) end
 	},
-	LoadActor(THEME:GetPathB("","_disk"))..{
-		InitCommand=function(self) self:x(SCREEN_CENTER_X-120):CenterY():diffusealpha(1) end,
-		OnCommand=function(self) self:spin():diffusealpha(0) end
-	},
 	Def.ActorFrame{
 		Condition=GAMESTATE:IsAnyHumanPlayerUsingMemoryCard(),
 		LoadActor(THEME:GetPathB("","profile"))..{
@@ -19,7 +15,7 @@ return Def.ActorFrame{
 		},
 		LoadFont("_z 36px shadowx")..{
 			Text="SAVING MACHINE STATS...",
-			InitCommand=function(self) self:x(SCREEN_CENTER_X+42):CenterY():zoom(0.7) end,
+			InitCommand=function(self) self:Center():zoom(0.7) end,
 			OnCommand=function(self) self:diffusealpha(1):linear(0.3):diffusealpha(0) end
 		},
 		LoadActor(THEME:GetPathB("_statsout","ending"))
@@ -34,6 +30,10 @@ return Def.ActorFrame{
 			Text="SAVING PROFILES...",
 			InitCommand=function(self) self:x(SCREEN_CENTER_X+42):CenterY():zoom(0.75) end,
 			OnCommand=function(self) self:diffusealpha(1):linear(0.3):diffusealpha(0) end
+		},
+		LoadActor(THEME:GetPathB("","_disk"))..{
+			InitCommand=function(self) self:x(SCREEN_CENTER_X-120):CenterY():diffusealpha(1) end,
+			OnCommand=function(self) self:spin():diffusealpha(0) end
 		}
 	}
 }

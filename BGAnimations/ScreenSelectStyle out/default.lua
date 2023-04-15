@@ -7,7 +7,6 @@ return Def.ActorFrame{
 		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y-120*WideScreenDiff()):diffuse(color("0,0,0,1")):zoomto(SCREEN_WIDTH,SCREEN_HEIGHT/2/WideScreenDiff()):diffusealpha(0) end,
 		OnCommand=function(self) self:sleep(0):linear(0.5):diffusealpha(1):y(SCREEN_CENTER_Y-158*WideScreenDiff()) end
 	},
-	LoadActor(THEME:GetPathB("_statsout","style")),
 	Def.ActorFrame{
 		Condition=GAMESTATE:IsAnyHumanPlayerUsingMemoryCard(),
 		Def.Sprite{
@@ -15,8 +14,8 @@ return Def.ActorFrame{
 			BeginCommand=function(self) self:Load(THEME:GetPathB("","profile")) end,
 			OnCommand=function(self) self:linear(0.5):zoomy(0.68*WideScreenDiff()) end
 		},
-		LoadFont("_z 36px black")..{
-			Text="LOADING PROFILES...",
+		LoadFont("_z 36px shadowx")..{
+			Text="LOADING USB PROFILES...",
 			InitCommand=function(self) self:Center():zoom(0.7*WideScreenDiff()):cropright(1.3):faderight(0.1) end,
 			OnCommand=function(self) self:sleep(0.25):linear(0.7):cropright(-0.3) end
 		},

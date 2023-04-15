@@ -133,6 +133,14 @@ function EnabledAndProfile(pn)
 	return GAMESTATE:IsPlayerEnabled(pn) and MEMCARDMAN:GetCardState(pn) ~= 'MemoryCardState_none'
 end
 
+function EnabledAndProfile(pn)
+	return GAMESTATE:IsPlayerEnabled(pn) and MEMCARDMAN:GetCardState(pn) ~= 'MemoryCardState_none'
+end
+
+function EnabledAndUSBReady(pn)
+	return GAMESTATE:IsPlayerEnabled(pn) and MEMCARDMAN:GetCardState(pn) == 'MemoryCardState_ready'
+end
+
 function GetDisplayNameFromProfileOrMemoryCard(pn)
 	if PROFILEMAN:IsPersistentProfile(pn) then return GAMESTATE:GetPlayerDisplayName(pn) end
 	if MEMCARDMAN:GetCardState(pn) ~= 'MemoryCardState_none' then return MEMCARDMAN:GetName(pn) end
@@ -327,4 +335,12 @@ function GetLives(player)
 	end
 
 	return lives
+end
+
+function USBCheck()
+	if not getenv("USBCheck") then
+		setenv("USBCheck",true)
+		return false
+	end
+	return true
 end

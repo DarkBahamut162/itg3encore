@@ -13,7 +13,7 @@ return Def.ActorFrame{
 	},
 	LoadFont("_z 36px shadowx")..{
 		Text="LOADING...",
-		InitCommand=function(self) self:x(SCREEN_CENTER_X+42*WideScreenDiff()):CenterY():zoom(0.7*WideScreenDiff()) end,
+		InitCommand=function(self) self:Center():zoom(0.7*WideScreenDiff()) end,
 		OnCommand=function(self) self:linear(0.2):diffuse(color("0,0,0,0")) end
 	}
 }
