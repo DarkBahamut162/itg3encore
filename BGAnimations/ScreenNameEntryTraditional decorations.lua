@@ -41,7 +41,7 @@ for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
 				self:name("Keyboard" .. PlayerNumberToString(pn))
 				ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen")
 			end
-		},
+		}
 		t[#t+1] = LoadActor(THEME:GetPathG("ScreenNameEntryTraditional","Selection"),pn)..{
 			InitCommand=function(self)
 				self:player(pn)
@@ -56,14 +56,14 @@ for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
 			self:name("Wheel" .. PlayerNumberToString(pn))
 			ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen")
 		end
-	},
+	}
 	t[#t+1] = LoadActor(THEME:GetPathG("ScreenNameEntryTraditional","Score"),pn)..{
 		InitCommand=function(self)
 			self:player(pn)
 			self:name("Score" .. PlayerNumberToString(pn))
 			ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen")
 		end
-	},
+	}
 	t[#t+1] = LoadActor(THEME:GetPathG("ScreenNameEntryTraditional","DifficultyIcon"),pn)..{
 		InitCommand=function(self)
 			self:player(pn)
@@ -115,8 +115,8 @@ for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
 				MESSAGEMAN:Broadcast("ChangeDisplayedFeat",{Player=pn,NewIndex=nextIndex})
 				curFeatNumber[pn] = nextIndex
 				self:queuecommand("RunFeat")
-			end,
-		})
+			end
+		}
 	end
 end
 

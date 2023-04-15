@@ -15,7 +15,7 @@ return Def.ActorFrame{
 			OnCommand=function(self) self:addx(-SCREEN_WIDTH/2):decelerate(0.3):addx(SCREEN_WIDTH/2) end
 		},
 		LoadActor("p1")..{
-			InitCommand=function(self) self:x(SCREEN_CENTER_X-200):y(SCREEN_CENTER_Y+145):addx(-SCREEN_WIDTH/2) end
+			InitCommand=function(self) self:x(SCREEN_CENTER_X-200):y(SCREEN_CENTER_Y+145):addx(-SCREEN_WIDTH/2) end,
 			OnCommand=function(self) self:decelerate(0.3):addx(SCREEN_WIDTH/2) end,
 		},
 		LoadActor("name entry BGA list frame")..{

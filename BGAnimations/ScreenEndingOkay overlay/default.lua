@@ -262,10 +262,10 @@ return Def.ActorFrame{
     LoadActor("intro")..{
         OnCommand=function(self) self:Center():sleep(20):addx(SCREEN_WIDTH*4) end
     },
-    LoadActor("../ScreenTitleMenu background/newlogo")..{
+    LoadActor("../ScreenTitleMenu background/newlogo "..(isFinal() and "final" or "normal"))..{
         OnCommand=function(self) self:diffusealpha(0):Center():sleep(2):diffusealpha(1):sleep(1.5):linear(1):diffusealpha(0) end
     },
-    LoadActor("../ScreenTitleMenu background/glow")..{
+    LoadActor("../ScreenTitleMenu background/glow "..(isFinal() and "final" or "normal"))..{
         OnCommand=function(self) self:blend(Blend.Add):diffusealpha(0):Center():sleep(1.7):accelerate(0.2):glow(1,1,1,1):sleep(0.2):decelerate(1):glow(0,0,0,0):diffusealpha(0) end
     },
     LoadActor("../ScreenEndingGood underlay/thank you for playing")..{
