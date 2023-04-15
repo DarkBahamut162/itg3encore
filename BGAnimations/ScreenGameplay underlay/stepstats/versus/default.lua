@@ -20,13 +20,14 @@ if getenv("ShowStatsP1") == nil or getenv("ShowStatsP2") == nil then return Def.
 
 	local t = Def.ActorFrame{}
 	for pn in ivalues(GAMESTATE:GetEnabledPlayers()) do
-		t[#t+1] = Def.ActorFrame{
-			Name="Player"..pname(pn),
-			Condition=GAMESTATE:IsHumanPlayer(pn) and bgNum[pn] > 0,
-			LoadActor("../double",pn)..{
-				InitCommand=function(self) self:zoom((atLeastOneHighscoreExists and IIDX or not IIDX) and 3/4 or 1) end
+		if GAMESTATE:IsHumanPlayer(pn) and bgNum[pn] > 0 then
+			t[#t+1] = Def.ActorFrame{
+				Name="Player"..pname(pn),
+				LoadActor("../double",pn)..{
+					InitCommand=function(self) self:zoom((atLeastOneHighscoreExists and IIDX or not IIDX) and 3/4 or 1) end
+				}
 			}
-		}
+		end
 	end
 
 	if not isRave() and not IIDX then
