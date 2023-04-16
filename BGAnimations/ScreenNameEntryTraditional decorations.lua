@@ -16,6 +16,12 @@ for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
 			BeginCommand=function(self)
 				MESSAGEMAN:Broadcast("ChangeDisplayedFeat",{Player=pn,NewIndex=curFeatNumber[pn]})
 			end,
+			CodeMessageCommand=function(self,param)
+				if param.Name == "Enter" then
+					SCREENMAN:GetTopScreen():Finish(pn)
+					SOUND:PlayOnce( THEME:GetPathS( 'ScreenNameEntryTraditional', "key" ) )
+				end
+			end,
 			MenuTimerExpiredMessageCommand = function(self)
 				SCREENMAN:GetTopScreen():Finish(pn)
 			end,

@@ -12,15 +12,18 @@ return Def.ActorFrame{
 		LoadActor("name frame")..{
 			Condition=getenv("HighScoreable"..pname(PLAYER_1)),
 			InitCommand=function(self) self:x(SCREEN_CENTER_X-157):y(SCREEN_CENTER_Y+72) end,
-			OnCommand=function(self) self:addx(-SCREEN_WIDTH/2):decelerate(0.3):addx(SCREEN_WIDTH/2) end
+			OnCommand=function(self) self:addx(-SCREEN_WIDTH/2):decelerate(0.3):addx(SCREEN_WIDTH/2) end,
+			OffCommand=function(self) self:accelerate(0.3):addx(-SCREEN_WIDTH/2) end
 		},
 		LoadActor("p1")..{
 			InitCommand=function(self) self:x(SCREEN_CENTER_X-200):y(SCREEN_CENTER_Y+145):addx(-SCREEN_WIDTH/2) end,
 			OnCommand=function(self) self:decelerate(0.3):addx(SCREEN_WIDTH/2) end,
+			OffCommand=function(self) self:accelerate(0.3):addx(-SCREEN_WIDTH/2) end
 		},
 		LoadActor("name entry BGA list frame")..{
 			InitCommand=function(self) self:x(SCREEN_CENTER_X-157):y(SCREEN_CENTER_Y-70):addx(-SCREEN_WIDTH/2) end,
-			OnCommand=function(self) self:decelerate(0.3):addx(SCREEN_WIDTH/2) end
+			OnCommand=function(self) self:decelerate(0.3):addx(SCREEN_WIDTH/2) end,
+			OffCommand=function(self) self:accelerate(0.3):addx(-SCREEN_WIDTH/2) end
 		}
 	},
 	Def.ActorFrame{
@@ -29,15 +32,18 @@ return Def.ActorFrame{
 		LoadActor("name frame")..{
 			Condition=getenv("HighScoreable"..pname(PLAYER_2)),
 			InitCommand=function(self) self:zoomx(-1):x(SCREEN_CENTER_X+156):y(SCREEN_CENTER_Y+72) end,
-			OnCommand=function(self) self:addx(SCREEN_WIDTH/2):decelerate(0.3):addx(-SCREEN_WIDTH/2) end
+			OnCommand=function(self) self:addx(SCREEN_WIDTH/2):decelerate(0.3):addx(-SCREEN_WIDTH/2) end,
+			OffCommand=function(self) self:accelerate(0.3):addx(SCREEN_WIDTH/2) end
 		},
 		LoadActor("p1")..{
-			InitCommand=function(self) self:x(SCREEN_CENTER_X+200):y(SCREEN_CENTER_Y+145):zoomx(-1):addx(-SCREEN_WIDTH/2) end,
-			OnCommand=function(self) self:decelerate(0.3):addx(SCREEN_WIDTH/2) end
+			InitCommand=function(self) self:x(SCREEN_CENTER_X+200):y(SCREEN_CENTER_Y+145):zoomx(-1):addx(SCREEN_WIDTH/2) end,
+			OnCommand=function(self) self:decelerate(0.3):addx(-SCREEN_WIDTH/2) end,
+			OffCommand=function(self) self:accelerate(0.3):addx(SCREEN_WIDTH/2) end
 		},
 		LoadActor("name entry BGA list frame")..{
 			InitCommand=function(self) self:x(SCREEN_CENTER_X+156):y(SCREEN_CENTER_Y-70):zoomx(-1):addx(SCREEN_WIDTH/2) end,
-			OnCommand=function(self) self:decelerate(0.3):addx(-SCREEN_WIDTH/2) end
+			OnCommand=function(self) self:decelerate(0.3):addx(-SCREEN_WIDTH/2) end,
+			OffCommand=function(self) self:accelerate(0.3):addx(SCREEN_WIDTH/2) end
 		}
 	},
 	LoadActor("light")..{
