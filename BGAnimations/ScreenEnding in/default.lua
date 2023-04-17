@@ -17,7 +17,8 @@ return Def.ActorFrame{
 			Text="SAVING USB PROFILES...",
 			InitCommand=function(self) self:Center():zoom(0.7) end,
 			OnCommand=function(self) self:diffusealpha(1):linear(0.3):diffusealpha(0) end
-		}
+		},
+		LoadActor(THEME:GetPathB("_statsout","ending"))
 	},
 	Def.ActorFrame{
 		Condition=not GAMESTATE:IsAnyHumanPlayerUsingMemoryCard(),
