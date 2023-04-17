@@ -6,11 +6,11 @@ return Def.ActorFrame{
     Def.ActorFrame{
         Condition=GAMESTATE:IsHumanPlayer(PLAYER_1),
         LoadActor("p1gradient")..{
-            InitCommand=function(self) self:x(SCREEN_CENTER_X-255):y(SCREEN_CENTER_Y-140) end
+            InitCommand=function(self) self:x(SCREEN_CENTER_X-182):y(SCREEN_CENTER_Y-140):halign(1) end
         },
         LoadFont("_r bold 30px")..{
             Text=ScreenEndingGetDisplayName(PLAYER_1),
-            InitCommand=function(self) self:x(SCREEN_CENTER_X-246):y(SCREEN_CENTER_Y-140):maxwidth(240) end,
+            InitCommand=function(self) self:x(SCREEN_CENTER_X-199):y(SCREEN_CENTER_Y-140):maxwidth(240):halign(1) end,
             OnCommand=function(self) self:zoom(0.7):shadowlength(2):diffuse(PlayerColor(PLAYER_1)) end
         },
         Def.ActorFrame{
@@ -134,11 +134,11 @@ return Def.ActorFrame{
     Def.ActorFrame{
         Condition=GAMESTATE:IsHumanPlayer(PLAYER_2),
         LoadActor("p2gradient")..{
-            InitCommand=function(self) self:x(SCREEN_CENTER_X+255):y(SCREEN_CENTER_Y-140) end
+            InitCommand=function(self) self:x(SCREEN_CENTER_X+182):y(SCREEN_CENTER_Y-140):halign(0) end
         },
         LoadFont("_r bold 30px")..{
             Text=ScreenEndingGetDisplayName(PLAYER_2),
-            InitCommand=function(self) self:x(SCREEN_CENTER_X+246):y(SCREEN_CENTER_Y-140):maxwidth(240) end,
+            InitCommand=function(self) self:x(SCREEN_CENTER_X+199):y(SCREEN_CENTER_Y-140):maxwidth(240):halign(0) end,
             OnCommand=function(self) self:zoom(0.7):shadowlength(2):diffuse(PlayerColor(PLAYER_2)) end
         },
         Def.ActorFrame{

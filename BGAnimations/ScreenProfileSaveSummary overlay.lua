@@ -5,11 +5,11 @@ return Def.ActorFrame{
 	Def.Quad{
 		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y-158):diffuse(color("#000000FF")):zoomto(SCREEN_WIDTH,SCREEN_HEIGHT/2) end
 	},
+	LoadActor("profile")..{
+		InitCommand=function(self) self:Center():zoomx(SCREEN_WIDTH):zoomy(0.68) end
+	},
 	Def.ActorFrame{
 		Condition=GAMESTATE:IsAnyHumanPlayerUsingMemoryCard(),
-		LoadActor("lolhi")..{
-			InitCommand=function(self) self:Center():zoomx(SCREEN_WIDTH):zoomy(0.68) end
-		},
 		LoadFont("_z 36px shadowx")..{
 			Text="SAVING USB PROFILES...",
 			InitCommand=function(self) self:Center():zoom(0.7) end
@@ -18,9 +18,6 @@ return Def.ActorFrame{
 	},
 	Def.ActorFrame{
 		Condition=not GAMESTATE:IsAnyHumanPlayerUsingMemoryCard(),
-		LoadActor("profile")..{
-			InitCommand=function(self) self:Center():zoomx(SCREEN_WIDTH):zoomy(0.68) end
-		},
 		LoadFont("_z 36px shadowx")..{
 			Text="SAVING MACHINE STATS...",
 			InitCommand=function(self) self:Center():zoom(0.7) end
