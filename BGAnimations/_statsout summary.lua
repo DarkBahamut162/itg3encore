@@ -115,52 +115,52 @@ return Def.ActorFrame{
     },
     Def.ActorFrame{
 		LoadActor(THEME:GetPathB("","_overlay/joinin"))..{
-			OnCommand=function(self) self:horizalign(right):zoomx(-1):x(SCREEN_LEFT):y(SCREEN_TOP+60):addx(-SCREEN_WIDTH):sleep(1.3):decelerate(0.3):addx(SCREEN_WIDTH) end
+			OnCommand=function(self) self:horizalign(right):x(SCREEN_LEFT):y(SCREEN_TOP+60):zoomx(-1*WideScreenDiff()):zoomy(WideScreenDiff()):addx(-SCREEN_WIDTH):sleep(1.3):decelerate(0.3):addx(SCREEN_WIDTH) end
 		},
 		LoadActor(THEME:GetPathB("","_overlay/joinin"))..{
-			OnCommand=function(self) self:horizalign(right):zoomx(-1):x(SCREEN_LEFT):y(SCREEN_TOP+140):addx(-SCREEN_WIDTH):sleep(1.3):decelerate(0.3):addx(SCREEN_WIDTH) end
+			OnCommand=function(self) self:horizalign(right):x(SCREEN_LEFT):y(SCREEN_TOP+140):zoomx(-1*WideScreenDiff()):zoomy(WideScreenDiff()):addx(-SCREEN_WIDTH):sleep(1.3):decelerate(0.3):addx(SCREEN_WIDTH) end
 		},
 		LoadActor(THEME:GetPathB("","_overlay/joinin"))..{
-			OnCommand=function(self) self:horizalign(right):x(SCREEN_RIGHT):y(SCREEN_TOP+60):addx(SCREEN_WIDTH):sleep(1.3):decelerate(0.3):addx(-SCREEN_WIDTH) end
+			OnCommand=function(self) self:horizalign(right):x(SCREEN_RIGHT):y(SCREEN_TOP+60):zoom(WideScreenDiff()):addx(SCREEN_WIDTH):sleep(1.3):decelerate(0.3):addx(-SCREEN_WIDTH) end
 		},
 		LoadActor(THEME:GetPathB("","_overlay/joinin"))..{
-			OnCommand=function(self) self:horizalign(right):x(SCREEN_RIGHT):y(SCREEN_TOP+140):addx(SCREEN_WIDTH):sleep(1.3):decelerate(0.3):addx(-SCREEN_WIDTH) end
+			OnCommand=function(self) self:horizalign(right):x(SCREEN_RIGHT):y(SCREEN_TOP+140):zoom(WideScreenDiff()):addx(SCREEN_WIDTH):sleep(1.3):decelerate(0.3):addx(-SCREEN_WIDTH) end
 		},
 		LoadActor(THEME:GetPathB("","_overlay/awards"))..{
-			OnCommand=function(self) self:animate(0):x(SCREEN_LEFT+30):y(SCREEN_TOP+60):zoom(0.55):setstate(4):diffusealpha(0.7):addx(-SCREEN_WIDTH):sleep(1.3):decelerate(0.3):addx(SCREEN_WIDTH) end
+			OnCommand=function(self) self:animate(0):x(SCREEN_LEFT+30*WideScreenDiff()):y(SCREEN_TOP+60):zoom(0.55*WideScreenDiff()):setstate(4):diffusealpha(0.7):addx(-SCREEN_WIDTH):sleep(1.3):decelerate(0.3):addx(SCREEN_WIDTH) end
 		},
         LoadFont("_v profile")..{
 			Text="SX Star Count: 10, 25, 50, 100",
-            InitCommand=function(self) self:x(SCREEN_LEFT+55):y(SCREEN_TOP+60):horizalign(left):shadowlength(0):zoom(0.8):addx(-SCREEN_WIDTH):sleep(1.3):decelerate(0.3):addx(SCREEN_WIDTH) end
+            InitCommand=function(self) self:x(SCREEN_LEFT+55*WideScreenDiff()):y(SCREEN_TOP+60):horizalign(left):shadowlength(0):zoom(0.8*WideScreenDiff()):addx(-SCREEN_WIDTH):sleep(1.3):decelerate(0.3):addx(SCREEN_WIDTH) end
         },
 		LoadActor(THEME:GetPathB("","_overlay/awards"))..{
-			OnCommand=function(self) self:animate(0):x(SCREEN_LEFT+30):y(SCREEN_TOP+140):zoom(0.55):setstate(4):diffusealpha(0.7):addx(-SCREEN_WIDTH):sleep(1.3):decelerate(0.3):addx(SCREEN_WIDTH) end
+			OnCommand=function(self) self:animate(0):x(SCREEN_LEFT+30*WideScreenDiff()):y(SCREEN_TOP+140):zoom(0.55*WideScreenDiff()):setstate(4):diffusealpha(0.7):addx(-SCREEN_WIDTH):sleep(1.3):decelerate(0.3):addx(SCREEN_WIDTH) end
 		},
         LoadFont("_v profile")..{
 			Text="Expert Quads: 10, 25, 50, 100",
-            InitCommand=function(self) self:x(SCREEN_LEFT+55):y(SCREEN_TOP+140):horizalign(left):shadowlength(0):zoom(0.8):addx(-SCREEN_WIDTH):sleep(1.3):decelerate(0.3):addx(SCREEN_WIDTH) end
+            InitCommand=function(self) self:x(SCREEN_LEFT+55*WideScreenDiff()):y(SCREEN_TOP+140):horizalign(left):shadowlength(0):zoom(0.8*WideScreenDiff()):addx(-SCREEN_WIDTH):sleep(1.3):decelerate(0.3):addx(SCREEN_WIDTH) end
         },
 		LoadActor(THEME:GetPathB("","_overlay/awards"))..{
-			OnCommand=function(self) self:animate(0):x(SCREEN_RIGHT-247):y(SCREEN_TOP+60):zoom(0.55):setstate(4):diffusealpha(0.7):addx(SCREEN_WIDTH):sleep(1.3):decelerate(0.3):addx(-SCREEN_WIDTH) end
+			OnCommand=function(self) self:animate(0):x(SCREEN_RIGHT-247*WideScreenDiff()):y(SCREEN_TOP+60):zoom(0.55*WideScreenDiff()):setstate(4):diffusealpha(0.7):addx(SCREEN_WIDTH):sleep(1.3):decelerate(0.3):addx(-SCREEN_WIDTH) end
 		},
         LoadFont("_v profile")..{
 			Text=": 500, 2.5k, 7.5k, 15k",
-            InitCommand=function(self) self:x(SCREEN_RIGHT-15):y(SCREEN_TOP+60):horizalign(right):shadowlength(0):zoom(0.8):addx(SCREEN_WIDTH):sleep(1.3):decelerate(0.3):addx(-SCREEN_WIDTH) end
+            InitCommand=function(self) self:x(SCREEN_RIGHT-15*WideScreenDiff()):y(SCREEN_TOP+60):horizalign(right):shadowlength(0):zoom(0.8*WideScreenDiff()):addx(SCREEN_WIDTH):sleep(1.3):decelerate(0.3):addx(-SCREEN_WIDTH) end
         },
         LoadFont("_v profile")..{
 			Text="Total % of",
-            InitCommand=function(self) self:x(SCREEN_RIGHT-226):y(SCREEN_TOP+54):horizalign(left):shadowlength(0):zoom(0.6):addx(SCREEN_WIDTH):sleep(1.3):decelerate(0.3):addx(-SCREEN_WIDTH) end
+            InitCommand=function(self) self:x(SCREEN_RIGHT-226*WideScreenDiff()):y(SCREEN_TOP+60-6*WideScreenDiff()):horizalign(left):shadowlength(0):zoom(0.6*WideScreenDiff()):addx(SCREEN_WIDTH):sleep(1.3):decelerate(0.3):addx(-SCREEN_WIDTH) end
         },
         LoadFont("_v profile")..{
 			Text="passed SX",
-            InitCommand=function(self) self:x(SCREEN_RIGHT-228):y(SCREEN_TOP+66):horizalign(left):shadowlength(0):zoom(0.6):addx(SCREEN_WIDTH):sleep(1.3):decelerate(0.3):addx(-SCREEN_WIDTH) end
+            InitCommand=function(self) self:x(SCREEN_RIGHT-228*WideScreenDiff()):y(SCREEN_TOP+60+6*WideScreenDiff()):horizalign(left):shadowlength(0):zoom(0.6*WideScreenDiff()):addx(SCREEN_WIDTH):sleep(1.3):decelerate(0.3):addx(-SCREEN_WIDTH) end
         },
 		LoadActor(THEME:GetPathB("","_overlay/awards"))..{
-			OnCommand=function(self) self:animate(0):x(SCREEN_RIGHT-247):y(SCREEN_TOP+140):zoom(0.55):setstate(4):diffusealpha(0.7):addx(SCREEN_WIDTH):sleep(1.3):decelerate(0.3):addx(-SCREEN_WIDTH) end
+			OnCommand=function(self) self:animate(0):x(SCREEN_RIGHT-247*WideScreenDiff()):y(SCREEN_TOP+140):zoom(0.55*WideScreenDiff()):setstate(4):diffusealpha(0.7):addx(SCREEN_WIDTH):sleep(1.3):decelerate(0.3):addx(-SCREEN_WIDTH) end
 		},
         LoadFont("_v profile")..{
 			Text="Calories: .25k, .75k, 1.5k, 3k",
-            InitCommand=function(self) self:x(SCREEN_RIGHT-20):y(SCREEN_TOP+140):horizalign(right):shadowlength(0):zoom(0.8):addx(SCREEN_WIDTH):sleep(1.3):decelerate(0.3):addx(-SCREEN_WIDTH) end
+            InitCommand=function(self) self:x(SCREEN_RIGHT-20*WideScreenDiff()):y(SCREEN_TOP+140):horizalign(right):shadowlength(0):zoom(0.8*WideScreenDiff()):addx(SCREEN_WIDTH):sleep(1.3):decelerate(0.3):addx(-SCREEN_WIDTH) end
         }
 	}
 }
