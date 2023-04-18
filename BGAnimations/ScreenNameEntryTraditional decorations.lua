@@ -15,6 +15,7 @@ for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
 			end,
 			BeginCommand=function(self)
 				MESSAGEMAN:Broadcast("ChangeDisplayedFeat",{Player=pn,NewIndex=curFeatNumber[pn]})
+				if STATSMAN:GetStagesPlayed() > 1 then self:queuecommand("RunFeat") end
 			end,
 			CodeMessageCommand=function(self,param)
 				if param.Name == "Enter" then
@@ -114,6 +115,13 @@ for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
 		InitCommand=function(self)
 			self:player(pn)
 			self:name("DifficultyIcon" .. PlayerNumberToString(pn))
+			ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen")
+		end
+	}
+	t[#t+1] = LoadActor(THEME:GetPathG("ScreenNameEntryTraditional","DifficultyMeter"),pn)..{
+		InitCommand=function(self)
+			self:player(pn)
+			self:name("DifficultyMeter" .. PlayerNumberToString(pn))
 			ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen")
 		end
 	}
