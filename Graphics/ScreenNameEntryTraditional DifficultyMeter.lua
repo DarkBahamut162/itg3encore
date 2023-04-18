@@ -1,14 +1,5 @@
 local Player = ...
-if not Player then error("[ScreenNameEntryTraditional DifficultyIcon] needs player.") end
-
-local DifficultyToFrame = {
-	['Difficulty_Beginner']		= 0,
-	['Difficulty_Easy']			= 1,
-	['Difficulty_Medium']		= 2,
-	['Difficulty_Hard']			= 3,
-	['Difficulty_Challenge']	= 4,
-	['Difficulty_Edit']			= 5
-}
+if not Player then error("[ScreenNameEntryTraditional DifficultyMeter] needs player.") end
 
 return LoadFont("_v 26px bold white")..{
 	ChangeDisplayedFeatMessageCommand=function(self,param)
