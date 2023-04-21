@@ -1,6 +1,6 @@
 return Def.ActorFrame{
     InitCommand=function(self) self:Center() end,
-    LoadActor("../credits frame")..{
+    LoadActor(THEME:GetPathG("credits","frame"))..{
         OnCommand=function(self) self:ztest(1) end
     },
     Def.Quad{

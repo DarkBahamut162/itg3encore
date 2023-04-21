@@ -22,13 +22,13 @@ return Def.ActorFrame{
 			InitCommand=function(self) self:zoom(WideScreenDiff()):x(SCREEN_CENTER_X+2*WideScreenDiff()):y(SCREEN_CENTER_Y+52*WideScreenDiff()):diffusealpha(0.2):cropleft(0.5):cropright(0.5) end,
 			StartTransitioningCommand=function(self) self:sleep(0.7):decelerate(0.75):cropright(0):cropleft(0):diffusealpha(1) end
 		},
-		LoadActor(THEME:GetPathB("horiz-line","short"))..{
+		LoadActor(THEME:GetPathG("horiz-line","short"))..{
 			InitCommand=function(self) self:zoomx(2*WideScreenDiff()):rotationz(90):x(SCREEN_CENTER_X+1*WideScreenDiff()):y(SCREEN_CENTER_Y+52*WideScreenDiff()):cropleft(0.5):cropright(0.5) end,
-			StartTransitioningCommand=function(self) self:sleep(0.55):accelerate(0.15):cropleft(0):cropright(0):decelerate(0.725):addx(-300):linear(0.15):diffusealpha(0) end
+			StartTransitioningCommand=function(self) self:sleep(0.55):accelerate(0.15):cropleft(0):cropright(0):decelerate(0.725):addx(-SCREEN_WIDTH/2):linear(0.15):diffusealpha(0) end
 		},
-		LoadActor(THEME:GetPathB("horiz-line","short"))..{
+		LoadActor(THEME:GetPathG("horiz-line","short"))..{
 			InitCommand=function(self) self:zoomx(2*WideScreenDiff()):rotationz(90):x(SCREEN_CENTER_X+2*WideScreenDiff()):y(SCREEN_CENTER_Y+52*WideScreenDiff()):cropleft(0.5):cropright(0.5) end,
-			StartTransitioningCommand=function(self) self:sleep(0.55):accelerate(0.15):cropleft(0):cropright(0):decelerate(0.725):addx(300):linear(0.15):diffusealpha(0) end
+			StartTransitioningCommand=function(self) self:sleep(0.55):accelerate(0.15):cropleft(0):cropright(0):decelerate(0.725):addx(SCREEN_WIDTH/2):linear(0.15):diffusealpha(0) end
 		}
 	},
 	Def.Quad{

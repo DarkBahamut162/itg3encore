@@ -9,11 +9,11 @@ return Def.ActorFrame{
 			InitCommand=function(self) self:x(SCREEN_LEFT+60*WideScreenDiff()):y(SCREEN_CENTER_Y+165*WideScreenDiff()):zoom(WideScreenDiff()) end,
 			OnCommand=function(self) self:diffusealpha(0):sleep(1.5):linear(0.3):diffusealpha(0.6) end
 		},
-		LoadActor(THEME:GetPathB("horiz-line","short"))..{
+		LoadActor(THEME:GetPathG("horiz-line","short"))..{
 			InitCommand=function(self) self:x(SCREEN_LEFT+120*WideScreenDiff()):y(SCREEN_CENTER_Y+155*WideScreenDiff()):zoom(WideScreenDiff()) end,
 			OnCommand=function(self) self:cropleft(0.5):cropright(0.5):sleep(1):accelerate(0.15):cropleft(0):cropright(0):accelerate(0.15):addy(-43*WideScreenDiff()):decelerate(0.2):addy(-43*WideScreenDiff()):diffusealpha(0) end
 		},
-		LoadActor(THEME:GetPathB("horiz-line","short"))..{
+		LoadActor(THEME:GetPathG("horiz-line","short"))..{
 			InitCommand=function(self) self:x(SCREEN_LEFT+120*WideScreenDiff()):y(SCREEN_CENTER_Y+155*WideScreenDiff()):zoom(WideScreenDiff()) end,
 			OnCommand=function(self) self:cropleft(0.5):cropright(0.5):sleep(1):accelerate(0.15):cropleft(0):cropright(0):accelerate(0.15):addy(43*WideScreenDiff()):decelerate(0.2):addy(43*WideScreenDiff()):diffusealpha(0) end
 		},
@@ -66,11 +66,11 @@ return Def.ActorFrame{
 			InitCommand=function(self) self:x(SCREEN_RIGHT-60*WideScreenDiff()):y(SCREEN_CENTER_Y+165*WideScreenDiff()):zoom(WideScreenDiff()) end,
 			OnCommand=function(self) self:diffusealpha(0):sleep(1.5):linear(0.3):diffusealpha(0.6) end
 		},
-		LoadActor(THEME:GetPathB("horiz-line","short"))..{
+		LoadActor(THEME:GetPathG("horiz-line","short"))..{
 			InitCommand=function(self) self:x(SCREEN_RIGHT-120*WideScreenDiff()):y(SCREEN_CENTER_Y+155*WideScreenDiff()):zoom(WideScreenDiff()) end,
 			OnCommand=function(self) self:cropleft(0.5):cropright(0.5):sleep(1):accelerate(0.15):cropleft(0):cropright(0):accelerate(0.15):addy(-43*WideScreenDiff()):decelerate(0.2):addy(-43*WideScreenDiff()):diffusealpha(0) end
 		},
-		LoadActor(THEME:GetPathB("horiz-line","short"))..{
+		LoadActor(THEME:GetPathG("horiz-line","short"))..{
 			InitCommand=function(self) self:x(SCREEN_RIGHT-120*WideScreenDiff()):y(SCREEN_CENTER_Y+155*WideScreenDiff()):zoom(WideScreenDiff()) end,
 			OnCommand=function(self) self:cropleft(0.5):cropright(0.5):sleep(1):accelerate(0.15):cropleft(0):cropright(0):accelerate(0.15):addy(43*WideScreenDiff()):decelerate(0.2):addy(43*WideScreenDiff()):diffusealpha(0) end
 		},

@@ -21,7 +21,7 @@ return Def.ActorFrame{
 		SelectMenuOpenedMessageCommand=function(self) if DifficultyChangingAvailable() then self:stoptweening():bounceend(0.2):diffusealpha(0) end end,
 		SelectMenuClosedMessageCommand=function(self) if DifficultyChangingAvailable() then self:stoptweening():linear(0.2):diffusealpha(1) end end
 	},
-	LoadActor("updatecoin")..{
+	LoadActor(THEME:GetPathG("","updatecoin"))..{
 		InitCommand=function(self) self:CenterX():y(isFinal() and SCREEN_BOTTOM-12 or SCREEN_BOTTOM-16):diffusealpha(0):shadowlength(2):zoom(0.5) end,
 		OnCommand=function(self) self:playcommand("Refresh") end,
 		RefreshCommand=function(self) self:diffusealpha(0):zoom(0):linear(0.08):zoom(0.5):diffusealpha(0.85):sleep(0.08):linear(0.1):diffusealpha(0) end,

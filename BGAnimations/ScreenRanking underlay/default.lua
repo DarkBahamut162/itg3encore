@@ -5,7 +5,7 @@ return Def.ActorFrame{
 	LoadActor("back frame")..{
 		InitCommand=function(self) self:x(SCREEN_CENTER_X-1*WideScreenDiff()):CenterY():zoomx(WideScreenDiff()) end
 	},
-	LoadActor(THEME:GetPathB("horiz-line","long"))..{
+	LoadActor(THEME:GetPathG("horiz-line","long"))..{
 		InitCommand=function(self) self:CenterX():y(SCREEN_BOTTOM-34*WideScreenDiff()):zoomx(0.99*WideScreenDiff()) end
 	},
 	LoadActor("mask")..{

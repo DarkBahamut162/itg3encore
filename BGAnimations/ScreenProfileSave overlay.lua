@@ -11,14 +11,14 @@ return Def.ActorFrame{
 		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y-158*WideScreenDiff()):diffuse(color("#000000FF")):zoomto(SCREEN_WIDTH,SCREEN_HEIGHT/2/WideScreenDiff()) end
 	},
 	Def.ActorFrame{
-		LoadActor("lolhi")..{
+		LoadActor(THEME:GetPathG("","lolhi"))..{
 			InitCommand=function(self) self:Center():zoomx(SCREEN_WIDTH):zoomy(0.68*WideScreenDiff()) end
 		},
 		LoadFont("_z 36px shadowx")..{
 			Text="LOADING...",
 			InitCommand=function(self) self:Center():zoom(0.7*WideScreenDiff()) end
 		},
-		LoadActor("_disk")..{
+		LoadActor(THEME:GetPathG("","_disk"))..{
 			InitCommand=function(self) self:x(SCREEN_CENTER_X-120*WideScreenDiff()):CenterY() end,
 			OnCommand=function(self) self:spin():decelerate(0.2):zoom(0):rotationz(360) end
 		}

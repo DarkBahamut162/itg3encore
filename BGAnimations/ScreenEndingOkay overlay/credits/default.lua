@@ -213,7 +213,7 @@ credits[#credits+1] = LoadFont("_r bold 30px")..{Text="THANK YOU FOR PLAYING!"}
 return Def.ActorFrame{
     Def.ActorFrame{
 		OnCommand=function(self) self:Center() end,
-		LoadActor("../../credits frame")..{
+		LoadActor(THEME:GetPathG("credits","frame"))..{
 			OnCommand=function(self) self:croptop(1):fadetop(1):sleep(3):linear(0.8):croptop(-1):fadetop(-1) end
 		},
 		Def.ActorScroller{

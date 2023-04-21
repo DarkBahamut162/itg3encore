@@ -7,7 +7,7 @@ return Def.ActorFrame{
 	},
 	Def.ActorFrame{
 		Condition=GAMESTATE:IsAnyHumanPlayerUsingMemoryCard() and not check,
-		LoadActor("profile")..{
+		LoadActor(THEME:GetPathG("","profile"))..{
 			InitCommand=function(self) self:Center():zoomx(SCREEN_WIDTH):zoomy(0.68*WideScreenDiff()) end,
 			OnCommand=function(self) self:linear(0.2):zoomy(0.0) setenv("USBCheck",true) end
 		},
@@ -19,7 +19,7 @@ return Def.ActorFrame{
 	},
 	Def.ActorFrame{
 		Condition=not GAMESTATE:IsAnyHumanPlayerUsingMemoryCard() or (GAMESTATE:IsAnyHumanPlayerUsingMemoryCard() and check),
-		LoadActor("lolhi")..{
+		LoadActor(THEME:GetPathG("","lolhi"))..{
 			InitCommand=function(self) self:Center():zoomx(SCREEN_WIDTH):zoomy(0.68*WideScreenDiff()) end,
 			OnCommand=function(self) self:linear(0.2):zoomy(0.0) end
 		},
