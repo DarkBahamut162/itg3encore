@@ -252,17 +252,16 @@ function cacheStep(Step)
 			end
 		end
 	end
-	if currentNotes ~= 0 then
-		noteCounter[currentNotes] = noteCounter[currentNotes] + 1
-	end
+	if currentNotes ~= 0 then noteCounter[currentNotes] = noteCounter[currentNotes] + 1 end
 	local total, times = 0, 0
 	for _sps, _times in pairs(stepsPerSec) do
 		total = total + (_sps * _times)
 		times = times + _times
 	end
-	total = total / times * 2
 
-	LoadModule("Config.Save.lua")("Version","0.22",getStepCacheFile(Step))
+	if total > 0 and times > 0 then total = total / times * 2 end
+
+	LoadModule("Config.Save.lua")("Version","0.23",getStepCacheFile(Step))
 	LoadModule("Config.Save.lua")("HasLua",HasLuaCheck() and "true" or "false",getStepCacheFile(Step))
 	if shockArrows ~= "" then LoadModule("Config.Save.lua")("ShockArrows",shockArrows,getStepCacheFile(Step)) end
 	LoadModule("Config.Save.lua")("StepCounter",table.concat(noteCounter,"_"),getStepCacheFile(Step))
