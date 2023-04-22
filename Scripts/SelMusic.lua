@@ -276,7 +276,7 @@ function LoadFromCache(Step,value)
 	local version = LoadModule("Config.Load.lua")("Version",getStepCacheFile(Step))
 	if not LoadModule("Config.Exists.lua")(value,getStepCacheFile(Step)) then
 		cacheStep(Step)
-	elseif not version or version ~= "0.22" then
+	elseif not version or version ~= "0.23" then
 		cacheStep(Step)
 	end
 	return LoadModule("Config.Load.lua")(value,getStepCacheFile(Step))
