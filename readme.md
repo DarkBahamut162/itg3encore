@@ -9,6 +9,8 @@ It's sources have being displayed down below.
 This Theme has been optimized for **Project OutFox** and has some additional *(but optional)* features that only work there!
 **ITGmania** might be your second pick since .mp4 background videos work in here without much issue. It might work incorrectly when used anywhere else!
 
+You also might need to switch your VideoRenderer to OpenGL as GLAD breaks the graphics after playing just one round (depending if they have been fixed yet everywhere).
+
 ## Information:
 To switch from **Normal Encore** to **Final Encore**, go into the theme's metrics.ini and set the **EnableFinalTheme** value inside **[Preferences]** to **true**
 
@@ -90,5 +92,6 @@ The following has been re-introduced from **OpenITG's ITG3Encore Theme**:
 * **Encore "Folders"**
 * **OptionsList** *(Mostly functional)*
 * **Fitness/Workout Mode** *(1 Player only)*
+* **USB Profile Stats**
 
 Stuff still needs to get fixed, even if the fixed and re-introduced list/code are quite long/big.
