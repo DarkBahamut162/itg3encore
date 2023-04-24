@@ -212,7 +212,7 @@ function getProfileSongs( pn )
 end
 
 function isFinal()
-	return tobool(THEME:GetMetric("Preferences", "EnableFinalTheme"))
+	return ThemePrefs.Get("EncoreThemeMode")
 end
 
 function isScreenTitle()
