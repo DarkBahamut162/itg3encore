@@ -87,7 +87,7 @@ What has been done so far:
 * Added **Theme Options**
 
 The following has been re-introduced from **OpenITG's ITG3Encore Theme**:
-* **BPM Display** *(Disabled in Battle Mode)*
+* **BPM Display** *(Disabled in Battle Mode & shows both players BPM if they are different from one another)*
 * **Full Combo Splash Animation**
 * **CustomMods** and **ScreenFilter**
 * **Encore "Folders"**
