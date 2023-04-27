@@ -34,7 +34,7 @@ return Def.ActorFrame{
 				mine = rv:GetValue('RadarCategory_Mines') > 0
 				hand = rv:GetValue('RadarCategory_Hands') > 0
 				roll = rv:GetValue('RadarCategory_Rolls') > 0
-				local totalSeconds = isOutFox() and LoadFromCache(step,"TrueLastSecond") - LoadFromCache(step,"TrueFirstSecond") or 0
+				local totalSeconds = isOutFox() and LoadFromCache(song,step,"TrueLastSecond") - LoadFromCache(song,step,"TrueFirstSecond") or 0
 				local avg_bps_OLD = song:GetLastBeat() / song:MusicLengthSeconds()
 				local avg_bps_NEW = isOutFox() and LoadModule("Config.Load.lua")("TrueLastBeat",getStepCacheFile(step)) / totalSeconds or 0
 				stream = rv:GetValue('RadarCategory_Stream')

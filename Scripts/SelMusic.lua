@@ -1,3 +1,9 @@
+local cacheVersion = "0.24"
+
+function getCacheVersion()
+	return cacheVersion
+end
+
 function DifficultyChangingAvailable()
 	return not isPlayMode('PlayMode_Endless') and not isOni() and GAMESTATE:GetSortOrder() ~= 'SortOrder_ModeMenu'
 end
@@ -158,12 +164,85 @@ local allowednotes = {
 	["TapNoteSubType_Roll"] = true
 }
 
+function getColumnsPerPlayer(typ,style)
+	if typ == "Dance" then
+		if style == "Single" then
+			return 4
+		elseif style == "Double" then
+			return 8
+		elseif style == "Couple" then
+			return 8
+		elseif style == "Solo" then
+			return 6
+		elseif style == "Solodouble" then
+			return 12
+		elseif style == "Routine" then
+			return 8
+		elseif style == "Threepanel" then
+			return 3
+		elseif style == "Threedouble" then
+			return 6
+		end
+	elseif typ == "Pump" then
+		if style == "Single" then
+			return 5
+		elseif style == "Double" then
+			return 10
+		elseif style == "Halfdouble" then
+			return 6
+		elseif style == "Couple" then
+			return 10
+		elseif style == "Routine" then
+			return 10
+		end
+	elseif typ == "Smx" then
+		if style == "Single" then
+			return 5
+		elseif style == "Double6" then
+			return 6
+		elseif style == "Double10" then
+			return 10
+		elseif style == "Couple" then
+			return 10
+		elseif style == "Routine" then
+			return 10
+		end
+	elseif typ == "Bm" then
+		if style == "Single5" then
+			return 5
+		elseif style == "Single6" then
+			return 6
+		elseif style == "Single7" then
+			return 7
+		elseif style == "Double5" then
+			return 10
+		elseif style == "Double6" then
+			return 12
+		elseif style == "Double7" then
+			return 14
+		end
+	elseif typ == "Pnm" then
+		if style == "Three" then
+			return 3
+		elseif style == "Four" then
+			return 4
+		elseif style == "Five" then
+			return 5
+		elseif style == "Seven" then
+			return 7
+		elseif style == "Nine" then
+			return 9
+		end
+	end
+	return 0
+end
+
 function getStepCacheFile(Step)
 	local filename = split("/",Step:GetFilename())
 	return "Cache/Steps/Steps_"..filename[3].."_"..filename[4].."_"..ToEnumShortString(Step:GetStepsType()).."_"..ToEnumShortString(Step:GetDifficulty()).."_"..Step:GetHash()
 end
 
-function cacheStep(Step)
+function cacheStep(Song,Step)
     local chartint = 1
 	local currentBeat = 0
 	local currentNotes = 0
@@ -173,14 +252,16 @@ function cacheStep(Step)
 	local lastBeat = 0
 	local shockArrows = ""
 
-	for k,v in pairs( GAMESTATE:GetCurrentSong():GetAllSteps() ) do
+	for k,v in pairs( Song:GetAllSteps() ) do
 		if v == Step then
 			chartint = k
 			break
 		end
 	end
 
-	for i=1,GAMESTATE:GetCurrentStyle():ColumnsPerPlayer() do
+	local stepType = split("_",Step:GetStepsType())
+
+	for i=1,getColumnsPerPlayer(stepType[2],stepType[3]) do
 		noteCounter[i] = 0
 	end
 
@@ -200,7 +281,7 @@ function cacheStep(Step)
 	local stepsPerSec = {}
 	local currentSPS = 0
 
-	for k,v in pairs( GAMESTATE:GetCurrentSong():GetNoteData(chartint) ) do
+	for k,v in pairs( Song:GetNoteData(chartint) ) do
 		ignore = false
 		if currentBeat < v[1] then
 			currentBeat = v[1]
@@ -243,7 +324,7 @@ function cacheStep(Step)
 				if currentBeat < firstBeat then firstBeat = currentBeat end
 			elseif v[3] == "TapNoteType_Mine" then
 				currentMines = currentMines + 1
-				if currentMines == GAMESTATE:GetCurrentStyle():ColumnsPerPlayer() then
+				if currentMines == getColumnsPerPlayer(stepType[2],stepType[3]) then
 					if shockArrows ~= "" then
 						shockArrows = shockArrows .. "_"
 					end
@@ -261,7 +342,7 @@ function cacheStep(Step)
 
 	if total > 0 and times > 0 then total = total / times * 2 end
 
-	LoadModule("Config.Save.lua")("Version","0.23",getStepCacheFile(Step))
+	LoadModule("Config.Save.lua")("Version",cacheVersion,getStepCacheFile(Step))
 	LoadModule("Config.Save.lua")("HasLua",HasLuaCheck() and "true" or "false",getStepCacheFile(Step))
 	if shockArrows ~= "" then LoadModule("Config.Save.lua")("ShockArrows",shockArrows,getStepCacheFile(Step)) end
 	LoadModule("Config.Save.lua")("StepCounter",table.concat(noteCounter,"_"),getStepCacheFile(Step))
@@ -272,18 +353,18 @@ function cacheStep(Step)
 	LoadModule("Config.Save.lua")("TrueLastSecond",Step:GetTimingData():GetElapsedTimeFromBeat(lastBeat),getStepCacheFile(Step))
 end
 
-function LoadFromCache(Step,value)
+function LoadFromCache(Song,Step,value)
 	local version = LoadModule("Config.Load.lua")("Version",getStepCacheFile(Step))
 	if not LoadModule("Config.Exists.lua")(value,getStepCacheFile(Step)) then
-		cacheStep(Step)
-	elseif not version or version ~= "0.23" then
-		cacheStep(Step)
+		cacheStep(Song,Step)
+	elseif not version or version ~= cacheVersion then
+		cacheStep(Song,Step)
 	end
 	return LoadModule("Config.Load.lua")(value,getStepCacheFile(Step))
 end
 
-function getStepCounter(Step)
-	return split("_",LoadFromCache(Step,"StepCounter"))
+function getStepCounter(Song,Step)
+	return split("_",LoadFromCache(Song,Step,"StepCounter"))
 end
 
 function GetMinSecondsToStep()
@@ -329,10 +410,10 @@ local tapsp2lv100={
 	45.5,46.0,46.5,47.0,47.5,48.0,48.5,49.0,49.5,50.0
 }
 
-function GetConvertDifficulty(Step)
-	local songLength = isOutFox() and (LoadFromCache(Step,"TrueLastSecond") - LoadFromCache(Step,"TrueFirstSecond")) or (GAMESTATE:GetCurrentSong():GetLastSecond() - GAMESTATE:GetCurrentSong():GetFirstSecond())
-	local voltage=Step:GetRadarValues(GAMESTATE:GetMasterPlayerNumber()):GetValue('RadarCategory_Voltage')*GAMESTATE:GetCurrentSong():MusicLengthSeconds()/songLength
-	local stream=Step:GetRadarValues(GAMESTATE:GetMasterPlayerNumber()):GetValue('RadarCategory_Stream')*GAMESTATE:GetCurrentSong():MusicLengthSeconds()/songLength
+function GetConvertDifficulty(Song,Step)
+	local songLength = isOutFox() and (LoadFromCache(Song,Step,"TrueLastSecond") - LoadFromCache(Song,Step,"TrueFirstSecond")) or (Song:GetLastSecond() - Song:GetFirstSecond())
+	local voltage=Step:GetRadarValues(GAMESTATE:GetMasterPlayerNumber()):GetValue('RadarCategory_Voltage')*Song:MusicLengthSeconds()/songLength
+	local stream=Step:GetRadarValues(GAMESTATE:GetMasterPlayerNumber()):GetValue('RadarCategory_Stream')*Song:MusicLengthSeconds()/songLength
 	local radar_voltage=voltage-0.5
 	local radar_stream=stream-0.5
 	local bpms=Step:GetTimingData():GetActualBPM()

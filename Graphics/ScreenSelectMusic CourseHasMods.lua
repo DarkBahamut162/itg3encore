@@ -34,13 +34,13 @@ return Def.ActorFrame{
 					if curStep then
 						if ThemePrefs.Get("ShowHasLua") then -- load cache HasLua
 							if isOutFox() then
-								if tobool(LoadFromCache(curStep,"HasLua")) then output = addToOutput(output,"HAS LUA","\n") end
+								if tobool(LoadFromCache(curSelection,curStep,"HasLua")) then output = addToOutput(output,"HAS LUA","\n") end
 							else
 								if HasLuaCheck() then output = addToOutput(output,"HAS LUA","\n") end
 							end
 						end
 						if ThemePrefs.Get("ShowStepCounter") and isOutFox() then -- load cache StepCounter
-							output = addToOutput(output,table.concat(getStepCounter(curStep),"|"),"\n")
+							output = addToOutput(output,table.concat(getStepCounter(curSelection,curStep),"|"),"\n")
 						end
 						if ThemePrefs.Get("ShowTrueBPMs") then -- Get true BPM range
 							local timingdata = curStep:GetTimingData()
@@ -139,16 +139,16 @@ return Def.ActorFrame{
 							end
 						end
 						if ThemePrefs.Get("ShowCalcDiff") then --Calculate Difficulty
-							local totalSeconds = isOutFox() and (LoadFromCache(curStep,"TrueLastSecond") - LoadFromCache(curStep,"TrueFirstSecond")) or (curSelection:GetLastSecond() - curSelection:GetFirstSecond())
-							local stepCounter = isOutFox() and getStepCounter(curStep)
+							local totalSeconds = isOutFox() and (LoadFromCache(curSelection,curStep,"TrueLastSecond") - LoadFromCache(curSelection,curStep,"TrueFirstSecond")) or (curSelection:GetLastSecond() - curSelection:GetFirstSecond())
+							local stepCounter = isOutFox() and getStepCounter(curSelection,curStep)
 							local stepSum = isOutFox() and 0 or math.round(curStep:GetRadarValues(GAMESTATE:GetMasterPlayerNumber()):GetValue('RadarCategory_TapsAndHolds') / totalSeconds * GAMESTATE:GetCurrentStyle():ColumnsPerPlayer() / 2)
 							if isOutFox() then
 								for i=1,#stepCounter do if stepCounter[i] then stepSum = stepSum + (stepCounter[i] * i) end end
 								stepSum = math.round( ( stepSum / totalSeconds ) * (#stepCounter/2) )
 							end
 							output = addToOutput(output,"Calc'd Difficulty (DB9): "..stepSum,"\n")
-							output = addToOutput(output,"Calc'd Difficulty (Y&A): "..math.round(GetConvertDifficulty(curStep)*GAMESTATE:GetCurrentStyle():ColumnsPerPlayer()/4),"\n")
-							if isOutFox() then output = addToOutput(output,"Calc'd Difficulty (SPS): "..math.round(tonumber(LoadFromCache(curStep,"StepsPerSecond"))*GAMESTATE:GetCurrentStyle():ColumnsPerPlayer()/4),"\n") end
+							output = addToOutput(output,"Calc'd Difficulty (Y&A): "..math.round(GetConvertDifficulty(curSelection,curStep)*GAMESTATE:GetCurrentStyle():ColumnsPerPlayer()/4),"\n")
+							if isOutFox() then output = addToOutput(output,"Calc'd Difficulty (SPS): "..math.round(tonumber(LoadFromCache(curSelection,curStep,"StepsPerSecond"))*GAMESTATE:GetCurrentStyle():ColumnsPerPlayer()/4),"\n") end
 						end
 						if ThemePrefs.Get("ShowRounds") then -- show amount of rounds for this song if not in EventMode
 							if not GAMESTATE:IsEventMode() then

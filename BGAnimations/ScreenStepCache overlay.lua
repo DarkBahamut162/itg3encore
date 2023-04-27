@@ -1,0 +1,257 @@
+local checked = false
+local updated = false
+local cancel = false
+local stepsTotal = 0
+local toBeCachedTotal = 0
+local alreadyCachedTotal = 0
+local cachedWrongVersionTotal = 0
+local errorTotal = 0
+
+local s = 5
+local ss = 50
+local sAni, ssAni = false, false
+
+local cur = 0
+local c, cs
+
+local cacheStepTypes = {
+	Dance = true,
+	Pump = true,
+	Smx = true,
+	Bm = true,
+	Pnm = true
+}
+
+local InputHandler = function(event)
+	if not event.PlayerNumber or not event.button then return false end
+
+	if event.type == "InputEventType_FirstPress" then
+		if event.GameButton == "MenuLeft" then
+			if checked and not updated then
+				cur = cur - 1
+				if cur%2 == 0 then c.Cursor:queuecommand("Yes") else c.Cursor:queuecommand("No") end
+				SOUND:PlayOnce(THEME:GetPathS('ScreenPrompt',"change"))
+			end
+		elseif event.GameButton == "MenuRight" then
+			if checked and not updated then
+				cur = cur + 1
+				if cur%2 == 0 then c.Cursor:queuecommand("Yes") else c.Cursor:queuecommand("No") end
+				SOUND:PlayOnce(THEME:GetPathS('ScreenPrompt',"change"))
+			end
+		elseif event.GameButton == "Back" then
+			cancel = true
+			SCREENMAN:GetTopScreen():Cancel()
+		elseif event.GameButton == "Start" then
+			if checked then
+				if updated then
+					SCREENMAN:GetTopScreen():StartTransitioningScreen("SM_GoToNextScreen")
+					SOUND:PlayOnce(THEME:GetPathS("Common", "Start"), true)
+				else
+					if cur%2 == 1 then
+						SCREENMAN:GetTopScreen():StartTransitioningScreen("SM_GoToNextScreen")
+						SOUND:PlayOnce(THEME:GetPathS("Common", "Start"), true)
+					else
+						checked = false
+						s,ss = 5,50
+						cs.Seconds:playcommand("Update")
+						cs.DeciSeconds:playcommand("Update")
+						c.Cursor:diffusealpha(0)
+						c.YES:diffusealpha(0)
+						c.NO:diffusealpha(0)
+						c.UpdateImminent:diffusealpha(1):sleep(5):diffusealpha(0)
+						c.Cache:sleep(5):queuecommand("Updating")
+					end
+				end
+			end
+		end
+	end
+end
+
+return Def.ActorFrame{
+	InitCommand=function(self) c = self:GetChildren() end,
+	OnCommand=function(self) SCREENMAN:GetTopScreen():AddInputCallback(InputHandler) end,
+	Def.ActorFrame{
+		Name="Timer",
+		InitCommand=function(self) self:x(SCREEN_LEFT+86*WideScreenDiff()):y(SCREEN_TOP+35*WideScreenDiff()) cs = self:GetChildren() end,
+		OnCommand=function(self) self:draworder(101):addy(-100):decelerate(0.8):addy(100):zoom(WideScreenDiff())end,
+		OffCommand=function(self) self:accelerate(0.7):addy(-200) end,
+		LoadFont("_z numbers")..{
+			Name="Seconds",
+			Text=s..".",
+			InitCommand=function(self) self:stoptweening():shadowlength(0):zoom(1.1):x(2):horizalign(right) end,
+			OnCommand=function(self) self:sleep(0.5):queuecommand("Update") end,
+			UpdateCommand=function(self)
+				if not sAni then sAni = true self:diffuseshift():effectperiod(0.5):effectcolor1(color("1,0,0,1")):effectcolor2(color("1,0,0,0")) end
+				if s > 0 then
+					s = s - 1
+					if not cancel then
+						c.Timer:zoom(1.3):linear(0.2):zoom(1)
+						SOUND:PlayOnce(THEME:GetPathS('MenuTimer',"tick"))
+						self:settext(s.."."):sleep(1):queuecommand("Update")
+					end
+				else
+					sAni = false
+					self:stoptweening():stopeffect()
+				end
+			end
+		},
+		LoadFont("_z numbers")..{
+			Name="DeciSeconds",
+			Text=ss%10,
+			InitCommand=function(self) self:stoptweening():shadowlength(0):zoom(0.85):x(1):y(2):halign(0) end,
+			OnCommand=function(self) self:sleep(0.5):queuecommand("Update") end,
+			UpdateCommand=function(self)
+				if not ssAni then ssAni = true self:diffuseshift():effectperiod(0.5):effectcolor1(color("1,0,0,1")):effectcolor2(color("1,0,0,0")) end
+				if s > 0 or ss > 0 then
+					if not cancel then
+						ss = ss - 1
+						self:settext((ss%10)):sleep(0.1):queuecommand("Update")
+					end
+				else
+					ssAni = false
+					self:stoptweening():stopeffect()
+				end
+			end
+		}
+	},
+	LoadFont("_z 36px shadowx")..{
+		Name="Cache",
+		Text="The StepCache will be checked in 5 seconds.\nThis might take a little while...",
+		InitCommand=function(self) self:Center():zoom(0.6*WideScreenDiff()):shadowlength(2):cropleft(0.5):cropright(0.5) end,
+		OnCommand=function(self) self:decelerate(0.5):cropleft(0):cropright(0):sleep(4.9):queuecommand("Checking") end,
+		CheckingCommand=function(self) self:settext("Checking..."):sleep(0.1):queuecommand("Check") end,
+		UpdatingCommand=function(self) self:settext("Updating..."):sleep(0.1):queuecommand("Update") end,
+		CheckCommand=function(self)
+			local songs = SONGMAN:GetAllSongs()
+			local currentCacheVersion = tonumber(getCacheVersion())
+			if not cancel then
+				for curSong=1,#songs do
+					local steps = songs[curSong]:GetAllSteps()
+					stepsTotal = stepsTotal + #steps
+					for curStep=1,#steps do
+						if steps[curStep] then
+							local filename = split("/",steps[curStep]:GetFilename())
+							local stepType = split("_",steps[curStep]:GetStepsType())[2]
+							if cacheStepTypes[stepType] then
+								if #filename >= 4 then
+									local cacheFile = getStepCacheFile(steps[curStep])
+									if not LoadModule("Config.Exists.lua")("Version",cacheFile) then
+										toBeCachedTotal = toBeCachedTotal + 1
+									else
+										local version = LoadModule("Config.Load.lua")("Version",cacheFile)
+										if version and tonumber(version) ~= currentCacheVersion then
+											alreadyCachedTotal = alreadyCachedTotal + 1
+											cachedWrongVersionTotal = cachedWrongVersionTotal + 1
+										else
+											alreadyCachedTotal = alreadyCachedTotal + 1
+										end
+									end
+								else
+									errorTotal = errorTotal + 1
+								end
+							end
+						end
+					end
+				end
+				checked = true
+				if toBeCachedTotal == 0 and cachedWrongVersionTotal == 0 then
+					updated = true
+				end
+				self:queuecommand("Checked")
+			end
+		end,
+		CheckedCommand=function(self)
+			local typ = ""
+			local add = ""
+
+			if toBeCachedTotal > 0 and cachedWrongVersionTotal == 0 then
+				typ = "cache"
+			elseif toBeCachedTotal == 0 and cachedWrongVersionTotal > 0 then
+				typ = "update"
+			elseif toBeCachedTotal > 0 and cachedWrongVersionTotal > 0 then
+				typ = "cache and update"
+			else
+				updated = true
+			end
+
+			if not updated then
+				add = "Would you like to\n"..typ.."\n the remaining steps?"
+				c.Cursor:queuecommand("Yes"):diffusealpha(1)
+				c.YES:diffusealpha(1)
+				c.NO:diffusealpha(1)
+				self:settext("There are "..toBeCachedTotal.." steps needing to be cached...\n"..
+				"There are "..alreadyCachedTotal.." steps already cached...\n"..
+				"There are "..cachedWrongVersionTotal.." steps on outdated versions...\n\n"..add.."\n\n\n\n\n")
+			else
+				c.Cursor:diffusealpha(1)
+				c.OK:diffusealpha(1)
+				self:settext("The StepCache is up-to-date!")
+			end
+		end,
+		UpdateCommand=function(self)
+			local songs = SONGMAN:GetAllSongs()
+			local currentCacheVersion = tonumber(getCacheVersion())
+
+			if not cancel then
+				for curSong=1,#songs do
+					local steps = songs[curSong]:GetAllSteps()
+					stepsTotal = stepsTotal + #steps
+					for curStep=1,#steps do
+						if steps[curStep] then
+							local filename = split("/",steps[curStep]:GetFilename())
+							local stepType = split("_",steps[curStep]:GetStepsType())[2]
+							if cacheStepTypes[stepType] then
+								if #filename >= 4 then
+									local cacheFile = getStepCacheFile(steps[curStep])
+									if not LoadModule("Config.Exists.lua")("Version",cacheFile) then
+										cacheStep(songs[curSong],steps[curStep])
+									else
+										local version = LoadModule("Config.Load.lua")("Version",cacheFile)
+										if version and tonumber(version) ~= currentCacheVersion then
+											cacheStep(songs[curSong],steps[curStep])
+										end
+									end
+								end
+							end
+						end
+					end
+				end
+				checked = true
+				updated = true
+				self:queuecommand("Updated")
+			end
+		end,
+		UpdatedCommand=function(self)
+			c.Cursor:queuecommand("Ok"):diffusealpha(1)
+			c.OK:diffusealpha(1)
+			self:settext("The StepCache has been updated!")
+		end
+	},
+	LoadActor(THEME:GetPathG("ScreenPrompt","Cursor"))..{
+		Name="Cursor",
+		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+SCREEN_CENTER_Y/3):diffusealpha(0) end,
+		YesCommand=function(self) self:x(SCREEN_CENTER_X-SCREEN_CENTER_X/3) end,
+		NoCommand=function(self) self:x(SCREEN_CENTER_X+SCREEN_CENTER_X/3) end,
+		OkCommand=function(self) self:CenterX() end,
+	},
+	LoadFont("_r bold 30px")..{
+		Name="OK",
+		Text="OK",
+		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+SCREEN_CENTER_Y/3):diffusealpha(0) end,
+	},
+	LoadFont("_r bold 30px")..{
+		Name="YES",
+		Text="Yes",
+		InitCommand=function(self) self:x(SCREEN_CENTER_X-SCREEN_CENTER_X/3):y(SCREEN_CENTER_Y+SCREEN_CENTER_Y/3):diffusealpha(0) end,
+	},
+	LoadFont("_r bold 30px")..{
+		Name="NO",
+		Text="No",
+		InitCommand=function(self) self:x(SCREEN_CENTER_X+SCREEN_CENTER_X/3):y(SCREEN_CENTER_Y+SCREEN_CENTER_Y/3):diffusealpha(0) end,
+	},
+	LoadFont("_z 36px shadowx")..{
+		Name="UpdateImminent",
+		Text="Update imminent...",
+		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+SCREEN_CENTER_Y/3):zoom(0.6*WideScreenDiff()):diffusealpha(0) end,
+	},
+}
