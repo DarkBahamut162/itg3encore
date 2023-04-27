@@ -41,16 +41,20 @@ if numPlayers == 1 then
 	local pos
 	local metricName = string.format("PlayerP%i%sX",pNum,styleType)
 	pos = THEME:GetMetric("ScreenGameplay",metricName)
-	t[#t+1] = Def.Quad{
-		Name="SinglePlayerFilter",
-		InitCommand=function(self) self:x(pos):CenterY():zoomto(filterWidth,SCREEN_HEIGHT*3):diffusecolor(filterColor):diffusealpha(filterAlpha) end,
+	t[#t+1] = Def.ActorFrame{
+		InitCommand=function(self) self:x(pos):CenterY() end,
 		OnCommand=function(self)
 			if getenv("RotationLeftP"..pNum) then
-				self:rotationz(90):y(SCREEN_CENTER_Y+8)
+				self:rotationz(-90)
+				--self:x((SCREEN_WIDTH+SCREEN_HEIGHT)/2)
+				self:y(SCREEN_CENTER_Y+10)
 			elseif getenv("RotationRightP"..pNum) then
-				self:rotationz(90):y(SCREEN_CENTER_Y+8)
+				self:rotationz(90)
+				self:x((SCREEN_WIDTH+SCREEN_HEIGHT)/2)
+				self:y(SCREEN_CENTER_Y+10)
 			elseif getenv("RotationUpsideDownP"..pNum) then
-				self:y(SCREEN_CENTER_Y+20)
+				self:rotationz(180)
+				self:y(SCREEN_CENTER_Y)
 			elseif getenv("RotationSoloP"..pNum) then
 				self:CenterX()
 			end
@@ -67,7 +71,12 @@ if numPlayers == 1 then
 			elseif getenv("EffectWagP"..pNum) then
 				self:wag():effectclock('beat')
 			end
-		end
+		end,
+		Def.Quad{
+			Name="SinglePlayerFilter",
+			InitCommand=function(self) self:zoomto(filterWidth,SCREEN_HEIGHT*4):diffusecolor(filterColor):diffusealpha(filterAlpha) end
+		},
+		LoadActor("SpeedAssist", player)
 	}
 else
 	if styleType == "TwoPlayersSharedSides" then
@@ -86,10 +95,10 @@ else
 
 		t[#t+1] = Def.Quad{
 			Name="RoutineFilter",
-			InitCommand=function(self) self:x(THEME:GetMetric("ScreenGameplay",metricName)):CenterY():zoomto(filterWidth,SCREEN_HEIGHT*3):diffusecolor(filterColor):diffusealpha(filterAlphas[player]) end,
+			InitCommand=function(self) self:x(THEME:GetMetric("ScreenGameplay",metricName)):CenterY():zoomto(filterWidth,SCREEN_HEIGHT*4):diffusecolor(filterColor):diffusealpha(filterAlphas[player]) end,
 			OnCommand=function(self)
 				if getenv("RotationLeftP"..pNum) then
-					self:rotationz(90):y(SCREEN_CENTER_Y+8)
+					self:rotationz(-90):y(SCREEN_CENTER_Y+8)
 				elseif getenv("RotationRightP"..pNum) then
 					self:rotationz(90):y(SCREEN_CENTER_Y+8)
 				elseif getenv("RotationUpsideDownP"..pNum) then
@@ -125,18 +134,19 @@ else
 
 			local metricName = string.format("PlayerP%i%sX",pNum,styleType)
 			local pos = THEME:GetMetric("ScreenGameplay",metricName)
-			t[#t+1] = Def.Quad{
-				Name="Player"..pNum.."Filter",
-				InitCommand=function(self) self:x(pos):CenterY():zoomto(filterWidth,SCREEN_HEIGHT*3):diffusecolor(filterColor):diffusealpha(filterAlphas[player] or 0.5) end,
+			t[#t+1] = Def.ActorFrame{
+				InitCommand=function(self) self:x(pos):CenterY() end,
 				OnCommand=function(self)
 					if getenv("RotationLeftP"..pNum) then
-						self:rotationz(90):y(SCREEN_CENTER_Y+8)
+						self:rotationz(-90)
+						self:y(SCREEN_CENTER_Y+10)
 					elseif getenv("RotationRightP"..pNum) then
-						self:rotationz(90):y(SCREEN_CENTER_Y+8)
+						self:rotationz(90)
+						self:y(SCREEN_CENTER_Y+10)
 					elseif getenv("RotationUpsideDownP"..pNum) then
-						self:y(SCREEN_CENTER_Y+20)
+						self:y(0)
 					end
-
+		
 					if getenv("EffectVibrateP"..pNum) then
 					elseif getenv("EffectSpinP"..pNum) then
 						self:spin():effectclock('beat'):effectmagnitude(0,0,45*currentMini)
@@ -149,7 +159,12 @@ else
 					elseif getenv("EffectWagP"..pNum) then
 						self:wag():effectclock('beat')
 					end
-				end
+				end,
+				Def.Quad{
+					Name="Player"..pNum.."Filter",
+					InitCommand=function(self) self:zoomto(filterWidth,SCREEN_HEIGHT*4):diffusecolor(filterColor):diffusealpha(filterAlphas[player]) end
+				},
+				LoadActor("SpeedAssist", player)
 			}
 		end
 	end

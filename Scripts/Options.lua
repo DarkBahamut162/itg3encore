@@ -55,24 +55,24 @@ function SongMods()
 	-- differences 2 (should be "27,24," but timingscale is not in sm5)
 	if isRegular() then
 		if HasLuaCheck() then
-			options = addToOutput(options,"20,"..add.."P,21,24",",")
+			options = addToOutput(options,"20,"..add.."P,29,21,24",",")
 		else
-			options = addToOutput(options,"20,"..add.."P,24",",")
+			options = addToOutput(options,"20,"..add.."P,29,24",",")
 		end
 	elseif isNonstop() then
 		if IsCourseSecret() then
-			options = addToOutput(options,"20,"..add.."P,24",",")
+			options = addToOutput(options,"20,"..add.."P,29,24",",")
 		else
-			options = addToOutput(options,"20,"..add.."P,21,24",",")
+			options = addToOutput(options,"20,"..add.."P,29,21,24",",")
 		end
 	end
 
 	if isRave() then
 		options = "1,3,28,21,"
 	elseif isOni() and not isLifeline(GAMESTATE:GetMasterPlayerNumber()) then
-		options = "1,3,28,20,"..add.."P,21,"
+		options = "1,3,28,20,"..add.."P,29,21,"
 	elseif isOni() then
-		options = "1,3,28,S,20,"..add.."P,21,"
+		options = "1,3,28,S,20,"..add.."P,29,21,"
 	end
 
 	options = addToOutput(options,"16",",")
@@ -146,7 +146,9 @@ function InitOptions()
 	setenv("EffectVibrateP2",false)
 
 	setenv("ShowModsP1",false)
+	setenv("ShowSpeedAssistP1",false)
 	setenv("ShowModsP2",false)
+	setenv("ShowSpeedAssistP2",false)
 
 	setenv("SetScoreTypeP1",2)
 	setenv("SetScoreTypeP2",2)
@@ -318,6 +320,25 @@ function OptionSetPacemaker()
 					break
 				end
 			end
+		end
+	}
+	setmetatable(t, t)
+	return t
+end
+
+function OptionShowAssists()
+	local t = {
+		Name="ShowAssists",
+		LayoutType = "ShowAllInRow",
+		SelectType = "SelectMultiple",
+		OneChoiceForAllPlayers = false,
+		ExportOnChange = false,
+		Choices = { "Speed Assist" },
+		LoadSelections = function(self, list, pn)
+			list[1] = getenv("ShowSpeedAssist"..pname(pn))
+		end,
+		SaveSelections = function(self, list, pn)
+			setenv("ShowSpeedAssist"..pname(pn),list[1])
 		end
 	}
 	setmetatable(t, t)
