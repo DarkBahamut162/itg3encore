@@ -10,7 +10,7 @@ local DifficultyToFrame = {
 	['Difficulty_Edit']			= 5
 }
 
-return LoadActor("DifficultyIcon")..{
+return LoadActor("DifficultyIcon "..(isFinal() and "final" or "normal"))..{
 	InitCommand=function(self) self:animate(false) end,
 	ChangeDisplayedFeatMessageCommand=function(self,param)
 		if param.Player == Player then

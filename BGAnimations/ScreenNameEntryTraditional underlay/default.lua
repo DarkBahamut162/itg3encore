@@ -9,18 +9,25 @@ return Def.ActorFrame{
 	Def.ActorFrame{
 		Name="P1Side",
 		InitCommand=function(self) self:visible(GAMESTATE:IsHumanPlayer(PLAYER_1)) end,
-		LoadActor("name frame")..{
+		LoadActor("name frame "..(isFinal() and "final" or "normal"))..{
 			Condition=getenv("HighScoreable"..pname(PLAYER_1)),
 			InitCommand=function(self) self:x(SCREEN_CENTER_X-157*WideScreenDiff()):y(SCREEN_CENTER_Y+72*WideScreenDiff()):addx(-SCREEN_WIDTH/2):zoom(WideScreenDiff()) end,
 			OnCommand=function(self) self:decelerate(0.3):addx(SCREEN_WIDTH/2) end,
 			OffCommand=function(self) self:accelerate(0.3):addx(-SCREEN_WIDTH/2) end
 		},
-		LoadActor("p1")..{
-			InitCommand=function(self) self:x(SCREEN_CENTER_X-200*WideScreenDiff()):y(SCREEN_CENTER_Y+145*WideScreenDiff()):addx(-SCREEN_WIDTH/2):zoom(WideScreenDiff()) end,
+		LoadActor("name entry "..(isFinal() and "final" or "normal").." BGA score frame")..{
+			InitCommand=function(self)
+				if isFinal() then
+					self:x(SCREEN_CENTER_X-195*WideScreenDiff()):y(SCREEN_CENTER_Y+134*WideScreenDiff())
+				else
+					self:x(SCREEN_CENTER_X-200*WideScreenDiff()):y(SCREEN_CENTER_Y+145*WideScreenDiff())
+				end
+				self:addx(-SCREEN_WIDTH/2):zoom(WideScreenDiff()):blend(Blend.Add)
+			end,
 			OnCommand=function(self) self:decelerate(0.3):addx(SCREEN_WIDTH/2) end,
 			OffCommand=function(self) self:accelerate(0.3):addx(-SCREEN_WIDTH/2) end
 		},
-		LoadActor("name entry BGA list frame")..{
+		LoadActor("name entry "..(isFinal() and "final" or "normal").." BGA list frame")..{
 			InitCommand=function(self) self:x(SCREEN_CENTER_X-157*WideScreenDiff()):y(SCREEN_CENTER_Y-70*WideScreenDiff()):addx(-SCREEN_WIDTH/2):zoom(WideScreenDiff()) end,
 			OnCommand=function(self) self:decelerate(0.3):addx(SCREEN_WIDTH/2) end,
 			OffCommand=function(self) self:accelerate(0.3):addx(-SCREEN_WIDTH/2) end
@@ -29,18 +36,25 @@ return Def.ActorFrame{
 	Def.ActorFrame{
 		Name="P2Side",
 		InitCommand=function(self) self:visible(GAMESTATE:IsHumanPlayer(PLAYER_2)) end,
-		LoadActor("name frame")..{
+		LoadActor("name frame "..(isFinal() and "final" or "normal"))..{
 			Condition=getenv("HighScoreable"..pname(PLAYER_2)),
 			InitCommand=function(self) self:x(SCREEN_CENTER_X+156*WideScreenDiff()):y(SCREEN_CENTER_Y+72*WideScreenDiff()):addx(SCREEN_WIDTH/2):zoomx(-1*WideScreenDiff()):zoomy(WideScreenDiff()) end,
 			OnCommand=function(self) self:decelerate(0.3):addx(-SCREEN_WIDTH/2) end,
 			OffCommand=function(self) self:accelerate(0.3):addx(SCREEN_WIDTH/2) end
 		},
-		LoadActor("p1")..{
-			InitCommand=function(self) self:x(SCREEN_CENTER_X+200*WideScreenDiff()):y(SCREEN_CENTER_Y+145*WideScreenDiff()):addx(SCREEN_WIDTH/2):zoomx(-1*WideScreenDiff()):zoomy(WideScreenDiff()) end,
+		LoadActor("name entry "..(isFinal() and "final" or "normal").." BGA score frame")..{
+			InitCommand=function(self)
+				if isFinal() then
+					self:x(SCREEN_CENTER_X+195*WideScreenDiff()):y(SCREEN_CENTER_Y+134*WideScreenDiff())
+				else
+					self:x(SCREEN_CENTER_X+200*WideScreenDiff()):y(SCREEN_CENTER_Y+145*WideScreenDiff())
+				end
+				self:addx(SCREEN_WIDTH/2):zoom(WideScreenDiff()):blend(Blend.Add)
+			end,
 			OnCommand=function(self) self:decelerate(0.3):addx(-SCREEN_WIDTH/2) end,
 			OffCommand=function(self) self:accelerate(0.3):addx(SCREEN_WIDTH/2) end
 		},
-		LoadActor("name entry BGA list frame")..{
+		LoadActor("name entry "..(isFinal() and "final" or "normal").." BGA list frame")..{
 			InitCommand=function(self) self:x(SCREEN_CENTER_X+156*WideScreenDiff()):y(SCREEN_CENTER_Y-70*WideScreenDiff()):addx(SCREEN_WIDTH/2):zoomx(-1*WideScreenDiff()):zoomy(WideScreenDiff()) end,
 			OnCommand=function(self) self:decelerate(0.3):addx(-SCREEN_WIDTH/2) end,
 			OffCommand=function(self) self:accelerate(0.3):addx(SCREEN_WIDTH/2) end
