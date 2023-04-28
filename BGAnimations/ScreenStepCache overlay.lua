@@ -7,9 +7,9 @@ local alreadyCachedTotal = 0
 local cachedWrongVersionTotal = 0
 local errorTotal = 0
 
-local s = 5
-local ss = 50
-local sAni, ssAni = false, false
+local s = 10
+local ss = 100
+local ani = false
 
 local cur = 0
 local c, cs
@@ -52,14 +52,14 @@ local InputHandler = function(event)
 						SOUND:PlayOnce(THEME:GetPathS("Common", "Start"), true)
 					else
 						checked = false
-						s,ss = 5,50
+						s,ss = 10,100
 						cs.Seconds:playcommand("Update")
 						cs.DeciSeconds:playcommand("Update")
 						c.Cursor:diffusealpha(0)
 						c.YES:diffusealpha(0)
 						c.NO:diffusealpha(0)
-						c.UpdateImminent:diffusealpha(1):sleep(5):diffusealpha(0)
-						c.Cache:sleep(5):queuecommand("Updating")
+						c.UpdateImminent:diffusealpha(1):sleep(s):diffusealpha(0)
+						c.Cache:sleep(ss/10):queuecommand("Updating")
 					end
 				end
 			end
@@ -81,17 +81,22 @@ return Def.ActorFrame{
 			InitCommand=function(self) self:stoptweening():shadowlength(0):zoom(1.1):x(2):horizalign(right) end,
 			OnCommand=function(self) self:sleep(0.5):queuecommand("Update") end,
 			UpdateCommand=function(self)
-				if not sAni then sAni = true self:diffuseshift():effectperiod(0.5):effectcolor1(color("1,0,0,1")):effectcolor2(color("1,0,0,0")) end
 				if s > 0 then
 					s = s - 1
 					if not cancel then
-						c.Timer:zoom(1.3):linear(0.2):zoom(1)
-						SOUND:PlayOnce(THEME:GetPathS('MenuTimer',"tick"))
+						if s <= 4 then
+							if not ani then
+								ani = true
+								c.Timer:diffuseshift():effectperiod(0.5):effectcolor1(color("1,0,0,1")):effectcolor2(color("1,0,0,0"))
+							end
+							c.Timer:zoom(1.3):linear(0.2):zoom(1)
+							SOUND:PlayOnce(THEME:GetPathS('MenuTimer',"tick"))
+						end
 						self:settext(s.."."):sleep(1):queuecommand("Update")
 					end
 				else
-					sAni = false
-					self:stoptweening():stopeffect()
+					ani = false
+					c.Timer:stoptweening():stopeffect()
 				end
 			end
 		},
@@ -101,24 +106,20 @@ return Def.ActorFrame{
 			InitCommand=function(self) self:stoptweening():shadowlength(0):zoom(0.85):x(1):y(2):halign(0) end,
 			OnCommand=function(self) self:sleep(0.5):queuecommand("Update") end,
 			UpdateCommand=function(self)
-				if not ssAni then ssAni = true self:diffuseshift():effectperiod(0.5):effectcolor1(color("1,0,0,1")):effectcolor2(color("1,0,0,0")) end
 				if s > 0 or ss > 0 then
 					if not cancel then
 						ss = ss - 1
 						self:settext((ss%10)):sleep(0.1):queuecommand("Update")
 					end
-				else
-					ssAni = false
-					self:stoptweening():stopeffect()
 				end
 			end
 		}
 	},
 	LoadFont("_z 36px shadowx")..{
 		Name="Cache",
-		Text="The StepCache will be checked in 5 seconds.\nThis might take a little while...",
+		Text="The StepCache will be checked in 10 seconds.\nThis might take a little while...",
 		InitCommand=function(self) self:Center():zoom(0.6*WideScreenDiff()):shadowlength(2):cropleft(0.5):cropright(0.5) end,
-		OnCommand=function(self) self:decelerate(0.5):cropleft(0):cropright(0):sleep(4.9):queuecommand("Checking") end,
+		OnCommand=function(self) self:decelerate(0.5):cropleft(0):cropright(0):sleep(s-0.1):queuecommand("Checking") end,
 		CheckingCommand=function(self) self:settext("Checking..."):sleep(0.1):queuecommand("Check") end,
 		UpdatingCommand=function(self) self:settext("Updating..."):sleep(0.1):queuecommand("Update") end,
 		CheckCommand=function(self)
@@ -133,7 +134,7 @@ return Def.ActorFrame{
 							local filename = split("/",steps[curStep]:GetFilename())
 							local stepType = split("_",steps[curStep]:GetStepsType())[2]
 							if cacheStepTypes[stepType] then
-								if #filename >= 4 then
+								if #filename >= 4 and not steps[curStep]:IsAutogen() then
 									local cacheFile = getStepCacheFile(steps[curStep])
 									if not LoadModule("Config.Exists.lua")("Version",cacheFile) then
 										toBeCachedTotal = toBeCachedTotal + 1
@@ -201,7 +202,7 @@ return Def.ActorFrame{
 							local filename = split("/",steps[curStep]:GetFilename())
 							local stepType = split("_",steps[curStep]:GetStepsType())[2]
 							if cacheStepTypes[stepType] then
-								if #filename >= 4 then
+								if #filename >= 4 and not steps[curStep]:IsAutogen() then
 									local cacheFile = getStepCacheFile(steps[curStep])
 									if not LoadModule("Config.Exists.lua")("Version",cacheFile) then
 										cacheStep(songs[curSong],steps[curStep])

@@ -239,7 +239,10 @@ end
 
 function getStepCacheFile(Step)
 	local filename = split("/",Step:GetFilename())
-	return "Cache/Steps/Steps_"..filename[3].."_"..filename[4].."_"..ToEnumShortString(Step:GetStepsType()).."_"..ToEnumShortString(Step:GetDifficulty()).."_"..Step:GetHash()
+	local Song = SONGMAN:GetSongFromSteps(Step)
+	local groupName = #filename >= 4 and filename[3] or Song:GetGroupName()
+	local songName = #filename >= 4 and filename[4] or Song:GetSongFolder()
+	return "Cache/Steps/Steps_"..groupName.."_"..songName.."_"..ToEnumShortString(Step:GetStepsType()).."_"..ToEnumShortString(Step:GetDifficulty()).."_"..Step:GetHash()
 end
 
 function cacheStep(Song,Step)
