@@ -5,6 +5,18 @@ elseif GAMESTATE:GetMasterPlayerNumber() == PLAYER_2 and getenv("RotationSoloP2"
 	posX = SCREEN_CENTER_X+SCREEN_WIDTH/4/WideScreenSemiDiff()
 end
 
+local buttons = {
+	Left = true,
+	Up = true,
+	Down = true,
+	Right = true,
+	DownLeft = true,
+	UpLeft = true,
+	Center = true,
+	UpRight = true,
+	DownRight = true
+}
+
 return Def.ActorFrame{
 	Def.ActorFrame{
 		InitCommand=function(self) self:x(posX):y(SCREEN_CENTER_Y+15):zoom(WideScreenDiff()) end,
@@ -48,45 +60,12 @@ return Def.ActorFrame{
 				Name="DirectionText",
 				InitCommand=function(self) self:y(-96) end,
 				LoadFont("_r bold shadow 30px")..{
-					Text="Left!",
 					InitCommand=function(self) self:diffusealpha(0):maxwidth(70) end,
 					CrossCommand=function(self) self:finishtweening():diffusealpha(1):zoom(1.4):linear(0.2):zoom(1):sleep(0.4):diffusealpha(0) end,
 					NoteCrossedMessageCommand=function(self,param)
-						if param.ButtonName == "Left" then
-							self:playcommand("Cross")
-						end
-					end,
-					NoteCrossedJumpMessageCommand=function(self) self:finishtweening():diffusealpha(0) end
-				},
-				LoadFont("_r bold shadow 30px")..{
-					Text="Right",
-					InitCommand=function(self) self:diffusealpha(0):maxwidth(70) end,
-					CrossCommand=function(self) self:finishtweening():diffusealpha(1):zoom(1.4):linear(0.2):zoom(1):sleep(0.4):diffusealpha(0) end,
-					NoteCrossedMessageCommand=function(self,param)
-						if param.ButtonName == "Right" then
-							self:playcommand("Cross")
-						end
-					end,
-					NoteCrossedJumpMessageCommand=function(self) self:finishtweening():diffusealpha(0) end
-				},
-				LoadFont("_r bold shadow 30px")..{
-					Text="Up",
-					InitCommand=function(self) self:diffusealpha(0):maxwidth(70) end,
-					CrossCommand=function(self) self:finishtweening():diffusealpha(1):zoom(1.4):linear(0.2):zoom(1):sleep(0.4):diffusealpha(0) end,
-					NoteCrossedMessageCommand=function(self,param)
-						if param.ButtonName == "Up" then
-							self:playcommand("Cross")
-						end
-					end,
-					NoteCrossedJumpMessageCommand=function(self) self:finishtweening():diffusealpha(0) end
-				},
-				LoadFont("_r bold shadow 30px")..{
-					Text="Down!",
-					InitCommand=function(self) self:diffusealpha(0):maxwidth(70) end,
-					CrossCommand=function(self) self:finishtweening():diffusealpha(1):zoom(1.4):linear(0.2):zoom(1):sleep(0.4):diffusealpha(0) end,
-					NoteCrossedMessageCommand=function(self,param)
-						if param.ButtonName == "Down" then
-							self:playcommand("Cross")
+						if buttons[param.ButtonName] then
+							local button = param.ButtonName
+							self:settext(button.."!"):playcommand("Cross")
 						end
 					end,
 					NoteCrossedJumpMessageCommand=function(self) self:finishtweening():diffusealpha(0) end
@@ -94,6 +73,7 @@ return Def.ActorFrame{
 				LoadFont("_r bold shadow 30px")..{
 					Text="Jump!",
 					InitCommand=function(self) self:diffusealpha(0):maxwidth(70) end,
+					NoteCrossedMessageCommand=function(self) self:finishtweening():diffusealpha(0) end,
 					NoteCrossedJumpMessageCommand=function(self) self:finishtweening():diffusealpha(1):zoom(1.4):linear(0.2):zoom(1):sleep(0.4):diffusealpha(0) end
 				}
 			}
