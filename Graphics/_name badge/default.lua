@@ -5,35 +5,39 @@ local iconName = "_icon p"..(player == PLAYER_1 and 1 or 2)
 local pX = 0.0
 local pXmod = ""
 
-local song = GAMESTATE:GetCurrentSong()
-local course = GAMESTATE:GetCurrentCourse()
-local bpm1, bpm2
+local step = GAMESTATE:GetCurrentSteps(player)
+local trail = GAMESTATE:GetCurrentTrail(player)
+local timingdata, bpm1, bpm2
 
 if GAMESTATE:IsCourseMode() then
-	local entries = course:GetCourseEntries()
+	local entries = trail:GetTrailEntries()
 	for i=1, #entries do
+		step = entries[i]:GetSteps()
+		timingdata = step:GetTimingData()
 		if i == 1 then
-			bpm1 = math.floor(entries[i]:GetSong():GetDisplayBpms()[1])
-			bpm2 = math.floor(entries[i]:GetSong():GetDisplayBpms()[2])
+			bpm1 = timingdata:GetActualBPM()[1]
+			bpm2 = timingdata:GetActualBPM()[2]
 		else
-			if math.floor(entries[i]:GetSong():GetDisplayBpms()[1]) < bpm1 then bpm1 = math.floor(entries[i]:GetSong():GetDisplayBpms()[1]) end
-			if math.floor(entries[i]:GetSong():GetDisplayBpms()[2]) > bpm2 then bpm2 = math.floor(entries[i]:GetSong():GetDisplayBpms()[2]) end
+			if timingdata:GetActualBPM()[1] < bpm1 then bpm1 = timingdata:GetActualBPM()[1] end
+			if timingdata:GetActualBPM()[2] > bpm2 then bpm2 = timingdata:GetActualBPM()[2] end
 		end
 	end
 else
-	if song then
-		bpm1 = math.floor(song:GetDisplayBpms()[1])
-		bpm2 = math.floor(song:GetDisplayBpms()[2])
+	if step then
+		timingdata = step:GetTimingData()
+		bpm1 = timingdata:GetActualBPM()[1]
+		bpm2 = timingdata:GetActualBPM()[2]
 	end
 end
 
 local function checkInitSpeedMods()
 	local playeroptions = GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Preferred")
-	if playeroptions:MMod()						then pX = playeroptions:MMod() pXmod = "m"
-	elseif isOutFox() and playeroptions:AMod()	then pX = playeroptions:AMod() pXmod = "a"
-	elseif isOutFox() and playeroptions:CAMod()	then pX = playeroptions:CAMod() pXmod = "ca"
-	elseif playeroptions:XMod()					then pX = playeroptions:XMod() * 100 pXmod = "x"
-	elseif playeroptions:CMod()					then pX = playeroptions:CMod() pXmod = "C" end
+	if playeroptions:XMod()						then pX = playeroptions:XMod()*100 pXmod = "x" end
+	if playeroptions:CMod()						then pX = playeroptions:CMod() pXmod = "C" end
+	if playeroptions:MMod()						then pX = playeroptions:MMod() pXmod = "m" end
+	if isOutFox() and playeroptions:AMod()		then pX = playeroptions:AMod() pXmod = "a" end
+	if isOutFox() and playeroptions:CAMod()		then pX = playeroptions:CAMod() pXmod = "ca" end
+	if isOutFox() and playeroptions:AVMod()		then pX = playeroptions:AVMod() pXmod = "av" end
 end
 
 local function modifiedBPM(speed,mode)
@@ -47,17 +51,17 @@ local function modifiedBPM(speed,mode)
 		modifiedBPM1 = speed
 		modifiedBPM2 = speed
 	elseif mode == "m" then
-		modifiedBPM1 = (bpm1 * speed) / bpm2
+		modifiedBPM1 = speed
 		modifiedBPM2 = speed
-	elseif mode == "a" then
+	elseif mode == "a" or mode == "ca" or mode == "av" then
 		local baseAvg = (bpm1 + bpm2) * 0.5
 		local mult = speed / baseAvg
 		modifiedBPM1 = bpm1 * mult
 		modifiedBPM2 = bpm2 * mult
 	end
 
-	modifiedBPM1 = math.floor(modifiedBPM1*1000)/1000
-	modifiedBPM2 = math.floor(modifiedBPM2*1000)/1000
+	modifiedBPM1 = math.round(modifiedBPM1*1000)/1000
+	modifiedBPM2 = math.round(modifiedBPM2*1000)/1000
 
 	if modifiedBPM2 and modifiedBPM1 ~= modifiedBPM2 then
 		return modifiedBPM1..' - '..modifiedBPM2

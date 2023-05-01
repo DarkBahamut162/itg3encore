@@ -147,8 +147,10 @@ function InitOptions()
 
 	setenv("ShowModsP1",false)
 	setenv("ShowSpeedAssistP1",false)
+	setenv("ShowStopAssistP1",false)
 	setenv("ShowModsP2",false)
 	setenv("ShowSpeedAssistP2",false)
+	setenv("ShowStopAssistP2",false)
 
 	setenv("SetScoreTypeP1",2)
 	setenv("SetScoreTypeP2",2)
@@ -333,12 +335,14 @@ function OptionShowAssists()
 		SelectType = "SelectMultiple",
 		OneChoiceForAllPlayers = false,
 		ExportOnChange = false,
-		Choices = { "Speed Assist" },
+		Choices = { "Speed Assist","Stop Assist" },
 		LoadSelections = function(self, list, pn)
 			list[1] = getenv("ShowSpeedAssist"..pname(pn))
+			list[2] = getenv("ShowStopAssist"..pname(pn))
 		end,
 		SaveSelections = function(self, list, pn)
 			setenv("ShowSpeedAssist"..pname(pn),list[1])
+			setenv("ShowStopAssist"..pname(pn),list[2])
 		end
 	}
 	setmetatable(t, t)

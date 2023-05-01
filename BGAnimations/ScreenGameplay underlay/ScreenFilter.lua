@@ -76,7 +76,8 @@ if numPlayers == 1 then
 			Name="SinglePlayerFilter",
 			InitCommand=function(self) self:zoomto(filterWidth,SCREEN_HEIGHT*4):diffusecolor(filterColor):diffusealpha(filterAlpha) end
 		},
-		LoadActor("SpeedAssist", player)
+		LoadActor("SpeedAssist", player),
+		LoadActor("StopAssist", player)
 	}
 else
 	if styleType == "TwoPlayersSharedSides" then
@@ -164,7 +165,8 @@ else
 					Name="Player"..pNum.."Filter",
 					InitCommand=function(self) self:zoomto(filterWidth,SCREEN_HEIGHT*4):diffusecolor(filterColor):diffusealpha(filterAlphas[player]) end
 				},
-				LoadActor("SpeedAssist", player)
+				LoadActor("SpeedAssist", player),
+				LoadActor("StopAssist", player)
 			}
 		end
 	end
