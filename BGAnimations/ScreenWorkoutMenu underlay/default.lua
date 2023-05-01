@@ -1,18 +1,6 @@
 return Def.ActorFrame{
 	OnCommand=function(self) if isOutFox() then GAMESTATE:UpdateDiscordScreenInfo("Selecting Workout","",1) end end,
 	LoadActor(THEME:GetPathB("ScreenWithMenuElements","underlay")),
-	LoadActor(THEME:GetPathG("_name","badge"),PLAYER_1)..{
-		Condition=not GAMESTATE:IsHumanPlayer(PLAYER_1),
-		InitCommand=function(self) self:x(SCREEN_CENTER_X+54):addx(SCREEN_WIDTH*3/4):player(PLAYER_1) end,
-		OnCommand=function(self) self:sleep(0.1):decelerate(0.3):addx(-SCREEN_WIDTH*3/4) end,
-		OffCommand=function(self) self:accelerate(0.3):addx(SCREEN_WIDTH) end
-	},
-	LoadActor(THEME:GetPathG("_name","badge"),PLAYER_2)..{
-		Condition=not GAMESTATE:IsHumanPlayer(PLAYER_2),
-		InitCommand=function(self) self:x(SCREEN_CENTER_X-54*1.25+SCREEN_WIDTH/2):addx(SCREEN_WIDTH*3/4):player(PLAYER_2) end,
-		OnCommand=function(self) self:sleep(0.2):decelerate(0.3):addx(-SCREEN_WIDTH*3/4) end,
-		OffCommand=function(self) self:accelerate(0.3):addx(SCREEN_WIDTH) end
-	},
 	Def.ActorFrame{
 		OnCommand=function(self) self:addx(-SCREEN_WIDTH):decelerate(0.3):addx(SCREEN_WIDTH) end,
 		OffCommand=function(self) self:accelerate(0.3):addx(SCREEN_WIDTH) end,

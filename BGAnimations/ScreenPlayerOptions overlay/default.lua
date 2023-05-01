@@ -2,13 +2,13 @@ return Def.ActorFrame{
 	Def.ActorFrame{
 		InitCommand=function(self) self:y(SCREEN_CENTER_Y-157*WideScreenDiff()) end,
 		LoadActor(THEME:GetPathG("_name","badge"),PLAYER_1)..{
-			InitCommand=function(self) self:x(SCREEN_CENTER_X+54*WideScreenDiff()):zoom(WideScreenDiff()):addx(SCREEN_WIDTH*3/4):player(PLAYER_1) end,
-			OnCommand=function(self) self:sleep(0.1):decelerate(0.3):addx(-SCREEN_WIDTH*3/4) end,
-			OffCommand=function(self) self:accelerate(0.3):addx(SCREEN_WIDTH) end
+			InitCommand=function(self) self:x(SCREEN_CENTER_X+64*WideScreenDiff()):zoom(WideScreenDiff()):addx(-SCREEN_WIDTH):player(PLAYER_1) end,
+			OnCommand=function(self) self:sleep(0.25):decelerate(0.3):addx(SCREEN_WIDTH) end,
+			OffCommand=function(self) self:accelerate(0.3):addx(-SCREEN_WIDTH) end
 		},
 		LoadActor(THEME:GetPathG("_name","badge"),PLAYER_2)..{
-			InitCommand=function(self) self:x(SCREEN_CENTER_X-54*1.25*WideScreenDiff()+SCREEN_WIDTH/2):zoom(WideScreenDiff()):addx(SCREEN_WIDTH*3/4):player(PLAYER_2) end,
-			OnCommand=function(self) self:sleep(0.2):decelerate(0.3):addx(-SCREEN_WIDTH*3/4) end,
+			InitCommand=function(self) self:x(SCREEN_CENTER_X-64*(isFinal() and 1.25 or 1.2)*WideScreenDiff()+SCREEN_WIDTH/2):zoom(WideScreenDiff()):addx(SCREEN_WIDTH):player(PLAYER_2) end,
+			OnCommand=function(self) self:sleep(0.25):decelerate(0.3):addx(-SCREEN_WIDTH) end,
 			OffCommand=function(self) self:accelerate(0.3):addx(SCREEN_WIDTH) end
 		}
 	},
