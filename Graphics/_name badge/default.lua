@@ -51,7 +51,7 @@ local function modifiedBPM(speed,mode)
 		modifiedBPM1 = speed
 		modifiedBPM2 = speed
 	elseif mode == "m" then
-		modifiedBPM1 = speed
+		modifiedBPM1 = bpm1 * speed / bpm2
 		modifiedBPM2 = speed
 	elseif mode == "a" or mode == "ca" or mode == "av" then
 		local baseAvg = (bpm1 + bpm2) * 0.5
