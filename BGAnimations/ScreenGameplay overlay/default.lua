@@ -170,7 +170,9 @@ local t = Def.ActorFrame{
 }
 
 for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
+	t[#t+1] = LoadActor("DeltaSeconds", pn)..{ Condition=isOni() and not isLifeline(pn) or isSurvival(pn) }
 	t[#t+1] = LoadActor("FCSplash", pn)
+	t[#t+1] = LoadActor("Score", pn)..{ Condition=isRegular() or isNonstop() or isLifeline(pn) }
 end
 
 return t
