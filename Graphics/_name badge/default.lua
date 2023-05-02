@@ -70,32 +70,24 @@ local function modifiedBPM(speed,mode)
 	end
 end
 
-if not isTopScreen("ScreenJukeboxMenu") then
+if not isTopScreen("ScreenJukeboxMenu") and GAMESTATE:IsHumanPlayer(player) then
 	return Def.ActorFrame{
 		LoadActor("_name frame "..(isFinal() and "final" or "normal"))..{ InitCommand=function(self) self:zoomx(1.75):xy(-205.5,5) end },
 		LoadFont("_v 26px bold white")..{
 			InitCommand=function(self) self:xy(-280,4):maxwidth(160):zoom(0.5):shadowlength(2):diffuse(PlayerColor(player)) end,
-			BeginCommand=function(self)
-				if GAMESTATE:IsPlayerEnabled(player) then
-					self:settext( GetDisplayNameFromProfileOrMemoryCard(player) )
-				end
-			end
+			BeginCommand=function(self) self:settext( GetDisplayNameFromProfileOrMemoryCard(player) ) end
 		},
 		LoadActor(iconName)..{ InitCommand=function(self) self:xy(-232,4):shadowlength(2) end },
 		LoadFont("_v 26px bold white")..{
 			InitCommand=function(self) self:xy(-226,4):maxwidth(260):halign(0):zoom(0.5):shadowlength(2):diffuse(PlayerColor(player)) end,
 			BeginCommand=function(self)
-				if GAMESTATE:IsPlayerEnabled(player) then
-					checkInitSpeedMods()
-					bpmtext = modifiedBPM(pX,pXmod)
-					self:settextf("MOD: %s%s  BPM: %s",pXmod == "x" and pX/100 or pX,pXmod,bpmtext)
-				end
+				checkInitSpeedMods()
+				bpmtext = modifiedBPM(pX,pXmod)
+				self:settextf("MOD: %s%s  BPM: %s",pXmod == "x" and pX/100 or pX,pXmod,bpmtext)
 			end,
 			SpeedChoiceChangedMessageCommand=function(self,param)
-				if GAMESTATE:IsPlayerEnabled(player) and param.pn == player then
-					bpmtext = modifiedBPM(param.speed,param.mode)
-					self:settextf("MOD: %s%s  BPM: %s",param.mode == "x" and param.speed/100 or param.speed,param.mode,bpmtext)
-				end
+				bpmtext = modifiedBPM(param.speed,param.mode)
+				self:settextf("MOD: %s%s  BPM: %s",param.mode == "x" and param.speed/100 or param.speed,param.mode,bpmtext)
 			end
 		}
 	}
