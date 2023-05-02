@@ -18,6 +18,12 @@ for group in ivalues(groups) do
 end
 
 return Def.ActorFrame{
+	OnCommand=function(self)
+		if isOutFox() then
+			GAMESTATE:UpdateDiscordGameMode(GAMESTATE:GetCurrentGame():GetName())
+			GAMESTATE:UpdateDiscordScreenInfo("Title Menu","",1)
+		end
+	end,
 	OffCommand=function(self) if isTopScreen('ScreenTitleJoin') then SOUND:StopMusic() end end,
 	LoadActor(THEME:GetPathB("ScreenSelectMusic","background/CJ126 "..(isFinal() and "Final" or "Normal")))..{
 		InitCommand=function(self) self:FullScreen():diffusealpha(0) end,
