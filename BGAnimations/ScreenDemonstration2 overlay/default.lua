@@ -56,11 +56,11 @@ return Def.ActorFrame{
 	Def.ActorFrame{
 		Name="PlatformLeft",
 		InitCommand=function(self) self:x(posX_now+33*WideScreenDiff()):y(SCREEN_CENTER_Y+80*WideScreenDiff()):zoom(0.8*WideScreenDiff()):rotationx(-20):fov(45):vanishpoint(SCREEN_CENTER_X+210,SCREEN_CENTER_Y+80) end,
-		LoadActor(THEME:GetPathB("ScreenGameplay","underlay/platform"))..{
+		LoadActor(THEME:GetPathB("ScreenGameplay","underlay/beginner/dance platform"))..{
 			InitCommand=function(self) self:y(7):diffuse(color("0.6,0.6,0.6,0.8")):diffusealpha(0) end,
 			OnCommand=function(self) self:sleep(30):linear(0.3):diffusealpha(1):sleep(4):linear(0.3):diffusealpha(0) end
 		},
-		LoadActor(THEME:GetPathB("ScreenGameplay","underlay/panelglow"))..{
+		LoadActor(THEME:GetPathB("ScreenGameplay","underlay/beginner/panelglow"))..{
 			InitCommand=function(self) self:x(-45):blend(Blend.Add):diffuseblink():effectperiod(0.5):diffusealpha(0) end,
 			OnCommand=function(self) self:sleep(30):linear(0.3):diffusealpha(1):sleep(4):linear(0.3):diffusealpha(0) end
 		}
@@ -77,11 +77,11 @@ return Def.ActorFrame{
 	Def.ActorFrame{
 		Name="PlatformUp",
 		InitCommand=function(self) self:x(posX_now+33*WideScreenDiff()):y(SCREEN_CENTER_Y+80*WideScreenDiff()):zoom(0.8*WideScreenDiff()):rotationx(-20):fov(45):vanishpoint(SCREEN_CENTER_X+210,SCREEN_CENTER_Y+80) end,
-		LoadActor(THEME:GetPathB("ScreenGameplay","underlay/platform"))..{
+		LoadActor(THEME:GetPathB("ScreenGameplay","underlay/beginner/dance platform"))..{
 			InitCommand=function(self) self:y(7):diffuse(color("0.6,0.6,0.6,0.8")):diffusealpha(0) end,
 			OnCommand=function(self) self:sleep(36):linear(0.3):diffusealpha(1):sleep(4):linear(0.3):diffusealpha(0) end
 		},
-		LoadActor(THEME:GetPathB("ScreenGameplay","underlay/panelglow"))..{
+		LoadActor(THEME:GetPathB("ScreenGameplay","underlay/beginner/panelglow"))..{
 			InitCommand=function(self) self:y(-45):blend(Blend.Add):diffuseblink():effectperiod(0.5):diffusealpha(0) end,
 			OnCommand=function(self) self:sleep(36):linear(0.3):diffusealpha(1):sleep(4):linear(0.3):diffusealpha(0) end
 		}
