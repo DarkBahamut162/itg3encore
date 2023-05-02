@@ -3,10 +3,7 @@ if not Player then error("[ScreenNameEntryTraditional Keyboard] what, you WANT m
 
 local function CreateScrollerItem(char,altName)
 	local textZoom = 0.95
-	if altName and (altName == "Back" or altName == "End") then
-		textZoom = 1
-	end
-
+	if altName and (altName == "Back" or altName == "End") then textZoom = 1 end
 	if not altName then altName = char end
 	return Def.ActorFrame{
 		Name="Character_"..altName,
@@ -19,9 +16,8 @@ end
 
 local KeyboardLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789?!."
 local scrollItems = {}
-for c in string.gmatch(KeyboardLetters,".") do
-	scrollItems[#scrollItems+1] = CreateScrollerItem(c)
-end
+
+for c in string.gmatch(KeyboardLetters,".") do scrollItems[#scrollItems+1] = CreateScrollerItem(c) end
 
 scrollItems[#scrollItems+1] = CreateScrollerItem("&leftarrow;","Back")
 scrollItems[#scrollItems+1] = CreateScrollerItem("&ok;","End")
@@ -33,11 +29,7 @@ return Def.ActorFrame{
 			local scroller = self:GetChild("KeyScroller")
 			local cur = scroller:GetCurrentItem()
 
-			if cur-1 < 0 then
-				cur = scroller:GetNumItems()-1
-			else
-				cur = cur-1
-			end
+			if cur-1 < 0 then cur = scroller:GetNumItems()-1 else cur = cur-1 end
 
 			scroller:SetCurrentAndDestinationItem(cur)
 			SOUND:PlayOnce( THEME:GetPathS( 'ScreenNameEntryTraditional', "change" ) )
@@ -48,41 +40,52 @@ return Def.ActorFrame{
 			local scroller = self:GetChild("KeyScroller")
 			local cur = scroller:GetCurrentItem()
 
-			if cur+1 > scroller:GetNumItems()-1 then
-				cur = 0
-			else
-				cur = cur+1
-			end
+			if cur+1 > scroller:GetNumItems()-1 then cur = 0 else cur = cur+1 end
 
 			scroller:SetCurrentAndDestinationItem(cur)
 			SOUND:PlayOnce( THEME:GetPathS( 'ScreenNameEntryTraditional', "change" ) )
 		end
 	end,
-
 	KeyboardEnterMessageCommand=function(self,param)
 		if param.Player == Player then
 			local ts = SCREENMAN:GetTopScreen()
 			local scroller = self:GetChild("KeyScroller")
 			local index = scroller:GetCurrentItem()
-			if index ~= scroller:GetNumItems() then
-				index = index+1
-			end
+
+			if index ~= scroller:GetNumItems() then index = index+1 end
 
 			local i = scrollItems[index]
 			local selectedChar = ToEnumShortString(i.Name)
+			local maxChars = THEME:GetMetric("ScreenNameEntryTraditional","MaxRankingNameLength")
+			local selected = getenv("HighScoreName"..pname(Player))
 
 			if selectedChar == "End" then
-				ts:Finish(Player)
-				self:playcommand("Off")
-				SOUND:PlayOnce( THEME:GetPathS( 'ScreenNameEntryTraditional', "key" ) )
+				if string.len(selected) > 0 then
+					PROFILEMAN:GetProfile(Player):SetLastUsedHighScoreName(selected)
+					GAMESTATE:StoreRankingName(Player,selected)
+					ts:Finish(Player)
+					self:playcommand("Off")
+					MESSAGEMAN:Broadcast("EntryFinished",{Player=Player})
+					SOUND:PlayOnce( THEME:GetPathS( 'ScreenNameEntryTraditional', "key" ) )
+				else
+					SOUND:PlayOnce( THEME:GetPathS( 'ScreenNameEntryTraditional', "invalid" ) )
+				end
 			elseif selectedChar == "Back" then
-				if ts:Backspace(Player) then
+				if string.len(selected) > 0 then
+					setenv("HighScoreName"..pname(Player),selected:sub(1,-2))
+					MESSAGEMAN:Broadcast("EntryChanged",{Player=Player})
 					SOUND:PlayOnce( THEME:GetPathS( 'ScreenNameEntryTraditional', "key" ) )
 				else
 					SOUND:PlayOnce( THEME:GetPathS( 'ScreenNameEntryTraditional', "invalid" ) )
 				end
 			else
-				if ts:EnterKey(Player,selectedChar) then
+				if string.len(selected) < maxChars then
+					if string.len(selected) == maxChars - 1 then
+						scroller:SetCurrentAndDestinationItem(scroller:GetNumItems()-1)
+					end
+					selected = selected .. selectedChar
+					setenv("HighScoreName"..pname(Player),selected)
+					MESSAGEMAN:Broadcast("EntryChanged",{Player=Player})
 					SOUND:PlayOnce( THEME:GetPathS( 'ScreenNameEntryTraditional', "key" ) )
 				else
 					SOUND:PlayOnce( THEME:GetPathS( 'ScreenNameEntryTraditional', "invalid" ) )
@@ -90,13 +93,17 @@ return Def.ActorFrame{
 			end
 		end
 	end,
-	SelectKeyMessageCommand=function(self,param)
-		if param.PlayerNumber == Player then
+	KeyboardBackMessageCommand=function(self,param)
+		if param.Player == Player then
+			local selected = getenv("HighScoreName"..pname(Player))
 			local scroller = self:GetChild("KeyScroller")
-			if param.Key == "BACK" then
+			if string.len(selected) > 0 then
 				scroller:SetCurrentAndDestinationItem(scroller:GetNumItems()-2)
-			elseif param.Key == "ENTER" then
-				scroller:SetCurrentAndDestinationItem(scroller:GetNumItems()-1)
+				setenv("HighScoreName"..pname(Player),selected:sub(1,-2))
+				MESSAGEMAN:Broadcast("EntryChanged",{Player=Player})
+				SOUND:PlayOnce( THEME:GetPathS( 'ScreenNameEntryTraditional', "key" ) )
+			else
+				SOUND:PlayOnce( THEME:GetPathS( 'ScreenNameEntryTraditional', "invalid" ) )
 			end
 		end
 	end,
@@ -105,9 +112,7 @@ return Def.ActorFrame{
 		SecondsPerItem=0.2,
 		NumItemsToDraw=5,
 		InitCommand=function(self) self:SetLoop(true) end,
-		TransformFunction=function(self,offset,itemIndex,numItems)
-			self:x(offset*40)
-		end,
+		TransformFunction=function(self,offset,itemIndex,numItems) self:x(offset*40) end,
 		children = scrollItems
 	},
 	LoadActor("cursor")

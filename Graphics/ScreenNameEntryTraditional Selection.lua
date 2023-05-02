@@ -1,13 +1,14 @@
 local Player = ...
 if not Player then error("[ScreenNameEntryTraditional Selection] needs Player") end
 
+setenv("HighScoreNameP1",GetDisplayNameFromProfileOrMemoryCard(PLAYER_1))
+setenv("HighScoreNameP2",GetDisplayNameFromProfileOrMemoryCard(PLAYER_2))
+
 return Def.ActorFrame{
 	LoadFont("ScreenNameEntryTraditional entry")..{
-		InitCommand=function(self) self:halign(0):zoom(1.1) end,
+		InitCommand=function(self) self:settext(getenv("HighScoreName"..pname(Player))):zoom(1.1):maxwidth(240) end,
 		EntryChangedMessageCommand=function(self,param)
-			if param.PlayerNumber == Player then
-				self:settext(param.Text)
-			end
+			if param.Player == Player then self:settext(getenv("HighScoreName"..pname(Player))) end
 		end
 	}
 }

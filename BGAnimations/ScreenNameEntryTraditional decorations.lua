@@ -4,6 +4,44 @@ local curFeatNumber = {
 	PlayerNumber_P1 = 1,
 	PlayerNumber_P2 = 1
 }
+local finished = {
+	PlayerNumber_P1 = false,
+	PlayerNumber_P2 = false
+}
+
+local InputHandler = function(event)
+	if not event.PlayerNumber or not event.button then return false end
+
+	if not finished[event.PlayerNumber] then
+		if getenv("HighScoreable"..pname(event.PlayerNumber)) then
+			if event.type == "InputEventType_FirstPress" then
+				if event.GameButton == "MenuLeft" then
+					MESSAGEMAN:Broadcast("KeyboardLeft",{Player=event.PlayerNumber})
+				elseif event.GameButton == "MenuRight" then
+					MESSAGEMAN:Broadcast("KeyboardRight",{Player=event.PlayerNumber})
+				elseif event.GameButton == "Select" then
+					MESSAGEMAN:Broadcast("KeyboardBack",{Player=event.PlayerNumber})
+				elseif event.GameButton == "Start" then
+					MESSAGEMAN:Broadcast("KeyboardEnter",{Player=event.PlayerNumber})
+				end
+			elseif event.type == "InputEventType_Repeat" then
+				if event.GameButton == "MenuLeft" then
+					MESSAGEMAN:Broadcast("KeyboardLeft",{Player=event.PlayerNumber})
+				elseif event.GameButton == "MenuRight" then
+					MESSAGEMAN:Broadcast("KeyboardRight",{Player=event.PlayerNumber})
+				end
+			end
+		else
+			if event.type == "InputEventType_FirstPress" then
+				if event.GameButton == "Start" then
+					finished[event.PlayerNumber] = true
+					SCREENMAN:GetTopScreen():Finish(event.PlayerNumber)
+					SOUND:PlayOnce( THEME:GetPathS( 'ScreenNameEntryTraditional', "key" ) )
+				end
+			end
+		end
+	end
+end
 
 for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
 	if not getenv("HighScoreable"..pname(pn)) then
@@ -17,14 +55,10 @@ for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
 				MESSAGEMAN:Broadcast("ChangeDisplayedFeat",{Player=pn,NewIndex=curFeatNumber[pn]})
 				if STATSMAN:GetStagesPlayed() > 1 then self:queuecommand("RunFeat") end
 			end,
-			CodeMessageCommand=function(self,param)
-				if param.Name == "Enter" then
-					SCREENMAN:GetTopScreen():Finish(pn)
-					SOUND:PlayOnce( THEME:GetPathS( 'ScreenNameEntryTraditional', "key" ) )
-				end
-			end,
 			MenuTimerExpiredMessageCommand = function(self)
+				finished[pn] = true
 				SCREENMAN:GetTopScreen():Finish(pn)
+				SOUND:PlayOnce( THEME:GetPathS( 'ScreenNameEntryTraditional', "key" ) )
 			end,
 			RunFeatCommand=function(self)
 				if not GAMESTATE:IsCourseMode() then
@@ -39,7 +73,7 @@ for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
 				MESSAGEMAN:Broadcast("ChangeDisplayedFeat",{Player=pn,NewIndex=nextIndex})
 				curFeatNumber[pn] = nextIndex
 				self:queuecommand("RunFeat")
-			end,
+			end
 		}
 	else
 		t[#t+1] = Def.Actor{
@@ -49,23 +83,9 @@ for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
 			end,
 			OnCommand=function(self) self:queuecommand("RunFeat") end,
 			MenuTimerExpiredMessageCommand = function(self)
+				finished[pn] = true
 				SCREENMAN:GetTopScreen():Finish(pn)
-			end,
-			CodeMessageCommand=function(self,param)
-				local ts = SCREENMAN:GetTopScreen()
-				if ts:GetFinalized(pn) or ts:IsTransitioning() then
-					return
-				end
-
-				if param.Name == "Left" or param.Name == "AltLeft" then
-					MESSAGEMAN:Broadcast("KeyboardLeft",{Player=pn})
-				elseif param.Name == "Right" or param.Name == "AltRight" then
-					MESSAGEMAN:Broadcast("KeyboardRight",{Player=pn})
-				elseif param.Name == "Backspace" then
-					MESSAGEMAN:Broadcast("KeyboardEnter",{Player=pn})
-				elseif param.Name == "Enter" then
-					MESSAGEMAN:Broadcast("KeyboardEnter",{Player=pn})
-				end
+				SOUND:PlayOnce( THEME:GetPathS( 'ScreenNameEntryTraditional', "key" ) )
 			end,
 			RunFeatCommand=function(self)
 				if not GAMESTATE:IsCourseMode() then
@@ -80,6 +100,16 @@ for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
 				MESSAGEMAN:Broadcast("ChangeDisplayedFeat",{Player=pn,NewIndex=nextIndex})
 				curFeatNumber[pn] = nextIndex
 				self:queuecommand("RunFeat")
+			end,
+			SelectKeyMessageCommand=function(self,param)
+				if param.PlayerNumber == pn then
+					local scroller = self:GetChild("KeyScroller")
+					if param.Key == "BACK" then
+						scroller:SetCurrentAndDestinationItem(scroller:GetNumItems()-2)
+					elseif param.Key == "ENTER" then
+						scroller:SetCurrentAndDestinationItem(scroller:GetNumItems()-1)
+					end
+				end
 			end
 		}
 		t[#t+1] = LoadActor(THEME:GetPathG("ScreenNameEntryTraditional","Keyboard"),pn)..{
@@ -128,5 +158,9 @@ for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
 end
 
 t[#t+1] = StandardDecorationFromFile("Banner","Banner")
+t[#t+1] = Def.Actor{
+	OnCommand=function(self) SCREENMAN:GetTopScreen():AddInputCallback(InputHandler) end,
+	EntryFinishedMessageCommand=function(self,param) finished[param.Player] = true end
+}
 
 return t

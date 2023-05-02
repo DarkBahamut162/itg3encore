@@ -16,18 +16,16 @@ local function MakeHighScoreWheelItem(index)
 
 					if hs then
 						local scoreName = hs:GetName()
-						if string.len(scoreName)<1 then
-							scoreName = THEME:GetMetric("HighScore","EmptyName")
-						end
+						if string.len(scoreName)<1 then scoreName = THEME:GetMetric("HighScore","EmptyName") end
 						c.Name:settext(scoreName)
 						c.Score:settext(FormatPercentScore(hs:GetPercentDP()))
 						local dateText = tostring(hs:GetDate())
-						dateText = string.gsub(string.sub(dateText,6,10),"-","/")
+						dateText = string.gsub(string.sub(dateText,1,10),"-","/")
 						c.Date:settext(dateText)
 					else
 						c.Name:settext("????")
 						c.Score:settext(FormatPercentScore(0))
-						c.Date:settext("--/--")
+						c.Date:settext("----/--/--")
 					end
 
 					if param.Focus == index then
@@ -43,7 +41,6 @@ local function MakeHighScoreWheelItem(index)
 					end
 				end
 			end,
-
 			LoadFont(wheelItemFont)..{
 				Name="Rank",
 				Text=index+1,
@@ -52,7 +49,7 @@ local function MakeHighScoreWheelItem(index)
 			},
 			LoadFont(wheelItemFont)..{
 				Name="Name",
-				InitCommand=function(self) self:x(-89):maxwidth(80):shadowlength(2) end,
+				InitCommand=function(self) self:x(-89):maxwidth(110):shadowlength(2) end,
 				FocusCommand=wheelItemFocus,
 			},
 			LoadFont(wheelItemFont)..{
@@ -62,7 +59,7 @@ local function MakeHighScoreWheelItem(index)
 			},
 			LoadFont(wheelItemFont)..{
 				Name="Date",
-				InitCommand=function(self) self:x(134):maxwidth(60):shadowlength(2) end,
+				InitCommand=function(self) self:x(132):maxwidth(80):shadowlength(2) end,
 				FocusCommand=wheelItemFocus,
 			}
 		}
@@ -71,22 +68,18 @@ end
 
 return Def.ActorFrame{
 	InitCommand=function(self) self:fov(15) end,
-
 	Def.ActorScroller{
 		SecondsPerItem=0.2,
 		NumItemsToDraw=10.5,
 		TransformFunction=function(self,offset,itemIndex,numItems)
 			local degrees=18*offset
 			local radians=degrees*math.pi/180
-			self:rotationx(degrees)
-			self:y(math.sin(radians)*90)
-			self:z(math.cos(radians)*90)
+			self:rotationx(degrees):y(math.sin(radians)*90):z(math.cos(radians)*90)
 		end,
 		OffCommand=function(self) self:stoptweening() end,
 		ChangeDisplayedFeatMessageCommand=function(self,param)
 			if param.Player == Player then
-				self:SetCurrentAndDestinationItem(15)
-				self:PositionItems()
+				self:SetCurrentAndDestinationItem(15):PositionItems()
 
 				local itemToFocus = -1
 				local scrollerFocus = 3
@@ -107,17 +100,13 @@ return Def.ActorFrame{
 								if hs:IsFillInMarker() then
 									local hsName = hs:GetName()
 									if string.find(hsName,PlayerNumberToString(Player)) then
-										if hs:GetPercentDP() == myPercentDP and hs:GetScore() == myScore then
-											itemToFocus = i-1
-										end
+										if hs:GetPercentDP() == myPercentDP and hs:GetScore() == myScore then itemToFocus = i-1 end
 									end
 								end
 							end
 						end
 						scrollerFocus = math.max(itemToFocus,3)
-						for i=0,9 do
-							MESSAGEMAN:Broadcast("UpdateWheelItem",{Player=param.Player,Index=i,HighScore=highScores[i+1],Focus=itemToFocus})
-						end
+						for i=0,9 do MESSAGEMAN:Broadcast("UpdateWheelItem",{Player=param.Player,Index=i,HighScore=highScores[i+1],Focus=itemToFocus}) end
 					end
 				else
 					local stagesAgo = (STATSMAN:GetStagesPlayed() - (param.NewIndex-1))
@@ -137,25 +126,19 @@ return Def.ActorFrame{
 								if hs:IsFillInMarker() then
 									local hsName = hs:GetName()
 									if string.find(hsName,PlayerNumberToString(Player)) then
-										if hs:GetPercentDP() == myPercentDP and hs:GetScore() == myScore then
-											itemToFocus = i-1
-										end
+										if hs:GetPercentDP() == myPercentDP and hs:GetScore() == myScore then itemToFocus = i-1 end
 									end
 								end
 							end
 						end
 						scrollerFocus = math.max(itemToFocus,3)
-						for i=0,9 do
-							MESSAGEMAN:Broadcast("UpdateWheelItem",{Player=param.Player,Index=i,HighScore=highScores[i+1],Focus=itemToFocus})
-						end
+						for i=0,9 do MESSAGEMAN:Broadcast("UpdateWheelItem",{Player=param.Player,Index=i,HighScore=highScores[i+1],Focus=itemToFocus}) end
 					end
 				end
 
-				self:SetDestinationItem(scrollerFocus)
-				self:PositionItems()
+				self:SetDestinationItem(scrollerFocus):PositionItems()
 			end
 		end,
-
 		MakeHighScoreWheelItem(0),
 		MakeHighScoreWheelItem(1),
 		MakeHighScoreWheelItem(2),
