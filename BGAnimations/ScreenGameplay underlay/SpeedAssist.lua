@@ -2,11 +2,6 @@ local c,cDl,cDr,cUl,cUr
 local player = ...
 local pNum = (player == PLAYER_1) and 1 or 2
 local style = GAMESTATE:GetCurrentStyle()
-local styleType = ToEnumShortString(style:GetStyleType())
-local metricName = string.format("PlayerP%i%sX",pNum,styleType)
-local pos = THEME:GetMetric("ScreenGameplay",metricName)
-
-local filterAlpha = tonumber(getenv("ScreenFilterP"..pNum))
 
 local mlevel = GAMESTATE:IsCourseMode() and "ModsLevel_Stage" or "ModsLevel_Preferred"
 local currentMini = 1-math.round(GAMESTATE:GetPlayerState(player):GetPlayerOptions(mlevel):Mini()*50) / 100
@@ -163,7 +158,7 @@ return Def.ActorFrame{
 	Def.ActorFrame{
 		Name="SpeedDown",
 		Def.ActorFrame{
-			InitCommand=function(self) self:x(-filterWidth/2-7):CenterY():rotationz(90):valign(0) end,
+			InitCommand=function(self) self:x(-filterWidth/2-8):CenterY():rotationz(90):valign(0) end,
 			OnCommand=function(self) cDl = self:GetChildren() end,
 			LoadActor(THEME:GetPathG("","lolhi"))..{ Name="SpeedDownLeft", InitCommand=function(self) self:zoomto(SCREEN_HEIGHT*4,16) end },
 			LoadActor("SpeedDown")..{ Name="SpeedDownLeft1", InitCommand=function(self) self:x(32*-15):diffusealpha(0.5):zoomtoheight(15):rotationz(180):SetAllStateDelays(0.125) end },
@@ -199,7 +194,7 @@ return Def.ActorFrame{
 			LoadActor("SpeedDown")..{ Name="SpeedDownLeft31", InitCommand=function(self) self:x(32*15):diffusealpha(0.5):zoomtoheight(15):rotationz(180):SetAllStateDelays(0.125) end }
 		},
 		Def.ActorFrame{
-			InitCommand=function(self) self:x(filterWidth/2+7):CenterY():rotationz(90):valign(1) end,
+			InitCommand=function(self) self:x(filterWidth/2+8):CenterY():rotationz(90):valign(1) end,
 			OnCommand=function(self) cDr = self:GetChildren() end,
 			LoadActor(THEME:GetPathG("","lolhi"))..{ Name="SpeedDownRight", InitCommand=function(self) self:zoomto(SCREEN_HEIGHT*4,-16) end },
 			LoadActor("SpeedDown")..{ Name="SpeedDownRight1", InitCommand=function(self) self:x(32*-15):diffusealpha(0.5):zoomtoheight(15):rotationz(180):SetAllStateDelays(0.125) end },
@@ -238,7 +233,7 @@ return Def.ActorFrame{
 	Def.ActorFrame{
 		Name="SpeedUp",
 		Def.ActorFrame{
-			InitCommand=function(self) self:x(-filterWidth/2-7):CenterY():rotationz(90):valign(0) end,
+			InitCommand=function(self) self:x(-filterWidth/2-8):CenterY():rotationz(90):valign(0) end,
 			OnCommand=function(self) cUl = self:GetChildren() end,
 			LoadActor(THEME:GetPathG("","profile"))..{ Name="SpeedUpLeft", InitCommand=function(self) self:zoomto(SCREEN_HEIGHT*4,16) end },
 			LoadActor("SpeedUp")..{ Name="SpeedUpLeft1", InitCommand=function(self) self:x(32*-15):diffusealpha(0.5):zoomtoheight(15):SetAllStateDelays(0.125) end },
@@ -274,7 +269,7 @@ return Def.ActorFrame{
 			LoadActor("SpeedUp")..{ Name="SpeedUpLeft31", InitCommand=function(self) self:x(32*15):diffusealpha(0.5):zoomtoheight(15):SetAllStateDelays(0.125) end }
 		},
 		Def.ActorFrame{
-			InitCommand=function(self) self:x(filterWidth/2+7):CenterY():rotationz(90):valign(1) end,
+			InitCommand=function(self) self:x(filterWidth/2+8):CenterY():rotationz(90):valign(1) end,
 			OnCommand=function(self) cUr = self:GetChildren() end,
 			LoadActor(THEME:GetPathG("","profile"))..{ Name="SpeedUpRight", InitCommand=function(self) self:zoomto(SCREEN_HEIGHT*4,-16) end },
 			LoadActor("SpeedUp")..{ Name="SpeedUpRight1", InitCommand=function(self) self:x(32*-15):diffusealpha(0.5):zoomtoheight(15):SetAllStateDelays(0.125) end },
