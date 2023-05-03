@@ -20,29 +20,9 @@ if string.find(style:GetName(),"double") then
 		filterWidth = filterWidth * 1.4
 	end
 end
-if getenv("EffectVibrateP"..pNum) then
-	filterWidth = filterWidth + (30 * currentMini)
-end
+if getenv("EffectVibrateP"..pNum) then filterWidth = filterWidth + (30 * currentMini) end
 
-local SpeedDowns = {}
-local SpeedUps = {}
-local timingData = GAMESTATE:GetCurrentSteps(player):GetTimingData()
-local temp = nil
-
-for k,v in pairs(timingData:GetBPMsAndTimes()) do
-	local data = split('=', v)
-	local numData = {tonumber(data[1]), tonumber(data[2])}
-	numData[2] = math.round(numData[2] * 1000) / 1000
-
-	if temp ~= nil then
-		if numData[2] - temp < 0 then
-			SpeedDowns[#SpeedDowns+1] = timingData:GetElapsedTimeFromBeat(numData[1])
-		elseif numData[2] - temp > 0 then
-			SpeedUps[#SpeedUps+1] = timingData:GetElapsedTimeFromBeat(numData[1])
-		end
-	end
-	temp = numData[2]
-end
+local SpeedDowns,SpeedUps,timingData,temp
 
 local totalDelta = 0
 local tmpDelta = 0
@@ -50,6 +30,32 @@ local SDi = 1
 local SUi = 1
 local SDa = false
 local SUa = false
+
+local function setSpeeds(steps)
+	temp = nil
+	SDi = 1
+	SUi = 1
+	SDa = false
+	SUa = false
+	SpeedUps = {}
+	SpeedDowns = {}
+	timingData = steps:GetTimingData()
+
+	for k,v in pairs(timingData:GetBPMsAndTimes()) do
+		local data = split('=', v)
+		local numData = {tonumber(data[1]), tonumber(data[2])}
+		numData[2] = math.round(numData[2] * 1000) / 1000
+
+		if temp then
+			if numData[2] - temp < 0 then
+				SpeedDowns[#SpeedDowns+1] = timingData:GetElapsedTimeFromBeat(numData[1])
+			elseif numData[2] - temp > 0 then
+				SpeedUps[#SpeedUps+1] = timingData:GetElapsedTimeFromBeat(numData[1])
+			end
+		end
+		temp = numData[2]
+	end
+end
 
 local function Update(self, delta)
 	totalDelta = totalDelta + delta
@@ -154,7 +160,15 @@ return Def.ActorFrame{
 		c.SpeedDown:diffusealpha(0)
 		c.SpeedUp:diffusealpha(0)
 	end,
-	OnCommand = function(self) self:SetUpdateFunction(Update) end,
+	OnCommand = function(self)
+		if GAMESTATE:IsCourseMode() then
+			setSpeeds(GAMESTATE:GetCurrentTrail(player):GetTrailEntry(STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetSongsPassed()):GetSteps())
+		else
+			setSpeeds(GAMESTATE:GetCurrentSteps(player))
+		end
+		self:SetUpdateFunction(Update)
+	end,
+	DoneLoadingNextSongMessageCommand=function(self) self:playcommand("On") end,
 	Def.ActorFrame{
 		Name="SpeedDown",
 		Def.ActorFrame{

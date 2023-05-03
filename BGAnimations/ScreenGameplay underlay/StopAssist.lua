@@ -20,29 +20,28 @@ if string.find(style:GetName(),"double") then
 		filterWidth = filterWidth * 1.4
 	end
 end
-if getenv("EffectVibrateP"..pNum) then
-	filterWidth = filterWidth + (30 * currentMini)
-end
+if getenv("EffectVibrateP"..pNum) then filterWidth = filterWidth + (30 * currentMini) end
 
-local Stops = {}
-local Si = 1
-local timingData = GAMESTATE:GetCurrentSteps(player):GetTimingData()
 local playeroptions = GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Preferred")
-
-for k,v in pairs(timingData:GetStops()) do
-	local data = split('=', v)
-	Stops[#Stops+1] = { Time = timingData:GetElapsedTimeFromBeat(tonumber(data[1])), Length = tonumber(data[2]), BPM = timingData:GetBPMAtBeat(tonumber(data[1])) }
-end
-
+local Stops,timingData,truebpms,bpm1,bpm2
 local totalDelta = 0
 local tmpDelta = 0
 local speedMod = 1
+local Si = 1
 
-local curStep = GAMESTATE:GetCurrentSteps(player)
-local timingdata = curStep:GetTimingData()
-local truebpms = timingdata:GetActualBPM()
-local bpm1 = math.floor(timingdata:GetActualBPM()[1])
-local bpm2 = math.floor(timingdata:GetActualBPM()[2])
+local function setStops(steps)
+	Si = 1
+	Stops = {}
+	timingData = steps:GetTimingData()
+	truebpms = timingData:GetActualBPM()
+	bpm1 = math.floor(timingData:GetActualBPM()[1])
+	bpm2 = math.floor(timingData:GetActualBPM()[2])
+
+	for k,v in pairs(timingData:GetStops()) do
+		local data = split('=', v)
+		Stops[#Stops+1] = { Time = timingData:GetElapsedTimeFromBeat(tonumber(data[1])), Length = tonumber(data[2]), BPM = timingData:GetBPMAtBeat(tonumber(data[1])) }
+	end
+end
 
 local function Update(self, delta)
 	totalDelta = totalDelta + delta
@@ -67,11 +66,16 @@ end
 local PY = GAMESTATE:GetPlayerState(player):GetPlayerOptions('ModsLevel_Preferred'):UsingReverse() and THEME:GetMetric("Player","ReceptorArrowsYReverse") or THEME:GetMetric("Player","ReceptorArrowsYStandard")
 
 return Def.ActorFrame{
-	InitCommand=function(self)
-		c = self:GetChildren()
-		--c.Stop:diffusealpha(0)
+	InitCommand=function(self) c = self:GetChildren() end,
+	OnCommand = function(self)
+		if GAMESTATE:IsCourseMode() then
+			setStops(GAMESTATE:GetCurrentTrail(player):GetTrailEntry(STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetSongsPassed()):GetSteps())
+		else
+			setStops(GAMESTATE:GetCurrentSteps(player))
+		end
+		self:SetUpdateFunction(Update)
 	end,
-	OnCommand = function(self) self:SetUpdateFunction(Update) end,
+	DoneLoadingNextSongMessageCommand=function(self) self:playcommand("On") end,
 	Def.Quad{
 		Name="Stop",
 		OnCommand=function(self)
