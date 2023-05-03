@@ -10,16 +10,18 @@ local trail = GAMESTATE:GetCurrentTrail(player)
 local timingdata, bpm1, bpm2
 
 if GAMESTATE:IsCourseMode() then
-	local entries = trail:GetTrailEntries()
-	for i=1, #entries do
-		step = entries[i]:GetSteps()
-		timingdata = step:GetTimingData()
-		if i == 1 then
-			bpm1 = timingdata:GetActualBPM()[1]
-			bpm2 = timingdata:GetActualBPM()[2]
-		else
-			if timingdata:GetActualBPM()[1] < bpm1 then bpm1 = timingdata:GetActualBPM()[1] end
-			if timingdata:GetActualBPM()[2] > bpm2 then bpm2 = timingdata:GetActualBPM()[2] end
+	if trail then
+		local entries = trail:GetTrailEntries()
+		for i=1, #entries do
+			step = entries[i]:GetSteps()
+			timingdata = step:GetTimingData()
+			if i == 1 then
+				bpm1 = timingdata:GetActualBPM()[1]
+				bpm2 = timingdata:GetActualBPM()[2]
+			else
+				if timingdata:GetActualBPM()[1] < bpm1 then bpm1 = timingdata:GetActualBPM()[1] end
+				if timingdata:GetActualBPM()[2] > bpm2 then bpm2 = timingdata:GetActualBPM()[2] end
+			end
 		end
 	end
 else
