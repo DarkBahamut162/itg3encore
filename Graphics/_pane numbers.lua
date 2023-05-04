@@ -50,7 +50,7 @@ return Def.ActorFrame{
 				elseif num <= stats[1][5] * numSongs then itemColor = color(colors[5][1]..","..colors[5][2]..","..colors[5][3]..",1")
 				else itemColor = color(colors[6][1]..","..colors[6][2]..","..colors[6][3]..",1")
 				end
-				num = string.format("%03i",num)
+				num = string.format("%03i",math.max(0,num))
 				if IsCourseSecret() then num = "???" end
 				self:settext(num)
 				self:diffusecolor(itemColor)
@@ -92,7 +92,7 @@ return Def.ActorFrame{
 				elseif num <= stats[2][5] * numSongs then itemColor = color(colors[5][1]..","..colors[5][2]..","..colors[5][3]..",1")
 				else itemColor = color(colors[6][1]..","..colors[6][2]..","..colors[6][3]..",1")
 				end
-				num = string.format("%03i",num)
+				num = string.format("%03i",math.max(0,num))
 				if IsCourseSecret() then num = "???" end
 				self:settext(num)
 				self:diffusecolor(itemColor)
@@ -134,7 +134,7 @@ return Def.ActorFrame{
 				elseif num <= stats[3][5] * numSongs then itemColor = color(colors[5][1]..","..colors[5][2]..","..colors[5][3]..",1")
 				else itemColor = color(colors[6][1]..","..colors[6][2]..","..colors[6][3]..",1")
 				end
-				num = string.format("%03i",num)
+				num = string.format("%03i",math.max(0,num))
 				if IsCourseSecret() then num = "???" end
 				self:settext(num)
 				self:diffusecolor(itemColor)
@@ -176,7 +176,7 @@ return Def.ActorFrame{
 				elseif num <= stats[4][5] * numSongs then itemColor = color(colors[5][1]..","..colors[5][2]..","..colors[5][3]..",1")
 				else itemColor = color(colors[6][1]..","..colors[6][2]..","..colors[6][3]..",1")
 				end
-				num = string.format("%03i",num)
+				num = string.format("%03i",math.max(0,num))
 				if IsCourseSecret() then num = "???" end
 				self:settext(num)
 				self:diffusecolor(itemColor)
@@ -218,7 +218,7 @@ return Def.ActorFrame{
 				elseif num <= stats[5][5] * numSongs then itemColor = color(colors[5][1]..","..colors[5][2]..","..colors[5][3]..",1")
 				else itemColor = color(colors[6][1]..","..colors[6][2]..","..colors[6][3]..",1")
 				end
-				num = string.format("%03i",num)
+				num = string.format("%03i",math.max(0,num))
 				if IsCourseSecret() then num = "???" end
 				self:settext(num)
 				self:diffusecolor(itemColor)

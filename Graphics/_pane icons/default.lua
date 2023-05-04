@@ -37,15 +37,15 @@ return Def.ActorFrame{
 				local totalSeconds = isOutFox() and LoadFromCache(song,step,"TrueLastSecond") - LoadFromCache(song,step,"TrueFirstSecond") or 0
 				local avg_bps_OLD = song:GetLastBeat() / song:MusicLengthSeconds()
 				local avg_bps_NEW = isOutFox() and LoadModule("Config.Load.lua")("TrueLastBeat",getStepCacheFile(step)) / totalSeconds or 0
-				stream = rv:GetValue('RadarCategory_Stream')
+				stream = math.max(0,rv:GetValue('RadarCategory_Stream'))
 				if isOutFox() then stream = stream * song:MusicLengthSeconds() / totalSeconds end
-				voltage = rv:GetValue('RadarCategory_Voltage')
+				voltage = math.max(0,rv:GetValue('RadarCategory_Voltage'))
 				if isOutFox() then voltage = voltage / avg_bps_OLD * avg_bps_NEW end
-				air = rv:GetValue('RadarCategory_Air')
+				air = math.max(0,rv:GetValue('RadarCategory_Air'))
 				if isOutFox() then air = air * song:MusicLengthSeconds() / totalSeconds end
-				freeze = rv:GetValue('RadarCategory_Freeze')
+				freeze = math.max(0,rv:GetValue('RadarCategory_Freeze'))
 				if isOutFox() then freeze = freeze * song:MusicLengthSeconds() / totalSeconds end
-				chaos = rv:GetValue('RadarCategory_Chaos')
+				chaos = math.max(0,rv:GetValue('RadarCategory_Chaos'))
 				if isOutFox() then chaos = chaos * song:MusicLengthSeconds() / totalSeconds end
 			end
 		elseif course then
@@ -70,11 +70,11 @@ return Def.ActorFrame{
 				mine = rv:GetValue('RadarCategory_Mines') > 0
 				hand = rv:GetValue('RadarCategory_Hands') > 0
 				roll = rv:GetValue('RadarCategory_Rolls') > 0
-				stream = rv:GetValue('RadarCategory_Stream')
-				voltage = rv:GetValue('RadarCategory_Voltage')
-				air = rv:GetValue('RadarCategory_Air')
-				freeze = rv:GetValue('RadarCategory_Freeze')
-				chaos = rv:GetValue('RadarCategory_Chaos')
+				stream = math.max(0,rv:GetValue('RadarCategory_Stream'))
+				voltage = math.max(0,rv:GetValue('RadarCategory_Voltage'))
+				air = math.max(0,rv:GetValue('RadarCategory_Air'))
+				freeze = math.max(0,rv:GetValue('RadarCategory_Freeze'))
+				chaos = math.max(0,rv:GetValue('RadarCategory_Chaos'))
 				if IsCourseSecret() then stream,voltage,air,freeze,chaos = 0,0,0,0,0 end
 			end
 		end
