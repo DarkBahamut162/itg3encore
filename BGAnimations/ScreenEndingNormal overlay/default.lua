@@ -56,7 +56,7 @@ return Def.ActorFrame{
                     OnCommand=function(self) self:y(20*0) end
                 },
                 LoadFont("_r bold 30px")..{
-                    Text=string.format("%05.2f%%",PROFILEMAN:GetProfile(PLAYER_1):GetSongsPercentComplete('StepsType_Dance_Single','Difficulty_Easy')),
+                    Text=string.format("%05.2f%%",PROFILEMAN:GetProfile(PLAYER_1):GetSongsPercentComplete(StepsTypeSingle(),'Difficulty_Easy')),
                     InitCommand=function(self) self:diffuse(PlayerColor(PLAYER_1)):shadowlength(2):zoom(0.5) end,
                     OnCommand=function(self) self:x(58):y(20*0) end
                 },
@@ -66,7 +66,7 @@ return Def.ActorFrame{
                     OnCommand=function(self) self:y(20*1) end
                 },
                 LoadFont("_r bold 30px")..{
-                    Text=string.format("%05.2f%%",PROFILEMAN:GetProfile(PLAYER_1):GetSongsPercentComplete('StepsType_Dance_Single','Difficulty_Medium')),
+                    Text=string.format("%05.2f%%",PROFILEMAN:GetProfile(PLAYER_1):GetSongsPercentComplete(StepsTypeSingle(),'Difficulty_Medium')),
                     InitCommand=function(self) self:diffuse(PlayerColor(PLAYER_1)):shadowlength(2):zoom(0.5) end,
                     OnCommand=function(self) self:x(58):y(20*1) end
                 },
@@ -76,7 +76,7 @@ return Def.ActorFrame{
                     OnCommand=function(self) self:y(20*2) end
                 },
                 LoadFont("_r bold 30px")..{
-                    Text=string.format("%05.2f%%",PROFILEMAN:GetProfile(PLAYER_1):GetSongsPercentComplete('StepsType_Dance_Single','Difficulty_Hard')),
+                    Text=string.format("%05.2f%%",PROFILEMAN:GetProfile(PLAYER_1):GetSongsPercentComplete(StepsTypeSingle(),'Difficulty_Hard')),
                     InitCommand=function(self) self:diffuse(PlayerColor(PLAYER_1)):shadowlength(2):zoom(0.5) end,
                     OnCommand=function(self) self:x(58):y(20*2) end
                 },
@@ -86,7 +86,7 @@ return Def.ActorFrame{
                     OnCommand=function(self) self:y(20*3) end
                 },
                 LoadFont("_r bold 30px")..{
-                    Text=string.format("%05.2f%%",PROFILEMAN:GetProfile(PLAYER_1):GetSongsPercentComplete('StepsType_Dance_Single','Difficulty_Challenge')),
+                    Text=string.format("%05.2f%%",PROFILEMAN:GetProfile(PLAYER_1):GetSongsPercentComplete(StepsTypeSingle(),'Difficulty_Challenge')),
                     InitCommand=function(self) self:diffuse(PlayerColor(PLAYER_1)):shadowlength(2):zoom(0.5) end,
                     OnCommand=function(self) self:x(58):y(20*3) end
                 }
@@ -100,7 +100,7 @@ return Def.ActorFrame{
                     OnCommand=function(self) self:zoom(0.5):shadowlength(2):diffuse(PlayerColor(PLAYER_1)) end
                 },
                 LoadFont("_r bold 30px")..{
-                    Text=string.format("%05.2f%%",GetCoursesPercentComplete(PROFILEMAN:GetProfile(PLAYER_1),'StepsType_Dance_Single')),
+                    Text=string.format("%05.2f%%",GetCoursesPercentComplete(PROFILEMAN:GetProfile(PLAYER_1),StepsTypeSingle())),
                     InitCommand=function(self) self:x(30):y(-50*0-30) end,
                     OnCommand=function(self) self:zoom(0.7):shadowlength(2):diffuse(PlayerColor(PLAYER_1)) end
                 },
@@ -110,7 +110,7 @@ return Def.ActorFrame{
                     OnCommand=function(self) self:y(20*1) end
                 },
                 LoadFont("_r bold 30px")..{
-                    Text=string.format("%05.2f%%",PROFILEMAN:GetProfile(PLAYER_1):GetCoursesPercentComplete('StepsType_Dance_Single','Difficulty_Medium')),
+                    Text=string.format("%05.2f%%",PROFILEMAN:GetProfile(PLAYER_1):GetCoursesPercentComplete(StepsTypeSingle(),'Difficulty_Medium')),
                     InitCommand=function(self) self:diffuse(PlayerColor(PLAYER_1)):shadowlength(2):zoom(0.5) end,
                     OnCommand=function(self) self:x(58):y(20*1) end
                 },
@@ -120,7 +120,7 @@ return Def.ActorFrame{
                     OnCommand=function(self) self:y(20*2) end
                 },
                 LoadFont("_r bold 30px")..{
-                    Text=string.format("%05.2f%%",PROFILEMAN:GetProfile(PLAYER_1):GetCoursesPercentComplete('StepsType_Dance_Single','Difficulty_Hard')),
+                    Text=string.format("%05.2f%%",PROFILEMAN:GetProfile(PLAYER_1):GetCoursesPercentComplete(StepsTypeSingle(),'Difficulty_Hard')),
                     InitCommand=function(self) self:diffuse(PlayerColor(PLAYER_1)):shadowlength(2):zoom(0.5) end,
                     OnCommand=function(self) self:x(58):y(20*2) end
                 }
@@ -174,7 +174,7 @@ return Def.ActorFrame{
                     OnCommand=function(self) self:zoom(0.5):shadowlength(2):diffuse(PlayerColor(PLAYER_2)) end
                 },
                 LoadFont("_r bold 30px")..{
-                    Text=string.format("%05.2f%%",GetSongsPercentComplete(PROFILEMAN:GetProfile(PLAYER_2),'StepsType_Dance_Single')),
+                    Text=string.format("%05.2f%%",GetSongsPercentComplete(PROFILEMAN:GetProfile(PLAYER_2),StepsTypeSingle())),
                     InitCommand=function(self) self:x(30):y(-50*0-30) end,
                     OnCommand=function(self) self:zoom(0.7):shadowlength(2):diffuse(PlayerColor(PLAYER_2)) end
                 },
@@ -184,7 +184,7 @@ return Def.ActorFrame{
                     OnCommand=function(self) self:y(20*0) end
                 },
                 LoadFont("_r bold 30px")..{
-                    Text=string.format("%05.2f%%",PROFILEMAN:GetProfile(PLAYER_2):GetSongsPercentComplete('StepsType_Dance_Single','Difficulty_Easy')),
+                    Text=string.format("%05.2f%%",PROFILEMAN:GetProfile(PLAYER_2):GetSongsPercentComplete(StepsTypeSingle(),'Difficulty_Easy')),
                     InitCommand=function(self) self:diffuse(PlayerColor(PLAYER_2)):shadowlength(2):zoom(0.5) end,
                     OnCommand=function(self) self:x(58):y(20*0) end
                 },
@@ -194,7 +194,7 @@ return Def.ActorFrame{
                     OnCommand=function(self) self:y(20*1) end
                 },
                 LoadFont("_r bold 30px")..{
-                    Text=string.format("%05.2f%%",PROFILEMAN:GetProfile(PLAYER_2):GetSongsPercentComplete('StepsType_Dance_Single','Difficulty_Medium')),
+                    Text=string.format("%05.2f%%",PROFILEMAN:GetProfile(PLAYER_2):GetSongsPercentComplete(StepsTypeSingle(),'Difficulty_Medium')),
                     InitCommand=function(self) self:diffuse(PlayerColor(PLAYER_2)):shadowlength(2):zoom(0.5) end,
                     OnCommand=function(self) self:x(58):y(20*1) end
                 },
@@ -204,7 +204,7 @@ return Def.ActorFrame{
                     OnCommand=function(self) self:y(20*2) end
                 },
                 LoadFont("_r bold 30px")..{
-                    Text=string.format("%05.2f%%",PROFILEMAN:GetProfile(PLAYER_2):GetSongsPercentComplete('StepsType_Dance_Single','Difficulty_Hard')),
+                    Text=string.format("%05.2f%%",PROFILEMAN:GetProfile(PLAYER_2):GetSongsPercentComplete(StepsTypeSingle(),'Difficulty_Hard')),
                     InitCommand=function(self) self:diffuse(PlayerColor(PLAYER_2)):shadowlength(2):zoom(0.5) end,
                     OnCommand=function(self) self:x(58):y(20*2) end
                 },
@@ -214,7 +214,7 @@ return Def.ActorFrame{
                     OnCommand=function(self) self:y(20*3) end
                 },
                 LoadFont("_r bold 30px")..{
-                    Text=string.format("%05.2f%%",PROFILEMAN:GetProfile(PLAYER_2):GetSongsPercentComplete('StepsType_Dance_Single','Difficulty_Challenge')),
+                    Text=string.format("%05.2f%%",PROFILEMAN:GetProfile(PLAYER_2):GetSongsPercentComplete(StepsTypeSingle(),'Difficulty_Challenge')),
                     InitCommand=function(self) self:diffuse(PlayerColor(PLAYER_2)):shadowlength(2):zoom(0.5) end,
                     OnCommand=function(self) self:x(58):y(20*3) end
                 }
@@ -228,7 +228,7 @@ return Def.ActorFrame{
                     OnCommand=function(self) self:zoom(0.5):shadowlength(2):diffuse(PlayerColor(PLAYER_2)) end
                 },
                 LoadFont("_r bold 30px")..{
-                    Text=string.format("%05.2f%%",GetCoursesPercentComplete(PROFILEMAN:GetProfile(PLAYER_2),'StepsType_Dance_Single')),
+                    Text=string.format("%05.2f%%",GetCoursesPercentComplete(PROFILEMAN:GetProfile(PLAYER_2),StepsTypeSingle())),
                     InitCommand=function(self) self:x(30):y(-50*0-30) end,
                     OnCommand=function(self) self:zoom(0.7):shadowlength(2):diffuse(PlayerColor(PLAYER_2)) end
                 },
@@ -238,7 +238,7 @@ return Def.ActorFrame{
                     OnCommand=function(self) self:y(20*1) end
                 },
                 LoadFont("_r bold 30px")..{
-                    Text=string.format("%05.2f%%",PROFILEMAN:GetProfile(PLAYER_2):GetCoursesPercentComplete('StepsType_Dance_Single','Difficulty_Medium')),
+                    Text=string.format("%05.2f%%",PROFILEMAN:GetProfile(PLAYER_2):GetCoursesPercentComplete(StepsTypeSingle(),'Difficulty_Medium')),
                     InitCommand=function(self) self:diffuse(PlayerColor(PLAYER_2)):shadowlength(2):zoom(0.5) end,
                     OnCommand=function(self) self:x(58):y(20*1) end
                 },
@@ -248,7 +248,7 @@ return Def.ActorFrame{
                     OnCommand=function(self) self:y(20*2) end
                 },
                 LoadFont("_r bold 30px")..{
-                    Text=string.format("%05.2f%%",PROFILEMAN:GetProfile(PLAYER_2):GetCoursesPercentComplete('StepsType_Dance_Single','Difficulty_Hard')),
+                    Text=string.format("%05.2f%%",PROFILEMAN:GetProfile(PLAYER_2):GetCoursesPercentComplete(StepsTypeSingle(),'Difficulty_Hard')),
                     InitCommand=function(self) self:diffuse(PlayerColor(PLAYER_2)):shadowlength(2):zoom(0.5) end,
                     OnCommand=function(self) self:x(58):y(20*2) end
                 }

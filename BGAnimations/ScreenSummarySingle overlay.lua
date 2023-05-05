@@ -33,24 +33,25 @@ for i=1,3 do
 				local val, text
 				if types[i] == "Actual" then
 					if n > 5 then
-						val = prof:GetCoursesActual('StepsType_Dance_Single',diffs[n])
+						val = prof:GetCoursesActual(StepsTypeSingle(),diffs[n])
 					else
-						val = prof:GetSongsActual('StepsType_Dance_Single',diffs[n])
+						val = prof:GetSongsActual(StepsTypeSingle(),diffs[n])
 					end
 					text = string.format("%5.2f",val)
 				elseif types[i] == "Possible" then
 					if n > 5 then
-						val = prof:GetCoursesPossible('StepsType_Dance_Single',diffs[n])
+						val = prof:GetCoursesPossible(StepsTypeSingle(),diffs[n])
 					else
-						val = prof:GetSongsPossible('StepsType_Dance_Single',diffs[n])
+						val = prof:GetSongsPossible(StepsTypeSingle(),diffs[n])
 					end
 					text = string.format("%5.2f",val)
 				elseif types[i] == "PercentComplete" then
 					if n > 5 then
-						val = prof:GetCoursesPercentComplete('StepsType_Dance_Single',diffs[n])
+						val = prof:GetCoursesPercentComplete(StepsTypeSingle(),diffs[n])
 					else
-						val = prof:GetSongsPercentComplete('StepsType_Dance_Single',diffs[n])
+						val = prof:GetSongsPercentComplete(StepsTypeSingle(),diffs[n])
 					end
+					if val ~= val then val = 0 end
 					text = FormatPercentScore(val)
 				end
 				self:settext(text)
@@ -61,7 +62,7 @@ for i=1,3 do
 	t[#t+1] = thing
 end
 
-local shortGrade = ToEnumShortString( GetGradeFromPercent(GetTotalPercentComplete(prof,'StepsType_Dance_Single')) )
+local shortGrade = ToEnumShortString( GetGradeFromPercent(GetTotalPercentComplete(prof,StepsTypeSingle())) )
 
 local totals = Def.ActorFrame{
 	Def.ActorFrame{
@@ -76,9 +77,9 @@ local totals = Def.ActorFrame{
 				local val = 0
 				for i=2,7 do
 					if i > 5 then
-						val = val + prof:GetCoursesActual('StepsType_Dance_Single',diffs[i])
+						val = val + prof:GetCoursesActual(StepsTypeSingle(),diffs[i])
 					else
-						val = val + prof:GetSongsActual('StepsType_Dance_Single',diffs[i])
+						val = val + prof:GetSongsActual(StepsTypeSingle(),diffs[i])
 					end
 				end
 				self:settext(string.format("%5.2f",val))
@@ -94,9 +95,9 @@ local totals = Def.ActorFrame{
 				local val = 0
 				for i=2,7 do
 					if i > 5 then
-						val = val + prof:GetCoursesPossible('StepsType_Dance_Single',diffs[i])
+						val = val + prof:GetCoursesPossible(StepsTypeSingle(),diffs[i])
 					else
-						val = val + prof:GetSongsPossible('StepsType_Dance_Single',diffs[i])
+						val = val + prof:GetSongsPossible(StepsTypeSingle(),diffs[i])
 					end
 				end
 				self:settext(string.format("%5.2f",val))
@@ -109,7 +110,8 @@ local totals = Def.ActorFrame{
 		LoadFont("_r bold numbers")..{
 			InitCommand=function(self) self:x(SCREEN_CENTER_X+136*WideScreenDiff()):y(20*WideScreenDiff()):horizalign(right):zoom(WideScreenDiff()) end,
 			BeginCommand=function(self)
-				local val = GetTotalPercentComplete(prof,'StepsType_Dance_Single')
+				local val = GetTotalPercentComplete(prof,StepsTypeSingle())
+				if val ~= val then val = 0 end
 				self:settext(FormatPercentScore(val))
 
 				if val >= 1 then

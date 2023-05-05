@@ -1,33 +1,81 @@
 function ChoiceSingle()
-	if IsGame("be-mu") then
+	if IsGame("dance") then
+		return "single"
+	elseif IsGame("pump") then
+		return "single"
+	elseif IsGame("smx") then
+		return "single"
+	elseif IsGame("be-mu") or IsGame("beat") then
 		return "single7"
 	elseif IsGame("po-mu") then
 		return "po-mu-nine"
-	else
-		return "single"
 	end
 end
 
 function ChoiceVersus()
-	if IsGame("be-mu") then
+	if IsGame("dance") then
+		return "versus"
+	elseif IsGame("pump") then
+		return "versus"
+	elseif IsGame("smx") then
+		return "versus"
+	elseif IsGame("be-mu") or IsGame("beat") then
 		return "versus7"
 	elseif IsGame("po-mu") then
 		return "po-mu-nine-versus"
-	else
-		return "versus"
 	end
 end
 
 function ChoiceDouble()
-	if IsGame("be-mu") then
+	if IsGame("dance") then
+		return "double"
+	elseif IsGame("pump") then
+		return "double"
+	elseif IsGame("smx") then
+		return "double10"
+	elseif IsGame("be-mu") or IsGame("beat") then
 		return "double7"
 	elseif IsGame("po-mu") then
 		return "po-mu-nine-double"
-	elseif IsGame("smx") then
-		return "double10"
-	else
-		return "double"
 	end
+end
+
+function GameModeEnabled()
+	if IsGame("dance") or IsGame("pump") or IsGame("smx") or IsGame("be-mu") or IsGame("beat") or IsGame("po-mu") then
+		return true
+	else
+		return false
+	end
+end
+
+function StepsTypeSingle()
+	if IsGame("dance") then
+		return "StepsType_Dance_Single"
+	elseif IsGame("pump") then
+		return "StepsType_Pump_Single"
+	elseif IsGame("smx") then
+		return "StepsType_Smx_Single"
+	elseif IsGame("be-mu") or IsGame("beat") then
+		return "StepsType_Bm_Single7"
+	elseif IsGame("po-mu") then
+		return "StepsType_Pnm_Nine"
+	end
+	return false
+end
+
+function StepsTypeDouble()
+	if IsGame("dance") then
+		return "StepsType_Dance_Double"
+	elseif IsGame("pump") then
+		return "StepsType_Pump_Double"
+	elseif IsGame("smx") then
+		return "StepsType_Smx_Double10"
+	elseif IsGame("be-mu") or IsGame("beat") then
+		return "StepsType_Bm_Double7"
+	elseif IsGame("po-mu") then
+		return "StepsType_Pnm_Nine_Double"
+	end
+	return false
 end
 
 function SongMods()
