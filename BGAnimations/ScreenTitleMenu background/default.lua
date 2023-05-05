@@ -17,6 +17,20 @@ for group in ivalues(groups) do
 	end
 end
 
+local function sortArray(array)
+	local check = {}
+	local output = {}
+	if array ~= "" then
+		for _,v in ipairs(split("|",array)) do
+			if not check[v] then
+				output[#output+1] = v
+				check[v] = true
+			end
+		end
+	end
+	return output
+end
+
 return Def.ActorFrame{
 	OnCommand=function(self)
 		if isOutFox() then
@@ -345,28 +359,80 @@ return Def.ActorFrame{
 		end
 	},
 	LoadFont("_r bold 30px")..{
-		InitCommand=function(self) self:x(isFinal() and SCREEN_CENTER_X+5*WideScreenDiff() or SCREEN_LEFT+35*WideScreenDiff()):y(isFinal() and SCREEN_TOP+69*WideScreenDiff() or SCREEN_TOP+59*WideScreenDiff()):shadowlength(2):halign(isFinal() and 0.5 or 0):maxwidth(isFinal() and SCREEN_WIDTH/4*3/WideScreenDiff() or SCREEN_WIDTH/WideScreenDiff()):zoom(0.6*WideScreenDiff()) end,
+		InitCommand=function(self) self:x(isFinal() and SCREEN_CENTER_X+5*WideScreenDiff() or SCREEN_LEFT+35*WideScreenDiff()):y(isFinal() and SCREEN_TOP+50*WideScreenDiff() or SCREEN_TOP+40*WideScreenDiff()):shadowlength(2):valign(0):halign(isFinal() and 0.5 or 0):maxwidth(isFinal() and SCREEN_WIDTH/4*3/WideScreenDiff() or SCREEN_WIDTH/WideScreenDiff()):zoom(0.6*WideScreenDiff()) end,
 		OnCommand=function(self) self:diffusealpha(0):sleep(0.5):linear(0.5):diffusealpha(1):playcommand("Refresh") end,
 		ScreenChangedMessageCommand=function(self) self:playcommand("Refresh") end,
 		RefreshCommand=function(self)
 			local songs = SONGMAN:GetAllSongs()
 			local songsSingle = 0
 			local songsDouble = 0
-			for i=1,#songs do
-				if songs[i]:HasStepsType("StepsType_Dance_Single") then songsSingle = songsSingle + 1 end
-				if songs[i]:HasStepsType("StepsType_Dance_Double") then songsDouble = songsDouble + 1 end
-			end
-			local groups = SONGMAN:GetNumSongGroups()
+
+			local groupsTotal = SONGMAN:GetNumSongGroups()
+			local groupsSingle = ""
+			local groupsDouble = ""
+			local groupsSingleCount = 0
+			local groupsDoubleCount = 0
+
 			local courses = SONGMAN:GetAllCourses(PREFSMAN:GetPreference("AutogenGroupCourses"))
-			local coursesMarathon = 0
-			local coursesSurvival = 0
-			for i=1,#courses do
-				if courses[i]:GetCourseType() == "CourseType_Nonstop" then coursesMarathon = coursesMarathon + 1 end
-				if courses[i]:GetCourseType() == "CourseType_Oni" or courses[i]:GetCourseType() == "CourseType_Survival" then coursesSurvival = coursesSurvival + 1 end
-			end
-			if not isTopScreen("ScreenLogo") then 
-				self:settext("Songs: "..songsSingle.." singles & "..songsDouble.." doubles in "..groups.." groups\n"
-							.."Courses: "..coursesMarathon.." marathons & "..coursesSurvival.." survivals")
+			local coursesMarathonSingle = 0
+			local coursesMarathonDouble = 0
+			local coursesSurvivalSingle = 0
+			local coursesSurvivalDouble = 0
+
+			if not isTopScreen("ScreenLogo") then
+				if (StepsTypeSingle() or StepsTypeDouble()) and (IsGame("dance") or (ProductFamily() == "OutFox" and tonumber(split("-",ProductVersion())[1]) == 0.5)) then
+					if #songs > 0 then
+						for i=1,#songs do
+							if songs[i]:HasStepsType(StepsTypeSingle()) then
+								if not string.find(groupsSingle,songs[i]:GetGroupName()) then
+									groupsSingle = addToOutput(groupsSingle,songs[i]:GetGroupName(),"|")
+								end
+								songsSingle = songsSingle + 1
+							end
+							if songs[i]:HasStepsType(StepsTypeDouble()) then
+								if not string.find(groupsDouble,songs[i]:GetGroupName()) then
+									groupsDouble = addToOutput(groupsDouble,songs[i]:GetGroupName(),"|")
+								end
+								songsDouble = songsDouble + 1
+							end
+						end
+					end
+					if #courses > 0 then
+						for i=1,#courses do
+							if courses[i]:GetCourseType() == "CourseType_Nonstop" then
+								if courses[i]:IsPlayableIn(StepsTypeSingle()) then coursesMarathonSingle = coursesMarathonSingle + 1 end
+								if courses[i]:IsPlayableIn(StepsTypeDouble()) then coursesMarathonDouble = coursesMarathonDouble + 1 end
+							end
+							if courses[i]:GetCourseType() == "CourseType_Oni" or courses[i]:GetCourseType() == "CourseType_Survival" then
+								if courses[i]:IsPlayableIn(StepsTypeSingle()) then coursesSurvivalSingle = coursesSurvivalSingle + 1 end
+								if courses[i]:IsPlayableIn(StepsTypeDouble()) then coursesSurvivalDouble = coursesSurvivalDouble + 1 end
+							end
+						end
+					end
+
+					groupsSingle = sortArray(groupsSingle)
+					groupsDouble = sortArray(groupsDouble)
+					groupsSingleCount = #groupsSingle
+					groupsDoubleCount = #groupsDouble
+				end
+
+				if songsSingle > 0 or songsDouble > 0 then
+					local output = ""
+					if groupsSingleCount == groupsDoubleCount then
+						output = addToOutput(output,"Songs: "..songsSingle.." singles & "..songsDouble.." doubles in "..groupsTotal.." groups","\n")
+					else
+						output = addToOutput(output,"Songs: "..songsSingle.." singles ("..groupsSingleCount.." groups) & "..songsDouble.." doubles ("..groupsDoubleCount.." groups)","\n")
+					end
+					output = addToOutput(output,"Courses: "..(coursesMarathonSingle+coursesMarathonDouble).." marathons & "..(coursesSurvivalSingle+coursesSurvivalDouble).." survivals","\n")
+					output = addToOutput(output,"Current Game Mode: "..GAMESTATE:GetCurrentGame():GetName(),"\n")
+					self:settext(output)
+				else
+					if GameModeEnabled() then
+						self:settext("Information: The song/course counter currently only works in Dance Mode!\nSome other functionalities might also be broken!\nCurrent Game Mode: "..GAMESTATE:GetCurrentGame():GetName()):diffuse(Color.Yellow)
+					else
+						self:settext("WARNING: This Game Mode isn't supported here!\nErrors might occur!"):diffuse(Color.Red)
+					end
+				end
 			end
 		end
 	},
