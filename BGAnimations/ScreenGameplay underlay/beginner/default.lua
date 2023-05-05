@@ -5,18 +5,6 @@ elseif GAMESTATE:GetMasterPlayerNumber() == PLAYER_2 and getenv("RotationSoloP2"
 	posX = SCREEN_CENTER_X+SCREEN_WIDTH/4/WideScreenSemiDiff()
 end
 
-local buttons = {
-	Left = true,
-	Up = true,
-	Down = true,
-	Right = true,
-	DownLeft = true,
-	UpLeft = true,
-	Center = true,
-	UpRight = true,
-	DownRight = true
-}
-
 return Def.ActorFrame{
 	Def.ActorFrame{
 		InitCommand=function(self) self:x(posX):y(SCREEN_CENTER_Y+15):zoom(WideScreenDiff()) end,
@@ -63,7 +51,7 @@ return Def.ActorFrame{
 					InitCommand=function(self) self:diffusealpha(0):maxwidth(70) end,
 					CrossCommand=function(self) self:finishtweening():diffusealpha(1):zoom(1.4):linear(0.2):zoom(1):sleep(0.4):diffusealpha(0) end,
 					NoteCrossedMessageCommand=function(self,param)
-						if buttons[param.ButtonName] then
+						if param.ButtonName then
 							local button = param.ButtonName
 							self:settext(button.."!"):playcommand("Cross")
 						end
