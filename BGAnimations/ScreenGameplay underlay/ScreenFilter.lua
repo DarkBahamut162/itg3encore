@@ -83,10 +83,10 @@ if numPlayers == 1 then
 		OnCommand=function(self)
 			if getenv("RotationLeftP"..pNum) then
 				self:rotationz(-90)
-				self:y(SCREEN_CENTER_Y+10)
+				self:y(SCREEN_CENTER_Y)
 			elseif getenv("RotationRightP"..pNum) then
 				self:rotationz(90)
-				self:y(SCREEN_CENTER_Y+10)
+				self:y(SCREEN_CENTER_Y)
 			elseif getenv("RotationUpsideDownP"..pNum) then
 				self:rotationz(180)
 				self:y(SCREEN_CENTER_Y)

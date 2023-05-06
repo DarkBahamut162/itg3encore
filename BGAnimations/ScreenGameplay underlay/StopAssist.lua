@@ -63,7 +63,15 @@ local function Update(self, delta)
 		end
 	end
 end
+
 local PY = GAMESTATE:GetPlayerState(player):GetPlayerOptions('ModsLevel_Preferred'):UsingReverse() and THEME:GetMetric("Player","ReceptorArrowsYReverse") or THEME:GetMetric("Player","ReceptorArrowsYStandard")
+if GAMESTATE:GetNumPlayersEnabled() == 1 then
+	if getenv("RotationRight"..pname(player)) and player == PLAYER_1 then
+		PY = PY - SCREEN_CENTER_X
+	elseif getenv("RotationLeft"..pname(player)) and player == PLAYER_2 then
+		PY = PY - SCREEN_CENTER_X
+	end
+end
 
 return Def.ActorFrame{
 	InitCommand=function(self) c = self:GetChildren() end,

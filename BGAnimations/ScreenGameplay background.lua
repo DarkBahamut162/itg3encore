@@ -40,7 +40,7 @@ return Def.ActorFrame {
 			for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
 				if GAMESTATE:GetNumPlayersEnabled() == 1 then
 					if isOutFox() and not tobool(LoadFromCache(GAMESTATE:GetCurrentSong(),GAMESTATE:GetCurrentSteps(GAMESTATE:GetMasterPlayerNumber()),"HasLua")) or not HasLuaCheck() then
-						if getenv("RotationNormal"..pname(pn)) then
+						if getenv("RotationNormal"..pname(pn)) or getenv("RotationUpsideDown"..pname(pn)) then
 							if IsGame("be-mu") then
 								SCREENMAN:GetTopScreen():GetChild("SongBackground"):GetChild(""):zoom((853-369+156-156*currentMini)/853):xy(pn == PLAYER_1 and 369-156+156*currentMini or 0,(480-87.75+87.75*currentMini)/4)
 							elseif IsGame("po-mu") then
@@ -71,26 +71,35 @@ return Def.ActorFrame {
 				end
 				if SCREENMAN:GetTopScreen():GetChild("Player"..pname(pn)) and SCREENMAN:GetTopScreen():GetChild("Player"..pname(pn)):GetChild("NoteField") then
 					if getenv("RotationLeft"..pname(pn)) then
-						SCREENMAN:GetTopScreen():GetChild("Player"..pname(pn)):GetChild("NoteField"):rotationz(270)
-						if GAMESTATE:IsPlayerEnabled(PLAYER_2) and not GAMESTATE:IsPlayerEnabled(PLAYER_1) then
-							SCREENMAN:GetTopScreen():GetChild("Player"..pname(pn)):GetChild("NoteField"):addx(-SCREEN_WIDTH/2)
+						SCREENMAN:GetTopScreen():GetChild("Player"..pname(pn)):rotationz(270)
+						if pn == PLAYER_1 then
+							SCREENMAN:GetTopScreen():GetChild("Player"..pname(pn)):x(SCREEN_CENTER_X-SCREEN_WIDTH/4)
+						elseif pn == PLAYER_2 then
+							SCREENMAN:GetTopScreen():GetChild("Player"..pname(pn)):x(SCREEN_CENTER_X-SCREEN_WIDTH/4)
 						end
 					elseif getenv("RotationRight"..pname(pn)) then
-						SCREENMAN:GetTopScreen():GetChild("Player"..pname(pn)):GetChild("NoteField"):rotationz(90)
-						if GAMESTATE:IsPlayerEnabled(PLAYER_1) and not GAMESTATE:IsPlayerEnabled(PLAYER_2) then
-							SCREENMAN:GetTopScreen():GetChild("Player"..pname(pn)):GetChild("NoteField"):addx(SCREEN_WIDTH/2)
+						SCREENMAN:GetTopScreen():GetChild("Player"..pname(pn)):rotationz(90)
+						if pn == PLAYER_1 then
+							SCREENMAN:GetTopScreen():GetChild("Player"..pname(pn)):x(SCREEN_CENTER_X+SCREEN_WIDTH/4)
+						elseif pn == PLAYER_2 then
+							SCREENMAN:GetTopScreen():GetChild("Player"..pname(pn)):x(SCREEN_CENTER_X+SCREEN_WIDTH/4)
 						end
 					elseif getenv("RotationUpsideDown"..pname(pn)) then
-						SCREENMAN:GetTopScreen():GetChild("Player"..pname(pn)):GetChild("NoteField"):rotationz(180):addy(20)
+						SCREENMAN:GetTopScreen():GetChild("Player"..pname(pn)):rotationz(180)
+						if pn == PLAYER_1 then
+							SCREENMAN:GetTopScreen():GetChild("Player"..pname(pn)):x(SCREEN_CENTER_X-SCREEN_WIDTH/4)
+						elseif pn == PLAYER_2 then
+							SCREENMAN:GetTopScreen():GetChild("Player"..pname(pn)):x(SCREEN_CENTER_X+SCREEN_WIDTH/4)
+						end
 					elseif getenv("RotationSolo"..pname(pn)) and not doubles then
 						if ToEnumShortString(GAMESTATE:GetCurrentStyle():GetStyleType()) == "OnePlayerOneSide" then
 							SCREENMAN:GetTopScreen():GetChild("Player"..pname(pn)):CenterX()
 						end
 					elseif getenv("RotationNormal"..pname(pn)) and not doubles then
-						if pn == PLAYER_2 then
-							SCREENMAN:GetTopScreen():GetChild("Player"..pname(pn)):x(SCREEN_CENTER_X+SCREEN_WIDTH/4)
-						else
+						if pn == PLAYER_1 then
 							SCREENMAN:GetTopScreen():GetChild("Player"..pname(pn)):x(SCREEN_CENTER_X-SCREEN_WIDTH/4)
+						elseif pn == PLAYER_2 then
+							SCREENMAN:GetTopScreen():GetChild("Player"..pname(pn)):x(SCREEN_CENTER_X+SCREEN_WIDTH/4)
 						end
 					end
 
