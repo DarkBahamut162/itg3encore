@@ -12,7 +12,7 @@ This Theme has been optimized for **Project OutFox** and has some additional *(b
 You also might need to switch your VideoRenderer to OpenGL as GLAD breaks the graphics after playing just one round (depending if they have been fixed yet everywhere).
 
 ## Information:
-To switch from **Normal Encore** to **Final Encore**, go into the theme's metrics.ini and set the **EnableFinalTheme** value inside **[Preferences]** to **true**
+Most additional features *(including the theme switch from **Encore Normal** to **Encore Final**)* have been moved to an additional **Theme Options** menu.
 
 ---
 

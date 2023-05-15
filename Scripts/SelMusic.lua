@@ -1,4 +1,4 @@
-local cacheVersion = "0.24"
+local cacheVersion = "0.25"
 
 function getCacheVersion()
 	return cacheVersion
@@ -209,17 +209,17 @@ function getColumnsPerPlayer(typ,style)
 		end
 	elseif typ == "Bm" then
 		if style == "Single5" then
-			return 5
+			return 5+1
 		elseif style == "Single6" then
-			return 6
+			return 6+1
 		elseif style == "Single7" then
-			return 7
+			return 7+1
 		elseif style == "Double5" then
-			return 10
+			return 10+2
 		elseif style == "Double6" then
-			return 12
+			return 12+2
 		elseif style == "Double7" then
-			return 14
+			return 14+2
 		end
 	elseif typ == "Pnm" then
 		if style == "Three" then
