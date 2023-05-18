@@ -1,11 +1,11 @@
 return Def.ActorFrame{
 	Def.Quad{
-		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+120*WideScreenDiff()):diffuse(color("0,0,0,1")):zoomto(SCREEN_WIDTH,SCREEN_HEIGHT/2/WideScreenDiff()):diffusealpha(0) end,
-		OnCommand=function(self) self:sleep(0):linear(0.5):diffusealpha(1):y(SCREEN_CENTER_Y+158*WideScreenDiff()) end
+		InitCommand=function(self) self:Center():diffuse(color("0,0,0,1")):valign(0):zoomto(SCREEN_WIDTH,SCREEN_HEIGHT):diffusealpha(0) end,
+		OnCommand=function(self) self:sleep(0):linear(0.5):diffusealpha(1):y(SCREEN_CENTER_Y+60*0.68*WideScreenDiff()) end
 	},
 	Def.Quad{
-		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y-120*WideScreenDiff()):diffuse(color("0,0,0,1")):zoomto(SCREEN_WIDTH,SCREEN_HEIGHT/2/WideScreenDiff()):diffusealpha(0) end,
-		OnCommand=function(self) self:sleep(0):linear(0.5):diffusealpha(1):y(SCREEN_CENTER_Y-158*WideScreenDiff()) end
+		InitCommand=function(self) self:Center():diffuse(color("0,0,0,1")):valign(1):zoomto(SCREEN_WIDTH,SCREEN_HEIGHT):diffusealpha(0) end,
+		OnCommand=function(self) self:sleep(0):linear(0.5):diffusealpha(1):y(SCREEN_CENTER_Y-60*0.68*WideScreenDiff()) end
 	},
 	Def.ActorFrame{
 		LoadActor(THEME:GetPathG("","lolhi"))..{

@@ -1,9 +1,9 @@
 return Def.ActorFrame{
 	Def.Quad{
-		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+158*WideScreenDiff()):diffuse(color("#000000FF")):zoomto(SCREEN_WIDTH,SCREEN_HEIGHT/2/WideScreenDiff()) end
+		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+60*0.68*WideScreenDiff()):valign(0):diffuse(color("#000000FF")):zoomto(SCREEN_WIDTH,SCREEN_HEIGHT) end
 	},
 	Def.Quad{
-		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y-158*WideScreenDiff()):diffuse(color("#000000FF")):zoomto(SCREEN_WIDTH,SCREEN_HEIGHT/2/WideScreenDiff()) end
+		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y-60*0.68*WideScreenDiff()):valign(1):diffuse(color("#000000FF")):zoomto(SCREEN_WIDTH,SCREEN_HEIGHT) end
 	},
 	LoadActor(THEME:GetPathB("_statsout","style")),
 	Def.ActorFrame{
