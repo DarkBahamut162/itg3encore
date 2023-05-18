@@ -47,10 +47,9 @@ function CourseTextBannerAfterSet(self,param)
 end
 
 function GetScreenSelectMusicHelpText()
-	local text = {}
 	local ret = THEME:GetString("ScreenSelectMusic", "HelpTextNormal")
 
-	if  SelectButtonAvailable() then
+	if SelectButtonAvailable() then
 		if DifficultyChangingAvailable() or ModeMenuAvailable() then
 			ret = ret .. "::" .. THEME:GetString( "ScreenSelectMusic", "SelectButtonAvailableHelpTextAppend" )
 		end

@@ -278,9 +278,16 @@ return Def.ActorFrame{
 	Def.ActorFrame{
 		Name="SelButtonMenu",
 		InitCommand=function(self) self:y(SCREEN_BOTTOM-54*WideScreenDiff()):visible(DifficultyChangingAvailable()) end,
-		LoadFont("_v 26px bold white")..{
-			Text="&START; Change Sort",
-			InitCommand=function(self) self:CenterX():zoomx(0.3*WideScreenDiff()):zoomy(0.6*WideScreenDiff()):diffusealpha(0):shadowlength(2) end,
+		Def.HelpDisplay {
+			File=THEME:GetPathF("HelpDisplay", "text"),
+			InitCommand=function(self)
+				local s = isOutFox() and THEME:GetString("ScreenSelectMusic", "HelpSelectTextOutFox") or THEME:GetString("ScreenSelectMusic", "HelpSelectText")
+				self:SetSecsBetweenSwitches(THEME:GetMetric("HelpDisplay","TipSwitchTime"))
+				self:SetTipsColonSeparated(s)
+				self:maxwidth(269)
+				self:CenterX():zoomx(0.3*WideScreenDiff()):zoomy(0.6*WideScreenDiff()):diffusealpha(0):shadowlength(2)
+			end,
+			OnCommand=function(self) self:shadowlength(0):diffuseshift():effectcolor1(color("#FFFFFF")):effectcolor2(color("#9A9999")):effectperiod(1.5) end,
 			OffCommand=function(self) self:linear(0.3):diffusealpha(0) end,
 			SelectMenuOpenedMessageCommand=function(self) self:stoptweening():bounceend(0.2):diffusealpha(1):zoomx(0.6*WideScreenDiff()) end,
 			SelectMenuClosedMessageCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(0):zoomx(0.3*WideScreenDiff()) end
