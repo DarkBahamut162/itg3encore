@@ -270,14 +270,19 @@ credits[#credits+1] = LoadFont("_r bold 30px")
 credits[#credits+1] = LoadFont("_r bold 30px")
 credits[#credits+1] = LoadFont("_r bold 30px")
 credits[#credits+1] = LoadFont("_r bold 30px")
+
+for i=0,math.ceil((SCREEN_HEIGHT-SCREEN_HEIGHT*WideScreenDiff())/24) do
+	credits[#credits+1] = LoadFont("_r bold 30px")
+end
+
 credits[#credits+1] = LoadFont("_r bold 30px")..{Text="THANK YOU FOR PLAYING!"}
 
 return Def.ActorScroller{
-	SecondsPerItem=0.275,
-	NumItemsToDraw=23,
+	SecondsPerItem=64.5/#credits,
+	NumItemsToDraw=23/WideScreenDiff(),
 	OnCommand=function(self) self:SetLoop(false):ScrollThroughAllItems():SetCurrentAndDestinationItem(-10):SetDestinationItem(#credits) end,
 	TransformFunction=function(self,offset,itemIndex,numItems)
-		self:y(offset*24):zoom(0.7):ztest(1)
+		self:y(offset*24*WideScreenDiff()):zoom(0.7*WideScreenDiff()):ztest(1)
 		if creditsDiffuse[itemIndex] then self:diffuse(creditsDiffuse[itemIndex]) end
 	end,
 	children = credits

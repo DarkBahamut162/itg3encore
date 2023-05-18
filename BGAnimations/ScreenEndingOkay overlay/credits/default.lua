@@ -1,20 +1,25 @@
 local credits = {}
+local creditWideScreenDiff=math.ceil((SCREEN_HEIGHT-SCREEN_HEIGHT*WideScreenDiff())/24)
 local creditsDiffuse = {
-	[ 98] = color("#76B1D5"),
-	[146] = color("#ffa800"),
-	[149] = color("#ffa800"),
-	[150] = color("#ddf3ff"),
-	[157] = color("#ffa800"),
-	[158] = color("#ddf3ff"),
-	[163] = color("#ffa800"),
-	[164] = color("#ddf3ff"),
-	[169] = color("#ffa800"),
-	[170] = color("#ddf3ff"),
-	[175] = color("#ffa800"),
-	[176] = color("#ddf3ff"),
-	[181] = color("#ffa800"),
-	[182] = color("#ddf3ff")
+	[ 98+creditWideScreenDiff] = color("#76B1D5"),
+	[146+creditWideScreenDiff] = color("#ffa800"),
+	[149+creditWideScreenDiff] = color("#ffa800"),
+	[150+creditWideScreenDiff] = color("#ddf3ff"),
+	[157+creditWideScreenDiff] = color("#ffa800"),
+	[158+creditWideScreenDiff] = color("#ddf3ff"),
+	[163+creditWideScreenDiff] = color("#ffa800"),
+	[164+creditWideScreenDiff] = color("#ddf3ff"),
+	[169+creditWideScreenDiff] = color("#ffa800"),
+	[170+creditWideScreenDiff] = color("#ddf3ff"),
+	[175+creditWideScreenDiff] = color("#ffa800"),
+	[176+creditWideScreenDiff] = color("#ddf3ff"),
+	[181+creditWideScreenDiff] = color("#ffa800"),
+	[182+creditWideScreenDiff] = color("#ddf3ff")
 }
+
+for i=1,math.ceil((SCREEN_HEIGHT-SCREEN_HEIGHT*WideScreenDiff())/24) do
+	credits[#credits+1] = LoadFont("_r bold 30px")
+end
 
 credits[#credits+1] = LoadFont("_r bold 30px")
 credits[#credits+1] = LoadFont("_r bold 30px")
@@ -208,21 +213,26 @@ credits[#credits+1] = LoadFont("_r bold 30px")
 credits[#credits+1] = LoadFont("_r bold 30px")
 credits[#credits+1] = LoadFont("_r bold 30px")
 credits[#credits+1] = LoadFont("_r bold 30px")
+
+for i=0,math.ceil((SCREEN_HEIGHT-SCREEN_HEIGHT*WideScreenDiff())/24) do
+	credits[#credits+1] = LoadFont("_r bold 30px")
+end
+
 credits[#credits+1] = LoadFont("_r bold 30px")..{Text="THANK YOU FOR PLAYING!"}
 
 return Def.ActorFrame{
     Def.ActorFrame{
 		OnCommand=function(self) self:Center() end,
 		LoadActor(THEME:GetPathG("credits","frame"))..{
-			OnCommand=function(self) self:croptop(1):fadetop(1):sleep(3):linear(0.8):croptop(-1):fadetop(-1) end
+			OnCommand=function(self) self:zoomx(WideScreenDiff()):croptop(1):fadetop(1):sleep(3):linear(0.8):croptop(-1):fadetop(-1) end
 		},
 		Def.ActorScroller{
-			SecondsPerItem=0.26,
-			NumItemsToDraw=23,
+			SecondsPerItem=51.25/#credits,
+			NumItemsToDraw=23/WideScreenDiff(),
 			OnCommand=function(self) self:SetLoop(false):ScrollThroughAllItems():SetCurrentAndDestinationItem(-16):SetDestinationItem(#credits) end,
 			TransformFunction=function(self,offset,itemIndex,numItems)
-				self:y(offset*24):zoom(0.7):ztest(1)
-				if itemIndex <= 97 and itemIndex ~= 0 then self:zoom(1) end
+				self:y(offset*24*WideScreenDiff()):zoom(0.7*WideScreenDiff()):ztest(1)
+				if itemIndex <= 97+math.ceil((SCREEN_HEIGHT-SCREEN_HEIGHT*WideScreenDiff())/24) and itemIndex ~= 0 then self:zoom(1*WideScreenDiff()) end
 				if creditsDiffuse[itemIndex] then self:diffuse(creditsDiffuse[itemIndex]) end
 			end,
 			children = credits

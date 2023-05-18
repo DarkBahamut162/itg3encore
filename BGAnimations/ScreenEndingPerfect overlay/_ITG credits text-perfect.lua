@@ -253,12 +253,16 @@ credits[#credits+1] = LoadFont("_v credit")
 credits[#credits+1] = LoadFont("_v credit")
 credits[#credits+1] = LoadFont("_v credit")
 
+for i=0,math.ceil((SCREEN_HEIGHT-SCREEN_HEIGHT*WideScreenDiff())/24) do
+	credits[#credits+1] = LoadFont("_v credit")
+end
+
 return Def.ActorScroller{
-	SecondsPerItem=0.3475,
-	NumItemsToDraw=23,
-	OnCommand=function(self) self:SetLoop(false):ScrollThroughAllItems():SetCurrentAndDestinationItem(-44):SetDestinationItem(#credits):horizalign(left):shadowlength(1.25) end,
+	SecondsPerItem=73.75/#credits,
+	NumItemsToDraw=23/WideScreenDiff(),
+	OnCommand=function(self) self:SetLoop(false):ScrollThroughAllItems():SetCurrentAndDestinationItem(-43/WideScreenSemiDiff()):SetDestinationItem(#credits):horizalign(left):shadowlength(1.25) end,
 	TransformFunction=function(self,offset,itemIndex,numItems)
-		self:y(offset*24):zoom(0.7)
+		self:y(offset*24*WideScreenDiff()):zoom(0.7*WideScreenDiff())
 		if creditsDiffuse[itemIndex] then self:diffuse(creditsDiffuse[itemIndex]) end
 	end,
 	children = credits
