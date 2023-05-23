@@ -1,4 +1,4 @@
-local cacheVersion = "0.25"
+local cacheVersion = "0.26"
 
 function getCacheVersion()
 	return cacheVersion
@@ -268,23 +268,12 @@ function cacheStep(Song,Step)
 	end
 
 	local timingData = Step:GetTimingData()
-	local warps = timingData:GetWarps()
-	local ignore = false
-
-	if #warps > 0 then
-		for i=1, #warps do
-			warps[i] = split("=",warps[i])
-			warps[i][1] = tonumber(warps[i][1])
-			warps[i][2] = tonumber(warps[i][2])
-		end
-	end
 
 	local lastSec = 0
 	local stepsPerSec = {}
 	local currentSPS = 0
 
 	for k,v in pairs( Song:GetNoteData(chartint) ) do
-		ignore = false
 		if currentBeat < v[1] then
 			currentBeat = v[1]
 			if currentNotes ~= 0 then
@@ -293,18 +282,9 @@ function cacheStep(Song,Step)
 			currentNotes, currentMines = 0, 0
 		end
 
-		if #warps > 0 then
-			for i=1, #warps do
-				if warps[i][1] < currentBeat and (warps[i][1] + warps[i][2]) > currentBeat then
-					ignore = true
-					break
-				end
-			end
-		end
-
-		if not ignore then
-			if allowednotes[ v[3] ] then
-				local currentSec = timingData:GetElapsedTimeFromBeat(v[1] )
+		if timingData:IsJudgableAtBeat(v[1]) then
+			if allowednotes[v[3]] then
+				local currentSec = timingData:GetElapsedTimeFromBeat(v[1])
 				currentNotes = currentNotes + 1
 				if lastSec > 0 then
 					if lastSec < currentSec then
