@@ -364,8 +364,8 @@ function GetMinSecondsToStep()
 	local OFFSET = GetSMParameter(song,"OFFSET")
 	if #OFFSET > 0 then offset = OFFSET end
 	if firstBeat < 999 then firstSec = firstBeat * 60 / firstBpm end
-	firstSec = song:GetFirstSecond() - firstSec + offset + 0.05
-	return math.max(firstSec, 1.55)
+	firstSec = song:GetFirstSecond() - firstSec + offset
+	return math.max(firstSec, 1.5)
 end
 
 local tapsp2lv100={
