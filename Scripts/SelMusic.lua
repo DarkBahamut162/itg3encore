@@ -1,4 +1,4 @@
-local cacheVersion = "0.26"
+local cacheVersion = "0.27"
 
 function getCacheVersion()
 	return cacheVersion
@@ -324,8 +324,10 @@ function cacheStep(Song,Step)
 
 	if total > 0 and times > 0 then total = total / times * 2 end
 
+	local hasLua = HasLua(Song,"BGCHANGES") or HasLua(Song,"FGCHANGES")
+
 	LoadModule("Config.Save.lua")("Version",cacheVersion,getStepCacheFile(Step))
-	LoadModule("Config.Save.lua")("HasLua",HasLuaCheck() and "true" or "false",getStepCacheFile(Step))
+	LoadModule("Config.Save.lua")("HasLua",hasLua and "true" or "false",getStepCacheFile(Step))
 	if shockArrows ~= "" then LoadModule("Config.Save.lua")("ShockArrows",shockArrows,getStepCacheFile(Step)) end
 	LoadModule("Config.Save.lua")("StepCounter",table.concat(noteCounter,"_"),getStepCacheFile(Step))
 	LoadModule("Config.Save.lua")("StepsPerSecond",total,getStepCacheFile(Step))
