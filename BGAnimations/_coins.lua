@@ -5,6 +5,7 @@ return Def.ActorFrame{
 		InitCommand=function(self) self:CenterX():y(isFinal() and SCREEN_BOTTOM-12*WideScreenDiff() or SCREEN_BOTTOM-16*WideScreenDiff()):diffusealpha(0):shadowlength(0):zoom(0.5*WideScreenDiff()) end,
 		OnCommand=function(self) self:linear(0.4):diffusealpha(1):playcommand("Refresh") end,
 		RefreshCommand=function(self)
+			if IsNetSMOnline() then if not isGamePlay() then self:settext('ONLINE MODE') end return end
 			if GAMESTATE:IsEventMode() then if not isGamePlay() then self:settext('EVENT MODE') end return end
 			if GAMESTATE:GetCoinMode()=='CoinMode_Free' then self:settext('FREE PLAY') return end
 			if GAMESTATE:GetCoinMode()=='CoinMode_Home' then self:settext('HOME MODE') return end

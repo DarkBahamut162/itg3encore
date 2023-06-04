@@ -1,3 +1,10 @@
+local Online = IsNetSMOnline() and Def.ActorFrame{
+	StandardDecorationFromFile("ArtistDisplay"..pname(GAMESTATE:GetMasterPlayerNumber()),"ArtistDisplay"..pname(GAMESTATE:GetMasterPlayerNumber())),
+	StandardDecorationFromFile("BPMDisplay"..pname(GAMESTATE:GetMasterPlayerNumber()),"BPMDisplay"..pname(GAMESTATE:GetMasterPlayerNumber())),
+	StandardDecorationFromFile("SongTime"..pname(GAMESTATE:GetMasterPlayerNumber()),"SongTime"..pname(GAMESTATE:GetMasterPlayerNumber())),
+	StandardDecorationFromFileOptional("UserList","UserList"),
+} or Def.ActorFrame{}
+
 return Def.ActorFrame{
 	OnCommand=function(self)
 		if isOutFox() then
@@ -5,7 +12,9 @@ return Def.ActorFrame{
 			if GAMESTATE:IsCourseMode() then
 				GAMESTATE:UpdateDiscordScreenInfo("Selecting Course","",1)
 			else
-				if GAMESTATE:IsEventMode() then
+				if IsNetSMOnline() then
+					GAMESTATE:UpdateDiscordScreenInfo("Selecting Song (Online Mode)","",1)
+				elseif GAMESTATE:IsEventMode() then
 					GAMESTATE:UpdateDiscordScreenInfo("Selecting Song (Event Mode)","",1)
 				else
 					local StageIndex = GAMESTATE:GetCurrentStageIndex()
@@ -151,24 +160,67 @@ return Def.ActorFrame{
 		},
 		LoadActor(THEME:GetPathG("_pane","elements/_lbase"))..{
 			InitCommand=function(self) self:x(SCREEN_CENTER_X+26*WideScreenDiff()):y(SCREEN_BOTTOM):zoom(WideScreenDiff()):horizalign(right):vertalign(bottom) end,
+			CurrentStepsP2ChangedMessageCommand=function(self) if IsNetSMOnline() then self:queuecommand("Recolor") end end,
+			CurrentSongChangedMessageCommand=function(self) if IsNetSMOnline() then self:queuecommand("Recolor") end end,
+			RecolorCommand=function(self)
+				if GAMESTATE:GetMasterPlayerNumber() == PLAYER_2 then 
+					local step = GAMESTATE:GetCurrentSteps(PLAYER_2)
+					if step then self:diffuse(CustomDifficultyToColor(ToEnumShortString(step:GetDifficulty()))) else self:diffuse(color("White")) end
+				end
+			end,
 			OnCommand=function(self) self:addx(-SCREEN_WIDTH):decelerate(0.75):addx(SCREEN_WIDTH) end,
 			OffCommand=function(self) self:sleep(0.5):accelerate(0.75):addx(-SCREEN_WIDTH) end
 		},
 		LoadActor(THEME:GetPathG("_pane","elements/_basewidth"))..{
 			InitCommand=function(self) self:x(SCREEN_CENTER_X-174*WideScreenDiff()):y(SCREEN_BOTTOM):zoom(WideScreenDiff()):horizalign(right):vertalign(bottom):zoomtowidth(SCREEN_WIDTH/2) end,
+			CurrentStepsP2ChangedMessageCommand=function(self) if IsNetSMOnline() then self:queuecommand("Recolor") end end,
+			CurrentSongChangedMessageCommand=function(self) if IsNetSMOnline() then self:queuecommand("Recolor") end end,
+			RecolorCommand=function(self)
+				if GAMESTATE:GetMasterPlayerNumber() == PLAYER_2 then 
+					local step = GAMESTATE:GetCurrentSteps(PLAYER_2)
+					if step then self:diffuse(CustomDifficultyToColor(ToEnumShortString(step:GetDifficulty()))) else self:diffuse(color("White")) end
+				end
+			end,
 			OnCommand=function(self) self:addx(-SCREEN_WIDTH):decelerate(0.75):addx(SCREEN_WIDTH) end,
 			OffCommand=function(self) self:sleep(0.5):accelerate(0.75):addx(-SCREEN_WIDTH) end
 		},
 		LoadActor(THEME:GetPathG("_pane","elements/_rbase"))..{
 			InitCommand=function(self) self:x(SCREEN_CENTER_X-26*WideScreenDiff()):y(SCREEN_BOTTOM):zoom(WideScreenDiff()):horizalign(left):vertalign(bottom) end,
+			CurrentStepsP1ChangedMessageCommand=function(self) if IsNetSMOnline() then self:queuecommand("Recolor") end end,
+			CurrentSongChangedMessageCommand=function(self) if IsNetSMOnline() then self:queuecommand("Recolor") end end,
+			RecolorCommand=function(self)
+				if GAMESTATE:GetMasterPlayerNumber() == PLAYER_1 then
+					local song = GAMESTATE:GetCurrentSong()
+					if song then
+						local step = GAMESTATE:GetCurrentSteps(PLAYER_1)
+						if step then self:diffuse(CustomDifficultyToColor(ToEnumShortString(step:GetDifficulty()))) else self:diffuse(color("White")) end
+					else
+						self:diffuse(color("White"))
+					end
+				end
+			end,
 			OnCommand=function(self) self:addx(SCREEN_WIDTH):decelerate(0.75):addx(-SCREEN_WIDTH) end,
 			OffCommand=function(self) self:sleep(0.5):accelerate(0.75):addx(SCREEN_WIDTH) end
 		},
 		LoadActor(THEME:GetPathG("_pane","elements/_basewidth"))..{
 			InitCommand=function(self) self:x(SCREEN_CENTER_X+174*WideScreenDiff()):y(SCREEN_BOTTOM):zoom(WideScreenDiff()):horizalign(left):vertalign(bottom):zoomtowidth(SCREEN_WIDTH/2) end,
+			CurrentStepsP1ChangedMessageCommand=function(self) if IsNetSMOnline() then self:queuecommand("Recolor") end end,
+			CurrentSongChangedMessageCommand=function(self) if IsNetSMOnline() then self:queuecommand("Recolor") end end,
+			RecolorCommand=function(self)
+				if GAMESTATE:GetMasterPlayerNumber() == PLAYER_1 then
+					local song = GAMESTATE:GetCurrentSong()
+					if song then
+						local step = GAMESTATE:GetCurrentSteps(PLAYER_1)
+						if step then self:diffuse(CustomDifficultyToColor(ToEnumShortString(step:GetDifficulty()))) else self:diffuse(color("White")) end
+					else
+						self:diffuse(color("White"))
+					end
+				end
+			end,
 			OnCommand=function(self) self:addx(SCREEN_WIDTH):decelerate(0.75):addx(-SCREEN_WIDTH) end,
 			OffCommand=function(self) self:sleep(0.5):accelerate(0.75):addx(SCREEN_WIDTH) end
-		}
+		},
+		Online
 	},
 	Def.ActorFrame{
 		Name="LightP1",

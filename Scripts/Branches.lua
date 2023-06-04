@@ -81,7 +81,11 @@ Branch.AfterGameplay = function()
 	elseif isRave() then
 		return "ScreenEvaluationRave"
 	else
-		return "ScreenEvaluationNormal"
+		if IsNetSMOnline() then
+			return "ScreenNetEvaluation"
+		else
+			return "ScreenEvaluationNormal"
+		end
 	end
 end
 

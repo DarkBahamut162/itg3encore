@@ -85,6 +85,7 @@ What has been done so far:
 * Tried to readd **marvelous/perfect/great color bar** on top of the **LifeGraph** in **ScreenEvaluation**
 * Added ability to switch between **Normal Score**, **Percentage** and **EX Score** via **Player Options**
 * Added **Theme Options**
+* Fixed **Online Mode** *(I think?)*
 
 The following has been re-introduced from **OpenITG's ITG3Encore Theme**:
 * **BPM Display** *(Disabled in Battle Mode & shows both players BPM if they are different from one another)*

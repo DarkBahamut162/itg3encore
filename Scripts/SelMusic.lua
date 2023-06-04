@@ -47,7 +47,7 @@ function CourseTextBannerAfterSet(self,param)
 end
 
 function GetScreenSelectMusicHelpText()
-	local ret = THEME:GetString("ScreenSelectMusic", "HelpTextNormal")
+	local ret = IsNetSMOnline() and THEME:GetString("ScreenNetSelectMusic", "HelpText") or THEME:GetString("ScreenSelectMusic", "HelpTextNormal")
 
 	if SelectButtonAvailable() then
 		if DifficultyChangingAvailable() or ModeMenuAvailable() then

@@ -10,6 +10,7 @@ return Def.ActorFrame{
 				Stage = 'Stage_Final'
 			end
 			if GAMESTATE:IsEventMode() then Stage = 'Stage_Event' end
+			if IsNetSMOnline() then Stage = 'Stage_Online' end
 			Stage = ToEnumShortString(Stage)
 			self:settext(THEME:GetString("Stages",Stage))
 		end

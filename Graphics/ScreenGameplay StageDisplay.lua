@@ -13,6 +13,7 @@ return Def.ActorFrame{
 					curStage = 'Stage_Final'
 				end
 				if GAMESTATE:IsEventMode() then curStage = 'Stage_Event' end
+				if IsNetSMOnline() then curStage = 'Stage_Online' end
 
 				if curStage:gsub("%D+", "") ~= "" then
 					curStage = curStage:gsub("%D+", "")
