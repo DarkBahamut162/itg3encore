@@ -351,23 +351,38 @@ function getStepCounter(Song,Step)
 	return split("_",LoadFromCache(Song,Step,"StepCounter"))
 end
 
+local typeList = {'avi','mkv','mp4','mpeg','mpg','wmv'}
+
 function GetMinSecondsToStep()
 	local song = GAMESTATE:GetCurrentSong()
-	local firstSec, firstBeat = 1.55, 999
-	local firstBpm, offset = 60, 0
-	local BGCHANGES = GetSMParameter(song,"BGCHANGES")
-	local firstOffset = 0
-	if #BGCHANGES > 0 then
-		firstOffset = tonumber(split('=', split(',', BGCHANGES)[1])[1])
-		if firstOffset < firstBeat then firstBeat = firstOffset end
-	end
+	local firstSec, firstBeat = 1, 0
+	local firstBpm, smOffset = 60, 0
+
 	local BPMS = GetSMParameter(song,"BPMS")
-	if #BPMS > 0 then firstBpm = split('=', split(',', BPMS)[1])[2] end
+	if BPMS ~= "" then firstBpm = split('=', split(',', BPMS)[1])[2] end
+
 	local OFFSET = GetSMParameter(song,"OFFSET")
-	if #OFFSET > 0 then offset = OFFSET end
-	if firstBeat < 999 then firstSec = firstBeat * 60 / firstBpm end
-	firstSec = song:GetFirstSecond() - firstSec + offset
-	return math.max(firstSec, 1.5)
+	if OFFSET ~= "" then smOffset = OFFSET end
+
+	local BGCHANGES = GetSMParameter(song,"BGCHANGES")
+	if BGCHANGES ~= "" then
+		BGCHANGES = split(',',BGCHANGES)
+		for BGC in ivalues(BGCHANGES) do
+			line = split('=',BGC)
+			line[1] = tonumber(line[1])
+			firstFile = line[2]
+			if line[1] >= 0 then break elseif line[1] < 0 and line[1] > -20 * firstBpm / 60 then
+				for i=1, #typeList do
+					if string.find(line[2], typeList[i]) then firstBeat = line[1] break end
+				end
+			end
+		end
+	end
+
+	if firstBeat < 0 then firstSec = firstBeat * 60 / firstBpm end
+	firstSec = song:GetFirstSecond() - firstSec + smOffset
+
+	return math.max(firstSec, 1)
 end
 
 local tapsp2lv100={
