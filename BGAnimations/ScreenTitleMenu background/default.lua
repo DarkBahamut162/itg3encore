@@ -360,7 +360,8 @@ return Def.ActorFrame{
 	},
 	LoadFont("_r bold 30px")..{
 		InitCommand=function(self) self:x(isFinal() and SCREEN_CENTER_X+5*WideScreenDiff() or SCREEN_LEFT+35*WideScreenDiff()):y(isFinal() and SCREEN_TOP+50*WideScreenDiff() or SCREEN_TOP+40*WideScreenDiff()):shadowlength(2):valign(0):halign(isFinal() and 0.5 or 0):maxwidth(isFinal() and SCREEN_WIDTH/4*3/WideScreenDiff() or SCREEN_WIDTH/WideScreenDiff()):zoom(0.6*WideScreenDiff()) end,
-		OnCommand=function(self) self:diffusealpha(0):sleep(0.5):linear(0.5):diffusealpha(1):playcommand("Refresh") end,
+		OnCommand=function(self) self:diffusealpha(0):sleep(0.5):linear(0.5):diffusealpha(1) end,
+		BeginCommand=function(self) self:playcommand("Refresh") end,
 		ScreenChangedMessageCommand=function(self) self:playcommand("Refresh") end,
 		RefreshCommand=function(self)
 			local songs = SONGMAN:GetAllSongs()
