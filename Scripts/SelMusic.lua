@@ -112,6 +112,11 @@ function GetSMParameter(song,parameter)
 	return tmp[1]
 end
 
+function GetSongFolderName(song)
+    local folderPath = split('/', song:GetSongDir())
+    return folderPath[#folderPath-1]
+end
+
 function HasLua(song,changes)
 	local var = GetSMParameter(song,changes)
 	local parameter, current
@@ -126,7 +131,9 @@ function HasLua(song,changes)
 						if string.find(current,".lua",0,true) then
 							return true
 						elseif string.find(current,".",0,true) then else
-							local checkFolder = FILEMAN:GetDirListing("/Songs/"..song:GetGroupName().."/"..song:GetSongFolder().."/"..current.."/")
+							local groupName = song:GetGroupName()
+							local songFolder = isOutFox() and song:GetSongFolder() or GetSongFolderName(song)
+							local checkFolder = FILEMAN:GetDirListing("/Songs/"..groupName.."/"..songFolder.."/"..current.."/")
 							for insideFiles in ivalues( checkFolder ) do
 								if string.find(insideFiles,".lua",0,true) then return true end
 							end
