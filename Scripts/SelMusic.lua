@@ -1,4 +1,4 @@
-local cacheVersion = "0.27"
+local cacheVersion = "0.28"
 
 function getCacheVersion()
 	return cacheVersion
@@ -126,9 +126,9 @@ function HasLua(song,changes)
 						if string.find(current,".lua",0,true) then
 							return true
 						elseif string.find(current,".",0,true) then else
-							if string.find(current,"-nosongbg-",0,true) or string.find(current,"-random-",0,true)
-								or string.find(current,"songbackground",0,true) or current == "" then else
-								return true
+							local checkFolder = FILEMAN:GetDirListing("/Songs/"..song:GetGroupName().."/"..song:GetSongFolder().."/"..current.."/")
+							for insideFiles in ivalues( checkFolder ) do
+								if string.find(insideFiles,".lua",0,true) then return true end
 							end
 						end
 					end
