@@ -1,5 +1,4 @@
 InitOptions()
-InitUserPrefs()
 
 return Def.ActorFrame{
 	OnCommand=function(self)
