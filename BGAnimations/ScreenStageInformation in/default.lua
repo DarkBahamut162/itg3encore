@@ -90,6 +90,7 @@ return Def.ActorFrame{
 					local steps = GAMESTATE:GetCurrentSteps(PLAYER_1)
 					if steps then text = steps:GetAuthorCredit() end
 				end
+				if text == "" then text = "Unknown" end
 				self:settext(text)
 			end,
 			OnCommand=function(self) self:playcommand("Set") end
@@ -127,6 +128,7 @@ return Def.ActorFrame{
 					local steps = GAMESTATE:GetCurrentSteps(PLAYER_2)
 					if steps then text = steps:GetAuthorCredit() end
 				end
+				if text == "" then text = "Unknown" end
 				self:settext(text)
 			end,
 			OnCommand=function(self) self:playcommand("Set") end
