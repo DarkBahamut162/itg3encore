@@ -39,6 +39,12 @@ return Def.ActorFrame{
 						end
 						if ThemePrefs.Get("ShowStepCounter") and isOutFox() then -- load cache StepCounter
 							output = addToOutput(output,table.concat(getStepCounter(curSelection,curStep),"|"),"\n")
+							if IsGame("be-mu") then
+								output = addToOutput(output,"Scratches: "..LoadFromCache(curSelection,curStep,"Scratches"),"\n")
+								if GetUserPrefN("StylePosition") == 2 then
+									output = addToOutput(output,"Foots: "..LoadFromCache(curSelection,curStep,"Foots"),"\n")
+								end
+							end
 						end
 						if ThemePrefs.Get("ShowTrueBPMs") then -- Get true BPM range
 							local timingdata = curStep:GetTimingData()

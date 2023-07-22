@@ -1,4 +1,4 @@
-local cacheVersion = "0.28"
+local cacheVersion = "0.30"
 
 function getCacheVersion()
 	return cacheVersion
@@ -279,6 +279,8 @@ function cacheStep(Song,Step)
 	local lastSec = 0
 	local stepsPerSec = {}
 	local currentSPS = 0
+	local scratches = 0
+	local foots = 0
 
 	for k,v in pairs( Song:GetNoteData(chartint) ) do
 		if currentBeat < v[1] then
@@ -311,6 +313,23 @@ function cacheStep(Song,Step)
 					if currentBeat > lastBeat then lastBeat = currentBeat end
 				end
 				if currentBeat < firstBeat then firstBeat = currentBeat end
+				if stepType[2] == "Bm" then
+					if #noteCounter == 6 or #noteCounter == 12 then
+						if v[2] == #noteCounter or (#noteCounter > 10 and v[2] == #noteCounter/2) then
+							scratches = scratches + 1
+						end
+					elseif #noteCounter == 7 or #noteCounter == 14 then
+						if v[2] == #noteCounter or (#noteCounter > 10 and v[2] == #noteCounter/2) then
+							foots = foots + 1
+						elseif v[2] == #noteCounter-1 or (#noteCounter > 10 and v[2] == #noteCounter/2-1) then
+							scratches = scratches + 1
+						end
+					elseif #noteCounter == 8 or #noteCounter == 16 then
+						if v[2] == 1 or (#noteCounter > 10 and v[2] == #noteCounter) then
+							scratches = scratches + 1
+						end
+					end
+				end
 			elseif v[3] == "TapNoteType_Mine" then
 				currentMines = currentMines + 1
 				if currentMines == getColumnsPerPlayer(stepType[2],stepType[3]) then
@@ -342,6 +361,12 @@ function cacheStep(Song,Step)
 	LoadModule("Config.Save.lua")("TrueFirstSecond",Step:GetTimingData():GetElapsedTimeFromBeat(firstBeat),getStepCacheFile(Step))
 	LoadModule("Config.Save.lua")("TrueLastBeat",lastBeat,getStepCacheFile(Step))
 	LoadModule("Config.Save.lua")("TrueLastSecond",Step:GetTimingData():GetElapsedTimeFromBeat(lastBeat),getStepCacheFile(Step))
+	if stepType[2] == "Bm" then
+		if #noteCounter == 7 or #noteCounter == 14 then
+			LoadModule("Config.Save.lua")("Foots",foots,getStepCacheFile(Step))
+		end
+		LoadModule("Config.Save.lua")("Scratches",scratches,getStepCacheFile(Step))
+	end
 end
 
 function LoadFromCache(Song,Step,value)
