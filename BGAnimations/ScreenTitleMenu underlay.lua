@@ -1,6 +1,5 @@
-InitOptions()
-
 return Def.ActorFrame{
+	BeginCommand=function() InitOptions() end,
 	OnCommand=function(self)
 		if not FILEMAN:DoesFileExist("Save/ThemePrefs.ini") then
 			Trace("ThemePrefs doesn't exist; creating file")
