@@ -364,49 +364,56 @@ return Def.ActorFrame{
 		BeginCommand=function(self) self:playcommand("Refresh") end,
 		ScreenChangedMessageCommand=function(self) self:playcommand("Refresh") end,
 		RefreshCommand=function(self)
-			local songs = SONGMAN:GetAllSongs()
-			local songsSingle = 0
-			local songsDouble = 0
-
-			local groupsTotal = SONGMAN:GetNumSongGroups()
-			local groupsSingle = ""
-			local groupsDouble = ""
-			local groupsSingleCount = 0
-			local groupsDoubleCount = 0
-
-			local courses = SONGMAN:GetAllCourses(PREFSMAN:GetPreference("AutogenGroupCourses"))
-			local coursesMarathonSingle = 0
-			local coursesMarathonDouble = 0
-			local coursesSurvivalSingle = 0
-			local coursesSurvivalDouble = 0
-
 			if not isTopScreen("ScreenLogo") then
-				if (StepsTypeSingle() or StepsTypeDouble()) and (IsGame("dance") or (ProductFamily() == "OutFox" and tonumber(split("-",ProductVersion())[1]) == 0.5)) then
+				local songs = SONGMAN:GetAllSongs()
+				local songsSingle = 0
+				local songsDouble = 0
+
+				local groupsSingle = ""
+				local groupsDouble = ""
+				local groupsSingleCount = 0
+				local groupsDoubleCount = 0
+
+				local courses = SONGMAN:GetAllCourses(PREFSMAN:GetPreference("AutogenGroupCourses"))
+				local coursesMarathonSingle = 0
+				local coursesMarathonDouble = 0
+				local coursesSurvivalSingle = 0
+				local coursesSurvivalDouble = 0
+
+				if (StepsTypeSingle() or StepsTypeDouble()) and (IsGame("dance") or (isOutFox() and tonumber(split("-",ProductVersion())[1]) == 0.5)) then
+					local StepsTypeSingle = StepsTypeSingle()[GetUserPrefN("StylePosition")]
+					local StepsTypeDouble = StepsTypeDouble()[GetUserPrefN("StylePosition")]
 					if #songs > 0 then
 						for i=1,#songs do
-							if songs[i]:HasStepsType(StepsTypeSingle()) then
+							if songs[i]:HasStepsType(StepsTypeSingle) then
 								if not string.find(groupsSingle,songs[i]:GetGroupName()) then
 									groupsSingle = addToOutput(groupsSingle,songs[i]:GetGroupName(),"|")
 								end
 								songsSingle = songsSingle + 1
 							end
-							if songs[i]:HasStepsType(StepsTypeDouble()) then
-								if not string.find(groupsDouble,songs[i]:GetGroupName()) then
-									groupsDouble = addToOutput(groupsDouble,songs[i]:GetGroupName(),"|")
+							if StepsTypeDouble then
+								if songs[i]:HasStepsType(StepsTypeDouble) then
+									if not string.find(groupsDouble,songs[i]:GetGroupName()) then
+										groupsDouble = addToOutput(groupsDouble,songs[i]:GetGroupName(),"|")
+									end
+									songsDouble = songsDouble + 1
 								end
-								songsDouble = songsDouble + 1
 							end
 						end
 					end
 					if #courses > 0 then
 						for i=1,#courses do
 							if courses[i]:GetCourseType() == "CourseType_Nonstop" then
-								if courses[i]:IsPlayableIn(StepsTypeSingle()) then coursesMarathonSingle = coursesMarathonSingle + 1 end
-								if courses[i]:IsPlayableIn(StepsTypeDouble()) then coursesMarathonDouble = coursesMarathonDouble + 1 end
+								if courses[i]:IsPlayableIn(StepsTypeSingle) then coursesMarathonSingle = coursesMarathonSingle + 1 end
+								if StepsTypeDouble then
+									if courses[i]:IsPlayableIn(StepsTypeDouble) then coursesMarathonDouble = coursesMarathonDouble + 1 end
+								end
 							end
 							if courses[i]:GetCourseType() == "CourseType_Oni" or courses[i]:GetCourseType() == "CourseType_Survival" then
-								if courses[i]:IsPlayableIn(StepsTypeSingle()) then coursesSurvivalSingle = coursesSurvivalSingle + 1 end
-								if courses[i]:IsPlayableIn(StepsTypeDouble()) then coursesSurvivalDouble = coursesSurvivalDouble + 1 end
+								if courses[i]:IsPlayableIn(StepsTypeSingle) then coursesSurvivalSingle = coursesSurvivalSingle + 1 end
+								if StepsTypeDouble then
+									if courses[i]:IsPlayableIn(StepsTypeDouble) then coursesSurvivalDouble = coursesSurvivalDouble + 1 end
+								end
 							end
 						end
 					end
@@ -415,17 +422,16 @@ return Def.ActorFrame{
 					groupsDouble = sortArray(groupsDouble)
 					groupsSingleCount = #groupsSingle
 					groupsDoubleCount = #groupsDouble
-				end
 
-				if songsSingle > 0 or songsDouble > 0 then
 					local output = ""
 					if groupsSingleCount == groupsDoubleCount then
-						output = addToOutput(output,"Songs: "..songsSingle.." singles & "..songsDouble.." doubles in "..groupsTotal.." groups","\n")
+						output = addToOutput(output,"Songs: "..songsSingle.." singles & "..songsDouble.." doubles in "..SONGMAN:GetNumSongGroups().." groups","\n")
 					else
 						output = addToOutput(output,"Songs: "..songsSingle.." singles ("..groupsSingleCount.." groups) & "..songsDouble.." doubles ("..groupsDoubleCount.." groups)","\n")
 					end
 					output = addToOutput(output,"Courses: "..(coursesMarathonSingle+coursesMarathonDouble).." marathons & "..(coursesSurvivalSingle+coursesSurvivalDouble).." survivals","\n")
 					output = addToOutput(output,"Current Game Mode: "..GAMESTATE:GetCurrentGame():GetName(),"\n")
+					output = addToOutput(output,"Current Style: "..StyleName()[GetUserPrefN("StylePosition")],"\n")
 					self:settext(output)
 				else
 					if GameModeEnabled() then

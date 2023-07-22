@@ -153,14 +153,14 @@ function ScreenEndingGetDisplayName(pn)
 end
 
 function QuadAward( pn )
-	return PROFILEMAN:GetProfile(pn):GetTotalStepsWithTopGrade(StepsTypeSingle(),'Difficulty_Challenge',1)
+	return PROFILEMAN:GetProfile(pn):GetTotalStepsWithTopGrade(StepsTypeSingle()[GetUserPrefN("StylePosition")],'Difficulty_Challenge',1)
 end
 
 function StarAward( pn )
-	return PROFILEMAN:GetProfile(pn):GetTotalStepsWithTopGrade(StepsTypeSingle(),'Difficulty_Challenge',1)*4
-		+PROFILEMAN:GetProfile(pn):GetTotalStepsWithTopGrade(StepsTypeSingle(),'Difficulty_Challenge',2)*3
-		+PROFILEMAN:GetProfile(pn):GetTotalStepsWithTopGrade(StepsTypeSingle(),'Difficulty_Challenge',3)*2
-		+PROFILEMAN:GetProfile(pn):GetTotalStepsWithTopGrade(StepsTypeSingle(),'Difficulty_Challenge',4)
+	return PROFILEMAN:GetProfile(pn):GetTotalStepsWithTopGrade(StepsTypeSingle()[GetUserPrefN("StylePosition")],'Difficulty_Challenge',1)*4
+		+PROFILEMAN:GetProfile(pn):GetTotalStepsWithTopGrade(StepsTypeSingle()[GetUserPrefN("StylePosition")],'Difficulty_Challenge',2)*3
+		+PROFILEMAN:GetProfile(pn):GetTotalStepsWithTopGrade(StepsTypeSingle()[GetUserPrefN("StylePosition")],'Difficulty_Challenge',3)*2
+		+PROFILEMAN:GetProfile(pn):GetTotalStepsWithTopGrade(StepsTypeSingle()[GetUserPrefN("StylePosition")],'Difficulty_Challenge',4)
 end
 
 function CalorieAward( pn )
@@ -168,7 +168,7 @@ function CalorieAward( pn )
 end
 
 function PercentAward( pn )
-	return (PROFILEMAN:GetProfile(pn):GetSongsActual(StepsTypeSingle(),'Difficulty_Challenge'))*100
+	return (PROFILEMAN:GetProfile(pn):GetSongsActual(StepsTypeSingle()[GetUserPrefN("StylePosition")],'Difficulty_Challenge'))*100
 end
 
 function StarIcon( Actor,pn )

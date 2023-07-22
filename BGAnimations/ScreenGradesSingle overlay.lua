@@ -19,9 +19,9 @@ for i=2,7 do
 			BeginCommand=function(self)
 				local tier = string.format('Grade_Tier%02i',s)
 				if i > 5 then
-					self:settext(prof:GetTotalTrailsWithTopGrade(StepsTypeSingle(),diffs[i],tier))
+					self:settext(prof:GetTotalTrailsWithTopGrade(StepsTypeSingle()[GetUserPrefN("StylePosition")],diffs[i],tier))
 				else
-					self:settext(prof:GetTotalStepsWithTopGrade(StepsTypeSingle(),diffs[i],tier))
+					self:settext(prof:GetTotalStepsWithTopGrade(StepsTypeSingle()[GetUserPrefN("StylePosition")],diffs[i],tier))
 				end
 			end
 		}

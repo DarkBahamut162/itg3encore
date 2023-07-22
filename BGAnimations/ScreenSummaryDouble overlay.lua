@@ -34,23 +34,23 @@ for i=1,3 do
 				local val, text
 				if types[i] == "Actual" then
 					if n > 5 then
-						val = prof:GetCoursesActual(StepsTypeDouble(),diffs[n])
+						val = prof:GetCoursesActual(StepsTypeDouble()[GetUserPrefN("StylePosition")],diffs[n])
 					else
-						val = prof:GetSongsActual(StepsTypeDouble(),diffs[n])
+						val = prof:GetSongsActual(StepsTypeDouble()[GetUserPrefN("StylePosition")],diffs[n])
 					end
 					text = string.format("%5.2f",val)
 				elseif types[i] == "Possible" then
 					if n > 5 then
-						val = prof:GetCoursesPossible(StepsTypeDouble(),diffs[n])
+						val = prof:GetCoursesPossible(StepsTypeDouble()[GetUserPrefN("StylePosition")],diffs[n])
 					else
-						val = prof:GetSongsPossible(StepsTypeDouble(),diffs[n])
+						val = prof:GetSongsPossible(StepsTypeDouble()[GetUserPrefN("StylePosition")],diffs[n])
 					end
 					text = string.format("%5.2f",val)
 				elseif types[i] == "PercentComplete" then
 					if n > 5 then
-						val = prof:GetCoursesPercentComplete(StepsTypeDouble(),diffs[n])
+						val = prof:GetCoursesPercentComplete(StepsTypeDouble()[GetUserPrefN("StylePosition")],diffs[n])
 					else
-						val = prof:GetSongsPercentComplete(StepsTypeDouble(),diffs[n])
+						val = prof:GetSongsPercentComplete(StepsTypeDouble()[GetUserPrefN("StylePosition")],diffs[n])
 					end
 					if val ~= val then val = 0 end
 					text = FormatPercentScore(val)
@@ -63,7 +63,7 @@ for i=1,3 do
 	t[#t+1] = thing
 end
 
-local shortGrade = ToEnumShortString( GetGradeFromPercent(GetTotalPercentComplete(prof,StepsTypeDouble())) )
+local shortGrade = GetGradeFromPercent(GetTotalPercentComplete(prof,StepsTypeDouble()[GetUserPrefN("StylePosition")]))
 
 local totals = Def.ActorFrame{
 	Def.ActorFrame{
@@ -78,9 +78,9 @@ local totals = Def.ActorFrame{
 				local val = 0
 				for i=2,7 do
 					if i > 5 then
-						val = val + prof:GetCoursesActual(StepsTypeDouble(),diffs[i])
+						val = val + prof:GetCoursesActual(StepsTypeDouble()[GetUserPrefN("StylePosition")],diffs[i])
 					else
-						val = val + prof:GetSongsActual(StepsTypeDouble(),diffs[i])
+						val = val + prof:GetSongsActual(StepsTypeDouble()[GetUserPrefN("StylePosition")],diffs[i])
 					end
 				end
 				self:settext(string.format("%5.2f",val))
@@ -96,9 +96,9 @@ local totals = Def.ActorFrame{
 				local val = 0
 				for i=2,7 do
 					if i > 5 then
-						val = val + prof:GetCoursesPossible(StepsTypeDouble(),diffs[i])
+						val = val + prof:GetCoursesPossible(StepsTypeDouble()[GetUserPrefN("StylePosition")],diffs[i])
 					else
-						val = val + prof:GetSongsPossible(StepsTypeDouble(),diffs[i])
+						val = val + prof:GetSongsPossible(StepsTypeDouble()[GetUserPrefN("StylePosition")],diffs[i])
 					end
 				end
 				self:settext(string.format("%5.2f",val))
@@ -111,7 +111,7 @@ local totals = Def.ActorFrame{
 		LoadFont("_r bold numbers")..{
 			InitCommand=function(self) self:x(SCREEN_CENTER_X+136*WideScreenDiff()):y(20*WideScreenDiff()):horizalign(right):zoom(WideScreenDiff()) end,
 			BeginCommand=function(self)
-				local val = GetTotalPercentComplete(prof,StepsTypeDouble())
+				local val = GetTotalPercentComplete(prof,StepsTypeDouble()[GetUserPrefN("StylePosition")])
 				if val ~= val then val = 0 end
 				self:settext(FormatPercentScore(val))
 

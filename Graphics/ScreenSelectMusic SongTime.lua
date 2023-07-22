@@ -1,5 +1,5 @@
 local c
-
+local stepsType = StepsTypeSingle()[GetUserPrefN("StylePosition")]
 return Def.ActorFrame{
 	BeginCommand = function(self) c = self:GetChildren() end,
 	LoadFont("titlemenu")..{
@@ -27,7 +27,9 @@ return Def.ActorFrame{
 				else
 					local songs = SONGMAN:GetSongsInGroup(SCREENMAN:GetTopScreen():GetMusicWheel():GetSelectedSection())
 					for s=1,#songs do
-						length = length + songs[s]:MusicLengthSeconds()
+						if songs[s]:HasStepsType(stepsType) then
+							length = length + songs[s]:MusicLengthSeconds()
+						end
 					end
 				end
 			end

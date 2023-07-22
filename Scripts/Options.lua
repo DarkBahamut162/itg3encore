@@ -1,42 +1,66 @@
 function ChoiceSingle()
 	if IsGame("dance") then
-		return "single"
+		if isOutFox() then
+			return {"single","solo","threepanel"}
+		else
+			return {"single"}
+		end
 	elseif IsGame("pump") then
-		return "single"
+		return {"single"}
 	elseif IsGame("smx") then
-		return "single"
+		return {"single"}
 	elseif IsGame("be-mu") or IsGame("beat") then
-		return "single7"
+		if isOutFox() then
+			return {"single5","single6","single7"}
+		else
+			return {"single5","single7"}
+		end
 	elseif IsGame("po-mu") then
-		return "po-mu-nine"
+		return {"po-mu-three","po-mu-four","po-mu-five","po-mu-seven","po-mu-nine"}
 	end
 end
 
 function ChoiceVersus()
 	if IsGame("dance") then
-		return "versus"
+		if isOutFox() then
+			return {"versus","solo-versus","threepanel-versus"}
+		else
+			return {"versus"}
+		end
 	elseif IsGame("pump") then
-		return "versus"
+		return {"versus"}
 	elseif IsGame("smx") then
-		return "versus"
+		return {"versus"}
 	elseif IsGame("be-mu") or IsGame("beat") then
-		return "versus7"
+		if isOutFox() then
+			return {"versus5","versus6","versus7"}
+		else
+			return {"versus5","versus7"}
+		end
 	elseif IsGame("po-mu") then
-		return "po-mu-nine-versus"
+		return {"po-mu-three-versus","po-mu-four-versus","po-mu-five-versus","po-mu-seven-versus","po-mu-nine-versus"}
 	end
 end
 
 function ChoiceDouble()
 	if IsGame("dance") then
-		return "double"
+		if isOutFox() then
+			return {"double","solo-double","threepanel-double"}
+		else
+			return {"double"}
+		end
 	elseif IsGame("pump") then
-		return "double"
+		return {"double"}
 	elseif IsGame("smx") then
-		return "double10"
+		return {"double10"}
 	elseif IsGame("be-mu") or IsGame("beat") then
-		return "double7"
+		if isOutFox() then
+			return {"double5","double6","double7"}
+		else
+			return {"double5","double7"}
+		end
 	elseif IsGame("po-mu") then
-		return "po-mu-nine-double"
+		return {nil,nil,nil,nil,"po-mu-nine-double"}
 	end
 end
 
@@ -48,32 +72,103 @@ function GameModeEnabled()
 	end
 end
 
+function GetStyles()
+	if GameModeEnabled() then
+		if IsNetSMOnline() then
+			if ChoiceDouble()[GetUserPrefN("StylePosition")] then
+				return "1,3"
+			else
+				return "1"
+			end
+		else
+			if ChoiceDouble()[GetUserPrefN("StylePosition")] then
+				return "1,2,3"
+			else
+				return "1,2"
+			end
+		end
+	else
+		return "0"
+	end
+end
+
+function GetStylesWorkout()
+	if GameModeEnabled() then
+		if ChoiceDouble()[GetUserPrefN("StylePosition")] then
+			return "1,2"
+		else
+			return "1"
+		end
+	else
+		return "0"
+	end
+end
+
+function StyleName()
+	if IsGame("dance") then
+		if isOutFox() then
+			return {"4 Arrows","6 Arrows","3 Arrows"}
+		else
+			return {"4 Arrows"}
+		end
+	elseif IsGame("pump") then
+		return {"5 Arrows"}
+	elseif IsGame("smx") then
+		return {"5 Arrows"}
+	elseif IsGame("be-mu") or IsGame("beat") then
+		if isOutFox() then
+			return {"5 Buttons + Turntable","Foot Pedal + 5 Buttons + Turntable","7 Buttons + Turntable"}
+		else
+			return {"5 Buttons + Turntable","7 Buttons + Turntable"}
+		end
+	elseif IsGame("po-mu") then
+		return {"3 Buttons","4 Buttons","5 Buttons","7 Buttons","9 Buttons"}
+	end
+	return false
+end
+
 function StepsTypeSingle()
 	if IsGame("dance") then
-		return "StepsType_Dance_Single"
+		if isOutFox() then
+			return {"StepsType_Dance_Single","StepsType_Dance_Solo","StepsType_Dance_Threepanel"}
+		else
+			return {"StepsType_Dance_Single"}
+		end
 	elseif IsGame("pump") then
-		return "StepsType_Pump_Single"
+		return {"StepsType_Pump_Single"}
 	elseif IsGame("smx") then
-		return "StepsType_Smx_Single"
+		return {"StepsType_Smx_Single"}
 	elseif IsGame("be-mu") or IsGame("beat") then
-		return "StepsType_Bm_Single7"
+		if isOutFox() then
+			return {"StepsType_Bm_Single5","StepsType_Bm_Single6","StepsType_Bm_Single7"}
+		else
+			return {"StepsType_Bm_Single5","StepsType_Bm_Single7"}
+		end
 	elseif IsGame("po-mu") then
-		return "StepsType_Pnm_Nine"
+		return {"StepsType_Pnm_Three","StepsType_Pnm_Four","StepsType_Pnm_Five","StepsType_Pnm_Seven","StepsType_Pnm_Nine"}
 	end
 	return false
 end
 
 function StepsTypeDouble()
 	if IsGame("dance") then
-		return "StepsType_Dance_Double"
+		if isOutFox() then
+			return {"StepsType_Dance_Double","StepsType_Dance_Solodouble","StepsType_Dance_Threedouble"}
+		else
+			return {"StepsType_Dance_Double"}
+		end
 	elseif IsGame("pump") then
-		return "StepsType_Pump_Double"
+		return {"StepsType_Pump_Double"}
 	elseif IsGame("smx") then
-		return "StepsType_Smx_Double10"
+		return {"StepsType_Smx_Double10"}
 	elseif IsGame("be-mu") or IsGame("beat") then
-		return "StepsType_Bm_Double7"
+		if isOutFox() then
+			return {"StepsType_Bm_Double5","StepsType_Bm_Double6","StepsType_Bm_Double7"}
+		else
+			return {"StepsType_Bm_Double5","StepsType_Bm_Double7"}
+		end
 	elseif IsGame("po-mu") then
-		return "StepsType_Pnm_Nine_Double"
+		return {nil,nil,nil,nil,"StepsType_Pnm_Nine_Double"}
 	end
 	return false
 end
@@ -155,6 +250,12 @@ function InitRotationOptions()
 end
 
 function InitOptions()
+	if GetUserPrefN("StylePosition") == nil then
+		SetUserPref("StylePosition",1)
+	elseif GetUserPrefN("StylePosition") > #ChoiceSingle() then
+		SetUserPref("StylePosition",1)
+	end
+
 	GAMESTATE:SetFailTypeExplicitlySet(true)
 	setenv("HighScoreableP1",false)
 	setenv("HighScoreableP2",false)

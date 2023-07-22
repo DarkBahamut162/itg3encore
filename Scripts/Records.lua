@@ -1,3 +1,16 @@
+function GetGradeFromPercent(percent)
+	local total = THEME:GetMetric("PlayerStageStats","NumGradeTiersUsed")
+	local grades = {}
+	for i=1,total do
+		grades[#grades+1] = THEME:GetMetric("PlayerStageStats", "GradePercentTier" .. string.format("%02d", i))
+	end
+	grades[#grades] = 0.5
+	for g=1,total-1 do
+		if percent <= grades[g] and percent > grades[g+1] then return "Tier"..string.format("%02d", g) end
+	end
+	return "Tier17"
+end
+
 function GetTotalActual( profile, stepsType )
 	return
 		profile:GetSongsActual(stepsType,'Difficulty_Easy')+
