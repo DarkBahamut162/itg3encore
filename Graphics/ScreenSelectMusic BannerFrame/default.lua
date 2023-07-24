@@ -26,7 +26,8 @@ return Def.ActorFrame{
 						self:effectcolor1(color("#FF000080"))
 					end
 				end
-			end
+			end,
+			CurrentSongChangedMessageCommand=function(self) self:playcommand("Blink") end
 		}
 	}
 }
