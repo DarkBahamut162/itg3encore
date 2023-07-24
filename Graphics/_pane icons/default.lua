@@ -34,19 +34,19 @@ return Def.ActorFrame{
 				mine = rv:GetValue('RadarCategory_Mines') > 0
 				hand = rv:GetValue('RadarCategory_Hands') > 0
 				roll = rv:GetValue('RadarCategory_Rolls') > 0
-				local totalSeconds = isOutFox() and LoadFromCache(song,step,"TrueLastSecond") - LoadFromCache(song,step,"TrueFirstSecond") or 0
+				local totalSeconds = isOutFox() and tonumber(LoadFromCache(song,step,"TrueSeconds")) or (song:GetLastSecond() - song:GetFirstSecond())
 				local avg_bps_OLD = song:GetLastBeat() / song:MusicLengthSeconds()
-				local avg_bps_NEW = isOutFox() and LoadModule("Config.Load.lua")("TrueLastBeat",getStepCacheFile(step)) / totalSeconds or 0
+				local avg_bps_NEW = (isOutFox() and tonumber(LoadFromCache(song,step,"TrueBeats")) or (song:GetLastBeat() - song:GetFirstBeat())) / totalSeconds
 				stream = math.max(0,rv:GetValue('RadarCategory_Stream'))
-				if isOutFox() then stream = stream * song:MusicLengthSeconds() / totalSeconds end
+				stream = stream * song:MusicLengthSeconds() / totalSeconds
 				voltage = math.max(0,rv:GetValue('RadarCategory_Voltage'))
-				if isOutFox() then voltage = voltage / avg_bps_OLD * avg_bps_NEW end
+				voltage = voltage / avg_bps_OLD * avg_bps_NEW
 				air = math.max(0,rv:GetValue('RadarCategory_Air'))
-				if isOutFox() then air = air * song:MusicLengthSeconds() / totalSeconds end
+				air = air * song:MusicLengthSeconds() / totalSeconds
 				freeze = math.max(0,rv:GetValue('RadarCategory_Freeze'))
-				if isOutFox() then freeze = freeze * song:MusicLengthSeconds() / totalSeconds end
+				freeze = freeze * song:MusicLengthSeconds() / totalSeconds
 				chaos = math.max(0,rv:GetValue('RadarCategory_Chaos'))
-				if isOutFox() then chaos = chaos * song:MusicLengthSeconds() / totalSeconds end
+				chaos = chaos * song:MusicLengthSeconds() / totalSeconds
 			end
 		elseif course then
 			local trail = GAMESTATE:GetCurrentTrail(player)

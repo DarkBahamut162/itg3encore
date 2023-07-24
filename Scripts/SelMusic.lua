@@ -1,4 +1,4 @@
-local cacheVersion = "0.30"
+local cacheVersion = "0.31"
 
 function getCacheVersion()
 	return cacheVersion
@@ -357,10 +357,8 @@ function cacheStep(Song,Step)
 	if shockArrows ~= "" then LoadModule("Config.Save.lua")("ShockArrows",shockArrows,getStepCacheFile(Step)) end
 	LoadModule("Config.Save.lua")("StepCounter",table.concat(noteCounter,"_"),getStepCacheFile(Step))
 	LoadModule("Config.Save.lua")("StepsPerSecond",total,getStepCacheFile(Step))
-	LoadModule("Config.Save.lua")("TrueFirstBeat",firstBeat,getStepCacheFile(Step))
-	LoadModule("Config.Save.lua")("TrueFirstSecond",Step:GetTimingData():GetElapsedTimeFromBeat(firstBeat),getStepCacheFile(Step))
-	LoadModule("Config.Save.lua")("TrueLastBeat",lastBeat,getStepCacheFile(Step))
-	LoadModule("Config.Save.lua")("TrueLastSecond",Step:GetTimingData():GetElapsedTimeFromBeat(lastBeat),getStepCacheFile(Step))
+	LoadModule("Config.Save.lua")("TrueBeats",lastBeat-firstBeat,getStepCacheFile(Step))
+	LoadModule("Config.Save.lua")("TrueSeconds",Step:GetTimingData():GetElapsedTimeFromBeat(lastBeat)-Step:GetTimingData():GetElapsedTimeFromBeat(firstBeat),getStepCacheFile(Step))
 	if stepType[2] == "Bm" then
 		if #noteCounter == 7 or #noteCounter == 14 then
 			LoadModule("Config.Save.lua")("Foots",foots,getStepCacheFile(Step))
@@ -377,10 +375,6 @@ function LoadFromCache(Song,Step,value)
 		cacheStep(Song,Step)
 	end
 	return LoadModule("Config.Load.lua")(value,getStepCacheFile(Step))
-end
-
-function getStepCounter(Song,Step)
-	return split("_",LoadFromCache(Song,Step,"StepCounter"))
 end
 
 local typeList = {'avi','mkv','mp4','mpeg','mpg','wmv'}
@@ -442,7 +436,7 @@ local tapsp2lv100={
 }
 
 function GetConvertDifficulty(Song,Step)
-	local songLength = isOutFox() and (LoadFromCache(Song,Step,"TrueLastSecond") - LoadFromCache(Song,Step,"TrueFirstSecond")) or (Song:GetLastSecond() - Song:GetFirstSecond())
+	local songLength = isOutFox() and tonumber(LoadFromCache(Song,Step,"TrueSeconds")) or (Song:GetLastSecond() - Song:GetFirstSecond())
 	local voltage=Step:GetRadarValues(GAMESTATE:GetMasterPlayerNumber()):GetValue('RadarCategory_Voltage')*Song:MusicLengthSeconds()/songLength
 	local stream=Step:GetRadarValues(GAMESTATE:GetMasterPlayerNumber()):GetValue('RadarCategory_Stream')*Song:MusicLengthSeconds()/songLength
 	local radar_voltage=voltage-0.5
