@@ -435,8 +435,7 @@ local tapsp2lv100={
 	45.5,46.0,46.5,47.0,47.5,48.0,48.5,49.0,49.5,50.0
 }
 
-function GetConvertDifficulty(Song,Step)
-	local songLength = isOutFox() and tonumber(LoadFromCache(Song,Step,"TrueSeconds")) or (Song:GetLastSecond() - Song:GetFirstSecond())
+function GetConvertDifficulty(Song,Step,songLength)
 	local voltage=Step:GetRadarValues(GAMESTATE:GetMasterPlayerNumber()):GetValue('RadarCategory_Voltage')*Song:MusicLengthSeconds()/songLength
 	local stream=Step:GetRadarValues(GAMESTATE:GetMasterPlayerNumber()):GetValue('RadarCategory_Stream')*Song:MusicLengthSeconds()/songLength
 	local radar_voltage=voltage-0.5
