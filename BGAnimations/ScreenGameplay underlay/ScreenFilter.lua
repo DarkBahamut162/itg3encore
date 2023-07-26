@@ -14,35 +14,58 @@ local styleType = ToEnumShortString(style:GetStyleType())
 local stepsType = ToEnumShortString(style:GetStepsType())
 local stepsTypeNumber = tonumber(string.match(stepsType, "%d+"))
 local gameMode = GAMESTATE:GetCurrentGame():GetName()
+local special = false
+local doubles = (styleType == 'OnePlayerTwoSides' or styleType == 'TwoPlayersSharedSides')
 
 function getFilter(player,filterWidth,filterAlpha)
-	local special = false
-	if ProductFamily() == "OutFox" and tonumber(split("-",ProductVersion())[1]) >= 0.5 then
-		if gameMode == "be-mu" and stepsTypeNumber == 7 then
-			stepsTypeNumber = stepsTypeNumber .. pname(player)
+	local file = ""
+	local pomuREST = ""
+	if isOutFox() and tonumber(split("-",ProductVersion())[1]) >= 0.5 then
+		if gameMode == "be-mu" then
 			special = true
+			if stepsTypeNumber == 5 then
+				file = stepsTypeNumber .. " "
+			elseif stepsTypeNumber == 6 then
+				file = (stepsTypeNumber-1) .. "p"
+			elseif stepsTypeNumber == 7 then
+				file = stepsTypeNumber .. pname(player)
+			end
 		elseif gameMode == "po-mu" then
-			local pomuREST = split('_', stepsType)[2]
+			pomuREST = split('_', stepsType)[2]
 			special = true
 			if pomuREST == "Three" then
-				stepsTypeNumber = 3
+				file = 3
 			elseif pomuREST == "Four" then
-				stepsTypeNumber = 4
+				file = 4
 				special = false
 			elseif pomuREST == "Five" then
-				stepsTypeNumber = 5
+				file = 5
 			elseif pomuREST == "Seven" then
-				stepsTypeNumber = 7
+				file = 7
 			elseif pomuREST == "Nine" then
-				stepsTypeNumber = 9
+				file = 9
 			end
-			stepsTypeNumber = stepsTypeNumber .. "Light"
+			file = file .. "Light"
 		end
 	end
 	if special then
-		return LoadActor("/Appearance/BackPlates/"..gameMode.."/"..string.gsub(gameMode,"-","")..stepsTypeNumber)..{
-			InitCommand=function(self) self:zoomto(filterWidth,SCREEN_HEIGHT*4):diffusealpha(filterAlpha) end
-		}
+		if doubles then
+			local file2 = (gameMode == "be-mu" and stepsTypeNumber == 7) and "7P2" or file
+			local repos = 0
+			if gameMode == "be-mu" and stepsTypeNumber == 7 then repos = 30 elseif gameMode == "po-mu" and pomuREST == "Nine" then repos = 15 end
+			return Def.ActorFrame{
+				LoadActor("/Appearance/BackPlates/"..gameMode.."/"..string.gsub(gameMode,"-","")..file)..{
+					InitCommand=function(self) self:x((-filterWidth/4)-repos):zoomto(filterWidth/2,SCREEN_HEIGHT*4):diffusealpha(filterAlpha) end
+				},
+				LoadActor("/Appearance/BackPlates/"..gameMode.."/"..string.gsub(gameMode,"-","")..file2)..{
+					InitCommand=function(self) self:x((filterWidth/4)+repos):zoomto(filterWidth/2,SCREEN_HEIGHT*4):diffusealpha(filterAlpha) end
+				}
+			}
+		else
+			return LoadActor("/Appearance/BackPlates/"..gameMode.."/"..string.gsub(gameMode,"-","")..file)..{
+				InitCommand=function(self) self:zoomto(filterWidth,SCREEN_HEIGHT*4):diffusealpha(filterAlpha) end
+			}
+		end
 	else
 		return Def.Quad{
 			InitCommand=function(self) self:zoomto(filterWidth,SCREEN_HEIGHT*4):diffusecolor(filterColor):diffusealpha(filterAlpha) end
@@ -61,13 +84,19 @@ if numPlayers == 1 then
 
 	if string.find(style:GetName(),"double") then
 		if IsGame("be-mu") then
-			filterWidth = filterWidth * 1.8
+			if stepsTypeNumber == 5 then
+				filterWidth = filterWidth * 1.3
+			elseif stepsTypeNumber == 6 then
+				filterWidth = filterWidth * 1.5
+			elseif stepsTypeNumber == 7 then
+				filterWidth = filterWidth * 1.625
+			end
 		elseif IsGame("pump") then
 			filterWidth = filterWidth * 1.35
 		elseif IsGame("smx") then
 			filterWidth = filterWidth * 1.45
 		elseif IsGame("po-mu") then
-			filterWidth = filterWidth * 1.65
+			filterWidth = filterWidth * 1.575
 		else
 			filterWidth = filterWidth * 1.4
 		end
@@ -190,10 +219,7 @@ else
 						self:wag():effectclock('beat')
 					end
 				end,
-				Def.Quad{
-					Name="Player"..pNum.."Filter",
-					InitCommand=function(self) self:zoomto(filterWidth,SCREEN_HEIGHT*4):diffusecolor(filterColor):diffusealpha(filterAlphas[player]) end
-				},
+				getFilter(player,filterWidth,filterAlphas[player]),
 				LoadActor("SpeedAssist", player),
 				LoadActor("StopAssist", player)
 			}
