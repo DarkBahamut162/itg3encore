@@ -7,6 +7,35 @@ local style = GAMESTATE:GetCurrentStyle()
 local styleType = style:GetStyleType()
 local doubles = (styleType == 'StyleType_OnePlayerTwoSides' or styleType == 'StyleType_TwoPlayersSharedSides')
 
+local function width(style)
+	if IsGame("be-mu") then
+		if style == 1 then
+			return 240
+		elseif style == 2 then
+			return 272
+		else
+			return 304
+		end
+	else
+		if style == 1 then
+			return 96
+		elseif style == 2 then
+			return 128
+		elseif style == 3 then
+			return 160
+		elseif style == 4 then
+			return 224
+		else
+			return 288
+		end
+	end
+end
+
+local function xS() return SCREEN_WIDTH*0.25+width(GetUserPrefN("StylePosition"))/2*currentMini end
+local function zoomS() return (SCREEN_WIDTH-xS())/SCREEN_WIDTH end
+local function xM() return SCREEN_CENTER_X+width(GetUserPrefN("StylePosition"))/2*currentMini end
+local function zoomM() return (SCREEN_WIDTH-xM())/SCREEN_WIDTH end
+
 return Def.ActorFrame {
 	Name="YOU_WISH_YOU_WERE_PLAYING_BEATMANIA_RIGHT_NOW",
 	UpdateDiscordInfoCommand=function()
@@ -41,30 +70,15 @@ return Def.ActorFrame {
 				if GAMESTATE:GetNumPlayersEnabled() == 1 and not doubles and (IsGame("be-mu") or IsGame("po-mu")) then
 					if isOutFox() and not tobool(LoadFromCache(GAMESTATE:GetCurrentSong(),GAMESTATE:GetCurrentSteps(GAMESTATE:GetMasterPlayerNumber()),"HasLua")) or not HasLuaCheck() then
 						if getenv("RotationNormal"..pname(pn)) or getenv("RotationUpsideDown"..pname(pn)) then
-							if IsGame("be-mu") then
-								SCREENMAN:GetTopScreen():GetChild("SongBackground"):GetChild(""):zoom((853-369+156-156*currentMini)/853):xy(pn == PLAYER_1 and 369-156+156*currentMini or 0,(480-87.75+87.75*currentMini)/4)
-							elseif IsGame("po-mu") then
-								SCREENMAN:GetTopScreen():GetChild("SongBackground"):GetChild(""):zoom((853-357+144-144*currentMini)/853):xy(pn == PLAYER_1 and 357-144+144*currentMini or 0,(480-81+81*currentMini)/4)
-							end
+							SCREENMAN:GetTopScreen():GetChild("SongBackground"):GetChild(""):zoom(zoomS()):xy(pn == PLAYER_1 and xS() or 0,SCREEN_CENTER_Y-SCREEN_CENTER_Y*zoomS())
 						elseif getenv("RotationSolo"..pname(pn)) then
-							if IsGame("be-mu") then
-								SCREENMAN:GetTopScreen():GetChild("SongBackground"):GetChild(""):zoom((853-582)/853):xy(0,12.5)
-								c.PC2:playcommand("BMS")
-								c.PC3:playcommand("BMS")
-								c.PC4:playcommand("BMS")
-								if getenv("ShowStats"..pname(pn)) == 0 then
-									c.PC5:playcommand("BMS")
-									c.PC6:playcommand("BMS")
-								end
-							elseif IsGame("po-mu") then
-								SCREENMAN:GetTopScreen():GetChild("SongBackground"):GetChild(""):zoom((853-571)/853):xy(0,0)
-								c.PC2:playcommand("PMS")
-								c.PC3:playcommand("PMS")
-								c.PC4:playcommand("PMS")
-								if getenv("ShowStats"..pname(pn)) == 0 then
-									c.PC5:playcommand("PMS")
-									c.PC6:playcommand("PMS")
-								end
+							SCREENMAN:GetTopScreen():GetChild("SongBackground"):GetChild(""):zoom(zoomM())
+							if zoomM() < 1/3 then c.PC2:playcommand("MULTI") end
+							c.PC3:playcommand("MULTI")
+							c.PC4:playcommand("MULTI")
+							if getenv("ShowStats"..pname(pn)) == 0 then
+								c.PC6:playcommand("MULTI")
+								if zoomM() < 1/3 then c.PC5:playcommand("MULTI") end
 							end
 						end
 					end
@@ -126,27 +140,22 @@ return Def.ActorFrame {
 	DoneLoadingNextSongMessageCommand=function(self) self:playcommand("On") end,
 	Def.ActorProxy{
 		Name="PC2",
-		BMSCommand=function(self) self:SetTarget( SCREENMAN:GetTopScreen():GetChild("SongBackground"):GetChild("") ):y(480/3-5) end,
-		PMSCommand=function(self) self:SetTarget( SCREENMAN:GetTopScreen():GetChild("SongBackground"):GetChild("") ):y(480/3) end
+		MULTICommand=function(self) self:SetTarget( SCREENMAN:GetTopScreen():GetChild("SongBackground"):GetChild("") ):y(SCREEN_HEIGHT/3) end,
 	},
 	Def.ActorProxy{
 		Name="PC3",
-		BMSCommand=function(self) self:SetTarget( SCREENMAN:GetTopScreen():GetChild("SongBackground"):GetChild("") ):y(480/3*2-10) end,
-		PMSCommand=function(self) self:SetTarget( SCREENMAN:GetTopScreen():GetChild("SongBackground"):GetChild("") ):y(480/3*2) end
+		MULTICommand=function(self) self:SetTarget( SCREENMAN:GetTopScreen():GetChild("SongBackground"):GetChild("") ):y(SCREEN_HEIGHT/3*2) end
 	},
 	Def.ActorProxy{
 		Name="PC4",
-		BMSCommand=function(self) self:SetTarget( SCREENMAN:GetTopScreen():GetChild("SongBackground"):GetChild("") ):x(582):y(0) end,
-		PMSCommand=function(self) self:SetTarget( SCREENMAN:GetTopScreen():GetChild("SongBackground"):GetChild("") ):x(571):y(0) end
+		MULTICommand=function(self) self:SetTarget( SCREENMAN:GetTopScreen():GetChild("SongBackground"):GetChild("") ):x(xM()):y(0) end
 	},
 	Def.ActorProxy{
 		Name="PC5",
-		BMSCommand=function(self) self:SetTarget( SCREENMAN:GetTopScreen():GetChild("SongBackground"):GetChild("") ):x(582):y(480/3-5) end,
-		PMSCommand=function(self) self:SetTarget( SCREENMAN:GetTopScreen():GetChild("SongBackground"):GetChild("") ):x(571):y(480/3) end
+		MULTICommand=function(self) self:SetTarget( SCREENMAN:GetTopScreen():GetChild("SongBackground"):GetChild("") ):x(xM()):y(SCREEN_HEIGHT/3) end
 	},
 	Def.ActorProxy{
 		Name="PC6",
-		BMSCommand=function(self) self:SetTarget( SCREENMAN:GetTopScreen():GetChild("SongBackground"):GetChild("") ):x(582):y(480/3*2-10) end,
-		PMSCommand=function(self) self:SetTarget( SCREENMAN:GetTopScreen():GetChild("SongBackground"):GetChild("") ):x(571):y(480/3*2) end
+		MULTICommand=function(self) self:SetTarget( SCREENMAN:GetTopScreen():GetChild("SongBackground"):GetChild("") ):x(xM()):y(SCREEN_HEIGHT/3*2) end
 	}
 }
