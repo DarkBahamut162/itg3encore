@@ -15,15 +15,20 @@ return Def.ActorFrame{
 			CurrentSongChangedMessageCommand=function(self) if initialLoad then self:playcommand("Refresh") else initialLoad = true end end
 		},
 		LoadActor("flare")..{
-			InitCommand=function(self) self:x(SCREEN_CENTER_X+142*WideScreenDiff()):y(SCREEN_CENTER_Y-18*WideScreenDiff()):blend(Blend.Add) end,
-			OnCommand=function(self) self:diffuseshift():effectcolor2(color("#000000")):effectclock("beat"):playcommand("Blink") end,
+			InitCommand=function(self) self:x(SCREEN_CENTER_X+142*WideScreenDiff()):y(SCREEN_CENTER_Y-18*WideScreenDiff()):zoom(WideScreenDiff()):blend(Blend.Add) end,
+			OnCommand=function(self) self:playcommand("Blink") end,
 			BlinkCommand=function(self)
-				self:effectcolor1(color("#000000"))
-				if GAMESTATE:GetCurrentSong() then
-					if GAMESTATE:GetCurrentSong():GetFirstSecond() <= 1 then
-						self:effectcolor1(color("#FF0000"))
-					elseif GAMESTATE:GetCurrentSong():GetFirstSecond() <= 2 then
-						self:effectcolor1(color("#FF000080"))
+				self:diffuseshift():effectcolor2(color("#000000"))
+				local song = GAMESTATE:GetCurrentSong()
+				if song then
+					local spmp = song:GetPreviewMusicPath()
+					local effectclock = spmp ~= "" and "beat" or "timerglobal"
+					if song:GetFirstSecond() <= 1 then
+						self:effectcolor1(color("#FF0000")):effectclock(effectclock):effectcolor2(color("#000000"))
+					elseif song:GetFirstSecond() <= 2 then
+						self:effectcolor1(color("#FF000080")):effectclock(effectclock):effectcolor2(color("#000000"))
+					else
+						self:effectcolor1(color("#000000")):effectclock(effectclock):effectcolor2(color("#000000"))
 					end
 				end
 			end,
