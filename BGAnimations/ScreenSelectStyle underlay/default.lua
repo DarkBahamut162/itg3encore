@@ -40,8 +40,8 @@ end
 return Def.ActorFrame{
 	BeginCommand = function(self)
 		c = self:GetChildren()
-		c.Left:addx(-c.Center:GetWidth()/4-8)
-		c.Right:addx(c.Center:GetWidth()/4+8)
+		c.Left:addx((-c.Center:GetWidth()/4-8)*WideScreenDiff())
+		c.Right:addx((c.Center:GetWidth()/4+8)*WideScreenDiff())
 	end,
 	OnCommand=function(self)
 		if styles and #styles > 1 then SCREENMAN:GetTopScreen():AddInputCallback(InputHandler) end
