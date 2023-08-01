@@ -16,7 +16,7 @@ local diffState = {
 }
 
 function DifficultyToState(diff)
-	return diffState[diff]
+	return diffState[diff] or 5
 end
 
 function GetSongFrame()
