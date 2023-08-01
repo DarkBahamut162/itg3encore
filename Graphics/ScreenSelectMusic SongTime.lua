@@ -13,6 +13,7 @@ return Def.ActorFrame{
 		SetCommand=function(self)
 			local curSelection = nil
 			local length = {0.0,0.0}
+			local EC = " "
 			if GAMESTATE:IsCourseMode() then
 				curSelection = GAMESTATE:GetCurrentCourse()
 				if curSelection then
@@ -24,6 +25,7 @@ return Def.ActorFrame{
 			else
 				curSelection = GAMESTATE:GetCurrentSong()
 				if curSelection then
+					EC = curSelection:GetPreviewMusicPath()
 					length[1] = curSelection:MusicLengthSeconds()
 					length[2] = length[2] + curSelection:GetLastSecond()-curSelection:GetFirstSecond()
 				else
@@ -35,7 +37,7 @@ return Def.ActorFrame{
 						end
 					end
 				end
-				MESSAGEMAN:Broadcast('SetTimeP1', {Time = length[2]})
+				MESSAGEMAN:Broadcast('SetTime',{Time = length[2],EffectClock = EC ~= "" and "beat" or "timerglobal"})
 			end
 			if length[1] >= 6000 then c.Time:x(-131) else c.Time:x(-103) end
 			self:settext( SecondsToMMSSMsMs(length[1]) )
@@ -45,10 +47,9 @@ return Def.ActorFrame{
 	},
 	LoadFont("_r bold bevel numbers")..{
 		Condition=not GAMESTATE:IsCourseMode(),
-		Name="P1",
-		InitCommand=function(self)
-			self:x(98):y(-30):halign(1):diffuseshift():effectcolor1(PlayerColor(GAMESTATE:GetMasterPlayerNumber())):effectcolor2(color("#FFFFFF")):effectclock("beat")
-		end,
-		SetTimeP1MessageCommand=function(self,param) self:settext(SecondsToMMSSMsMs(param.Time)) end
+		InitCommand=function(self) self:x(98):y(-30):halign(1) end,
+		SetTimeMessageCommand=function(self,param)
+			self:settext(SecondsToMMSSMsMs(param.Time)):diffuseshift():effectcolor1(PlayerColor(GAMESTATE:GetMasterPlayerNumber())):effectcolor2(color("#FFFFFF")):effectclock(param.EffectClock)
+		end
 	}
 }
