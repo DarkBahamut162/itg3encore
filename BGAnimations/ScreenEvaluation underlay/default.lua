@@ -50,16 +50,12 @@ return Def.ActorFrame{
 	},
 	Def.ActorFrame{
 		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y-34*WideScreenDiff()):zoom(WideScreenDiff()) end,
-		LoadActor("modsframe")..{
-			OnCommand=function(self) self:diffusealpha(0):sleep(3):linear(0.8):diffusealpha(1) end,
-			OffCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(0) end
-		},
-		LoadActor("modsframe")..{
+		LoadActor("modsframe "..(isFinal() and "final" or "normal"))..{
 			OnCommand=function(self) self:diffusealpha(0):sleep(3):linear(0.8):diffusealpha(1) end,
 			OffCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(0) end
 		}
 	},
-	LoadActor("trapezoid")..{
+	LoadActor("trapezoid "..(isFinal() and "final" or "normal"))..{
 		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y-109*WideScreenDiff()):zoom(WideScreenDiff()):shadowlength(2):diffusealpha(0) end,
 		OnCommand=function(self) self:sleep(3):linear(0.8):diffusealpha(1) end,
 		OffCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(0) end

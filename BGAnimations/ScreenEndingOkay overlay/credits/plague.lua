@@ -1,6 +1,6 @@
 return Def.ActorFrame{
     Def.ActorFrame{
-		LoadActor("frame"),
+		LoadActor("frame "..(isFinal() and "final" or "normal")),
 		LoadFont("_r bold 30px")..{
 			Text="Ryan McKanna",
 			OnCommand=function(self) self:y(10):x(42):diffuse(color("#FFFFFF")) end

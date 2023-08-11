@@ -13,12 +13,12 @@ return Def.ActorFrame{
 			OnCommand=function(self) self:sleep(3):decelerate(0.3):addy(-SCREEN_HEIGHT) end,
 			OffCommand=function(self) self:accelerate(0.3):addy(SCREEN_HEIGHT) end
 		},
-		LoadActor("base frame")..{
+		LoadActor("base frame "..(isFinal() and "final" or "normal"))..{
 			InitCommand=function(self) self:x(THEME:GetMetric("ScreenEvaluation","GradeFrameP1X")-27):y(THEME:GetMetric("ScreenEvaluation","GradeFrameP1Y")-32*WideScreenDiff()):zoom(WideScreenDiff()):addx(-EvalTweenDistance()) end,
 			OnCommand=function(self) self:sleep(3):decelerate(0.3):addx(EvalTweenDistance()) end,
 			OffCommand=function(self) self:accelerate(0.3):addx(-EvalTweenDistance()) end
 		},
-		LoadActor("base frame")..{
+		LoadActor("base frame "..(isFinal() and "final" or "normal"))..{
 			InitCommand=function(self) self:x(THEME:GetMetric("ScreenEvaluation","GradeFrameP2X")+27):y(THEME:GetMetric("ScreenEvaluation","GradeFrameP2Y")-32*WideScreenDiff()):zoomx(-1*WideScreenDiff()):zoomy(WideScreenDiff()):addx(EvalTweenDistance()) end,
 			OnCommand=function(self) self:sleep(3):decelerate(0.3):addx(-EvalTweenDistance()) end,
 			OffCommand=function(self) self:accelerate(0.3):addx(EvalTweenDistance()) end

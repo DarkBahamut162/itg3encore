@@ -29,12 +29,12 @@ return Def.ActorFrame{
 				ShowCommand=function(self) self:linear(0.3):diffusealpha(1):diffuseshift():effectcolor1(color("1,0,0,0.3")):effectcolor2(color("1,0,0,0.8")) end,
 				HideCommand=function(self) self:stopeffect():stoptweening():linear(0.5):diffusealpha(0) end
 			},
-			LoadActor(THEME:GetPathB("_shared","danger/_danger text"))..{
+			LoadActor(THEME:GetPathB("_shared","danger/_danger text "..(isFinal() and "final" or "normal")))..{
 				InitCommand=function(self) self:x(SCREEN_CENTER_X-SCREEN_WIDTH/4):y(SCREEN_CENTER_Y+140):diffusealpha(0) end,
 				ShowCommand=function(self) self:linear(0.3):diffusealpha(1) end,
 				HideCommand=function(self) self:stopeffect():stoptweening():linear(0.5):diffusealpha(0) end
 			},
-			LoadActor(THEME:GetPathB("_shared","danger/_danger glow"))..{
+			LoadActor(THEME:GetPathB("_shared","danger/_danger glow "..(isFinal() and "final" or "normal")))..{
 				InitCommand=function(self) self:x(SCREEN_CENTER_X-SCREEN_WIDTH/4):y(SCREEN_CENTER_Y+140):cropleft(-0.3):cropright(1):faderight(0.1):fadeleft(0.1) end,
 				ShowCommand=function(self) self:cropleft(-0.3):cropright(1):faderight(0.1):fadeleft(0.1):sleep(0.5):linear(0.7):cropleft(1):cropright(-0.3):sleep(0.8):queuecommand("Show") end,
 				HideCommand=function(self) self:stopeffect():stoptweening():linear(0.5):diffusealpha(0) end
@@ -70,12 +70,12 @@ return Def.ActorFrame{
 				ShowCommand=function(self) self:linear(0.3):diffusealpha(1):diffuseshift():effectcolor1(color("1,0,0,0.3")):effectcolor2(color("1,0,0,0.8")) end,
 				HideCommand=function(self) self:stopeffect():stoptweening():linear(0.5):diffusealpha(0) end
 			},
-			LoadActor(THEME:GetPathB("_shared","danger/_danger text"))..{
+			LoadActor(THEME:GetPathB("_shared","danger/_danger text "..(isFinal() and "final" or "normal")))..{
 				InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+140):diffusealpha(0) end,
 				ShowCommand=function(self) self:linear(0.3):diffusealpha(1) end,
 				HideCommand=function(self) self:stopeffect():stoptweening():linear(0.5):diffusealpha(0) end
 			},
-			LoadActor(THEME:GetPathB("_shared","danger/_danger glow"))..{
+			LoadActor(THEME:GetPathB("_shared","danger/_danger glow "..(isFinal() and "final" or "normal")))..{
 				InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+140):cropleft(-0.3):cropright(1):faderight(0.1):fadeleft(0.1) end,
 				ShowCommand=function(self) self:cropleft(-0.3):cropright(1):faderight(0.1):fadeleft(0.1):sleep(0.5):linear(0.7):cropleft(1):cropright(-0.3):sleep(0.8):queuecommand("Show") end,
 				HideCommand=function(self) self:stopeffect():stoptweening():linear(0.5):diffusealpha(0) end
@@ -111,12 +111,12 @@ return Def.ActorFrame{
 				ShowCommand=function(self) self:linear(0.3):diffusealpha(1):diffuseshift():effectcolor1(color("1,0,0,0.3")):effectcolor2(color("1,0,0,0.8")) end,
 				HideCommand=function(self) self:stopeffect():stoptweening():linear(0.5):diffusealpha(0) end
 			},
-			LoadActor(THEME:GetPathB("_shared","danger/_danger text"))..{
+			LoadActor(THEME:GetPathB("_shared","danger/_danger text "..(isFinal() and "final" or "normal")))..{
 				InitCommand=function(self) self:x(SCREEN_CENTER_X+SCREEN_WIDTH/4):y(SCREEN_CENTER_Y+140):diffusealpha(0) end,
 				ShowCommand=function(self) self:linear(0.3):diffusealpha(1) end,
 				HideCommand=function(self) self:stopeffect():stoptweening():linear(0.5):diffusealpha(0) end
 			},
-			LoadActor(THEME:GetPathB("_shared","danger/_danger glow"))..{
+			LoadActor(THEME:GetPathB("_shared","danger/_danger glow "..(isFinal() and "final" or "normal")))..{
 				InitCommand=function(self) self:x(SCREEN_CENTER_X+SCREEN_WIDTH/4):y(SCREEN_CENTER_Y+140):cropleft(-0.3):cropright(1):faderight(0.1):fadeleft(0.1) end,
 				ShowCommand=function(self) self:cropleft(-0.3):cropright(1):faderight(0.1):fadeleft(0.1):sleep(0.5):linear(0.7):cropleft(1):cropright(-0.3):sleep(0.8):queuecommand("Show") end,
 				HideCommand=function(self) self:stopeffect():stoptweening():linear(0.5):diffusealpha(0) end

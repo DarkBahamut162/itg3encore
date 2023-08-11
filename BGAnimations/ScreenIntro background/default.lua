@@ -2,7 +2,7 @@ return Def.ActorFrame{
 	LoadActor("Intro by Angel")..{ InitCommand=function(self) self:FullScreen():zoomy(1.2):rate(0.92):sleep(35):diffusealpha(0) end },
 	Def.ActorFrame{
 		InitCommand=function(self) self:Center() end,
-		LoadActor("swoosh")..{
+		LoadActor("swoosh "..(isFinal() and "final" or "normal"))..{
 			InitCommand=function(self) self:y(20):zoomtowidth(SCREEN_WIDTH):blend(Blend.Add):cropright(1):faderight(1) end,
 			OnCommand=function(self) self:linear(0.5):cropright(0):faderight(0):sleep(4):linear(0.5):diffusealpha(0.0):addx(50):cropleft(1):fadeleft(1) end
 		},

@@ -3,14 +3,14 @@ return Def.ActorFrame{
 		InitCommand=function(self) self:FullScreen():diffuse(color("#00000000")) end,
 		StartTransitioningCommand=function(self) self:linear(1.5):diffusealpha(1) end
 	},
-	LoadActor("_stage")..{
+	LoadActor("_stage "..(isFinal() and "final" or "normal"))..{
 		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y-75*WideScreenDiff()):zoom(0.6*WideScreenDiff()):diffusealpha(0):addy(-30) end,
 		StartTransitioningCommand=function(self) self:sleep(0.1):linear(0.3):diffusealpha(1):addy(30) end
 	},
 	Def.ActorFrame{
 		Name="NormalFail",
 		InitCommand=function(self) self:visible(songfail(false)) end,
-		LoadActor("_failed text")..{
+		LoadActor("_failed "..(isFinal() and "final" or "normal"))..{
 			InitCommand=function(self) self:zoom(WideScreenDiff()):x(SCREEN_CENTER_X+2*WideScreenDiff()):y(SCREEN_CENTER_Y+30*WideScreenDiff()):diffusealpha(0):addx(-500) end,
 			StartTransitioningCommand=function(self) self:sleep(0.4):decelerate(0.7):addx(500):diffusealpha(1) end
 		}

@@ -23,11 +23,11 @@ return Def.ActorFrame{
 	Def.ActorFrame{
 		Name="Cleared",
 		BeginCommand=function(self) self:visible( STATSMAN:GetCurStageStats():OnePassed() ) end,
-		LoadActor("cleared glow")..{
+		LoadActor("cleared glow "..(isFinal() and "final" or "normal"))..{
 			InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+100*WideScreenDiff()):zoom(WideScreenDiff()):cropleft(-0.3):cropright(1):faderight(0.1):fadeleft(0.1) end,
 			OnCommand=function(self) self:sleep(0.35):linear(0.7):cropleft(1):cropright(-0.3) end
 		},
-		LoadActor("cleared text")..{
+		LoadActor("cleared text "..(isFinal() and "final" or "normal"))..{
 			InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+100*WideScreenDiff()):zoom(WideScreenDiff()):cropright(1.3):faderight(0.1) end,
 			OnCommand=function(self) self:sleep(0.35):linear(0.7):cropright(-0.3):sleep(1.95):linear(0.3):diffusealpha(0) end
 		}
@@ -35,11 +35,11 @@ return Def.ActorFrame{
 	Def.ActorFrame{
 		Name="Failed",
 		BeginCommand=function(self) self:visible( not STATSMAN:GetCurStageStats():OnePassed() ) end,
-		LoadActor("failed glow")..{
+		LoadActor("failed glow "..(isFinal() and "final" or "normal"))..{
 			InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+100*WideScreenDiff()):zoom(WideScreenDiff()):cropleft(-0.3):cropright(1):faderight(0.1):fadeleft(0.1) end,
 			OnCommand=function(self) self:sleep(0.35):linear(0.7):cropleft(1):cropright(-0.3) end
 		},
-		LoadActor("failed text")..{
+		LoadActor("failed text "..(isFinal() and "final" or "normal"))..{
 			InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+100*WideScreenDiff()):zoom(WideScreenDiff()):cropright(1.3):faderight(0.1) end,
 			OnCommand=function(self) self:sleep(0.35):linear(0.7):cropright(-0.3):sleep(1.95):linear(0.3):diffusealpha(0) end
 		}

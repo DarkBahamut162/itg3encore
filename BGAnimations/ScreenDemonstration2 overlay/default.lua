@@ -17,7 +17,7 @@ return Def.ActorFrame{
 		InitCommand=function(self) self:x(posX_now):CenterY():addx(SCREEN_WIDTH/2):zoom(WideScreenDiff()) end,
 		OnCommand=function(self) self:sleep(5):decelerate(0.5):addx(-SCREEN_WIDTH/2):sleep(5):linear(0.3):diffusealpha(0) end
 	},
-	LoadActor("focus square")..{
+	LoadActor("focus square "..(isFinal() and "final" or "normal"))..{
 		InitCommand=function(self) self:x(posX):y(SCREEN_CENTER_Y+60):zoomx(width_field/width_square*WideScreenDiff()):zoomy(1.05):diffuseblink():effectperiod(0.5):diffusealpha(0) end,
 		OnCommand=function(self) self:sleep(6):linear(0.3):diffusealpha(1):sleep(4):linear(0.3):diffusealpha(0) end
 	},
@@ -26,7 +26,7 @@ return Def.ActorFrame{
 		InitCommand=function(self) self:x(posX_now):CenterY():addx(SCREEN_WIDTH):zoom(WideScreenDiff()) end,
 		OnCommand=function(self) self:sleep(11):decelerate(0.5):addx(-SCREEN_WIDTH):sleep(5):linear(0.3):diffusealpha(0) end
 	},
-	LoadActor("focus rect")..{
+	LoadActor("focus rect "..(isFinal() and "final" or "normal"))..{
 		InitCommand=function(self) self:x(posX):y(SCREEN_CENTER_Y-124):zoomx(width_field/width_square*WideScreenDiff()):zoomy(0.8*WideScreenDiff()):diffuseblink():effectperiod(0.5):diffusealpha(0) end,
 		OnCommand=function(self) self:sleep(12):linear(0.3):diffusealpha(1):sleep(4):linear(0.3):diffusealpha(0) end
 	},
@@ -35,7 +35,7 @@ return Def.ActorFrame{
 		InitCommand=function(self) self:x(posX_now):CenterY():addx(SCREEN_WIDTH/2):zoom(WideScreenDiff()) end,
 		OnCommand=function(self) self:sleep(17):decelerate(0.5):addx(-SCREEN_WIDTH/2):sleep(5):linear(0.3):diffusealpha(0) end
 	},
-	LoadActor("focus rect")..{
+	LoadActor("focus rect "..(isFinal() and "final" or "normal"))..{
 		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+15):zoom(WideScreenDiff()):rotationz(90):diffuseblink():effectperiod(0.5):diffusealpha(0) end,
 		OnCommand=function(self) self:sleep(18):linear(0.3):diffusealpha(1):sleep(4):linear(0.3):diffusealpha(0) end
 	},
@@ -98,11 +98,11 @@ return Def.ActorFrame{
 		OnCommand=function(self) self:sleep(3.5):linear(0.5):diffusealpha(0) end
 	},
 	Def.ActorFrame{
-		LoadActor("instructions")..{
+		LoadActor("instructions "..(isFinal() and "final" or "normal"))..{
 			InitCommand=function(self) self:Center():cropright(1.3):zoom(SCREEN_WIDTH/self:GetWidth()) end,
 			OnCommand=function(self) self:linear(1):cropright(-0.3):sleep(2):decelerate(0.5):zoom(0.7*WideScreenDiff()):y(SCREEN_TOP+40) end
 		},
-		LoadActor("white instructions")..{
+		LoadActor("white instructions "..(isFinal() and "final" or "normal"))..{
 			InitCommand=function(self) self:Center():cropleft(-0.3):zoom(SCREEN_WIDTH/self:GetWidth()):cropright(1):faderight(0.1):fadeleft(0.1) end,
 			OnCommand=function(self) self:linear(1):cropleft(1):cropright(-0.3) end
 		}
