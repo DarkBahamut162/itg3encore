@@ -4,7 +4,7 @@ return Def.ActorFrame{
 		Def.ActorFrame{
 			Name="W1",
 			InitCommand=function(self) self:y(-195*WideScreenDiff()) end,
-			LoadActor("_A")..{
+			LoadActor("_A "..(isFinal() and "Final" or "Normal"))..{
 				InitCommand=function(self) self:x(-156*WideScreenDiff()):horizalign(left) end,
 				OnCommand=function(self) self:zoom(WideScreenDiff()):addx(-100):diffusealpha(0):sleep(3):bounceend(0.4):addx(100):diffusealpha(1) end,
 				OffCommand=function(self) self:sleep(0.05):bouncebegin(0.4):addx(-100):diffusealpha(0) end
@@ -19,7 +19,7 @@ return Def.ActorFrame{
 		Def.ActorFrame{
 			Name="W2",
 			InitCommand=function(self) self:y(-170*WideScreenDiff()) end,
-			LoadActor("_B")..{
+			LoadActor("_B "..(isFinal() and "Final" or "Normal"))..{
 				InitCommand=function(self) self:x(-156*WideScreenDiff()):horizalign(left) end,
 				OnCommand=function(self) self:zoom(WideScreenDiff()):addx(-100):diffusealpha(0):sleep(3.10):bounceend(0.4):addx(100):diffusealpha(1) end,
 				OffCommand=function(self) self:sleep(0.1):bouncebegin(0.4):addx(-100):diffusealpha(0) end
@@ -34,7 +34,7 @@ return Def.ActorFrame{
 		Def.ActorFrame{
 			Name="W3",
 			InitCommand=function(self) self:y(-145*WideScreenDiff()) end,
-			LoadActor("_C")..{
+			LoadActor("_C "..(isFinal() and "Final" or "Normal"))..{
 				InitCommand=function(self) self:x(-156*WideScreenDiff()):horizalign(left) end,
 				OnCommand=function(self) self:zoom(WideScreenDiff()):addx(-100):diffusealpha(0):sleep(3.20):bounceend(0.4):addx(100):diffusealpha(1) end,
 				OffCommand=function(self) self:sleep(0.15):bouncebegin(0.4):addx(-100):diffusealpha(0) end
@@ -49,7 +49,7 @@ return Def.ActorFrame{
 		Def.ActorFrame{
 			Name="W4",
 			InitCommand=function(self) self:y(-120*WideScreenDiff()) end,
-			LoadActor("_D")..{
+			LoadActor("_D "..(isFinal() and "Final" or "Normal"))..{
 				InitCommand=function(self) self:x(-156*WideScreenDiff()):horizalign(left) end,
 				OnCommand=function(self) self:zoom(WideScreenDiff()):addx(-100):diffusealpha(0):sleep(3.30):bounceend(0.4):addx(100):diffusealpha(1) end,
 				OffCommand=function(self) self:sleep(0.2):bouncebegin(0.4):addx(-100):diffusealpha(0) end
@@ -64,7 +64,7 @@ return Def.ActorFrame{
 		Def.ActorFrame{
 			Name="W5",
 			InitCommand=function(self) self:y(-95*WideScreenDiff()) end,
-			LoadActor("_E")..{
+			LoadActor("_E "..(isFinal() and "Final" or "Normal"))..{
 				InitCommand=function(self) self:x(-156*WideScreenDiff()):horizalign(left) end,
 				OnCommand=function(self) self:zoom(WideScreenDiff()):addx(-100):diffusealpha(0):sleep(3.40):bounceend(0.4):addx(100):diffusealpha(1) end,
 				OffCommand=function(self) self:sleep(0.25):bouncebegin(0.4):addx(-100):diffusealpha(0) end
@@ -79,7 +79,7 @@ return Def.ActorFrame{
 		Def.ActorFrame{
 			Name="Miss",
 			InitCommand=function(self) self:y(-70*WideScreenDiff()) end,
-			LoadActor("_F")..{
+			LoadActor("_F "..(isFinal() and "Final" or "Normal"))..{
 				InitCommand=function(self) self:x(-156*WideScreenDiff()):horizalign(left) end,
 				OnCommand=function(self) self:zoom(WideScreenDiff()):addx(-100):diffusealpha(0):sleep(3.50):bounceend(0.4):addx(100):diffusealpha(1) end,
 				OffCommand=function(self) self:sleep(0.3):bouncebegin(0.4):addx(-100):diffusealpha(0) end

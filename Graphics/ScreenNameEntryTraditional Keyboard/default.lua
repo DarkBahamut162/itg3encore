@@ -115,5 +115,5 @@ return Def.ActorFrame{
 		TransformFunction=function(self,offset,itemIndex,numItems) self:x(offset*40) end,
 		children = scrollItems
 	},
-	LoadActor("cursor")
+	LoadActor("cursor "..(isFinal() and "final" or "normal"))
 }

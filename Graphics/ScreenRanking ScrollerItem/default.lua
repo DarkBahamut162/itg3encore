@@ -1,6 +1,6 @@
 local t = Def.ActorFrame{
 	InitCommand=function(self) self:runcommandsonleaves(function(child) child:ztest(true) end) end,
-	LoadActor("_song frame")..{InitCommand=function(self) self:zoom(WideScreenDiff()) end},
+	LoadActor("_song frame "..(isFinal() and "final" or "normal"))..{InitCommand=function(self) self:zoom(WideScreenDiff()) end},
 	Def.Banner{
 		InitCommand=function(self) self:x(-276*WideScreenDiff()):halign(0):scaletoclipped(128*WideScreenDiff(),40*WideScreenDiff()):diffusealpha(0.5):fadeleft(0.25):faderight(0.25) end,
 		SetCommand=function(self, params)
