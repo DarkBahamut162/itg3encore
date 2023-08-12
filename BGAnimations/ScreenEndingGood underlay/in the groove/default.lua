@@ -38,15 +38,15 @@ return Def.ActorFrame{
         }
     },
     Def.ActorFrame{
-        LoadActor(THEME:GetPathB("ScreenTitleMenu","background/glow"))..{
+        LoadActor(THEME:GetPathB("ScreenTitleMenu","background/glow "..(isFinal() and "final" or "normal")))..{
             InitCommand=function(self) self:Center():zoom(0.8):diffusealpha(0) end,
             OnCommand=function(self) self:sleep(1):linear(1):diffusealpha(1):zoom(1):sleep(1.5):accelerate(0.58):diffusealpha(0):zoom(0.6) end
         },
-        LoadActor(THEME:GetPathB("ScreenTitleMenu","background/glow"))..{
+        LoadActor(THEME:GetPathB("ScreenTitleMenu","background/glow "..(isFinal() and "final" or "normal")))..{
             InitCommand=function(self) self:Center():blend(Blend.Add):zoom(1):diffusealpha(0) end,
             OnCommand=function(self) self:sleep(1.5):accelerate(0.3):diffusealpha(0.4):linear(1.2):zoom(1.4):diffusealpha(0) end
         },
-        LoadActor(THEME:GetPathB("ScreenTitleMenu","background/light"))..{
+        LoadActor(THEME:GetPathB("ScreenTitleMenu","background/light "..(isFinal() and "final" or "normal")))..{
             InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+10):blend(Blend.Add):zoom(1) end,
             OnCommand=function(self) self:cropright(1.2):cropleft(-0.2):linear(1):cropright(-0.2):cropleft(-0.3):cropright(1):faderight(0.1):fadeleft(0.1):sleep(1.2):linear(0.7):cropleft(1):cropright(-0.3):sleep(0.5) end
         }
