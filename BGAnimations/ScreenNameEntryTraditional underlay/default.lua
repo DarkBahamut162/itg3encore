@@ -1,6 +1,6 @@
 return Def.ActorFrame{
-	LoadActor(THEME:GetPathB("ScreenWithMenuElements","underlay/_base")),
 	LoadActor(THEME:GetPathB("ScreenWithMenuElements","underlay/_sides")),
+	LoadActor(THEME:GetPathB("ScreenWithMenuElements","underlay/_base")),
 	LoadActor(THEME:GetPathB("ScreenWithMenuElements","underlay/_normaltop")),
 	LoadActor("name entry banner mask")..{
 		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+138):zbuffer(true):blend(Blend.NoEffect):addy(200):zoom(WideScreenDiff()) end,

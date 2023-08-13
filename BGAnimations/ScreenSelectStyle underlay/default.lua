@@ -47,8 +47,8 @@ return Def.ActorFrame{
 		if styles and #styles > 1 then SCREENMAN:GetTopScreen():AddInputCallback(InputHandler) end
 		if isOutFox() then GAMESTATE:UpdateDiscordScreenInfo("Selecting Style","",1) end
 	end,
-	LoadActor(THEME:GetPathB("ScreenWithMenuElements","underlay/_base")),
 	LoadActor(THEME:GetPathB("ScreenWithMenuElements","underlay/_sides")),
+	LoadActor(THEME:GetPathB("ScreenWithMenuElements","underlay/_base")),
 	Def.ActorFrame{
 		InitCommand=function(self) self:x(SCREEN_CENTER_X+100*WideScreenSemiDiff()):y(SCREEN_CENTER_Y+13*WideScreenSemiDiff()):z(-100):zoom(1.3*WideScreenDiff()) end,
 		LoadActor("char")..{
