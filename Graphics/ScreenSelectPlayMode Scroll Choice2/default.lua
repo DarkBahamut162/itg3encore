@@ -21,7 +21,7 @@ return Def.ActorFrame{
 	LoseFocusCommand=function(self) self:zoom(0.6*WideScreenDiff()) end,
 	LoadActor("title")..{
 		InitCommand=function(self) self:zoom(0):x(-73):y(-117*WideScreenDiff()) end,
-		GainFocusCommand=function(self) self:zoom(0):bounceend(0.1):zoom(0.885*WideScreenDiff()) end,
+		GainFocusCommand=function(self) self:zoom(0):bounceend(0.1):zoom(0.4425*WideScreenDiff()) end,
 		LoseFocusCommand=function(self) self:bouncebegin(0.1):zoom(0) end
 	},
 	LoadActor("../ScreenSelectPlayMode Scroll Choice1/frame")..{
