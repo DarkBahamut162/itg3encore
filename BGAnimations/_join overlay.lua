@@ -44,16 +44,16 @@ return Def.ActorFrame{
 			InitCommand=function(self) self:settext("PRESS"):shadowlength(2):zoom(0.6*WideScreenDiff()) end,
 			JoinedCommand=function(self) self:linear(0.2):diffusealpha(0) end
 		},
-		LoadActor(THEME:GetPathG("_common","base start button"))..{
+		LoadActor(THEME:GetPathG("_common","base start button "..(isFinal() and "final" or "normal")))..{
 			InitCommand=function(self) self:addx(45*WideScreenDiff()):shadowlength(0):zoom(0.5*WideScreenDiff()) end,
 			JoinedCommand=function(self) self:linear(0.2):diffusealpha(0) end
 		},
-		LoadActor(THEME:GetPathG("_common","start button"))..{
+		LoadActor(THEME:GetPathG("_common","start button "..(isFinal() and "final" or "normal")))..{
 			InitCommand=function(self) self:addx(45*WideScreenDiff()):zoom(0.5*WideScreenDiff()) end,
 			OnCommand=function(self) self:diffuseshift():effectcolor1(color("#FFFFFF")):effectcolor2(color("#858585")):effectclock("beat") end,
 			JoinedCommand=function(self) self:linear(0.2):diffusealpha(0) end
 		},
-		LoadActor(THEME:GetPathG("_common","glow start button"))..{
+		LoadActor(THEME:GetPathG("_common","glow start button "..(isFinal() and "final" or "normal")))..{
 			InitCommand=function(self) self:addx(45*WideScreenDiff()):zoom(0.5*WideScreenDiff()):blend(Blend.Add) end,
 			OnCommand=function(self) self:diffuseshift():effectcolor1(color("#6BFF75")):effectcolor2(color("#FFFFFF00")):effectclock("beat") end,
 			JoinedCommand=function(self) self:linear(0.2):diffusealpha(0) end
@@ -91,16 +91,16 @@ return Def.ActorFrame{
 			InitCommand=function(self) self:settext("PRESS"):x(-33*WideScreenDiff()):shadowlength(2):zoom(0.6*WideScreenDiff()) end,
 			JoinedCommand=function(self) self:linear(0.2):diffusealpha(0) end
 		},
-		LoadActor(THEME:GetPathG("_common","base start button"))..{
+		LoadActor(THEME:GetPathG("_common","base start button "..(isFinal() and "final" or "normal")))..{
 			InitCommand=function(self) self:addx(11*WideScreenDiff()):shadowlength(0):zoom(0.5*WideScreenDiff()) end,
 			JoinedCommand=function(self) self:linear(0.2):diffusealpha(0) end
 		},
-		LoadActor(THEME:GetPathG("_common","start button"))..{
+		LoadActor(THEME:GetPathG("_common","start button "..(isFinal() and "final" or "normal")))..{
 			InitCommand=function(self) self:addx(11*WideScreenDiff()):zoom(0.5*WideScreenDiff()) end,
 			OnCommand=function(self) self:diffuseshift():effectcolor1(color("#FFFFFF")):effectcolor2(color("#858585")):effectoffset(-0.05):effectclock("beat"):effectperiod(1/177.38*120) end,
 			JoinedCommand=function(self) self:linear(0.2):diffusealpha(0) end
 		},
-		LoadActor(THEME:GetPathG("_common","glow start button"))..{
+		LoadActor(THEME:GetPathG("_common","glow start button "..(isFinal() and "final" or "normal")))..{
 			InitCommand=function(self) self:addx(11*WideScreenDiff()):zoom(0.5*WideScreenDiff()):blend(Blend.Add) end,
 			OnCommand=function(self) self:diffuseshift():effectcolor1(color("#6BFF75")):effectcolor2(color("#FFFFFF00")):effectoffset(-0.05):effectclock("beat"):effectperiod(1/177.38*120) end,
 			JoinedCommand=function(self) self:linear(0.2):diffusealpha(0) end

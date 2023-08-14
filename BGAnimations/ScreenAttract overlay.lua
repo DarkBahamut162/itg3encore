@@ -72,7 +72,7 @@ return Def.ActorFrame{
 		InsertCoinCommand=function(self) self:visible(false) end,
 		PressStartCommand=function(self) self:visible(true) end
 	},
-	LoadActor(THEME:GetPathG("_common","base start button"))..{
+	LoadActor(THEME:GetPathG("_common","base start button "..(isFinal() and "final" or "normal")))..{
 		InitCommand=function(self) self:CenterX():y(SCREEN_BOTTOM-37):zoom(0.7) end,
 		OnCommand=function(self) self:playcommand("Refresh") end,
 		CoinModeChangedMessageCommand=function(self) self:playcommand("Refresh") end,
@@ -89,7 +89,7 @@ return Def.ActorFrame{
 		InsertCoinCommand=function(self) self:visible(false) end,
 		PressStartCommand=function(self) self:visible(true) end
 	},
-	LoadActor(THEME:GetPathG("_common","start button"))..{
+	LoadActor(THEME:GetPathG("_common","start button "..(isFinal() and "final" or "normal")))..{
 		InitCommand=function(self) self:CenterX():y(SCREEN_BOTTOM-37):visible(false):diffuseshift():effectcolor1(color("#FFFFFF")):effectcolor2(color("#858585")):zoom(0.7):effectclock("beat") end,
 		OnCommand=function(self) self:playcommand("Refresh") end,
 		CoinModeChangedMessageCommand=function(self) self:playcommand("Refresh") end,
@@ -106,7 +106,7 @@ return Def.ActorFrame{
 		InsertCoinCommand=function(self) self:visible(false) end,
 		PressStartCommand=function(self) self:visible(true) end
 	},
-	LoadActor(THEME:GetPathG("_common","glow start button"))..{
+	LoadActor(THEME:GetPathG("_common","glow start button "..(isFinal() and "final" or "normal")))..{
 		InitCommand=function(self) self:CenterX():y(SCREEN_BOTTOM-37):zoom(0.7):blend(Blend.Add):diffuseshift():effectcolor1(color("#6BFF75")):effectcolor2(color("#FFFFFF00")):effectclock("beat") end,
 		OnCommand=function(self) self:playcommand("Refresh") end,
 		CoinModeChangedMessageCommand=function(self) self:playcommand("Refresh") end,

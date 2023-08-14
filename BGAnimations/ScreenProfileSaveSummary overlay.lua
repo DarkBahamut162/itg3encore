@@ -5,7 +5,7 @@ return Def.ActorFrame{
 	Def.Quad{
 		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y-60*0.68*WideScreenDiff()):valign(1):diffuse(color("#000000FF")):zoomto(SCREEN_WIDTH,SCREEN_HEIGHT) end
 	},
-	LoadActor(THEME:GetPathG("","profile"))..{
+	LoadActor(THEME:GetPathG("","profile "..(isFinal() and "final" or "normal")))..{
 		InitCommand=function(self) self:Center():zoomx(SCREEN_WIDTH):zoomy(0.68*WideScreenDiff()) end
 	},
 	Def.ActorFrame{

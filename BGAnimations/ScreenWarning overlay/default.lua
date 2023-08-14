@@ -2,13 +2,13 @@ return Def.ActorFrame{
 	LoadActor(IsHome() and "home" or "arcade")..{
 		InitCommand=function(self) self:rotationx(5) end
 	},
-	LoadActor(THEME:GetPathG("","lolhi"))..{
+	LoadActor(THEME:GetPathG("","lolhi "..(isFinal() and "final" or "normal")))..{
 		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y-130):fadeleft(0.3):faderight(0.3):cropleft(1.3):cropright(-0.3):zoom(0.5) end,
 		OnCommand=function(self) self:queuecommand("Anim") end,
 		AnimCommand=function(self) self:linear(1):cropleft(-0.3):zoom(1.6):linear(7):zoom(1.2) end,
 		OffCommand=function(self) self:stoptweening():linear(0.5):cropright(1.3):zoom(0.5) end
 	},
-	LoadActor(THEME:GetPathG("_red2","streak"))..{
+	LoadActor(THEME:GetPathG("_red2","streak "..(isFinal() and "final" or "normal")))..{
 		InitCommand=function(self) self:diffusealpha(0):zoom(0.5):CenterX():y(SCREEN_CENTER_Y-132):zoom(2.25):sleep(0.8):accelerate(0.8):diffusealpha(1):sleep(0.7):decelerate(0.8):diffusealpha(0) end,
 		OnCommand=function(self) self:queuecommand("Anim") end,
 		AnimCommand=function(self) self:linear(1):cropleft(-0.3):zoom(1.6):linear(7):zoom(1.2) end,

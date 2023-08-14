@@ -10,7 +10,7 @@ return Def.ActorFrame{
 		OffCommand=function(self) self:accelerate(0.2):diffusealpha(0) end
 	},
 	Def.ActorFrame{
-		LoadActor("border")..{
+		LoadActor("border "..(isFinal() and "final" or "normal"))..{
 			InitCommand=function(self) self:xy(player == PLAYER_1 and -96 or 96,110):shadowlength(1):zoom(0.8) end,
 			OnCommand=function(self) self:addx(player == PLAYER_1 and -SCREEN_CENTER_X or SCREEN_CENTER_X):sleep(0.4):decelerate(0.3):addx(player == PLAYER_1 and SCREEN_CENTER_X or -SCREEN_CENTER_X) end,
 			OffCommand=function(self) self:accelerate(0.2):diffusealpha(0) end

@@ -9,7 +9,7 @@ return Def.ActorFrame{
 	},
 	Def.ActorFrame{
 		Condition=GAMESTATE:IsAnyHumanPlayerUsingMemoryCard(),
-		LoadActor(THEME:GetPathG("","profile"))..{
+		LoadActor(THEME:GetPathG("","profile "..(isFinal() and "final" or "normal")))..{
 			InitCommand=function(self) self:Center():zoomx(SCREEN_WIDTH):zoomy(0) end,
 			OnCommand=function(self) self:linear(0.5):zoomy(0.68*WideScreenDiff()) end
 		},
@@ -33,7 +33,7 @@ return Def.ActorFrame{
 	},
 	Def.ActorFrame{
 		Condition=not GAMESTATE:IsAnyHumanPlayerUsingMemoryCard(),
-		LoadActor(THEME:GetPathG("","lolhi"))..{
+		LoadActor(THEME:GetPathG("","lolhi "..(isFinal() and "final" or "normal")))..{
 			InitCommand=function(self) self:Center():zoomx(SCREEN_WIDTH):zoomy(0) end,
 			OnCommand=function(self) self:linear(0.5):zoomy(0.68*WideScreenDiff()) end
 		},
@@ -42,7 +42,7 @@ return Def.ActorFrame{
 			InitCommand=function(self) self:Center():zoom(0.7*WideScreenDiff()):cropright(1.3):faderight(0.1) end,
 			OnCommand=function(self) self:sleep(0.25):linear(0.7):cropright(-0.3) end
 		},
-		LoadActor(THEME:GetPathG("","_disk"))..{
+		LoadActor(THEME:GetPathG("","_disk "..(isFinal() and "final" or "normal")))..{
 			InitCommand=function(self) self:x(SCREEN_CENTER_X-120*WideScreenDiff()):CenterY():zoom(WideScreenDiff()):diffusealpha(0) end,
 			OnCommand=function(self) self:spin():diffusealpha(1) end
 		},

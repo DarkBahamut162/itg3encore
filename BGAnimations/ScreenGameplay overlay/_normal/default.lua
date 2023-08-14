@@ -41,7 +41,7 @@ return Def.ActorFrame{
 		TweenOffCommand=function(self) if AnyPlayerFullComboed() then self:sleep(1) end self:accelerate(0.8):addy(-100) end,
 		Def.SongMeterDisplay{
 			InitCommand=function(self) self:SetStreamWidth(292) end,
-			Stream=LoadActor("meter stream"),
+			Stream=LoadActor("meter stream "..(isFinal() and "final" or "normal")),
 			Tip=LoadActor("tip")..{
 				OnCommand=function(self) self:zoom(0):sleep(1.8):zoom(1):diffuseshift():effectcolor1(color("1,1,1,1")):effectcolor2(color("1,1,1,0.5")):effectclock("beat"):effectperiod(4) end
 			}
@@ -67,28 +67,28 @@ return Def.ActorFrame{
 				InitCommand=function(self) self:CenterX():y(SCREEN_TOP+22*WideScreenDiff()):zoom(WideScreenDiff()):diffusealpha(0):blend(Blend.Add) end,
 				OnCommand=function(self) self:effectclock('beat'):diffuseramp():effectcolor1(color("#FFFFFF00")):effectcolor2(color("#00EAFF")):effectperiod(0.5):effect_hold_at_full(0.5):diffusealpha(0):linear(0.4):diffusealpha(1) end
 			},
-			LoadActor("width")..{
+			LoadActor("width "..(isFinal() and "final" or "normal"))..{
 				InitCommand=function(self) self:x(SCREEN_CENTER_X-190*WideScreenDiff()):y(SCREEN_TOP+22*WideScreenDiff()):zoom(WideScreenDiff()):halign(1) end,
 				OnCommand=function(self) self:sleep(1.5):linear(0.1):zoomtowidth(SCREEN_WIDTH/2-200*WideScreenDiff()) end
 			},
-			LoadActor("width")..{
+			LoadActor("width "..(isFinal() and "final" or "normal"))..{
 				InitCommand=function(self) self:x(SCREEN_CENTER_X+190*WideScreenDiff()):y(SCREEN_TOP+22*WideScreenDiff()):zoom(WideScreenDiff()):halign(0) end,
 				OnCommand=function(self) self:sleep(1.5):linear(0.1):zoomtowidth(SCREEN_WIDTH/2-200*WideScreenDiff()) end
 			},
-			LoadActor("left")..{
+			LoadActor("left "..(isFinal() and "final" or "normal"))..{
 				InitCommand=function(self) self:x(SCREEN_CENTER_X-193*WideScreenDiff()):y(SCREEN_TOP+22*WideScreenDiff()):zoom(WideScreenDiff()):halign(1) end,
 				OnCommand=function(self) self:sleep(1.5):linear(0.1):x(SCREEN_LEFT+16*WideScreenDiff()) end
 			},
-			LoadActor("left")..{
+			LoadActor("left "..(isFinal() and "final" or "normal"))..{
 				InitCommand=function(self) self:x(SCREEN_CENTER_X+193*WideScreenDiff()):y(SCREEN_TOP+22*WideScreenDiff()):zoom(WideScreenDiff()):halign(1):zoomx(-1) end,
 				OnCommand=function(self) self:sleep(1.5):linear(0.1):x(SCREEN_RIGHT-16*WideScreenDiff()) end
 			},
-			LoadActor("_base normal")..{ InitCommand=function(self) self:CenterX():y(SCREEN_TOP+22*WideScreenDiff()):zoom(WideScreenDiff()) end },
-			LoadActor("_neons top")..{
+			LoadActor("_base normal "..(isFinal() and "final" or "normal"))..{ InitCommand=function(self) self:CenterX():y(SCREEN_TOP+22*WideScreenDiff()):zoom(WideScreenDiff()) end },
+			LoadActor("_neons top "..(isFinal() and "final" or "normal"))..{
 				InitCommand=function(self) self:CenterX():y(SCREEN_TOP+22*WideScreenDiff()):zoom(WideScreenDiff()):blend(Blend.Add) end,
 				OnCommand=function(self) self:effectclock('beat'):diffuseramp():effectcolor1(color("#007892")):effectcolor2(color("#00EAFF")):effectperiod(0.5):effect_hold_at_full(0.5):diffusealpha(0):linear(0.4):diffusealpha(1) end
 			},
-			LoadActor("_neons top")..{
+			LoadActor("_neons top "..(isFinal() and "final" or "normal"))..{
 				InitCommand=function(self) self:CenterX():y(SCREEN_TOP+22*WideScreenDiff()):zoom(WideScreenDiff()) end,
 				OnCommand=function(self) self:effectclock('beat'):diffuseramp():effectcolor1(color("#FFFFFF00")):effectcolor2(color("#00EAFF")):effectperiod(0.5):effect_hold_at_full(0.5):diffusealpha(0):linear(0.4):diffusealpha(1) end
 			},
@@ -116,19 +116,19 @@ return Def.ActorFrame{
 		Def.ActorFrame{
 			Name="BPMFrame",
 			LoadActor("_uplight bottom")..{
-				InitCommand=function(self) self:CenterX():y(SCREEN_TOP+44*WideScreenDiff()):zoom(WideScreenDiff()):diffusealpha(0):visible(not isRave()) end,
+				InitCommand=function(self) self:CenterX():y(SCREEN_TOP+45*WideScreenDiff()):zoom(WideScreenDiff()):diffusealpha(0):visible(not isRave()) end,
 				OnCommand=function(self) self:effectclock('beat'):diffuseramp():effectcolor1(color("#007892")):effectcolor2(color("#00EAFF")):effectperiod(0.5):effect_hold_at_full(0.5):diffusealpha(0):linear(0.4):diffusealpha(1) end
 			},
 			LoadActor("_uplight bottom")..{
-				InitCommand=function(self) self:CenterX():y(SCREEN_TOP+44*WideScreenDiff()):zoom(WideScreenDiff()):diffusealpha(0):blend(Blend.Add):visible(not isRave()) end,
+				InitCommand=function(self) self:CenterX():y(SCREEN_TOP+45*WideScreenDiff()):zoom(WideScreenDiff()):diffusealpha(0):blend(Blend.Add):visible(not isRave()) end,
 				OnCommand=function(self) self:effectclock('beat'):diffuseramp():effectcolor1(color("#FFFFFF00")):effectcolor2(color("#00EAFF")):effectperiod(0.5):effect_hold_at_full(0.5):diffusealpha(0):linear(0.4):diffusealpha(1) end
 			},
-			LoadActor("_base bpm")..{ InitCommand=function(self) self:CenterX():y(SCREEN_TOP+58*WideScreenDiff()):zoom(WideScreenDiff()):visible(not isRave()) end },
-			LoadActor("_neons bottom")..{
+			LoadActor("_base bpm "..(isFinal() and "final" or "normal"))..{ InitCommand=function(self) self:CenterX():y(SCREEN_TOP+58*WideScreenDiff()):zoom(WideScreenDiff()):visible(not isRave()) end },
+			LoadActor("_neons bottom "..(isFinal() and "final" or "normal"))..{
 				InitCommand=function(self) self:CenterX():y(SCREEN_TOP+60*WideScreenDiff()):zoom(WideScreenDiff()):blend(Blend.Add):visible(not isRave()) end,
 				OnCommand=function(self) self:effectclock('beat'):diffuseramp():effectcolor1(color("#007892")):effectcolor2(color("#00EAFF")):effectperiod(0.5):effect_hold_at_full(0.5):diffusealpha(0):linear(0.4):diffusealpha(1) end
 			},
-			LoadActor("_neons bottom")..{
+			LoadActor("_neons bottom "..(isFinal() and "final" or "normal"))..{
 				InitCommand=function(self) self:CenterX():y(SCREEN_TOP+60*WideScreenDiff()):zoom(WideScreenDiff()):visible(not isRave()) end,
 				OnCommand=function(self) self:effectclock('beat'):diffuseramp():effectcolor1(color("#FFFFFF00")):effectcolor2(color("#00EAFF")):effectperiod(0.5):effect_hold_at_full(0.5):diffusealpha(0):linear(0.4):diffusealpha(1) end
 			}
@@ -174,7 +174,7 @@ return Def.ActorFrame{
 					end
 				end
 			},
-			LoadActor("difficulty glow")..{
+			LoadActor("difficulty glow "..(isFinal() and "final" or "normal"))..{
 				InitCommand=function(self) self:blend(Blend.Add):diffusealpha(0):draworder(110) end,
 				OnCommand=function(self) self:sleep(2.4):decelerate(0.5):diffusealpha(1):sleep(0.2):decelerate(0.8):diffusealpha(0):sleep(0) end,
 				OffCommand=function(self) self:stoptweening():decelerate(0.3):diffusealpha(0) end
@@ -211,7 +211,7 @@ return Def.ActorFrame{
 					end
 				end
 			},
-			LoadActor("difficulty glow")..{
+			LoadActor("difficulty glow "..(isFinal() and "final" or "normal"))..{
 				InitCommand=function(self) self:zoomx(-1):blend(Blend.Add):diffusealpha(0):draworder(110) end,
 				OnCommand=function(self) self:sleep(2.4):decelerate(0.5):diffusealpha(1):sleep(0.2):decelerate(0.8):diffusealpha(0):sleep(0) end,
 				OffCommand=function(self) self:stoptweening():decelerate(0.3):diffusealpha(0) end

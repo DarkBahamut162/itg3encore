@@ -17,7 +17,7 @@ return Def.ActorFrame{
 			InitCommand=function(self) self:x(SCREEN_LEFT+60*WideScreenDiff()):y(SCREEN_CENTER_Y+165*WideScreenDiff()):zoom(WideScreenDiff()) end,
 			OnCommand=function(self) self:diffusealpha(0):sleep(0.5):linear(0.3):diffusealpha(0.6) end
 		},
-		LoadActor(THEME:GetPathG("","_disk"))..{
+		LoadActor(THEME:GetPathG("","_disk "..(isFinal() and "final" or "normal")))..{
 			InitCommand=function(self) self:x(SCREEN_LEFT+60*WideScreenDiff()):y(SCREEN_CENTER_Y+165*WideScreenDiff()):zoom(WideScreenDiff()) end,
 			OnCommand=function(self) self:diffusealpha(0):sleep(0.5):spin():diffusealpha(1) end
 		},
@@ -50,7 +50,7 @@ return Def.ActorFrame{
 			InitCommand=function(self) self:x(SCREEN_RIGHT-60*WideScreenDiff()):y(SCREEN_CENTER_Y+165*WideScreenDiff()):zoom(WideScreenDiff()) end,
 			OnCommand=function(self) self:diffusealpha(0):sleep(0.5):linear(0.3):diffusealpha(0.6) end
 		},
-		LoadActor(THEME:GetPathG("","_disk"))..{
+		LoadActor(THEME:GetPathG("","_disk "..(isFinal() and "final" or "normal")))..{
 			InitCommand=function(self) self:x(SCREEN_RIGHT-120*WideScreenDiff()):y(SCREEN_CENTER_Y+165*WideScreenDiff()):zoom(WideScreenDiff()) end,
 			OnCommand=function(self) self:diffusealpha(0):sleep(0.5):spin():diffusealpha(1) end
 		},

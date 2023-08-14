@@ -184,7 +184,7 @@ return Def.ActorFrame{
 		Def.ActorFrame{
 			InitCommand=function(self) self:x(-filterWidth/2-8):CenterY():rotationz(rotate):valign(0) end,
 			OnCommand=function(self) cDl = self:GetChildren() end,
-			LoadActor(THEME:GetPathG("","lolhi"))..{ Name="SpeedDownLeft", InitCommand=function(self) self:zoomto(SCREEN_HEIGHT*4,16) end },
+			LoadActor(THEME:GetPathG("","lolhi "..(isFinal() and "final" or "normal")))..{ Name="SpeedDownLeft", InitCommand=function(self) self:zoomto(SCREEN_HEIGHT*4,16) end },
 			LoadActor("SpeedDown")..{ Name="SpeedDownLeft1", InitCommand=function(self) self:x(32*-15):diffusealpha(0.5):zoomtoheight(15):rotationz(180):SetAllStateDelays(0.125) end },
 			LoadActor("SpeedDown")..{ Name="SpeedDownLeft2", InitCommand=function(self) self:x(32*-14):diffusealpha(0.5):zoomtoheight(15):rotationz(180):SetAllStateDelays(0.125) end },
 			LoadActor("SpeedDown")..{ Name="SpeedDownLeft3", InitCommand=function(self) self:x(32*-13):diffusealpha(0.5):zoomtoheight(15):rotationz(180):SetAllStateDelays(0.125) end },
@@ -220,7 +220,7 @@ return Def.ActorFrame{
 		Def.ActorFrame{
 			InitCommand=function(self) self:x(filterWidth/2+8):CenterY():rotationz(rotate):valign(1) end,
 			OnCommand=function(self) cDr = self:GetChildren() end,
-			LoadActor(THEME:GetPathG("","lolhi"))..{ Name="SpeedDownRight", InitCommand=function(self) self:zoomto(SCREEN_HEIGHT*4,-16) end },
+			LoadActor(THEME:GetPathG("","lolhi "..(isFinal() and "final" or "normal")))..{ Name="SpeedDownRight", InitCommand=function(self) self:zoomto(SCREEN_HEIGHT*4,-16) end },
 			LoadActor("SpeedDown")..{ Name="SpeedDownRight1", InitCommand=function(self) self:x(32*-15):diffusealpha(0.5):zoomtoheight(15):rotationz(180):SetAllStateDelays(0.125) end },
 			LoadActor("SpeedDown")..{ Name="SpeedDownRight2", InitCommand=function(self) self:x(32*-14):diffusealpha(0.5):zoomtoheight(15):rotationz(180):SetAllStateDelays(0.125) end },
 			LoadActor("SpeedDown")..{ Name="SpeedDownRight3", InitCommand=function(self) self:x(32*-13):diffusealpha(0.5):zoomtoheight(15):rotationz(180):SetAllStateDelays(0.125) end },
@@ -259,7 +259,7 @@ return Def.ActorFrame{
 		Def.ActorFrame{
 			InitCommand=function(self) self:x(-filterWidth/2-8):CenterY():rotationz(rotate):valign(0) end,
 			OnCommand=function(self) cUl = self:GetChildren() end,
-			LoadActor(THEME:GetPathG("","profile"))..{ Name="SpeedUpLeft", InitCommand=function(self) self:zoomto(SCREEN_HEIGHT*4,16) end },
+			LoadActor(THEME:GetPathG("","profile "..(isFinal() and "final" or "normal")))..{ Name="SpeedUpLeft", InitCommand=function(self) self:zoomto(SCREEN_HEIGHT*4,16) end },
 			LoadActor("SpeedUp")..{ Name="SpeedUpLeft1", InitCommand=function(self) self:x(32*-15):diffusealpha(0.5):zoomtoheight(15):SetAllStateDelays(0.125) end },
 			LoadActor("SpeedUp")..{ Name="SpeedUpLeft2", InitCommand=function(self) self:x(32*-14):diffusealpha(0.5):zoomtoheight(15):SetAllStateDelays(0.125) end },
 			LoadActor("SpeedUp")..{ Name="SpeedUpLeft3", InitCommand=function(self) self:x(32*-13):diffusealpha(0.5):zoomtoheight(15):SetAllStateDelays(0.125) end },
@@ -295,7 +295,7 @@ return Def.ActorFrame{
 		Def.ActorFrame{
 			InitCommand=function(self) self:x(filterWidth/2+8):CenterY():rotationz(rotate):valign(1) end,
 			OnCommand=function(self) cUr = self:GetChildren() end,
-			LoadActor(THEME:GetPathG("","profile"))..{ Name="SpeedUpRight", InitCommand=function(self) self:zoomto(SCREEN_HEIGHT*4,-16) end },
+			LoadActor(THEME:GetPathG("","profile "..(isFinal() and "final" or "normal")))..{ Name="SpeedUpRight", InitCommand=function(self) self:zoomto(SCREEN_HEIGHT*4,-16) end },
 			LoadActor("SpeedUp")..{ Name="SpeedUpRight1", InitCommand=function(self) self:x(32*-15):diffusealpha(0.5):zoomtoheight(15):SetAllStateDelays(0.125) end },
 			LoadActor("SpeedUp")..{ Name="SpeedUpRight2", InitCommand=function(self) self:x(32*-14):diffusealpha(0.5):zoomtoheight(15):SetAllStateDelays(0.125) end },
 			LoadActor("SpeedUp")..{ Name="SpeedUpRight3", InitCommand=function(self) self:x(32*-13):diffusealpha(0.5):zoomtoheight(15):SetAllStateDelays(0.125) end },

@@ -8,7 +8,7 @@ return Def.ActorFrame{
 		},
 		Def.Quad{ InitCommand=function(self) self:clearzbuffer(true):zoom(0) end }
 	},
-	LoadActor(THEME:GetPathG("","lolhi"))..{
+	LoadActor(THEME:GetPathG("","lolhi "..(isFinal() and "final" or "normal")))..{
 		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y-80*WideScreenDiff()):fadeleft(0.3):faderight(0.3):cropleft(1.3):cropright(-0.3):zoom(0.3*WideScreenDiff()) end,
 		OnCommand=function(self) self:linear(1):cropleft(-0.3):zoom(2*WideScreenDiff()):linear(15):zoomy(1.2*WideScreenDiff()) end,
 		OffCommand=function(self) self:stoptweening():linear(0.5):cropright(1.3):zoom(0.5*WideScreenDiff()) end

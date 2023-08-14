@@ -81,7 +81,7 @@ return Def.ActorFrame{
 		self:RunCommandsOnChildren(function(self) self:playcommand("Set") end)
 	end,
 	Def.ActorFrame{
-		LoadActor("_null")..{
+		LoadActor("_null "..(isFinal() and "final" or "normal"))..{
 			InitCommand=function(self) self:x(-32+15.666*0):y(145):shadowlength(1):zoom(0.6) end,
 			OnCommand=function(self) self:addy(100):sleep(0.4):decelerate(0.3):addy(-100) end,
 			OffCommand=function(self) self:accelerate(0.2):diffusealpha(0) end,
@@ -94,7 +94,7 @@ return Def.ActorFrame{
 			OffCommand=function(self) self:accelerate(0.2):diffusealpha(0) end,
 			SetCommand=function(self) if bpm then self:diffuse(color("#00FFFF")) else self:diffuse(color("#808080")) end end
 		},
-		LoadActor("_null")..{
+		LoadActor("_null "..(isFinal() and "final" or "normal"))..{
 			InitCommand=function(self) self:x(-32+15.666*1):y(145):shadowlength(1):zoom(0.6) end,
 			OnCommand=function(self) self:addy(100):sleep(0.45):decelerate(0.3):addy(-100) end,
 			OffCommand=function(self) self:accelerate(0.2):diffusealpha(0) end,
@@ -107,7 +107,7 @@ return Def.ActorFrame{
 			OffCommand=function(self) self:accelerate(0.2):diffusealpha(0) end,
 			SetCommand=function(self) if stop then self:diffuse(color("#FF0000")) else self:diffuse(color("#808080")) end end
 		},
-		LoadActor("_null")..{
+		LoadActor("_null "..(isFinal() and "final" or "normal"))..{
 			InitCommand=function(self) self:x(-32+15.666*2):y(145):shadowlength(1):zoom(0.6) end,
 			OnCommand=function(self) self:addy(100):sleep(0.5):decelerate(0.3):addy(-100) end,
 			OffCommand=function(self) self:accelerate(0.2):diffusealpha(0) end,
@@ -120,7 +120,7 @@ return Def.ActorFrame{
 			OffCommand=function(self) self:accelerate(0.2):diffusealpha(0) end,
 			SetCommand=function(self) if delay then self:diffuse(color("#0000FF")) else self:diffuse(color("#808080")) end end
 		},
-		LoadActor("_null")..{
+		LoadActor("_null "..(isFinal() and "final" or "normal"))..{
 			InitCommand=function(self) self:x(-32+15.666*3):y(145):shadowlength(1):zoom(0.6) end,
 			OnCommand=function(self) self:addy(100):sleep(0.55):decelerate(0.3):addy(-100) end,
 			OffCommand=function(self) self:accelerate(0.2):diffusealpha(0) end,
@@ -133,7 +133,7 @@ return Def.ActorFrame{
 			OffCommand=function(self) self:accelerate(0.2):diffusealpha(0) end,
 			SetCommand=function(self) if warp then self:diffuse(color("#C000FF")) else self:diffuse(color("#808080")) end end
 		},
-		LoadActor("_null")..{
+		LoadActor("_null "..(isFinal() and "final" or "normal"))..{
 			InitCommand=function(self) self:x(-32+15.666*4):y(145):shadowlength(1):zoom(0.6) end,
 			OnCommand=function(self) self:addy(100):sleep(0.6):decelerate(0.3):addy(-100) end,
 			OffCommand=function(self) self:accelerate(0.2):diffusealpha(0) end,
@@ -146,7 +146,7 @@ return Def.ActorFrame{
 			OffCommand=function(self) self:accelerate(0.2):diffusealpha(0) end,
 			SetCommand=function(self) if scroll then self:diffuse(color("#00FF00")) else self:diffuse(color("#808080")) end end
 		},
-		LoadActor("_null")..{
+		LoadActor("_null "..(isFinal() and "final" or "normal"))..{
 			InitCommand=function(self) self:x(-32+15.666*5):y(145):shadowlength(1):zoom(0.6) end,
 			OnCommand=function(self) self:addy(100):sleep(0.65):decelerate(0.3):addy(-100) end,
 			OffCommand=function(self) self:accelerate(0.2):diffusealpha(0) end,
@@ -159,7 +159,7 @@ return Def.ActorFrame{
 			OffCommand=function(self) self:accelerate(0.2):diffusealpha(0) end,
 			SetCommand=function(self) if speed then self:diffuse(color("#FF8000")) else self:diffuse(color("#808080")) end end
 		},
-		LoadActor("_null")..{
+		LoadActor("_null "..(isFinal() and "final" or "normal"))..{
 			InitCommand=function(self) self:x(-32+15.666*6):y(145):shadowlength(1):zoom(0.6) end,
 			OnCommand=function(self) self:addy(100):sleep(0.7):decelerate(0.3):addy(-100) end,
 			OffCommand=function(self) self:accelerate(0.2):diffusealpha(0) end,
@@ -172,7 +172,7 @@ return Def.ActorFrame{
 			OffCommand=function(self) self:accelerate(0.2):diffusealpha(0) end,
 			SetCommand=function(self) if fake then self:diffuse(color("#FFFFFF")) else self:diffuse(color("#808080")) end end
 		},
-		LoadActor("_null")..{
+		LoadActor("_null "..(isFinal() and "final" or "normal"))..{
 			InitCommand=function(self) self:x(-32+15.666*7):y(145):shadowlength(1):zoom(0.6) end,
 			OnCommand=function(self) self:addy(100):sleep(0.75):decelerate(0.3):addy(-100) end,
 			OffCommand=function(self) self:accelerate(0.2):diffusealpha(0) end,
@@ -187,31 +187,31 @@ return Def.ActorFrame{
 		}
 	},
 	Def.ActorFrame{
-		LoadActor("_long")..{
+		LoadActor("_long "..(isFinal() and "final" or "normal"))..{
 			InitCommand=function(self) self:x(-39+25*0):y(114):shadowlength(1):halign(0) end,
 			OnCommand=function(self) self:addx(player == PLAYER_1 and -SCREEN_WIDTH or SCREEN_WIDTH):sleep(0.7):decelerate(0.3):addx(player == PLAYER_1 and SCREEN_WIDTH or -SCREEN_WIDTH) end,
 			OffCommand=function(self) self:accelerate(0.2):diffusealpha(0) end,
 			SetCommand=function(self) if stream > 0 then self:diffuse(color("#FFFFFF")) else self:diffuse(color("#808080")) end end
 		},
-		LoadActor("_long")..{
+		LoadActor("_long "..(isFinal() and "final" or "normal"))..{
 			InitCommand=function(self) self:x(-39+25*1):y(114):shadowlength(1):halign(0) end,
 			OnCommand=function(self) self:addx(player == PLAYER_1 and -SCREEN_WIDTH or SCREEN_WIDTH):sleep(0.7):decelerate(0.3):addx(player == PLAYER_1 and SCREEN_WIDTH or -SCREEN_WIDTH) end,
 			OffCommand=function(self) self:accelerate(0.2):diffusealpha(0) end,
 			SetCommand=function(self) if voltage > 0 then self:diffuse(color("#FFFFFF")) else self:diffuse(color("#808080")) end end
 		},
-		LoadActor("_long")..{
+		LoadActor("_long "..(isFinal() and "final" or "normal"))..{
 			InitCommand=function(self) self:x(-39+25*2):y(114):shadowlength(1):halign(0) end,
 			OnCommand=function(self) self:addx(player == PLAYER_1 and -SCREEN_WIDTH or SCREEN_WIDTH):sleep(0.7):decelerate(0.3):addx(player == PLAYER_1 and SCREEN_WIDTH or -SCREEN_WIDTH) end,
 			OffCommand=function(self) self:accelerate(0.2):diffusealpha(0) end,
 			SetCommand=function(self) if air > 0 then self:diffuse(color("#FFFFFF")) else self:diffuse(color("#808080")) end end
 		},
-		LoadActor("_long")..{
+		LoadActor("_long "..(isFinal() and "final" or "normal"))..{
 			InitCommand=function(self) self:x(-39+25*3):y(114):shadowlength(1):halign(0) end,
 			OnCommand=function(self) self:addx(player == PLAYER_1 and -SCREEN_WIDTH or SCREEN_WIDTH):sleep(0.7):decelerate(0.3):addx(player == PLAYER_1 and SCREEN_WIDTH or -SCREEN_WIDTH) end,
 			OffCommand=function(self) self:accelerate(0.2):diffusealpha(0) end,
 			SetCommand=function(self) if freeze > 0 then self:diffuse(color("#FFFFFF")) else self:diffuse(color("#808080")) end end
 		},
-		LoadActor("_long")..{
+		LoadActor("_long "..(isFinal() and "final" or "normal"))..{
 			InitCommand=function(self) self:x(-39+25*4):y(114):shadowlength(1):halign(0) end,
 			OnCommand=function(self) self:addx(player == PLAYER_1 and -SCREEN_WIDTH or SCREEN_WIDTH):sleep(0.7):decelerate(0.3):addx(player == PLAYER_1 and SCREEN_WIDTH or -SCREEN_WIDTH) end,
 			OffCommand=function(self) self:accelerate(0.2):diffusealpha(0) end,
@@ -344,32 +344,32 @@ return Def.ActorFrame{
 		}
 	},
 	Def.ActorFrame{
-		LoadActor("_jump")..{
-			InitCommand=function(self) self:x(-27+25*0):y(230):shadowlength(2) end,
+		LoadActor("_jump "..(isFinal() and "final" or "normal"))..{
+			InitCommand=function(self) self:x(-27+25*0):y(230):shadowlength(1) end,
 			OnCommand=function(self) self:decelerate(0.3):y(130) end,
 			OffCommand=function(self) self:accelerate(0.2):diffusealpha(0) end,
 			SetCommand=function(self) if jump then self:diffuse(color("#FFFFFF")) else self:diffuse(color("#808080")) end end
 		},
-		LoadActor("_hold")..{
-			InitCommand=function(self) self:x(-27+25*1):y(230):shadowlength(2) end,
+		LoadActor("_hold "..(isFinal() and "final" or "normal"))..{
+			InitCommand=function(self) self:x(-27+25*1):y(230):shadowlength(1) end,
 			OnCommand=function(self) self:sleep(0.1):decelerate(0.3):y(130) end,
 			OffCommand=function(self) self:accelerate(0.2):diffusealpha(0) end,
 			SetCommand=function(self) if hold then self:diffuse(color("#FFFFFF")) else self:diffuse(color("#808080")) end end
 		},
-		LoadActor("_mine")..{
-			InitCommand=function(self) self:x(-27+25*2):y(230):shadowlength(2) end,
+		LoadActor("_mine "..(isFinal() and "final" or "normal"))..{
+			InitCommand=function(self) self:x(-27+25*2):y(230):shadowlength(1) end,
 			OnCommand=function(self) self:sleep(0.2):decelerate(0.3):y(130) end,
 			OffCommand=function(self) self:accelerate(0.2):diffusealpha(0) end,
 			SetCommand=function(self) if mine then self:diffuse(color("#FFFFFF")) else self:diffuse(color("#808080")) end end
 		},
-		LoadActor("_hand")..{
-			InitCommand=function(self) self:x(-27+25*3):y(230):shadowlength(2) end,
+		LoadActor("_hand "..(isFinal() and "final" or "normal"))..{
+			InitCommand=function(self) self:x(-27+25*3):y(230):shadowlength(1) end,
 			OnCommand=function(self) self:sleep(0.3):decelerate(0.3):y(130) end,
 			OffCommand=function(self) self:accelerate(0.2):diffusealpha(0) end,
 			SetCommand=function(self) if hand then self:diffuse(color("#FFFFFF")) else self:diffuse(color("#808080")) end end
 		},
-		LoadActor("_roll")..{
-			InitCommand=function(self) self:x(-27+25*4):y(230):shadowlength(2) end,
+		LoadActor("_roll "..(isFinal() and "final" or "normal"))..{
+			InitCommand=function(self) self:x(-27+25*4):y(230):shadowlength(1) end,
 			OnCommand=function(self) self:sleep(0.4):decelerate(0.3):y(130) end,
 			OffCommand=function(self) self:accelerate(0.2):diffusealpha(0) end,
 			SetCommand=function(self) if roll then self:diffuse(color("#FFFFFF")) else self:diffuse(color("#808080")) end end

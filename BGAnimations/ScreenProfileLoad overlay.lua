@@ -10,7 +10,7 @@ return Def.ActorFrame{
 	LoadActor(THEME:GetPathB("_statsout","style")),
 	Def.ActorFrame{
 		Condition=GAMESTATE:IsAnyHumanPlayerUsingMemoryCard(),
-		LoadActor(THEME:GetPathG("","profile"))..{
+		LoadActor(THEME:GetPathG("","profile "..(isFinal() and "final" or "normal")))..{
 			InitCommand=function(self) self:Center():zoomx(SCREEN_WIDTH):zoomy(0.68*WideScreenDiff()) end
 		},
 		LoadFont("_z 36px shadowx")..{
@@ -20,14 +20,14 @@ return Def.ActorFrame{
 	},
 	Def.ActorFrame{
 		Condition=not GAMESTATE:IsAnyHumanPlayerUsingMemoryCard(),
-		LoadActor(THEME:GetPathG("","lolhi"))..{
+		LoadActor(THEME:GetPathG("","lolhi "..(isFinal() and "final" or "normal")))..{
 			InitCommand=function(self) self:Center():zoomx(SCREEN_WIDTH):zoomy(0.68*WideScreenDiff()) end
 		},
 		LoadFont("_z 36px shadowx")..{
 			Text="LOADING...",
 			InitCommand=function(self) self:Center():zoom(0.7*WideScreenDiff()) end
 		},
-		LoadActor(THEME:GetPathG("","_disk"))..{
+		LoadActor(THEME:GetPathG("","_disk "..(isFinal() and "final" or "normal")))..{
 			InitCommand=function(self) self:x(SCREEN_CENTER_X-120*WideScreenDiff()):CenterY():zoom(WideScreenDiff()) end,
 			OnCommand=function(self) self:linear(0.5):zoom(0):rotationz(360) end
 		}

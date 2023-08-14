@@ -8,7 +8,7 @@ return Def.ActorFrame{
 		OnCommand=function(self) self:sleep(0):linear(0.5):diffusealpha(1):y(SCREEN_CENTER_Y-60*0.68*WideScreenDiff()) end
 	},
 	Def.ActorFrame{
-		LoadActor(THEME:GetPathG("","lolhi"))..{
+		LoadActor(THEME:GetPathG("","lolhi "..(isFinal() and "final" or "normal")))..{
 			InitCommand=function(self) self:Center():zoomx(SCREEN_WIDTH):zoomy(0.0) end,
 			OnCommand=function(self) self:linear(0.2):zoomy(0.68*WideScreenDiff()) end
 		},
@@ -17,7 +17,7 @@ return Def.ActorFrame{
 			InitCommand=function(self) self:Center():cropright(1.3):faderight(0.1):zoom(0.7*WideScreenDiff()) end,
 			OnCommand=function(self) self:sleep(0.2):linear(0.5):cropright(-0.3) end
 		},
-		LoadActor(THEME:GetPathG("","_disk"))..{
+		LoadActor(THEME:GetPathG("","_disk "..(isFinal() and "final" or "normal")))..{
 			InitCommand=function(self) self:x(SCREEN_CENTER_X-120*WideScreenDiff()):CenterY():zoom(WideScreenDiff()):diffusealpha(0) end,
 			OnCommand=function(self) self:spin():diffusealpha(1) end
 		},

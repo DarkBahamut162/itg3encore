@@ -7,7 +7,7 @@ return Def.ActorFrame{
 		InitCommand=function(self) self:Center():diffuse(color("0,0,0,1")):valign(1):zoomto(SCREEN_WIDTH,SCREEN_HEIGHT):diffusealpha(0) end,
 		OnCommand=function(self) self:sleep(0):linear(0.5):diffusealpha(1):y(SCREEN_CENTER_Y-60*0.68*WideScreenDiff()) end
 	},
-	LoadActor(THEME:GetPathG("","profile"))..{
+	LoadActor(THEME:GetPathG("","profile "..(isFinal() and "final" or "normal")))..{
 		InitCommand=function(self) self:Center():zoomx(SCREEN_WIDTH):zoomy(0) end,
 		OnCommand=function(self) self:linear(0.5):zoomy(0.68*WideScreenDiff()) end
 	},
