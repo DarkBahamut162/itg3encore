@@ -492,7 +492,7 @@ function OptionSetPacemaker()
 			if selected and selected ~= 0 then
 				list[selected] = true
 			else
-				list[11] = true
+				list[1] = true
 			end
 		end,
 		SaveSelections = function(self, list, pn)
