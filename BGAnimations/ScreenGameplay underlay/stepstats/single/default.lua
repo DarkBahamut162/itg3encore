@@ -1,6 +1,7 @@
 if isTopScreen("ScreenDemonstration2") then return Def.ActorFrame{} end
 
 local pn = GAMESTATE:GetMasterPlayerNumber()
+local graph = getenv("ShowStatsGraph"..pname(pn)) == 2
 local startX = pn == PLAYER_1 and SCREEN_WIDTH/4 or -SCREEN_WIDTH/4
 local SongOrCourse,StepsOrTrail,scorelist,topscore
 local mines,holds,rolls,holdsAndRolls = 0,0,0,0
@@ -69,14 +70,21 @@ return Def.ActorFrame{
 		BeginCommand=function(self) self:visible(GAMESTATE:IsHumanPlayer(pn)) end,
 		OnCommand=function(self)
 			if IsGame("be-mu") then
-				self:x(startX+(getenv("RotationSolo"..pname(pn)) and 78*WideScreenDiff() or 0))
+				local move = pn == PLAYER_1 and 78 or -78
+				self:x(startX+(getenv("RotationSolo"..pname(pn)) and move*WideScreenDiff() or 0))
 				self:y(getenv("RotationSolo"..pname(pn)) and SCREEN_HEIGHT/6*WideScreenDiff() or 0)
 			elseif IsGame("po-mu") then
-				self:x(startX+(getenv("RotationSolo"..pname(pn)) and 72*WideScreenDiff() or 0))
+				local move = pn == PLAYER_1 and 72 or -72
+				self:x(startX+(getenv("RotationSolo"..pname(pn)) and move*WideScreenDiff() or 0))
 				self:y(getenv("RotationSolo"..pname(pn)) and SCREEN_HEIGHT/6*WideScreenDiff() or 0)
 			else
-				self:x(startX+(getenv("RotationSolo"..pname(pn)) and 64*WideScreenDiff() or 0))
+				local move = pn == PLAYER_1 and 64 or -64
+				self:x(startX+(getenv("RotationSolo"..pname(pn)) and move*WideScreenDiff() or 0))
 				self:y(getenv("RotationSolo"..pname(pn)) and 34*WideScreenDiff() or 0)
+			end
+			if graph then
+				local plus = pn == PLAYER_1 and 72 or -72
+				self:addx(getenv("RotationSolo"..pname(pn)) and plus/2 or plus)
 			end
 			self:zoom(getenv("RotationSolo"..pname(pn)) and 0.75*WideScreenDiff() or 1*WideScreenDiff())
 			:addx(pn == PLAYER_1 and SCREEN_WIDTH/2 or -SCREEN_WIDTH/2)
@@ -87,6 +95,14 @@ return Def.ActorFrame{
 			if AnyPlayerFullComboed() then self:sleep(1) end
 			self:accelerate(0.8):addx(pn == PLAYER_1 and SCREEN_WIDTH/2 or -SCREEN_WIDTH/2)
 		end,
+		LoadActor("../graph",pn)..{
+			Condition=graph,
+			InitCommand=function(self)
+				if not isFinal() then
+					self:zoomx(0.95):zoomy(0.85)
+				end
+			end
+		},
 		LoadActor("s_"..(isFinal() and "final" or "normal")),
 		LoadActor("s_bg"..getenv("ShowStats"..pname(pn))),
 		LoadActor("s_glow final")..{

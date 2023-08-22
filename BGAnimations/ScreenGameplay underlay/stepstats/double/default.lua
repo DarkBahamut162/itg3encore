@@ -47,13 +47,13 @@ return Def.ActorFrame{
 	OnCommand=function(self) self:Center() end,
 	Def.ActorFrame{
 		Name="Player",
-		InitCommand=function(self) self:x(xPos):addx(pn == PLAYER_1 and 100*getenv("ShowStatsType"..pname(pn)) or -100*getenv("ShowStatsType"..pname(pn))):zoom(WideScreenDiff()) end,
+		InitCommand=function(self) self:x(xPos):addx(pn == PLAYER_1 and 100*getenv("ShowStatsSize"..pname(pn)) or -100*getenv("ShowStatsSize"..pname(pn))):zoom(WideScreenDiff()) end,
 		BeginCommand=function(self) self:visible(GAMESTATE:IsHumanPlayer(pn)) end,
 		OnCommand=function(self)
 			if GAMESTATE:GetNumPlayersEnabled() == 2 and GAMESTATE:GetNumSidesJoined() == 2 then
-				self:addx(pn == PLAYER_1 and -100*getenv("ShowStatsType"..pname(pn)) or 100*getenv("ShowStatsType"..pname(pn))):diffusealpha(0):sleep(0.5):linear(0.8):diffusealpha(1)
+				self:addx(pn == PLAYER_1 and -100*getenv("ShowStatsSize"..pname(pn)) or 100*getenv("ShowStatsSize"..pname(pn))):diffusealpha(0):sleep(0.5):linear(0.8):diffusealpha(1)
 			else
-				self:sleep(0.5):decelerate(0.8):addx(pn == PLAYER_1 and -100*getenv("ShowStatsType"..pname(pn)) or 100*getenv("ShowStatsType"..pname(pn)))
+				self:sleep(0.5):decelerate(0.8):addx(pn == PLAYER_1 and -100*getenv("ShowStatsSize"..pname(pn)) or 100*getenv("ShowStatsSize"..pname(pn)))
 			end
 		end,
 		OffCommand=function(self)
@@ -61,9 +61,13 @@ return Def.ActorFrame{
 			if GAMESTATE:GetNumPlayersEnabled() == 2 and GAMESTATE:GetNumSidesJoined() == 2 then
 				self:linear(0.8):diffusealpha(0)
 			else
-				self:accelerate(0.8):addx(pn == PLAYER_1 and 100*getenv("ShowStatsType"..pname(pn)) or -100*getenv("ShowStatsType"..pname(pn)))
+				self:accelerate(0.8):addx(pn == PLAYER_1 and 100*getenv("ShowStatsSize"..pname(pn)) or -100*getenv("ShowStatsSize"..pname(pn)))
 			end
 		end,
+		LoadActor("../graph",pn)..{
+			Condition=getenv("ShowStatsGraph"..pname(pn)) == 2,
+			InitCommand=function(self) self:x(pn == PLAYER_1 and 53 or -53):y(-15):zoom(0.5) end
+		},
 		LoadActor("d_bg"),
 		Def.ActorFrame{
 			Condition=getenv("ShowStats"..pname(pn)) < 7,
@@ -147,8 +151,7 @@ return Def.ActorFrame{
 			}
 		},
 		Def.ActorFrame{
-			Condition=getenv("ShowStatsType"..pname(pn)) == 2,
-			InitCommand=function(self) self:x(pn == PLAYER_1 and -62 or 62):y(154):zoom(0.33) end,
+			InitCommand=function(self) self:x(pn == PLAYER_1 and -62 or 62):y(148):zoom(0.33) end,
 			LoadActor("../single/s_"..(isFinal() and "final" or "normal")),
 			LoadActor("../single/s_glow final")..{
 				Condition=isFinal(),

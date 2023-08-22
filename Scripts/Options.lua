@@ -177,7 +177,7 @@ function SongMods()
 	local style = GAMESTATE:GetCurrentStyle()
 	local styleType = style:GetStyleType()
 	local doubles = (styleType == 'StyleType_OnePlayerTwoSides' or styleType == 'StyleType_TwoPlayersSharedSides')
-	local add = (GAMESTATE:GetNumPlayersEnabled() == 2 and not doubles) and "" or "20T,"
+	local add = (GAMESTATE:GetNumPlayersEnabled() == 1 and not doubles) and "20S,20G," or "20G,"
 
 	local options = "1,2,4,F,0,3,5,RE,RE2,AE,AE2,AE3,17,9,"
 
@@ -306,8 +306,10 @@ function InitOptions()
 
 	setenv("ShowStatsP1",0)
 	setenv("ShowStatsP2",0)
-	setenv("ShowStatsTypeP1",1)
-	setenv("ShowStatsTypeP2",1)
+	setenv("ShowStatsSizeP1",1)
+	setenv("ShowStatsSizeP2",1)
+	setenv("ShowStatsGraphP1",1)
+	setenv("ShowStatsGraphP2",1)
 	setenv("SetPacemakerP1",0)
 	setenv("SetPacemakerP2",0)
 
@@ -419,16 +421,16 @@ function OptionShowStats()
 	return t
 end
 
-function OptionShowStatsType()
+function OptionShowStatsSize()
 	local t = {
-		Name="ShowStatsType",
+		Name="ShowStatsSize",
 		LayoutType = "ShowAllInRow",
 		SelectType = "SelectOne",
 		OneChoiceForAllPlayers = false,
 		ExportOnChange = false,
 		Choices = { "Full","Mini" },
 		LoadSelections = function(self, list, pn)
-			local selected = getenv("ShowStatsType"..pname(pn))
+			local selected = getenv("ShowStatsSize"..pname(pn))
 			if selected and selected ~= 0 then
 				list[selected] = true
 			else
@@ -438,7 +440,36 @@ function OptionShowStatsType()
 		SaveSelections = function(self, list, pn)
 			for i, choice in ipairs(self.Choices) do
 				if list[i] then
-					setenv("ShowStatsType"..pname(pn),i)
+					setenv("ShowStatsSize"..pname(pn),i)
+					break
+				end
+			end
+		end
+	}
+	setmetatable(t, t)
+	return t
+end
+
+function OptionShowStatsGraph()
+	local t = {
+		Name="ShowStatsGraph",
+		LayoutType = "ShowAllInRow",
+		SelectType = "SelectOne",
+		OneChoiceForAllPlayers = false,
+		ExportOnChange = false,
+		Choices = { "Off","On" },
+		LoadSelections = function(self, list, pn)
+			local selected = getenv("ShowStatsGraph"..pname(pn))
+			if selected and selected ~= 0 then
+				list[selected] = true
+			else
+				list[1] = true
+			end
+		end,
+		SaveSelections = function(self, list, pn)
+			for i, choice in ipairs(self.Choices) do
+				if list[i] then
+					setenv("ShowStatsGraph"..pname(pn),i)
 					break
 				end
 			end
@@ -676,11 +707,23 @@ function DisplayCustomModifiersText(pn)
 	if getenv("ShowMods"..pname(pn)) then output = addToOutput(output,"Show Mods",", ") end
 	if getenv("ShowStats"..pname(pn)) > 0 then
 		if GAMESTATE:GetNumPlayersEnabled() == 2 and not doubles then
-			output = addToOutput(output,"Show Stats",", ")
-		elseif getenv("ShowStatsType"..pname(pn)) == 1 then
-			output = addToOutput(output,"Show Full Stats",", ")
-		elseif getenv("ShowStatsType"..pname(pn)) == 2 then
-			output = addToOutput(output,"Show Mini Stats",", ")
+			if getenv("ShowStatsGraph"..pname(pn)) == 1 then
+				output = addToOutput(output,"Show Stats",", ")
+			else
+				output = addToOutput(output,"Show Stats with Graph",", ")
+			end
+		elseif getenv("ShowStatsSize"..pname(pn)) == 1 then
+			if getenv("ShowStatsGraph"..pname(pn)) == 1 then
+				output = addToOutput(output,"Show FullStats",", ")
+			else
+				output = addToOutput(output,"Show FullStats with Graph",", ")
+			end
+		elseif getenv("ShowStatsSize"..pname(pn)) == 2 then
+			if getenv("ShowStatsGraph"..pname(pn)) == 1 then
+				output = addToOutput(output,"Show MiniStats",", ")
+			else
+				output = addToOutput(output,"Show MiniStats with Graph",", ")
+			end
 		end
 	end
 
