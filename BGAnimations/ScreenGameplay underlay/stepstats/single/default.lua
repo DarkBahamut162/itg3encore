@@ -173,8 +173,11 @@ return Def.ActorFrame{
 		Def.ActorFrame{
 			Condition=getenv("ShowStats"..pname(pn)) == 7,
 			InitCommand=function(self) self:y(isFinal() and -19 or 0) end,
-			LoadActor("s_bg_7")..{
-				InitCommand=function(self) self:cropleft(0.025):cropright(0.025):diffusealpha(0.5) end
+			LoadActor(THEME:GetPathG("horiz-line","short"))..{
+				InitCommand=function(self)
+					local target = THEME:GetMetric("PlayerStageStats", "GradePercentTier" .. string.format("%02d", 18-getenv("SetPacemaker"..pname(pn))))
+					self:y(-target*barHeight+barHeight/2):valign(0):zoomx(1.25):zoomy(0.5):diffusealpha(0.5):fadeleft(0.25):faderight(0.25):diffuse(color("#FF0000")):diffuseramp():effectcolor1(color("#FF000080")):effectcolor2(color("#FF0000FF")):effectperiod(0.5):effect_hold_at_full(0.5):effectclock('beat')
+				end
 			},
 			LoadActor("s_glow final")..{
 				Condition=isFinal(),
@@ -252,7 +255,7 @@ return Def.ActorFrame{
 				LoadFont("_z numbers")..{
 					Name="TargetPoints",
 					OnCommand=function(self)
-						local target = THEME:GetMetric("PlayerStageStats","GradePercentTier"..string.format("%02d",17-getenv("SetPacemaker"..pname(pn))))
+						local target = THEME:GetMetric("PlayerStageStats","GradePercentTier"..string.format("%02d",18-getenv("SetPacemaker"..pname(pn))))
 						self:maxwidth(125):horizalign(right):zoom(0.75):shadowlength(0):addy(125+2.5):addx(100):diffuse(PlayerColor(pn)):settext(math.ceil(target*STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):GetPossibleDancePoints()))
 						if topscore then self:maxheight(15):addy(-0.5) end
 					end
@@ -282,7 +285,7 @@ return Def.ActorFrame{
 						local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn)
 						local DPCurMax = pss:GetCurrentPossibleDancePoints()
 						local curPlayerDP = pss:GetActualDancePoints()
-						local target = THEME:GetMetric("PlayerStageStats","GradePercentTier"..string.format("%02d",17-getenv("SetPacemaker"..pname(pn))))
+						local target = THEME:GetMetric("PlayerStageStats","GradePercentTier"..string.format("%02d",18-getenv("SetPacemaker"..pname(pn))))
 						local curTargetDP = math.ceil(DPCurMax*target)
 						self:settextf("%+04d",(curPlayerDP-curTargetDP))
 					end
@@ -318,7 +321,7 @@ return Def.ActorFrame{
 			},
 			LoadActor("../w6")..{
 				OnCommand=function(self)
-					local target = THEME:GetMetric("PlayerStageStats","GradePercentTier"..string.format("%02d",17-getenv("SetPacemaker"..pname(pn))))
+					local target = THEME:GetMetric("PlayerStageStats","GradePercentTier"..string.format("%02d",18-getenv("SetPacemaker"..pname(pn))))
 					self:vertalign(bottom):addy(barHeight/2):addx(barCenter+(barWidth[bgNum]+barSpace[bgNum])*(topscore ~= nil and 2 or 1)):zoomx(0.01*barWidth[bgNum]):zoomy(target*barHeight):diffusealpha(0.25)
 				end
 			},
@@ -360,7 +363,7 @@ return Def.ActorFrame{
 					local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn)
 					local DPCurMax = pss:GetCurrentPossibleDancePoints()
 					local DPMax = pss:GetPossibleDancePoints()
-					local target = THEME:GetMetric("PlayerStageStats","GradePercentTier"..string.format("%02d",17-getenv("SetPacemaker"..pname(pn))))
+					local target = THEME:GetMetric("PlayerStageStats","GradePercentTier"..string.format("%02d",18-getenv("SetPacemaker"..pname(pn))))
 					self:zoomy(DPCurMax/DPMax*target*barHeight)
 				end
 			}

@@ -486,7 +486,7 @@ function OptionSetPacemaker()
 		SelectType = "SelectOne",
 		OneChoiceForAllPlayers = false,
 		ExportOnChange = false,
-		Choices = {'C-','C','C+','B-','B','B+','A-','A','A+','S-','S','S+','★','★★','★★★','★★★★'},
+		Choices = {'D+','C-','C','C+','B-','B','B+','A-','A','A+','S-','S','S+','★','★★','★★★','★★★★'},
 		LoadSelections = function(self, list, pn)
 			local selected = getenv("SetPacemaker"..pname(pn))
 			if selected and selected ~= 0 then

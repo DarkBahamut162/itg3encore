@@ -105,7 +105,7 @@ return Def.ActorFrame{
 			},
 			LoadActor("../w6")..{
 				OnCommand=function(self)
-					local target = THEME:GetMetric("PlayerStageStats", "GradePercentTier" .. string.format("%02d", 17-getenv("SetPacemaker"..pname(pn))))
+					local target = THEME:GetMetric("PlayerStageStats", "GradePercentTier" .. string.format("%02d", 18-getenv("SetPacemaker"..pname(pn))))
 					self:vertalign(bottom):x(barCenter+(barWidth[bgNum])*(topscore ~= nil and 2 or 1)):y(164):zoomx(0.01*barWidth[bgNum]):zoomy(target*barHeight):diffusealpha(0.25)
 				end
 			},
@@ -142,7 +142,7 @@ return Def.ActorFrame{
 				InitCommand=function(self) self:vertalign(bottom):x(barCenter+barWidth[bgNum]*(topscore ~= nil and 2 or 1)):y(164):zoomx(0.01*barWidth[bgNum]):zoomy(0) end,
 				JudgmentMessageCommand=function(self,param) if param.Player == pn then self:queuecommand("Update") end end,
 				UpdateCommand=function(self)
-					local target = THEME:GetMetric("PlayerStageStats", "GradePercentTier" .. string.format("%02d", 17-getenv("SetPacemaker"..pname(pn))))
+					local target = THEME:GetMetric("PlayerStageStats", "GradePercentTier" .. string.format("%02d", 18-getenv("SetPacemaker"..pname(pn))))
 					local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn)
 					local DPCurMax = pss:GetCurrentPossibleDancePoints()
 					local DPMax = pss:GetPossibleDancePoints()
@@ -283,7 +283,7 @@ return Def.ActorFrame{
 					LoadFont("_z numbers")..{
 						Name="TargetPoints",
 						OnCommand=function(self)
-							local target = THEME:GetMetric("PlayerStageStats","GradePercentTier"..string.format("%02d",17-getenv("SetPacemaker"..pname(pn))))
+							local target = THEME:GetMetric("PlayerStageStats","GradePercentTier"..string.format("%02d",18-getenv("SetPacemaker"..pname(pn))))
 							self:maxwidth(125):horizalign(right):shadowlength(0):addy(160):addx(125):diffuse(PlayerColor(pn)):settext(math.ceil(target*STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):GetPossibleDancePoints()))
 						end
 					},
@@ -311,7 +311,7 @@ return Def.ActorFrame{
 							local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn)
 							local DPCurMax = pss:GetCurrentPossibleDancePoints()
 							local curPlayerDP = pss:GetActualDancePoints()
-							local target = THEME:GetMetric("PlayerStageStats","GradePercentTier"..string.format("%02d",17-getenv("SetPacemaker"..pname(pn))))
+							local target = THEME:GetMetric("PlayerStageStats","GradePercentTier"..string.format("%02d",18-getenv("SetPacemaker"..pname(pn))))
 							local curTargetDP = math.ceil(DPCurMax*target)
 							self:settextf("%+04d",(curPlayerDP-curTargetDP))
 						end
