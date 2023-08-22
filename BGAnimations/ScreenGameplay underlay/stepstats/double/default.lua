@@ -68,7 +68,7 @@ return Def.ActorFrame{
 			Condition=getenv("ShowStatsGraph"..pname(pn)) == 2,
 			InitCommand=function(self) self:x(pn == PLAYER_1 and 53 or -53):y(-15):zoom(0.5) end
 		},
-		LoadActor("d_bg"),
+		LoadActor("d_bg",pn),
 		Def.ActorFrame{
 			Condition=getenv("ShowStats"..pname(pn)) < 7,
 			Bars
