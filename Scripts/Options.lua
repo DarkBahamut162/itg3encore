@@ -177,7 +177,13 @@ function SongMods()
 	local style = GAMESTATE:GetCurrentStyle()
 	local styleType = style:GetStyleType()
 	local doubles = (styleType == 'StyleType_OnePlayerTwoSides' or styleType == 'StyleType_TwoPlayersSharedSides')
-	local add = (GAMESTATE:GetNumPlayersEnabled() == 1 and not doubles) and "20S,20G," or "20G,"
+	local add = ""
+	
+	if isOutFox() then
+		add = (GAMESTATE:GetNumPlayersEnabled() == 1 and not doubles) and "20S,20G," or "20G,"
+	else
+		add = (GAMESTATE:GetNumPlayersEnabled() == 1 and not doubles) and "20S," or ""
+	end
 
 	local options = "1,2,4,F,0,3,5,RE,RE2,AE,AE2,AE3,17,9,"
 
