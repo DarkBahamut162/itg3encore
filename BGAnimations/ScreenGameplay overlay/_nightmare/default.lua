@@ -105,14 +105,9 @@ return Def.ActorFrame{
 			LoadActor("_difficulty icons")..{
 				InitCommand=function(self) self:pause():playcommand("Update") end,
 				UpdateCommand=function(self)
-					local steps = GAMESTATE:GetCurrentSteps(PLAYER_1)
-					local course = GAMESTATE:GetCurrentTrail(PLAYER_1)
-					if course then
-						self:visible(true)
-						self:setstate(DifficultyToState(course:GetDifficulty()))
-					elseif steps then
-						self:visible(true)
-						self:setstate(DifficultyToState(steps:GetDifficulty()))
+					local StepsOrTrail = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentTrail(PLAYER_1) or GAMESTATE:GetCurrentSteps(PLAYER_1)
+					if StepsOrTrail then
+						self:visible(true):setstate(DifficultyToState(StepsOrTrail:GetDifficulty()))
 					else
 						self:visible(false)
 					end
@@ -133,14 +128,9 @@ return Def.ActorFrame{
 			LoadActor("_difficulty icons")..{
 				InitCommand=function(self) self:pause():zoomx(-1):playcommand("Update") end,
 				UpdateCommand=function(self)
-					local steps = GAMESTATE:GetCurrentSteps(PLAYER_2)
-					local course = GAMESTATE:GetCurrentTrail(PLAYER_2)
-					if course then
-						self:visible(true)
-						self:setstate(DifficultyToState(course:GetDifficulty()))
-					elseif steps then
-						self:visible(true)
-						self:setstate(DifficultyToState(steps:GetDifficulty()))
+					local StepsOrTrail = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentTrail(PLAYER_2) or GAMESTATE:GetCurrentSteps(PLAYER_2)
+					if StepsOrTrail then
+						self:visible(true):setstate(DifficultyToState(StepsOrTrail:GetDifficulty()))
 					else
 						self:visible(false)
 					end

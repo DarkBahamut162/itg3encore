@@ -8,13 +8,8 @@ if ShowStandardDecoration("StepsDisplay") then
 				LoadActor(THEME:GetPathG("_difficulty icons",isFinal() and "final" or "normal"))..{
 					InitCommand=function(self) self:zoomy(0.8):animate(0):zoomx((pn==PLAYER_2) and -0.8 or 0.8):playcommand("Update") end,
 					UpdateCommand=function(self)
-						local course = GAMESTATE:GetCurrentTrail(pn)
-						local steps = GAMESTATE:GetCurrentSteps(pn)
-						if course then
-							self:setstate(DifficultyToState(course:GetDifficulty()))
-						elseif steps then
-							self:setstate(DifficultyToState(steps:GetDifficulty()))
-						end
+						local StepsOrTrail = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentTrail(pn) or GAMESTATE:GetCurrentSteps(pn)
+						if StepsOrTrail then self:setstate(DifficultyToState(StepsOrTrail:GetDifficulty())) end
 					end
 				},
 				Def.StepsDisplay {
