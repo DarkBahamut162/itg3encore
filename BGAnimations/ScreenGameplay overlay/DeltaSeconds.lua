@@ -12,6 +12,10 @@ return LoadFont("_r bold 30px")..{
 		else
 			posX = THEME:GetMetric(Var "LoadingScreen","PlayerP2OnePlayerOneSideX")
 		end
+		if IsGame("pump") then
+			if GAMESTATE:GetNumPlayersEnabled() == 1 and getenv("RotationSolo"..pname(player)) then posX = THEME:GetMetric(Var "LoadingScreen","PlayerP1OnePlayerTwoSidesX") end
+			self:addy(10)
+		end
 		self:x(posX + 72*WideScreenDiff()):shadowlength(1):skewx(-0.125)
 	end,
 	CurrentSongChangedMessageCommand=function(self)

@@ -44,10 +44,23 @@ return Def.ActorFrame{
 		Name="Score"..pname(player),
 		InitCommand=function(self)
 			self:visible(not getenv("HideScore"..pname(player))):diffuse(PlayerColor(player)):x(math.floor(scale(player == PLAYER_1 and 0.25 or 0.75,0,1,SCREEN_LEFT,SCREEN_RIGHT))):zoom(WideScreenDiff())
-			if getenv("Workout") then self:y(SCREEN_TOP+51*WideScreenDiff()) else self:y(SCREEN_TOP+61*WideScreenDiff()) end
+			if getenv("Workout") then
+				if IsGame("pump") then
+					if getenv("RotationSolo"..pname(player)) then
+						self:y(SCREEN_TOP+61*WideScreenDiff())
+					else
+						self:y(SCREEN_TOP+41*WideScreenDiff())
+					end
+				else
+					self:y(SCREEN_TOP+51*WideScreenDiff())
+				end
+			else
+				self:y(SCREEN_TOP+61*WideScreenDiff())
+			end
+			if IsGame("pump") then self:addy(10) if GAMESTATE:GetNumPlayersEnabled() == 1 and getenv("RotationSolo"..pname(player)) then self:CenterX() end end
 		end,
 		OnCommand=function(self) self:queuecommand("RedrawScore"):addy(-100):sleep(0.5):decelerate(0.8):addy(100) end,
-		OffCommand=function(self) if AnyPlayerFullComboed() then self:sleep(1) end self:accelerate(0.8):addy(-100) end,
+		OffCommand=function(self) if not IsGame("pump") then if AnyPlayerFullComboed() then self:sleep(1) end self:accelerate(0.8):addy(-100) end end,
 		JudgmentMessageCommand=function(self,param)
 			local short = ToEnumShortString(param.TapNoteScore or param.HoldNoteScore)
 			local update = weight[short] ~= 0

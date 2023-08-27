@@ -20,6 +20,7 @@ function DifficultyToState(diff)
 end
 
 function GetSongFrame()
+	if IsGame("pump") then return "_piupro" end
 	if GAMESTATE:IsCourseMode() then return "_normal" end
 	local song = GAMESTATE:GetCurrentSong()
 	local songTitle = song:GetDisplayFullTitle()

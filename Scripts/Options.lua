@@ -179,7 +179,7 @@ function SongMods()
 	local doubles = (styleType == 'StyleType_OnePlayerTwoSides' or styleType == 'StyleType_TwoPlayersSharedSides')
 	local add = ""
 	
-	if isOutFox() then
+	if isOutFox() and not isOni() then
 		add = (GAMESTATE:GetNumPlayersEnabled() == 1 and not doubles) and "20S,20G," or "20G,"
 	else
 		add = (GAMESTATE:GetNumPlayersEnabled() == 1 and not doubles) and "20S," or ""
@@ -216,12 +216,18 @@ function SongMods()
 		end
 	end
 
+	if GAMESTATE:IsCourseMode() then
+		if (GAMESTATE:GetNumPlayersEnabled() == 1 and not doubles) then
+			options = "1,3,22R"
+		else
+			options = "1,3"
+		end
+	end
+
 	if isRave() then
-		options = "1,3,28,21,"
-	elseif isOni() and not isLifeline(GAMESTATE:GetMasterPlayerNumber()) then
-		options = "1,3,28,20,"..add.."P,29,21,"
-	elseif isOni() then
-		options = "1,3,28,S,20,"..add.."P,29,21,"
+		options = addToOutput(options,"28,21",",")
+	elseif GAMESTATE:IsCourseMode() then
+		options = addToOutput(options,"28,S,20,"..add.."P,29,21",",")
 	end
 
 	options = addToOutput(options,"16",",")
@@ -581,6 +587,27 @@ function OptionOrientation()
 			setenv("RotationRight"..pname(pn),list[3])
 			setenv("RotationUpsideDown"..pname(pn),list[4])
 			if GAMESTATE:GetNumPlayersEnabled() == 1 then setenv("RotationSolo"..pname(pn),list[5]) end
+		end
+	}
+	setmetatable(t, t)
+	return t
+end
+
+function OptionOrientationRestricted()
+	local t = {
+		Name = "Orientation",
+		LayoutType = "ShowAllInRow",
+		SelectType = "SelectOne",
+		OneChoiceForAllPlayers = false,
+		ExportOnChange = false,
+		Choices = { "Normal", "Solo-Centered" },
+		LoadSelections = function(self, list, pn)
+			list[1] = getenv("RotationNormal"..pname(pn))
+			list[2] = getenv("RotationSolo"..pname(pn))
+		end,
+		SaveSelections = function(self, list, pn)
+			setenv("RotationNormal"..pname(pn),list[1])
+			setenv("RotationSolo"..pname(pn),list[2])
 		end
 	}
 	setmetatable(t, t)
