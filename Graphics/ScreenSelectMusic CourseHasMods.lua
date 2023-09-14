@@ -30,6 +30,8 @@ return Def.ActorFrame{
 				curStep = GAMESTATE:GetCurrentSteps(GAMESTATE:GetMasterPlayerNumber())
 				if curSelection then
 					if curStep then
+						--lua.ReportScriptError( curSelection:GetGroupName().." | "..curSelection:GetDisplayFullTitle().." / "..curSelection:GetDisplayArtist() )
+
 						local Cache = isOutFox() and split("\n",LoadModule("Config.LoadEverything.lua")(getStepCacheFile(curStep))) or {}
 						local CacheLoaded = {}
 
