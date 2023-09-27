@@ -3,6 +3,7 @@ local t = LoadFallbackB()
 for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
 	if GAMESTATE:IsPlayerEnabled(pn) then
 		t[#t+1] = StandardDecorationFromFile("Disqualify"..pname(pn), "Disqualify")..{
+			InitCommand=function(self,param)self:playcommand("Update") end,
 			UpdateCommand=function(self)
 				local disqualify = GAMESTATE:CurrentOptionsDisqualifyPlayer(pn)
 				self:diffusealpha(disqualify and 1 or 0)
