@@ -47,7 +47,7 @@ local function UpdateGraph()
     return stepsPerSecList
 end
 
-local function GetVertecies(stepsPerSecList)
+local function GetVertices(stepsPerSecList)
     local stepsList = stepsPerSecList or {1}
     local lenCorrection = 1.0
     local addx = graphW / #stepsList
@@ -86,40 +86,42 @@ end
 
 return Def.ActorFrame{
     LoadActor("notegraph")..{
-        InitCommand=function(self) self:zoomy(2/3):sleep(0.5):linear(0.5):x(pn == PLAYER_1 and -100 or 100):cropleft(pn == PLAYER_1 and 0 or 0.5):cropright(pn == PLAYER_1 and 0.5 or 0) end
+        InitCommand=function(self) self:cropleft(pn == PLAYER_1 and 0 or 1):cropright(pn == PLAYER_1 and 1 or 0):zoomy(2/3):sleep(0.5):linear(0.5):x(pn == PLAYER_1 and -100 or 100):cropleft(pn == PLAYER_1 and 0 or 0.5):cropright(pn == PLAYER_1 and 0.5 or 0) end
     },
     LoadActor("notegraph")..{
-        InitCommand=function(self) self:zoomy(2/3):sleep(0.5):linear(0.5):x(pn == PLAYER_1 and -100 or 100):cropleft(pn == PLAYER_1 and 0 or 0.5):cropright(pn == PLAYER_1 and 0.5 or 0) end,
+        InitCommand=function(self) self:cropleft(pn == PLAYER_1 and 0 or 1):cropright(pn == PLAYER_1 and 1 or 0):zoomy(2/3):sleep(0.5):linear(0.5):x(pn == PLAYER_1 and -100 or 100):cropleft(pn == PLAYER_1 and 0 or 0.5):cropright(pn == PLAYER_1 and 0.5 or 0) end,
         OnCommand=function(self) self:blend(Blend.Add):diffuseramp():effectcolor1(color("#FFFFFF00")):effectcolor2(color("#FFFFFF")):effectperiod(0.5):effect_hold_at_full(0.5):effectclock('beat') end
     },
-    Def.ActorMultiVertex{
-        DoneLoadingNextSongMessageCommand=function(self) self:playcommand("Init") end,
-        InitCommand=function(self)
-            local vertices = GetVertecies(UpdateGraph())
-            self:SetDrawState({Mode = 'DrawMode_Quads'})
-            self:SetVertices(1, vertices)
-            self:SetNumVertices(#vertices)
-            self:rotationz(pn == PLAYER_1 and -90 or 90)
-            self:rotationx(pn == PLAYER_1 and 0 or 180)
-            self:x(pn == PLAYER_1 and-46 or 46):y(175)
-            self:zoomy(0):sleep(0.08):linear(0.92):zoomy(1.0-0.4*math.max(854-SCREEN_WIDTH, 0)/214)
-        end
-    },
-    Def.ActorMultiVertex{
-        DoneLoadingNextSongMessageCommand=function(self) self:playcommand("Init") end,
-        InitCommand=function(self)
-            local update = UpdateGraph()
-            for i=1,#update do update[i] = math.max(0,(update[i]-20)/4) end
-            local vertices = GetVertecies(update)
-            self:SetDrawState({Mode = 'DrawMode_Quads'})
-            self:SetVertices(1, vertices)
-            self:SetNumVertices(#vertices)
-            self:rotationz(pn == PLAYER_1 and -90 or 90)
-            self:rotationx(pn == PLAYER_1 and 0 or 180)
-            self:x(pn == PLAYER_1 and-46 or 46):y(175)
-            self:blend(Blend.Subtract)
-            self:zoomy(0):sleep(0.08):linear(0.92):zoomy(1.0-0.4*math.max(854-SCREEN_WIDTH, 0)/214)
-        end
+    Def.ActorFrame{
+        Def.ActorMultiVertex{
+            DoneLoadingNextSongMessageCommand=function(self) self:playcommand("Init") end,
+            InitCommand=function(self)
+                local vertices = GetVertices(UpdateGraph())
+                self:SetDrawState({Mode = 'DrawMode_Quads'})
+                self:SetVertices(1, vertices)
+                self:SetNumVertices(#vertices)
+                self:rotationz(pn == PLAYER_1 and -90 or 90)
+                self:rotationx(pn == PLAYER_1 and 0 or 180)
+                self:x(pn == PLAYER_1 and-46 or 46):y(175)
+                self:diffusealpha(0):zoomy(0):linear(0.5):zoomy(1.0-0.4*math.max(854-SCREEN_WIDTH, 0)/214):diffusealpha(1)
+            end
+        },
+        Def.ActorMultiVertex{
+            DoneLoadingNextSongMessageCommand=function(self) self:playcommand("Init") end,
+            InitCommand=function(self)
+                local update = UpdateGraph()
+                for i=1,#update do update[i] = math.max(0,(update[i]-20)/4) end
+                local vertices = GetVertices(update)
+                self:SetDrawState({Mode = 'DrawMode_Quads'})
+                self:SetVertices(1, vertices)
+                self:SetNumVertices(#vertices)
+                self:rotationz(pn == PLAYER_1 and -90 or 90)
+                self:rotationx(pn == PLAYER_1 and 0 or 180)
+                self:x(pn == PLAYER_1 and-46 or 46):y(175)
+                self:blend(Blend.Subtract)
+                self:diffusealpha(0):zoomy(0):linear(0.5):zoomy(1.0-0.4*math.max(854-SCREEN_WIDTH, 0)/214):diffusealpha(1)
+            end
+        }
     },
     LoadActor(THEME:GetPathG("horiz-line","short"))..{
         DoneLoadingNextSongMessageCommand=function(self) self:queuecommand("RePos") end,
