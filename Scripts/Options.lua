@@ -320,8 +320,8 @@ function InitOptions()
 	setenv("ShowStatsP2",0)
 	setenv("ShowStatsSizeP1",1)
 	setenv("ShowStatsSizeP2",1)
-	setenv("ShowStatsGraphP1",1)
-	setenv("ShowStatsGraphP2",1)
+	setenv("ShowNoteGraphP1",1)
+	setenv("ShowNoteGraphP2",1)
 	setenv("SetPacemakerP1",0)
 	setenv("SetPacemakerP2",0)
 
@@ -462,16 +462,16 @@ function OptionShowStatsSize()
 	return t
 end
 
-function OptionShowStatsGraph()
+function OptionShowNoteGraph()
 	local t = {
-		Name="ShowStatsGraph",
+		Name="ShowNoteGraph",
 		LayoutType = "ShowAllInRow",
 		SelectType = "SelectOne",
 		OneChoiceForAllPlayers = false,
 		ExportOnChange = false,
 		Choices = { "Off","On" },
 		LoadSelections = function(self, list, pn)
-			local selected = getenv("ShowStatsGraph"..pname(pn))
+			local selected = getenv("ShowNoteGraph"..pname(pn))
 			if selected and selected ~= 0 then
 				list[selected] = true
 			else
@@ -481,7 +481,7 @@ function OptionShowStatsGraph()
 		SaveSelections = function(self, list, pn)
 			for i, choice in ipairs(self.Choices) do
 				if list[i] then
-					setenv("ShowStatsGraph"..pname(pn),i)
+					setenv("ShowNoteGraph"..pname(pn),i)
 					break
 				end
 			end
@@ -740,22 +740,22 @@ function DisplayCustomModifiersText(pn)
 	if getenv("ShowMods"..pname(pn)) then output = addToOutput(output,"Show Mods",", ") end
 	if getenv("ShowStats"..pname(pn)) > 0 then
 		if GAMESTATE:GetNumPlayersEnabled() == 2 and not doubles then
-			if getenv("ShowStatsGraph"..pname(pn)) == 1 then
+			if getenv("ShowNoteGraph"..pname(pn)) == 1 then
 				output = addToOutput(output,"Show Stats",", ")
 			else
-				output = addToOutput(output,"Show Stats with Graph",", ")
+				output = addToOutput(output,"Show Stats with Note Graph",", ")
 			end
 		elseif getenv("ShowStatsSize"..pname(pn)) == 1 then
-			if getenv("ShowStatsGraph"..pname(pn)) == 1 then
+			if getenv("ShowNoteGraph"..pname(pn)) == 1 then
 				output = addToOutput(output,"Show FullStats",", ")
 			else
-				output = addToOutput(output,"Show FullStats with Graph",", ")
+				output = addToOutput(output,"Show FullStats with Note Graph",", ")
 			end
 		elseif getenv("ShowStatsSize"..pname(pn)) == 2 then
-			if getenv("ShowStatsGraph"..pname(pn)) == 1 then
+			if getenv("ShowNoteGraph"..pname(pn)) == 1 then
 				output = addToOutput(output,"Show MiniStats",", ")
 			else
-				output = addToOutput(output,"Show MiniStats with Graph",", ")
+				output = addToOutput(output,"Show MiniStats with Note Graph",", ")
 			end
 		end
 	end

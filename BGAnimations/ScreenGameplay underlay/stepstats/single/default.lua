@@ -1,7 +1,7 @@
 if isTopScreen("ScreenDemonstration2") then return Def.ActorFrame{} end
 
 local pn = GAMESTATE:GetMasterPlayerNumber()
-local graph = getenv("ShowStatsGraph"..pname(pn)) == 2
+local graph = getenv("ShowNoteGraph"..pname(pn)) == 2
 local startX = pn == PLAYER_1 and SCREEN_WIDTH/4 or -SCREEN_WIDTH/4
 local SongOrCourse,StepsOrTrail,scorelist,topscore
 local mines,holds,rolls,holdsAndRolls = 0,0,0,0
