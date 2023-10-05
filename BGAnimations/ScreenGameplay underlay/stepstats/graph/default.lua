@@ -47,6 +47,53 @@ local function UpdateGraph()
     return stepsPerSecList
 end
 
+local function UpdateGraphAssist()
+    local SongOrCourse = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentTrail(pn):GetTrailEntry(GAMESTATE:GetLoadingCourseSongIndex()):GetSong() or GAMESTATE:GetCurrentSong()
+    local StepOrTrails = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentTrail(pn):GetTrailEntry(GAMESTATE:GetLoadingCourseSongIndex()):GetSteps() or GAMESTATE:GetCurrentSteps(pn)
+	local assist = {}
+    local chartint = 1
+    local temp = nil
+
+    if SongOrCourse then
+        for k,v in pairs( SongOrCourse:GetAllSteps() ) do
+            if v == StepOrTrails then
+                chartint = k
+                break
+            end
+        end
+
+        local timingData = StepOrTrails:GetTimingData()
+        if getenv("ShowSpeedAssist"..pname(pn)) then
+            for k,v in pairs(timingData:GetBPMsAndTimes()) do
+                local data = split('=', v)
+                local numData = {tonumber(data[1]), tonumber(data[2])}
+                numData[2] = math.round(numData[2] * 1000) / 1000
+                if numData[1] > SongOrCourse:GetLastBeat() then break end
+
+                if temp then
+                    if numData[2] - temp < 0 then
+                        assist[timingData:GetElapsedTimeFromBeat(numData[1])] = -1
+                    elseif numData[2] - temp > 0 then
+                        assist[timingData:GetElapsedTimeFromBeat(numData[1])] = 1
+                    end
+                end
+                temp = numData[2]
+            end
+        end
+
+        if getenv("ShowStopAssist"..pname(pn)) then
+            for k,v in pairs(timingData:GetStops()) do
+                local data = split('=', v)
+                local numData = {tonumber(data[1]), tonumber(data[2])}
+                if numData[1] > SongOrCourse:GetLastBeat() then break end
+                assist[timingData:GetElapsedTimeFromBeat(numData[1])] = 0
+            end
+        end
+    end
+
+    return {assist,SongOrCourse:GetLastSecond()}
+end
+
 local function GetVertices(stepsPerSecList)
     local stepsList = stepsPerSecList or {1}
     local lenCorrection = 1.0
@@ -80,6 +127,29 @@ local function GetVertices(stepsPerSecList)
             {nextX, graphH, 0},
             {col[1], col[2], col[3], col[4]*0.5}
         }
+    end
+    return vertices
+end
+
+local function GetVerticesAssist(insert)
+    local assistList,lastSecond = insert[1],insert[2]
+    local vertices = {}
+    local col = color('1, 1, 1, 1')
+    local length = lastSecond/352/2
+
+    for sec,typ in pairs(assistList) do
+        if typ < 0 then
+            col = color('0, 0, 1, 0.5')
+        elseif typ > 0 then
+            col = color('1, 0, 0, 0.5')
+        else
+            col = color('1, 1, 1, 0.25')
+        end
+
+        vertices[#vertices+1] = { {(sec-length)*graphW/lastSecond, graphH*2, 0},col }
+        vertices[#vertices+1] = { {(sec-length)*graphW/lastSecond, 0, 0},col }
+        vertices[#vertices+1] = { {(sec+length)*graphW/lastSecond, 0, 0},col }
+        vertices[#vertices+1] = { {(sec+length)*graphW/lastSecond, graphH*2, 0},col }
     end
     return vertices
 end
@@ -121,7 +191,21 @@ return Def.ActorFrame{
                 self:blend(Blend.Subtract)
                 self:diffusealpha(0):zoomy(0):linear(0.5):zoomy(1.0-0.4*math.max(854-SCREEN_WIDTH, 0)/214):diffusealpha(1)
             end
-        }
+        },
+        Def.ActorMultiVertex{
+            Condition=getenv("ShowSpeedAssist"..pname(pn)) or getenv("ShowStopAssist"..pname(pn)),
+            DoneLoadingNextSongMessageCommand=function(self) self:playcommand("Init") end,
+            InitCommand=function(self)
+                local vertices = GetVerticesAssist(UpdateGraphAssist())
+                self:SetDrawState({Mode = 'DrawMode_Quads'})
+                self:SetVertices(1, vertices)
+                self:SetNumVertices(#vertices)
+                self:rotationz(pn == PLAYER_1 and -90 or 90)
+                self:rotationx(pn == PLAYER_1 and 0 or 180)
+                self:x(pn == PLAYER_1 and-46 or 46):y(175)
+                self:diffusealpha(0):zoomy(0):linear(0.5):zoomy(1.0-0.4*math.max(854-SCREEN_WIDTH, 0)/214):diffusealpha(1)
+            end
+        },
     },
     LoadActor(THEME:GetPathG("horiz-line","short"))..{
         DoneLoadingNextSongMessageCommand=function(self) self:queuecommand("RePos") end,
