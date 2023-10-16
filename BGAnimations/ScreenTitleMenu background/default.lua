@@ -451,6 +451,7 @@ return Def.ActorFrame{
 		end
 	},
 	Def.ActorFrame{
+		Condition=ThemePrefs.Get("ShowClock"),
 		Name="TIME & DATE",
 		InitCommand=function(self) self:CenterX():y(isFinal() and SCREEN_BOTTOM+11 or SCREEN_BOTTOM-6) end,
 		LoadFont("_v 26px bold black")..{

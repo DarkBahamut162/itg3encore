@@ -29,6 +29,7 @@ return Def.ActorFrame{
 		CoinInsertedMessageCommand=function(self) self:stoptweening():playcommand("Refresh") end
 	},
 	Def.ActorFrame{
+		Condition=ThemePrefs.Get("ShowClock"),
 		Name="TIME & DATE",
 		OnCommand=function(self) self:CenterX():y(isGamePlay() and SCREEN_BOTTOM-26*WideScreenDiff() or SCREEN_BOTTOM-33*WideScreenDiff()) if GAMESTATE:IsEventMode() and isGamePlay() then self:y(SCREEN_BOTTOM-16*WideScreenDiff()) end end,
 		LoadFont("_v 26px bold black")..{

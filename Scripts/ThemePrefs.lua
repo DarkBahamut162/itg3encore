@@ -13,6 +13,11 @@ local Prefs = {
 		Choices = { OptionNameString('Off'), OptionNameString('On') },
 		Values = { false, true }
 	},
+	ShowClock = {
+		Default = false,
+		Choices = { OptionNameString('Off'), OptionNameString('On') },
+		Values = { false, true }
+	},
 	ShowHasLua = {
 		Default = false,
 		Choices = { OptionNameString('Off'), OptionNameString('On') },
