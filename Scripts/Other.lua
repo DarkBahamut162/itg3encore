@@ -344,3 +344,12 @@ function USBCheck()
 	end
 	return true
 end
+
+local OptionsListKeys = {
+	PrevItem = "MenuLeft",
+	NextItem = "MenuRight"
+}
+
+function GetOptionsListMapping(name)
+	return OptionsListKeys[name]
+end
