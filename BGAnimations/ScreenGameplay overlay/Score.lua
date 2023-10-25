@@ -64,7 +64,7 @@ return Def.ActorFrame{
 		JudgmentMessageCommand=function(self,param)
 			local short = ToEnumShortString(param.TapNoteScore or param.HoldNoteScore)
 			local update = weight[short] ~= 0
-			if param.Player == player and update then self:queuecommand("RedrawScore") end
+			if param.Player == player and update then self:stoptweening():queuecommand("RedrawScore") end
 		end,
 		RedrawScoreCommand=function(self)
 			local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(player)
