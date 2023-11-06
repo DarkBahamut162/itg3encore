@@ -1,7 +1,7 @@
 return Def.ActorFrame{
 	LoadFont("_r bold stroke")..{
-		InitCommand=function(self) self:halign(0) end,
-		CurrentSongChangedMessageCommand=function(self) self:playcommand("Set") end,
+		InitCommand=function(self) self:halign(0):diffuseramp():effectperiod(1):effectoffset(0.2):effectclock("beat"):effectcolor1(color("#693A3A")):effectcolor2(color("#FF0000")) end,
+		CurrentSongChangedMessageCommand=function(self) self:playcommand("Blink"):playcommand("Set") end,
 		CurrentCourseChangedMessageCommand=function(self) self:playcommand("Set") end,
 		CurrentTrailP1ChangedMessageCommand=function(self) self:playcommand("Set") end,
 		CurrentTrailP2ChangedMessageCommand=function(self) self:playcommand("Set") end,
@@ -177,6 +177,16 @@ return Def.ActorFrame{
 				end
 			end
 			self:settext(output):valign(1)
+		end,
+		BlinkCommand=function(self)
+			local song = GAMESTATE:GetCurrentSong()
+			if song then
+				local spmp = song:GetPreviewMusicPath()
+				local effectclock = spmp ~= "" and "beat" or "timerglobal"
+				self:effectclock(effectclock)
+			else
+				self:effectclock("beat")
+			end
 		end
 	}
 }

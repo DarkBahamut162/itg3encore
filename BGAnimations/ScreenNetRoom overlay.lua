@@ -46,13 +46,35 @@ return Def.ActorFrame{
 		end,
 		LoadActor(THEME:GetPathG("_pane elements/_lneon",isFinal() and "final" or "normal"))..{
 			InitCommand=function(self) self:x(SCREEN_CENTER_X-90*WideScreenDiff()):y(SCREEN_BOTTOM-76*WideScreenDiff()):zoom(WideScreenDiff()):horizalign(right):vertalign(bottom):diffuseshift():effectcolor1(color("#bed0ff")):effectcolor2(color("#767676")):effectoffset(0):effectclock("beat") end,
-			OnCommand=function(self) self:addx(-SCREEN_WIDTH):decelerate(0.75):addx(SCREEN_WIDTH) end,
-			OffCommand=function(self) self:sleep(0.5):accelerate(0.75):addx(-SCREEN_WIDTH) end
+			OnCommand=function(self) self:playcommand("Blink"):addx(-SCREEN_WIDTH):decelerate(0.75):addx(SCREEN_WIDTH) end,
+			OffCommand=function(self) self:sleep(0.5):accelerate(0.75):addx(-SCREEN_WIDTH) end,
+			BlinkCommand=function(self)
+				local song = GAMESTATE:GetCurrentSong()
+				if song then
+					local spmp = song:GetPreviewMusicPath()
+					local effectclock = spmp ~= "" and "beat" or "timerglobal"
+					self:effectclock(effectclock)
+				else
+					self:effectclock("beat")
+				end
+			end,
+			CurrentSongChangedMessageCommand=function(self) self:playcommand("Blink") end
 		},
 		LoadActor(THEME:GetPathG("_pane elements/_neonwidth",isFinal() and "final" or "normal"))..{
 			InitCommand=function(self) self:x(SCREEN_CENTER_X-146*WideScreenDiff()):y(SCREEN_BOTTOM-76*WideScreenDiff()):zoom(WideScreenDiff()):horizalign(right):vertalign(bottom):zoomtowidth(SCREEN_WIDTH/2):diffuseshift():effectcolor1(color("#bed0ff")):effectcolor2(color("#767676")):effectoffset(0):effectclock("beat") end,
-			OnCommand=function(self) self:addx(-SCREEN_WIDTH):decelerate(0.75):addx(SCREEN_WIDTH) end,
-			OffCommand=function(self) self:sleep(0.5):accelerate(0.75):addx(-SCREEN_WIDTH) end
+			OnCommand=function(self) self:playcommand("Blink"):addx(-SCREEN_WIDTH):decelerate(0.75):addx(SCREEN_WIDTH) end,
+			OffCommand=function(self) self:sleep(0.5):accelerate(0.75):addx(-SCREEN_WIDTH) end,
+			BlinkCommand=function(self)
+				local song = GAMESTATE:GetCurrentSong()
+				if song then
+					local spmp = song:GetPreviewMusicPath()
+					local effectclock = spmp ~= "" and "beat" or "timerglobal"
+					self:effectclock(effectclock)
+				else
+					self:effectclock("beat")
+				end
+			end,
+			CurrentSongChangedMessageCommand=function(self) self:playcommand("Blink") end
 		}
 	},
 	Def.ActorFrame{
@@ -65,13 +87,35 @@ return Def.ActorFrame{
 		end,
 		LoadActor(THEME:GetPathG("_pane elements/_lneon",isFinal() and "final" or "normal"))..{
 			InitCommand=function(self) self:x(SCREEN_CENTER_X+146*WideScreenDiff()):y(SCREEN_BOTTOM-76*WideScreenDiff()):zoomx(-1*WideScreenDiff()):zoomy(WideScreenDiff()):horizalign(left):vertalign(bottom):diffuseshift():effectcolor1(color("#bed0ff")):effectcolor2(color("#767676")):effectoffset(0):effectclock("beat") end,
-			OnCommand=function(self) self:addx(SCREEN_WIDTH):decelerate(0.75):addx(-SCREEN_WIDTH) end,
-			OffCommand=function(self) self:sleep(0.5):accelerate(0.75):addx(SCREEN_WIDTH) end
+			OnCommand=function(self) self:playcommand("Blink"):addx(SCREEN_WIDTH):decelerate(0.75):addx(-SCREEN_WIDTH) end,
+			OffCommand=function(self) self:sleep(0.5):accelerate(0.75):addx(SCREEN_WIDTH) end,
+			BlinkCommand=function(self)
+				local song = GAMESTATE:GetCurrentSong()
+				if song then
+					local spmp = song:GetPreviewMusicPath()
+					local effectclock = spmp ~= "" and "beat" or "timerglobal"
+					self:effectclock(effectclock)
+				else
+					self:effectclock("beat")
+				end
+			end,
+			CurrentSongChangedMessageCommand=function(self) self:playcommand("Blink") end
 		},
 		LoadActor(THEME:GetPathG("_pane elements/_neonwidth",isFinal() and "final" or "normal"))..{
 			InitCommand=function(self) self:x(SCREEN_CENTER_X+146*WideScreenDiff()):y(SCREEN_BOTTOM-76*WideScreenDiff()):zoom(WideScreenDiff()):horizalign(left):vertalign(bottom):zoomtowidth(SCREEN_WIDTH/2):diffuseshift():effectcolor1(color("#bed0ff")):effectcolor2(color("#767676")):effectoffset(0):effectclock("beat") end,
-			OnCommand=function(self) self:addx(SCREEN_WIDTH):decelerate(0.75):addx(-SCREEN_WIDTH) end,
-			OffCommand=function(self) self:sleep(0.5):accelerate(0.75):addx(SCREEN_WIDTH) end
+			OnCommand=function(self) self:playcommand("Blink"):addx(SCREEN_WIDTH):decelerate(0.75):addx(-SCREEN_WIDTH) end,
+			OffCommand=function(self) self:sleep(0.5):accelerate(0.75):addx(SCREEN_WIDTH) end,
+			BlinkCommand=function(self)
+				local song = GAMESTATE:GetCurrentSong()
+				if song then
+					local spmp = song:GetPreviewMusicPath()
+					local effectclock = spmp ~= "" and "beat" or "timerglobal"
+					self:effectclock(effectclock)
+				else
+					self:effectclock("beat")
+				end
+			end,
+			CurrentSongChangedMessageCommand=function(self) self:playcommand("Blink") end
 		}
 	},
 	Def.ActorFrame{
@@ -86,26 +130,70 @@ return Def.ActorFrame{
 			Name="LeftSide",
 			LoadActor(THEME:GetPathG("_pane elements/_lneon",isFinal() and "final" or "normal"))..{
 				InitCommand=function(self) self:x(SCREEN_CENTER_X-90*WideScreenDiff()):y(SCREEN_BOTTOM-76*WideScreenDiff()):zoom(WideScreenDiff()):horizalign(right):vertalign(bottom):diffuseshift():effectcolor1(color("#bed0ff")):effectcolor2(color("#767676")):effectoffset(0):effectclock("beat") end,
-				OnCommand=function(self) self:addx(-SCREEN_WIDTH):decelerate(0.75):addx(SCREEN_WIDTH) end,
-				OffCommand=function(self) self:sleep(0.5):accelerate(0.75):addx(-SCREEN_WIDTH) end
+				OnCommand=function(self) self:playcommand("Blink"):addx(-SCREEN_WIDTH):decelerate(0.75):addx(SCREEN_WIDTH) end,
+				OffCommand=function(self) self:sleep(0.5):accelerate(0.75):addx(-SCREEN_WIDTH) end,
+				BlinkCommand=function(self)
+					local song = GAMESTATE:GetCurrentSong()
+					if song then
+						local spmp = song:GetPreviewMusicPath()
+						local effectclock = spmp ~= "" and "beat" or "timerglobal"
+						self:effectclock(effectclock)
+					else
+						self:effectclock("beat")
+					end
+				end,
+				CurrentSongChangedMessageCommand=function(self) self:playcommand("Blink") end
 			},
 			LoadActor(THEME:GetPathG("_pane elements/_neonwidth",isFinal() and "final" or "normal"))..{
 				InitCommand=function(self) self:x(SCREEN_CENTER_X-146*WideScreenDiff()):y(SCREEN_BOTTOM-76*WideScreenDiff()):zoom(WideScreenDiff()):horizalign(right):vertalign(bottom):zoomtowidth(SCREEN_WIDTH/2):diffuseshift():effectcolor1(color("#bed0ff")):effectcolor2(color("#767676")):effectoffset(0):effectclock("beat") end,
-				OnCommand=function(self) self:addx(-SCREEN_WIDTH):decelerate(0.75):addx(SCREEN_WIDTH) end,
-				OffCommand=function(self) self:sleep(0.5):accelerate(0.75):addx(-SCREEN_WIDTH) end
+				OnCommand=function(self) self:playcommand("Blink"):addx(-SCREEN_WIDTH):decelerate(0.75):addx(SCREEN_WIDTH) end,
+				OffCommand=function(self) self:sleep(0.5):accelerate(0.75):addx(-SCREEN_WIDTH) end,
+				BlinkCommand=function(self)
+					local song = GAMESTATE:GetCurrentSong()
+					if song then
+						local spmp = song:GetPreviewMusicPath()
+						local effectclock = spmp ~= "" and "beat" or "timerglobal"
+						self:effectclock(effectclock)
+					else
+						self:effectclock("beat")
+					end
+				end,
+				CurrentSongChangedMessageCommand=function(self) self:playcommand("Blink") end
 			}
 		},
 		Def.ActorFrame{
 			Name="RightSide",
 			LoadActor(THEME:GetPathG("_pane elements/_lneon",isFinal() and "final" or "normal"))..{
 				InitCommand=function(self) self:x(SCREEN_CENTER_X+146*WideScreenDiff()):y(SCREEN_BOTTOM-76*WideScreenDiff()):zoomx(-1*WideScreenDiff()):zoomy(WideScreenDiff()):horizalign(left):vertalign(bottom):diffuseshift():effectcolor1(color("#bed0ff")):effectcolor2(color("#767676")):effectoffset(0):effectclock("beat") end,
-				OnCommand=function(self) self:addx(SCREEN_WIDTH):decelerate(0.75):addx(-SCREEN_WIDTH) end,
-				OffCommand=function(self) self:sleep(0.5):accelerate(0.75):addx(SCREEN_WIDTH) end
+				OnCommand=function(self) self:playcommand("Blink"):addx(SCREEN_WIDTH):decelerate(0.75):addx(-SCREEN_WIDTH) end,
+				OffCommand=function(self) self:sleep(0.5):accelerate(0.75):addx(SCREEN_WIDTH) end,
+				BlinkCommand=function(self)
+					local song = GAMESTATE:GetCurrentSong()
+					if song then
+						local spmp = song:GetPreviewMusicPath()
+						local effectclock = spmp ~= "" and "beat" or "timerglobal"
+						self:effectclock(effectclock)
+					else
+						self:effectclock("beat")
+					end
+				end,
+				CurrentSongChangedMessageCommand=function(self) self:playcommand("Blink") end
 			},
 			LoadActor(THEME:GetPathG("_pane elements/_neonwidth",isFinal() and "final" or "normal"))..{
 				InitCommand=function(self) self:x(SCREEN_CENTER_X+146*WideScreenDiff()):y(SCREEN_BOTTOM-76*WideScreenDiff()):zoom(WideScreenDiff()):horizalign(left):vertalign(bottom):zoomtowidth(SCREEN_WIDTH/2):diffuseshift():effectcolor1(color("#bed0ff")):effectcolor2(color("#767676")):effectoffset(0):effectclock("beat") end,
-				OnCommand=function(self) self:addx(SCREEN_WIDTH):decelerate(0.75):addx(-SCREEN_WIDTH) end,
-				OffCommand=function(self) self:sleep(0.5):accelerate(0.75):addx(SCREEN_WIDTH) end
+				OnCommand=function(self) self:playcommand("Blink"):addx(SCREEN_WIDTH):decelerate(0.75):addx(-SCREEN_WIDTH) end,
+				OffCommand=function(self) self:sleep(0.5):accelerate(0.75):addx(SCREEN_WIDTH) end,
+				BlinkCommand=function(self)
+					local song = GAMESTATE:GetCurrentSong()
+					if song then
+						local spmp = song:GetPreviewMusicPath()
+						local effectclock = spmp ~= "" and "beat" or "timerglobal"
+						self:effectclock(effectclock)
+					else
+						self:effectclock("beat")
+					end
+				end,
+				CurrentSongChangedMessageCommand=function(self) self:playcommand("Blink") end
 			}
 		}
 	},
