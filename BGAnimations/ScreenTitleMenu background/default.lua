@@ -380,7 +380,7 @@ return Def.ActorFrame{
 				local coursesSurvivalSingle = 0
 				local coursesSurvivalDouble = 0
 
-				if (StepsTypeSingle() or StepsTypeDouble()) and (IsGame("dance") or (isOutFox() and tonumber(split("-",ProductVersion())[1]) == 0.5)) then
+				if (StepsTypeSingle() or StepsTypeDouble()) and (IsGame("dance") or isOutFoxV()) then
 					local StepsTypeSingle = StepsTypeSingle()[GetUserPrefN("StylePosition")]
 					local StepsTypeDouble = StepsTypeDouble()[GetUserPrefN("StylePosition")]
 					if #songs > 0 then

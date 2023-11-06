@@ -20,7 +20,7 @@ local doubles = (styleType == 'OnePlayerTwoSides' or styleType == 'TwoPlayersSha
 function getFilter(player,filterWidth,filterAlpha)
 	local file = ""
 	local pomuREST = ""
-	if isOutFox() and tonumber(split("-",ProductVersion())[1]) >= 0.5 then
+	if isOutFoxV() then
 		if gameMode == "be-mu" then
 			special = true
 			if stepsTypeNumber == 5 then

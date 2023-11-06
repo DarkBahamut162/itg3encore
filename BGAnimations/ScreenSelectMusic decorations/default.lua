@@ -47,7 +47,7 @@ t[#t+1] = Def.FadingBanner{
 						if path == "" or path == nil then
 							self:LoadFromSong(nil)
 						else
-							if ProductFamily() == "OutFox" and tonumber(split("-",ProductVersion())[1]) == 0.5 then
+							if isOutFoxV() then
 								self:LoadFromSongGroup(split("/",path)[3])
 							else
 								self:LoadFromSongGroup(split("/",path)[2])

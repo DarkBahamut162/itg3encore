@@ -235,6 +235,10 @@ function isOutFox()
 	return ProductFamily() == "OutFox"
 end
 
+function isOutFoxV()
+	return isOutFox() and tonumber(split("-",ProductVersion())[1]) >= 0.5
+end
+
 function hasAvatar(pn)
 	if isOutFox() then
 		return Basename(LoadModule("Options.GetProfileData.lua")(pn)["Image"]) ~= "UserProfile generic icon.png"
