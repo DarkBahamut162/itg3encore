@@ -673,30 +673,9 @@ function OptionRowScreenFilter()
 	return t
 end
 
-function GetRateModHelper( rate )
-	local msrate = string.format( "%.1f", GAMESTATE:GetSongOptionsObject("ModsLevel_Preferred"):MusicRate() )
-
-	return msrate == rate
-end
-
 function GetRateMod()
-	if GetRateModHelper('1.0') then return ''
-	elseif GetRateModHelper('0.5') then return '0.5x Rate'
-	elseif GetRateModHelper('0.6') then return '0.6x Rate'
-	elseif GetRateModHelper('0.7') then return '0.7x Rate'
-	elseif GetRateModHelper('0.8') then return '0.8x Rate'
-	elseif GetRateModHelper('0.9') then return '0.9x Rate'
-	elseif GetRateModHelper('1.1') then return '1.1x Rate'
-	elseif GetRateModHelper('1.2') then return '1.2x Rate'
-	elseif GetRateModHelper('1.3') then return '1.3x Rate'
-	elseif GetRateModHelper('1.4') then return '1.4x Rate'
-	elseif GetRateModHelper('1.5') then return '1.5x Rate'
-	elseif GetRateModHelper('1.6') then return '1.6x Rate'
-	elseif GetRateModHelper('1.7') then return '1.7x Rate'
-	elseif GetRateModHelper('1.8') then return '1.8x Rate'
-	elseif GetRateModHelper('1.9') then return '1.9x Rate'
-	elseif GetRateModHelper('2.0') then return '2.0x Rate'
-	else return '(Unknown rate mod)' end
+	local msrate = string.format( "%.1f", GAMESTATE:GetSongOptionsObject("ModsLevel_Preferred"):MusicRate() )
+	if msrate == "1.0" then return '' else return msrate..'x Rate' end
 end
 
 function DisplayCustomModifiersText(pn)
