@@ -33,7 +33,7 @@ return Def.ActorFrame{
 		Name="TIME & DATE",
 		OnCommand=function(self) self:CenterX():y(isGamePlay() and SCREEN_BOTTOM-26*WideScreenDiff() or SCREEN_BOTTOM-33*WideScreenDiff()) if GAMESTATE:IsEventMode() and isGamePlay() then self:y(SCREEN_BOTTOM-16*WideScreenDiff()) end end,
 		LoadFont("_v 26px bold black")..{
-			InitCommand=function(self) self:shadowlength(2):zoom(0.5*WideScreenDiff()):playcommand("Set") end,
+			InitCommand=function(self) self:zoom(0.5*WideScreenDiff()):playcommand("Set") end,
 			SetCommand=function(self) self:settext( string.format('%02i:%02i:%02i %s %02i %04i', Hour(), Minute(), Second(), string.sub(MonthToString(MonthOfYear()),1,3), DayOfMonth(), Year()) ):sleep(1/6):queuecommand("Set") end
 		}
 	}

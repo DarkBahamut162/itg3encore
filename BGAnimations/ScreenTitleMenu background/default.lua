@@ -456,7 +456,7 @@ return Def.ActorFrame{
 		InitCommand=function(self) self:CenterX():y(isFinal() and SCREEN_BOTTOM+11 or SCREEN_BOTTOM-6) end,
 		LoadFont("_v 26px bold black")..{
 			SetCommand=function(self) self:settext( string.format('%02i:%02i:%02i %s %02i %04i', Hour(), Minute(), Second(), string.sub(MonthToString(MonthOfYear()),1,3), DayOfMonth(), Year()) ):sleep(1/6):queuecommand("Set") end,
-			InitCommand=function(self) self:y(-48*WideScreenDiff()):shadowlength(2):zoom(0.5*WideScreenDiff()):diffusealpha(0) end,
+			InitCommand=function(self) self:y(-48*WideScreenDiff()):zoom(0.5*WideScreenDiff()):diffusealpha(0) end,
 			OnCommand=function(self) self:sleep(0.5):playcommand("Set"):linear(0.5):diffusealpha(1) end,
 			OffCommand=function(self) self:stoptweening():accelerate(0.5):addy(100) end,
 			ScreenChangedMessageCommand=function(self) if not isTopScreen("ScreenLogo") then self:visible(true):playcommand("Set") else self:visible(false) end end,
