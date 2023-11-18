@@ -1,4 +1,4 @@
-local cacheVersion = "0.31"
+local cacheVersion = "0.32"
 
 function getCacheVersion()
 	return cacheVersion
@@ -350,13 +350,23 @@ function cacheStep(Song,Step)
 
 	if total > 0 and times > 0 then total = total / times * 2 end
 
+	local total2, times2 = 0, 0
+	for _sps2, _times2 in pairs(stepsPerSec) do
+		if _sps2 > total / 6 and _sps2 < total * 2 then
+			total2 = total2 + (_sps2 * _times2)
+			times2 = times2 + _times2
+		end
+	end
+
+	if total2 > 0 and times2 > 0 then total2 = total2 / times2 * 2 end
+
 	local hasLua = HasLua(Song,"BGCHANGES") or HasLua(Song,"FGCHANGES")
 
 	LoadModule("Config.Save.lua")("Version",cacheVersion,getStepCacheFile(Step))
 	LoadModule("Config.Save.lua")("HasLua",hasLua and "true" or "false",getStepCacheFile(Step))
 	if shockArrows ~= "" then LoadModule("Config.Save.lua")("ShockArrows",shockArrows,getStepCacheFile(Step)) end
 	LoadModule("Config.Save.lua")("StepCounter",table.concat(noteCounter,"_"),getStepCacheFile(Step))
-	LoadModule("Config.Save.lua")("StepsPerSecond",total,getStepCacheFile(Step))
+	LoadModule("Config.Save.lua")("StepsPerSecond",total2,getStepCacheFile(Step))
 	LoadModule("Config.Save.lua")("TrueBeats",lastBeat-firstBeat,getStepCacheFile(Step))
 	LoadModule("Config.Save.lua")("TrueSeconds",Step:GetTimingData():GetElapsedTimeFromBeat(lastBeat)-Step:GetTimingData():GetElapsedTimeFromBeat(firstBeat),getStepCacheFile(Step))
 	if stepType[2] == "Bm" then
