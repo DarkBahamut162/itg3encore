@@ -7,27 +7,21 @@ local style = GAMESTATE:GetCurrentStyle()
 local styleType = style:GetStyleType()
 local doubles = (styleType == 'StyleType_OnePlayerTwoSides' or styleType == 'StyleType_TwoPlayersSharedSides')
 
-local function width(style)
+local function width(pos)
 	if IsGame("be-mu") then
-		if style == 1 then
-			return 240
-		elseif style == 2 then
-			return 272
-		else
-			return 304
-		end
+		local width = {
+			[1] = 240,
+			[2] = 272
+		}
+		return width[pos] or 304
 	else
-		if style == 1 then
-			return 96
-		elseif style == 2 then
-			return 128
-		elseif style == 3 then
-			return 160
-		elseif style == 4 then
-			return 224
-		else
-			return 288
-		end
+		local width = {
+			[1] = 96,
+			[2] = 128,
+			[3] = 160,
+			[4] = 224
+		}
+		return width[pos] or 288
 	end
 end
 
@@ -84,38 +78,43 @@ return Def.ActorFrame {
 					end
 				end
 				if SCREENMAN:GetTopScreen():GetChild("Player"..pname(pn)) and SCREENMAN:GetTopScreen():GetChild("Player"..pname(pn)):GetChild("NoteField") then
+					local rotationZ = 0
+					local posX = 0
 					if getenv("RotationLeft"..pname(pn)) then
-						SCREENMAN:GetTopScreen():GetChild("Player"..pname(pn)):rotationz(270)
+						rotationZ = 270
 						if pn == PLAYER_1 then
-							SCREENMAN:GetTopScreen():GetChild("Player"..pname(pn)):x(SCREEN_CENTER_X-SCREEN_WIDTH/4)
+							posX = SCREEN_CENTER_X-SCREEN_WIDTH/4
 						elseif pn == PLAYER_2 then
-							SCREENMAN:GetTopScreen():GetChild("Player"..pname(pn)):x(SCREEN_CENTER_X-SCREEN_WIDTH/4)
+							posX = SCREEN_CENTER_X-SCREEN_WIDTH/4
 						end
 					elseif getenv("RotationRight"..pname(pn)) then
-						SCREENMAN:GetTopScreen():GetChild("Player"..pname(pn)):rotationz(90)
+						rotationZ = 90
 						if pn == PLAYER_1 then
-							SCREENMAN:GetTopScreen():GetChild("Player"..pname(pn)):x(SCREEN_CENTER_X+SCREEN_WIDTH/4)
+							posX = SCREEN_CENTER_X+SCREEN_WIDTH/4
 						elseif pn == PLAYER_2 then
-							SCREENMAN:GetTopScreen():GetChild("Player"..pname(pn)):x(SCREEN_CENTER_X+SCREEN_WIDTH/4)
+							posX = SCREEN_CENTER_X+SCREEN_WIDTH/4
 						end
 					elseif getenv("RotationUpsideDown"..pname(pn)) then
-						SCREENMAN:GetTopScreen():GetChild("Player"..pname(pn)):rotationz(180)
+						rotationZ = 180
 						if pn == PLAYER_1 then
-							SCREENMAN:GetTopScreen():GetChild("Player"..pname(pn)):x(SCREEN_CENTER_X-SCREEN_WIDTH/4)
+							posX = SCREEN_CENTER_X-SCREEN_WIDTH/4
 						elseif pn == PLAYER_2 then
-							SCREENMAN:GetTopScreen():GetChild("Player"..pname(pn)):x(SCREEN_CENTER_X+SCREEN_WIDTH/4)
+							posX = SCREEN_CENTER_X+SCREEN_WIDTH/4
 						end
 					elseif getenv("RotationSolo"..pname(pn)) and not doubles then
 						if ToEnumShortString(GAMESTATE:GetCurrentStyle():GetStyleType()) == "OnePlayerOneSide" then
-							SCREENMAN:GetTopScreen():GetChild("Player"..pname(pn)):CenterX()
+							posX = SCREEN_CENTER_X
 						end
 					elseif getenv("RotationNormal"..pname(pn)) and not doubles then
 						if pn == PLAYER_1 then
-							SCREENMAN:GetTopScreen():GetChild("Player"..pname(pn)):x(SCREEN_CENTER_X-SCREEN_WIDTH/4)
+							posX = SCREEN_CENTER_X-SCREEN_WIDTH/4
 						elseif pn == PLAYER_2 then
-							SCREENMAN:GetTopScreen():GetChild("Player"..pname(pn)):x(SCREEN_CENTER_X+SCREEN_WIDTH/4)
+							posX = SCREEN_CENTER_X+SCREEN_WIDTH/4
 						end
 					end
+					
+					SCREENMAN:GetTopScreen():GetChild("Player"..pname(pn)):rotationz(rotationZ)
+					SCREENMAN:GetTopScreen():GetChild("Player"..pname(pn)):x(posX)
 
 					local mlevel = GAMESTATE:IsCourseMode() and "ModsLevel_Stage" or "ModsLevel_Preferred"
 					local currentMini = 1-math.round(GAMESTATE:GetPlayerState(pn):GetPlayerOptions(mlevel):Mini()*50) / 100

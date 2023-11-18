@@ -52,58 +52,45 @@ return Def.ActorFrame{
 		SetCommand=function(self)
 			local val = 0
 			local add = ""
-			local song = GAMESTATE:GetCurrentSong()
-			local course = GAMESTATE:GetCurrentCourse()
-			local numSongs = 1
-			if song or (course and not IsCourseSecret()) then
-				if song then
-					local steps = GAMESTATE:GetCurrentSteps(player)
-					if steps then
-						val = steps:GetRadarValues(player):GetValue('RadarCategory_TapsAndHolds')
-						if steps:GetRadarValues(player):GetValue('RadarCategory_Fakes') > 0 then add = "?" end
+			local SongOrCourse = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentCourse() or GAMESTATE:GetCurrentSong()
+			local StepOrTrails = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentTrail(player) or GAMESTATE:GetCurrentSteps(player)
+			local numSongs = GAMESTATE:IsCourseMode() and TrailUtil.GetNumSongs(StepOrTrails) or 1
+
+			if SongOrCourse and StepOrTrails and (not GAMESTATE:IsCourseMode() or (GAMESTATE:IsCourseMode() and not IsCourseSecret())) then
+				val = StepOrTrails:GetRadarValues(player):GetValue('RadarCategory_TapsAndHolds')
+				if StepOrTrails:GetRadarValues(player):GetValue('RadarCategory_Fakes') > 0 then add = "?" end
+				if not GAMESTATE:IsCourseMode() or (GAMESTATE:IsCourseMode() and not IsCourseSecret()) then
+					if val == 0 then
+						self:diffusetopedge(color("#"..topedge[1][1]..topedge[1][2]..topedge[1][3]))
+						self:diffusebottomedge(color("#"..bottomedge[1][1]..bottomedge[1][2]..bottomedge[1][3]))
+					elseif val <= 249 * numSongs then
+						self:diffusetopedge(color("#"..topedge[2][1]..topedge[2][2]..topedge[2][3]))
+						self:diffusebottomedge(color("#"..bottomedge[2][1]..bottomedge[2][2]..bottomedge[2][3]))
+					elseif val <= 374 * numSongs then
+						self:diffusetopedge(color("#"..topedge[3][1]..topedge[3][2]..topedge[3][3]))
+						self:diffusebottomedge(color("#"..bottomedge[3][1]..bottomedge[3][2]..bottomedge[3][3]))
+					elseif val <= 499 * numSongs then
+						self:diffusetopedge(color("#"..topedge[4][1]..topedge[4][2]..topedge[4][3]))
+						self:diffusebottomedge(color("#"..bottomedge[4][1]..bottomedge[4][2]..bottomedge[4][3]))
+					elseif val <= 624 * numSongs then
+						self:diffusetopedge(color("#"..topedge[5][1]..topedge[5][2]..topedge[5][3]))
+						self:diffusebottomedge(color("#"..bottomedge[5][1]..bottomedge[5][2]..bottomedge[5][3]))
+					elseif val <= 749 * numSongs then
+						self:diffusetopedge(color("#"..topedge[6][1]..topedge[6][2]..topedge[6][3]))
+						self:diffusebottomedge(color("#"..bottomedge[6][1]..bottomedge[6][2]..bottomedge[6][3]))
+					elseif val <= 874 * numSongs then
+						self:diffusetopedge(color("#"..topedge[7][1]..topedge[7][2]..topedge[7][3]))
+						self:diffusebottomedge(color("#"..bottomedge[7][1]..bottomedge[7][2]..bottomedge[7][3]))
+					elseif val <= 999 * numSongs then
+						self:diffusetopedge(color("#"..topedge[8][1]..topedge[8][2]..topedge[8][3]))
+						self:diffusebottomedge(color("#"..bottomedge[8][1]..bottomedge[8][2]..bottomedge[8][3]))
+					elseif val <= 1199 * numSongs then
+						self:diffusetopedge(color("#"..topedge[9][1]..topedge[9][2]..topedge[9][3]))
+						self:diffusebottomedge(color("#"..bottomedge[9][1]..bottomedge[9][2]..bottomedge[9][3]))
 					else
-						val = 0
+						self:diffusetopedge(color("#"..topedge[10][1]..topedge[10][2]..topedge[10][3]))
+						self:diffusebottomedge(color("#"..bottomedge[10][1]..bottomedge[10][2]..bottomedge[10][3]))
 					end
-				elseif course then
-					local trail = GAMESTATE:GetCurrentTrail(player)
-					if trail then
-						val = trail:GetRadarValues(player):GetValue('RadarCategory_TapsAndHolds')
-						if trail:GetRadarValues(player):GetValue('RadarCategory_Fakes') > 0 then add = "?" end
-						numSongs = TrailUtil.GetNumSongs(trail)
-					else
-						val = 0
-					end
-				end
-				if val == 0 then
-					self:diffusetopedge(color("#"..topedge[1][1]..topedge[1][2]..topedge[1][3]))
-					self:diffusebottomedge(color("#"..bottomedge[1][1]..bottomedge[1][2]..bottomedge[1][3]))
-				elseif val <= 249 * numSongs then
-					self:diffusetopedge(color("#"..topedge[2][1]..topedge[2][2]..topedge[2][3]))
-					self:diffusebottomedge(color("#"..bottomedge[2][1]..bottomedge[2][2]..bottomedge[2][3]))
-				elseif val <= 374 * numSongs then
-					self:diffusetopedge(color("#"..topedge[3][1]..topedge[3][2]..topedge[3][3]))
-					self:diffusebottomedge(color("#"..bottomedge[3][1]..bottomedge[3][2]..bottomedge[3][3]))
-				elseif val <= 499 * numSongs then
-					self:diffusetopedge(color("#"..topedge[4][1]..topedge[4][2]..topedge[4][3]))
-					self:diffusebottomedge(color("#"..bottomedge[4][1]..bottomedge[4][2]..bottomedge[4][3]))
-				elseif val <= 624 * numSongs then
-					self:diffusetopedge(color("#"..topedge[5][1]..topedge[5][2]..topedge[5][3]))
-					self:diffusebottomedge(color("#"..bottomedge[5][1]..bottomedge[5][2]..bottomedge[5][3]))
-				elseif val <= 749 * numSongs then
-					self:diffusetopedge(color("#"..topedge[6][1]..topedge[6][2]..topedge[6][3]))
-					self:diffusebottomedge(color("#"..bottomedge[6][1]..bottomedge[6][2]..bottomedge[6][3]))
-				elseif val <= 874 * numSongs then
-					self:diffusetopedge(color("#"..topedge[7][1]..topedge[7][2]..topedge[7][3]))
-					self:diffusebottomedge(color("#"..bottomedge[7][1]..bottomedge[7][2]..bottomedge[7][3]))
-				elseif val <= 999 * numSongs then
-					self:diffusetopedge(color("#"..topedge[8][1]..topedge[8][2]..topedge[8][3]))
-					self:diffusebottomedge(color("#"..bottomedge[8][1]..bottomedge[8][2]..bottomedge[8][3]))
-				elseif val <= 1199 * numSongs then
-					self:diffusetopedge(color("#"..topedge[9][1]..topedge[9][2]..topedge[9][3]))
-					self:diffusebottomedge(color("#"..bottomedge[9][1]..bottomedge[9][2]..bottomedge[9][3]))
-				else
-					self:diffusetopedge(color("#"..topedge[10][1]..topedge[10][2]..topedge[10][3]))
-					self:diffusebottomedge(color("#"..bottomedge[10][1]..bottomedge[10][2]..bottomedge[10][3]))
 				end
 			else
 				self:diffusetopedge(color("#ffffff"))

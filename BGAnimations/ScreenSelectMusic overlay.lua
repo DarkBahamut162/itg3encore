@@ -9,18 +9,20 @@ return Def.ActorFrame{
 	OnCommand=function(self)
 		if isOutFox() then
 			GAMESTATE:UpdateDiscordProfile(GAMESTATE:GetPlayerDisplayName(GAMESTATE:GetMasterPlayerNumber()))
+			local text = ""
 			if GAMESTATE:IsCourseMode() then
-				GAMESTATE:UpdateDiscordScreenInfo("Selecting Course","",1)
+				text = "Selecting Course"
 			else
 				if IsNetSMOnline() then
-					GAMESTATE:UpdateDiscordScreenInfo("Selecting Song (Online Mode)","",1)
+					text = "Selecting Song (Online Mode)"
 				elseif GAMESTATE:IsEventMode() then
-					GAMESTATE:UpdateDiscordScreenInfo("Selecting Song (Event Mode)","",1)
+					text = "Selecting Song (Event Mode)"
 				else
 					local StageIndex = GAMESTATE:GetCurrentStageIndex()
-					GAMESTATE:UpdateDiscordScreenInfo("Selecting Song (Stage ".. StageIndex+1 .. ")	","",1)
+					text = "Selecting Song (Stage ".. StageIndex+1 .. ")"
 				end
 			end
+			GAMESTATE:UpdateDiscordScreenInfo(text,"",1)
 		end
 	end,
 	OffCommand = function(self, params)

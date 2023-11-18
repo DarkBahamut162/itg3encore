@@ -10,48 +10,26 @@ return Def.ActorFrame{
 			local name = self:GetChild("ScoreName")
 			local score = self:GetChild("ScorePercent")
 			local profile = PROFILEMAN:GetMachineProfile()
-			local song = GAMESTATE:GetCurrentSong()
-			local scoreText = "xxx"
-			local nameText = "xxx"
-			if song then
-				local steps = GAMESTATE:GetCurrentSteps(player)
-				if steps then
-					local hsl = profile:GetHighScoreList(song,steps)
-					local scores = hsl and hsl:GetHighScores()
-					if scores[1] then
-						nameText = scores[1]:GetName()
-						scoreText = string.format("%0.2f%%",scores[1]:GetPercentDP()*100)
-					else
-						nameText = "N/A"
-						scoreText = "0.00%"
-					end
+			local SongOrCourse = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentCourse() or GAMESTATE:GetCurrentSong()
+			local StepOrTrails = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentTrail(player) or GAMESTATE:GetCurrentSteps(player)
+			local scoreText = "?"
+			local nameText = "?"
+
+			if SongOrCourse and StepOrTrails then
+				local hsl = profile:GetHighScoreList(SongOrCourse,StepOrTrails)
+				local scores = hsl and hsl:GetHighScores()
+				if scores[1] then
+					nameText = scores[1]:GetName()
+					scoreText = string.format("%0.2f%%",scores[1]:GetPercentDP()*100)
 				else
-					nameText = "no"
-					scoreText = "steps"
-				end
-			elseif GAMESTATE:IsCourseMode() then
-				local course = GAMESTATE:GetCurrentCourse()
-				if course then
-					local trail = GAMESTATE:GetCurrentTrail(player)
-					if trail then
-						local hsl = profile:GetHighScoreList(course,trail)
-						local scores = hsl and hsl:GetHighScores()
-						if scores[1] then
-							nameText = scores[1]:GetName()
-							scoreText = string.format("%0.2f%%",scores[1]:GetPercentDP()*100)
-						else
-							nameText = "N/A"
-							scoreText = "0.00%"
-						end
-					else
-						nameText = "NO" scoreText = "TRAIL"
-					end
-				else
-					nameText = "?" scoreText = "?"
+					nameText = "N/A"
+					scoreText = "0.00%"
 				end
 			else
-				nameText = "?" scoreText = "?"
+				nameText = "?"
+				scoreText = "?"
 			end
+
 			name:settext(nameText)
 			score:settext(scoreText)
 		end,
@@ -81,42 +59,19 @@ return Def.ActorFrame{
 			local name = self:GetChild("ScoreName")
 			local score = self:GetChild("ScorePercent")
 			local profile = PROFILEMAN:GetProfile(player)
-			local song = GAMESTATE:GetCurrentSong()
-			local scoreText = "xxx"
+			local SongOrCourse = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentCourse() or GAMESTATE:GetCurrentSong()
+			local StepOrTrails = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentTrail(player) or GAMESTATE:GetCurrentSteps(player)
+			local scoreText = "?"
 			local nameText = "YOU"
-			if song then
-				local steps = GAMESTATE:GetCurrentSteps(player)
-				if steps then
-					local hsl = profile:GetHighScoreList(song,steps)
-					local scores = hsl and hsl:GetHighScores()
-					if scores[1] then
-						scoreText = string.format("%0.2f%%",scores[1]:GetPercentDP()*100)
-					else
-						scoreText = "0.00%"
-					end
+
+			if SongOrCourse and StepOrTrails then
+				local hsl = profile:GetHighScoreList(SongOrCourse,StepOrTrails)
+				local scores = hsl and hsl:GetHighScores()
+				if scores[1] then
+					scoreText = string.format("%0.2f%%",scores[1]:GetPercentDP()*100)
 				else
-					scoreText = "steps"
+					scoreText = "0.00%"
 				end
-			elseif GAMESTATE:IsCourseMode() then
-				local course = GAMESTATE:GetCurrentCourse()
-				if course then
-					local trail = GAMESTATE:GetCurrentTrail(player)
-					if trail then
-						local hsl = profile:GetHighScoreList(course,trail)
-						local scores = hsl and hsl:GetHighScores()
-						if scores[1] then
-							scoreText = string.format("%0.2f%%",scores[1]:GetPercentDP()*100)
-						else
-							scoreText = "0.00%"
-						end
-					else
-						scoreText = "?"
-					end
-				else
-					scoreText = "?"
-				end
-			else
-				scoreText = "?"
 			end
 			name:settext(nameText)
 			score:settext(scoreText)
