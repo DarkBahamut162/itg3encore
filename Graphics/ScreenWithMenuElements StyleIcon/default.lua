@@ -2,7 +2,7 @@ local style = GAMESTATE:GetCurrentStyle()
 local stepsType = split("_",style:GetStepsType())[2]
 local players = { PLAYER_1 = false, PLAYER_2 = false }
 
-for pn in ivalues(GAMESTATE:GetEnabledPlayers()) do
+for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
 	players[pn] = true
 end
 
