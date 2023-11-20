@@ -185,7 +185,8 @@ function SongMods()
 		add = (GAMESTATE:GetNumPlayersEnabled() == 1 and not doubles) and "20S," or ""
 	end
 
-	local options = "1,2,4,F,0,3,5,RE,RE2,AE,AE2,AE3,17,9,"
+	local fail = isOutFoxV() and "FV" or "F"
+	local options = "1,2,4,"..fail..",0,3,5,RE,RE2,AE,AE2,AE3,17,9,"
 
 	if isRegular() then
 		if doubles then
