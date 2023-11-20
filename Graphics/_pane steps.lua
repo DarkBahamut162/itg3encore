@@ -54,9 +54,10 @@ return Def.ActorFrame{
 			local add = ""
 			local SongOrCourse = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentCourse() or GAMESTATE:GetCurrentSong()
 			local StepOrTrails = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentTrail(player) or GAMESTATE:GetCurrentSteps(player)
-			local numSongs = GAMESTATE:IsCourseMode() and TrailUtil.GetNumSongs(StepOrTrails) or 1
+			local numSongs
 
 			if SongOrCourse and StepOrTrails and (not GAMESTATE:IsCourseMode() or (GAMESTATE:IsCourseMode() and not IsCourseSecret())) then
+				numSongs = GAMESTATE:IsCourseMode() and TrailUtil.GetNumSongs(StepOrTrails) or 1
 				val = StepOrTrails:GetRadarValues(player):GetValue('RadarCategory_TapsAndHolds')
 				if StepOrTrails:GetRadarValues(player):GetValue('RadarCategory_Fakes') > 0 then add = "?" end
 				if not GAMESTATE:IsCourseMode() or (GAMESTATE:IsCourseMode() and not IsCourseSecret()) then
