@@ -15,7 +15,7 @@ if (total == 1 and (getenv("ShowStatsP1") == 7 or getenv("ShowStatsP2") == 7)) o
 	if not scorelist then scorelist = PROFILEMAN:GetProfile(player):GetHighScoreList(SongOrCourse,StepsOrTrail) end
 	if scorelist then topscore = scorelist:GetHighScores() end
 	local first = #topscore <= 1
-	if topscore and not first then HighScore = math.ceil(topscore[2]:GetPercentDP()*STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetPossibleDancePoints()) end
+	if topscore and not first then HighScore = math.ceil(topscore[1]:GetPercentDP()*STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetPossibleDancePoints()) end
 	if DPCurrent >= HighScore and not first and DPCurrent >= Target then
 		PacemakerRecord = "HIGHSCORE & TARGET MET"
 	elseif DPCurrent < HighScore and not first and DPCurrent >= Target then
