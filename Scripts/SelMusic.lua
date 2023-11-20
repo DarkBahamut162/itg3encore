@@ -170,36 +170,38 @@ local allowednotes = {
 	["TapNoteSubType_Roll"] = true
 }
 
-function getColumnsPerPlayer(typ,style)
+function getColumnsPerPlayer(typ,style,calc)
+	local dif = calc and 2 or 1
+
 	if typ == "Dance" then
 		if style == "Single" then
 			return 4
 		elseif style == "Double" then
-			return 8
+			return 8/dif
 		elseif style == "Couple" then
-			return 8
+			return 8/dif
 		elseif style == "Solo" then
 			return 6
 		elseif style == "Solodouble" then
-			return 12
+			return 12/dif
 		elseif style == "Routine" then
-			return 8
+			return 8/dif
 		elseif style == "Threepanel" then
 			return 3
 		elseif style == "Threedouble" then
-			return 6
+			return 6/dif
 		end
 	elseif typ == "Pump" then
 		if style == "Single" then
 			return 5
 		elseif style == "Double" then
-			return 10
+			return 10/dif
 		elseif style == "Halfdouble" then
 			return 6
 		elseif style == "Couple" then
-			return 10
+			return 10/dif
 		elseif style == "Routine" then
-			return 10
+			return 10/dif
 		end
 	elseif typ == "Smx" then
 		if style == "Single" then
@@ -207,11 +209,11 @@ function getColumnsPerPlayer(typ,style)
 		elseif style == "Double6" then
 			return 6
 		elseif style == "Double10" then
-			return 10
+			return 10/dif
 		elseif style == "Couple" then
-			return 10
+			return 10/dif
 		elseif style == "Routine" then
-			return 10
+			return 10/dif
 		end
 	elseif typ == "Bm" then
 		if style == "Single5" then
@@ -221,11 +223,11 @@ function getColumnsPerPlayer(typ,style)
 		elseif style == "Single7" then
 			return 7+1
 		elseif style == "Double5" then
-			return 10+2
+			return (10+2)/dif
 		elseif style == "Double6" then
-			return 12+2
+			return (12+2)/dif
 		elseif style == "Double7" then
-			return 14+2
+			return (14+2)/dif
 		end
 	elseif typ == "Pnm" then
 		if style == "Three" then
