@@ -79,7 +79,7 @@ return Def.ActorFrame {
 				end
 				if SCREENMAN:GetTopScreen():GetChild("Player"..pname(pn)) and SCREENMAN:GetTopScreen():GetChild("Player"..pname(pn)):GetChild("NoteField") then
 					local rotationZ = 0
-					local posX = 0
+					local posX = SCREEN_CENTER_X
 					if getenv("RotationLeft"..pname(pn)) then
 						rotationZ = 270
 						if pn == PLAYER_1 then
