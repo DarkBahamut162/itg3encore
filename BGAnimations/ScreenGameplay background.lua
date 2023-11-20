@@ -58,7 +58,7 @@ return Def.ActorFrame {
 	end,
 	InitCommand = function(self) c = self:GetChildren() end,
 	OnCommand=function(self)
-		if not isTopScreen("ScreenDemonstration2") and not isTopScreen("ScreenJukebox") then
+		if not isTopScreen("ScreenDemonstration") and not isTopScreen("ScreenDemonstration2") and not isTopScreen("ScreenJukebox") then
 			self:playcommand("UpdateDiscordInfo")
 			for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
 				if GAMESTATE:GetNumPlayersEnabled() == 1 and not doubles and (IsGame("be-mu") or IsGame("po-mu")) then
