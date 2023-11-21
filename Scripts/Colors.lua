@@ -74,5 +74,5 @@ function TapNoteScoreToColor( tns )
 		["TapNoteScore_W5"]		= color("#FF7149"),
 		["TapNoteScore_Miss"]	= color("#FF0808")
 	}
-	return colors[dc] or color("1,1,1,1")
+	return colors[tns] or color("1,1,1,1")
 end
