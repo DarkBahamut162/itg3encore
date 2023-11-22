@@ -3,6 +3,7 @@ if isTopScreen("ScreenDemonstration2") then return Def.ActorFrame{} end
 local pn = GAMESTATE:GetMasterPlayerNumber()
 local graph = getenv("ShowNoteGraph"..pname(pn)) == 2
 local startX = pn == PLAYER_1 and SCREEN_WIDTH/4 or -SCREEN_WIDTH/4
+if getenv("ShowNoteGraph"..pname(pn)) > 1 and getenv("ShowStats"..pname(pn)) == 0 then startX = startX * 2 end
 local SongOrCourse,StepsOrTrail,scorelist,topscore
 local mines,holds,rolls,holdsAndRolls = 0,0,0,0
 
@@ -98,19 +99,21 @@ return Def.ActorFrame{
 		LoadActor("../graph",pn)..{
 			Condition=graph,
 			InitCommand=function(self)
-				if not isFinal() then
-					self:zoomx(0.95):zoomy(0.85)
-				end
+				if not isFinal() then self:zoomx(0.95):zoomy(0.85) end
+				if getenv("ShowStats"..pname(pn)) == 0 then self:addx(pn == PLAYER_1 and 5 or -5) end
 			end
 		},
-		LoadActor("s_"..(isFinal() and "final" or "normal")),
-		LoadActor("s_bg"..getenv("ShowStats"..pname(pn))),
-		LoadActor("s_glow final")..{
-			Condition=isFinal(),
-			InitCommand=function(self) self:blend(Blend.Add):diffuseramp():effectcolor1(color("#FFFFFF00")):effectcolor2(color("#FFFFFF")):effectperiod(0.5):effect_hold_at_full(0.5):effectclock('beat') end
+		Def.ActorFrame{
+			Condition=getenv("ShowStats"..pname(pn)) > 0,
+			LoadActor("s_"..(isFinal() and "final" or "normal")),
+			LoadActor("s_bg"..getenv("ShowStats"..pname(pn))),
+			LoadActor("s_glow final")..{
+				Condition=isFinal(),
+				InitCommand=function(self) self:blend(Blend.Add):diffuseramp():effectcolor1(color("#FFFFFF00")):effectcolor2(color("#FFFFFF")):effectperiod(0.5):effect_hold_at_full(0.5):effectclock('beat') end
+			}
 		},
 		Def.ActorFrame{
-			Condition=getenv("ShowStats"..pname(pn)) < 7,
+			Condition=getenv("ShowStats"..pname(pn)) > 0 and getenv("ShowStats"..pname(pn)) < 7,
 			LoadFont("_z bold gray 36px")..{
 				Condition=isFinal(),
 				Name="Statistics",

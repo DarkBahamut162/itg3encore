@@ -4,6 +4,7 @@ local xPos = pn == PLAYER_1 and (SCREEN_RIGHT-20*WideScreenDiff()-SCREEN_WIDTH/2
 if player then xPos = player == PLAYER_1 and -20*WideScreenDiff() or 20*WideScreenDiff() end
 local SongOrCourse, StepsOrTrail, scorelist, topscore
 local mines, holds, rolls, holdsAndRolls = 0, 0, 0, 0
+local stats = getenv("ShowStats"..pname(pn))
 
 local barWidth		= {14,7,4+2/3,3+2/3,2.8,2+1/3}
 local barHeight		= 268
@@ -21,18 +22,18 @@ if StepsOrTrail then
 	holdsAndRolls = holds + rolls
 end
 
-local bgNum = getenv("ShowStats"..pname(pn))
+local bgNum = stats
 if bgNum == 7 then if topscore == nil then bgNum = 2 else bgNum = 3 end end
 if bgNum > 0 then barCenter	= -totalWidth/2+barWidth[bgNum]/2 end
 
 local Bars = Def.ActorFrame{}
 
-if getenv("ShowStats"..pname(pn)) < 7 then
-	for i = 1,math.min(6,getenv("ShowStats"..pname(pn))) do
+if stats < 7 then
+	for i = 1,math.min(6,stats) do
 		local score = i < 6 and "W"..i or "Miss"
 		Bars[#Bars+1] = LoadActor("../w"..i)..{
 			InitCommand=function(self) self:vertalign(bottom):x(barCenter+barWidth[bgNum]*(i-1)):y(164):zoomx(0.01*barWidth[bgNum]):zoomy(0) end,
-			Condition=getenv("ShowStats"..pname(pn)) >= i,
+			Condition=stats >= i,
 			JudgmentMessageCommand=function(self,param) if param.Player == pn then self:queuecommand("Update") end end,
 			UpdateCommand=function(self)
 				local TotalSteps = StepsOrTrail:GetRadarValues(pn):GetValue('RadarCategory_TapsAndHolds')
@@ -46,6 +47,7 @@ end
 return Def.ActorFrame{
 	OnCommand=function(self) self:Center() end,
 	Def.ActorFrame{
+		Condition=stats > 0,
 		Name="Player",
 		InitCommand=function(self) self:x(xPos):addx(pn == PLAYER_1 and 100*getenv("ShowStatsSize"..pname(pn)) or -100*getenv("ShowStatsSize"..pname(pn))):zoom(WideScreenDiff()) end,
 		BeginCommand=function(self) self:visible(GAMESTATE:IsHumanPlayer(pn)) end,
@@ -70,11 +72,11 @@ return Def.ActorFrame{
 		},
 		LoadActor("d_bg",pn),
 		Def.ActorFrame{
-			Condition=getenv("ShowStats"..pname(pn)) < 7,
+			Condition=stats < 7,
 			Bars
 		},
 		Def.ActorFrame{
-			Condition=getenv("ShowStats"..pname(pn)) == 7,
+			Condition=stats == 7,
 			LoadActor("../w1")..{
 				OnCommand=function(self)
 					self:vertalign(bottom):x(barCenter):y(164):zoomx(0.01*barWidth[bgNum]):zoomy(barHeight):diffusealpha(0.25)
@@ -154,17 +156,17 @@ return Def.ActorFrame{
 			InitCommand=function(self) self:x(pn == PLAYER_1 and -62 or 62):y(144):zoom(0.33) end,
 			Def.ActorFrame{
 				LoadFont("_z bold gray 36px")..{
-					Condition=getenv("ShowStats"..pname(pn)) ~= 7,
+					Condition=stats < 7,
 					Text="STATS",
 					OnCommand=function(self) self:zoom(0.5):halign(0):shadowlength(1):addy(-174) end
 				},
 				LoadFont("_z bold gray 36px")..{
-					Condition=getenv("ShowStats"..pname(pn)) == 7,
+					Condition=stats == 7,
 					Text="PACE",
 					OnCommand=function(self) self:zoom(0.5):halign(0):shadowlength(1):addy(-174) end
 				},
 				Def.ActorFrame{
-					Condition=getenv("ShowStats"..pname(pn)) ~= 7,
+					Condition=stats < 7,
 					InitCommand=function(self) self:y(-150) end,
 					LoadFont("ScreenGameplay judgment")..{
 						Name="LabelW1",
@@ -204,37 +206,42 @@ return Def.ActorFrame{
 					},
 					LoadFont("_z numbers")..{
 						Name="NumbersW2",
+						Text="?",
 						InitCommand=function(self) self:maxwidth(125):halign(1):addy(35-4):addx(125):shadowlength(1):diffuse(TapNoteScoreToColor('TapNoteScore_W2')):queuecommand("Update") end,
 						JudgmentMessageCommand=function(self,param) if param.Player == pn then self:queuecommand("Update") end end,
-						UpdateCommand=function(self) self:settext(STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):GetTapNoteScores('TapNoteScore_W2')) end
+						UpdateCommand=function(self) if stats >= 2 then self:settext(STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):GetTapNoteScores('TapNoteScore_W2')) end end
 					},
 					LoadFont("_z numbers")..{
 						Name="NumbersW3",
+						Text="?",
 						InitCommand=function(self) self:maxwidth(125):halign(1):addy(60-3):addx(125):shadowlength(1):diffuse(TapNoteScoreToColor('TapNoteScore_W3')):queuecommand("Update") end,
 						JudgmentMessageCommand=function(self,param) if param.Player == pn then self:queuecommand("Update") end end,
-						UpdateCommand=function(self) self:settext(STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):GetTapNoteScores('TapNoteScore_W3')) end
+						UpdateCommand=function(self) if stats >= 3 then self:settext(STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):GetTapNoteScores('TapNoteScore_W3')) end end
 					},
 					LoadFont("_z numbers")..{
 						Name="NumbersW4",
+						Text="?",
 						InitCommand=function(self) self:maxwidth(125):halign(1):addy(85-2):addx(125):shadowlength(1):diffuse(TapNoteScoreToColor('TapNoteScore_W4')):queuecommand("Update") end,
 						JudgmentMessageCommand=function(self,param) if param.Player == pn then self:queuecommand("Update") end end,
-						UpdateCommand=function(self) self:settext(STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):GetTapNoteScores('TapNoteScore_W4')) end
+						UpdateCommand=function(self) if stats >= 4 then self:settext(STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):GetTapNoteScores('TapNoteScore_W4')) end end
 					},
 					LoadFont("_z numbers")..{
 						Name="NumbersW5",
+						Text="?",
 						InitCommand=function(self) self:maxwidth(125):halign(1):addy(110-1):addx(125):shadowlength(1):diffuse(TapNoteScoreToColor('TapNoteScore_W5')):queuecommand("Update") end,
 						JudgmentMessageCommand=function(self,param) if param.Player == pn then self:queuecommand("Update") end end,
-						UpdateCommand=function(self) self:settext(STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):GetTapNoteScores('TapNoteScore_W5')) end
+						UpdateCommand=function(self) if stats >= 5 then self:settext(STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):GetTapNoteScores('TapNoteScore_W5')) end end
 					},
 					LoadFont("_z numbers")..{
 						Name="NumbersMiss",
+						Text="?",
 						InitCommand=function(self) self:maxwidth(125):halign(1):addy(135):addx(125):shadowlength(1):diffuse(TapNoteScoreToColor('TapNoteScore_Miss')):queuecommand("Update") end,
 						JudgmentMessageCommand=function(self,param) if param.Player == pn then self:queuecommand("Update") end end,
-						UpdateCommand=function(self) self:settext(STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):GetTapNoteScores('TapNoteScore_Miss')) end
+						UpdateCommand=function(self) if stats >= 6 then self:settext(STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):GetTapNoteScores('TapNoteScore_Miss')) end end
 					}
 				},
 				Def.ActorFrame{
-					Condition=getenv("ShowStats"..pname(pn)) == 7,
+					Condition=stats == 7,
 					InitCommand=function(self) self:y(-140) end,
 					LoadFont("ScreenGameplay judgment")..{
 						Name="PlayerName",
@@ -332,12 +339,12 @@ return Def.ActorFrame{
 					LoadFont("ScreenGameplay judgment")..{
 						Name="HoldName",
 						Text="DROP'D",
-						OnCommand=function(self) self:maxwidth(125):halign(1):shadowlength(1):addy(50) end
+						OnCommand=function(self) self:maxwidth(125):halign(1):shadowlength(1):addy(50):fadeleft(pn == PLAYER_1 and 1 or 0):faderight(pn == PLAYER_2 and 1 or 0):linear(1):fadeleft(0):faderight(0) end
 					},
 					LoadFont("ScreenGameplay judgment")..{
 						Name="MineName",
 						Text="MINED",
-						OnCommand=function(self) self:maxwidth(125):halign(1):shadowlength(1):addy(15) end
+						OnCommand=function(self) self:maxwidth(125):halign(1):shadowlength(1):addy(15):fadeleft(pn == PLAYER_1 and 1 or 0):faderight(pn == PLAYER_2 and 1 or 0):linear(1):fadeleft(0):faderight(0) end
 					},
 					LoadFont("ScreenGameplay judgment")..{
 						Name="HoldCounter",
