@@ -20,26 +20,37 @@ local weight = {
     W4 = 0,
     W5 = 0
 }
+local stop = false
+local dif = 1
 
 for w,v in pairs(weight) do
 	if not isOutFox() and string.find(w,"Pro") then else weight[w] = tonumber(THEME:GetMetric('ScoreKeeperNormal', 'PercentScoreWeight'..w)) end
 end
 
-function animateScore(currentScore,fakeScore)
-	if currentScore > fakeScore then
-		displayScore = fakeScore + math.ceil((currentScore - fakeScore) / 4)
-	elseif currentScore < fakeScore then
+local function animateScore(currentScore,fakeScore)
+	local percent = GAMESTATE:GetCurrentSong():GetLastSecond()/GAMESTATE:GetSongPosition():GetMusicSecondsVisible()
+	if scoreType == 1 then
+		dif = math.min(5,percent*percent)
+	elseif scoreType == 2 then
+		dif = math.min(10,2.5*percent*percent)
+	elseif scoreType == 3 then
+		dif = 5
+	end
+
+	if currentScore > fakeScore + math.ceil((currentScore - fakeScore) / dif) then
+		displayScore = fakeScore + math.ceil((currentScore - fakeScore) / dif)
+	elseif currentScore <= fakeScore + math.ceil((currentScore - fakeScore) / dif) then
 		displayScore = currentScore
 	end
 	return displayScore
 end
 
 local function UpdateScore(self)
-	self:GetChild("Score"..pname(player)):queuecommand("RedrawScore")
+	if not stop and (displayScore > 0 or (isSurvival(player) and GAMESTATE:GetSongPosition():GetMusicSecondsVisible() >= GAMESTATE:GetCurrentSong():GetFirstSecond())) then self:GetChild("Score"..pname(player)):queuecommand("RedrawScore") end
 end
 
 return Def.ActorFrame{
-	OnCommand=function(self) if isGamePlay() and (scoreType ~= 2 or isSurvival(player)) then self:SetUpdateFunction(UpdateScore) end self:visible(isGamePlay()) end,
+	OnCommand=function(self) if isGamePlay() or isSurvival(player) then self:SetUpdateFunction(UpdateScore) end self:visible(isGamePlay()) end,
 	LoadFont("_r bold numbers") .. {
 		Name="Score"..pname(player),
 		InitCommand=function(self)
@@ -60,10 +71,10 @@ return Def.ActorFrame{
 			if IsGame("pump") then self:addy(10) if GAMESTATE:GetNumPlayersEnabled() == 1 and getenv("RotationSolo"..pname(player)) then self:CenterX() end end
 		end,
 		OnCommand=function(self) self:queuecommand("RedrawScore"):addy(-100):sleep(0.5):decelerate(0.8):addy(100) end,
-		OffCommand=function(self) if not IsGame("pump") then if AnyPlayerFullComboed() then self:sleep(1) end self:accelerate(0.8):addy(-100) end end,
+		OffCommand=function(self) stop = true if not IsGame("pump") then if AnyPlayerFullComboed() then self:sleep(1) end self:accelerate(0.8):addy(-100) end end,
 		JudgmentMessageCommand=function(self,param)
 			local short = ToEnumShortString(param.TapNoteScore or param.HoldNoteScore)
-			local update = weight[short] ~= 0
+			local update = weight[short] and weight[short] > 0
 			if param.Player == player and update then self:stoptweening():queuecommand("RedrawScore") end
 		end,
 		RedrawScoreCommand=function(self)
@@ -80,7 +91,8 @@ return Def.ActorFrame{
 					Diffuse = PlayerColorSemi(player),
 				})
 			elseif scoreType == 2 then
-				self:settext(FormatPercentScore(pss:GetPercentDancePoints())) -- PERCENT
+				output = animateScore(pss:GetPercentDancePoints()*10000,displayScore)/100
+				self:settextf("%1.2f%%",output) -- PERCENT
 			elseif scoreType == 3 then
 				output = animateScore(pss:GetActualDancePoints(),displayScore)
 				self:settextf("%04d",output) -- EX
