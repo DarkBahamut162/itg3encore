@@ -423,29 +423,9 @@ function GetMinSecondsToStep()
 	return math.max(firstSec, 1)
 end
 
-local tapsp2lv100={
-	00.5,0.55,00.6,0.65,00.7,0.75,00.8,0.85,00.9,0.95,
-	01.0,01.2,01.4,01.6,01.7,01.8,01.9,02.0,02.2,02.3,
-	02.5,02.6,03.0,03.3,03.6,04.0,04.3,04.6,05.0,05.2,
-	05.5,05.7,06.0,06.2,06.5,06.7,07.0,07.2,07.4,07.6,
-	07.8,08.0,08.3,08.6,09.0,09.2,09.4,09.6,09.8,10.0,
-	10.2,10.5,10.7,11.0,11.3,11.6,12.0,12.0,12.2,12.4,
-	12.6,12.8,13.0,13.0,13.3,13.5,13.7,14.0,14.2,14.4,
-	14.5,14.5,14.6,14.8,15.0,15.2,15.4,15.6,15.8,16.0,
-	16.2,16.4,16.6,16.8,17.0,17.2,17.4,17.6,17.8,18.0,
-	18.2,18.4,18.6,18.8,19.0,19.2,19.4,19.6,19.8,20.0,
-	20.2,20.4,20.6,20.8,21.0,21.2,21.4,21.6,21.8,22.0,
-	22.2,22.4,22.6,22.8,23.0,23.2,23.4,23.6,23.8,24.0,
-	24.2,24.4,24.6,24.8,25.0,25.2,25.4,25.6,25.8,26.0,
-	26.2,26.4,26.6,26.8,27.0,27.2,27.4,27.6,27.8,28.0,
-	28.2,28.4,28.6,28.8,29.0,29.2,29.4,29.6,29.8,30.0,
-	30.2,30.4,30.6,30.8,31.0,31.2,31.4,31.6,31.8,32.0,
-	32.2,32.4,32.6,32.8,33.0,33.2,33.4,33.6,33.8,34.0,
-	34.2,34.4,34.6,34.8,35.0,35.2,35.4,35.6,35.8,36.0,
-	36.4,36.8,37.2,37.6,38.0,38.4,38.8,39.2,39.6,40.0,
-	40.5,41.0,41.5,42.0,42.5,43.0,43.5,44.0,44.5,45.0,
-	45.5,46.0,46.5,47.0,47.5,48.0,48.5,49.0,49.5,50.0
-}
+function LV100(input)
+	return math.pow(input*(1/15000),2)+(input*0.09)+0.5
+end
 
 function GetConvertDifficulty(Song,Step,songLength)
 	local voltage=Step:GetRadarValues(GAMESTATE:GetMasterPlayerNumber()):GetValue('RadarCategory_Voltage')*Song:MusicLengthSeconds()/songLength
@@ -477,28 +457,5 @@ function GetConvertDifficulty(Song,Step,songLength)
 		tapspoint=tapspoint*1.02
 	end
 	--if songLength>60 then tapspoint=tapspoint*(1+((songLength-60)/30)*0.025) end
-	if tapspoint>=#tapsp2lv100*1.98 then
-		tapspoint=#tapsp2lv100
-	else
-		if tapspoint>=#tapsp2lv100 then
-			local max=#tapsp2lv100*1.98-#tapsp2lv100
-			tapspoint=#tapsp2lv100*0.85+(#tapsp2lv100*0.15*math.sin((math.pi*0.5)*(tapspoint-#tapsp2lv100)/max))
-		elseif tapspoint>=#tapsp2lv100*0.5 then
-			local max=#tapsp2lv100-#tapsp2lv100*0.5
-			tapspoint=#tapsp2lv100*0.5+(#tapsp2lv100*0.35*math.sin((math.pi*0.5)*(tapspoint-#tapsp2lv100*0.5)/max))
-		end
-	end
-	tapspoint=math.round(tapspoint)
-	tapspoint=math.max(tapspoint+1,1)
-	tapspoint=math.min(tapspoint,#tapsp2lv100)
-
-	local meter
-	if tapsp2lv100[tapspoint]<25 then
-		meter=12*math.sin(tapsp2lv100[tapspoint]*math.pi*0.5/25)
-	elseif tapsp2lv100[tapspoint]<35 then
-		meter=(tapsp2lv100[tapspoint]-25)*3/10+12
-	else
-		meter=(tapsp2lv100[tapspoint]-35)*5/15+15
-	end
-	return meter
+	return LV100(tapspoint)
 end
