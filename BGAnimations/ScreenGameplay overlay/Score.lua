@@ -20,8 +20,10 @@ local weight = {
     W4 = 0,
     W5 = 0
 }
-local stop = false
+local stopping,stop = false,false
 local dif = 1
+
+if scoreType == 1 then dif = 4 elseif scoreType == 2 then dif = 10 elseif scoreType == 3 then dif = 5 end
 
 for w,v in pairs(weight) do
 	if not isOutFox() and string.find(w,"Pro") then else weight[w] = tonumber(THEME:GetMetric('ScoreKeeperNormal', 'PercentScoreWeight'..w)) end
@@ -29,19 +31,14 @@ end
 
 local function animateScore(currentScore,fakeScore)
 	local percent = GAMESTATE:GetCurrentSong():GetLastSecond()/GAMESTATE:GetSongPosition():GetMusicSecondsVisible()
-	if scoreType == 1 then
-		dif = math.min(5,percent*percent)
-	elseif scoreType == 2 then
-		dif = math.min(10,2.5*percent*percent)
-	elseif scoreType == 3 then
-		dif = 5
-	end
 
 	if currentScore > fakeScore + math.ceil((currentScore - fakeScore) / dif) then
 		displayScore = fakeScore + math.ceil((currentScore - fakeScore) / dif)
 	elseif currentScore <= fakeScore + math.ceil((currentScore - fakeScore) / dif) then
+		if stopping then stop = true end
 		displayScore = currentScore
 	end
+
 	return displayScore
 end
 
@@ -50,7 +47,11 @@ local function UpdateScore(self)
 end
 
 return Def.ActorFrame{
-	OnCommand=function(self) if isGamePlay() or isSurvival(player) then self:SetUpdateFunction(UpdateScore) end self:visible(isGamePlay()) end,
+	OnCommand=function(self)
+		if isGamePlay() or isSurvival(player) then self:SetUpdateFunction(UpdateScore) end self:visible(isGamePlay())
+		self:queuecommand("RedrawScore"):addy(-100):sleep(0.5):decelerate(0.8):addy(100)
+	end,
+	OffCommand=function(self) stopping = true if not IsGame("pump") then if AnyPlayerFullComboed() then self:sleep(1) end self:accelerate(0.8):addy(-100) end end,
 	LoadFont("_r bold numbers") .. {
 		Name="Score"..pname(player),
 		InitCommand=function(self)
@@ -70,8 +71,6 @@ return Def.ActorFrame{
 			end
 			if IsGame("pump") then self:addy(10) if GAMESTATE:GetNumPlayersEnabled() == 1 and getenv("RotationSolo"..pname(player)) then self:CenterX() end end
 		end,
-		OnCommand=function(self) self:queuecommand("RedrawScore"):addy(-100):sleep(0.5):decelerate(0.8):addy(100) end,
-		OffCommand=function(self) stop = true if not IsGame("pump") then if AnyPlayerFullComboed() then self:sleep(1) end self:accelerate(0.8):addy(-100) end end,
 		JudgmentMessageCommand=function(self,param)
 			local short = ToEnumShortString(param.TapNoteScore or param.HoldNoteScore)
 			local update = weight[short] and weight[short] > 0
