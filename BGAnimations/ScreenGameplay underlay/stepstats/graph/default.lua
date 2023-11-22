@@ -51,17 +51,9 @@ local function UpdateGraphAssist()
     local SongOrCourse = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentTrail(pn):GetTrailEntry(GAMESTATE:GetLoadingCourseSongIndex()):GetSong() or GAMESTATE:GetCurrentSong()
     local StepOrTrails = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentTrail(pn):GetTrailEntry(GAMESTATE:GetLoadingCourseSongIndex()):GetSteps() or GAMESTATE:GetCurrentSteps(pn)
 	local assist = {}
-    local chartint = 1
     local temp = nil
 
     if SongOrCourse then
-        for k,v in pairs( SongOrCourse:GetAllSteps() ) do
-            if v == StepOrTrails then
-                chartint = k
-                break
-            end
-        end
-
         local timingData = StepOrTrails:GetTimingData()
         if getenv("ShowSpeedAssist"..pname(pn)) then
             for k,v in pairs(timingData:GetBPMsAndTimes()) do
