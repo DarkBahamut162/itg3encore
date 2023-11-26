@@ -7,9 +7,9 @@ return LoadFont("_v 26px bold white")..{
 			if GAMESTATE:IsCourseMode() then
 				local trail = GAMESTATE:GetCurrentTrail(Player)
 				local difficulty = ToEnumShortString(trail:GetDifficulty())
-				self:settext(trail:GetDifficulty().." "..trail:GetMeter())
-				self:diffuse(CustomDifficultyToColor(trail:GetDifficulty()))
-				self:diffusetopedge(ContrastingDifficultyColor(trail:GetDifficulty()))
+				self:settext(difficulty.." "..trail:GetMeter())
+				self:diffuse(CustomDifficultyToColor(difficulty))
+				self:diffusetopedge(ContrastingDifficultyColor(difficulty))
 			else
 				local stagesAgo = (STATSMAN:GetStagesPlayed() - (param.NewIndex-1))
 				local playedSS = STATSMAN:GetPlayedStageStats(stagesAgo)

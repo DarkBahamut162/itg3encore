@@ -413,8 +413,7 @@ for side in ivalues(PlayerNumber) do
 			end
 
 			local Selection = GAMESTATE:GetCurrentTrail(pn) or GAMESTATE:GetCurrentSteps(pn)
-			local CustomDifficulty = StepsOrTrailToCustomDifficulty(Selection)
-			local DifficultyColor = CustomDifficultyToColor(CustomDifficulty)
+			local DifficultyColor = CustomDifficultyToColor(ToEnumShortString(Selection:GetDifficulty()))
 			c.BubbleColor:RunCommandsRecursively( function(self) self:diffuse(DifficultyColor) end )
 
 			local DifficultyColor = {DifficultyColor[1], DifficultyColor[1], DifficultyColor[2], DifficultyColor[4]}
@@ -511,8 +510,7 @@ for side in ivalues(PlayerNumber) do
 			local DifficultyColor
 
 			if IsDisplayedPlayer[pn] then
-				DifficultyColor = StepsOrTrailToCustomDifficulty(Selection)
-				DifficultyColor = CustomDifficultyToColor(DifficultyColor)
+				DifficultyColor = CustomDifficultyToColor(ToEnumShortString(Selection:GetDifficulty()))
 			else
 				DifficultyColor = color("#404040")
 			end
