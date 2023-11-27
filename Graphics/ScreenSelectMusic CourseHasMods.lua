@@ -195,7 +195,7 @@ return Def.ActorFrame{
 				local effectclock = spmp ~= "" and "beat" or "timerglobal"
 				self:effectclock(effectclock)
 			else
-				self:effectclock("beat")
+				self:effectclock("beat"):settext("")
 			end
 		end
 	}
