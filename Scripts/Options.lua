@@ -200,7 +200,7 @@ function SongMods()
 		options = addToOutput(options,"10,11",",")
 	end
 
-	options = addToOutput(options,"12,13,14,7,BGC,M,A,15,19,28,S,25",",")
+	options = addToOutput(options,"12,13,14,7,BGC,M,A,15,19,28,30,S,25",",")
 
 	-- differences 2 (should be "27,24," but timingscale is not in sm5)
 	if isRegular() then
@@ -273,12 +273,25 @@ function InitOptions()
 	setenv("HighScoreableP1",false)
 	setenv("HighScoreableP2",false)
 
-	setenv("UnderComboP1",false)
-	setenv("UnderComboP2",false)
-	setenv("UnderTapJudgmentsP1",false)
-	setenv("UnderTapJudgmentsP2",false)
-	setenv("UnderHoldJudgmentsP1",false)
-	setenv("UnderHoldJudgmentsP2",false)
+	setenv("RotationLeftP1",false)
+	setenv("RotationLeftP2",false)
+	setenv("RotationRightP1",false)
+	setenv("RotationRightP2",false)
+	setenv("RotationUpsideDownP1",false)
+	setenv("RotationUpsideDownP2",false)
+
+	setenv("EffectWagP1",false)
+	setenv("EffectWagP2",false)
+	setenv("EffectPulseP1",false)
+	setenv("EffectPulseP2",false)
+	setenv("EffectBounceP1",false)
+	setenv("EffectBounceP2",false)
+	setenv("EffectSpinReverseP1",false)
+	setenv("EffectSpinReverseP2",false)
+	setenv("EffectSpinP1",false)
+	setenv("EffectSpinP2",false)
+	setenv("EffectVibrateP1",false)
+	setenv("EffectVibrateP2",false)
 
 	setenv("HideScoreP1",false)
 	setenv("HideScoreP2",false)
@@ -287,35 +300,19 @@ function InitOptions()
 	setenv("HideLifeP1",false)
 	setenv("HideLifeP2",false)
 
-	setenv("RotationLeftP1",false)
-	setenv("RotationRightP1",false)
-	setenv("RotationUpsideDownP1",false)
-	setenv("RotationLeftP2",false)
-	setenv("RotationRightP2",false)
-	setenv("RotationUpsideDownP2",false)
+	setenv("UnderComboP1",false)
+	setenv("UnderComboP2",false)
+	setenv("UnderTapJudgmentsP1",false)
+	setenv("UnderTapJudgmentsP2",false)
+	setenv("UnderHoldJudgmentsP1",false)
+	setenv("UnderHoldJudgmentsP2",false)
 
-	setenv("EffectWagP1",false)
-	setenv("EffectPulseP1",false)
-	setenv("EffectBounceP1",false)
-	setenv("EffectSpinReverseP1",false)
-	setenv("EffectSpinP1",false)
-	setenv("EffectVibrateP1",false)
-	setenv("EffectWagP2",false)
-	setenv("EffectPulseP2",false)
-	setenv("EffectBounceP2",false)
-	setenv("EffectSpinReverseP2",false)
-	setenv("EffectSpinP2",false)
-	setenv("EffectVibrateP2",false)
-
-	setenv("ShowModsP1",false)
-	setenv("ShowSpeedAssistP1",false)
-	setenv("ShowStopAssistP1",false)
-	setenv("ShowModsP2",false)
-	setenv("ShowSpeedAssistP2",false)
-	setenv("ShowStopAssistP2",false)
-
+	setenv("ShowMovePlayerStatsP1",3)
+	setenv("ShowMovePlayerStatsP2",3)
 	setenv("SetScoreTypeP1",2)
 	setenv("SetScoreTypeP2",2)
+	setenv("ScreenFilterP1",0)
+	setenv("ScreenFilterP2",0)
 
 	setenv("ShowStatsP1",0)
 	setenv("ShowStatsP2",0)
@@ -325,28 +322,72 @@ function InitOptions()
 	setenv("ShowNoteGraphP2",1)
 	setenv("SetPacemakerP1",0)
 	setenv("SetPacemakerP2",0)
+	
+	setenv("ShowModsP1",false)
+	setenv("ShowModsP2",false)
+	setenv("ShowSpeedAssistP1",false)
+	setenv("ShowSpeedAssistP2",false)
+	setenv("ShowStopAssistP1",false)
+	setenv("ShowStopAssistP2",false)
 
-	setenv("ScreenFilterP1",0)
-	setenv("ScreenFilterP2",0)
 end
 
-function OptionUnderFieldOptions()
+local function AvailableArrowDirections()
+	local dirs = { "Normal", "Left", "Right", "Upside-Down" }
+	if GAMESTATE:GetNumPlayersEnabled() == 1 then dirs[#dirs+1] = "Solo-Centered" end
+	return dirs
+end
+
+function OptionOrientation()
 	local t = {
-		Name="UnderFieldOptions",
+		Name = "Orientation",
 		LayoutType = "ShowAllInRow",
-		SelectType = "SelectMultiple",
-		OneChoiceForAllPlayers = true,
+		SelectType = "SelectOne",
+		OneChoiceForAllPlayers = false,
 		ExportOnChange = false,
-		Choices = { "Combo", "Tap Judgments", "Hold Judgments" },
+		Choices = AvailableArrowDirections(),
 		LoadSelections = function(self, list, pn)
-			list[1] = getenv("UnderCombo"..pname(pn))
-			list[2] = getenv("UnderTapJudgments"..pname(pn))
-			list[3] = getenv("UnderHoldJudgments"..pname(pn))
+			list[1] = getenv("RotationNormal"..pname(pn))
+			list[2] = getenv("RotationLeft"..pname(pn))
+			list[3] = getenv("RotationRight"..pname(pn))
+			list[4] = getenv("RotationUpsideDown"..pname(pn))
+			if GAMESTATE:GetNumPlayersEnabled() == 1 then list[5] = getenv("RotationSolo"..pname(pn)) end
 		end,
 		SaveSelections = function(self, list, pn)
-			setenv("UnderCombo"..pname(pn),list[1])
-			setenv("UnderTapJudgments"..pname(pn),list[2])
-			setenv("UnderHoldJudgments"..pname(pn),list[3])
+			setenv("RotationNormal"..pname(pn),list[1])
+			setenv("RotationLeft"..pname(pn),list[2])
+			setenv("RotationRight"..pname(pn),list[3])
+			setenv("RotationUpsideDown"..pname(pn),list[4])
+			if GAMESTATE:GetNumPlayersEnabled() == 1 then setenv("RotationSolo"..pname(pn),list[5]) end
+		end
+	}
+	setmetatable(t, t)
+	return t
+end
+
+function OptionPlayfield()
+	local t = {
+		Name = "PlayfieldMods",
+		LayoutType = "ShowAllInRow",
+		SelectType = "SelectMultiple",
+		OneChoiceForAllPlayers = false,
+		ExportOnChange = false,
+		Choices = { "Vibrate", "Spin Right", "Spin Left", "Bob", "Pulse", "Wag" },
+		LoadSelections = function(self, list, pn)
+			list[1] = getenv("EffectVibrate"..pname(pn))
+			list[2] = getenv("EffectSpin"..pname(pn))
+			list[3] = getenv("EffectSpinReverse"..pname(pn))
+			list[4] = getenv("EffectBounce"..pname(pn))
+			list[5] = getenv("EffectPulse"..pname(pn))
+			list[6] = getenv("EffectWag"..pname(pn))
+		end,
+		SaveSelections = function(self, list, pn)
+			setenv("EffectVibrate"..pname(pn),list[1])
+			setenv("EffectSpin"..pname(pn),list[2])
+			setenv("EffectSpinReverse"..pname(pn),list[3])
+			setenv("EffectBounce"..pname(pn),list[4])
+			setenv("EffectPulse"..pname(pn),list[5])
+			setenv("EffectWag"..pname(pn),list[6])
 		end
 	}
 	setmetatable(t, t)
@@ -376,6 +417,58 @@ function OptionTournamentOptions()
 	return t
 end
 
+function OptionUnderFieldOptions()
+	local t = {
+		Name="UnderFieldOptions",
+		LayoutType = "ShowAllInRow",
+		SelectType = "SelectMultiple",
+		OneChoiceForAllPlayers = true,
+		ExportOnChange = false,
+		Choices = { "Combo", "Tap Judgments", "Hold Judgments" },
+		LoadSelections = function(self, list, pn)
+			list[1] = getenv("UnderCombo"..pname(pn))
+			list[2] = getenv("UnderTapJudgments"..pname(pn))
+			list[3] = getenv("UnderHoldJudgments"..pname(pn))
+		end,
+		SaveSelections = function(self, list, pn)
+			setenv("UnderCombo"..pname(pn),list[1])
+			setenv("UnderTapJudgments"..pname(pn),list[2])
+			setenv("UnderHoldJudgments"..pname(pn),list[3])
+		end
+	}
+	setmetatable(t, t)
+	return t
+end
+
+function OptionMovePlayerStats()
+	local t = {
+		Name="MovePlayerStats",
+		LayoutType = "ShowAllInRow",
+		SelectType = "SelectOne",
+		OneChoiceForAllPlayers = false,
+		ExportOnChange = false,
+		Choices = { "Top","Top|Center","Center","Center|Bottom","Bottom" },
+		LoadSelections = function(self, list, pn)
+			local selected = getenv("ShowMovePlayerStats"..pname(pn))
+			if selected and selected ~= 0 then
+				list[selected] = true
+			else
+				list[1] = true
+			end
+		end,
+		SaveSelections = function(self, list, pn)
+			for i, choice in ipairs(self.Choices) do
+				if list[i] then
+					setenv("ShowMovePlayerStats"..pname(pn),i)
+					break
+				end
+			end
+		end
+	}
+	setmetatable(t, t)
+	return t
+end
+
 function OptionSetScoreType()
 	local t = {
 		Name="SetScoreType",
@@ -399,6 +492,36 @@ function OptionSetScoreType()
 					break
 				end
 			end
+		end
+	}
+	setmetatable(t, t)
+	return t
+end
+
+function OptionRowScreenFilter()
+	local t = {
+		Name="ScreenFilter",
+		LayoutType = "ShowAllInRow",
+		SelectType = "SelectOne",
+		OneChoiceForAllPlayers = false,
+		ExportOnChange = false,
+		Choices = getPercentValues(),
+		LoadSelections = function(self, list, pn)
+			local filterValue = getenv("ScreenFilter"..pname(pn))
+			if filterValue ~= nil then
+				local val = filterValue*10+1
+				list[val] = true
+			else
+				setenv("ScreenFilter"..pname(pn),0)
+				list[1] = true
+			end
+		end,
+		SaveSelections = function(self, list, pn)
+			local val = 0
+			for i=1,#list do
+				if list[i] then val = (i-1)/10 end
+			end
+			setenv("ScreenFilter"..pname(pn),val)
 		end
 	}
 	setmetatable(t, t)
@@ -561,39 +684,6 @@ function OptionShowModifiers()
 	return t
 end
 
-local function AvailableArrowDirections()
-	local dirs = { "Normal", "Left", "Right", "Upside-Down" }
-	if GAMESTATE:GetNumPlayersEnabled() == 1 then dirs[#dirs+1] = "Solo-Centered" end
-	return dirs
-end
-
-function OptionOrientation()
-	local t = {
-		Name = "Orientation",
-		LayoutType = "ShowAllInRow",
-		SelectType = "SelectOne",
-		OneChoiceForAllPlayers = false,
-		ExportOnChange = false,
-		Choices = AvailableArrowDirections(),
-		LoadSelections = function(self, list, pn)
-			list[1] = getenv("RotationNormal"..pname(pn))
-			list[2] = getenv("RotationLeft"..pname(pn))
-			list[3] = getenv("RotationRight"..pname(pn))
-			list[4] = getenv("RotationUpsideDown"..pname(pn))
-			if GAMESTATE:GetNumPlayersEnabled() == 1 then list[5] = getenv("RotationSolo"..pname(pn)) end
-		end,
-		SaveSelections = function(self, list, pn)
-			setenv("RotationNormal"..pname(pn),list[1])
-			setenv("RotationLeft"..pname(pn),list[2])
-			setenv("RotationRight"..pname(pn),list[3])
-			setenv("RotationUpsideDown"..pname(pn),list[4])
-			if GAMESTATE:GetNumPlayersEnabled() == 1 then setenv("RotationSolo"..pname(pn),list[5]) end
-		end
-	}
-	setmetatable(t, t)
-	return t
-end
-
 function OptionOrientationRestricted()
 	local t = {
 		Name = "Orientation",
@@ -609,65 +699,6 @@ function OptionOrientationRestricted()
 		SaveSelections = function(self, list, pn)
 			setenv("RotationNormal"..pname(pn),list[1])
 			setenv("RotationSolo"..pname(pn),list[2])
-		end
-	}
-	setmetatable(t, t)
-	return t
-end
-
-function OptionPlayfield()
-	local t = {
-		Name = "PlayfieldMods",
-		LayoutType = "ShowAllInRow",
-		SelectType = "SelectMultiple",
-		OneChoiceForAllPlayers = false,
-		ExportOnChange = false,
-		Choices = { "Vibrate", "Spin Right", "Spin Left", "Bob", "Pulse", "Wag" },
-		LoadSelections = function(self, list, pn)
-			list[1] = getenv("EffectVibrate"..pname(pn))
-			list[2] = getenv("EffectSpin"..pname(pn))
-			list[3] = getenv("EffectSpinReverse"..pname(pn))
-			list[4] = getenv("EffectBounce"..pname(pn))
-			list[5] = getenv("EffectPulse"..pname(pn))
-			list[6] = getenv("EffectWag"..pname(pn))
-		end,
-		SaveSelections = function(self, list, pn)
-			setenv("EffectVibrate"..pname(pn),list[1])
-			setenv("EffectSpin"..pname(pn),list[2])
-			setenv("EffectSpinReverse"..pname(pn),list[3])
-			setenv("EffectBounce"..pname(pn),list[4])
-			setenv("EffectPulse"..pname(pn),list[5])
-			setenv("EffectWag"..pname(pn),list[6])
-		end
-	}
-	setmetatable(t, t)
-	return t
-end
-
-function OptionRowScreenFilter()
-	local t = {
-		Name="ScreenFilter",
-		LayoutType = "ShowAllInRow",
-		SelectType = "SelectOne",
-		OneChoiceForAllPlayers = false,
-		ExportOnChange = false,
-		Choices = getPercentValues(),
-		LoadSelections = function(self, list, pn)
-			local filterValue = getenv("ScreenFilter"..pname(pn))
-			if filterValue ~= nil then
-				local val = filterValue*10+1
-				list[val] = true
-			else
-				setenv("ScreenFilter"..pname(pn),0)
-				list[1] = true
-			end
-		end,
-		SaveSelections = function(self, list, pn)
-			local val = 0
-			for i=1,#list do
-				if list[i] then val = (i-1)/10 end
-			end
-			setenv("ScreenFilter"..pname(pn),val)
 		end
 	}
 	setmetatable(t, t)
