@@ -5,8 +5,8 @@ local timingData
 
 if SongOrCourse and StepOrTrails then timingData = StepOrTrails:GetTimingData() end
 
-local sudden = GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Song"):SuddenOffset() ~= 0
-local hidden = GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Song"):HiddenOffset() ~= 0
+local sudden = GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Preferred"):SuddenOffset() ~= 0
+local hidden = GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Preferred"):HiddenOffset() ~= 0
 local val = 0
 
 local function UpdateDynamic(self)
