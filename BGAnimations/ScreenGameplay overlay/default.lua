@@ -1,4 +1,123 @@
+local MOD = {}
+local CURRENT = {}
+local PREVIOUS = {}
+local c
+
+local function setX(value,player)
+	GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Preferred"):XMod(value/100)
+	GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Stage"):XMod(value/100)
+	GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Song"):XMod(value/100)
+	GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Current"):XMod(value/100)
+end
+local function setC(value,player)
+	GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Preferred"):CMod(value)
+	GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Stage"):CMod(value)
+	GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Song"):CMod(value)
+	GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Current"):CMod(value)
+end
+local function setM(value,player)
+	GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Preferred"):MMod(value)
+	GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Stage"):MMod(value)
+	GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Song"):MMod(value)
+	GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Current"):MMod(value)	
+end
+local function setA(value,player)
+	GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Preferred"):AMod(value)
+	GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Stage"):AMod(value)
+	GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Song"):AMod(value)
+	GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Current"):AMod(value)
+end
+local function setAV(value,player)
+	GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Preferred"):AVMod(value)
+	GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Stage"):AVMod(value)
+	GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Song"):AVMod(value)
+	GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Current"):AVMod(value)
+end
+local function setCA(value,player)
+	GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Preferred"):CAMod(value)
+	GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Stage"):CAMod(value)
+	GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Song"):CAMod(value)
+	GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Current"):CAMod(value)
+end
+
 local t = Def.ActorFrame{
+	OnCommand=function(self)
+		for pn in ivalues(GAMESTATE:GetEnabledPlayers()) do
+			local playeroptions = GAMESTATE:GetPlayerState(pn):GetPlayerOptions("ModsLevel_Preferred")
+			if playeroptions:MMod() then MOD[pn] = "m" CURRENT[pn] = playeroptions:MMod() break end
+			if isOutFox() then if playeroptions:AMod() then MOD[pn] = "a" CURRENT[pn] = playeroptions:AMod() break end end
+			if isOutFox() then if playeroptions:CAMod() then MOD[pn] = "ca" CURRENT[pn] = playeroptions:CAMod() break end end
+			if isOutFox() then if playeroptions:AVMod() then MOD[pn] = "av" CURRENT[pn] = playeroptions:AVMod() break end end
+			if playeroptions:XMod() then MOD[pn] = "x" CURRENT[pn] = playeroptions:XMod()*100 end
+			if playeroptions:CMod() then MOD[pn] = "c" CURRENT[pn] = playeroptions:CMod() end
+		end
+	end,
+	CodeMessageCommand = function(self, params)
+		if params.Name == 'SpeedUp' or params.Name == 'SpeedDown' then
+			PREVIOUS[params.PlayerNumber] = CURRENT[params.PlayerNumber]
+			if params.Name == 'SpeedUp' then
+				CURRENT[params.PlayerNumber] = CURRENT[params.PlayerNumber] + 25
+			elseif params.Name == 'SpeedDown' then
+				if CURRENT[params.PlayerNumber] > 25 then CURRENT[params.PlayerNumber] = CURRENT[params.PlayerNumber] - 25 end
+			end
+
+			if MOD[params.PlayerNumber] == "x" then
+				setX(CURRENT[params.PlayerNumber],params.PlayerNumber)
+			elseif MOD[params.PlayerNumber] == "c" then
+				setC(CURRENT[params.PlayerNumber],params.PlayerNumber)
+			elseif MOD[params.PlayerNumber] == "m" then
+				setM(CURRENT[params.PlayerNumber],params.PlayerNumber)
+			elseif MOD[params.PlayerNumber] == "a" then
+				setA(CURRENT[params.PlayerNumber],params.PlayerNumber)
+			elseif MOD[params.PlayerNumber] == "ca" then
+				setCA(CURRENT[params.PlayerNumber],params.PlayerNumber)
+			elseif MOD[params.PlayerNumber] == "av" then
+				setAV(CURRENT[params.PlayerNumber],params.PlayerNumber)
+			end
+
+			if PREVIOUS[params.PlayerNumber] ~= CURRENT[params.PlayerNumber] then
+				if params.PlayerNumber == PLAYER_1 then
+					c.MOD1:playcommand("Change")
+				else
+					c.MOD2:playcommand("Change")
+				end
+			end
+		end
+	end,
+	Def.ActorFrame{
+		InitCommand = function(self) c = self:GetChildren() end,
+		OnCommand=function(self) self:addy(-100):sleep(0.5):decelerate(0.8):addy(100) end,
+		OffCommand=function(self) self:accelerate(0.8):addy(-100) end,
+		LoadFont("_eurostile normal")..{
+			Condition=GAMESTATE:IsPlayerEnabled(PLAYER_1),
+			Name="MOD1",
+			InitCommand=function(self) self:shadowlength(1):zoom(0.4):x(THEME:GetMetric("ScreenGameplay","ScoreP1X")):y(THEME:GetMetric("ScreenGameplay","ScoreP1Y")-15) end,
+			OnCommand=function(self) self:settext(CURRENT[PLAYER_1] and "SPEED: " .. (CURRENT[PLAYER_1] / (MOD[PLAYER_1] == "x" and 100 or 1))..MOD[PLAYER_1] or "") end,
+			ChangeCommand=function(self)
+				local text ="SPEED CHANGE: " .. (PREVIOUS[PLAYER_1] / (MOD[PLAYER_1] == "x" and 100 or 1))..MOD[PLAYER_1] .. " -> " .. (CURRENT[PLAYER_1] / (MOD[PLAYER_1] == "x" and 100 or 1))..MOD[PLAYER_1]
+				self:stoptweening():diffusealpha(1):settext(text):sleep(1):linear(0.25):diffusealpha(0):queuecommand("TrueChange")
+			end,
+			TrueChangeCommand=function(self)
+				local text = "SPEED: " .. (CURRENT[PLAYER_1] / (MOD[PLAYER_1] == "x" and 100 or 1))..MOD[PLAYER_1]
+				self:settext(text):linear(0.25):diffusealpha(1)
+			end
+		},
+		LoadFont("_eurostile normal")..{
+			Condition=GAMESTATE:IsPlayerEnabled(PLAYER_2),
+			Name="MOD2",
+			Text=CURRENT[PLAYER_2] or "?",
+			InitCommand=function(self) self:shadowlength(1):zoom(0.4):x(THEME:GetMetric("ScreenGameplay","ScoreP2X")):y(THEME:GetMetric("ScreenGameplay","ScoreP2Y")+15) end,
+			OnCommand=function(self) self:settext(CURRENT[PLAYER_2] and "SPEED: " .. (CURRENT[PLAYER_2] / (MOD[PLAYER_2] == "x" and 100 or 1))..MOD[PLAYER_2] or "") end,
+			ChangeCommand=function(self)
+				local text ="SPEED CHANGE: " .. (PREVIOUS[PLAYER_2] / (MOD[PLAYER_2] == "x" and 100 or 1))..MOD[PLAYER_2] .. " -> " .. (CURRENT[PLAYER_2] / (MOD[PLAYER_2] == "x" and 100 or 1))..MOD[PLAYER_2]
+				self:stoptweening():diffusealpha(1):settext(text):sleep(1):linear(0.25):diffusealpha(0):queuecommand("TrueChange")
+			end,
+			TrueChangeCommand=function(self)
+				local text = "SPEED: " .. (CURRENT[PLAYER_2] / (MOD[PLAYER_2] == "x" and 100 or 1))..MOD[PLAYER_2]
+				self:settext(text):linear(0.25):diffusealpha(1)
+			end
+		}
+	},
 	LoadActor(GetSongFrame()),
 	Def.ActorFrame{
 		Name="RaveNames",
