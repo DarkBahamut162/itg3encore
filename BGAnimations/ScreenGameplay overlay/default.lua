@@ -87,7 +87,7 @@ local t = Def.ActorFrame{
 	Def.ActorFrame{
 		InitCommand = function(self) c = self:GetChildren() end,
 		OnCommand=function(self) self:addy(-100):sleep(0.5):decelerate(0.8):addy(100) end,
-		OffCommand=function(self) self:accelerate(0.8):addy(-100) end,
+		OffCommand=function(self) if not IsGame("pump") then if AnyPlayerFullComboed() then self:sleep(1) end self:accelerate(0.8):addy(-100) end end,
 		LoadFont("_eurostile normal")..{
 			Condition=GAMESTATE:IsPlayerEnabled(PLAYER_1),
 			Name="MOD1",
