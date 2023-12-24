@@ -48,8 +48,8 @@ for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
 end
 
 local function GraphDisplay(pn)
-	local firstSecond = GAMESTATE:GetCurrentSong():GetFirstSecond() - GAMESTATE:GetCurrentSteps(pn):GetTimingData():GetElapsedTimeFromBeat(0)
-	local length = GAMESTATE:IsCourseMode() and TrailUtil.GetTotalSeconds(GAMESTATE:GetCurrentTrail(pn)) or GAMESTATE:GetCurrentSong():GetLastSecond() - firstSecond
+	local firstSecond = GAMESTATE:GetCurrentSong():GetFirstSecond()
+	local length = GAMESTATE:IsCourseMode() and TrailUtil.GetTotalSeconds(GAMESTATE:GetCurrentTrail(pn)) or GAMESTATE:GetCurrentSong():GetLastSecond()
 	local lastMarvelousSecond = GAMESTATE:IsCourseMode() and getenv("LastFantastic"..pname(pn)) or getenv("LastFantastic"..pname(pn)) - firstSecond
 	local lastPerfectSecond = GAMESTATE:IsCourseMode() and getenv("LastPerfect"..pname(pn)) or getenv("LastPerfect"..pname(pn)) - firstSecond
 	local lastGreatSecond = GAMESTATE:IsCourseMode() and getenv("LastGreat"..pname(pn)) or getenv("LastGreat"..pname(pn)) - firstSecond
