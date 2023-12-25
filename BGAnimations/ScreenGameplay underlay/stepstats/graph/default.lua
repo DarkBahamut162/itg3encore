@@ -10,7 +10,12 @@ local allowednotes = {
 	["TapNoteType_Tap"] = true,
 	["TapNoteType_Lift"] = true,
 	["TapNoteSubType_Hold"] = true,
-	["TapNoteSubType_Roll"] = true
+	["TapNoteSubType_Roll"] = true,
+	--What the hell happened here, OF0.5-pre042?
+	["TapNoteType_TapNoteType_Tap"] = true,
+	["TapNoteType_TapNoteType_Lift"] = true,
+	["TapNoteSubType_TapNoteSubType_Hold"] = true,
+	["TapNoteSubType_TapNoteSubType_Roll"] = true
 }
 
 local function UpdateGraph()
