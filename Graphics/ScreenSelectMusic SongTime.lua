@@ -27,13 +27,13 @@ return Def.ActorFrame{
 				if curSelection then
 					EC = curSelection:GetPreviewMusicPath()
 					length[1] = curSelection:MusicLengthSeconds()
-					length[2] = length[2] + curSelection:GetLastSecond()-curSelection:GetFirstSecond()
+					length[2] = curSelection:GetFirstSecond() > curSelection:GetLastSecond() and 0 or curSelection:GetLastSecond()-curSelection:GetFirstSecond()
 				else
 					local songs = SONGMAN:GetSongsInGroup(SCREENMAN:GetTopScreen():GetMusicWheel():GetSelectedSection())
 					for s=1,#songs do
 						if songs[s]:HasStepsType(stepsType) then
 							length[1] = length[1] + songs[s]:MusicLengthSeconds()
-							length[2] = length[2] + songs[s]:GetLastSecond()-songs[s]:GetFirstSecond()
+							length[2] = length[2] + (songs[s]:GetFirstSecond() > songs[s]:GetLastSecond() and 0 or songs[s]:GetLastSecond()-songs[s]:GetFirstSecond())
 						end
 					end
 				end
