@@ -50,6 +50,7 @@ end
 local function GraphDisplay(pn)
 	local firstSecond = GAMESTATE:GetCurrentSong():GetFirstSecond()
 	local length = GAMESTATE:IsCourseMode() and TrailUtil.GetTotalSeconds(GAMESTATE:GetCurrentTrail(pn)) or GAMESTATE:GetCurrentSong():GetLastSecond()
+	local totallength = GAMESTATE:IsCourseMode() and TrailUtil.GetTotalSeconds(GAMESTATE:GetCurrentTrail(pn)) or GAMESTATE:GetCurrentSong():MusicLengthSeconds()
 	local lastMarvelousSecond = GAMESTATE:IsCourseMode() and getenv("LastFantastic"..pname(pn)) or getenv("LastFantastic"..pname(pn)) - firstSecond
 	local lastPerfectSecond = GAMESTATE:IsCourseMode() and getenv("LastPerfect"..pname(pn)) or getenv("LastPerfect"..pname(pn)) - firstSecond
 	local lastGreatSecond = GAMESTATE:IsCourseMode() and getenv("LastGreat"..pname(pn)) or getenv("LastGreat"..pname(pn)) - firstSecond
@@ -64,19 +65,19 @@ local function GraphDisplay(pn)
 		LoadActor(THEME:GetPathB("ScreenEvaluation","underlay/FFC "..pname(pn)))..{
 			Condition=not isRave() and getenv("EvalCombo"..pname(pn)) and not (isOni() and not isLifeline(player)),
 			InitCommand=function(self)
-				self:croptop(0.75) if lastMarvelousSecond > 0 then self:cropright(1-(lastMarvelousSecond/length)) end
+				self:croptop(0.75) if lastMarvelousSecond > 0 then self:cropright(1-(lastMarvelousSecond/totallength)) end
 			end
 		},
 		LoadActor(THEME:GetPathB("ScreenEvaluation","underlay/FEC "..pname(pn)))..{
 			Condition=not isRave() and getenv("EvalCombo"..pname(pn)) and lastMarvelousSecond > 0 and not (isOni() and not isLifeline(player)),
 			InitCommand=function(self)
-				self:croptop(0.75):cropleft(1-(length-lastMarvelousSecond)/length) if lastPerfectSecond > 0 then self:cropright(1-(lastPerfectSecond/length)) end
+				self:croptop(0.75):cropleft(1-(length-lastMarvelousSecond)/length) if lastPerfectSecond > 0 then self:cropright(1-(lastPerfectSecond/totallength)) end
 			end
 		},
 		LoadActor(THEME:GetPathB("ScreenEvaluation","underlay/FGC "..pname(pn)))..{
 			Condition=not isRave() and getenv("EvalCombo"..pname(pn)) and lastPerfectSecond > 0 and not (isOni() and not isLifeline(player)),
 			InitCommand=function(self)
-				self:croptop(0.75):cropleft(1-(length-lastPerfectSecond)/length) if lastGreatSecond > 0 then self:cropright(1-(lastGreatSecond/length)) end
+				self:croptop(0.75):cropleft(1-(length-lastPerfectSecond)/length) if lastGreatSecond > 0 then self:cropright(1-(lastGreatSecond/totallength)) end
 			end
 		},
 	}
