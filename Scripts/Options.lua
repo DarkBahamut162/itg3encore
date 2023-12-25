@@ -177,8 +177,8 @@ function SongMods()
 	local style = GAMESTATE:GetCurrentStyle()
 	local styleType = style:GetStyleType()
 	local doubles = (styleType == 'StyleType_OnePlayerTwoSides' or styleType == 'StyleType_TwoPlayersSharedSides')
-	local add = ""
-	
+	local add,add2 = "",isOutFoxV() and "27," or ""
+
 	if isOutFox() and not isOni() then
 		add = (GAMESTATE:GetNumPlayersEnabled() == 1 and not doubles) and "20S,20G," or "20G,"
 	else
@@ -202,18 +202,17 @@ function SongMods()
 
 	options = addToOutput(options,"12,13,14,7,BGC,M,A,15,19,28,30,S,25",",")
 
-	-- differences 2 (should be "27,24," but timingscale is not in sm5)
 	if isRegular() then
 		if HasLuaCheck() then
-			options = addToOutput(options,"20,"..add.."P,29,21,24",",")
+			options = addToOutput(options,"20,"..add.."P,29,21,"..add2.."24",",")
 		else
-			options = addToOutput(options,"20,"..add.."P,29,24",",")
+			options = addToOutput(options,"20,"..add.."P,29,"..add2.."24",",")
 		end
 	elseif isNonstop() then
 		if IsCourseSecret() then
-			options = addToOutput(options,"20,"..add.."P,29,24",",")
+			options = addToOutput(options,"20,"..add.."P,29,"..add2.."24",",")
 		else
-			options = addToOutput(options,"20,"..add.."P,29,21,24",",")
+			options = addToOutput(options,"20,"..add.."P,29,21,"..add2.."24",",")
 		end
 	end
 
