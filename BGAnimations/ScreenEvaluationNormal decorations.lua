@@ -82,19 +82,19 @@ local function GraphDisplay(pn)
 		LoadActor(THEME:GetPathB("ScreenEvaluation","underlay/FGC "..pname(pn)))..{
 			Condition=not isRave() and getenv("EvalCombo"..pname(pn)) and lastPerfectSecond > 0 and not (isOni() and not isLifeline(player)),
 			InitCommand=function(self)
-				self:croptop(0.75) if lastGreatSecond > 0 then self:cropright(1-(lastGreatSecond/length)) end
+				self:croptop(0.75) if lastGreatSecond ~= 0 then self:cropright(1-(lastGreatSecond/length)) end
 			end
 		},
 		LoadActor(THEME:GetPathB("ScreenEvaluation","underlay/FEC "..pname(pn)))..{
 			Condition=not isRave() and getenv("EvalCombo"..pname(pn)) and lastMarvelousSecond > 0 and not (isOni() and not isLifeline(player)),
 			InitCommand=function(self)
-				self:croptop(0.75) if lastPerfectSecond > 0 then self:cropright(1-(lastPerfectSecond/length)) end
+				self:croptop(0.75) if lastPerfectSecond ~= 0 then self:cropright(1-(lastPerfectSecond/length)) end
 			end
 		},
 		LoadActor(THEME:GetPathB("ScreenEvaluation","underlay/FFC "..pname(pn)))..{
 			Condition=not isRave() and getenv("EvalCombo"..pname(pn)) and not (isOni() and not isLifeline(player)),
 			InitCommand=function(self)
-				self:croptop(0.75) if lastMarvelousSecond > 0 then self:cropright(1-(lastMarvelousSecond/length)) end
+				self:croptop(0.75) if lastMarvelousSecond ~= 0 then self:cropright(1-(lastMarvelousSecond/length)) end
 			end
 		}
 	}
