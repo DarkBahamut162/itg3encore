@@ -38,15 +38,15 @@ return Def.ActorFrame{
 				local avg_bps_OLD = song:GetLastBeat() / song:MusicLengthSeconds()
 				local avg_bps_NEW = (isOutFox() and tonumber(LoadFromCache(song,step,"TrueBeats")) or (song:GetLastBeat() - song:GetFirstBeat())) / totalSeconds
 				stream = math.max(0,rv:GetValue('RadarCategory_Stream'))
-				stream = stream * song:MusicLengthSeconds() / totalSeconds
+				stream = math.max(0,stream * song:MusicLengthSeconds() / totalSeconds)
 				voltage = math.max(0,rv:GetValue('RadarCategory_Voltage'))
-				voltage = voltage / avg_bps_OLD * avg_bps_NEW
+				voltage = math.max(0,voltage / avg_bps_OLD * avg_bps_NEW)
 				air = math.max(0,rv:GetValue('RadarCategory_Air'))
-				air = air * song:MusicLengthSeconds() / totalSeconds
+				air = math.max(0,air * song:MusicLengthSeconds() / totalSeconds)
 				freeze = math.max(0,rv:GetValue('RadarCategory_Freeze'))
-				freeze = freeze * song:MusicLengthSeconds() / totalSeconds
+				freeze = math.max(0,freeze * song:MusicLengthSeconds() / totalSeconds)
 				chaos = math.max(0,rv:GetValue('RadarCategory_Chaos'))
-				chaos = chaos * song:MusicLengthSeconds() / totalSeconds
+				chaos = math.max(0,chaos * song:MusicLengthSeconds() / totalSeconds)
 			end
 		elseif course then
 			local trail = GAMESTATE:GetCurrentTrail(player)
