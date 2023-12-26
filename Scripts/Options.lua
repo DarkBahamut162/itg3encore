@@ -1,5 +1,5 @@
 function ChoiceSingle()
-	if IsGame("dance") then
+	if IsGame("dance") or IsGame("groove") then
 		if isOutFox() then
 			return {"single","solo","threepanel"}
 		else
@@ -21,7 +21,7 @@ function ChoiceSingle()
 end
 
 function ChoiceVersus()
-	if IsGame("dance") then
+	if IsGame("dance") or IsGame("groove") then
 		if isOutFox() then
 			return {"versus","solo-versus","threepanel-versus"}
 		else
@@ -43,7 +43,7 @@ function ChoiceVersus()
 end
 
 function ChoiceDouble()
-	if IsGame("dance") then
+	if IsGame("dance") or IsGame("groove") then
 		if isOutFox() then
 			return {"double","solo-double","threepanel-double"}
 		else
@@ -65,7 +65,7 @@ function ChoiceDouble()
 end
 
 function GameModeEnabled()
-	if IsGame("dance") or IsGame("pump") or IsGame("smx") or IsGame("be-mu") or IsGame("beat") or IsGame("po-mu") then
+	if IsGame("dance") or IsGame("groove") or IsGame("pump") or IsGame("smx") or IsGame("be-mu") or IsGame("beat") or IsGame("po-mu") then
 		return true
 	else
 		return false
@@ -105,7 +105,7 @@ function GetStylesWorkout()
 end
 
 function StyleName()
-	if IsGame("dance") then
+	if IsGame("dance") or IsGame("groove") then
 		if isOutFox() then
 			return {"4 Arrows","6 Arrows","3 Arrows"}
 		else
@@ -128,7 +128,7 @@ function StyleName()
 end
 
 function StepsTypeSingle()
-	if IsGame("dance") then
+	if IsGame("dance") or IsGame("groove") then
 		if isOutFox() then
 			return {"StepsType_Dance_Single","StepsType_Dance_Solo","StepsType_Dance_Threepanel"}
 		else
@@ -151,7 +151,7 @@ function StepsTypeSingle()
 end
 
 function StepsTypeDouble()
-	if IsGame("dance") then
+	if IsGame("dance") or IsGame("groove") then
 		if isOutFox() then
 			return {"StepsType_Dance_Double","StepsType_Dance_Solodouble","StepsType_Dance_Threedouble"}
 		else

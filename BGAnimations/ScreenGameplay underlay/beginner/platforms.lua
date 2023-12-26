@@ -12,7 +12,7 @@ return Def.ActorFrame{
 		end,
 		Def.ActorFrame{
 			InitCommand=function(self) self:x(P1X):y(SCREEN_CENTER_Y+40*WideScreenDiff()):zoom(1.2*WideScreenDiff()):rotationx(P1r):fov(45):vanishpoint(SCREEN_CENTER_X-160,SCREEN_CENTER_Y+40) end,
-			Condition=IsGame("dance"),
+			Condition=IsGame("dance") or IsGame("groove"),
 			LoadActor("dance platform")..{
 				InitCommand=function(self) self:y(7):diffuse(color("0.6,0.6,0.6,0.8")) end
 			},
@@ -98,7 +98,7 @@ return Def.ActorFrame{
 		end,
 		Def.ActorFrame{
 			InitCommand=function(self) self:x(P2X):y(SCREEN_CENTER_Y+40*WideScreenDiff()):zoom(1.2*WideScreenDiff()):rotationx(P2r):fov(45):vanishpoint(SCREEN_CENTER_X+160,SCREEN_CENTER_Y+40) end,
-			Condition=IsGame("dance"),
+			Condition=IsGame("dance") or IsGame("groove"),
 			LoadActor("dance platform")..{
 				InitCommand=function(self) self:y(7):diffuse(color("0.6,0.6,0.6,0.8")) end
 			},
