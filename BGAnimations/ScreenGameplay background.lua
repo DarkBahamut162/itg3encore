@@ -60,7 +60,7 @@ return Def.ActorFrame {
 	OnCommand=function(self)
 		if not isTopScreen("ScreenDemonstration") and not isTopScreen("ScreenDemonstration2") and not isTopScreen("ScreenJukebox") then
 			self:playcommand("UpdateDiscordInfo")
-			for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
+			for pn in ivalues(GAMESTATE:GetEnabledPlayers()) do
 				if GAMESTATE:GetNumPlayersEnabled() == 1 and not doubles and (IsGame("be-mu") or IsGame("po-mu")) then
 					if isOutFox() and not tobool(LoadFromCache(GAMESTATE:GetCurrentSong(),GAMESTATE:GetCurrentSteps(GAMESTATE:GetMasterPlayerNumber()),"HasLua")) or not HasLuaCheck() then
 						if getenv("RotationNormal"..pname(pn)) or getenv("RotationUpsideDown"..pname(pn)) then

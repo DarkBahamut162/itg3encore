@@ -121,7 +121,7 @@ local t = Def.ActorFrame{
 	LoadActor(GetSongFrame()),
 	Def.ActorFrame{
 		Name="RaveNames",
-		InitCommand=function(self) self:CenterX():y(SCREEN_TOP+58*WideScreenDiff()):visible(isRave()) end,
+		InitCommand=function(self) self:CenterX():y(SCREEN_TOP+66*WideScreenDiff()):visible(isRave()) end,
 		OnCommand=function(self) self:addy(-100):sleep(0.5):decelerate(0.8):addy(100) end,
 		OffCommand=function(self) self:accelerate(0.8):addy(-100) end,
 		LoadFont("_v 26px bold black")..{
@@ -290,7 +290,7 @@ local t = Def.ActorFrame{
 	LoadActor(THEME:GetPathB("","_coins"))..{ InitCommand=function(self) self:visible(not GAMESTATE:IsDemonstration()) end }
 }
 
-for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
+for pn in ivalues(GAMESTATE:GetEnabledPlayers()) do
 	t[#t+1] = LoadActor("DeltaSeconds", pn)..{ Condition=isOni() and not isLifeline(pn) or isSurvival(pn) }
 	t[#t+1] = LoadActor("FCSplash", pn)
 	t[#t+1] = LoadActor("Score", pn)..{ Condition=isRegular() or isNonstop() or isLifeline(pn) }
