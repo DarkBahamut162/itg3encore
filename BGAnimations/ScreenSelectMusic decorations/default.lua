@@ -19,52 +19,54 @@ t[#t+1] = LoadFont("_v 26px bold shadow") .. {
 t[#t+1] = StandardDecorationFromFile("BannerReflection","BannerReflection")
 t[#t+1] = StandardDecorationFromFile("Triangle","Triangle")
 
-t[#t+1] = Def.FadingBanner{
-	InitCommand=function(self) self:x(SCREEN_CENTER_X+140*WideScreenDiff()):y(SCREEN_CENTER_Y-91*WideScreenDiff()):addx(SCREEN_WIDTH):decelerate(0.75):addx(-SCREEN_WIDTH):ztest(true):vertalign(bottom):playcommand("Set") end,
-	OffCommand=function(self) self:accelerate(0.75):addx(SCREEN_WIDTH) end,
-	SetCommand=function(self)
-		local song = GAMESTATE:GetCurrentSong()
-		local course = GAMESTATE:GetCurrentCourse()
-		local sortOrder = GAMESTATE:GetSortOrder()
-		if song then
-			self:LoadFromSong(song)
-		elseif course then
-			self:LoadFromCourse(course)
-		elseif sortOrder == 'SortOrder_ModeMenu' then
-			self:LoadFromSortOrder('SortOrder_ModeMenu')
-		else
-			local topScreen = SCREENMAN:GetTopScreen()
-			if topScreen then
-				local wheel = topScreen:GetMusicWheel()
-				if wheel then
-					local curIdx = wheel:GetCurrentIndex()
-					local numItems = wheel:GetNumItems()
+if not isOutFoxV() then
+	t[#t+1] = Def.FadingBanner{
+		InitCommand=function(self) self:x(SCREEN_CENTER_X+140*WideScreenDiff()):y(SCREEN_CENTER_Y-91*WideScreenDiff()):addx(SCREEN_WIDTH):decelerate(0.75):addx(-SCREEN_WIDTH):ztest(true):vertalign(bottom):playcommand("Set") end,
+		OffCommand=function(self) self:accelerate(0.75):addx(SCREEN_WIDTH) end,
+		SetCommand=function(self)
+			local song = GAMESTATE:GetCurrentSong()
+			local course = GAMESTATE:GetCurrentCourse()
+			local sortOrder = GAMESTATE:GetSortOrder()
+			if song then
+				self:LoadFromSong(song)
+			elseif course then
+				self:LoadFromCourse(course)
+			elseif sortOrder == 'SortOrder_ModeMenu' then
+				self:LoadFromSortOrder('SortOrder_ModeMenu')
+			else
+				local topScreen = SCREENMAN:GetTopScreen()
+				if topScreen then
+					local wheel = topScreen:GetMusicWheel()
+					if wheel then
+						local curIdx = wheel:GetCurrentIndex()
+						local numItems = wheel:GetNumItems()
 
-					if curIdx+1 == numItems-1 then
-						self:LoadRandom()
-					elseif curIdx+1 ~= numItems then
-						local path = SONGMAN:GetSongGroupBannerPath( wheel:GetSelectedSection() )
-						if path == "" or path == nil then
-							self:LoadFromSong(nil)
-						else
-							if isOutFoxV() then
-								self:LoadFromSongGroup(split("/",path)[3])
+						if curIdx+1 == numItems-1 then
+							self:LoadRandom()
+						elseif curIdx+1 ~= numItems then
+							local path = SONGMAN:GetSongGroupBannerPath( wheel:GetSelectedSection() )
+							if path == "" or path == nil then
+								self:LoadFromSong(nil)
 							else
-								self:LoadFromSongGroup(split("/",path)[2])
+								if isOutFoxV() then
+									self:LoadFromSongGroup(split("/",path)[3])
+								else
+									self:LoadFromSongGroup(split("/",path)[2])
+								end
 							end
+						elseif curIdx == 0 then
+							self:LoadFromSong(nil)
 						end
-					elseif curIdx == 0 then
-						self:LoadFromSong(nil)
 					end
 				end
 			end
-		end
-		self:scaletoclipped(320*WideScreenDiff(),120*WideScreenDiff())
-	end,
-	CurrentSongChangedMessageCommand=function(self) self:playcommand("Set") end,
-	CurrentCourseChangedMessageCommand=function(self) self:playcommand("Set") end,
-	WheelMovingMessageCommand=function(self) self:queuecommand("Set") end
-}
+			self:scaletoclipped(320*WideScreenDiff(),120*WideScreenDiff())
+		end,
+		CurrentSongChangedMessageCommand=function(self) self:playcommand("Set") end,
+		CurrentCourseChangedMessageCommand=function(self) self:playcommand("Set") end,
+		WheelMovingMessageCommand=function(self) self:queuecommand("Set") end
+	}
+end
 
 local function StepsDisplay(pn)
 	local function set(self, player) self:SetFromGameState(player) end
