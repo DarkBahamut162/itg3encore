@@ -48,11 +48,7 @@ if not isOutFoxV() then
 							if path == "" or path == nil then
 								self:LoadFromSong(nil)
 							else
-								if isOutFoxV() then
-									self:LoadFromSongGroup(split("/",path)[3])
-								else
-									self:LoadFromSongGroup(split("/",path)[2])
-								end
+								self:LoadFromSongGroup(split("/",path)[2])
 							end
 						elseif curIdx == 0 then
 							self:LoadFromSong(nil)
