@@ -40,6 +40,17 @@ local function setCA(value,player)
 	GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Current"):CAMod(value)
 end
 
+local judgments,offsetdata = {},{}
+if ThemePrefs.Get("ShowOffset") then
+	for i,player in pairs( GAMESTATE:GetEnabledPlayers() ) do
+		judgments[player] = {}
+		offsetdata[player] = {}
+		for i=1,GAMESTATE:GetCurrentStyle(player):ColumnsPerPlayer() do
+			judgments[player][i] = { ProW1=0, ProW2=0, ProW3=0, ProW4=0, ProW5=0, W1=0, W2=0, W3=0, W4=0, W5=0, Miss=0 }
+		end
+	end
+end
+
 local t = Def.ActorFrame{
 	OnCommand=function(self)
 		for pn in ivalues(GAMESTATE:GetEnabledPlayers()) do
@@ -287,7 +298,30 @@ local t = Def.ActorFrame{
 			InitCommand=function(self) self:FullScreen():diffusealpha(0.8) end
 		}
 	},
-	LoadActor(THEME:GetPathB("","_coins"))..{ InitCommand=function(self) self:visible(not GAMESTATE:IsDemonstration()) end }
+	LoadActor(THEME:GetPathB("","_coins"))..{ InitCommand=function(self) self:visible(not GAMESTATE:IsDemonstration()) end },
+	JudgmentMessageCommand=function(self, params)
+		if params.Player == params.Player and not string.find(params.TapNoteScore,"Checkpoint") and ThemePrefs.Get("ShowOffset") then
+			local player = params.Player
+			if params.Notes then
+				for i,col in pairs(params.Notes) do
+					local tns = ToEnumShortString(params.TapNoteScore)
+					judgments[player][i][tns] = judgments[player][i][tns] + 1
+				end
+				if params.TapNoteOffset then
+					local vStats = STATSMAN:GetCurStageStats():GetPlayerStageStats( player )
+					local time = GAMESTATE:IsCourseMode() and vStats:GetAliveSeconds() or GAMESTATE:GetCurMusicSeconds()
+					local noff = params.TapNoteScore == "TapNoteScore_Miss" and "Miss" or params.TapNoteOffset
+					offsetdata[player][#offsetdata[player]+1] = { time, noff, params.TapNoteScore }
+				end
+			end
+		end
+	end,
+	OffCommand=function(self)
+		if ThemePrefs.Get("ShowOffset") then
+			setenv( "perColJudgeData", judgments )
+			setenv( "OffsetTable", offsetdata )
+		end
+	end,
 }
 
 for pn in ivalues(GAMESTATE:GetEnabledPlayers()) do

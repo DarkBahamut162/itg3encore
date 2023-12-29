@@ -1,3 +1,32 @@
+local offsetInfo = getenv("OffsetTable")
+local early = {
+	["TapNoteScore_W1"] = 0,
+	["TapNoteScore_W2"] = 0,
+	["TapNoteScore_W3"] = 0,
+	["TapNoteScore_W4"] = 0,
+	["TapNoteScore_W5"] = 0
+}
+local late = {
+	["TapNoteScore_W1"] = 0,
+	["TapNoteScore_W2"] = 0,
+	["TapNoteScore_W3"] = 0,
+	["TapNoteScore_W4"] = 0,
+	["TapNoteScore_W5"] = 0
+}
+
+if offsetInfo then
+	for t in ivalues(offsetInfo[PLAYER_1]) do
+		if t[2] and type(t[2]) == "number" then
+			t[2] = (math.floor(t[2]*1000))/1000
+			if t[2] < 0 then
+				early[t[3]] = early[t[3]] + 1
+			elseif t[2] > 0 then
+				late[t[3]] = late[t[3]] + 1
+			end
+		end
+	end
+end
+
 return Def.ActorFrame{
 	Def.ActorFrame{
 		Name="JudgeFrames",
@@ -88,6 +117,110 @@ return Def.ActorFrame{
 				Text="MISS",
 				InitCommand=function(self) self:x(-150*WideScreenDiff()):horizalign(left) end,
 				OnCommand=function(self) self:zoomx(0.8*WideScreenDiff()):zoomy(0.6*WideScreenDiff()):diffusebottomedge(color("#BBB9FB")):cropright(1.3):faderight(0.1):sleep(3.60):linear(0.7):cropright(-0.3) end,
+				OffCommand=function(self) self:linear(0.2):diffusealpha(0) end
+			}
+		}
+	},
+	Def.ActorFrame{
+		Condition=ThemePrefs.Get("ShowOffset"),
+		Name="OffsetFrames",
+		Def.ActorFrame{
+			Name="W1",
+			InitCommand=function(self) self:y(-195*WideScreenDiff()) end,
+			LoadFont("_ScreenEvaluation numbers")..{
+				InitCommand=function(self) self:x(-156*WideScreenDiff()):y(-5):horizalign(right):diffuse(color("#0000FF")) end,
+				OnCommand=function(self)
+					self:settextf("%04d",early["TapNoteScore_W1"]):AddAttribute(0, {Length = math.max(4-string.len(''..early["TapNoteScore_W1"]), 0),Diffuse = color("#000080")})
+					self:zoom(0.4*WideScreenDiff()):cropleft(1.3):fadeleft(0.1):sleep(3.60):linear(0.7):cropleft(-0.3)
+				end,
+				OffCommand=function(self) self:linear(0.2):diffusealpha(0) end
+			},
+			LoadFont("_ScreenEvaluation numbers")..{
+				InitCommand=function(self) self:x(-156*WideScreenDiff()):y(5):horizalign(right):diffuse(color("#FF0000")) end,
+				OnCommand=function(self)
+					self:settextf("%04d",late["TapNoteScore_W1"]):AddAttribute(0, {Length = math.max(4-string.len(''..late["TapNoteScore_W1"]), 0),Diffuse = color("#800000")})
+					self:zoom(0.4*WideScreenDiff()):cropleft(1.3):fadeleft(0.1):sleep(3.60):linear(0.7):cropleft(-0.3)
+				end,
+				OffCommand=function(self) self:linear(0.2):diffusealpha(0) end
+			}
+		},
+		Def.ActorFrame{
+			Name="W2",
+			InitCommand=function(self) self:y(-170*WideScreenDiff()) end,
+			LoadFont("_ScreenEvaluation numbers")..{
+				InitCommand=function(self) self:x(-156*WideScreenDiff()):y(-5):horizalign(right):diffuse(color("#0000FF")) end,
+				OnCommand=function(self)
+					self:settextf("%04d",early["TapNoteScore_W2"]):AddAttribute(0, {Length = math.max(4-string.len(''..early["TapNoteScore_W2"]), 0),Diffuse = color("#000080")})
+					self:zoom(0.4*WideScreenDiff()):cropleft(1.3):fadeleft(0.1):sleep(3.60):linear(0.7):cropleft(-0.3)
+				end,
+				OffCommand=function(self) self:linear(0.2):diffusealpha(0) end
+			},
+			LoadFont("_ScreenEvaluation numbers")..{
+				InitCommand=function(self) self:x(-156*WideScreenDiff()):y(5):horizalign(right):diffuse(color("#FF0000")) end,
+				OnCommand=function(self)
+					self:settextf("%04d",late["TapNoteScore_W2"]):AddAttribute(0, {Length = math.max(4-string.len(''..late["TapNoteScore_W2"]), 0),Diffuse = color("#800000")})
+					self:zoom(0.4*WideScreenDiff()):cropleft(1.3):fadeleft(0.1):sleep(3.60):linear(0.7):cropleft(-0.3)
+				end,
+				OffCommand=function(self) self:linear(0.2):diffusealpha(0) end
+			}
+		},
+		Def.ActorFrame{
+			Name="W3",
+			InitCommand=function(self) self:y(-145*WideScreenDiff()) end,
+			LoadFont("_ScreenEvaluation numbers")..{
+				InitCommand=function(self) self:x(-156*WideScreenDiff()):y(-5):horizalign(right):diffuse(color("#0000FF")) end,
+				OnCommand=function(self)
+					self:settextf("%04d",early["TapNoteScore_W3"]):AddAttribute(0, {Length = math.max(4-string.len(''..early["TapNoteScore_W3"]), 0),Diffuse = color("#000080")})
+					self:zoom(0.4*WideScreenDiff()):cropleft(1.3):fadeleft(0.1):sleep(3.60):linear(0.7):cropleft(-0.3)
+				end,
+				OffCommand=function(self) self:linear(0.2):diffusealpha(0) end
+			},
+			LoadFont("_ScreenEvaluation numbers")..{
+				InitCommand=function(self) self:x(-156*WideScreenDiff()):y(5):horizalign(right):diffuse(color("#FF0000")) end,
+				OnCommand=function(self)
+					self:settextf("%04d",late["TapNoteScore_W3"]):AddAttribute(0, {Length = math.max(4-string.len(''..late["TapNoteScore_W3"]), 0),Diffuse = color("#800000")})
+					self:zoom(0.4*WideScreenDiff()):cropleft(1.3):fadeleft(0.1):sleep(3.60):linear(0.7):cropleft(-0.3)
+				end,
+				OffCommand=function(self) self:linear(0.2):diffusealpha(0) end
+			}
+		},
+		Def.ActorFrame{
+			Name="W4",
+			InitCommand=function(self) self:y(-120*WideScreenDiff()) end,
+			LoadFont("_ScreenEvaluation numbers")..{
+				InitCommand=function(self) self:x(-156*WideScreenDiff()):y(-5):horizalign(right):diffuse(color("#0000FF")) end,
+				OnCommand=function(self)
+					self:settextf("%04d",early["TapNoteScore_W4"]):AddAttribute(0, {Length = math.max(4-string.len(''..early["TapNoteScore_W4"]), 0),Diffuse = color("#000080")})
+					self:zoom(0.4*WideScreenDiff()):cropleft(1.3):fadeleft(0.1):sleep(3.60):linear(0.7):cropleft(-0.3)
+				end,
+				OffCommand=function(self) self:linear(0.2):diffusealpha(0) end
+			},
+			LoadFont("_ScreenEvaluation numbers")..{
+				InitCommand=function(self) self:x(-156*WideScreenDiff()):y(5):horizalign(right):diffuse(color("#FF0000")) end,
+				OnCommand=function(self)
+					self:settextf("%04d",late["TapNoteScore_W4"]):AddAttribute(0, {Length = math.max(4-string.len(''..late["TapNoteScore_W4"]), 0),Diffuse = color("#800000")})
+					self:zoom(0.4*WideScreenDiff()):cropleft(1.3):fadeleft(0.1):sleep(3.60):linear(0.7):cropleft(-0.3)
+				end,
+				OffCommand=function(self) self:linear(0.2):diffusealpha(0) end
+			}
+		},
+		Def.ActorFrame{
+			Name="W5",
+			InitCommand=function(self) self:y(-95*WideScreenDiff()) end,
+			LoadFont("_ScreenEvaluation numbers")..{
+				InitCommand=function(self) self:x(-156*WideScreenDiff()):y(-5):horizalign(right):diffuse(color("#0000FF")) end,
+				OnCommand=function(self)
+					self:settextf("%04d",early["TapNoteScore_W5"]):AddAttribute(0, {Length = math.max(4-string.len(''..early["TapNoteScore_W5"]), 0),Diffuse = color("#000080")})
+					self:zoom(0.4*WideScreenDiff()):cropleft(1.3):fadeleft(0.1):sleep(3.60):linear(0.7):cropleft(-0.3)
+				end,
+				OffCommand=function(self) self:linear(0.2):diffusealpha(0) end
+			},
+			LoadFont("_ScreenEvaluation numbers")..{
+				InitCommand=function(self) self:x(-156*WideScreenDiff()):y(5):horizalign(right):diffuse(color("#FF0000")) end,
+				OnCommand=function(self)
+					self:settextf("%04d",late["TapNoteScore_W5"]):AddAttribute(0, {Length = math.max(4-string.len(''..late["TapNoteScore_W5"]), 0),Diffuse = color("#800000")})
+					self:zoom(0.4*WideScreenDiff()):cropleft(1.3):fadeleft(0.1):sleep(3.60):linear(0.7):cropleft(-0.3)
+				end,
 				OffCommand=function(self) self:linear(0.2):diffusealpha(0) end
 			}
 		}
