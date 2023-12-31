@@ -464,7 +464,7 @@ local function GetWeightPercent(array,skill)
 		total = total + array[SkillsDefault[currentSkill]][i]
 	end
 
-	return math.round(array[SkillsDefault[currentSkill]][skill]/total*100,3)
+	return total == 0 and 0 or math.round(array[SkillsDefault[currentSkill]][skill]/total*100,3)
 end
 
 return Def.ActorFrame{
