@@ -51,7 +51,6 @@ return Def.ActorFrame{
 		OffCommand=function(self) self:accelerate(0.2):diffusealpha(0) end,
 		SetCommand=function(self)
 			local val = 0
-			local add = ""
 			local SongOrCourse = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentCourse() or GAMESTATE:GetCurrentSong()
 			local StepOrTrails = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentTrail(player) or GAMESTATE:GetCurrentSteps(player)
 			local numSongs
@@ -59,7 +58,6 @@ return Def.ActorFrame{
 			if SongOrCourse and StepOrTrails and (not GAMESTATE:IsCourseMode() or (GAMESTATE:IsCourseMode() and not IsCourseSecret())) then
 				numSongs = GAMESTATE:IsCourseMode() and TrailUtil.GetNumSongs(StepOrTrails) or 1
 				val = StepOrTrails:GetRadarValues(player):GetValue('RadarCategory_TapsAndHolds')
-				if StepOrTrails:GetRadarValues(player):GetValue('RadarCategory_Fakes') > 0 then add = "?" end
 				if not GAMESTATE:IsCourseMode() or (GAMESTATE:IsCourseMode() and not IsCourseSecret()) then
 					if val == 0 then
 						self:diffusetopedge(color("#"..topedge[1][1]..topedge[1][2]..topedge[1][3]))
@@ -98,7 +96,7 @@ return Def.ActorFrame{
 				self:diffusebottomedge(color("#ffffff"))
 				val = "?"
 			end
-			self:settext(val..add)
+			self:settext(val)
 			self:maxwidth(150)
 		end,
 		CurrentSongChangedMessageCommand=function(self) self:playcommand("Set") end,
