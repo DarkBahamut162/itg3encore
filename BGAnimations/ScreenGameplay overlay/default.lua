@@ -100,7 +100,7 @@ local t = Def.ActorFrame{
 		OnCommand=function(self) self:addy(-100):sleep(0.5):decelerate(0.8):addy(100) end,
 		OffCommand=function(self) if not IsGame("pump") then if AnyPlayerFullComboed() then self:sleep(1) end self:accelerate(0.8):addy(-100) end end,
 		LoadFont("_eurostile normal")..{
-			Condition=GAMESTATE:IsPlayerEnabled(PLAYER_1),
+			Condition=GAMESTATE:IsPlayerEnabled(PLAYER_1) and getenv("EffectControlP1"),
 			Name="MOD1",
 			InitCommand=function(self) self:shadowlength(1):zoom(0.4):x(THEME:GetMetric("ScreenGameplay","ScoreP1X")):y(THEME:GetMetric("ScreenGameplay","ScoreP1Y")-15) end,
 			OnCommand=function(self) self:settext(CURRENT[PLAYER_1] and "SPEED: " .. (CURRENT[PLAYER_1] / (MOD[PLAYER_1] == "x" and 100 or 1))..MOD[PLAYER_1] or "") end,
@@ -114,7 +114,7 @@ local t = Def.ActorFrame{
 			end
 		},
 		LoadFont("_eurostile normal")..{
-			Condition=GAMESTATE:IsPlayerEnabled(PLAYER_2),
+			Condition=GAMESTATE:IsPlayerEnabled(PLAYER_2) and getenv("EffectControlP2"),
 			Name="MOD2",
 			Text=CURRENT[PLAYER_2] or "?",
 			InitCommand=function(self) self:shadowlength(1):zoom(0.4):x(THEME:GetMetric("ScreenGameplay","ScoreP2X")):y(THEME:GetMetric("ScreenGameplay","ScoreP2Y")-15) end,

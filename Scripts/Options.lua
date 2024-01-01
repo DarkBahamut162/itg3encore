@@ -1,3 +1,43 @@
+function LoadKeymapFile()
+	if not FILEMAN:DoesFileExist("Save/Keymaps.ini") then return {} end
+
+	local configfile = RageFileUtil.CreateRageFile()
+	configfile:Open("Save/Keymaps.ini", 1)
+
+	local configcontent = configfile:Read()
+
+	configfile:Close()
+	configfile:destroy()
+
+	return configcontent
+end
+
+function SetupKeymapArray()
+	local keys = split("\n",LoadKeymapFile():gsub("%\r", ""))
+	local KeyMaps = {}
+	local group = ""
+
+	for key in ivalues(keys) do
+		if string.find(key,"%[") and string.find(key,"%]") then
+			group = key:match("%[(.*)%]")
+			KeyMaps[group] = {}
+		elseif string.len(key) > 0 then
+			local splitted = split("=",key)
+			splitted[2] = split(":",splitted[2])
+			KeyMaps[group][splitted[1]] = splitted[2]
+		end
+	end
+
+	return KeyMaps
+end
+
+function keyMapped(key)
+	for i = 1,#key do
+		if key[1] ~= "" then return true end
+	end
+	return false
+end
+
 function ChoiceSingle()
 	if IsGame("dance") or IsGame("groove") then
 		if isOutFox() then
@@ -262,6 +302,11 @@ function InitRotationOptions()
 end
 
 function InitOptions()
+	local KeyMaps = SetupKeymapArray()
+
+	setenv("EffectControlP1",keyMapped(KeyMaps[GAMESTATE:GetCurrentGame():GetName()]["1_EffectDown"]) and keyMapped(KeyMaps[GAMESTATE:GetCurrentGame():GetName()]["1_EffectUp"]))
+	setenv("EffectControlP2",keyMapped(KeyMaps[GAMESTATE:GetCurrentGame():GetName()]["2_EffectDown"]) and keyMapped(KeyMaps[GAMESTATE:GetCurrentGame():GetName()]["2_EffectUp"]))
+
 	if GetUserPrefN("StylePosition") == nil then
 		SetUserPref("StylePosition",1)
 	elseif GetUserPrefN("StylePosition") > #ChoiceSingle() then
