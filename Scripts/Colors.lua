@@ -49,6 +49,7 @@ function ContrastingDifficultyColor( dc )
 end
 
 function DifficultyToColor( dc )
+	if not string.find(dc, "_") then dc = "Difficulty_"..dc end
 	local colors = {
 		["Difficulty_Beginner"]	= CustomDifficultyToColor("Beginner"),
 		["Difficulty_Easy"]		= CustomDifficultyToColor("Easy"),
