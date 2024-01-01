@@ -1,8 +1,3 @@
-function ScreenCleaning()
-	if Hour() > 2 and Hour() < 7 and GetScreenCleaning() == true then return "ScreenNoise" end
-	return "ScreenCompany"
-end
-
 Branch.TitleScreen = function()
 	if GAMESTATE:GetCoinMode() == 'CoinMode_Home' then
 		return "ScreenTitleMenu"
