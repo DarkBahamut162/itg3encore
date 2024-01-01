@@ -49,27 +49,54 @@ end
 
 local function TotalPossibleStepSeconds()
 	local fSecs = 0
-    for i = 1, 1 do
-        local s = STATSMAN:GetPlayedStageStats(i)
-        for a = 1, #s:GetPlayedSongs() do
-            fSecs = fSecs + s:GetPlayedSongs()[a]:GetStepsSeconds()
-        end
-    end
+	local s = STATSMAN:GetPlayedStageStats(1)
+	local played = isITGmania() and #s:GetPlayedSongs() or #s:GetPossibleSongs()
+	for a = 1, played do
+		fSecs = fSecs + s:GetPossibleSongs()[a]:GetStepsSeconds()
+	end
 
     local songoptions = GAMESTATE:GetSongOptionsObject("ModsLevel_Song")
+    if not songoptions then return fSecs end
 
+    return fSecs / songoptions:MusicRate()
+end
+
+local function CalcMinusStepSeconds(pn)
+	local fSecs = 0
+	local played = #STATSMAN:GetPlayedStageStats(1):GetPlayedSongs()
+	local SongOrCourse = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentCourse() or GAMESTATE:GetCurrentSong()
+	local StepsOrTrail = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentTrail(pn) or GAMESTATE:GetCurrentSteps(pn)
+	if GAMESTATE:IsCourseMode() then
+		for i = 1, played do
+			local trail = StepsOrTrail:GetTrailEntry(i)
+			if trail then
+				fSecs = fSecs + trail:GetSong():GetFirstSecond()
+				fSecs = fSecs + trail:GetSteps():GetTimingData():GetElapsedTimeFromBeat(0)
+			end
+		end
+	else
+		fSecs = fSecs + SongOrCourse:GetFirstSecond()
+		fSecs = fSecs + StepsOrTrail:GetTimingData():GetElapsedTimeFromBeat(0)
+	end
+
+    local songoptions = GAMESTATE:GetSongOptionsObject("ModsLevel_Song")
     if not songoptions then return fSecs end
 
     return fSecs / songoptions:MusicRate()
 end
 
 local function GraphDisplay(pn)
-	local beatZero = GAMESTATE:GetCurrentSteps(pn):GetTimingData():GetElapsedTimeFromBeat(0)
-	local firstSecond = GAMESTATE:GetCurrentSong():GetFirstSecond()
 	local length = TotalPossibleStepSeconds()
-	local lastMarvelousSecond = GAMESTATE:IsCourseMode() and getenv("LastFantastic"..pname(pn)) or getenv("LastFantastic"..pname(pn)) - firstSecond - beatZero
-	local lastPerfectSecond = GAMESTATE:IsCourseMode() and getenv("LastPerfect"..pname(pn)) or getenv("LastPerfect"..pname(pn)) - firstSecond - beatZero
-	local lastGreatSecond = GAMESTATE:IsCourseMode() and getenv("LastGreat"..pname(pn)) or getenv("LastGreat"..pname(pn)) - firstSecond - beatZero
+	local lastMarvelousSecond = getenv("LastFantastic"..pname(pn)) - CalcMinusStepSeconds(pn)
+	local lastPerfectSecond = getenv("LastPerfect"..pname(pn)) - CalcMinusStepSeconds(pn)
+	local lastGreatSecond = getenv("LastGreat"..pname(pn)) - CalcMinusStepSeconds(pn)
+
+	local combo = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):GetComboList()
+	local trueLast = #combo > 0 and combo[1]["StartSecond"]+combo[1]["SizeSeconds"] or 0
+	local maxLast = lastGreatSecond ~= 0 and lastGreatSecond or lastPerfectSecond ~= 0 and lastPerfectSecond or lastMarvelousSecond
+	local lastGreatSecond = lastGreatSecond * (trueLast/maxLast)
+	local lastPerfectSecond = lastPerfectSecond * (trueLast/maxLast)
+	local lastMarvelousSecond = lastMarvelousSecond * (trueLast/maxLast)
 
 	return Def.ActorFrame {
 		Def.GraphDisplay {
