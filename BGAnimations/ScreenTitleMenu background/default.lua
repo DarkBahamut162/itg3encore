@@ -401,7 +401,7 @@ return Def.ActorFrame{
 							end
 						end
 					end
-					if not IsGame("po-mu") and not IsGame("be-mu") then
+					if isOutFoxV() or (not IsGame("po-mu") and not IsGame("be-mu")) then
 						if #courses > 0 then
 							for i=1,#courses do
 								if courses[i]:GetCourseType() == "CourseType_Nonstop" then
@@ -432,7 +432,7 @@ return Def.ActorFrame{
 						output = addToOutput(output,"Songs: "..songsSingle.." singles ("..groupsSingleCount.." groups) & "..songsDouble.." doubles ("..groupsDoubleCount.." groups)","\n")
 					end
 
-					if IsGame("po-mu") or IsGame("be-mu") then
+					if not isOutFoxV() and (IsGame("po-mu") or IsGame("be-mu")) then
 						output = addToOutput(output,"Courses: ? marathons & ? survivals","\n")
 					else
 						output = addToOutput(output,"Courses: "..(coursesMarathonSingle+coursesMarathonDouble).." marathons & "..(coursesSurvivalSingle+coursesSurvivalDouble).." survivals","\n")
