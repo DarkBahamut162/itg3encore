@@ -1,6 +1,4 @@
-local TitleSongFade = isOutFox() and LoadModule("Text.FadeSlide.lua"){
-	Width = 579, Font = "_r bold 30px", Height = 40, SleepBeforeStart = 0, SideFade = 0, OverflowSpacing = 0
-} or Def.ActorFrame{ Create = function(this) return Def.ActorFrame{} end }
+local TitleSongFade = isOutFox() and LoadModule("Text.FadeSlide.lua") or Def.ActorFrame{ Create = function(this) return Def.ActorFrame{} end }
 
 local vertexOn = false
 local vertexColor = color("0,0,0,0")
