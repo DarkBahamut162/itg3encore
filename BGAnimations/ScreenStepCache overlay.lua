@@ -72,8 +72,8 @@ return Def.ActorFrame{
 	OnCommand=function(self) SCREENMAN:GetTopScreen():AddInputCallback(InputHandler) end,
 	Def.ActorFrame{
 		Name="Timer",
-		InitCommand=function(self) self:x(SCREEN_LEFT+86*WideScreenDiff()):y(SCREEN_TOP+35*WideScreenDiff()) cs = self:GetChildren() end,
-		OnCommand=function(self) self:draworder(101):addy(-100):decelerate(0.8):addy(100):zoom(WideScreenDiff())end,
+		InitCommand=function(self) self:x(SCREEN_LEFT+86*WideScreenDiff()):y(SCREEN_TOP+35*WideScreenDiff()):zoom(WideScreenDiff()) cs = self:GetChildren() end,
+		OnCommand=function(self) self:draworder(101):addy(-100):decelerate(0.8):addy(100) end,
 		OffCommand=function(self) self:accelerate(0.7):addy(-200) end,
 		LoadFont("_z numbers")..{
 			Name="Seconds",
@@ -89,7 +89,7 @@ return Def.ActorFrame{
 								ani = true
 								c.Timer:diffuseshift():effectperiod(0.5):effectcolor1(color("1,0,0,1")):effectcolor2(color("1,0,0,0"))
 							end
-							c.Timer:zoom(1.3):linear(0.2):zoom(1)
+							c.Timer:zoom(1.3*WideScreenDiff()):linear(0.2):zoom(1*WideScreenDiff())
 							SOUND:PlayOnce(THEME:GetPathS('MenuTimer',"tick"))
 						end
 						self:settext(s.."."):sleep(1):queuecommand("Update")
@@ -118,7 +118,7 @@ return Def.ActorFrame{
 	LoadFont("_z 36px shadowx")..{
 		Name="Cache",
 		Text="The StepCache will be checked in 10 seconds.\nThis might take a little while...",
-		InitCommand=function(self) self:Center():zoom(0.6*WideScreenDiff()):shadowlength(2):cropleft(0.5):cropright(0.5) end,
+		InitCommand=function(self) self:Center():zoom(0.6*WideScreenDiff()):shadowlength(2):cropleft(0.5):cropright(0.5):maxwidth(SCREEN_WIDTH/0.7/WideScreenDiff()) end,
 		OnCommand=function(self) self:decelerate(0.5):cropleft(0):cropright(0):sleep(s-0.1):queuecommand("Checking") end,
 		CheckingCommand=function(self) self:settext("Checking..."):sleep(0.1):queuecommand("Check") end,
 		UpdatingCommand=function(self) self:settext("Updating..."):sleep(0.1):queuecommand("Update") end,
@@ -230,7 +230,7 @@ return Def.ActorFrame{
 	},
 	LoadActor(THEME:GetPathG("ScreenPrompt","Cursor"))..{
 		Name="Cursor",
-		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+SCREEN_CENTER_Y/3):diffusealpha(0) end,
+		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+SCREEN_CENTER_Y/3):zoom(WideScreenDiff()):diffusealpha(0) end,
 		YesCommand=function(self) self:x(SCREEN_CENTER_X-SCREEN_CENTER_X/3) end,
 		NoCommand=function(self) self:x(SCREEN_CENTER_X+SCREEN_CENTER_X/3) end,
 		OkCommand=function(self) self:CenterX() end,
@@ -238,17 +238,17 @@ return Def.ActorFrame{
 	LoadFont("_r bold 30px")..{
 		Name="OK",
 		Text="OK",
-		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+SCREEN_CENTER_Y/3):diffusealpha(0) end,
+		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+SCREEN_CENTER_Y/3):zoom(WideScreenDiff()):diffusealpha(0) end,
 	},
 	LoadFont("_r bold 30px")..{
 		Name="YES",
 		Text="Yes",
-		InitCommand=function(self) self:x(SCREEN_CENTER_X-SCREEN_CENTER_X/3):y(SCREEN_CENTER_Y+SCREEN_CENTER_Y/3):diffusealpha(0) end,
+		InitCommand=function(self) self:x(SCREEN_CENTER_X-SCREEN_CENTER_X/3):y(SCREEN_CENTER_Y+SCREEN_CENTER_Y/3):zoom(WideScreenDiff()):diffusealpha(0) end,
 	},
 	LoadFont("_r bold 30px")..{
 		Name="NO",
 		Text="No",
-		InitCommand=function(self) self:x(SCREEN_CENTER_X+SCREEN_CENTER_X/3):y(SCREEN_CENTER_Y+SCREEN_CENTER_Y/3):diffusealpha(0) end,
+		InitCommand=function(self) self:x(SCREEN_CENTER_X+SCREEN_CENTER_X/3):y(SCREEN_CENTER_Y+SCREEN_CENTER_Y/3):zoom(WideScreenDiff()):diffusealpha(0) end,
 	},
 	LoadFont("_z 36px shadowx")..{
 		Name="UpdateImminent",

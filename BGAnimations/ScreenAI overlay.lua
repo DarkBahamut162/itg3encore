@@ -313,13 +313,13 @@ local InputHandler = function(event)
 		elseif event.GameButton == "MenuUp" then
 			if not editing and not checking then -- changing currently selected weight
 				if currentList - 1 < 1 then currentList = totalList else currentList = currentList - 1 end
-				if currentList <= totalWeights then weight.Current:y((currentList-1)*16) else weight.Current:y(currentList*16) end
+				if currentList <= totalWeights then weight.Current:y((currentList-1)*16*WideScreenDiff()) else weight.Current:y(currentList*16*WideScreenDiff()) end
 				SOUND:PlayOnce( THEME:GetPathS( 'OptionsList', "left" ) )
 			end
 		elseif event.GameButton == "MenuDown" then
 			if not editing and not checking then -- changing currently selected weight
 				if currentList + 1 > totalList then currentList = 1 else currentList = currentList + 1 end
-				if currentList <= totalWeights then weight.Current:y((currentList-1)*16) else weight.Current:y(currentList*16) end
+				if currentList <= totalWeights then weight.Current:y((currentList-1)*16*WideScreenDiff()) else weight.Current:y(currentList*16*WideScreenDiff()) end
 				SOUND:PlayOnce( THEME:GetPathS( 'OptionsList', "right" ) )
 			end
 		elseif event.GameButton == "Select" and not selectHeld then -- skill change switch
@@ -330,14 +330,16 @@ local InputHandler = function(event)
 		elseif event.GameButton == "Back" then
 			if not editing then 
 				if CheckChanges() then -- changes detected | ask player to discard
-					SOUND:PlayOnce( THEME:GetPathS( 'MemoryCardManager', "error" ) )
-					prompt.BG:diffusealpha(0.5)
-					if cur%2 == 0 then prompt.Cursor:queuecommand("Yes") else prompt.Cursor:queuecommand("No") end
-					prompt.Cursor:diffusealpha(1)
-					prompt.Warning:diffusealpha(1)
-					prompt.YES:diffusealpha(1)
-					prompt.NO:diffusealpha(1)
-					checking = true
+					if not checking then
+						SOUND:PlayOnce( THEME:GetPathS( 'MemoryCardManager', "error" ) )
+						prompt.BG:diffusealpha(0.5)
+						if cur%2 == 0 then prompt.Cursor:queuecommand("Yes") else prompt.Cursor:queuecommand("No") end
+						prompt.Cursor:diffusealpha(1)
+						prompt.Warning:diffusealpha(1)
+						prompt.YES:diffusealpha(1)
+						prompt.NO:diffusealpha(1)
+						checking = true
+					end
 				else -- exit screen
 					SCREENMAN:GetTopScreen():Cancel()
 				end
@@ -468,36 +470,37 @@ local function GetWeightPercent(array,skill)
 end
 
 return Def.ActorFrame{
+	InitCommand=function(self) self:y(SCREEN_CENTER_Y-SCREEN_CENTER_Y*WideScreenDiff()) end,
 	OnCommand=function(self) SCREENMAN:GetTopScreen():AddInputCallback(InputHandler) end,
 	Def.ActorFrame{
 		Name="Skill",
 		InitCommand=function(self) self:x(SCREEN_LEFT+86*WideScreenDiff()):y(SCREEN_TOP+80*WideScreenDiff()) skill = self:GetChildren() end,
 		LoadFont("_z bold 36px")..{
 			Name="Current",
-			InitCommand=function(self) self:shadowlength(1):zoom(1/3):horizalign(left):diffusebottomedge(color("0.5,0.5,0.5")) end,
+			InitCommand=function(self) self:shadowlength(1):zoom(1/3*WideScreenDiff()):horizalign(left):diffusebottomedge(color("0.5,0.5,0.5")) end,
 			OnCommand=function(self) self:playcommand("Update") end,
 			UpdateCommand=function(self) self:settext("Current Skill ("..currentSkill.."/"..totalSkills..")") end
 		},
 		LoadFont("_z bold 36px")..{
 			Name="Default",
 			Text="Default Values",
-			InitCommand=function(self) self:x(SCREEN_CENTER_X-86*WideScreenDiff()):shadowlength(1):zoom(1/3):horizalign(left):diffusebottomedge(color("0.75,0.75,0.75")) end
+			InitCommand=function(self) self:x(SCREEN_CENTER_X-86*WideScreenDiff()):shadowlength(1):zoom(1/3*WideScreenDiff()):horizalign(left):diffusebottomedge(color("0.75,0.75,0.75")) end
 		},
 		LoadFont("_z bold 36px")..{
 			Name="Name",
-			InitCommand=function(self) self:shadowlength(1):zoom(1/3):y(6):valign(0):halign(0):diffusebottomedge(color("1,1,0")):vertspacing(-16) end,
+			InitCommand=function(self) self:shadowlength(1):zoom(1/3*WideScreenDiff()):y(6*WideScreenDiff()):valign(0):halign(0):diffusebottomedge(color("1,1,0")):vertspacing(-16) end,
 			OnCommand=function(self) self:playcommand("Update") end,
 			UpdateCommand=function(self) self:settext(SkillsDefault[currentSkill].."\n(Used on Difficulty "..range[SkillsDefault[currentSkill]]..")") end
 		},
 		LoadFont("_v 26px bold shadow") .. {
 			Name="Left",
 			Text="&MENULEFT;",
-			InitCommand=function(self) self:x(-6):y(16):zoom(0.5):diffusealpha(0) end
+			InitCommand=function(self) self:x(-6*WideScreenDiff()):y(16*WideScreenDiff()):zoom(0.5*WideScreenDiff()):diffusealpha(0) end
 		},
 		LoadFont("_v 26px bold shadow") .. {
 			Name="Right",
 			Text="&MENURIGHT;",
-			InitCommand=function(self) self:x(85):y(16):zoom(0.5):diffusealpha(0) end
+			InitCommand=function(self) self:x(85*WideScreenDiff()):y(16*WideScreenDiff()):zoom(0.5*WideScreenDiff()):diffusealpha(0) end
 		}
 	},
 	Def.ActorFrame{
@@ -505,99 +508,99 @@ return Def.ActorFrame{
 		InitCommand=function(self) self:x(SCREEN_LEFT+86*WideScreenDiff()):y(SCREEN_TOP+160*WideScreenDiff()) weight = self:GetChildren() end,
 		Def.Quad{
 			Name="Current",
-			InitCommand=function(self) self:CenterX():zoomto(SCREEN_WIDTH,16):diffuseshift():effectcolor1(color("#bed0ff80")):effectcolor2(color("#76767640")):effectoffset(0):effectclock("timerglobal"):faderight(0.5) end
+			InitCommand=function(self) self:CenterX():zoomto(SCREEN_WIDTH,16*WideScreenDiff()):diffuseshift():effectcolor1(color("#bed0ff80")):effectcolor2(color("#76767640")):effectoffset(0):effectclock("timerglobal"):faderight(0.5) end
 		},
 		LoadFont("_z bold 36px")..{
 			Name="Percent",
-			InitCommand=function(self) self:y(16*-1):shadowlength(1):zoom(1/3):horizalign(left):diffusebottomedge(color("1,0,0")) end,
+			InitCommand=function(self) self:y(16*-1*WideScreenDiff()):shadowlength(1):zoom(1/3*WideScreenDiff()):horizalign(left):diffusebottomedge(color("1,0,0")) end,
 			OnCommand=function(self) self:playcommand("Update") end,
 			UpdateCommand=function(self) self:settext("Score: "..CalcPercent(AIini).."%") end
 		},
 		LoadFont("_z bold 36px")..{
 			Name="WeightMiss",
-			InitCommand=function(self) self:y(16*0):shadowlength(1):zoom(1/3):horizalign(left) end,
+			InitCommand=function(self) self:y(16*0*WideScreenDiff()):shadowlength(1):zoom(1/3*WideScreenDiff()):horizalign(left) end,
 			OnCommand=function(self) self:playcommand("Update") end,
 			UpdateCommand=function(self) self:settext("Miss: "..AIini[SkillsDefault[currentSkill]]["WeightMiss"].." ("..GetWeightPercent(AIini,"WeightMiss").."%)") end
 		},
 		LoadFont("_z bold 36px")..{
 			Name="WeightW5",
-			InitCommand=function(self) self:y(16*1):shadowlength(1):zoom(1/3):horizalign(left) end,
+			InitCommand=function(self) self:y(16*1*WideScreenDiff()):shadowlength(1):zoom(1/3*WideScreenDiff()):horizalign(left) end,
 			OnCommand=function(self) self:playcommand("Update") end,
 			UpdateCommand=function(self) self:settext("W5: "..AIini[SkillsDefault[currentSkill]]["WeightW5"].." ("..GetWeightPercent(AIini,"WeightW5").."%)") end
 		},
 		LoadFont("_z bold 36px")..{
 			Name="WeightW4",
-			InitCommand=function(self) self:y(16*2):shadowlength(1):zoom(1/3):horizalign(left) end,
+			InitCommand=function(self) self:y(16*2*WideScreenDiff()):shadowlength(1):zoom(1/3*WideScreenDiff()):horizalign(left) end,
 			OnCommand=function(self) self:playcommand("Update") end,
 			UpdateCommand=function(self) self:settext("W4: "..AIini[SkillsDefault[currentSkill]]["WeightW4"].." ("..GetWeightPercent(AIini,"WeightW4").."%)") end
 		},
 		LoadFont("_z bold 36px")..{
 			Name="WeightW3",
-			InitCommand=function(self) self:y(16*3):shadowlength(1):zoom(1/3):horizalign(left) end,
+			InitCommand=function(self) self:y(16*3*WideScreenDiff()):shadowlength(1):zoom(1/3*WideScreenDiff()):horizalign(left) end,
 			OnCommand=function(self) self:playcommand("Update") end,
 			UpdateCommand=function(self) self:settext("W3: "..AIini[SkillsDefault[currentSkill]]["WeightW3"].." ("..GetWeightPercent(AIini,"WeightW3").."%)") end
 		},
 		LoadFont("_z bold 36px")..{
 			Name="WeightW2",
-			InitCommand=function(self) self:y(16*4):shadowlength(1):zoom(1/3):horizalign(left) end,
+			InitCommand=function(self) self:y(16*4*WideScreenDiff()):shadowlength(1):zoom(1/3*WideScreenDiff()):horizalign(left) end,
 			OnCommand=function(self) self:playcommand("Update") end,
 			UpdateCommand=function(self) self:settext("W2: "..AIini[SkillsDefault[currentSkill]]["WeightW2"].." ("..GetWeightPercent(AIini,"WeightW2").."%)") end
 		},
 		LoadFont("_z bold 36px")..{
 			Name="WeightW1",
-			InitCommand=function(self) self:y(16*5):shadowlength(1):zoom(1/3):horizalign(left) end,
+			InitCommand=function(self) self:y(16*5*WideScreenDiff()):shadowlength(1):zoom(1/3*WideScreenDiff()):horizalign(left) end,
 			OnCommand=function(self) self:playcommand("Update") end,
 			UpdateCommand=function(self) self:settext("W1: "..AIini[SkillsDefault[currentSkill]]["WeightW1"].." ("..GetWeightPercent(AIini,"WeightW1").."%)") end
 		},
 		LoadFont("_z bold 36px")..{
 			Condition=totalWeights>6,
 			Name="WeightProW5",
-			InitCommand=function(self) self:y(16*6):shadowlength(1):zoom(1/3):horizalign(left) end,
+			InitCommand=function(self) self:y(16*6*WideScreenDiff()):shadowlength(1):zoom(1/3*WideScreenDiff()):horizalign(left) end,
 			OnCommand=function(self) self:playcommand("Update") end,
 			UpdateCommand=function(self) self:settext("ProW5: "..AIini[SkillsDefault[currentSkill]]["WeightProW5"].." ("..GetWeightPercent(AIini,"WeightProW5").."%)") end
 		},
 		LoadFont("_z bold 36px")..{
 			Condition=totalWeights>6,
 			Name="WeightProW4",
-			InitCommand=function(self) self:y(16*7):shadowlength(1):zoom(1/3):horizalign(left) end,
+			InitCommand=function(self) self:y(16*7*WideScreenDiff()):shadowlength(1):zoom(1/3*WideScreenDiff()):horizalign(left) end,
 			OnCommand=function(self) self:playcommand("Update") end,
 			UpdateCommand=function(self) self:settext("ProW4: "..AIini[SkillsDefault[currentSkill]]["WeightProW4"].." ("..GetWeightPercent(AIini,"WeightProW4").."%)") end
 		},
 		LoadFont("_z bold 36px")..{
 			Condition=totalWeights>6,
 			Name="WeightProW3",
-			InitCommand=function(self) self:y(16*8):shadowlength(1):zoom(1/3):horizalign(left) end,
+			InitCommand=function(self) self:y(16*8*WideScreenDiff()):shadowlength(1):zoom(1/3*WideScreenDiff()):horizalign(left) end,
 			OnCommand=function(self) self:playcommand("Update") end,
 			UpdateCommand=function(self) self:settext("ProW3: "..AIini[SkillsDefault[currentSkill]]["WeightProW3"].." ("..GetWeightPercent(AIini,"WeightProW3").."%)") end
 		},
 		LoadFont("_z bold 36px")..{
 			Condition=totalWeights>6,
 			Name="WeightProW2",
-			InitCommand=function(self) self:y(16*9):shadowlength(1):zoom(1/3):horizalign(left) end,
+			InitCommand=function(self) self:y(16*9*WideScreenDiff()):shadowlength(1):zoom(1/3*WideScreenDiff()):horizalign(left) end,
 			OnCommand=function(self) self:playcommand("Update") end,
 			UpdateCommand=function(self) self:settext("ProW2: "..AIini[SkillsDefault[currentSkill]]["WeightProW2"].." ("..GetWeightPercent(AIini,"WeightProW2").."%)") end
 		},
 		LoadFont("_z bold 36px")..{
 			Condition=totalWeights>6,
 			Name="WeightProW1",
-			InitCommand=function(self) self:y(16*10):shadowlength(1):zoom(1/3):horizalign(left) end,
+			InitCommand=function(self) self:y(16*10*WideScreenDiff()):shadowlength(1):zoom(1/3*WideScreenDiff()):horizalign(left) end,
 			OnCommand=function(self) self:playcommand("Update") end,
 			UpdateCommand=function(self) self:settext("ProW1: "..AIini[SkillsDefault[currentSkill]]["WeightProW1"].." ("..GetWeightPercent(AIini,"WeightProW1").."%)") end
 		},
 		LoadFont("_z bold 36px")..{
 			Name="ResetCurrent",
 			Text="Reset Current Skill",
-			OnCommand=function(self) self:y(16*(#totalWeightNames+1)):diffusebottomedge(color("0,0,1")):shadowlength(1):zoom(1/3):horizalign(left) end
+			OnCommand=function(self) self:y(16*(#totalWeightNames+1)*WideScreenDiff()):diffusebottomedge(color("0,0,1")):shadowlength(1):zoom(1/3*WideScreenDiff()):horizalign(left) end
 		},
 		LoadFont("_z bold 36px")..{
 			Name="ResetAll",
 			Text="Reset All Skills",
-			OnCommand=function(self) self:y(16*(#totalWeightNames+2)):diffusebottomedge(color("0,0,0.5")):shadowlength(1):zoom(1/3):horizalign(left) end
+			OnCommand=function(self) self:y(16*(#totalWeightNames+2)*WideScreenDiff()):diffusebottomedge(color("0,0,0.5")):shadowlength(1):zoom(1/3*WideScreenDiff()):horizalign(left) end
 		},
 		LoadFont("_z bold 36px")..{
 			Name="SaveAI",
 			Text="Save AI",
-			OnCommand=function(self) self:y(16*(#totalWeightNames+3)):diffusebottomedge(color("0,0.5,0")):shadowlength(1):zoom(1/3):horizalign(left) end
+			OnCommand=function(self) self:y(16*(#totalWeightNames+3)*WideScreenDiff()):diffusebottomedge(color("0,0.5,0")):shadowlength(1):zoom(1/3*WideScreenDiff()):horizalign(left) end
 		}
 	},
 	Def.ActorFrame{
@@ -605,85 +608,85 @@ return Def.ActorFrame{
 		InitCommand=function(self) self:CenterX():y(SCREEN_TOP+160*WideScreenDiff()) default = self:GetChildren() end,
 		LoadFont("_z bold 36px")..{
 			Name="Percent",
-			InitCommand=function(self) self:y(16*-1):shadowlength(1):zoom(1/3):horizalign(left):diffusebottomedge(color("1,0,0")) end,
+			InitCommand=function(self) self:y(16*-1*WideScreenDiff()):shadowlength(1):zoom(1/3*WideScreenDiff()):horizalign(left):diffusebottomedge(color("1,0,0")) end,
 			OnCommand=function(self) self:playcommand("Update") end,
 			UpdateCommand=function(self) self:settext("Score: "..CalcPercent(AIiniDefault).."%") end
 		},
 		LoadFont("_z bold 36px")..{
 			Name="WeightMiss",
-			InitCommand=function(self) self:y(16*0):shadowlength(1):zoom(1/3):horizalign(left) end,
+			InitCommand=function(self) self:y(16*0*WideScreenDiff()):shadowlength(1):zoom(1/3*WideScreenDiff()):horizalign(left) end,
 			OnCommand=function(self) self:playcommand("Update") end,
 			UpdateCommand=function(self) self:settext("Miss: "..AIiniDefault[SkillsDefault[currentSkill]]["WeightMiss"].." ("..GetWeightPercent(AIiniDefault,"WeightMiss").."%)") end
 		},
 		LoadFont("_z bold 36px")..{
 			Name="WeightW5",
-			InitCommand=function(self) self:y(16*1):shadowlength(1):zoom(1/3):horizalign(left) end,
+			InitCommand=function(self) self:y(16*1*WideScreenDiff()):shadowlength(1):zoom(1/3*WideScreenDiff()):horizalign(left) end,
 			OnCommand=function(self) self:playcommand("Update") end,
 			UpdateCommand=function(self) self:settext("W5: "..AIiniDefault[SkillsDefault[currentSkill]]["WeightW5"].." ("..GetWeightPercent(AIiniDefault,"WeightW5").."%)") end
 		},
 		LoadFont("_z bold 36px")..{
 			Name="WeightW4",
-			InitCommand=function(self) self:y(16*2):shadowlength(1):zoom(1/3):horizalign(left) end,
+			InitCommand=function(self) self:y(16*2*WideScreenDiff()):shadowlength(1):zoom(1/3*WideScreenDiff()):horizalign(left) end,
 			OnCommand=function(self) self:playcommand("Update") end,
 			UpdateCommand=function(self) self:settext("W4: "..AIiniDefault[SkillsDefault[currentSkill]]["WeightW4"].." ("..GetWeightPercent(AIiniDefault,"WeightW4").."%)") end
 		},
 		LoadFont("_z bold 36px")..{
 			Name="WeightW3",
-			InitCommand=function(self) self:y(16*3):shadowlength(1):zoom(1/3):horizalign(left) end,
+			InitCommand=function(self) self:y(16*3*WideScreenDiff()):shadowlength(1):zoom(1/3*WideScreenDiff()):horizalign(left) end,
 			OnCommand=function(self) self:playcommand("Update") end,
 			UpdateCommand=function(self) self:settext("W3: "..AIiniDefault[SkillsDefault[currentSkill]]["WeightW3"].." ("..GetWeightPercent(AIiniDefault,"WeightW3").."%)") end
 		},
 		LoadFont("_z bold 36px")..{
 			Name="WeightW2",
-			InitCommand=function(self) self:y(16*4):shadowlength(1):zoom(1/3):horizalign(left) end,
+			InitCommand=function(self) self:y(16*4*WideScreenDiff()):shadowlength(1):zoom(1/3*WideScreenDiff()):horizalign(left) end,
 			OnCommand=function(self) self:playcommand("Update") end,
 			UpdateCommand=function(self) self:settext("W2: "..AIiniDefault[SkillsDefault[currentSkill]]["WeightW2"].." ("..GetWeightPercent(AIiniDefault,"WeightW2").."%)") end
 		},
 		LoadFont("_z bold 36px")..{
 			Name="WeightW1",
-			InitCommand=function(self) self:y(16*5):shadowlength(1):zoom(1/3):horizalign(left) end,
+			InitCommand=function(self) self:y(16*5*WideScreenDiff()):shadowlength(1):zoom(1/3*WideScreenDiff()):horizalign(left) end,
 			OnCommand=function(self) self:playcommand("Update") end,
 			UpdateCommand=function(self) self:settext("W1: "..AIiniDefault[SkillsDefault[currentSkill]]["WeightW1"].." ("..GetWeightPercent(AIiniDefault,"WeightW1").."%)") end
 		},
 		LoadFont("_z bold 36px")..{
 			Condition=totalWeights>6,
 			Name="WeightProW5",
-			InitCommand=function(self) self:y(16*6):shadowlength(1):zoom(1/3):horizalign(left) end,
+			InitCommand=function(self) self:y(16*6*WideScreenDiff()):shadowlength(1):zoom(1/3*WideScreenDiff()):horizalign(left) end,
 			OnCommand=function(self) self:playcommand("Update") end,
 			UpdateCommand=function(self) self:settext("ProW5: "..AIiniDefault[SkillsDefault[currentSkill]]["WeightProW5"].." ("..GetWeightPercent(AIiniDefault,"WeightProW5").."%)") end
 		},
 		LoadFont("_z bold 36px")..{
 			Condition=totalWeights>6,
 			Name="WeightProW4",
-			InitCommand=function(self) self:y(16*7):shadowlength(1):zoom(1/3):horizalign(left) end,
+			InitCommand=function(self) self:y(16*7*WideScreenDiff()):shadowlength(1):zoom(1/3*WideScreenDiff()):horizalign(left) end,
 			OnCommand=function(self) self:playcommand("Update") end,
 			UpdateCommand=function(self) self:settext("ProW4: "..AIiniDefault[SkillsDefault[currentSkill]]["WeightProW4"].." ("..GetWeightPercent(AIiniDefault,"WeightProW4").."%)") end
 		},
 		LoadFont("_z bold 36px")..{
 			Condition=totalWeights>6,
 			Name="WeightProW3",
-			InitCommand=function(self) self:y(16*8):shadowlength(1):zoom(1/3):horizalign(left) end,
+			InitCommand=function(self) self:y(16*8*WideScreenDiff()):shadowlength(1):zoom(1/3*WideScreenDiff()):horizalign(left) end,
 			OnCommand=function(self) self:playcommand("Update") end,
 			UpdateCommand=function(self) self:settext("ProW3: "..AIiniDefault[SkillsDefault[currentSkill]]["WeightProW3"].." ("..GetWeightPercent(AIiniDefault,"WeightProW3").."%)") end
 		},
 		LoadFont("_z bold 36px")..{
 			Condition=totalWeights>6,
 			Name="WeightProW2",
-			InitCommand=function(self) self:y(16*9):shadowlength(1):zoom(1/3):horizalign(left) end,
+			InitCommand=function(self) self:y(16*9*WideScreenDiff()):shadowlength(1):zoom(1/3*WideScreenDiff()):horizalign(left) end,
 			OnCommand=function(self) self:playcommand("Update") end,
 			UpdateCommand=function(self) self:settext("ProW2: "..AIiniDefault[SkillsDefault[currentSkill]]["WeightProW2"].." ("..GetWeightPercent(AIiniDefault,"WeightProW2").."%)") end
 		},
 		LoadFont("_z bold 36px")..{
 			Condition=totalWeights>6,
 			Name="WeightProW1",
-			InitCommand=function(self) self:y(16*10):shadowlength(1):zoom(1/3):horizalign(left) end,
+			InitCommand=function(self) self:y(16*10*WideScreenDiff()):shadowlength(1):zoom(1/3*WideScreenDiff()):horizalign(left) end,
 			OnCommand=function(self) self:playcommand("Update") end,
 			UpdateCommand=function(self) self:settext("ProW1: "..AIiniDefault[SkillsDefault[currentSkill]]["WeightProW1"].." ("..GetWeightPercent(AIiniDefault,"WeightProW1").."%)") end
 		}
 	},
 	Def.ActorFrame{
 		Name="Prompt",
-		InitCommand=function(self) prompt = self:GetChildren() end,
+		InitCommand=function(self) self:y(-SCREEN_CENTER_Y+SCREEN_CENTER_Y*WideScreenDiff()) prompt = self:GetChildren() end,
 		Def.Quad{
 			Name="BG",
 			InitCommand=function(self) self:FullScreen():diffuse(color("0,0,0")):diffusealpha(0) end,
@@ -703,7 +706,7 @@ return Def.ActorFrame{
 		},
 		LoadActor(THEME:GetPathG("ScreenPrompt","Cursor"))..{
 			Name="Cursor",
-			InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+SCREEN_CENTER_Y/3):diffusealpha(0) end,
+			InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+SCREEN_CENTER_Y/3):zoom(WideScreenDiff()):diffusealpha(0) end,
 			YesCommand=function(self) self:x(SCREEN_CENTER_X-SCREEN_CENTER_X/3) end,
 			NoCommand=function(self) self:x(SCREEN_CENTER_X+SCREEN_CENTER_X/3) end
 		},
@@ -715,12 +718,12 @@ return Def.ActorFrame{
 		LoadFont("_r bold 30px")..{
 			Name="YES",
 			Text="Yes",
-			InitCommand=function(self) self:x(SCREEN_CENTER_X-SCREEN_CENTER_X/3):y(SCREEN_CENTER_Y+SCREEN_CENTER_Y/3):diffusealpha(0) end,
+			InitCommand=function(self) self:x(SCREEN_CENTER_X-SCREEN_CENTER_X/3):y(SCREEN_CENTER_Y+SCREEN_CENTER_Y/3):zoom(WideScreenDiff()):diffusealpha(0) end,
 		},
 		LoadFont("_r bold 30px")..{
 			Name="NO",
 			Text="No",
-			InitCommand=function(self) self:x(SCREEN_CENTER_X+SCREEN_CENTER_X/3):y(SCREEN_CENTER_Y+SCREEN_CENTER_Y/3):diffusealpha(0) end,
+			InitCommand=function(self) self:x(SCREEN_CENTER_X+SCREEN_CENTER_X/3):y(SCREEN_CENTER_Y+SCREEN_CENTER_Y/3):zoom(WideScreenDiff()):diffusealpha(0) end,
 		}
 	}
 }
