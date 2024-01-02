@@ -102,7 +102,7 @@ local t = Def.ActorFrame{
 		LoadFont("_eurostile normal")..{
 			Condition=GAMESTATE:IsPlayerEnabled(PLAYER_1) and getenv("EffectControlP1"),
 			Name="MOD1",
-			InitCommand=function(self) self:shadowlength(1):zoom(0.4):x(THEME:GetMetric("ScreenGameplay","ScoreP1X")):y(THEME:GetMetric("ScreenGameplay","ScoreP1Y")-15) end,
+			InitCommand=function(self) self:shadowlength(1):zoom(0.4*WideScreenDiff()):x(THEME:GetMetric("ScreenGameplay","ScoreP1X")):y(THEME:GetMetric("ScreenGameplay","ScoreP1Y")-15*WideScreenDiff()) end,
 			OnCommand=function(self) self:settext(CURRENT[PLAYER_1] and "SPEED: " .. (CURRENT[PLAYER_1] / (MOD[PLAYER_1] == "x" and 100 or 1))..MOD[PLAYER_1] or "") end,
 			ChangeCommand=function(self)
 				local text ="SPEED CHANGE: " .. (PREVIOUS[PLAYER_1] / (MOD[PLAYER_1] == "x" and 100 or 1))..MOD[PLAYER_1] .. " -> " .. (CURRENT[PLAYER_1] / (MOD[PLAYER_1] == "x" and 100 or 1))..MOD[PLAYER_1]
@@ -117,7 +117,7 @@ local t = Def.ActorFrame{
 			Condition=GAMESTATE:IsPlayerEnabled(PLAYER_2) and getenv("EffectControlP2"),
 			Name="MOD2",
 			Text=CURRENT[PLAYER_2] or "?",
-			InitCommand=function(self) self:shadowlength(1):zoom(0.4):x(THEME:GetMetric("ScreenGameplay","ScoreP2X")):y(THEME:GetMetric("ScreenGameplay","ScoreP2Y")-15) end,
+			InitCommand=function(self) self:shadowlength(1):zoom(0.4*WideScreenDiff()):x(THEME:GetMetric("ScreenGameplay","ScoreP2X")):y(THEME:GetMetric("ScreenGameplay","ScoreP2Y")-15*WideScreenDiff()) end,
 			OnCommand=function(self) self:settext(CURRENT[PLAYER_2] and "SPEED: " .. (CURRENT[PLAYER_2] / (MOD[PLAYER_2] == "x" and 100 or 1))..MOD[PLAYER_2] or "") end,
 			ChangeCommand=function(self)
 				local text ="SPEED CHANGE: " .. (PREVIOUS[PLAYER_2] / (MOD[PLAYER_2] == "x" and 100 or 1))..MOD[PLAYER_2] .. " -> " .. (CURRENT[PLAYER_2] / (MOD[PLAYER_2] == "x" and 100 or 1))..MOD[PLAYER_2]
