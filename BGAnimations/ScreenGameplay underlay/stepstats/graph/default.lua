@@ -144,8 +144,8 @@ local function GetVerticesAssist(insert)
         end
 
         vertices[#vertices+1] = { {(sec-length)*graphW/lastSecond, graphH*2, 0},col }
-        vertices[#vertices+1] = { {(sec-length)*graphW/lastSecond, 0, 0},col }
-        vertices[#vertices+1] = { {(sec+length)*graphW/lastSecond, 0, 0},col }
+        vertices[#vertices+1] = { {(sec-length)*graphW/lastSecond, graphH, 0},col }
+        vertices[#vertices+1] = { {(sec+length)*graphW/lastSecond, graphH, 0},col }
         vertices[#vertices+1] = { {(sec+length)*graphW/lastSecond, graphH*2, 0},col }
     end
     return vertices
