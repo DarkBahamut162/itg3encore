@@ -1,4 +1,5 @@
 return Def.ActorFrame{
+	InitCommand=function(self) self:y(-77*WideScreenDiff())end,
 	LoadActor(THEME:GetPathG("ScreenOptions","more/moreexit")) .. {
 		Text="Exit",
 		InitCommand=function(self) self:CenterX():y(-10*WideScreenDiff()):zoom(WideScreenDiff()):croptop(0.57):cropbottom(0.1):diffuse(color("0.5,0.5,0.5,1")) end,
