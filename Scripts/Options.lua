@@ -302,10 +302,12 @@ function InitRotationOptions()
 end
 
 function InitOptions()
-	local KeyMaps = SetupKeymapArray()
+	local KeyMaps = SetupKeymapArray() or {}
 
-	setenv("EffectControlP1",keyMapped(KeyMaps[GAMESTATE:GetCurrentGame():GetName()]["1_EffectDown"]) and keyMapped(KeyMaps[GAMESTATE:GetCurrentGame():GetName()]["1_EffectUp"]))
-	setenv("EffectControlP2",keyMapped(KeyMaps[GAMESTATE:GetCurrentGame():GetName()]["2_EffectDown"]) and keyMapped(KeyMaps[GAMESTATE:GetCurrentGame():GetName()]["2_EffectUp"]))
+	if #KeyMaps > 0 then
+		setenv("EffectControlP1",keyMapped(KeyMaps[GAMESTATE:GetCurrentGame():GetName()]["1_EffectDown"]) and keyMapped(KeyMaps[GAMESTATE:GetCurrentGame():GetName()]["1_EffectUp"]))
+		setenv("EffectControlP2",keyMapped(KeyMaps[GAMESTATE:GetCurrentGame():GetName()]["2_EffectDown"]) and keyMapped(KeyMaps[GAMESTATE:GetCurrentGame():GetName()]["2_EffectUp"]))
+	end
 
 	if GetUserPrefN("StylePosition") == nil then
 		SetUserPref("StylePosition",1)
