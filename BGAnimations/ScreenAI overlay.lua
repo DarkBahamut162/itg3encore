@@ -380,6 +380,7 @@ local InputHandler = function(event)
 					SOUND:PlayOnce(THEME:GetPathS("ScreenPlayerOptions", "cancel all"), true)
 				elseif currentList == totalWeights + 3 then -- save ai
 					SaveAI()
+					AIiniOLD = deepcopy(AIini)
 					SOUND:PlayOnce(THEME:GetPathS("", "_save"), true)
 				end
 			elseif editing and not checking then -- change value
