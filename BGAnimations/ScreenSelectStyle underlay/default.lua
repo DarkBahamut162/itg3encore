@@ -16,21 +16,25 @@ local InputHandler = function(event)
 
 	if event.type == "InputEventType_FirstPress" then
 		if event.GameButton == "MenuLeft" and selectState then
-			if currentStylePosition == 1 then
-				SetUserPref("StylePosition",#styles)
-			else
-				SetUserPref("StylePosition",currentStylePosition-1)
+			if styles and #styles > 1 then
+				if currentStylePosition == 1 then
+					SetUserPref("StylePosition",#styles)
+				else
+					SetUserPref("StylePosition",currentStylePosition-1)
+				end
+				SCREENMAN:GetTopScreen():SetNextScreenName(screenName)
+				SCREENMAN:GetTopScreen():StartTransitioningScreen("SM_GoToNextScreen")
 			end
-			SCREENMAN:GetTopScreen():SetNextScreenName(screenName)
-			SCREENMAN:GetTopScreen():StartTransitioningScreen("SM_GoToNextScreen")
 		elseif event.GameButton == "MenuRight" and selectState then
-			if currentStylePosition == #styles then
-				SetUserPref("StylePosition",1)
-			else
-				SetUserPref("StylePosition",currentStylePosition+1)
+			if styles and #styles > 1 then
+				if currentStylePosition == #styles then
+					SetUserPref("StylePosition",1)
+				else
+					SetUserPref("StylePosition",currentStylePosition+1)
+				end
+				SCREENMAN:GetTopScreen():SetNextScreenName(screenName)
+				SCREENMAN:GetTopScreen():StartTransitioningScreen("SM_GoToNextScreen")
 			end
-			SCREENMAN:GetTopScreen():SetNextScreenName(screenName)
-			SCREENMAN:GetTopScreen():StartTransitioningScreen("SM_GoToNextScreen")
 		elseif (event.GameButton == "MenuUp" or event.GameButton == "MenuDown") and selectState and enableUD then
 			if currentBattleMode == "rave" then
 				setenv("BattleMode","battle")
@@ -66,7 +70,7 @@ return Def.ActorFrame{
 		c.Right:addx((c.Center:GetWidth()/4+8)*WideScreenDiff())
 	end,
 	OnCommand=function(self)
-		if styles and #styles > 1 then SCREENMAN:GetTopScreen():AddInputCallback(InputHandler) end
+		if styles and #styles > 1 or enableUD then SCREENMAN:GetTopScreen():AddInputCallback(InputHandler) end
 		if isOutFox() then GAMESTATE:UpdateDiscordScreenInfo("Selecting Style","",1) end
 	end,
 	LoadActor(THEME:GetPathB("ScreenWithMenuElements","underlay/_sides")),
