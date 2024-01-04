@@ -15,8 +15,8 @@ function isOni()
 	return isPlayMode("PlayMode_Oni")
 end
 
-function isRave()
-	return isPlayMode("PlayMode_Rave")
+function isVS()
+	return isPlayMode("PlayMode_Rave") or isPlayMode("PlayMode_Battle")
 end
 
 function isLifeline(player)

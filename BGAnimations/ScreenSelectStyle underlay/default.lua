@@ -2,6 +2,14 @@ local c
 local selectState = false
 local styles = ChoiceSingle()
 local currentStylePosition = GetUserPrefN("StylePosition")
+local currentBattleMode = getenv("BattleMode")
+local screenName = Var "LoadingScreen" or "ScreenSelectStyle" 
+local enableUD = screenName == "ScreenSelectNumPlayers"
+local output = enableUD and "Current Style: "..StyleName()[currentStylePosition].." | Battle Mode: "..string.gsub(" "..currentBattleMode, "%W%l", string.upper):sub(2) or "Current Style: "..StyleName()[currentStylePosition]
+
+for player in ivalues(PlayerNumber) do
+	SCREENMAN:set_input_redirected(player, false)
+end
 
 local InputHandler = function(event)
 	if not event.PlayerNumber or not event.button then return false end
@@ -13,7 +21,7 @@ local InputHandler = function(event)
 			else
 				SetUserPref("StylePosition",currentStylePosition-1)
 			end
-			SCREENMAN:GetTopScreen():SetNextScreenName("ScreenSelectStyle")
+			SCREENMAN:GetTopScreen():SetNextScreenName(screenName)
 			SCREENMAN:GetTopScreen():StartTransitioningScreen("SM_GoToNextScreen")
 		elseif event.GameButton == "MenuRight" and selectState then
 			if currentStylePosition == #styles then
@@ -21,15 +29,29 @@ local InputHandler = function(event)
 			else
 				SetUserPref("StylePosition",currentStylePosition+1)
 			end
-			SCREENMAN:GetTopScreen():SetNextScreenName("ScreenSelectStyle")
+			SCREENMAN:GetTopScreen():SetNextScreenName(screenName)
+			SCREENMAN:GetTopScreen():StartTransitioningScreen("SM_GoToNextScreen")
+		elseif (event.GameButton == "MenuUp" or event.GameButton == "MenuDown") and selectState and enableUD then
+			if currentBattleMode == "rave" then
+				setenv("BattleMode","battle")
+			else
+				setenv("BattleMode","rave")
+			end
+			SCREENMAN:GetTopScreen():SetNextScreenName(screenName)
 			SCREENMAN:GetTopScreen():StartTransitioningScreen("SM_GoToNextScreen")
 		elseif event.GameButton == "Select" and not selectState then
+			for player in ivalues(PlayerNumber) do
+				SCREENMAN:set_input_redirected(player, true)
+			end
 			SOUND:PlayOnce( THEME:GetPathS( 'OptionsList', "opened" ) )
 			selectState = true
 			c.Left:linear(0.125):diffusealpha(1)
 			c.Right:linear(0.125):diffusealpha(1)
 		end
 	elseif event.type == "InputEventType_Release" and event.GameButton == "Select" and selectState then
+		for player in ivalues(PlayerNumber) do
+			SCREENMAN:set_input_redirected(player, false)
+		end
 		SOUND:PlayOnce( THEME:GetPathS( 'OptionsList', "closed" ) )
 		selectState = false
 		c.Left:linear(0.125):diffusealpha(0)
@@ -69,7 +91,7 @@ return Def.ActorFrame{
 	LoadActor(THEME:GetPathB("ScreenWithMenuElements","underlay/fore")),
 	LoadFont("_v 26px bold shadow") .. {
 		Name="Center",
-		InitCommand=function(self) self:x(SCREEN_CENTER_X):y(SCREEN_CENTER_Y-160*WideScreenDiff()):zoom(0.5*WideScreenDiff()):cropleft(0.5):cropright(0.5):settext("Current Style: "..StyleName()[GetUserPrefN("StylePosition")]) end,
+		InitCommand=function(self) self:x(SCREEN_CENTER_X):y(SCREEN_CENTER_Y-160*WideScreenDiff()):zoom(0.5*WideScreenDiff()):cropleft(0.5):cropright(0.5):settext(output) end,
 		OnCommand=function(self) self:decelerate(0.5):cropleft(0):cropright(0) end,
 		OffCommand=function(self) self:accelerate(0.5):cropleft(0.5):cropright(0.5) end
 	},

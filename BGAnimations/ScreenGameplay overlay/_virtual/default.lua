@@ -27,7 +27,7 @@ return Def.ActorFrame{
 		}
 	},
 	Def.ActorFrame{
-		OnCommand=function(self) self:visible(not isRave()) end,
+		OnCommand=function(self) self:visible(not isVS()) end,
 		StandardDecorationFromFile("BPMDisplay","BPMDisplay")
 	},
 	Def.ActorFrame{
@@ -60,7 +60,7 @@ return Def.ActorFrame{
 			OnCommand=function(self) self:sleep(1.5):linear(0.1):x(SCREEN_RIGHT-16*WideScreenDiff()) end
 		},
 		LoadActor("_base normal")..{ InitCommand=function(self) self:CenterX():y(SCREEN_TOP+24*WideScreenDiff()):zoom(WideScreenDiff()) end },
-		LoadActor("_base bpm")..{ InitCommand=function(self) self:CenterX():y(SCREEN_TOP+61*WideScreenDiff()):zoom(WideScreenDiff()):visible(not isRave()) end },
+		LoadActor("_base bpm")..{ InitCommand=function(self) self:CenterX():y(SCREEN_TOP+61*WideScreenDiff()):zoom(WideScreenDiff()):visible(not isVS()) end },
 		LoadActor("_neons top")..{
 			InitCommand=function(self) self:CenterX():y(SCREEN_TOP+24*WideScreenDiff()):zoom(WideScreenDiff()):blend(Blend.Add) end,
 			OnCommand=function(self) self:effectclock('beat'):diffuseramp():effectcolor1(color("#77777788")):effectcolor2(color("#ffffff")):effectperiod(0.5):effect_hold_at_full(0.5):diffusealpha(0):linear(0.4):diffusealpha(1) end
@@ -70,11 +70,11 @@ return Def.ActorFrame{
 			OnCommand=function(self) self:effectclock('beat'):diffuseramp():effectcolor1(color("#FFFFFF00")):effectcolor2(color("#ffffffff")):effectperiod(0.5):effect_hold_at_full(0.5):diffusealpha(0):linear(0.4):diffusealpha(1) end
 		},
 		LoadActor("_neons bottom")..{
-			InitCommand=function(self) self:CenterX():y(SCREEN_TOP+40*WideScreenDiff()):zoom(WideScreenDiff()):blend(Blend.Add):visible(not isRave()) end,
+			InitCommand=function(self) self:CenterX():y(SCREEN_TOP+40*WideScreenDiff()):zoom(WideScreenDiff()):blend(Blend.Add):visible(not isVS()) end,
 			OnCommand=function(self) self:effectclock('beat'):diffuseramp():effectcolor1(color("#77777788")):effectcolor2(color("#ffffff")):effectperiod(0.5):effect_hold_at_full(0.5):diffusealpha(0):linear(0.4):diffusealpha(1) end
 		},
 		LoadActor("_neons bottom")..{
-			InitCommand=function(self) self:CenterX():y(SCREEN_TOP+40*WideScreenDiff()):zoom(WideScreenDiff()):visible(not isRave()) end,
+			InitCommand=function(self) self:CenterX():y(SCREEN_TOP+40*WideScreenDiff()):zoom(WideScreenDiff()):visible(not isVS()) end,
 			OnCommand=function(self) self:effectclock('beat'):diffuseramp():effectcolor1(color("#FFFFFF00")):effectcolor2(color("#ffffffff")):effectperiod(0.5):effect_hold_at_full(0.5):diffusealpha(0):linear(0.4):diffusealpha(1) end
 		},
 		Def.ActorFrame{
@@ -106,7 +106,7 @@ return Def.ActorFrame{
 			self:queuecommand('TweenOff')
 		end,
 		Def.ActorFrame{
-			Condition=GAMESTATE:IsPlayerEnabled(PLAYER_1) or isRave(),
+			Condition=GAMESTATE:IsPlayerEnabled(PLAYER_1) or isVS(),
 			Name="Player1",
 			OnCommand=function(self) self:x(SCREEN_CENTER_X-240*WideScreenDiff()):y(SCREEN_TOP+27*WideScreenDiff()):zoom(WideScreenDiff()):addx(-SCREEN_WIDTH/2) end,
 			TweenOnCommand=function(self) self:sleep(1.5):decelerate(0.5):addx(SCREEN_WIDTH/2) end,
@@ -129,7 +129,7 @@ return Def.ActorFrame{
 			}
 		},
 		Def.ActorFrame{
-			Condition=GAMESTATE:IsPlayerEnabled(PLAYER_2) or isRave(),
+			Condition=GAMESTATE:IsPlayerEnabled(PLAYER_2) or isVS(),
 			Name="Player2",
 			OnCommand=function(self) self:x(SCREEN_CENTER_X+240*WideScreenDiff()):y(SCREEN_TOP+27*WideScreenDiff()):zoom(WideScreenDiff()):addx(SCREEN_WIDTH/2) end,
 			TweenOnCommand=function(self) self:sleep(1.5):decelerate(0.5):addx(-SCREEN_WIDTH/2) end,

@@ -30,7 +30,7 @@ if getenv("ShowStatsP1") == nil or getenv("ShowStatsP2") == nil then return Def.
 		end
 	end
 
-	if not isRave() and not IIDX then
+	if not isVS() and not IIDX then
 		local Judgments = Def.ActorFrame{
 			InitCommand=function(self) self:Center() end
 		}
@@ -44,7 +44,7 @@ if getenv("ShowStatsP1") == nil or getenv("ShowStatsP2") == nil then return Def.
 
 		t[#t+1] = Def.ActorFrame{
 			Name="Labels",
-			InitCommand=function(self) self:y(isRave() and -10*WideScreenDiff() or 0):diffusealpha(0) end,
+			InitCommand=function(self) self:y(isVS() and -10*WideScreenDiff() or 0):diffusealpha(0) end,
 			Condition=bgNum[PLAYER_1] > 0 or bgNum[PLAYER_2] > 0,
 			OnCommand=function(self) self:sleep(0.5):decelerate(0.8):diffusealpha(1) end,
 			OffCommand=function(self) if AnyPlayerFullComboed() then self:sleep(1) end self:accelerate(0.8):diffusealpha(0) end,
@@ -75,7 +75,7 @@ if getenv("ShowStatsP1") == nil or getenv("ShowStatsP2") == nil then return Def.
 
 			t[#t+1] = Def.ActorFrame{
 				Name="Numbers"..pname(pn),
-				InitCommand=function(self) self:y(isRave() and -10 or 0):diffusealpha(0) end,
+				InitCommand=function(self) self:y(isVS() and -10 or 0):diffusealpha(0) end,
 				Condition=bgNum[PLAYER_1] > 0 or bgNum[PLAYER_2] > 0,
 				OnCommand=function(self) self:sleep(0.5):decelerate(0.8):diffusealpha(1) end,
 				OffCommand=function(self) if AnyPlayerFullComboed() then self:sleep(1) end self:accelerate(0.8):diffusealpha(0) end,
@@ -83,7 +83,7 @@ if getenv("ShowStatsP1") == nil or getenv("ShowStatsP2") == nil then return Def.
 				Numbers
 			}
 		end
-	elseif not isRave() and IIDX then
+	elseif not isVS() and IIDX then
 		local Judgments = Def.ActorFrame{
 			InitCommand=function(self) self:Center() end
 		}
@@ -97,7 +97,7 @@ if getenv("ShowStatsP1") == nil or getenv("ShowStatsP2") == nil then return Def.
 
 		t[#t+1] = Def.ActorFrame{
 			Name="Labels",
-			InitCommand=function(self) self:y(isRave() and -10*WideScreenDiff() or 0):diffusealpha(0) end,
+			InitCommand=function(self) self:y(isVS() and -10*WideScreenDiff() or 0):diffusealpha(0) end,
 			Condition=bgNum[PLAYER_1] > 0 or bgNum[PLAYER_2] > 0,
 			OnCommand=function(self) self:sleep(0.5):decelerate(0.8):diffusealpha(1) end,
 			OffCommand=function(self) if AnyPlayerFullComboed() then self:sleep(1) end self:accelerate(0.8):diffusealpha(0) end,

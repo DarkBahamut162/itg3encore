@@ -11,13 +11,13 @@ local val = 0
 
 local function UpdateDynamic(self)
 	local YoffsetBeat = 0
-	if sudden or hidden or (isRave() and GAMESTATE:IsHumanPlayer(player)) then
+	if sudden or hidden or (isVS() and GAMESTATE:IsHumanPlayer(player)) then
 		YoffsetBeat = ArrowEffects.GetYOffset(GAMESTATE:GetPlayerState(player),1,timingData:GetBeatFromElapsedTime(GAMESTATE:GetSongPosition():GetMusicSecondsVisible()+1))/64
-		if sudden or isRave() then
+		if sudden or isVS() then
 			val = YoffsetBeat / 3 - 1
 			GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Song"):SuddenOffset(val,100)
 		end
-		if hidden or isRave() then
+		if hidden or isVS() then
 			val = math.min(4,YoffsetBeat) / 3 - 1
 			GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Song"):HiddenOffset(val,100)
 		end
@@ -25,5 +25,5 @@ local function UpdateDynamic(self)
 end
 
 return Def.ActorFrame{
-	OnCommand=function(self) if sudden or hidden or isRave() then self:SetUpdateFunction(UpdateDynamic) end end
+	OnCommand=function(self) if sudden or hidden or isVS() then self:SetUpdateFunction(UpdateDynamic) end end
 }

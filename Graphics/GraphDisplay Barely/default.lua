@@ -1,5 +1,5 @@
 return Def.ActorFrame{
-	Condition=not isRave(),
+	Condition=not isVS(),
 	LoadActor("arrow")..{
 		InitCommand=function(self) self:zoom(0.8):y(6):diffuseshift():effectoffset(0.5):diffusealpha(0) end,
 		OnCommand=function(self) self:sleep(3.5):addy(-20):accelerate(0.3):diffusealpha(1):addy(25):decelerate(0.3):addy(-10):accelerate(0.3):addy(10) end

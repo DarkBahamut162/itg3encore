@@ -78,7 +78,7 @@ return Def.ActorFrame{
 		LoadFont("_r bold 30px")..{
 			Text="Step Artist:",
 			InitCommand=function(self) self:x(SCREEN_LEFT+5*WideScreenDiff()):y(SCREEN_CENTER_Y+152*WideScreenDiff()):zoom(0.6*WideScreenDiff()):halign(0):shadowlength(2) end,
-			BeginCommand=function(self) self:visible(GAMESTATE:IsPlayerEnabled(PLAYER_1) and isRegular() or isRave()) end
+			BeginCommand=function(self) self:visible(GAMESTATE:IsPlayerEnabled(PLAYER_1) and isRegular() or isVS()) end
 		},
 		LoadFont("_r bold 30px")..{
 			Name="AuthorText",
@@ -101,7 +101,7 @@ return Def.ActorFrame{
 			SetCommand=function(self)
 				if GAMESTATE:IsHumanPlayer(PLAYER_1) then
 					self:settext(GetDisplayNameFromProfileOrMemoryCard(PLAYER_1))
-				elseif isRave() then
+				elseif isVS() then
 					self:settext("CPU")
 				end
 			end,
@@ -116,7 +116,7 @@ return Def.ActorFrame{
 		LoadFont("_r bold 30px")..{
 			Text=":Step Artist",
 			InitCommand=function(self) self:x(SCREEN_RIGHT-5*WideScreenDiff()):y(SCREEN_CENTER_Y+152*WideScreenDiff()):zoom(0.6*WideScreenDiff()):halign(1):shadowlength(2) end,
-			BeginCommand=function(self) self:visible(GAMESTATE:IsPlayerEnabled(PLAYER_2) and isRegular() or isRave()) end
+			BeginCommand=function(self) self:visible(GAMESTATE:IsPlayerEnabled(PLAYER_2) and isRegular() or isVS()) end
 		},
 		LoadFont("_r bold 30px")..{
 			Name="AuthorText",
@@ -139,7 +139,7 @@ return Def.ActorFrame{
 			SetCommand=function(self)
 				if GAMESTATE:IsHumanPlayer(PLAYER_2) then
 					self:settext(GetDisplayNameFromProfileOrMemoryCard(PLAYER_2))
-				elseif isRave() then
+				elseif isVS() then
 					self:settext("CPU")
 				end
 			end,

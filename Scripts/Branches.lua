@@ -7,7 +7,7 @@ end
 
 Branch.StartGame = function()
 	if GAMESTATE:GetCoinMode() == 'CoinMode_Home' then
-		if isRave() then
+		if isVS() then
 			return "ScreenSelectNumPlayers"
 		end
 		return "ScreenSelectStyle"
@@ -73,7 +73,7 @@ Branch.AfterGameplay = function()
 		else
 			return "ScreenEvaluationOni"
 		end
-	elseif isRave() then
+	elseif isVS() then
 		return "ScreenEvaluationRave"
 	else
 		if IsNetSMOnline() then

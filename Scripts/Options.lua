@@ -264,7 +264,7 @@ function SongMods()
 		end
 	end
 
-	if isRave() then
+	if isVS() then
 		options = addToOutput(options,"28,21"..add2,",")
 	elseif GAMESTATE:IsCourseMode() then
 		options = addToOutput(options,"28,S,20,"..add.."P,29,21"..add2,",")
@@ -314,6 +314,8 @@ function InitOptions()
 	elseif GetUserPrefN("StylePosition") > #ChoiceSingle() then
 		SetUserPref("StylePosition",1)
 	end
+
+	setenv("BattleMode","rave")
 
 	GAMESTATE:SetFailTypeExplicitlySet(true)
 	setenv("HighScoreableP1",false)
