@@ -1,5 +1,5 @@
 local player = ...
-local scoreType = getenv("SetScoreType"..pname(player))
+local scoreType = getenv("SetScoreType"..pname(GAMESTATE:IsHumanPlayer(player) and player or OtherPlayer[player]))
 return Def.ActorFrame{
 	LoadFont("_r bold numbers") .. {
 		Name="Score"..pname(player),
@@ -8,7 +8,7 @@ return Def.ActorFrame{
 			if isTopScreen("ScreenEvaluationWorkout") or isTopScreen("ScreenEvaluationCourseWorkout") then
 				self:x(player == PLAYER_1 and SCREEN_CENTER_X-58*WideScreenDiff() or SCREEN_CENTER_X+58*WideScreenDiff()):y(SCREEN_CENTER_Y+92*WideScreenDiff()):zoom(2/3*WideScreenDiff())
 			elseif isTopScreen("ScreenEvaluationRave") then
-				self:x(player == PLAYER_1 and SCREEN_CENTER_X-199*WideScreenDiff() or SCREEN_CENTER_X+199*WideScreenDiff()):y(SCREEN_CENTER_Y+175*WideScreenDiff()):zoom(WideScreenDiff())
+				self:x(player == PLAYER_1 and SCREEN_CENTER_X-196*WideScreenDiff() or SCREEN_CENTER_X+196*WideScreenDiff()):y(SCREEN_CENTER_Y+160*WideScreenDiff()):zoom(WideScreenDiff())
 			else
 				self:x(player == PLAYER_1 and SCREEN_CENTER_X-199*WideScreenDiff() or SCREEN_CENTER_X+199*WideScreenDiff()):y(SCREEN_CENTER_Y+52*WideScreenDiff()):zoom(WideScreenDiff())
 			end

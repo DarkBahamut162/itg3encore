@@ -441,6 +441,8 @@ return Def.ActorFrame{
 			}
 		}
 	},
+	LoadActor("../ScreenEvaluation underlay/Score",PLAYER_1)..{Condition=GAMESTATE:IsPlayerEnabled(PLAYER_1)},
+	LoadActor("../ScreenEvaluation underlay/Score",PLAYER_2)..{Condition=GAMESTATE:IsPlayerEnabled(PLAYER_2)},
 	LoadFont("_angel glow")..{
 		Text="Song Title",
 		InitCommand=function(self) self:x(isFinal() and SCREEN_CENTER_X or SCREEN_CENTER_X-300*WideScreenDiff()):halign(isFinal() and 0.5 or 0):y(SCREEN_CENTER_Y-169*WideScreenDiff()):animate(0):maxwidth(700):zoom(0.6*WideScreenDiff()):shadowlength(0):playcommand("Update") end,

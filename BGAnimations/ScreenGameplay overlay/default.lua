@@ -132,9 +132,9 @@ local t = Def.ActorFrame{
 	LoadActor(GetSongFrame()),
 	Def.ActorFrame{
 		Name="RaveNames",
-		InitCommand=function(self) self:CenterX():y(SCREEN_TOP+66*WideScreenDiff()):visible(isVS()) end,
+		InitCommand=function(self) self:CenterX():y(SCREEN_TOP+69*WideScreenDiff()):visible(isVS()) end,
 		OnCommand=function(self) self:addy(-100):sleep(0.5):decelerate(0.8):addy(100) end,
-		OffCommand=function(self) self:accelerate(0.8):addy(-100) end,
+		OffCommand=function(self) if not IsGame("pump") then if AnyPlayerFullComboed() then self:sleep(1) end self:accelerate(0.8):addy(-100) end end,
 		LoadFont("_v 26px bold black")..{
 			InitCommand=function(self) self:x(-254*WideScreenDiff()):zoom(0.55*WideScreenDiff()):shadowlength(0):maxwidth(160) end,
 			BeginCommand=function(self)
