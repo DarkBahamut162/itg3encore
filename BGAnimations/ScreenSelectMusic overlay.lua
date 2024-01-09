@@ -397,7 +397,8 @@ return Def.ActorFrame{
 			LoadActor(THEME:GetPathG("_pane","steps"),PLAYER_1),
 			LoadActor(THEME:GetPathG("_pane","numbers"),PLAYER_1)..{ InitCommand=function(self) self:y(129) end },
 			LoadActor(THEME:GetPathG("_pane","avatar"),PLAYER_1),
-			LoadActor(THEME:GetPathG("_player","scores"),PLAYER_1)
+			LoadActor(THEME:GetPathG("_player","scores"),PLAYER_1),
+			LoadActor(THEME:GetPathG("_player","steps"),PLAYER_1)
 		},
 		Def.ActorFrame{
 			Name="PaneDisplayP2",
@@ -408,7 +409,8 @@ return Def.ActorFrame{
 			LoadActor(THEME:GetPathG("_pane","steps"),PLAYER_2),
 			LoadActor(THEME:GetPathG("_pane","numbers"),PLAYER_2)..{ InitCommand=function(self) self:y(129) end },
 			LoadActor(THEME:GetPathG("_pane","avatar"),PLAYER_2),
-			LoadActor(THEME:GetPathG("_player","scores"),PLAYER_2)
+			LoadActor(THEME:GetPathG("_player","scores"),PLAYER_2),
+			LoadActor(THEME:GetPathG("_player","steps"),PLAYER_2)
 		}
 	},
 	LoadActor(THEME:GetPathB("ScreenWithMenuElements","underlay/_sides"))..{ InitCommand=function(self) self:ztest(true) end },

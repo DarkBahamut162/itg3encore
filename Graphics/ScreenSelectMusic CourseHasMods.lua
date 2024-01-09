@@ -47,15 +47,6 @@ return Def.ActorFrame{
 								if HasLuaCheck() then output = addToOutput(output,"HAS LUA","\n") end
 							end
 						end
-						if ThemePrefs.Get("ShowStepCounter") and isOutFox() then -- load cache StepCounter
-							output = addToOutput(output,CacheLoaded["StepCounter"]:gsub("_","|"),"\n")
-							if IsGame("be-mu") then
-								output = addToOutput(output,"Scratches: "..CacheLoaded["Scratches"],"\n")
-								if GetUserPrefN("StylePosition") == 2 then
-									output = addToOutput(output,"Foots: "..CacheLoaded["Foots"],"\n")
-								end
-							end
-						end
 						if ThemePrefs.Get("ShowTrueBPMs") then -- Get true BPM range
 							local bpms = getTrueBPMs(curSelection,curStep)
 							if bpms[1] == bpms[2] and bpms[2] == bpms[3] then
