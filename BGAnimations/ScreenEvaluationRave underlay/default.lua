@@ -152,7 +152,7 @@ return Def.ActorFrame{
 			}
 		},
 		Def.ActorFrame{
-			Condition=ThemePrefs.Get("ShowOffset"),
+			Condition=ThemePrefs.Get("ShowOffset") and getenv("EvalComboP1")),
 			Name="Offsets",
 			InitCommand=function(self) self:x(THEME:GetMetric("ScreenEvaluationRave","W1NumberP1X")-42*WideScreenDiff()) end,
 			Def.ActorFrame{
@@ -336,7 +336,7 @@ return Def.ActorFrame{
 			}
 		},
 		Def.ActorFrame{
-			Condition=ThemePrefs.Get("ShowOffset"),
+			Condition=ThemePrefs.Get("ShowOffset") and getenv("EvalComboP2"),
 			Name="Offsets",
 			InitCommand=function(self) self:x(THEME:GetMetric("ScreenEvaluationRave","W1NumberP2X")-42*WideScreenDiff()) end,
 			Def.ActorFrame{

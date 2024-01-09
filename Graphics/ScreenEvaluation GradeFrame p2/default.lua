@@ -122,7 +122,7 @@ return Def.ActorFrame{
 		}
 	},
 	Def.ActorFrame{
-		Condition=ThemePrefs.Get("ShowOffset"),
+		Condition=ThemePrefs.Get("ShowOffset") and getenv("EvalComboP2"),
 		Name="OffsetFrames",
 		Def.ActorFrame{
 			Name="W1",
