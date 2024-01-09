@@ -94,15 +94,6 @@ return Def.ActorFrame{
 								if isOutFox() then output = addToOutput(output,"Calc'd Difficulty (SPS): "..math.round(tonumber(CacheLoaded["StepsPerSecond"])*getColumnsPerPlayer(stepType[2],stepType[3],true)/4),"\n") end
 							end
 						end
-						if ThemePrefs.Get("ShowRounds") then -- show amount of rounds for this song if not in EventMode
-							if not GAMESTATE:IsEventMode() then
-								if curSelection:IsLong() then
-									output = addToOutput(output,"COUNTS AS 2 ROUNDS","\n")
-								elseif curSelection:IsMarathon() then
-									output = addToOutput(output,"COUNTS AS 3 ROUNDS","\n")
-								end
-							end
-						end
 					end
 				end
 			end
