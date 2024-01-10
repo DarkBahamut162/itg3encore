@@ -267,6 +267,16 @@ function HasStopAtBeat(beat,timing)
 	return false
 end
 
+function checkStopAtBeat(beat,timing)
+	for k,v in pairs(timing:GetStops()) do
+		local data = split('=', v)
+		if tonumber(data[1]) == beat then
+			return timing:GetElapsedTimeFromBeat(beat)+tonumber(data[2])
+		end
+	end
+	return timing:GetElapsedTimeFromBeat(beat)
+end
+
 function cacheStep(Song,Step)
     local chartint = 1
 	local currentBeat = 0

@@ -51,9 +51,9 @@ local function setSpeeds(steps)
 
 		if temp then
 			if numData[2] - temp < 0 then
-				SpeedDowns[#SpeedDowns+1] = timingData:GetElapsedTimeFromBeat(numData[1])
+				SpeedDowns[#SpeedDowns+1] = checkStopAtBeat(numData[1],timingData)
 			elseif numData[2] - temp > 0 then
-				SpeedUps[#SpeedUps+1] = timingData:GetElapsedTimeFromBeat(numData[1])
+				SpeedUps[#SpeedUps+1] = checkStopAtBeat(numData[1],timingData)
 			end
 		end
 		temp = numData[2]

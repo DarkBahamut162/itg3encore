@@ -66,12 +66,11 @@ local function UpdateGraphAssist()
                 local numData = {tonumber(data[1]), tonumber(data[2])}
                 numData[2] = math.round(numData[2],3)
                 if numData[1] > SongOrCourse:GetLastBeat() then break end
-
                 if temp then
                     if numData[2] - temp < 0 then
-                        assist[timingData:GetElapsedTimeFromBeat(numData[1])] = -1
+                        assist[checkStopAtBeat(numData[1],timingData)] = -1
                     elseif numData[2] - temp > 0 then
-                        assist[timingData:GetElapsedTimeFromBeat(numData[1])] = 1
+                        assist[checkStopAtBeat(numData[1],timingData)] = 1
                     end
                 end
                 temp = numData[2]
