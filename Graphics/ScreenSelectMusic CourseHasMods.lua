@@ -48,7 +48,15 @@ return Def.ActorFrame{
 							end
 						end
 						if ThemePrefs.Get("ShowTrueBPMs") then -- Get true BPM range
-							local bpms = getTrueBPMs(curSelection,curStep)
+							local bpms = {}
+							if isOutFox() then
+								local truebpms = curStep:GetTimingData():GetActualBPM()
+								bpms[1]=math.round(truebpms[1])
+								bpms[2]=math.round(truebpms[2])
+								bpms[3]=math.round(tonumber(CacheLoaded["TrueMaxBPM"]))
+							else
+								bpms = getTrueBPMs(curSelection,curStep)
+							end
 							if bpms[1] == bpms[2] and bpms[2] == bpms[3] then
 								output = addToOutput(output,"BPM: "..bpms[1],"\n")
 							elseif bpms[3] == bpms[1] or bpms[3] == 0 then

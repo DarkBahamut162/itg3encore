@@ -1,4 +1,4 @@
-local cacheVersion = "0.32"
+local cacheVersion = "0.33"
 
 function getCacheVersion()
 	return cacheVersion
@@ -258,6 +258,15 @@ function getStepCacheFile(Step)
 	return "Cache/Steps/Steps_"..groupName.."_"..songName.."_"..ToEnumShortString(Step:GetStepsType()).."_"..ToEnumShortString(Step:GetDifficulty()).."_"..Step:GetHash()
 end
 
+function HasStopAtBeat(beat,timing)
+	for k,v in pairs(timing:GetStops()) do
+		if tonumber(split('=', v)[1]) == beat then
+			return true
+		end
+	end
+	return false
+end
+
 function cacheStep(Song,Step)
     local chartint = 1
 	local currentBeat = 0
@@ -282,12 +291,12 @@ function cacheStep(Song,Step)
 	end
 
 	local timingData = Step:GetTimingData()
-
 	local lastSec = 0
 	local stepsPerSec = {}
 	local currentSPS = 0
 	local scratches = 0
 	local foots = 0
+	local currentBPM,checkBPM,checking,checkCount,maxBPM,isStop = 0,0,false,0,0,false
 
 	for k,v in pairs( Song:GetNoteData(chartint) ) do
 		if currentBeat < v[1] then
@@ -300,6 +309,23 @@ function cacheStep(Song,Step)
 
 		if timingData:IsJudgableAtBeat(v[1]) then
 			if allowednotes[v[3]] then
+				currentBPM = math.round(timingData:GetBPMAtBeat(v[1]),3)
+				isStop = HasStopAtBeat(v[1],timingData)
+				if currentBPM > maxBPM and not checking and not isStop then
+					checking = true
+					if currentBPM > checkBPM then checkBPM = currentBPM end
+					checkCount = 0
+				elseif math.abs(1-checkBPM/currentBPM) <= 0.02 and checking and not isStop then
+					checkCount = checkCount + 1
+					if checkCount > 4 then
+						if currentBPM > checkBPM then checkBPM = currentBPM end
+						if currentBPM > maxBPM then maxBPM = checkBPM end
+					end
+				else
+					checkBPM = 0
+					checking = false
+				end
+
 				local currentSec = timingData:GetElapsedTimeFromBeat(v[1])
 				currentNotes = currentNotes + 1
 				if lastSec > 0 then
@@ -375,6 +401,7 @@ function cacheStep(Song,Step)
 	LoadModule("Config.Save.lua")("StepCounter",table.concat(noteCounter,"_"),getStepCacheFile(Step))
 	LoadModule("Config.Save.lua")("StepsPerSecond",total2,getStepCacheFile(Step))
 	LoadModule("Config.Save.lua")("TrueBeats",lastBeat-firstBeat,getStepCacheFile(Step))
+	LoadModule("Config.Save.lua")("TrueMaxBPM",maxBPM,getStepCacheFile(Step))
 	LoadModule("Config.Save.lua")("TrueSeconds",Step:GetTimingData():GetElapsedTimeFromBeat(lastBeat)-Step:GetTimingData():GetElapsedTimeFromBeat(firstBeat),getStepCacheFile(Step))
 	if stepType[2] == "Bm" then
 		if #noteCounter == 7 or #noteCounter == 14 then
