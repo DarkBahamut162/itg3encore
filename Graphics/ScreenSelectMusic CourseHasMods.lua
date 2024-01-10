@@ -40,13 +40,6 @@ return Def.ActorFrame{
 							CacheLoaded[Cache[i][1]] = Cache[i][2]
 						end
 
-						if ThemePrefs.Get("ShowHasLua") then -- load cache HasLua
-							if isOutFox() then
-								if tobool(CacheLoaded["HasLua"]) then output = addToOutput(output,"HAS LUA","\n") end
-							else
-								if HasLuaCheck() then output = addToOutput(output,"HAS LUA","\n") end
-							end
-						end
 						if ThemePrefs.Get("ShowTrueBPMs") then -- Get true BPM range
 							local bpms = {}
 							if isOutFox() then
