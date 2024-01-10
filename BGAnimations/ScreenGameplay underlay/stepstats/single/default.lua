@@ -2,6 +2,7 @@ if isTopScreen("ScreenDemonstration2") then return Def.ActorFrame{} end
 
 local pn = GAMESTATE:GetMasterPlayerNumber()
 local graph = getenv("ShowNoteGraph"..pname(pn)) == 2
+local solo = getenv("RotationSolo"..pname(pn))
 local startX = pn == PLAYER_1 and SCREEN_WIDTH/4 or -SCREEN_WIDTH/4
 if getenv("ShowNoteGraph"..pname(pn)) > 1 and getenv("ShowStats"..pname(pn)) == 0 then startX = startX * 2 end
 local SongOrCourse,StepsOrTrail,scorelist,topscore
@@ -72,22 +73,22 @@ return Def.ActorFrame{
 		OnCommand=function(self)
 			if IsGame("be-mu") then
 				local move = pn == PLAYER_1 and 78 or -78
-				self:x(startX+(getenv("RotationSolo"..pname(pn)) and move*WideScreenDiff() or 0))
-				self:y(getenv("RotationSolo"..pname(pn)) and SCREEN_HEIGHT/6*WideScreenDiff() or 0)
+				self:x(startX+(solo and move*WideScreenDiff() or 0))
+				self:y(solo and SCREEN_HEIGHT/6*WideScreenDiff() or 0)
 			elseif IsGame("po-mu") then
 				local move = pn == PLAYER_1 and 72 or -72
-				self:x(startX+(getenv("RotationSolo"..pname(pn)) and move*WideScreenDiff() or 0))
-				self:y(getenv("RotationSolo"..pname(pn)) and SCREEN_HEIGHT/6*WideScreenDiff() or 0)
+				self:x(startX+(solo and move*WideScreenDiff() or 0))
+				self:y(solo and SCREEN_HEIGHT/6*WideScreenDiff() or 0)
 			else
 				local move = pn == PLAYER_1 and 64 or -64
-				self:x(startX+(getenv("RotationSolo"..pname(pn)) and move*WideScreenDiff() or 0))
-				self:y(getenv("RotationSolo"..pname(pn)) and 34*WideScreenDiff() or 0)
+				self:x(startX+(solo and move*WideScreenDiff() or 0))
+				self:y(solo and 34*WideScreenDiff() or 0)
 			end
 			if graph then
 				local plus = pn == PLAYER_1 and 72 or -72
-				self:addx(getenv("RotationSolo"..pname(pn)) and plus/2 or plus)
+				self:addx(solo and plus/2 or plus)
 			end
-			self:zoom(getenv("RotationSolo"..pname(pn)) and 0.75*WideScreenDiff() or 1*WideScreenDiff())
+			self:zoom(solo and 0.75*WideScreenDiff() or 1*WideScreenDiff())
 			:addx(pn == PLAYER_1 and SCREEN_WIDTH/2 or -SCREEN_WIDTH/2)
 			:decelerate(1)
 			:addx(pn == PLAYER_1 and -SCREEN_WIDTH/2 or SCREEN_WIDTH/2)
@@ -100,7 +101,8 @@ return Def.ActorFrame{
 			Condition=graph,
 			InitCommand=function(self)
 				if not isFinal() then self:zoomx(0.95):zoomy(0.85) end
-				if getenv("ShowStats"..pname(pn)) == 0 then self:addx(pn == PLAYER_1 and 5 or -5) end
+				local move = solo and 5 or 66
+				if getenv("ShowStats"..pname(pn)) == 0 then self:addx(pn == PLAYER_1 and move or -move) end
 			end
 		},
 		Def.ActorFrame{
