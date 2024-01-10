@@ -62,8 +62,8 @@ local function modifiedBPM(speed,mode)
 		modifiedBPM2 = bpm2 * mult
 	end
 
-	modifiedBPM1 = math.round(modifiedBPM1*1000)/1000
-	modifiedBPM2 = math.round(modifiedBPM2*1000)/1000
+	modifiedBPM1 = math.round(modifiedBPM1,3)
+	modifiedBPM2 = math.round(modifiedBPM2,3)
 
 	if modifiedBPM2 and modifiedBPM1 ~= modifiedBPM2 then
 		return modifiedBPM1..' - '..modifiedBPM2

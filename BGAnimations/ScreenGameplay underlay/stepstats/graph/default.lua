@@ -64,7 +64,7 @@ local function UpdateGraphAssist()
             for k,v in pairs(timingData:GetBPMsAndTimes()) do
                 local data = split('=', v)
                 local numData = {tonumber(data[1]), tonumber(data[2])}
-                numData[2] = math.round(numData[2] * 1000) / 1000
+                numData[2] = math.round(numData[2],3)
                 if numData[1] > SongOrCourse:GetLastBeat() then break end
 
                 if temp then

@@ -470,10 +470,10 @@ function getTrueBPMs(song,step)
 	local bpms = step:GetDisplayBpms()
 	local truebpms = timingdata:GetActualBPM()
 
-	bpms[1] = math.round(bpms[1] * 1000) / 1000
-	bpms[2] = math.round(bpms[2] * 1000) / 1000
-	truebpms[1] = math.round(truebpms[1] * 1000) / 1000
-	truebpms[2] = math.round(truebpms[2] * 1000) / 1000
+	bpms[1] = math.round(bpms[1],3)
+	bpms[2] = math.round(bpms[2],3)
+	truebpms[1] = math.round(truebpms[1],3)
+	truebpms[2] = math.round(truebpms[2],3)
 
 	for i=1,2 do
 		if bpms[i] then if math.abs(1-bpms[i]/math.round(bpms[i])) < 0.005 then bpms[i] = math.round(bpms[i]) end end
@@ -490,7 +490,7 @@ function getTrueBPMs(song,step)
 
 		for i, set in ipairs(sets) do
 			currentSet = split("=",set)
-			currentSet[2]=math.round(currentSet[2] * 1000 / 1000)
+			currentSet[2]=math.round(currentSet[2],3)
 
 			if lastSet then
 				duration = (currentSet[1]-lastSet[1]) / lastSet[2] * 60
@@ -531,23 +531,7 @@ function getTrueBPMs(song,step)
 			end
 		end
 		if math.abs(1-fastestBPM/truebpms[2]) <= 0.04 then fastestBPM = truebpms[2] end
-		--[[
-		local function pairsByKeys (t, f)
-			local a = {}
-			for n in pairs(t) do table.insert(a, n) end
-			table.sort(a, f)
-			local i = 0
-			local iter = function()
-				i = i + 1
-				if a[i] == nil then return nil
-				else return a[i], t[ a[i] ]
-				end
-			end
-			return iter
-		end
-		for _bpm, _seconds in pairsByKeys(BPMs) do if _seconds >= 10 then fastestBPM_backup = _bpm end end
-		if fastestBPM_backup > fastestBPM then fastestBPM = fastestBPM_backup end
-		]]--
+
 		return {truebpms[1],truebpms[2],fastestBPM}
 	end
 end

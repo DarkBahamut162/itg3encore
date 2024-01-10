@@ -47,7 +47,7 @@ local function setSpeeds(steps)
 	for k,v in pairs(timingData:GetBPMsAndTimes()) do
 		local data = split('=', v)
 		local numData = {tonumber(data[1]), tonumber(data[2])}
-		numData[2] = math.round(numData[2] * 1000) / 1000
+		numData[2] = math.round(numData[2],3)
 
 		if temp then
 			if numData[2] - temp < 0 then
