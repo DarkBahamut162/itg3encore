@@ -13,6 +13,7 @@ local late = {
 	["TapNoteScore_W4"] = 0,
 	["TapNoteScore_W5"] = 0
 }
+local perfect = 0
 
 if offsetInfo then
 	for t in ivalues(offsetInfo[PLAYER_1]) do
@@ -22,6 +23,8 @@ if offsetInfo then
 				early[t[3]] = early[t[3]] + 1
 			elseif t[2] > 0 then
 				late[t[3]] = late[t[3]] + 1
+			else
+				perfect = perfect + 1
 			end
 		end
 	end
@@ -127,6 +130,14 @@ return Def.ActorFrame{
 		Def.ActorFrame{
 			Name="W1",
 			InitCommand=function(self) self:y(-195*WideScreenDiff()) end,
+			LoadFont("_ScreenEvaluation numbers")..{
+				InitCommand=function(self) self:x(-156*WideScreenDiff()):y(-15*WideScreenDiff()):horizalign(right):diffuse(color("#FFFFFF")) end,
+				OnCommand=function(self)
+					self:settextf("%04d",perfect):AddAttribute(0, {Length = math.max(4-string.len(''..perfect), 0),Diffuse = color("#808080")})
+					self:zoom(0.4*WideScreenDiff()):cropleft(1.3):fadeleft(0.1):sleep(3.60):linear(0.7):cropleft(-0.3)
+				end,
+				OffCommand=function(self) self:linear(0.2):diffusealpha(0) end
+			},
 			LoadFont("_ScreenEvaluation numbers")..{
 				InitCommand=function(self) self:x(-156*WideScreenDiff()):y(-5*WideScreenDiff()):horizalign(right):diffuse(color("#0000FF")) end,
 				OnCommand=function(self)

@@ -32,6 +32,10 @@ local late = {
 		["TapNoteScore_W5"] = 0
 	}
 }
+local perfect = {
+	[PLAYER_1] = 0,
+	[PLAYER_2] = 0
+}
 
 if offsetInfo then
 	for pn in ivalues(GAMESTATE:GetEnabledPlayers()) do
@@ -42,6 +46,8 @@ if offsetInfo then
 					early[pn][t[3]] = early[pn][t[3]] + 1
 				elseif t[2] > 0 then
 					late[pn][t[3]] = late[pn][t[3]] + 1
+				else
+					perfect[pn] = perfect[pn] + 1
 				end
 			end
 		end
@@ -159,6 +165,14 @@ return Def.ActorFrame{
 			Def.ActorFrame{
 				Name="W1",
 				InitCommand=function(self) self:y(THEME:GetMetric("ScreenEvaluationRave","W1NumberP1Y")) end,
+				LoadFont("_ScreenEvaluation numbers")..{
+					InitCommand=function(self) self:y(-9*WideScreenDiff()):horizalign(right):shadowlength(1):diffuse(color("#FFFFFF")) end,
+					OnCommand=function(self)
+						self:settextf("%04d",perfect[PLAYER_1]):AddAttribute(0, {Length = math.max(4-string.len(''..perfect[PLAYER_1]), 0),Diffuse = color("#808080")})
+						self:zoom(0.25*WideScreenDiff()):cropleft(1.3):fadeleft(0.1):sleep(3.60):linear(0.7):cropleft(-0.3)
+					end,
+					OffCommand=function(self) self:linear(0.2):diffusealpha(0) end
+				},
 				LoadFont("_ScreenEvaluation numbers")..{
 					InitCommand=function(self) self:y(-3*WideScreenDiff()):horizalign(right):shadowlength(1):diffuse(color("#0000FF")) end,
 					OnCommand=function(self)
@@ -343,6 +357,14 @@ return Def.ActorFrame{
 			Def.ActorFrame{
 				Name="W1",
 				InitCommand=function(self) self:y(THEME:GetMetric("ScreenEvaluationRave","W1NumberP2Y")) end,
+				LoadFont("_ScreenEvaluation numbers")..{
+					InitCommand=function(self) self:y(-3*WideScreenDiff()):horizalign(right):shadowlength(1):diffuse(color("#FFFFFF")) end,
+					OnCommand=function(self)
+						self:settextf("%04d",perfect[PLAYER_2]):AddAttribute(0, {Length = math.max(4-string.len(''..perfect[PLAYER_2]), 0),Diffuse = color("#808080")})
+						self:zoom(0.25*WideScreenDiff()):cropleft(1.3):fadeleft(0.1):sleep(3.60):linear(0.7):cropleft(-0.3)
+					end,
+					OffCommand=function(self) self:linear(0.2):diffusealpha(0) end
+				},
 				LoadFont("_ScreenEvaluation numbers")..{
 					InitCommand=function(self) self:y(-3*WideScreenDiff()):horizalign(right):shadowlength(1):diffuse(color("#0000FF")) end,
 					OnCommand=function(self)
