@@ -1,6 +1,7 @@
 local MOD = {}
 local CURRENT = {}
 local PREVIOUS = {}
+local enableOffsets = ThemePrefs.Get("ShowOffset")
 local c
 
 local function setX(value,player)
@@ -41,7 +42,7 @@ local function setCA(value,player)
 end
 
 local judgments,offsetdata = {},{}
-if ThemePrefs.Get("ShowOffset") then
+if enableOffsets then
 	for i,player in pairs( GAMESTATE:GetEnabledPlayers() ) do
 		judgments[player] = {}
 		offsetdata[player] = {}
@@ -300,7 +301,7 @@ local t = Def.ActorFrame{
 	},
 	LoadActor(THEME:GetPathB("","_coins"))..{ InitCommand=function(self) self:visible(not GAMESTATE:IsDemonstration()) end },
 	JudgmentMessageCommand=function(self, params)
-		if params.Player == params.Player and not string.find(params.TapNoteScore,"Checkpoint") and ThemePrefs.Get("ShowOffset") then
+		if params.Player == params.Player and not string.find(params.TapNoteScore,"Checkpoint") and enableOffsets then
 			local player = params.Player
 			if params.Notes then
 				for i,col in pairs(params.Notes) do
@@ -317,7 +318,7 @@ local t = Def.ActorFrame{
 		end
 	end,
 	OffCommand=function(self)
-		if ThemePrefs.Get("ShowOffset") then
+		if enableOffsets then
 			setenv( "perColJudgeData", judgments )
 			setenv( "OffsetTable", offsetdata )
 		end
