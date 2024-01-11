@@ -527,7 +527,8 @@ function getTrueBPMs(song,step)
 
 		for i, set in ipairs(sets) do
 			currentSet = split("=",set)
-			currentSet[2]=math.round(currentSet[2],3)
+			currentSet[1]=math.round(tonumber(currentSet[1]),3)
+			currentSet[2]=math.round(tonumber(currentSet[2]),3)
 
 			if lastSet then
 				duration = (currentSet[1]-lastSet[1]) / lastSet[2] * 60
