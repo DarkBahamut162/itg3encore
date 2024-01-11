@@ -4,7 +4,7 @@ return Def.ActorFrame{
 		InitCommand=function(self) self:shadowlength(2.5):zoom(0.5*WideScreenDiff()):y(-17.5*WideScreenDiff()):halign(0) end
 	},
 	LoadFont("_r bold shadow 30px")..{
-		InitCommand=function(self) self:zoom(0.66*WideScreenDiff()):maxwidth(350):halign(0) end,
+		InitCommand=function(self) self:zoom(0.66*WideScreenDiff()):maxwidth(340):halign(0) end,
 		CurrentSongChangedMessageCommand=function(self) self:playcommand("Set") end,
 		CurrentCourseChangedMessageCommand=function(self) self:playcommand("Set") end,
 		CurrentTrailP1ChangedMessageCommand=function(self) self:playcommand("Set") end,
@@ -12,29 +12,25 @@ return Def.ActorFrame{
 		SetCommand=function(self)
 			local song = GAMESTATE:GetCurrentSong()
 			local course = GAMESTATE:GetCurrentCourse()
-			local text = ""
+			local output = ""
 			if song then
-				text = song:GetDisplayArtist()
+				output = song:GetDisplayArtist()
 			elseif course then
 				local trail = GAMESTATE:GetCurrentTrail(GAMESTATE:GetMasterPlayerNumber())
 				if trail then
 					local artists = trail:GetArtists()
 					for i=1,#artists do
-						if not string.find(text,artists[i]) then
-							if i == 1 then
-								text = artists[i]
-							elseif i < #artists then
-								text = text .. ", " .. artists[i]
-							end
-							if string.len(text) >= 60 then
-								text = "Various Artists"
+						if not string.find(output,artists[i]) then
+							output = addToOutput(output,artists[i],", ")
+							if string.len(output) >= 60 then
+								output = "Various Artists"
 								break
 							end
 						end
 					end
 				end
 			end
-			self:settext(text)
+			self:settext(output)
 		end
 	}
 }
