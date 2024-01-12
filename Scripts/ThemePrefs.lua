@@ -8,6 +8,11 @@ local Prefs = {
 		Choices = { OptionNameString('Normal'), OptionNameString('Final') },
 		Values = { false, true }
 	},
+	ShowBPMDisplayType = {
+		Default = 0,
+		Choices = { "DisplayBPM", "ActualBPM", "CalculatedBPM" },
+		Values = { 0, 1, 2 }
+	},
 	ShowCalcDiff = {
 		Default = false,
 		Choices = { OptionNameString('Off'), OptionNameString('On') },
@@ -34,11 +39,6 @@ local Prefs = {
 		Values = { false, true }
 	},
 	ShowStepCounter = {
-		Default = false,
-		Choices = { OptionNameString('Off'), OptionNameString('On') },
-		Values = { false, true }
-	},
-	ShowTrueBPMs = {
 		Default = false,
 		Choices = { OptionNameString('Off'), OptionNameString('On') },
 		Values = { false, true }

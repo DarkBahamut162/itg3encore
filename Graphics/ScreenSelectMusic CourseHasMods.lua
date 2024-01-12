@@ -31,7 +31,6 @@ return Def.ActorFrame{
 					--[[ Automate my video timestamping this way... Work smarter not harder... ]]--
 					--lua.ReportScriptError( curSelection:GetGroupName().." | "..curSelection:GetDisplayFullTitle().." / "..curSelection:GetDisplayArtist() )
 					if curStep then
-
 						local Cache = isOutFox() and split("\n",LoadModule("Config.LoadEverything.lua")(getStepCacheFile(curStep))) or {}
 						local CacheLoaded = {}
 
@@ -40,30 +39,6 @@ return Def.ActorFrame{
 							CacheLoaded[Cache[i][1]] = Cache[i][2]
 						end
 
-						if ThemePrefs.Get("ShowTrueBPMs") then -- Get true BPM range
-							local bpms = {}
-							if isOutFox() then
-								local truebpms = curStep:GetTimingData():GetActualBPM()
-								bpms[1]=math.round(truebpms[1])
-								bpms[2]=math.round(truebpms[2])
-								bpms[3]=math.round(tonumber(CacheLoaded["TrueMaxBPM"]))
-							else
-								bpms = getTrueBPMs(curSelection,curStep)
-							end
-							if bpms[1] == bpms[2] and bpms[2] == bpms[3] then
-								output = addToOutput(output,"BPM: "..bpms[1],"\n")
-							elseif bpms[3] == bpms[1] or bpms[3] == 0 then
-								if bpms[1] ~= bpms[2] then
-									output = addToOutput(output,"BPM: "..bpms[1] .. " (" .. bpms[2] .. ")","\n")
-								else
-									output = addToOutput(output,"BPM: "..bpms[1],"\n")
-								end
-							elseif bpms[3] < bpms[2] then
-								output = addToOutput(output,"BPM: "..bpms[1] .. " - " .. bpms[3] .. " (" .. bpms[2] .. ")","\n")
-							else
-								output = addToOutput(output,"BPM: "..bpms[1] .. " - " .. bpms[2],"\n")
-							end
-						end
 						if ThemePrefs.Get("ShowCalcDiff") then --Calculate Difficulty
 							local totalSeconds = isOutFox() and tonumber(CacheLoaded["TrueSeconds"]) or (curSelection:GetLastSecond() - curSelection:GetFirstSecond())
 							local stepCounter = isOutFox() and split("_",CacheLoaded["StepCounter"])
