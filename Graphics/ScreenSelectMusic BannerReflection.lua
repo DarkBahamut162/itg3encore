@@ -1,13 +1,15 @@
-local course = GAMESTATE:IsCourseMode()
+local courseMode = GAMESTATE:IsCourseMode()
 
 return Def.FadingBanner{
 	InitCommand=function(self) self:playcommand("Set"):ztest(true):vertalign(bottom):zoomy(-1) end,
-	BeginCommand=function(self) self:visible(not GAMESTATE:IsCourseMode()) end,
 	SetCommand=function(self)
 		local song = GAMESTATE:GetCurrentSong()
+		local course = GAMESTATE:GetCurrentCourse()
 		local sortOrder = GAMESTATE:GetSortOrder()
 		if song then
 			self:LoadFromSong(song)
+		elseif course then
+			self:LoadFromCourse(course)
 		elseif sortOrder == 'SortOrder_ModeMenu' then
 			self:LoadFromSortOrder('SortOrder_ModeMenu')
 		else
@@ -39,6 +41,7 @@ return Def.FadingBanner{
 		end
 		self:scaletoclipped(320*WideScreenDiff(),120*WideScreenDiff())
 	end,
-	CurrentSongChangedMessageCommand=function(self) if not course then self:playcommand("Set") end end,
+	CurrentSongChangedMessageCommand=function(self) if not courseMode then self:playcommand("Set") end end,
+	CurrentCourseChangedMessageCommand=function(self) if courseMode then self:playcommand("Set") end end,
 	WheelMovingMessageCommand=function(self) self:queuecommand("Set") end
 }
