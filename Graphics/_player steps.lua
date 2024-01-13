@@ -4,7 +4,7 @@ local courseMode = GAMESTATE:IsCourseMode()
 
 return Def.ActorFrame{
 	LoadFont("_r bold 30px")..{
-		InitCommand=function(self) self:y(72):diffusealpha(0):zoomx(1/2):zoomy(1/3):shadowlength(2):maxwidth(SCREEN_CENTER_X) end,
+		InitCommand=function(self) self:y(72):diffusealpha(0):zoom(0.4):shadowlength(2):maxwidth(SCREEN_CENTER_X) end,
 		OnCommand=function(self) self:sleep(0.85):linear(0.2):diffusealpha(1) end,
 		OffCommand=function(self) self:linear(0.4):diffusealpha(0) end,
 		SetCommand=function(self)
