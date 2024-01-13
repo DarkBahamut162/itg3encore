@@ -1,3 +1,5 @@
+local course = GAMESTATE:IsCourseMode()
+
 return Def.ActorFrame{
 	LoadFont("_v 26px bold white")..{
 		Text="ARTIST:",
@@ -5,10 +7,8 @@ return Def.ActorFrame{
 	},
 	LoadFont("_r bold shadow 30px")..{
 		InitCommand=function(self) self:zoom(0.66*WideScreenDiff()):maxwidth(340):halign(0) end,
-		CurrentSongChangedMessageCommand=function(self) self:playcommand("Set") end,
-		CurrentCourseChangedMessageCommand=function(self) self:playcommand("Set") end,
-		CurrentTrailP1ChangedMessageCommand=function(self) self:playcommand("Set") end,
-		CurrentTrailP2ChangedMessageCommand=function(self) self:playcommand("Set") end,
+		CurrentSongChangedMessageCommand=function(self) if not course then self:playcommand("Set") end end,
+		CurrentCourseChangedMessageCommand=function(self) if course then self:playcommand("Set") end end,
 		SetCommand=function(self)
 			local song = GAMESTATE:GetCurrentSong()
 			local course = GAMESTATE:GetCurrentCourse()

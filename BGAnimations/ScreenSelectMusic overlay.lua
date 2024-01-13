@@ -4,13 +4,14 @@ local Online = IsNetSMOnline() and Def.ActorFrame{
 	StandardDecorationFromFile("SongTime"..pname(GAMESTATE:GetMasterPlayerNumber()),"SongTime"..pname(GAMESTATE:GetMasterPlayerNumber())),
 	StandardDecorationFromFileOptional("UserList","UserList"),
 } or Def.ActorFrame{}
+local course = GAMESTATE:IsCourseMode()
 
 return Def.ActorFrame{
 	OnCommand=function(self)
 		if isOutFox() then
 			GAMESTATE:UpdateDiscordProfile(GAMESTATE:GetPlayerDisplayName(GAMESTATE:GetMasterPlayerNumber()))
 			local text = ""
-			if GAMESTATE:IsCourseMode() then
+			if course then
 				text = "Selecting Course"
 			else
 				if IsNetSMOnline() then
@@ -55,10 +56,10 @@ return Def.ActorFrame{
 		},
 		LoadFont("_v 26px bold white")..{
 			InitCommand=function(self) self:maxwidth(350):horizalign(left):x(20*WideScreenDiff()):y(2*WideScreenDiff()):shadowlength(0.5):zoom(0.5*WideScreenDiff()) end,
-			CurrentSongChangedMessageCommand=function(self) self:playcommand("Update") end,
-			CurrentCourseChangedMessageCommand=function(self) self:playcommand("Update") end,
-			CurrentStepsP1ChangedMessageCommand=function(self) self:playcommand("Update") end,
-			CurrentTrailP1ChangedMessageCommand=function(self) self:playcommand("Update") end,
+			CurrentSongChangedMessageCommand=function(self) if not course then self:playcommand("Update") end end,
+			CurrentCourseChangedMessageCommand=function(self) if course then self:playcommand("Update") end end,
+			CurrentStepsP1ChangedMessageCommand=function(self) if not course then self:playcommand("Update") end end,
+			CurrentTrailP1ChangedMessageCommand=function(self) if course then self:playcommand("Update") end end,
 			UpdateCommand=function(self)
 				local song = GAMESTATE:GetCurrentSong()
 				local course = GAMESTATE:GetCurrentCourse()
@@ -109,10 +110,10 @@ return Def.ActorFrame{
 		},
 		LoadFont("_v 26px bold white")..{
 			InitCommand=function(self) self:maxwidth(350):horizalign(right):x(-20*WideScreenDiff()):y(2*WideScreenDiff()):shadowlength(0.5):zoom(0.5*WideScreenDiff()) end,
-			CurrentSongChangedMessageCommand=function(self) self:playcommand("Update") end,
-			CurrentCourseChangedMessageCommand=function(self) self:playcommand("Update") end,
-			CurrentStepsP2ChangedMessageCommand=function(self) self:playcommand("Update") end,
-			CurrentTrailP2ChangedMessageCommand=function(self) self:playcommand("Update") end,
+			CurrentSongChangedMessageCommand=function(self) if not course then self:playcommand("Update") end end,
+			CurrentCourseChangedMessageCommand=function(self) if course then self:playcommand("Update") end end,
+			CurrentStepsP2ChangedMessageCommand=function(self) if not course then self:playcommand("Update") end end,
+			CurrentTrailP2ChangedMessageCommand=function(self) if course then self:playcommand("Update") end end,
 			UpdateCommand=function(self)
 				local song = GAMESTATE:GetCurrentSong()
 				local course = GAMESTATE:GetCurrentCourse()

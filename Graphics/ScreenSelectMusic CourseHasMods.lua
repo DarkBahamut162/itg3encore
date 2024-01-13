@@ -1,9 +1,14 @@
+local courseMode = GAMESTATE:IsCourseMode()
+
 return Def.ActorFrame{
 	LoadFont("_r bold stroke")..{
 		InitCommand=function(self) self:halign(0):diffuseramp():effectperiod(1):effectoffset(0.2):effectclock("beat"):effectcolor1(color("#693A3A")):effectcolor2(color("#FF0000")) end,
-		CurrentSongChangedMessageCommand=function(self) self:playcommand("Blink") end,
-		CurrentTrailP1ChangedMessageCommand=function(self) self:playcommand("Set") end,
-		CurrentTrailP2ChangedMessageCommand=function(self) self:playcommand("Set") end,
+		CurrentSongChangedMessageCommand=function(self) if not courseMode then self:playcommand("Blink") end end,
+		CurrentCourseChangedMessageCommand=function(self) if courseMode then self:playcommand("Blink") end end,
+		CurrentStepsP1ChangedMessageCommand=function(self) if not courseMode then self:playcommand("Set") end end,
+		CurrentStepsP2ChangedMessageCommand=function(self) if not courseMode then self:playcommand("Set") end end,
+		CurrentTrailP1ChangedMessageCommand=function(self) if courseMode then self:playcommand("Set") end end,
+		CurrentTrailP2ChangedMessageCommand=function(self) if courseMode then self:playcommand("Set") end end,
 		SetCommand=function(self)
 			local curSelection = nil
 			local output = ""

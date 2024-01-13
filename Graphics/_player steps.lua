@@ -1,5 +1,6 @@
 local player = ...
 assert(player,"[Graphics/_player scores] player required")
+local courseMode = GAMESTATE:IsCourseMode()
 
 return Def.ActorFrame{
 	LoadFont("_r bold 30px")..{
@@ -38,8 +39,9 @@ return Def.ActorFrame{
 				self:settext(output)
 			end
 		end,
-		CurrentSongChangedMessageCommand=function(self) self:playcommand("Set") end,
-		["CurrentSteps".. pname(player) .."ChangedMessageCommand"]=function(self) self:playcommand("Set") end,
-		["CurrentTrail".. pname(player) .."ChangedMessageCommand"]=function(self) self:playcommand("Set") end
+		CurrentSongChangedMessageCommand=function(self) if not courseMode then self:playcommand("Set") end end,
+		CurrentCourseChangedMessageCommand=function(self) if courseMode then self:playcommand("Set") end end,
+		["CurrentSteps".. pname(player) .."ChangedMessageCommand"]=function(self) if not courseMode then self:playcommand("Set") end end,
+		["CurrentTrail".. pname(player) .."ChangedMessageCommand"]=function(self) if courseMode then self:playcommand("Set") end end
 	}
 }

@@ -1,4 +1,5 @@
 local BPMtype = ThemePrefs.Get("ShowBPMDisplayType")
+local course = GAMESTATE:IsCourseMode()
 
 local function getBPMRange(self,step)
 	local bpms = BPMtype == 0 and step:GetDisplayBpms() or step:GetTimingData():GetActualBPM()
@@ -92,8 +93,11 @@ return Def.ActorFrame{
 				end
 			end
 		end,
-		CurrentTrailP1ChangedMessageCommand=function(self) self:playcommand("Set") end,
-		CurrentTrailP2ChangedMessageCommand=function(self) self:playcommand("Set") end,
-		CurrentSongChangedMessageCommand=function(self) self:playcommand("Set") end
+		CurrentSongChangedMessageCommand=function(self) if not course then self:playcommand("Set") end end,
+		CurrentCourseChangedMessageCommand=function(self) if course then self:playcommand("Set") end end,
+		CurrentStepsP1ChangedMessageCommand=function(self) if not course then self:playcommand("Set") end end,
+		CurrentStepsP2ChangedMessageCommand=function(self) if not course then self:playcommand("Set") end end,
+		CurrentTrailP1ChangedMessageCommand=function(self) if course then self:playcommand("Set") end end,
+		CurrentTrailP2ChangedMessageCommand=function(self) if course then self:playcommand("Set") end end
 	}
 }

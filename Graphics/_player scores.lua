@@ -1,5 +1,6 @@
 local player = ...
 assert(player,"[Graphics/_player scores] player required")
+local courseMode = GAMESTATE:IsCourseMode()
 
 return Def.ActorFrame{
 	InitCommand=function(self) if IsUsingWideScreen() and hasAvatar(player) then self:x(player == PLAYER_1 and 48 or -48) end end,
@@ -33,9 +34,10 @@ return Def.ActorFrame{
 			name:settext(nameText)
 			score:settext(scoreText)
 		end,
-		CurrentSongChangedMessageCommand=function(self) self:playcommand("Set") end,
-		["CurrentSteps".. pname(player) .."ChangedMessageCommand"]=function(self) self:playcommand("Set") end,
-		["CurrentTrail".. pname(player) .."ChangedMessageCommand"]=function(self) self:playcommand("Set") end,
+		CurrentSongChangedMessageCommand=function(self) if not courseMode then self:playcommand("Set") end end,
+		CurrentCourseChangedMessageCommand=function(self) if courseMode then self:playcommand("Set") end end,
+		["CurrentSteps".. pname(player) .."ChangedMessageCommand"]=function(self) if not courseMode then self:playcommand("Set") end end,
+		["CurrentTrail".. pname(player) .."ChangedMessageCommand"]=function(self) if courseMode then self:playcommand("Set") end end,
 		LoadFont("_z 36px shadowx")..{
 			Name="ScoreName",
 			Text="MACH",
@@ -76,9 +78,10 @@ return Def.ActorFrame{
 			name:settext(nameText)
 			score:settext(scoreText)
 		end,
-		CurrentSongChangedMessageCommand=function(self) self:playcommand("Set") end,
-		["CurrentSteps".. pname(player) .."ChangedMessageCommand"]=function(self) self:playcommand("Set") end,
-		["CurrentTrail".. pname(player) .."ChangedMessageCommand"]=function(self) self:playcommand("Set") end,
+		CurrentSongChangedMessageCommand=function(self) if not courseMode then self:playcommand("Set") end end,
+		CurrentCourseChangedMessageCommand=function(self) if courseMode then self:playcommand("Set") end end,
+		["CurrentSteps".. pname(player) .."ChangedMessageCommand"]=function(self) if not courseMode then self:playcommand("Set") end end,
+		["CurrentTrail".. pname(player) .."ChangedMessageCommand"]=function(self) if courseMode then self:playcommand("Set") end end,
 		LoadFont("_z 36px shadowx")..{
 			Name="ScoreName",
 			Text="CARD",

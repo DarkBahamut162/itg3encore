@@ -1,3 +1,5 @@
+local course = GAMESTATE:IsCourseMode()
+
 return Def.FadingBanner{
 	InitCommand=function(self) self:playcommand("Set"):ztest(true):vertalign(bottom):zoomy(-1) end,
 	BeginCommand=function(self) self:visible(not GAMESTATE:IsCourseMode()) end,
@@ -37,7 +39,6 @@ return Def.FadingBanner{
 		end
 		self:scaletoclipped(320*WideScreenDiff(),120*WideScreenDiff())
 	end,
-	CurrentSongChangedMessageCommand=function(self) self:playcommand("Set") end,
-	CurrentCourseChangedMessageCommand=function(self) self:playcommand("Set") end,
+	CurrentSongChangedMessageCommand=function(self) if not course then self:playcommand("Set") end end,
 	WheelMovingMessageCommand=function(self) self:queuecommand("Set") end
 }

@@ -28,6 +28,7 @@ local bottomedge = {
 }
 
 local steps = {0,250,375,600,625,750,875,1000,1200}
+local courseMode = GAMESTATE:IsCourseMode()
 
 for key,value in pairs(topedge) do
     topedge[key][1] = string.format("%x", topedge[key][1] * 255)
@@ -99,9 +100,10 @@ return Def.ActorFrame{
 			self:settext(val)
 			self:maxwidth(150)
 		end,
-		CurrentSongChangedMessageCommand=function(self) self:playcommand("Set") end,
-		["CurrentSteps".. pname(player) .."ChangedMessageCommand"]=function(self) self:playcommand("Set") end,
-		["CurrentTrail".. pname(player) .."ChangedMessageCommand"]=function(self) self:playcommand("Set") end
+		CurrentSongChangedMessageCommand=function(self) if not courseMode then self:playcommand("Set") end end,
+		CurrentCourseChangedMessageCommand=function(self) if courseMode then self:playcommand("Set") end end,
+		["CurrentSteps".. pname(player) .."ChangedMessageCommand"]=function(self) if not courseMode then self:playcommand("Set") end end,
+		["CurrentTrail".. pname(player) .."ChangedMessageCommand"]=function(self) if courseMode then self:playcommand("Set") end end
 	},
 	LoadFont("_v 26px bold white")..{
 		Name="Label",

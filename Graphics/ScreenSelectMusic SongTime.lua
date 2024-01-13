@@ -1,5 +1,6 @@
 local c
 local stepsType = StepsTypeSingle()[GetUserPrefN("StylePosition")]
+local course = GAMESTATE:IsCourseMode()
 
 return Def.ActorFrame{
 	BeginCommand = function(self) c = self:GetChildren() end,
@@ -42,8 +43,8 @@ return Def.ActorFrame{
 			if length[1] >= 6000 then c.Time:x(-131) else c.Time:x(-103) end
 			self:settext( SecondsToMMSSMsMs(length[1]) )
 		end,
-		CurrentSongChangedMessageCommand=function(self) self:queuecommand("Set") end,
-		CurrentCourseChangedMessageCommand=function(self) self:queuecommand("Set") end
+		CurrentSongChangedMessageCommand=function(self) if not course then self:queuecommand("Set") end end,
+		CurrentCourseChangedMessageCommand=function(self) if course then self:queuecommand("Set") end end
 	},
 	LoadFont("_r bold bevel numbers")..{
 		Condition=not GAMESTATE:IsCourseMode(),
