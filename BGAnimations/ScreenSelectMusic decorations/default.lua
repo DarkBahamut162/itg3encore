@@ -169,7 +169,7 @@ t[#t+1] = Def.ActorFrame{
 	StandardDecorationFromFile("ArtistDisplay","ArtistDisplay"),
 	StandardDecorationFromFile("BPMDisplay","BPMDisplay"),
 	StandardDecorationFromFile("CourseHasMods","CourseHasMods"),
-	StandardDecorationFromFile("RoundsDisplay","RoundsDisplay"),
+	StandardDecorationFromFile("InfoDisplay","InfoDisplay"),
 	StandardDecorationFromFileOptional("SongTime","SongTime"),
 	StandardDecorationFromFileOptional("StepsDisplayList","StepsDisplayList"),
 	StandardDecorationFromFileOptional("CourseContentsList","CourseContentsList")

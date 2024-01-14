@@ -4,32 +4,12 @@ return Def.ActorFrame{
 	LoadFont("_r bold stroke")..{
 		InitCommand=function(self) self:halign(0):diffuseramp():effectperiod(1):effectoffset(0.2):effectclock("beat"):effectcolor1(color("#693A3A")):effectcolor2(color("#FF0000")) end,
 		CurrentSongChangedMessageCommand=function(self) if not courseMode then self:playcommand("Blink") end end,
-		CurrentCourseChangedMessageCommand=function(self) if courseMode then self:playcommand("Blink") end end,
 		CurrentStepsP1ChangedMessageCommand=function(self) if not courseMode then self:playcommand("Set") end end,
 		CurrentStepsP2ChangedMessageCommand=function(self) if not courseMode then self:playcommand("Set") end end,
-		CurrentTrailP1ChangedMessageCommand=function(self) if courseMode then self:playcommand("Set") end end,
-		CurrentTrailP2ChangedMessageCommand=function(self) if courseMode then self:playcommand("Set") end end,
 		SetCommand=function(self)
 			local curSelection = nil
 			local output = ""
-			if GAMESTATE:IsCourseMode() then
-				curSelection = GAMESTATE:GetCurrentCourse()
-				if curSelection then
-					if curSelection:HasMods() or curSelection:HasTimedMods() then
-						output = addToOutput(output,"HAS MODS","\n")
-					end
-					local trail = GAMESTATE:GetCurrentTrail(GAMESTATE:GetMasterPlayerNumber())
-					if trail then
-						local entries = trail:GetTrailEntries()
-						for i=1,#entries do
-							if entries[i]:GetNormalModifiers() ~= "" then
-								output = addToOutput(output,"HAS SONG MODS","\n")
-								break
-							end
-						end
-					end
-				end
-			else
+			if not GAMESTATE:IsCourseMode() then
 				curSelection = GAMESTATE:GetCurrentSong()
 				curStep = GAMESTATE:GetCurrentSteps(GAMESTATE:GetMasterPlayerNumber())
 				if curSelection then
