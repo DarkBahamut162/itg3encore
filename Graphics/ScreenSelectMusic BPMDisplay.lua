@@ -1,14 +1,20 @@
 local BPMtype = ThemePrefs.Get("ShowBPMDisplayType")
 local course = GAMESTATE:IsCourseMode()
 
-local function getBPMRange(self,step)
+local function getBPMs(step)
 	local bpms = BPMtype == 0 and step:GetDisplayBpms() or step:GetTimingData():GetActualBPM()
 	bpms[1]=math.round(bpms[1])
 	bpms[2]=math.round(bpms[2])
+
+	return bpms
+end
+
+local function getBPMRange(self,step)
+	local bpms = getBPMs(step)
 	if BPMtype == 0 and (step:IsDisplayBpmRandom() or step:IsDisplayBpmSecret()) then
 		self:diffuse(color("#ffffff"))
 		return "..."
-	elseif step:IsDisplayBpmConstant() then
+	elseif bpms[1] == bpms[2] then
 		self:diffuse(color("#ffffff"))
 		return bpms[1]
 	else
@@ -17,7 +23,7 @@ local function getBPMRange(self,step)
 	end
 end
 
-local function getTrueBPMRange(self,song,step)
+local function getTrueBPMs(song,step)
 	local bpms = {}
 	if isOutFox() then
 		local truebpms = step:GetTimingData():GetActualBPM()
@@ -25,10 +31,16 @@ local function getTrueBPMRange(self,song,step)
 		bpms[2]=math.round(truebpms[2])
 		bpms[3]=math.round(tonumber(LoadFromCache(song,step,"TrueMaxBPM")))
 	else
-		bpms = getTrueBPMs(song,step)
+		bpms = getTrueBPMsCalculated(song,step)
 		bpms[1]=math.round(bpms[1])
 		bpms[2]=math.round(bpms[2])
 	end
+
+	return bpms
+end
+
+local function getTrueBPMRange(self,song,step)
+	local bpms = getTrueBPMs(song,step)
 
 	if bpms[1] == bpms[2] and bpms[2] == bpms[3] then
 		self:diffuse(color("#ffffff"))
@@ -63,32 +75,25 @@ return Def.ActorFrame{
 			if GAMESTATE:IsCourseMode() then self:SetFromGameState() else
 				local output = ""
 				self:settext(output)
-				if GAMESTATE:GetNumPlayersEnabled() == 1 then
-					local song = GAMESTATE:GetCurrentSong()
-					if song then
-						local step = GAMESTATE:GetCurrentSteps(GAMESTATE:GetMasterPlayerNumber())
-						if step then output = BPMtype == 2 and getTrueBPMRange(self,song,step) or getBPMRange(self,step) end
+				local song = GAMESTATE:GetCurrentSong()
+				if song then
+					local temp = {}
+					for pn in ivalues(GAMESTATE:GetEnabledPlayers()) do
+						local step = GAMESTATE:GetCurrentSteps(pn)
+						if step then temp[pn] = BPMtype == 2 and getTrueBPMRange(self,song,step) or getBPMRange(self,step) end
 					end
-					self:settext(output)
-				else
-					local song = GAMESTATE:GetCurrentSong()
-					if song then
-						local temp = {}
-						for pn in ivalues(GAMESTATE:GetEnabledPlayers()) do
-							local step = GAMESTATE:GetCurrentSteps(pn)
-							if step then temp[pn] = BPMtype == 2 and getTrueBPMRange(self,song,step) or getBPMRange(self,step) end
+					if temp[PLAYER_1] and temp[PLAYER_2] then
+						if temp[PLAYER_1] == temp[PLAYER_2] then
+							self:settext(temp[PLAYER_1])
+						else
+							output = temp[PLAYER_1].."\n"..temp[PLAYER_2]
+							self:settext(output):diffuse(PlayerColor(PLAYER_2)):AddAttribute(0, {
+								Length = string.len(temp[PLAYER_1]),
+								Diffuse = PlayerColor(PLAYER_1),
+							})
 						end
-						if temp[PLAYER_1] and temp[PLAYER_2] then
-							if temp[PLAYER_1] == temp[PLAYER_2] then
-								self:settext(temp[PLAYER_1])
-							else
-								output = temp[PLAYER_1].."\n"..temp[PLAYER_2]
-								self:settext(output):diffuse(PlayerColor(PLAYER_2)):AddAttribute(0, {
-									Length = string.len(temp[PLAYER_1]),
-									Diffuse = PlayerColor(PLAYER_1),
-								})
-							end
-						end
+					elseif temp[PLAYER_1] or temp[PLAYER_2] then
+						self:settext(temp[GAMESTATE:GetMasterPlayerNumber()])
 					end
 				end
 			end

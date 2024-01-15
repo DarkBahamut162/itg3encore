@@ -7,7 +7,8 @@ local pXmod = ""
 
 local step = GAMESTATE:GetCurrentSteps(player)
 local trail = GAMESTATE:GetCurrentTrail(player)
-local timingdata, bpm1, bpm2
+local timingdata
+local bpm = {}
 
 if GAMESTATE:IsCourseMode() then
 	if trail then
@@ -16,19 +17,19 @@ if GAMESTATE:IsCourseMode() then
 			step = entries[i]:GetSteps()
 			timingdata = step:GetTimingData()
 			if i == 1 then
-				bpm1 = timingdata:GetActualBPM()[1]
-				bpm2 = timingdata:GetActualBPM()[2]
+				bpm[1] = timingdata:GetActualBPM()[1]
+				bpm[2] = timingdata:GetActualBPM()[2]
 			else
-				if timingdata:GetActualBPM()[1] < bpm1 then bpm1 = timingdata:GetActualBPM()[1] end
-				if timingdata:GetActualBPM()[2] > bpm2 then bpm2 = timingdata:GetActualBPM()[2] end
+				if timingdata:GetActualBPM()[1] < bpm[1] then bpm[1] = timingdata:GetActualBPM()[1] end
+				if timingdata:GetActualBPM()[2] > bpm[2] then bpm[2] = timingdata:GetActualBPM()[2] end
 			end
 		end
 	end
 else
 	if step then
 		timingdata = step:GetTimingData()
-		bpm1 = timingdata:GetActualBPM()[1]
-		bpm2 = timingdata:GetActualBPM()[2]
+		bpm[1] = timingdata:GetActualBPM()[1]
+		bpm[2] = timingdata:GetActualBPM()[2]
 	end
 end
 
@@ -43,23 +44,29 @@ local function checkInitSpeedMods()
 end
 
 local function modifiedBPM(speed,mode)
-	local modifiedBPM1 = bpm1
-	local modifiedBPM2 = bpm2
+	local modifiedBPM1 = bpm[1]
+	local modifiedBPM2 = bpm[2]
 
 	if mode == "x" then
-		modifiedBPM1 = bpm1 * speed / 100
-		modifiedBPM2 = bpm2 * speed / 100
+		modifiedBPM1 = bpm[1] * speed / 100
+		modifiedBPM2 = bpm[2] * speed / 100
 	elseif mode == "C" then
 		modifiedBPM1 = speed
 		modifiedBPM2 = speed
 	elseif mode == "m" then
-		modifiedBPM1 = bpm1 * speed / bpm2
-		modifiedBPM2 = speed
+        local max = tonumber(THEME:GetMetric('Player', 'MModHighCap'))
+        if bpm[2] > max then
+            speed = speed / max
+        else
+            speed = (bpm[2] ~= 0) and speed / bpm[2] or 0
+        end
+		modifiedBPM1 = bpm[1] * speed
+		modifiedBPM2 = bpm[2] * speed
 	elseif mode == "a" or mode == "ca" or mode == "av" then
-		local baseAvg = (bpm1 + bpm2) * 0.5
+		local baseAvg = (bpm[1] + bpm[2]) * 0.5
 		local mult = speed / baseAvg
-		modifiedBPM1 = bpm1 * mult
-		modifiedBPM2 = bpm2 * mult
+		modifiedBPM1 = bpm[1] * mult
+		modifiedBPM2 = bpm[2] * mult
 	end
 
 	modifiedBPM1 = math.round(modifiedBPM1,3)

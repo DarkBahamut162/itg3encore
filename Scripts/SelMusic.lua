@@ -502,7 +502,7 @@ function GetConvertDifficulty(Song,Step,songLength)
 	return LV100(tapspoint)
 end
 
-function getTrueBPMs(song,step)
+function getTrueBPMsCalculated(song,step)
 	local timingdata = step:GetTimingData()
 	local bpms = step:GetDisplayBpms()
 	local truebpms = timingdata:GetActualBPM()
