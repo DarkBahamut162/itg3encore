@@ -3,7 +3,7 @@ local commands = {
     ActorFrame = nil,
     AftContainer = nil,
     Font = "_r bold 30px",
-    Width = 579,
+    Width = 580,
     Height = 40,
     SpeedFactor = 200,
     SetText = function(this,newStr)
@@ -17,17 +17,18 @@ local commands = {
             UpdateTextCommand=function(self,params)
                 if params.Text then
 					local ctn = this.AftContainer:GetChild("TextContainer"):GetChildren()
-                    ctn.Main:settext(params.Text):x(2)
+                    ctn.Main:settext(params.Text)
                     ctn.Second:settext(params.Text):visible(true)
-					this.SpeedFactor = string.len( params.Text ) / 2.75
-					xPosNow = ctn.Main:GetWidth()
-					ctn.Second:x(ctn.Main:GetWidth())
+					this.SpeedFactor = (string.len( params.Text )+64) / 2.75
+                    local widthCheck = ctn.Main:GetWidth() > this.Width
+					xPosNow = widthCheck and (this.Width)/4 or (this.Width+ctn.Main:GetWidth())/4-32
+					ctn.Second:x(ctn.Main:GetWidth()+this.Width)
                 end
             end
         }
 
         local function ScrollerUpdate(self,delta)
-            local widthItem = self:GetChild("TextContainer"):GetChild("Main"):GetWidth()
+            local widthItem = self:GetChild("TextContainer"):GetChild("Main"):GetWidth()+this.Width
             if (xPosNow) >= (widthItem) then xPosNow = 0 end
             xPosNow = xPosNow+(delta*this.SpeedFactor)
             self:GetChild("TextContainer"):x(this.Width-xPosNow)
@@ -42,7 +43,7 @@ local commands = {
             Def.ActorFrame{
                 Name="TextContainer",
                 InitCommand=function(self)
-                    self:GetChild("Main"):x( 2 )
+                    self:GetChild("Main")
                     self:RunCommandsRecursively(
                         function(self)
                             if self.settext then

@@ -91,7 +91,7 @@ return Def.ActorFrame{
 				local text = ""
 				local song = GAMESTATE:GetCurrentSong()
 				if song then text = song:GetDisplayFullTitle() end
-				if isOutFox() then TitleSongFade:SetText( text.."                                                                " ) end
+				if isOutFox() then TitleSongFade:SetText( text ) end
 				self:settext(text)
 			end
 		}
