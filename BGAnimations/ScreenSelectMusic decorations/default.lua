@@ -1,5 +1,5 @@
 local t = LoadFallbackB()
-local course = GAMESTATE:IsCourseMode()
+local courseMode = GAMESTATE:IsCourseMode()
 
 t[#t+1] = LoadFont("_v 26px bold shadow") .. {
 	InitCommand=function(self) self:x(SCREEN_CENTER_X+140*WideScreenDiff()):y(SCREEN_CENTER_Y-160*WideScreenDiff()):zoom(0.5*WideScreenDiff()) end,
@@ -59,8 +59,8 @@ if not isOutFoxV() then
 			end
 			self:scaletoclipped(320*WideScreenDiff(),120*WideScreenDiff())
 		end,
-		CurrentSongChangedMessageCommand=function(self) if not course then self:playcommand("Set") end end,
-		CurrentCourseChangedMessageCommand=function(self) if course then self:playcommand("Set") end end,
+		CurrentSongChangedMessageCommand=function(self) if not courseMode then self:playcommand("Set") end end,
+		CurrentCourseChangedMessageCommand=function(self) if courseMode then self:playcommand("Set") end end,
 		WheelMovingMessageCommand=function(self) self:queuecommand("Set") end
 	}
 end
@@ -70,9 +70,9 @@ local function StepsDisplay(pn)
 
 	return Def.StepsDisplay {
 		InitCommand=function(self) self:player(pn):Load("StepsDisplay",GAMESTATE:GetPlayerState(pn)) end,
-		CurrentSongChangedMessageCommand=function(self) if not course then self:visible(GAMESTATE:GetCurrentSong() ~= nil) end end,
-		["CurrentSteps".. pname(pn) .."ChangedMessageCommand"]=function(self) if not course then set(self, pn) end end,
-		["CurrentTrail".. pname(pn) .."ChangedMessageCommand"]=function(self) if course then set(self, pn) end end
+		CurrentSongChangedMessageCommand=function(self) if not courseMode then self:visible(GAMESTATE:GetCurrentSong() ~= nil) end end,
+		["CurrentSteps".. pname(pn) .."ChangedMessageCommand"]=function(self) if not courseMode then set(self, pn) end end,
+		["CurrentTrail".. pname(pn) .."ChangedMessageCommand"]=function(self) if courseMode then set(self, pn) end end
 	}
 end
 

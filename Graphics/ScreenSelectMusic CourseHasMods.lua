@@ -11,8 +11,8 @@ return Def.ActorFrame{
 			local output = ""
 			if not GAMESTATE:IsCourseMode() then
 				curSelection = GAMESTATE:GetCurrentSong()
-				curStep = GAMESTATE:GetCurrentSteps(GAMESTATE:GetMasterPlayerNumber())
 				if curSelection then
+					curStep = GAMESTATE:GetCurrentSteps(GAMESTATE:GetMasterPlayerNumber())
 					--[[ Automate my video timestamping this way... Work smarter not harder... ]]--
 					--lua.ReportScriptError( curSelection:GetGroupName().." | "..curSelection:GetDisplayFullTitle().." / "..curSelection:GetDisplayArtist() )
 					if curStep then

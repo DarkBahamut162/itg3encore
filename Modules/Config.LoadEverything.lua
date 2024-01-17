@@ -1,4 +1,4 @@
-return function(file)	
+return function(file)
 	if not FILEMAN:DoesFileExist(file) then return {} end
 
 	local configfile = RageFileUtil.CreateRageFile()
@@ -8,6 +8,6 @@ return function(file)
 
 	configfile:Close()
 	configfile:destroy()
-	
+
 	return configcontent
 end
