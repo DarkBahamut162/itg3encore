@@ -9,27 +9,64 @@ local step = GAMESTATE:GetCurrentSteps(player)
 local trail = GAMESTATE:GetCurrentTrail(player)
 local timingdata
 local bpm = {}
+local currentBPM = {}
+local absoluteBPM = {}
+local BPMtype = ThemePrefs.Get("ShowBPMDisplayType")
+
+function getAllTheBPMs(song,step)
+	local bpms = {0,0,0}
+	if BPMtype == 0 then
+		bpms = step:GetDisplayBpms()
+		bpms[1]=math.round(bpms[1])
+		bpms[2]=math.round(bpms[2])
+		bpms[3] = 0
+	elseif BPMtype == 1 then
+		bpms = step:GetTimingData():GetActualBPM()
+		bpms[1]=math.round(bpms[1])
+		bpms[2]=math.round(bpms[2])
+		bpms[3] = 0
+	elseif BPMtype == 2 then
+		if isOutFox() then
+			bpms = step:GetTimingData():GetActualBPM()
+			bpms[1]=math.round(bpms[1])
+			bpms[2]=math.round(bpms[2])
+			bpms[3]=math.round(tonumber(LoadFromCache(song,step,"TrueMaxBPM")))
+		else
+			bpms = getTrueBPMsCalculated(song,step)
+		end
+	end
+	return bpms
+end
 
 if GAMESTATE:IsCourseMode() then
 	if trail then
 		local entries = trail:GetTrailEntries()
 		for i=1, #entries do
+			local song = entries[i]:GetSong()
 			step = entries[i]:GetSteps()
 			timingdata = step:GetTimingData()
+			bpm = getAllTheBPMs(song,step)
+			absoluteBPM = timingdata:GetActualBPM()
 			if i == 1 then
-				bpm[1] = timingdata:GetActualBPM()[1]
-				bpm[2] = timingdata:GetActualBPM()[2]
+				currentBPM[1] = bpm[1]
+				currentBPM[2] = bpm[2]
+				if bpm[3] then currentBPM[3] = bpm[3] end
 			else
-				if timingdata:GetActualBPM()[1] < bpm[1] then bpm[1] = timingdata:GetActualBPM()[1] end
-				if timingdata:GetActualBPM()[2] > bpm[2] then bpm[2] = timingdata:GetActualBPM()[2] end
+				if bpm[1] < currentBPM[1] then currentBPM[1] = bpm[1] end
+				if bpm[2] > currentBPM[2] then currentBPM[2] = bpm[2] end
+				if bpm[3] > currentBPM[3] then currentBPM[3] = bpm[3] end
 			end
 		end
 	end
 else
 	if step then
+		local song = GAMESTATE:GetCurrentSong()
 		timingdata = step:GetTimingData()
-		bpm[1] = timingdata:GetActualBPM()[1]
-		bpm[2] = timingdata:GetActualBPM()[2]
+		bpm = getAllTheBPMs(song,step)
+		absoluteBPM = step:GetTimingData():GetActualBPM()
+		currentBPM[1] = bpm[1]
+		currentBPM[2] = bpm[2]
+		currentBPM[3] = bpm[3]
 	end
 end
 
@@ -44,38 +81,58 @@ local function checkInitSpeedMods()
 end
 
 local function modifiedBPM(speed,mode)
-	local modifiedBPM1 = bpm[1]
-	local modifiedBPM2 = bpm[2]
+	local modifiedBPM = {0,0,0}
 
 	if mode == "x" then
-		modifiedBPM1 = bpm[1] * speed / 100
-		modifiedBPM2 = bpm[2] * speed / 100
+		modifiedBPM[1] = currentBPM[1] * speed / 100
+		modifiedBPM[2] = currentBPM[2] * speed / 100
+		modifiedBPM[3] = currentBPM[3] * speed / 100
 	elseif mode == "C" then
-		modifiedBPM1 = speed
-		modifiedBPM2 = speed
+		modifiedBPM[1] = speed
+		modifiedBPM[2] = speed
+		modifiedBPM[3] = speed
 	elseif mode == "m" then
         local max = tonumber(THEME:GetMetric('Player', 'MModHighCap'))
-        if bpm[2] > max then
+        if absoluteBPM[2] > max then
             speed = speed / max
         else
-            speed = (bpm[2] ~= 0) and speed / bpm[2] or 0
+            speed = speed / absoluteBPM[2]
         end
-		modifiedBPM1 = bpm[1] * speed
-		modifiedBPM2 = bpm[2] * speed
+		modifiedBPM[1] = currentBPM[1] * speed
+		modifiedBPM[2] = currentBPM[2] * speed
+		modifiedBPM[3] = currentBPM[3] * speed
 	elseif mode == "a" or mode == "ca" or mode == "av" then
-		local baseAvg = (bpm[1] + bpm[2]) * 0.5
+		local baseAvg = (absoluteBPM[1] + absoluteBPM[2]) * 0.5
 		local mult = speed / baseAvg
-		modifiedBPM1 = bpm[1] * mult
-		modifiedBPM2 = bpm[2] * mult
+		modifiedBPM[1] = currentBPM[1] * mult
+		modifiedBPM[2] = currentBPM[2] * mult
+		modifiedBPM[3] = currentBPM[3] * mult
 	end
 
-	modifiedBPM1 = math.round(modifiedBPM1,3)
-	modifiedBPM2 = math.round(modifiedBPM2,3)
+	modifiedBPM[1] = math.round(modifiedBPM[1],3)
+	modifiedBPM[2] = math.round(modifiedBPM[2],3)
+	modifiedBPM[3] = math.round(modifiedBPM[3],3)
 
-	if modifiedBPM2 and modifiedBPM1 ~= modifiedBPM2 then
-		return modifiedBPM1..' - '..modifiedBPM2
+	if modifiedBPM[3] == 0.0 then
+		if modifiedBPM[2] and modifiedBPM[1] ~= modifiedBPM[2] then
+			return modifiedBPM[1]..' - '..modifiedBPM[2]
+		else
+			return modifiedBPM[1]
+		end
 	else
-		return modifiedBPM1
+		if modifiedBPM[1] == modifiedBPM[2] and modifiedBPM[2] == modifiedBPM[3] then
+			return modifiedBPM[1]
+		elseif modifiedBPM[3] == modifiedBPM[1] or modifiedBPM[3] == 0 then
+			if modifiedBPM[1] ~= modifiedBPM[2] then
+				return modifiedBPM[1] .. " (" .. modifiedBPM[2] .. ")"
+			else
+				return modifiedBPM[1]
+			end
+		elseif modifiedBPM[3] < modifiedBPM[2] then
+			return modifiedBPM[1] .. "-" .. modifiedBPM[3] .. " (" .. modifiedBPM[2] .. ")"
+		else
+			return modifiedBPM[1] .. "-" .. modifiedBPM[2]
+		end
 	end
 end
 
