@@ -50,7 +50,7 @@ if GAMESTATE:IsCourseMode() then
 			if i == 1 then
 				currentBPM[1] = bpm[1]
 				currentBPM[2] = bpm[2]
-				if bpm[3] then currentBPM[3] = bpm[3] end
+				currentBPM[3] = bpm[3]
 			else
 				if bpm[1] < currentBPM[1] then currentBPM[1] = bpm[1] end
 				if bpm[2] > currentBPM[2] then currentBPM[2] = bpm[2] end
