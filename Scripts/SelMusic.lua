@@ -573,3 +573,31 @@ function getTrueBPMsCalculated(song,step)
 		return {truebpms[1],truebpms[2],fastestBPM}
 	end
 end
+
+function getAllTheBPMs(song,step,BPMtype)
+	local bpms = {0,0,0}
+	if BPMtype == 0 then
+		bpms = step:GetDisplayBpms()
+		bpms[1]=math.round(bpms[1])
+		bpms[2]=math.round(bpms[2])
+		bpms[3] = 0
+	elseif BPMtype == 1 then
+		bpms = step:GetTimingData():GetActualBPM()
+		bpms[1]=math.round(bpms[1])
+		bpms[2]=math.round(bpms[2])
+		bpms[3] = 0
+	elseif BPMtype == 2 then
+		if isOutFox() then
+			bpms = step:GetTimingData():GetActualBPM()
+			bpms[1]=math.round(bpms[1])
+			bpms[2]=math.round(bpms[2])
+			bpms[3]=math.round(tonumber(LoadFromCache(song,step,"TrueMaxBPM")))
+		else
+			bpms = getTrueBPMsCalculated(song,step)
+			bpms[1]=math.round(bpms[1])
+			bpms[2]=math.round(bpms[2])
+			bpms[3]=math.round(bpms[3])
+		end
+	end
+	return bpms
+end

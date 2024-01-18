@@ -1,64 +1,34 @@
 local BPMtype = ThemePrefs.Get("ShowBPMDisplayType")
 local course = GAMESTATE:IsCourseMode()
 
-local function getBPMs(step)
-	local bpms = BPMtype == 0 and step:GetDisplayBpms() or step:GetTimingData():GetActualBPM()
-	bpms[1]=math.round(bpms[1])
-	bpms[2]=math.round(bpms[2])
-
-	return bpms
-end
-
-local function getBPMRange(self,step)
-	local bpms = getBPMs(step)
-	if BPMtype == 0 and (step:IsDisplayBpmRandom() or step:IsDisplayBpmSecret()) then
-		self:diffuse(color("#ffffff"))
-		return "..."
-	elseif bpms[1] == bpms[2] then
-		self:diffuse(color("#ffffff"))
-		return bpms[1]
-	else
-		self:diffuse(color("#d8f6ff"))
-		return table.concat(bpms,"-")
-	end
-end
-
-local function getTrueBPMs(song,step)
-	local bpms = {}
-	if isOutFox() then
-		local truebpms = step:GetTimingData():GetActualBPM()
-		bpms[1]=math.round(truebpms[1])
-		bpms[2]=math.round(truebpms[2])
-		bpms[3]=math.round(tonumber(LoadFromCache(song,step,"TrueMaxBPM")))
-	else
-		bpms = getTrueBPMsCalculated(song,step)
-		bpms[1]=math.round(bpms[1])
-		bpms[2]=math.round(bpms[2])
-	end
-
-	return bpms
-end
-
-local function getTrueBPMRange(self,song,step)
-	local bpms = getTrueBPMs(song,step)
-
-	if bpms[1] == bpms[2] and bpms[2] == bpms[3] then
-		self:diffuse(color("#ffffff"))
-		return bpms[1]
-	elseif bpms[3] == bpms[1] or bpms[3] == 0 then
-		if bpms[1] ~= bpms[2] then
+local function getTrueBPMRange(self,bpm)
+	if bpm[3] == 0.0 then
+		if bpm[2] and bpm[1] ~= bpm[2] then
 			self:diffuse(color("#d8f6ff"))
-			return bpms[1] .. " (" .. bpms[2] .. ")"
+			return bpm[1]..' - '..bpm[2]
 		else
 			self:diffuse(color("#ffffff"))
-			return bpms[1]
+			return bpm[1]
 		end
-	elseif bpms[3] < bpms[2] then
-		self:diffuse(color("#d8f6ff"))
-		return bpms[1] .. "-" .. bpms[3] .. " (" .. bpms[2] .. ")"
 	else
-		self:diffuse(color("#d8f6ff"))
-		return bpms[1] .. "-" .. bpms[2]
+		if bpm[1] == bpm[2] and bpm[2] == bpm[3] then
+			self:diffuse(color("#ffffff"))
+			return bpm[1]
+		elseif bpm[3] == bpm[1] or bpm[3] == 0 then
+			if bpm[1] ~= bpm[2] then
+				self:diffuse(color("#d8f6ff"))
+				return bpm[1] .. " (" .. bpm[2] .. ")"
+			else
+				self:diffuse(color("#ffffff"))
+				return bpm[1]
+			end
+		elseif bpm[3] < bpm[2] then
+			self:diffuse(color("#d8f6ff"))
+			return bpm[1] .. "-" .. bpm[3] .. " (" .. bpm[2] .. ")"
+		else
+			self:diffuse(color("#d8f6ff"))
+			return bpm[1] .. "-" .. bpm[2]
+		end
 	end
 end
 
@@ -72,30 +42,55 @@ return Def.ActorFrame{
 		Font="BPMDisplay bpm",
 		InitCommand=function(self) self:halign(1):zoom(0.66*WideScreenDiff()):maxwidth(120):maxheight(32):vertspacing(-10) end,
 		SetCommand=function(self)
-			if GAMESTATE:IsCourseMode() then self:SetFromGameState() else
-				local output = ""
-				self:settext(output)
-				local song = GAMESTATE:GetCurrentSong()
-				if song then
-					local temp = {}
+			local temp = {}
+			if GAMESTATE:IsCourseMode() then
+				local course = GAMESTATE:GetCurrentCourse()
+				if course then
 					for pn in ivalues(GAMESTATE:GetEnabledPlayers()) do
-						local step = GAMESTATE:GetCurrentSteps(pn)
-						if step then temp[pn] = BPMtype == 2 and getTrueBPMRange(self,song,step) or getBPMRange(self,step) end
-					end
-					if temp[PLAYER_1] and temp[PLAYER_2] then
-						if temp[PLAYER_1] == temp[PLAYER_2] then
-							self:settext(temp[PLAYER_1])
-						else
-							output = temp[PLAYER_1].."\n"..temp[PLAYER_2]
-							self:settext(output):diffuse(PlayerColor(PLAYER_2)):AddAttribute(0, {
-								Length = string.len(temp[PLAYER_1]),
-								Diffuse = PlayerColor(PLAYER_1),
-							})
+						local trail = GAMESTATE:GetCurrentTrail(pn)
+						if trail then
+							local entries = trail:GetTrailEntries()
+							local bpm,currentBPM = {},{}
+							for i=1, #entries do
+								bpm = getAllTheBPMs(entries[i]:GetSong(),entries[i]:GetSteps(),BPMtype)
+								if i == 1 then
+									currentBPM[1] = bpm[1]
+									currentBPM[2] = bpm[2]
+									currentBPM[3] = bpm[3]
+								else
+									if bpm[1] < currentBPM[1] then currentBPM[1] = bpm[1] end
+									if bpm[2] > currentBPM[2] then currentBPM[2] = bpm[2] end
+									if bpm[3] > currentBPM[3] then currentBPM[3] = bpm[3] end
+								end
+							end
+							temp[pn] = getTrueBPMRange(self,currentBPM) 
 						end
-					elseif temp[PLAYER_1] or temp[PLAYER_2] then
-						self:settext(temp[GAMESTATE:GetMasterPlayerNumber()])
 					end
 				end
+			else
+				local output = ""
+				local song = GAMESTATE:GetCurrentSong()
+				if song then
+					for pn in ivalues(GAMESTATE:GetEnabledPlayers()) do
+						local step = GAMESTATE:GetCurrentSteps(pn)
+						if step then temp[pn] = getTrueBPMRange(self,getAllTheBPMs(song,step,BPMtype)) end
+					end
+				end
+			end
+			if temp[PLAYER_1] and temp[PLAYER_2] then
+				if temp[PLAYER_1] == temp[PLAYER_2] then
+					self:settext(temp[PLAYER_1])
+				else
+					output = temp[PLAYER_1].."\n"..temp[PLAYER_2]
+					self:settext(output):diffuse(PlayerColor(PLAYER_2)):AddAttribute(0, {
+						Length = string.len(temp[PLAYER_1]),
+						Diffuse = PlayerColor(PLAYER_1),
+					})
+				end
+			elseif temp[PLAYER_1] or temp[PLAYER_2] then
+				self:settext(temp[GAMESTATE:GetMasterPlayerNumber()])
+			else
+				self:settext("")
 			end
 		end,
 		CurrentSongChangedMessageCommand=function(self) if not course then self:playcommand("Set") end end,

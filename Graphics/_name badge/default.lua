@@ -13,31 +13,6 @@ local currentBPM = {}
 local absoluteBPM = {}
 local BPMtype = ThemePrefs.Get("ShowBPMDisplayType")
 
-function getAllTheBPMs(song,step)
-	local bpms = {0,0,0}
-	if BPMtype == 0 then
-		bpms = step:GetDisplayBpms()
-		bpms[1]=math.round(bpms[1])
-		bpms[2]=math.round(bpms[2])
-		bpms[3] = 0
-	elseif BPMtype == 1 then
-		bpms = step:GetTimingData():GetActualBPM()
-		bpms[1]=math.round(bpms[1])
-		bpms[2]=math.round(bpms[2])
-		bpms[3] = 0
-	elseif BPMtype == 2 then
-		if isOutFox() then
-			bpms = step:GetTimingData():GetActualBPM()
-			bpms[1]=math.round(bpms[1])
-			bpms[2]=math.round(bpms[2])
-			bpms[3]=math.round(tonumber(LoadFromCache(song,step,"TrueMaxBPM")))
-		else
-			bpms = getTrueBPMsCalculated(song,step)
-		end
-	end
-	return bpms
-end
-
 if GAMESTATE:IsCourseMode() then
 	if trail then
 		local entries = trail:GetTrailEntries()
@@ -45,7 +20,7 @@ if GAMESTATE:IsCourseMode() then
 			local song = entries[i]:GetSong()
 			step = entries[i]:GetSteps()
 			timingdata = step:GetTimingData()
-			bpm = getAllTheBPMs(song,step)
+			bpm = getAllTheBPMs(song,step,BPMtype)
 			absoluteBPM = timingdata:GetActualBPM()
 			if i == 1 then
 				currentBPM[1] = bpm[1]
@@ -62,7 +37,7 @@ else
 	if step then
 		local song = GAMESTATE:GetCurrentSong()
 		timingdata = step:GetTimingData()
-		bpm = getAllTheBPMs(song,step)
+		bpm = getAllTheBPMs(song,step,BPMtype)
 		absoluteBPM = step:GetTimingData():GetActualBPM()
 		currentBPM[1] = bpm[1]
 		currentBPM[2] = bpm[2]
