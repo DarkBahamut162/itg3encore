@@ -16,17 +16,9 @@ return Def.ActorFrame{
 					--[[ Automate my video timestamping this way... Work smarter not harder... ]]--
 					--lua.ReportScriptError( curSelection:GetGroupName().." | "..curSelection:GetDisplayFullTitle().." / "..curSelection:GetDisplayArtist() )
 					if curStep then
-						local Cache = isOutFox() and split("\n",LoadModule("Config.LoadEverything.lua")(getStepCacheFile(curStep))) or {}
-						local CacheLoaded = {}
-
-						for i=1,#Cache do
-							Cache[i] = split("=",Cache[i])
-							CacheLoaded[Cache[i][1]] = Cache[i][2]
-						end
-
 						if ThemePrefs.Get("ShowCalcDiff") then --Calculate Difficulty
-							local totalSeconds = isOutFox() and tonumber(CacheLoaded["TrueSeconds"]) or (curSelection:GetLastSecond() - curSelection:GetFirstSecond())
-							local stepCounter = isOutFox() and split("_",CacheLoaded["StepCounter"])
+							local totalSeconds = isOutFox() and tonumber(LoadFromCache(curSelection,curStep,"TrueSeconds")) or (curSelection:GetLastSecond() - curSelection:GetFirstSecond())
+							local stepCounter = isOutFox() and split("_",LoadFromCache(curSelection,curStep,"StepCounter"))
 							local stepType = split("_",curStep:GetStepsType())
 							local stepSum = isOutFox() and 0 or math.round(curStep:GetRadarValues(GAMESTATE:GetMasterPlayerNumber()):GetValue('RadarCategory_TapsAndHolds') / totalSeconds * getColumnsPerPlayer(stepType[2],stepType[3],true) / 2)
 							if isOutFox() then
@@ -40,10 +32,10 @@ return Def.ActorFrame{
 							output = addToOutput(output,"Calc'd Difficulty (DB9): "..stepSum,"\n")
 							if IsGame("be-mu") then
 								output = addToOutput(output,"Calc'd Difficulty (Y&A): "..math.round(GetConvertDifficulty(curSelection,curStep,totalSeconds)/2),"\n")
-								if isOutFox() then output = addToOutput(output,"Calc'd Difficulty (SPS): "..math.round(tonumber(CacheLoaded["StepsPerSecond"])/2),"\n") end
+								if isOutFox() then output = addToOutput(output,"Calc'd Difficulty (SPS): "..math.round(tonumber(LoadFromCache(curSelection,curStep,"StepsPerSecond"))/2),"\n") end
 							else
 								output = addToOutput(output,"Calc'd Difficulty (Y&A): "..math.round(GetConvertDifficulty(curSelection,curStep,totalSeconds)*getColumnsPerPlayer(stepType[2],stepType[3],true)/4),"\n")
-								if isOutFox() then output = addToOutput(output,"Calc'd Difficulty (SPS): "..math.round(tonumber(CacheLoaded["StepsPerSecond"])*getColumnsPerPlayer(stepType[2],stepType[3],true)/4),"\n") end
+								if isOutFox() then output = addToOutput(output,"Calc'd Difficulty (SPS): "..math.round(tonumber(LoadFromCache(curSelection,curStep,"StepsPerSecond"))*getColumnsPerPlayer(stepType[2],stepType[3],true)/4),"\n") end
 							end
 						end
 					end
