@@ -71,12 +71,10 @@ local function CalcMinusStepSeconds(pn)
 			local trail = StepsOrTrail:GetTrailEntry(i)
 			if trail then
 				fSecs = fSecs + trail:GetSong():GetFirstSecond()
-				fSecs = fSecs + trail:GetSteps():GetTimingData():GetElapsedTimeFromBeat(0)
 			end
 		end
 	else
 		fSecs = fSecs + SongOrCourse:GetFirstSecond()
-		fSecs = fSecs + StepsOrTrail:GetTimingData():GetElapsedTimeFromBeat(0)
 	end
 
     local songoptions = GAMESTATE:GetSongOptionsObject("ModsLevel_Song")
