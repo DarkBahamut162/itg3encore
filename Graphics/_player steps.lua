@@ -10,18 +10,18 @@ return Def.ActorFrame{
 		SetCommand=function(self)
 			if ThemePrefs.Get("ShowStepCounter") and isOutFox() and not GAMESTATE:IsCourseMode() then
 				local SongOrCourse = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentCourse() or GAMESTATE:GetCurrentSong()
-				local StepOrTrails = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentTrail(player) or GAMESTATE:GetCurrentSteps(player)
+				local StepsOrTrail = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentTrail(player) or GAMESTATE:GetCurrentSteps(player)
 				local output = ""
 				local loadStepCounter = ""
 				local loadScratches = ""
 				local loadFoots = ""
 
-				if SongOrCourse and StepOrTrails then
-					loadStepCounter = LoadFromCache(SongOrCourse,StepOrTrails,"StepCounter")
+				if SongOrCourse and StepsOrTrail then
+					loadStepCounter = LoadFromCache(SongOrCourse,StepsOrTrail,"StepCounter")
 					if IsGame("be-mu") then
-						loadScratches = LoadFromCache(SongOrCourse,StepOrTrails,"Scratches")
+						loadScratches = LoadFromCache(SongOrCourse,StepsOrTrail,"Scratches")
 						if GetUserPrefN("StylePosition") == 2 then
-							loadFoots = LoadFromCache(SongOrCourse,StepOrTrails,"Foots")
+							loadFoots = LoadFromCache(SongOrCourse,StepsOrTrail,"Foots")
 						end
 					end
 					if loadStepCounter and loadStepCounter ~= "" then
@@ -34,6 +34,11 @@ return Def.ActorFrame{
 					end
 					if loadScratches and loadScratches ~= "" then output = addToOutput(output,"Scratches: "..loadScratches," | ") end
 					if loadFoots and loadFoots ~= "" then output = addToOutput(output,"Foots: "..loadFoots," | ") end
+					
+					local rv = StepsOrTrail:GetRadarValues(player)
+					local lifts = rv:GetValue('RadarCategory_Lifts')
+
+					if lifts and lifts ~= 0 then output = addToOutput(output,"Lifts: "..lifts," | ") end
 				end
 
 				self:settext(output)
