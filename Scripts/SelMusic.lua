@@ -259,7 +259,7 @@ function getStepCacheFile(Step)
 end
 
 function HasStopAtBeat(beat,timing)
-	for k,v in pairs(timing:GetStops()) do
+	for _,v in pairs(timing:GetStops()) do
 		if tonumber(split('=', v)[1]) == beat then
 			return true
 		end
@@ -268,7 +268,7 @@ function HasStopAtBeat(beat,timing)
 end
 
 function checkStopAtBeat(beat,timing)
-	for k,v in pairs(timing:GetStops()) do
+	for _,v in pairs(timing:GetStops()) do
 		local data = split('=', v)
 		if tonumber(data[1]) == beat then
 			return timing:GetElapsedTimeFromBeat(beat)+tonumber(data[2])
@@ -287,9 +287,9 @@ function cacheStep(Song,Step)
 	local lastBeat = 0
 	local shockArrows = ""
 
-	for k,v in pairs( Song:GetAllSteps() ) do
-		if v == Step then
-			chartint = k
+	for i,current in pairs( Song:GetAllSteps() ) do
+		if current == Step then
+			chartint = i
 			break
 		end
 	end
@@ -308,7 +308,7 @@ function cacheStep(Song,Step)
 	local foots = 0
 	local currentBPM,checkBPM,checking,checkCount,maxBPM,isStop = 0,0,false,0,0,false
 
-	for k,v in pairs( Song:GetNoteData(chartint) ) do
+	for _,v in pairs( Song:GetNoteData(chartint) ) do
 		if currentBeat < v[1] then
 			currentBeat = v[1]
 			if currentNotes ~= 0 then
@@ -376,10 +376,7 @@ function cacheStep(Song,Step)
 			elseif v[3] == "TapNoteType_Mine" then
 				currentMines = currentMines + 1
 				if currentMines == getColumnsPerPlayer(stepType[2],stepType[3]) then
-					if shockArrows ~= "" then
-						shockArrows = shockArrows .. "_"
-					end
-					shockArrows = shockArrows .. Step:GetTimingData():GetElapsedTimeFromBeat(v[1])
+					shockArrows = addToOutput(shockArrows,Step:GetTimingData():GetElapsedTimeFromBeat(v[1]),"_")
 				end
 			end
 		end
