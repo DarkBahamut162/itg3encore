@@ -406,13 +406,13 @@ return Def.ActorFrame{
 							for i=1,#courses do
 								if courses[i]:GetCourseType() == "CourseType_Nonstop" then
 									if courses[i]:IsPlayableIn(StepsTypeSingle) then coursesMarathonSingle = coursesMarathonSingle + 1 end
-									if StepsTypeDouble and songsDouble > 0 then
+									if StepsTypeDouble then
 										if courses[i]:IsPlayableIn(StepsTypeDouble) then coursesMarathonDouble = coursesMarathonDouble + 1 end
 									end
 								end
 								if courses[i]:GetCourseType() == "CourseType_Oni" or courses[i]:GetCourseType() == "CourseType_Survival" then
 									if courses[i]:IsPlayableIn(StepsTypeSingle) then coursesSurvivalSingle = coursesSurvivalSingle + 1 end
-									if StepsTypeDouble and songsDouble > 0 then
+									if StepsTypeDouble then
 										if courses[i]:IsPlayableIn(StepsTypeDouble) then coursesSurvivalDouble = coursesSurvivalDouble + 1 end
 									end
 								end
