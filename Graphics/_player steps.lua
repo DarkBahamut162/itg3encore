@@ -27,8 +27,10 @@ return Def.ActorFrame{
 					if loadStepCounter and loadStepCounter ~= "" then
 						loadStepCounter = split("_",loadStepCounter)
 						for i=1,#loadStepCounter do
+							local temp = ""
 							if loadStepCounter[i] and tonumber(loadStepCounter[i]) > 0 then
-								output = addToOutput(output,i.."s: "..loadStepCounter[i]," | ")
+								for dot=1,i do temp = addToOutput(temp,"•") end
+								output = addToOutput(output,temp.." "..loadStepCounter[i]," | ")
 							end
 						end
 					end
