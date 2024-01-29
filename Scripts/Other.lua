@@ -263,7 +263,7 @@ function addToOutput(output,add,pre)
 	if string.len(output) == 0 then
 		return add
 	else
-		return output..pre..add
+		if pre then return output..pre..add else return output..add end
 	end
 end
 
