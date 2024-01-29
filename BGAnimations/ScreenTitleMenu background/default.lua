@@ -401,7 +401,7 @@ return Def.ActorFrame{
 							end
 						end
 					end
-					if isOutFoxV() or (not IsGame("po-mu") and not IsGame("be-mu")) then
+					if not IsGame("po-mu") and not IsGame("be-mu") then
 						if #courses > 0 then
 							for i=1,#courses do
 								if courses[i]:GetCourseType() == "CourseType_Nonstop" then
@@ -432,14 +432,14 @@ return Def.ActorFrame{
 						output = addToOutput(output,"Songs: "..songsSingle.." singles ("..groupsSingleCount.." groups) & "..songsDouble.." doubles ("..groupsDoubleCount.." groups)","\n")
 					end
 
-					if not isOutFoxV() and (IsGame("po-mu") or IsGame("be-mu")) then
+					if IsGame("po-mu") or IsGame("be-mu") then
 						output = addToOutput(output,"Courses: ? marathons & ? survivals","\n")
 					else
 						output = addToOutput(output,"Courses: "..(coursesMarathonSingle+coursesMarathonDouble).." marathons & "..(coursesSurvivalSingle+coursesSurvivalDouble).." survivals","\n")
 					end
 					output = addToOutput(output,"Current Game Mode: "..GAMESTATE:GetCurrentGame():GetName(),"\n")
 					output = addToOutput(output,"Current Style: "..StyleName()[GetUserPrefN("StylePosition")],"\n")
-					self:settext(output)
+					self:settext(output):vertspacing(-10)
 				else
 					if GameModeEnabled() then
 						self:settext("Information: The song/course counter currently only works in Dance Mode!\nSome other functionalities might also be broken!\nCurrent Game Mode: "..GAMESTATE:GetCurrentGame():GetName()):diffuse(Color.Yellow)
