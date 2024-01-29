@@ -401,20 +401,18 @@ return Def.ActorFrame{
 							end
 						end
 					end
-					if isOutFoxV() or (not IsGame("po-mu") and not IsGame("be-mu")) then
-						if #courses > 0 then
-							for i=1,#courses do
-								if courses[i]:GetCourseType() == "CourseType_Nonstop" then
-									if courses[i]:IsPlayableIn(StepsTypeSingle) then coursesMarathonSingle = coursesMarathonSingle + 1 end
-									if StepsTypeDouble then
-										if courses[i]:IsPlayableIn(StepsTypeDouble) then coursesMarathonDouble = coursesMarathonDouble + 1 end
-									end
+					if songsDouble > 0 then
+						for i=1,#courses do
+							if courses[i]:GetCourseType() == "CourseType_Nonstop" then
+								if courses[i]:IsPlayableIn(StepsTypeSingle) then coursesMarathonSingle = coursesMarathonSingle + 1 end
+								if StepsTypeDouble then
+									if courses[i]:IsPlayableIn(StepsTypeDouble) then coursesMarathonDouble = coursesMarathonDouble + 1 end
 								end
-								if courses[i]:GetCourseType() == "CourseType_Oni" or courses[i]:GetCourseType() == "CourseType_Survival" then
-									if courses[i]:IsPlayableIn(StepsTypeSingle) then coursesSurvivalSingle = coursesSurvivalSingle + 1 end
-									if StepsTypeDouble then
-										if courses[i]:IsPlayableIn(StepsTypeDouble) then coursesSurvivalDouble = coursesSurvivalDouble + 1 end
-									end
+							end
+							if courses[i]:GetCourseType() == "CourseType_Oni" or courses[i]:GetCourseType() == "CourseType_Survival" then
+								if courses[i]:IsPlayableIn(StepsTypeSingle) then coursesSurvivalSingle = coursesSurvivalSingle + 1 end
+								if StepsTypeDouble then
+									if courses[i]:IsPlayableIn(StepsTypeDouble) then coursesSurvivalDouble = coursesSurvivalDouble + 1 end
 								end
 							end
 						end
