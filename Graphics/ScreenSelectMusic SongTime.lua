@@ -59,7 +59,7 @@ return Def.ActorFrame{
 					end
 				end
 			end
-			for i=1,#length do if tonumber(length[i]) < 0 then length[i] = 0.001 end end
+			for i=1,#length do if length[i] < 0 then length[i] = 0.001 end end
 			MESSAGEMAN:Broadcast('SetTime')
 			if length[1] >= 6000 then c.Time:x(-131) else c.Time:x(-103) end
 			self:settext( SecondsToMMSSMsMs(length[1]) )
