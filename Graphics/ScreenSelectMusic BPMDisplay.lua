@@ -5,7 +5,7 @@ local function getTrueBPMRange(self,bpm)
 	if bpm[3] == 0.0 then
 		if bpm[2] and bpm[1] ~= bpm[2] then
 			self:diffuse(color("#d8f6ff"))
-			return bpm[1]..' - '..bpm[2]
+			return bpm[1].."-"..bpm[2]
 		else
 			self:diffuse(color("#ffffff"))
 			return bpm[1]

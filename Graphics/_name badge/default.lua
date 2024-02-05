@@ -90,7 +90,7 @@ local function modifiedBPM(speed,mode)
 
 	if modifiedBPM[3] == 0.0 then
 		if modifiedBPM[2] and modifiedBPM[1] ~= modifiedBPM[2] then
-			return modifiedBPM[1]..' - '..modifiedBPM[2]
+			return modifiedBPM[1].."-"..modifiedBPM[2]
 		else
 			return modifiedBPM[1]
 		end
