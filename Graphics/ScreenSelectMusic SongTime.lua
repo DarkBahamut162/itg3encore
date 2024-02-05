@@ -44,7 +44,7 @@ return Def.ActorFrame{
 					for pos,player in pairs( players ) do
 						if isOutFox() then
 							local steps = GAMESTATE:GetCurrentSteps(player)
-							if steps then length[pos+1] = LoadFromCache(curSelection,steps,"TrueSeconds") end
+							if steps then length[pos+1] = tonumber(LoadFromCache(curSelection,steps,"TrueSeconds")) end
 						else
 							length[pos+1] = curSelection:GetFirstSecond() > curSelection:GetLastSecond() and 0 or curSelection:GetLastSecond()-curSelection:GetFirstSecond()
 						end
@@ -59,6 +59,7 @@ return Def.ActorFrame{
 					end
 				end
 			end
+			for i=1,#length do if tonumber(length[i]) < 0 then length[i] = 0.001 end end
 			MESSAGEMAN:Broadcast('SetTime')
 			if length[1] >= 6000 then c.Time:x(-131) else c.Time:x(-103) end
 			self:settext( SecondsToMMSSMsMs(length[1]) )
