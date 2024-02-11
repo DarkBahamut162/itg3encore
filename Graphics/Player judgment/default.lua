@@ -66,15 +66,15 @@ return Def.ActorFrame {
 		end
 		if not iFrame then return end
 		if check then
-			if checkFantastics and iFrame > 0 then
+			if checkFantastics == true and iFrame > 0 then
 				checkFantastics = false
 				setenv("LastFantastic"..pname(player),STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetAliveSeconds())
 			end
-			if checkPerfects and iFrame > 1 then
+			if checkPerfects == true and iFrame > 1 then
 				checkPerfects = false
 				setenv("LastPerfect"..pname(player),STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetAliveSeconds())
 			end
-			if checkGreats and iFrame > 2 then
+			if checkGreats == true and iFrame > 2 then
 				checkGreats = false
 				setenv("LastGreat"..pname(player),STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetAliveSeconds())
 			end
