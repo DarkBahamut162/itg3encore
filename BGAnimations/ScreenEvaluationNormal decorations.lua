@@ -38,6 +38,12 @@ for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
 				ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen")
 			end
 		}
+		t[#t+1] = LoadActor(THEME:GetPathG(Var "LoadingScreen", "AutoPlayer"), pn ) .. {
+			InitCommand=function(self)
+				self:player(pn):name("AutoPlayer" .. PlayerNumberToString(pn))
+				ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen")
+			end
+		}
 		t[#t+1] = LoadActor(THEME:GetPathG(Var "LoadingScreen", "PacemakerRecord"), pn)..{
 			InitCommand=function(self)
 				self:player(pn):name("PacemakerRecord" .. PlayerNumberToString(pn))

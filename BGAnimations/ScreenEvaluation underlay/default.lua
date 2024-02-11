@@ -13,7 +13,8 @@ return Def.ActorFrame{
 				local songname = title .. " - " .. GAMESTATE:GetCurrentSong():GetGroupName()
 				local Difficulty = ToEnumShortString( StepOrTrails:GetDifficulty() ) .. " " .. StepOrTrails:GetMeter()
 				local Percentage = STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetPercentDancePoints()
-				local states = Difficulty .. " (".. string.format( "%.2f%%", Percentage*100) .. ")"
+				local autoPlayer = getenv("EvalCombo"..pname(player)) and "" or " | AUTOPLAYER"
+				local states = Difficulty .. " (".. string.format( "%.2f%%", Percentage*100) .. ")"..autoPlayer
 				GAMESTATE:UpdateDiscordProfile(GAMESTATE:GetPlayerDisplayName(player))
 				GAMESTATE:UpdateDiscordScreenInfo(songname,states,1)
 			end
