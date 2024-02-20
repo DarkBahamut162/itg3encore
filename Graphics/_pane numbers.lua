@@ -22,13 +22,13 @@ local courseMode = GAMESTATE:IsCourseMode()
 
 return Def.ActorFrame{
 	InitCommand=function(self) self:y(-1) if IsUsingWideScreen() and hasAvatar(player) then self:x(player == PLAYER_1 and 48 or -48) end end,
+	CurrentSongChangedMessageCommand=function(self) if not courseMode then self:RunCommandsRecursively( function(self) self:stoptweening():playcommand("Set") end ) end end,
+	CurrentCourseChangedMessageCommand=function(self) if courseMode then self:RunCommandsRecursively( function(self) self:stoptweening():playcommand("Set") end )  end end,
+	["CurrentSteps".. pname(player) .."ChangedMessageCommand"]=function(self) if not courseMode then self:RunCommandsRecursively( function(self) self:stoptweening():playcommand("Set") end )  end end,
+	["CurrentTrail".. pname(player) .."ChangedMessageCommand"]=function(self) if courseMode then self:RunCommandsRecursively( function(self) self:stoptweening():playcommand("Set") end )  end end,
 	LoadFont("smallnumbers")..{
 		Name="Jumps",
 		InitCommand=function(self) self:x(-127+100):diffusealpha(0):maxwidth(22) end,
-		CurrentSongChangedMessageCommand=function(self) if not courseMode then self:playcommand("Set") end end,
-		CurrentCourseChangedMessageCommand=function(self) if courseMode then self:playcommand("Set") end end,
-		["CurrentSteps".. pname(player) .."ChangedMessageCommand"]=function(self) if not courseMode then self:playcommand("Set") end end,
-		["CurrentTrail".. pname(player) .."ChangedMessageCommand"]=function(self) if courseMode then self:playcommand("Set") end end,
 		SetCommand=function(self)
 			local song = GAMESTATE:GetCurrentSong()
 			local course = GAMESTATE:GetCurrentCourse()
@@ -68,10 +68,6 @@ return Def.ActorFrame{
 	LoadFont("smallnumbers")..{
 		Name="Holds",
 		InitCommand=function(self) self:x(-102+100):diffusealpha(0):maxwidth(22) end,
-		CurrentSongChangedMessageCommand=function(self) if not courseMode then self:playcommand("Set") end end,
-		CurrentCourseChangedMessageCommand=function(self) if courseMode then self:playcommand("Set") end end,
-		["CurrentSteps".. pname(player) .."ChangedMessageCommand"]=function(self) if not courseMode then self:playcommand("Set") end end,
-		["CurrentTrail".. pname(player) .."ChangedMessageCommand"]=function(self) if courseMode then self:playcommand("Set") end end,
 		SetCommand=function(self)
 			local song = GAMESTATE:GetCurrentSong()
 			local course = GAMESTATE:GetCurrentCourse()
@@ -111,10 +107,6 @@ return Def.ActorFrame{
 	LoadFont("smallnumbers")..{
 		Name="Mines",
 		InitCommand=function(self) self:x(-77+100):diffusealpha(0):maxwidth(22) end,
-		CurrentSongChangedMessageCommand=function(self) if not courseMode then self:playcommand("Set") end end,
-		CurrentCourseChangedMessageCommand=function(self) if courseMode then self:playcommand("Set") end end,
-		["CurrentSteps".. pname(player) .."ChangedMessageCommand"]=function(self) if not courseMode then self:playcommand("Set") end end,
-		["CurrentTrail".. pname(player) .."ChangedMessageCommand"]=function(self) if courseMode then self:playcommand("Set") end end,
 		SetCommand=function(self)
 			local song = GAMESTATE:GetCurrentSong()
 			local course = GAMESTATE:GetCurrentCourse()
@@ -154,10 +146,6 @@ return Def.ActorFrame{
 	LoadFont("smallnumbers")..{
 		Name="Hands",
 		InitCommand=function(self) self:x(-52+100):diffusealpha(0):maxwidth(22) end,
-		CurrentSongChangedMessageCommand=function(self) if not courseMode then self:playcommand("Set") end end,
-		CurrentCourseChangedMessageCommand=function(self) if courseMode then self:playcommand("Set") end end,
-		["CurrentSteps".. pname(player) .."ChangedMessageCommand"]=function(self) if not courseMode then self:playcommand("Set") end end,
-		["CurrentTrail".. pname(player) .."ChangedMessageCommand"]=function(self) if courseMode then self:playcommand("Set") end end,
 		SetCommand=function(self)
 			local song = GAMESTATE:GetCurrentSong()
 			local course = GAMESTATE:GetCurrentCourse()
@@ -197,10 +185,6 @@ return Def.ActorFrame{
 	LoadFont("smallnumbers")..{
 		Name="Rolls",
 		InitCommand=function(self) self:x(-27+100):diffusealpha(0):maxwidth(22) end,
-		CurrentSongChangedMessageCommand=function(self) if not courseMode then self:playcommand("Set") end end,
-		CurrentCourseChangedMessageCommand=function(self) if courseMode then self:playcommand("Set") end end,
-		["CurrentSteps".. pname(player) .."ChangedMessageCommand"]=function(self) if not courseMode then self:playcommand("Set") end end,
-		["CurrentTrail".. pname(player) .."ChangedMessageCommand"]=function(self) if courseMode then self:playcommand("Set") end end,
 		SetCommand=function(self)
 			local song = GAMESTATE:GetCurrentSong()
 			local course = GAMESTATE:GetCurrentCourse()

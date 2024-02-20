@@ -26,6 +26,10 @@ end
 
 return Def.ActorFrame{
 	InitCommand=function(self) self:y(-1) if IsUsingWideScreen() and hasAvatar(player) then self:x(player == PLAYER_1 and 48 or -48) end end,
+	CurrentSongChangedMessageCommand=function(self) if not courseMode then self:RunCommandsRecursively( function(self) self:stoptweening():playcommand("Set") end ) end end,
+	CurrentCourseChangedMessageCommand=function(self) if courseMode then self:RunCommandsRecursively( function(self) self:stoptweening():playcommand("Set") end )  end end,
+	["CurrentSteps".. pname(player) .."ChangedMessageCommand"]=function(self) if not courseMode then self:RunCommandsRecursively( function(self) self:stoptweening():playcommand("Set") end )  end end,
+	["CurrentTrail".. pname(player) .."ChangedMessageCommand"]=function(self) if courseMode then self:RunCommandsRecursively( function(self) self:stoptweening():playcommand("Set") end )  end end,
 	Def.Quad{
 		Name="Jumps",
 		InitCommand=function(self) self:x(-127+100):y(125+17):valign(1):zoomto(24,0):diffusealpha(0):blend(Blend.Add) end,
@@ -62,10 +66,6 @@ return Def.ActorFrame{
 			self:decelerate(0.1)
 			self:zoomy(yZoom)
 		end,
-		CurrentSongChangedMessageCommand=function(self) if not courseMode then self:stoptweening():playcommand("Set") end end,
-		CurrentCourseChangedMessageCommand=function(self) if courseMode then self:stoptweening():playcommand("Set") end end,
-		["CurrentSteps".. pname(player) .."ChangedMessageCommand"]=function(self) if not courseMode then self:stoptweening():playcommand("Set") end end,
-		["CurrentTrail".. pname(player) .."ChangedMessageCommand"]=function(self) if courseMode then self:stoptweening():playcommand("Set") end end,
 		OffCommand=function(self) self:accelerate(0.2):diffusealpha(0) end
 	},
 	Def.Quad{
@@ -104,10 +104,6 @@ return Def.ActorFrame{
 			self:decelerate(0.1)
 			self:zoomy(yZoom)
 		end,
-		CurrentSongChangedMessageCommand=function(self) if not courseMode then self:stoptweening():playcommand("Set") end end,
-		CurrentCourseChangedMessageCommand=function(self) if courseMode then self:stoptweening():playcommand("Set") end end,
-		["CurrentSteps".. pname(player) .."ChangedMessageCommand"]=function(self) if not courseMode then self:stoptweening():playcommand("Set") end end,
-		["CurrentTrail".. pname(player) .."ChangedMessageCommand"]=function(self) if courseMode then self:stoptweening():playcommand("Set") end end,
 		OffCommand=function(self) self:accelerate(0.2):diffusealpha(0) end
 	},
 	Def.Quad{
@@ -146,10 +142,6 @@ return Def.ActorFrame{
 			self:decelerate(0.1)
 			self:zoomy(yZoom)
 		end,
-		CurrentSongChangedMessageCommand=function(self) if not courseMode then self:stoptweening():playcommand("Set") end end,
-		CurrentCourseChangedMessageCommand=function(self) if courseMode then self:stoptweening():playcommand("Set") end end,
-		["CurrentSteps".. pname(player) .."ChangedMessageCommand"]=function(self) if not courseMode then self:stoptweening():playcommand("Set") end end,
-		["CurrentTrail".. pname(player) .."ChangedMessageCommand"]=function(self) if courseMode then self:stoptweening():playcommand("Set") end end,
 		OffCommand=function(self) self:accelerate(0.2):diffusealpha(0) end
 	},
 	Def.Quad{
@@ -188,10 +180,6 @@ return Def.ActorFrame{
 			self:decelerate(0.1)
 			self:zoomy(yZoom)
 		end,
-		CurrentSongChangedMessageCommand=function(self) if not courseMode then self:stoptweening():playcommand("Set") end end,
-		CurrentCourseChangedMessageCommand=function(self) if courseMode then self:stoptweening():playcommand("Set") end end,
-		["CurrentSteps".. pname(player) .."ChangedMessageCommand"]=function(self) if not courseMode then self:stoptweening():playcommand("Set") end end,
-		["CurrentTrail".. pname(player) .."ChangedMessageCommand"]=function(self) if courseMode then self:stoptweening():playcommand("Set") end end,
 		OffCommand=function(self) self:accelerate(0.2):diffusealpha(0) end
 	},
 	Def.Quad{
@@ -230,10 +218,6 @@ return Def.ActorFrame{
 			self:decelerate(0.1)
 			self:zoomy(yZoom)
 		end,
-		CurrentSongChangedMessageCommand=function(self) if not courseMode then self:stoptweening():playcommand("Set") end end,
-		CurrentCourseChangedMessageCommand=function(self) if courseMode then self:stoptweening():playcommand("Set") end end,
-		["CurrentSteps".. pname(player) .."ChangedMessageCommand"]=function(self) if not courseMode then self:stoptweening():playcommand("Set") end end,
-		["CurrentTrail".. pname(player) .."ChangedMessageCommand"]=function(self) if courseMode then self:stoptweening():playcommand("Set") end end,
 		OffCommand=function(self) self:accelerate(0.2):diffusealpha(0) end
 	}
 }

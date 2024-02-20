@@ -8,11 +8,11 @@ local courseMode = GAMESTATE:IsCourseMode()
 
 return Def.ActorFrame{
 	InitCommand=function(self) self:y(-1) if IsUsingWideScreen() and hasAvatar(player) then self:x(player == PLAYER_1 and 48 or -48) end end,
-	CurrentSongChangedMessageCommand=function(self) if not courseMode then self:playcommand("Set") end end,
-	CurrentCourseChangedMessageCommand=function(self) if courseMode then self:playcommand("Set") end end,
-	["CurrentSteps".. pname(player) .."ChangedMessageCommand"]=function(self) if not courseMode then self:playcommand("Set") end end,
-	["CurrentTrail".. pname(player) .."ChangedMessageCommand"]=function(self) if courseMode then self:playcommand("Set") end end,
-	SetCommand=function(self)
+	CurrentSongChangedMessageCommand=function(self) if not courseMode then self:playcommand("MasterSet") end end,
+	CurrentCourseChangedMessageCommand=function(self) if courseMode then self:playcommand("MasterSet") end end,
+	["CurrentSteps".. pname(player) .."ChangedMessageCommand"]=function(self) if not courseMode then self:playcommand("MasterSet") end end,
+	["CurrentTrail".. pname(player) .."ChangedMessageCommand"]=function(self) if courseMode then self:playcommand("MasterSet") end end,
+	MasterSetCommand=function(self)
 		song,course = GAMESTATE:GetCurrentSong(),GAMESTATE:GetCurrentCourse()
 		bpm,stop,delay,warp,scroll,speed,fake,attack,jump,hold,mine,hand,roll = false,false,false,false,false,false,false,false,false,false,false,false,false
 		stream,voltage,air,freeze,chaos = 0,0,0,0,0
@@ -218,105 +218,83 @@ return Def.ActorFrame{
 			OffCommand=function(self) self:accelerate(0.2):diffusealpha(0) end,
 			SetCommand=function(self) if chaos > 0 then self:diffuse(color("#FFFFFF")) else self:diffuse(color("#808080")) end end
 		},
-		Def.Quad{
-			Name="STREAM",
-			InitCommand=function(self) self:x(-37+25*0):y(114):halign(0):zoomto(20,4):diffuse(color("#FF0000")):blend(Blend.Add) end,
-			OnCommand=function(self) self:diffusealpha(0):sleep(0.9):decelerate(0.3):diffusealpha(1):playcommand("Set") end,
-			SetCommand=function(self)
-				self:decelerate(0.1):zoomx(math.min(stream,1)*20)
-				if stream > 1 and voltage > 1 and air > 1 and freeze > 1 and chaos > 1 then
-					self:stopeffect():rainbow():effectclock('beat')
-				elseif stream > 1 then
-					self:stopeffect():diffuseramp():effectcolor1(color("#800000")):effectcolor2(color("#FF0000")):effectperiod(0.5):effect_hold_at_full(0.5):effectclock('beat')
-				else
-					self:stopeffect()
-				end
-			end,
-			CurrentSongChangedMessageCommand=function(self) if not courseMode then self:stoptweening():playcommand("Set") end end,
-			CurrentCourseChangedMessageCommand=function(self) if courseMode then self:stoptweening():playcommand("Set") end end,
-			["CurrentSteps".. pname(player) .."ChangedMessageCommand"]=function(self) if not courseMode then self:stoptweening():playcommand("Set") end end,
-			["CurrentTrail".. pname(player) .."ChangedMessageCommand"]=function(self) if courseMode then self:stoptweening():playcommand("Set") end end,
-			OffCommand=function(self) self:accelerate(0.2):diffusealpha(0) end,
-		},
-		Def.Quad{
-			Name="VOLTAGE",
-			InitCommand=function(self) self:x(-37+25*1):y(114):halign(0):zoomto(20,4):diffuse(color("#FFFF00")):blend(Blend.Add) end,
-			OnCommand=function(self) self:diffusealpha(0):sleep(0.9):decelerate(0.3):diffusealpha(1):playcommand("Set") end,
-			SetCommand=function(self)
-				self:decelerate(0.1):zoomx(math.min(voltage,1)*20)
-				if stream > 1 and voltage > 1 and air > 1 and freeze > 1 and chaos > 1 then
-					self:stopeffect():rainbow():effectclock('beat')
-				elseif voltage > 1 then
-					self:stopeffect():diffuseramp():effectcolor1(color("#808000")):effectcolor2(color("#FFFF00")):effectperiod(0.5):effect_hold_at_full(0.5):effectclock('beat')
-				else
-					self:stopeffect()
-				end
-			end,
-			CurrentSongChangedMessageCommand=function(self) if not courseMode then self:stoptweening():playcommand("Set") end end,
-			CurrentCourseChangedMessageCommand=function(self) if courseMode then self:stoptweening():playcommand("Set") end end,
-			["CurrentSteps".. pname(player) .."ChangedMessageCommand"]=function(self) if not courseMode then self:stoptweening():playcommand("Set") end end,
-			["CurrentTrail".. pname(player) .."ChangedMessageCommand"]=function(self) if courseMode then self:stoptweening():playcommand("Set") end end,
-			OffCommand=function(self) self:accelerate(0.2):diffusealpha(0) end
-		},
-		Def.Quad{
-			Name="AIR",
-			InitCommand=function(self) self:x(-37+25*2):y(114):halign(0):zoomto(20,4):diffuse(color("#00FFFF")):blend(Blend.Add) end,
-			OnCommand=function(self) self:diffusealpha(0):sleep(0.9):decelerate(0.3):diffusealpha(1):playcommand("Set") end,
-			SetCommand=function(self)
-				self:decelerate(0.1):zoomx(math.min(air,1)*20)
-				if stream > 1 and voltage > 1 and air > 1 and freeze > 1 and chaos > 1 then
-					self:stopeffect():rainbow():effectclock('beat')
-				elseif air > 1 then
-					self:stopeffect():diffuseramp():effectcolor1(color("#008080")):effectcolor2(color("#00FFFF")):effectperiod(0.5):effect_hold_at_full(0.5):effectclock('beat')
-				else
-					self:stopeffect()
-				end
-			end,
-			CurrentSongChangedMessageCommand=function(self) if not courseMode then self:stoptweening():playcommand("Set") end end,
-			CurrentCourseChangedMessageCommand=function(self) if courseMode then self:stoptweening():playcommand("Set") end end,
-			["CurrentSteps".. pname(player) .."ChangedMessageCommand"]=function(self) if not courseMode then self:stoptweening():playcommand("Set") end end,
-			["CurrentTrail".. pname(player) .."ChangedMessageCommand"]=function(self) if courseMode then self:stoptweening():playcommand("Set") end end,
-			OffCommand=function(self) self:accelerate(0.2):diffusealpha(0) end
-		},
-		Def.Quad{
-			Name="FREEZE",
-			InitCommand=function(self) self:x(-37+25*3):y(114):halign(0):zoomto(20,4):diffuse(color("#FFFFFF")):blend(Blend.Add) end,
-			OnCommand=function(self) self:diffusealpha(0):sleep(0.9):decelerate(0.3):diffusealpha(1):playcommand("Set") end,
-			SetCommand=function(self)
-				self:decelerate(0.1):zoomx(math.min(freeze,1)*20)
-				if stream > 1 and voltage > 1 and air > 1 and freeze > 1 and chaos > 1 then
-					self:stopeffect():rainbow():effectclock('beat')
-				elseif freeze > 1 then
-					self:stopeffect():diffuseramp():effectcolor1(color("#808080")):effectcolor2(color("#FFFFFF")):effectperiod(0.5):effect_hold_at_full(0.5):effectclock('beat')
-				else
-					self:stopeffect()
-				end
-			end,
-			CurrentSongChangedMessageCommand=function(self) if not courseMode then self:stoptweening():playcommand("Set") end end,
-			CurrentCourseChangedMessageCommand=function(self) if courseMode then self:stoptweening():playcommand("Set") end end,
-			["CurrentSteps".. pname(player) .."ChangedMessageCommand"]=function(self) if not courseMode then self:stoptweening():playcommand("Set") end end,
-			["CurrentTrail".. pname(player) .."ChangedMessageCommand"]=function(self) if courseMode then self:stoptweening():playcommand("Set") end end,
-			OffCommand=function(self) self:accelerate(0.2):diffusealpha(0) end
-		},
-		Def.Quad{
-			Name="CHAOS",
-			InitCommand=function(self) self:x(-37+25*4):y(114):halign(0):zoomto(20,4):diffuse(color("#FF00FF")):blend(Blend.Add) end,
-			OnCommand=function(self) self:diffusealpha(0):sleep(0.9):decelerate(0.3):diffusealpha(1):playcommand("Set") end,
-			SetCommand=function(self)
-				self:decelerate(0.1):zoomx(math.min(chaos,1)*20)
-				if stream > 1 and voltage > 1 and air > 1 and freeze > 1 and chaos > 1 then
-					self:stopeffect():rainbow():effectclock('beat')
-				elseif chaos > 1 then
-					self:stopeffect():diffuseramp():effectcolor1(color("#800080")):effectcolor2(color("#FF00FF")):effectperiod(0.5):effect_hold_at_full(0.5):effectclock('beat')
-				else
-					self:stopeffect()
-				end
-			end,
-			CurrentSongChangedMessageCommand=function(self) if not courseMode then self:stoptweening():playcommand("Set") end end,
-			CurrentCourseChangedMessageCommand=function(self) if courseMode then self:stoptweening():playcommand("Set") end end,
-			["CurrentSteps".. pname(player) .."ChangedMessageCommand"]=function(self) if not courseMode then self:stoptweening():playcommand("Set") end end,
-			["CurrentTrail".. pname(player) .."ChangedMessageCommand"]=function(self) if courseMode then self:stoptweening():playcommand("Set") end end,
-			OffCommand=function(self) self:accelerate(0.2):diffusealpha(0) end
+		Def.ActorFrame{
+			OnCommand=function(self) self:diffusealpha(0):sleep(1):decelerate(0.3):diffusealpha(1) end,
+			Def.Quad{
+				Name="STREAM",
+				InitCommand=function(self) self:x(-37+25*0):y(114):halign(0):zoomto(20,4):diffuse(color("#FF0000")):blend(Blend.Add) end,
+				SetCommand=function(self)
+					self:stoptweening():decelerate(0.1):zoomx(math.min(stream,1)*20)
+					if stream > 1 and voltage > 1 and air > 1 and freeze > 1 and chaos > 1 then
+						self:stopeffect():rainbow():effectclock('beat')
+					elseif stream > 1 then
+						self:stopeffect():diffuseramp():effectcolor1(color("#800000")):effectcolor2(color("#FF0000")):effectperiod(0.5):effect_hold_at_full(0.5):effectclock('beat')
+					else
+						self:stopeffect()
+					end
+				end,
+				OffCommand=function(self) self:accelerate(0.2):diffusealpha(0) end,
+			},
+			Def.Quad{
+				Name="VOLTAGE",
+				InitCommand=function(self) self:x(-37+25*1):y(114):halign(0):zoomto(20,4):diffuse(color("#FFFF00")):blend(Blend.Add) end,
+				SetCommand=function(self)
+					self:stoptweening():decelerate(0.1):zoomx(math.min(voltage,1)*20)
+					if stream > 1 and voltage > 1 and air > 1 and freeze > 1 and chaos > 1 then
+						self:stopeffect():rainbow():effectclock('beat')
+					elseif voltage > 1 then
+						self:stopeffect():diffuseramp():effectcolor1(color("#808000")):effectcolor2(color("#FFFF00")):effectperiod(0.5):effect_hold_at_full(0.5):effectclock('beat')
+					else
+						self:stopeffect()
+					end
+				end,
+				OffCommand=function(self) self:accelerate(0.2):diffusealpha(0) end
+			},
+			Def.Quad{
+				Name="AIR",
+				InitCommand=function(self) self:x(-37+25*2):y(114):halign(0):zoomto(20,4):diffuse(color("#00FFFF")):blend(Blend.Add) end,
+				SetCommand=function(self)
+					self:stoptweening():decelerate(0.1):zoomx(math.min(air,1)*20)
+					if stream > 1 and voltage > 1 and air > 1 and freeze > 1 and chaos > 1 then
+						self:stopeffect():rainbow():effectclock('beat')
+					elseif air > 1 then
+						self:stopeffect():diffuseramp():effectcolor1(color("#008080")):effectcolor2(color("#00FFFF")):effectperiod(0.5):effect_hold_at_full(0.5):effectclock('beat')
+					else
+						self:stopeffect()
+					end
+				end,
+				OffCommand=function(self) self:accelerate(0.2):diffusealpha(0) end
+			},
+			Def.Quad{
+				Name="FREEZE",
+				InitCommand=function(self) self:x(-37+25*3):y(114):halign(0):zoomto(20,4):diffuse(color("#FFFFFF")):blend(Blend.Add) end,
+				SetCommand=function(self)
+					self:stoptweening():decelerate(0.1):zoomx(math.min(freeze,1)*20)
+					if stream > 1 and voltage > 1 and air > 1 and freeze > 1 and chaos > 1 then
+						self:stopeffect():rainbow():effectclock('beat')
+					elseif freeze > 1 then
+						self:stopeffect():diffuseramp():effectcolor1(color("#808080")):effectcolor2(color("#FFFFFF")):effectperiod(0.5):effect_hold_at_full(0.5):effectclock('beat')
+					else
+						self:stopeffect()
+					end
+				end,
+				OffCommand=function(self) self:accelerate(0.2):diffusealpha(0) end
+			},
+			Def.Quad{
+				Name="CHAOS",
+				InitCommand=function(self) self:x(-37+25*4):y(114):halign(0):zoomto(20,4):diffuse(color("#FF00FF")):blend(Blend.Add) end,
+				SetCommand=function(self)
+					self:stoptweening():decelerate(0.1):zoomx(math.min(chaos,1)*20)
+					if stream > 1 and voltage > 1 and air > 1 and freeze > 1 and chaos > 1 then
+						self:stopeffect():rainbow():effectclock('beat')
+					elseif chaos > 1 then
+						self:stopeffect():diffuseramp():effectcolor1(color("#800080")):effectcolor2(color("#FF00FF")):effectperiod(0.5):effect_hold_at_full(0.5):effectclock('beat')
+					else
+						self:stopeffect()
+					end
+				end,
+				OffCommand=function(self) self:accelerate(0.2):diffusealpha(0) end
+			}
 		},
 		LoadFont("_z bold gray 36px")..{
 			InitCommand=function(self) self:x(-27+25*0):y(113):shadowlength(1):zoom(0.2):diffusealpha(0):maxwidth(120) end,
