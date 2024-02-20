@@ -46,8 +46,9 @@ return Def.ActorFrame{
 				self:settext(output)
 			end
 		end,
-		CurrentSongChangedMessageCommand=function(self) if not courseMode then self:playcommand("Set") end end,
-		CurrentCourseChangedMessageCommand=function(self) if courseMode then self:playcommand("Set") end end,
+		EmptyCommand=function(self) self:settext("") end,
+		CurrentSongChangedMessageCommand=function(self) if not courseMode then if not GAMESTATE:GetCurrentSong() then self:playcommand("Empty") end end end,
+		CurrentCourseChangedMessageCommand=function(self) if courseMode then if not GAMESTATE:GetCurrentCourse() then self:playcommand("Empty") end end end,
 		["CurrentSteps".. pname(player) .."ChangedMessageCommand"]=function(self) if not courseMode then self:playcommand("Set") end end,
 		["CurrentTrail".. pname(player) .."ChangedMessageCommand"]=function(self) if courseMode then self:playcommand("Set") end end
 	}

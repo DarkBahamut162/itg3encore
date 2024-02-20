@@ -45,11 +45,11 @@ end
 
 return Def.ActorFrame{
 	InitCommand=function(self) self:y(-1) if IsUsingWideScreen() and hasAvatar(player) then self:x(player == PLAYER_1 and 48 or -48) end end,
+	OnCommand=function(self) self:diffusealpha(0):sleep(0.85):linear(0.2):diffusealpha(1) end,
+	OffCommand=function(self) self:accelerate(0.2):diffusealpha(0) end,
 	LoadFont("_z 36px shadowx")..{
 		Name="StepCount",
-		InitCommand=function(self) self:x(-67):y(120+4):zoom(0.35):diffusealpha(0) end,
-		OnCommand=function(self) self:sleep(0.4):linear(0.2):diffusealpha(1):shadowlength(2) end,
-		OffCommand=function(self) self:accelerate(0.2):diffusealpha(0) end,
+		InitCommand=function(self) self:x(-67):y(120+4):zoom(0.35):diffusealpha(0):shadowlength(1) end,
 		SetCommand=function(self)
 			local val = 0
 			local SongOrCourse = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentCourse() or GAMESTATE:GetCurrentSong()
@@ -107,8 +107,6 @@ return Def.ActorFrame{
 	},
 	LoadFont("_v 26px bold white")..{
 		Name="Label",
-		InitCommand=function(self) self:x(-67):y(120+17):settext("STEPS"):shadowlength(2):zoomx(0.45):zoomy(0.4):diffusealpha(0) end,
-		OnCommand=function(self) self:sleep(0.85):linear(0.2):diffusebottomedge(color("#8F8F8F")):diffusealpha(1) end,
-		OffCommand=function(self) self:accelerate(0.2):diffusealpha(0) end
+		InitCommand=function(self) self:x(-67):y(120+17):settext("STEPS"):shadowlength(1):zoomx(0.45):zoomy(0.4):diffusebottomedge(color("#8F8F8F")) end
 	}
 }

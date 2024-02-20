@@ -9,7 +9,7 @@ return Def.ActorFrame{
 		SetCommand=function(self)
 			local SongOrCourse = courseMode and GAMESTATE:GetCurrentCourse() or GAMESTATE:GetCurrentSong()
 			local output = ""
-			if GAMESTATE:IsCourseMode() then
+			if courseMode then
 				if SongOrCourse then
 					if SongOrCourse:HasMods() or SongOrCourse:HasTimedMods() then output = "HAS MODS" end
 					if output == "" then
@@ -58,8 +58,9 @@ return Def.ActorFrame{
 			end
 			self:settext(output)
 		end,
-		CurrentSongChangedMessageCommand=function(self) if not courseMode then self:playcommand("Set") end end,
-		CurrentCourseChangedMessageCommand=function(self) if courseMode then self:playcommand("Set") end end,
+		EmptyCommand=function(self) self:settext("") end,
+		CurrentSongChangedMessageCommand=function(self) if not course then if GAMESTATE:GetCurrentSong() then else self:playcommand("Empty") end end end,
+		CurrentCourseChangedMessageCommand=function(self) if course then if GAMESTATE:GetCurrentCourse() then else self:playcommand("Empty") end end end,
 		CurrentStepsP1ChangedMessageCommand=function(self) if not courseMode then self:playcommand("Set") end end,
 		CurrentStepsP2ChangedMessageCommand=function(self) if not courseMode then self:playcommand("Set") end end,
 		CurrentTrailP1ChangedMessageCommand=function(self) if courseMode then self:playcommand("Set") end end,

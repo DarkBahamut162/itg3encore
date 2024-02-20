@@ -61,7 +61,7 @@ return Def.ActorFrame{
 			end
 			for i=1,#length do if length[i] < 0 then length[i] = 0.001 end end
 			MESSAGEMAN:Broadcast('SetTime')
-			if length[1] >= 6000 then c.Time:x(-131) else c.Time:x(-103) end
+			if length[1] >= 6000 then c.Time:x(-103-(math.floor(math.log10(length[1]/6000)+1)*28)) else c.Time:x(-103) end
 			self:settext( SecondsToMMSSMsMs(length[1]) )
 		end,
 		CurrentSongChangedMessageCommand=function(self) if not course then self:queuecommand("Set") end end,

@@ -1,5 +1,5 @@
 local BPMtype = ThemePrefs.Get("ShowBPMDisplayType")
-local course = GAMESTATE:IsCourseMode()
+local courseMode = GAMESTATE:IsCourseMode()
 
 local function getTrueBPMRange(self,bpm)
 	if bpm[3] == 0.0 then
@@ -43,7 +43,7 @@ return Def.ActorFrame{
 		InitCommand=function(self) self:halign(1):zoom(0.66*WideScreenDiff()):maxwidth(120):maxheight(32):vertspacing(-10) end,
 		SetCommand=function(self)
 			local temp = {}
-			if GAMESTATE:IsCourseMode() then
+			if courseMode then
 				local course = GAMESTATE:GetCurrentCourse()
 				if course then
 					for pn in ivalues(GAMESTATE:GetEnabledPlayers()) do
@@ -93,11 +93,12 @@ return Def.ActorFrame{
 				self:settext("")
 			end
 		end,
-		CurrentSongChangedMessageCommand=function(self) if not course then self:playcommand("Set") end end,
-		CurrentCourseChangedMessageCommand=function(self) if course then self:playcommand("Set") end end,
-		CurrentStepsP1ChangedMessageCommand=function(self) if not course then self:playcommand("Set") end end,
-		CurrentStepsP2ChangedMessageCommand=function(self) if not course then self:playcommand("Set") end end,
-		CurrentTrailP1ChangedMessageCommand=function(self) if course then self:playcommand("Set") end end,
-		CurrentTrailP2ChangedMessageCommand=function(self) if course then self:playcommand("Set") end end
+		EmptyCommand=function(self) self:settext("") end,
+		CurrentSongChangedMessageCommand=function(self) if not courseMode then if not GAMESTATE:GetCurrentSong() then self:playcommand("Empty") end end end,
+		CurrentCourseChangedMessageCommand=function(self) if courseMode then if not GAMESTATE:GetCurrentCourse() then self:playcommand("Empty") end end end,
+		CurrentStepsP1ChangedMessageCommand=function(self) if not courseMode then self:playcommand("Set") end end,
+		CurrentStepsP2ChangedMessageCommand=function(self) if not courseMode then self:playcommand("Set") end end,
+		CurrentTrailP1ChangedMessageCommand=function(self) if courseMode then self:playcommand("Set") end end,
+		CurrentTrailP2ChangedMessageCommand=function(self) if courseMode then self:playcommand("Set") end end
 	}
 }
