@@ -401,19 +401,21 @@ return Def.ActorFrame{
 							end
 						end
 					end
-					if not IsGame("po-mu") and not IsGame("be-mu") then
-						if #courses > 0 then
-							for i=1,#courses do
-								if courses[i]:GetCourseType() == "CourseType_Nonstop" then
-									if courses[i]:IsPlayableIn(StepsTypeSingle) then coursesMarathonSingle = coursesMarathonSingle + 1 end
-									if StepsTypeDouble and songsDouble > 0 then
-										if courses[i]:IsPlayableIn(StepsTypeDouble) then coursesMarathonDouble = coursesMarathonDouble + 1 end
+					if GAMESTATE:GetCoinMode() == 'CoinMode_Home' then
+						if not IsGame("po-mu") and not IsGame("be-mu") then
+							if #courses > 0 then
+								for i=1,#courses do
+									if courses[i]:GetCourseType() == "CourseType_Nonstop" then
+										if courses[i]:IsPlayableIn(StepsTypeSingle) then coursesMarathonSingle = coursesMarathonSingle + 1 end
+										if StepsTypeDouble and songsDouble > 0 then
+											if courses[i]:IsPlayableIn(StepsTypeDouble) then coursesMarathonDouble = coursesMarathonDouble + 1 end
+										end
 									end
-								end
-								if courses[i]:GetCourseType() == "CourseType_Oni" or courses[i]:GetCourseType() == "CourseType_Survival" then
-									if courses[i]:IsPlayableIn(StepsTypeSingle) then coursesSurvivalSingle = coursesSurvivalSingle + 1 end
-									if StepsTypeDouble and songsDouble > 0 then
-										if courses[i]:IsPlayableIn(StepsTypeDouble) then coursesSurvivalDouble = coursesSurvivalDouble + 1 end
+									if courses[i]:GetCourseType() == "CourseType_Oni" or courses[i]:GetCourseType() == "CourseType_Survival" then
+										if courses[i]:IsPlayableIn(StepsTypeSingle) then coursesSurvivalSingle = coursesSurvivalSingle + 1 end
+										if StepsTypeDouble and songsDouble > 0 then
+											if courses[i]:IsPlayableIn(StepsTypeDouble) then coursesSurvivalDouble = coursesSurvivalDouble + 1 end
+										end
 									end
 								end
 							end
@@ -432,10 +434,12 @@ return Def.ActorFrame{
 						output = addToOutput(output,"Songs: "..songsSingle.." singles ("..groupsSingleCount.." groups) & "..songsDouble.." doubles ("..groupsDoubleCount.." groups)","\n")
 					end
 
-					if IsGame("po-mu") or IsGame("be-mu") then
-						output = addToOutput(output,"Courses: ? marathons & ? survivals","\n")
-					else
-						output = addToOutput(output,"Courses: "..(coursesMarathonSingle+coursesMarathonDouble).." marathons & "..(coursesSurvivalSingle+coursesSurvivalDouble).." survivals","\n")
+					if GAMESTATE:GetCoinMode() == 'CoinMode_Home' then
+						if IsGame("po-mu") or IsGame("be-mu") then
+							output = addToOutput(output,"Courses: ? marathons & ? survivals","\n")
+						else
+							output = addToOutput(output,"Courses: "..(coursesMarathonSingle+coursesMarathonDouble).." marathons & "..(coursesSurvivalSingle+coursesSurvivalDouble).." survivals","\n")
+						end
 					end
 					output = addToOutput(output,"Current Game Mode: "..GAMESTATE:GetCurrentGame():GetName(),"\n")
 					output = addToOutput(output,"Current Style: "..StyleName()[GetUserPrefN("StylePosition")],"\n")
