@@ -19,6 +19,8 @@ if string.find(style:GetName(),"double") then
 		filterWidth = filterWidth * 1.45
 	elseif IsGame("po-mu") then
 		filterWidth = filterWidth * 1.65
+	elseif IsGame("techno") then
+		filterWidth = filterWidth * 1.8375
 	else
 		filterWidth = filterWidth * 1.4
 	end

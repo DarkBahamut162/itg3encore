@@ -246,6 +246,24 @@ function getColumnsPerPlayer(typ,style,calc)
 		elseif style == "Nine" then
 			return 9
 		end
+	elseif typ == "Techno" then
+		if style == "Single4" then
+			return 4
+		elseif style == "Single5" then
+			return 5
+		elseif style == "Single8" then
+			return 8/dif
+		elseif style == "Single9" then
+			return 9/dif
+		elseif style == "Double4" then
+			return 8/dif
+		elseif style == "Double5" then
+			return 10/dif
+		elseif style == "Double8" then
+			return 16/dif/dif
+		elseif style == "Double9" then
+			return 18/dif/dif
+		end
 	end
 	return 0
 end

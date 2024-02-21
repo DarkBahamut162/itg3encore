@@ -97,6 +97,8 @@ if numPlayers == 1 then
 			filterWidth = filterWidth * 1.45
 		elseif IsGame("po-mu") then
 			filterWidth = filterWidth * 1.575
+		elseif IsGame("techno") then
+			filterWidth = filterWidth * 1.8375
 		else
 			filterWidth = filterWidth * 1.4
 		end

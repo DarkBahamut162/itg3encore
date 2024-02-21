@@ -57,6 +57,8 @@ function ChoiceSingle()
 		end
 	elseif IsGame("po-mu") then
 		return {"po-mu-three","po-mu-four","po-mu-five","po-mu-seven","po-mu-nine"}
+	elseif IsGame("techno") then
+		return {"single4","single5","single8","single9"}
 	end
 end
 
@@ -79,6 +81,8 @@ function ChoiceVersus()
 		end
 	elseif IsGame("po-mu") then
 		return {"po-mu-three-versus","po-mu-four-versus","po-mu-five-versus","po-mu-seven-versus","po-mu-nine-versus"}
+	elseif IsGame("techno") then
+		return {"versus4","versus5","versus8","versus9"}
 	end
 end
 
@@ -101,11 +105,13 @@ function ChoiceDouble()
 		end
 	elseif IsGame("po-mu") then
 		return {nil,nil,nil,nil,"po-mu-nine-double"}
+	elseif IsGame("techno") then
+		return {"double4","double5","double8","double9"}
 	end
 end
 
 function GameModeEnabled()
-	if IsGame("dance") or IsGame("groove") or IsGame("pump") or IsGame("smx") or IsGame("be-mu") or IsGame("beat") or IsGame("po-mu") then
+	if IsGame("dance") or IsGame("groove") or IsGame("pump") or IsGame("smx") or IsGame("be-mu") or IsGame("beat") or IsGame("po-mu") or IsGame("techno") then
 		return true
 	else
 		return false
@@ -163,6 +169,8 @@ function StyleName()
 		end
 	elseif IsGame("po-mu") then
 		return {"3 Buttons","4 Buttons","5 Buttons","7 Buttons","9 Buttons"}
+	elseif IsGame("techno") then
+		return {"4 Arrows","5 Arrows","8 Arrows","9 Arrows"}
 	end
 	return false
 end
@@ -186,6 +194,8 @@ function StepsTypeSingle()
 		end
 	elseif IsGame("po-mu") then
 		return {"StepsType_Pnm_Three","StepsType_Pnm_Four","StepsType_Pnm_Five","StepsType_Pnm_Seven","StepsType_Pnm_Nine"}
+	elseif IsGame("techno") then
+		return {"StepsType_Techno_Single4","StepsType_Techno_Single5","StepsType_Techno_Single8","StepsType_Techno_Single9"}
 	end
 	return false
 end
@@ -209,6 +219,8 @@ function StepsTypeDouble()
 		end
 	elseif IsGame("po-mu") then
 		return {nil,nil,nil,nil,"StepsType_Pnm_Nine_Double"}
+	elseif IsGame("techno") then
+		return {"StepsType_Techno_Double4","StepsType_Techno_Double5","StepsType_Techno_Double8","StepsType_Techno_Double9"}
 	end
 	return false
 end
