@@ -1,10 +1,9 @@
 local t = LoadFallbackB()
 
 if ShowStandardDecoration("StepsDisplay") then
-	for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
-		if (GAMESTATE:IsPlayerEnabled(pn) or isVS()) and not isTopScreen("ScreenEvaluationSummary") then
+	for pn in ivalues(GAMESTATE:GetEnabledPlayers()) do
+		if not isTopScreen("ScreenEvaluationSummary") then
 			local t2 = Def.ActorFrame{
-				InitCommand=function(self) self:player(pn) end,
 				LoadActor(THEME:GetPathG("_difficulty icons",isFinal() and "final" or "normal"))..{
 					InitCommand=function(self) self:zoomy(0.8):animate(0):zoomx((pn==PLAYER_2) and -0.8 or 0.8):playcommand("Update") end,
 					UpdateCommand=function(self)
