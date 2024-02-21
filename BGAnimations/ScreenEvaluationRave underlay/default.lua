@@ -159,7 +159,7 @@ return Def.ActorFrame{
 			}
 		},
 		Def.ActorFrame{
-			Condition=enableOffsets and getenv("EvalComboP1")),
+			Condition=enableOffsets and getenv("EvalComboP1"),
 			Name="Offsets",
 			InitCommand=function(self) self:x(THEME:GetMetric("ScreenEvaluationRave","W1NumberP1X")-42*WideScreenDiff()) end,
 			Def.ActorFrame{
