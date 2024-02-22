@@ -19,7 +19,8 @@ local cacheStepTypes = {
 	Pump = true,
 	Smx = true,
 	Bm = true,
-	Pnm = true
+	Pnm = true,
+	Techno = true
 }
 
 local InputHandler = function(event)
