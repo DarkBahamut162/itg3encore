@@ -616,3 +616,59 @@ function getAllTheBPMs(song,step,BPMtype)
 	end
 	return bpms
 end
+
+local repeatCheck = {}
+
+--[[
+	This function gets called intentionally through MeterSetCommand inside Metrics.ini for [StepsDisplayListRow]
+	But for whatever reason, it gets called on ALL Changed*MessageCommands FOR ALL ENABLED PLAYERS.
+	Because of this, if ShowCalcDiff is enabled, I'm forcing a check so that the function only gets executed once and loaded every other time. 
+]]--
+function getCalculatedDifficulty(Step)
+	if not Step then return "" end
+	local value = split("/",getStepCacheFile(Step))[3]
+	if repeatCheck[value] then return repeatCheck[value] end
+
+	local OG = Step:GetMeter()
+	local Song = SONGMAN:GetSongFromSteps(Step)
+	local totalSeconds = isOutFox() and tonumber(LoadFromCache(Song,Step,"TrueSeconds")) or (Song:GetLastSecond() - Song:GetFirstSecond())
+	local stepCounter = isOutFox() and split("_",LoadFromCache(Song,Step,"StepCounter")) or {}
+	local stepType = split("_",Step:GetStepsType())
+	local stepSum = isOutFox() and 0 or math.round(Step:GetRadarValues(GAMESTATE:GetMasterPlayerNumber()):GetValue('RadarCategory_TapsAndHolds') / totalSeconds * getColumnsPerPlayer(stepType[2],stepType[3],true) / 2)
+	if isOutFox() then
+		for i=1,#stepCounter do if stepCounter[i] then stepSum = stepSum + (stepCounter[i] * i) end end
+		if IsGame("be-mu") then
+			stepSum = stepSum / totalSeconds
+		else
+			stepSum = ( stepSum / totalSeconds ) * (getColumnsPerPlayer(stepType[2],stepType[3],true) / 2)
+		end
+	end
+
+	local DB9 = stepSum
+	local YA  = 0
+	local SPS = 0
+
+	if IsGame("be-mu") then
+		YA = GetConvertDifficulty(Song,Step,totalSeconds) / 2
+		if isOutFox() then SPS = tonumber(LoadFromCache(Song,Step,"StepsPerSecond")) / 2 end
+	else
+		YA = GetConvertDifficulty(Song,Step,totalSeconds) * (getColumnsPerPlayer(stepType[2],stepType[3],true) / 4)
+		if isOutFox() then SPS = tonumber(LoadFromCache(Song,Step,"StepsPerSecond")) * (getColumnsPerPlayer(stepType[2],stepType[3],true) / 4) end
+	end
+
+	local output = {}
+	if DB9 > YA and DB9 > SPS then
+		output = {math.round(DB9),"DB9"}
+	elseif YA > DB9 and YA > SPS then
+		output = {math.round(YA),"Y&A"}
+	elseif SPS > DB9 and SPS > YA then
+		output = {math.round(SPS),"SPS"}
+	end
+	if output[1] and output[1] ~= OG then
+		repeatCheck[value] = output[1].." "..output[2].."\n"..OG.." OG"
+		return output[1].." "..output[2].."\n"..OG.." OG"
+	else
+		repeatCheck[value] = OG
+		return OG
+	end
+end

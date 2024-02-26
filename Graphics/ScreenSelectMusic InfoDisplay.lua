@@ -26,6 +26,8 @@ return Def.ActorFrame{
 					end
 				end
 			else
+				--[[ Automate my video timestamping this way... Work smarter not harder... ]]--
+				--lua.ReportScriptError( SongOrCourse:GetGroupName().." | "..SongOrCourse:GetDisplayFullTitle().." / "..SongOrCourse:GetDisplayArtist() )
 				if SongOrCourse and (enableRounds or enableLua) then
 					if enableRounds then
 						if SongOrCourse:IsLong() then

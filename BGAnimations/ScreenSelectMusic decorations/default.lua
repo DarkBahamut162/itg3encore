@@ -168,7 +168,6 @@ t[#t+1] = Def.ActorFrame{
 	LoadActor(THEME:GetPathG('ScreenSelectMusic','BannerFrame')),
 	StandardDecorationFromFile("ArtistDisplay","ArtistDisplay"),
 	StandardDecorationFromFile("BPMDisplay","BPMDisplay"),
-	StandardDecorationFromFile("CourseHasMods","CourseHasMods"),
 	StandardDecorationFromFile("InfoDisplay","InfoDisplay"),
 	StandardDecorationFromFileOptional("SongTime","SongTime"),
 	StandardDecorationFromFileOptional("StepsDisplayList","StepsDisplayList"),
