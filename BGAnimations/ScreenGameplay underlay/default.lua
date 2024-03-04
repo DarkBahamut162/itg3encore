@@ -2,7 +2,7 @@ local t = Def.ActorFrame{ Name="GameplayUnderlay" }
 local stats = false
 
 if getenv("ShowStatsP1") == nil and getenv("ShowStatsP2") == nil then
-elseif getenv("ShowStatsP1") > 0 or getenv("ShowStatsP2") > 0 or getenv("ShowNoteGraphP1") > 0 or getenv("ShowNoteGraphP2") > 0 then
+elseif getenv("ShowStatsP1") > 0 or getenv("ShowStatsP2") > 0 or getenv("ShowNoteGraphP1") > 1 or getenv("ShowNoteGraphP2") > 1 then
 	stats = true
 end
 
