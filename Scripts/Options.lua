@@ -653,7 +653,7 @@ function OptionShowNoteGraph()
 		SelectType = "SelectOne",
 		OneChoiceForAllPlayers = false,
 		ExportOnChange = false,
-		Choices = { "Off","On" },
+		Choices = { "Off","Row","All" },
 		LoadSelections = function(self, list, pn)
 			local selected = getenv("ShowNoteGraph"..pname(pn))
 			if selected and selected ~= 0 then
@@ -811,24 +811,26 @@ function DisplayCustomModifiersText(pn)
 	if getenv("ShowMods"..pname(pn)) then output = addToOutput(output,"Show Mods",", ") end
 	if getenv("ShowStats"..pname(pn)) > 0 then
 		if GAMESTATE:GetNumPlayersEnabled() == 2 and not doubles then
-			if getenv("ShowNoteGraph"..pname(pn)) == 1 then
+			if getenv("ShowNoteGraph"..pname(pn)) > 1 then
 				output = addToOutput(output,"Show Stats",", ")
 			else
-				output = addToOutput(output,"Show Stats with Note Graph",", ")
+				output = addToOutput(output,"Show Stats & NoteGraph",", ")
 			end
 		elseif getenv("ShowStatsSize"..pname(pn)) == 1 then
-			if getenv("ShowNoteGraph"..pname(pn)) == 1 then
+			if getenv("ShowNoteGraph"..pname(pn)) > 1 then
 				output = addToOutput(output,"Show FullStats",", ")
 			else
-				output = addToOutput(output,"Show FullStats with Note Graph",", ")
+				output = addToOutput(output,"Show FullStats & NoteGraph",", ")
 			end
 		elseif getenv("ShowStatsSize"..pname(pn)) == 2 then
-			if getenv("ShowNoteGraph"..pname(pn)) == 1 then
+			if getenv("ShowNoteGraph"..pname(pn)) > 1 then
 				output = addToOutput(output,"Show MiniStats",", ")
 			else
-				output = addToOutput(output,"Show MiniStats with Note Graph",", ")
+				output = addToOutput(output,"Show MiniStats & NoteGraph",", ")
 			end
 		end
+	elseif getenv("ShowNoteGraph"..pname(pn)) > 1 then
+		output = addToOutput(output,"Show NoteGraph",", ")
 	end
 
 	if getenv("ScreenFilter"..pname(pn)) > 0 then output = addToOutput(output,"Screen Filter ("..(getenv("ScreenFilter"..pname(pn))*100).."%)",", ") end

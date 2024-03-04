@@ -5,6 +5,7 @@ local height  = SCREEN_HEIGHT / max
 local bgColor = color('0, 0, 0, 0.66')
 local normalizeAlpha = (1.0 - bgColor[4]) * 0.8
 local graphH = -max
+local rowLimit = getenv("ShowNoteGraph"..pname(pn)) == 2
 
 local allowednotes = {
 	["TapNoteType_Tap"] = true,
@@ -23,6 +24,8 @@ local function UpdateGraph()
     local StepOrTrails = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentTrail(pn):GetTrailEntry(GAMESTATE:GetLoadingCourseSongIndex()):GetSteps() or GAMESTATE:GetCurrentSteps(pn)
 	local stepsPerSecList = {0}
     local chartint = 1
+    local absoluteSec = 0
+    local previousSec = -999
 
     if SongOrCourse then
         for k,v in pairs( SongOrCourse:GetAllSteps() ) do
@@ -42,8 +45,12 @@ local function UpdateGraph()
         for k,v in pairs( SongOrCourse:GetNoteData(chartint) ) do
             if timingData:IsJudgableAtBeat(v[1]) then
                 if allowednotes[v[3]] then
-                    local currentSec = math.ceil(timingData:GetElapsedTimeFromBeat(v[1]))
-                    stepsPerSecList[currentSec] = stepsPerSecList[currentSec] and stepsPerSecList[currentSec] + 1 or 0
+                    if rowLimit then absoluteSec = timingData:GetElapsedTimeFromBeat(v[1]) end
+                    if previousSec ~= absoluteSec then
+                        local currentSec = math.ceil(timingData:GetElapsedTimeFromBeat(v[1]))
+                        stepsPerSecList[currentSec] = stepsPerSecList[currentSec] and stepsPerSecList[currentSec] + 1 or 0
+                    end
+                    if rowLimit then previousSec = absoluteSec end
                 end
             end
         end
