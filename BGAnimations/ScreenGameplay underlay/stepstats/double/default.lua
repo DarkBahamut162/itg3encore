@@ -67,7 +67,7 @@ return Def.ActorFrame{
 			end
 		end,
 		LoadActor("../graph",pn)..{
-			Condition=getenv("ShowNoteGraph"..pname(pn)) == 2,
+			Condition=getenv("ShowNoteGraph"..pname(pn)) > 1,
 			InitCommand=function(self) self:x(pn == PLAYER_1 and 53 or -53):y(-15):zoom(0.5) end
 		},
 		LoadActor("d_bg",pn),

@@ -60,7 +60,7 @@ return Def.ActorFrame {
 			setenv("EvalCombo"..pname(player),true)
 		end
 		if (GAMESTATE:GetPlayerState(player):GetPlayerController() == 'PlayerController_Autoplay') or
-		(GAMESTATE:GetPlayerState(player):GetPlayerController() == 'PlayerController_Cpu') or isSurvival(player) then
+		(GAMESTATE:GetPlayerState(player):GetPlayerController() == 'PlayerController_Cpu') then
 			checkFantastics, checkPerfects, checkGreats, check = false, false, false, false
 			setenv("EvalCombo"..pname(player),false)
 		end

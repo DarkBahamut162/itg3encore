@@ -109,23 +109,26 @@ local function GraphDisplay(pn)
 				self:Set( ss, ss:GetPlayerStageStats(pn) ):player( pn )
 			end
 		},
-		LoadActor(THEME:GetPathB("ScreenEvaluation","underlay/FGC "..pname(pn)))..{
-			Condition=not isVS() and getenv("EvalCombo"..pname(pn)) and lastPerfectSecond > 0 and not (isOni() and not isLifeline(player)),
-			InitCommand=function(self)
-				self:croptop(0.78) if not STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):FullComboOfScore('TapNoteScore_W3') == true then self:cropright(1-(lastGreatSecond/length)) end
-			end
-		},
-		LoadActor(THEME:GetPathB("ScreenEvaluation","underlay/FEC "..pname(pn)))..{
-			Condition=not isVS() and getenv("EvalCombo"..pname(pn)) and lastMarvelousSecond > 0 and not (isOni() and not isLifeline(player)),
-			InitCommand=function(self)
-				self:croptop(0.78) if not STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):FullComboOfScore('TapNoteScore_W2') == true then self:cropright(1-(lastPerfectSecond/length)) end
-			end
-		},
-		LoadActor(THEME:GetPathB("ScreenEvaluation","underlay/FFC "..pname(pn)))..{
-			Condition=not isVS() and getenv("EvalCombo"..pname(pn)) and not (isOni() and not isLifeline(player)),
-			InitCommand=function(self)
-				self:croptop(0.78) if not STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):FullComboOfScore('TapNoteScore_W1') == true then self:cropright(1-(lastMarvelousSecond/length)) end
-			end
+		Def.ActorFrame {
+			Condition=not isSurvival(pn),
+			LoadActor(THEME:GetPathB("ScreenEvaluation","underlay/FGC "..pname(pn)))..{
+				Condition=not isVS() and getenv("EvalCombo"..pname(pn)) and lastPerfectSecond > 0 and not (isOni() and not isLifeline(pn)),
+				InitCommand=function(self)
+					self:croptop(0.78) if not STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):FullComboOfScore('TapNoteScore_W3') == true then self:cropright(1-(lastGreatSecond/length)) end
+				end
+			},
+			LoadActor(THEME:GetPathB("ScreenEvaluation","underlay/FEC "..pname(pn)))..{
+				Condition=not isVS() and getenv("EvalCombo"..pname(pn)) and lastMarvelousSecond > 0 and not (isOni() and not isLifeline(pn)),
+				InitCommand=function(self)
+					self:croptop(0.78) if not STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):FullComboOfScore('TapNoteScore_W2') == true then self:cropright(1-(lastPerfectSecond/length)) end
+				end
+			},
+			LoadActor(THEME:GetPathB("ScreenEvaluation","underlay/FFC "..pname(pn)))..{
+				Condition=not isVS() and getenv("EvalCombo"..pname(pn)) and not (isOni() and not isLifeline(pn)),
+				InitCommand=function(self)
+					self:croptop(0.78) if not STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):FullComboOfScore('TapNoteScore_W1') == true then self:cropright(1-(lastMarvelousSecond/length)) end
+				end
+			}
 		}
 	}
 end
