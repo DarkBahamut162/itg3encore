@@ -602,11 +602,12 @@ function getAllTheBPMs(song,step,BPMtype)
 		bpms[2]=math.round(bpms[2])
 		bpms[3] = 0
 	elseif BPMtype == 2 then
-		if isOutFox() then
+		local trueBPM = tonumber(LoadFromCache(song,step,"TrueMaxBPM"))
+		if isOutFox() and trueBPM > 0 then
 			bpms = step:GetTimingData():GetActualBPM()
 			bpms[1]=math.round(bpms[1])
 			bpms[2]=math.round(bpms[2])
-			bpms[3]=math.round(tonumber(LoadFromCache(song,step,"TrueMaxBPM")))
+			bpms[3]=math.round(trueBPM)
 		else
 			bpms = getTrueBPMsCalculated(song,step)
 			bpms[1]=math.round(bpms[1])
@@ -635,6 +636,13 @@ function getCalculatedDifficulty(Step)
 	local stepCounter = isOutFox() and split("_",LoadFromCache(Song,Step,"StepCounter")) or {}
 	local stepType = split("_",Step:GetStepsType())
 	local stepSum = isOutFox() and 0 or math.round(Step:GetRadarValues(GAMESTATE:GetMasterPlayerNumber()):GetValue('RadarCategory_TapsAndHolds') / totalSeconds * getColumnsPerPlayer(stepType[2],stepType[3],true) / 2)
+
+	if totalSeconds < 0 then
+		totalSeconds = Song:GetLastSecond() - Song:GetFirstSecond()
+		stepCounter = {}
+		stepSum = math.round(Step:GetRadarValues(GAMESTATE:GetMasterPlayerNumber()):GetValue('RadarCategory_TapsAndHolds') / totalSeconds * getColumnsPerPlayer(stepType[2],stepType[3],true) / 2)
+	end
+
 	if isOutFox() then
 		for i=1,#stepCounter do if stepCounter[i] then stepSum = stepSum + (stepCounter[i] * i) end end
 		if IsGame("be-mu") then
@@ -671,4 +679,32 @@ function getCalculatedDifficulty(Step)
 		repeatCheck[value] = OG
 		return OG
 	end
+end
+
+function grooveRadar(song,step,timingData,RadarValues)
+	local stream,voltage,air,freeze,chaos = 0,0,0,0,0
+	local totalSeconds = isOutFox() and tonumber(LoadFromCache(song,step,"TrueSeconds")) or (song:GetLastSecond() - song:GetFirstSecond())
+	local totalBeats = (isOutFox() and tonumber(LoadFromCache(song,step,"TrueBeats")) or (song:GetLastBeat() - song:GetFirstBeat()))
+	local avg_bps_OLD = song:GetLastBeat() / song:MusicLengthSeconds()
+	local avg_bps_NEW = totalBeats / totalSeconds
+
+	if totalSeconds < 0 and totalBeats < 0 then
+		totalSeconds = song:GetLastSecond() - song:GetFirstSecond()
+		totalBeats = song:GetLastBeat() - song:GetFirstBeat()
+		avg_bps_NEW = totalBeats / totalSeconds
+	end
+
+	stream = RadarValues:GetValue('RadarCategory_Stream')
+	voltage = RadarValues:GetValue('RadarCategory_Voltage')
+	air = RadarValues:GetValue('RadarCategory_Air')
+	freeze = RadarValues:GetValue('RadarCategory_Freeze')
+	chaos = RadarValues:GetValue('RadarCategory_Chaos')
+
+	stream = stream * song:MusicLengthSeconds() / totalSeconds
+	voltage = voltage / avg_bps_OLD * avg_bps_NEW
+	air = air * song:MusicLengthSeconds() / totalSeconds
+	freeze = freeze * song:MusicLengthSeconds() / totalSeconds
+	chaos = chaos * song:MusicLengthSeconds() / totalSeconds
+
+	return math.max(0,stream),math.max(0,voltage),math.max(0,air),math.max(0,freeze),math.max(0,chaos)
 end

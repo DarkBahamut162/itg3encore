@@ -36,6 +36,13 @@ return Def.ActorFrame{
 					end
 					if loadScratches and loadScratches ~= "" then output = addToOutput(output,"Scratches: "..loadScratches," | ") end
 					if loadFoots and loadFoots ~= "" then output = addToOutput(output,"Foots: "..loadFoots," | ") end
+
+					if output == "" then
+						self:diffuseshift():effectcolor1(color("#FF0000")):effectcolor2(color("#FFFFFF")):effectclock("beat")
+						output = "FAILED TO LOAD"
+					else
+						self:stopeffect()
+					end
 					
 					local rv = StepsOrTrail:GetRadarValues(player)
 					local lifts = rv:GetValue('RadarCategory_Lifts')

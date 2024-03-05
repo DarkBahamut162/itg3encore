@@ -28,7 +28,9 @@ return Def.ActorFrame{
 							local entries = trail:GetTrailEntries()
 							for i=1,#entries do
 								if isOutFox() then
-									length[pos+1] = length[pos+1] + LoadFromCache(entries[i]:GetSong(),entries[i]:GetSteps(),"TrueSeconds")
+									local trueSeconds = LoadFromCache(entries[i]:GetSong(),entries[i]:GetSteps(),"TrueSeconds")
+									if trueSeconds < 0 then trueSeconds = entries[i]:GetSong():GetFirstSecond() > entries[i]:GetSong():GetLastSecond() and 0 or entries[i]:GetSong():GetLastSecond()-entries[i]:GetSong():GetFirstSecond() end
+									length[pos+1] = length[pos+1] + trueSeconds
 								else
 									length[pos+1] = length[pos+1] + (entries[i]:GetSong():GetFirstSecond() > entries[i]:GetSong():GetLastSecond() and 0 or entries[i]:GetSong():GetLastSecond()-entries[i]:GetSong():GetFirstSecond())
 								end
@@ -45,6 +47,7 @@ return Def.ActorFrame{
 						if isOutFox() then
 							local steps = GAMESTATE:GetCurrentSteps(player)
 							if steps then length[pos+1] = tonumber(LoadFromCache(curSelection,steps,"TrueSeconds")) end
+							if length[pos+1] < 0 then length[pos+1] = curSelection:GetFirstSecond() > curSelection:GetLastSecond() and 0 or curSelection:GetLastSecond()-curSelection:GetFirstSecond() end
 						else
 							length[pos+1] = curSelection:GetFirstSecond() > curSelection:GetLastSecond() and 0 or curSelection:GetLastSecond()-curSelection:GetFirstSecond()
 						end
