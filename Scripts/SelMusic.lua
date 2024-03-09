@@ -602,7 +602,7 @@ function getAllTheBPMs(song,step,BPMtype)
 		bpms[2]=math.round(bpms[2])
 		bpms[3] = 0
 	elseif BPMtype == 2 then
-		local trueBPM = tonumber(LoadFromCache(song,step,"TrueMaxBPM"))
+		local trueBPM = isOutFox() and tonumber(LoadFromCache(song,step,"TrueMaxBPM")) or 0
 		if isOutFox() and trueBPM > 0 then
 			bpms = step:GetTimingData():GetActualBPM()
 			bpms[1]=math.round(bpms[1])
