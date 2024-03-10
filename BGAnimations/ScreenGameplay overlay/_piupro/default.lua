@@ -1,3 +1,5 @@
+local showDanger = PREFSMAN:GetPreference("ShowDanger")
+
 local function SingleLifeMeter()
 	local style = GAMESTATE:GetCurrentStyle()
 	local styleType = style:GetStyleType()
@@ -225,11 +227,13 @@ local function MakeLifeMeter(side)
 			c.Hex:cropright(1-(FadePos+0.65))
 		end
 
-		local DangerAlpha = scale( original_life, 0.1, 0.25, 0.8, 0 )
-		c.Danger:stoptweening()
-		local OldDangerAlpha = c.Danger:GetDiffuseAlpha()
-		c.Danger:linear(math.abs(OldDangerAlpha - DangerAlpha) * 1)
-		c.Danger:diffusealpha(DangerAlpha)
+		if showDanger then
+			local DangerAlpha = scale( original_life, 0.1, 0.25, 0.8, 0 )
+			c.Danger:stoptweening()
+			local OldDangerAlpha = c.Danger:GetDiffuseAlpha()
+			c.Danger:linear(math.abs(OldDangerAlpha - DangerAlpha) * 1)
+			c.Danger:diffusealpha(DangerAlpha)
+		end
 
 		local fFillVisible = scale( original_life, 0.80, 0.90, 0, 1 )
 		c.Filled:diffusealpha(fFillVisible)
@@ -244,7 +248,7 @@ local function MakeLifeMeter(side)
 		Def.Quad { Name = "HexMask" },
 		LoadActor("meter tip") .. { Name = "Tip" },
 		LoadActor("meter grad") .. { Name = "Grad" },
-		LoadActor("meter danger") .. { Name = "Danger" },
+		LoadActor("meter danger") .. { Condition = showDanger , Name = "Danger" },
 		LoadActor("meter honeycomb") .. { Name = "Hex" },
 		LoadActor("life meter ticks", TicksWidth) .. { Name = "Tick" },
 		LoadActor("meter filled color") .. { Name = "Filled" },
@@ -277,7 +281,7 @@ local function MakeLifeMeter(side)
 		local f=function(self) self:zoomx(side == PLAYER_1 and 1 or -1):ztest(true):halign(0):x(MeterX[side]) end
 
 		f(c.Grad)
-		f(c.Danger)
+		if showDanger then f(c.Danger) end
 		f(c.Tick)
 		f(c.Filled)
 		f(c.FilledHex)
@@ -304,9 +308,11 @@ local function MakeLifeMeter(side)
 		c.Grad:SetWidth( MeterWidth )
 		c.Grad:diffusealpha(1)
 
-		c.Danger:SetWidth( MeterWidth )
-		c.Danger:diffuse(color("#C0C0C0"))
-		c.Danger:diffusealpha(0)
+		if showDanger then
+			c.Danger:SetWidth( MeterWidth )
+			c.Danger:diffuse(color("#C0C0C0"))
+			c.Danger:diffusealpha(0)
+		end
 
 		c.Dead:SetWidth( MeterWidth )
 		c.Dead:diffuse(color("#909090"))

@@ -7,15 +7,20 @@ end
 
 Branch.StartGame = function()
 	if GAMESTATE:GetCoinMode() == 'CoinMode_Home' then
-		if isVS() then
-			return "ScreenSelectNumPlayers"
-		end
-		return "ScreenSelectStyle"
+		if isVS() then return "ScreenSelectNumPlayers" end
 	else
 		if PREFSMAN:GetPreference("ShowCaution") then return "ScreenWarning" end
-		return "ScreenSelectGameMode"
+		return "ScreenSelectPlayMode"
 	end
-	return "ScreenSelectGameMode"
+	return "ScreenSelectStyle"
+end
+
+Branch.BeforeSelectStyle = function()
+	if GAMESTATE:GetCoinMode() == 'CoinMode_Free' then
+		return "ScreenSelectPlayMode"
+	else
+		return "ScreenTitleMenu"
+	end
 end
 
 Branch.AfterSelectStyle = function()

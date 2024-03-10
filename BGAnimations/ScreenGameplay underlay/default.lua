@@ -10,7 +10,7 @@ t[#t+1] = Def.ActorFrame{
 	LoadActor("ScreenFilter"),
 	LoadActor("beginner")..{ Condition=isRegular() and GAMESTATE:GetEasiestStepsDifficulty() == 'Difficulty_Beginner' },
 	LoadActor("stepstats")..{ Condition=stats },
-	LoadActor("danger")..{ Condition=not isOni() },
+	LoadActor("danger")..{ Condition=not isOni() and PREFSMAN:GetPreference("ShowDanger") },
 	LoadActor("dead")
 }
 
