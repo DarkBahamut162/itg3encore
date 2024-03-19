@@ -1,4 +1,5 @@
 local player = Var "Player"
+local pnMaxLives = { PlayerNumber_P1 = 0, PlayerNumber_P2 = 0 }
 
 return Def.ActorFrame{
 	InitCommand=function(self)
@@ -25,9 +26,8 @@ return Def.ActorFrame{
 			InitCommand=function(self) self:zoomx(1.05):cropright(1):sleep(1):decelerate(0.6):cropright(0) end,
 			LifeChangedMessageCommand=function(self,params)
 				if params.Player == player then
-					local screen = SCREENMAN:GetTopScreen()
-					local glifemeter = screen:GetLifeMeter(player)
-					self:stoptweening():accelerate(0.1):cropright(1-(params.LivesLeft/glifemeter:GetTotalLives()))
+					if params.LivesLeft > pnMaxLives[player] then pnMaxLives[player] = params.LivesLeft end 
+					self:stoptweening():accelerate(0.1):cropright(1-(params.LivesLeft/pnMaxLives[player]))
 				end
 			end
 		},
@@ -72,6 +72,7 @@ return Def.ActorFrame{
 			BeginCommand=function(self)
 				local screen = SCREENMAN:GetTopScreen()
 				local glifemeter = screen:GetLifeMeter(player)
+				if glifemeter:GetTotalLives() > pnMaxLives[player] then pnMaxLives[player] = glifemeter:GetTotalLives() end 
 				self:settext(glifemeter:GetTotalLives()):x(-1):y(-5):maxwidth(28):valign(1)
 			end,
 			LifeChangedMessageCommand=function(self,params)
@@ -90,6 +91,11 @@ return Def.ActorFrame{
 				local screen = SCREENMAN:GetTopScreen()
 				local glifemeter = screen:GetLifeMeter(player)
 				self:settext(glifemeter:GetTotalLives()):x(-1):y(5):maxwidth(28):valign(0)
+			end,
+			LifeChangedMessageCommand=function(self,params)
+				if params.Player == player and pnMaxLives[player] ~= tonumber(self:GetText()) then
+					self:settext(pnMaxLives[player])
+				end
 			end
 		}
 	}
