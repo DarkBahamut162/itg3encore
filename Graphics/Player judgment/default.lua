@@ -23,12 +23,10 @@ local TNSFrames = {
 
 local judgment = not GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentSteps(player):GetDifficulty() == 'Difficulty_Beginner' and "_beginner" or "_judgments"
 
-local checkFantastics = true
-local checkPerfects = true
-local checkGreats = true
-local check = false
-local preCheck = true
-setenv("EvalCombo"..pname(player),false)
+setenv("checkFantastics"..pname(player),true)
+setenv("checkPerfects"..pname(player),true)
+setenv("checkGreats"..pname(player),true)
+setenv("check"..pname(player),true)
 
 return Def.ActorFrame {
 	LoadActor(judgment) .. {
@@ -55,28 +53,29 @@ return Def.ActorFrame {
 		local tns = param.TapNoteScore
 		local iNumStates = c.Judgment:GetNumStates()
 		local iFrame = TNSFrames[tns]
-		if iFrame and preCheck then
-			preCheck, check = false, true
-			setenv("EvalCombo"..pname(player),true)
-		end
+
 		if (GAMESTATE:GetPlayerState(player):GetPlayerController() == 'PlayerController_Autoplay') or
 		(GAMESTATE:GetPlayerState(player):GetPlayerController() == 'PlayerController_Cpu') then
-			checkFantastics, checkPerfects, checkGreats, check = false, false, false, false
+			setenv("checkFantastics"..pname(player),false)
+			setenv("checkPerfects"..pname(player),false)
+			setenv("checkGreats"..pname(player),false)
+			setenv("check"..pname(player),false)
 			setenv("EvalCombo"..pname(player),false)
 		end
 		if not iFrame then return end
-		if check then
-			if checkFantastics == true and iFrame > 0 then
-				checkFantastics = false
+		if getenv("check"..pname(player)) then
+			if getenv("checkFantastics"..pname(player)) and iFrame > 0 then
+				setenv("checkFantastics"..pname(player),false)
 				setenv("LastFantastic"..pname(player),STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetAliveSeconds())
 			end
-			if checkPerfects == true and iFrame > 1 then
-				checkPerfects = false
+			if getenv("checkPerfects"..pname(player)) and iFrame > 1 then
+				setenv("checkPerfects"..pname(player),false)
 				setenv("LastPerfect"..pname(player),STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetAliveSeconds())
 			end
-			if checkGreats == true and iFrame > 2 then
-				checkGreats = false
+			if getenv("checkGreats"..pname(player)) and iFrame > 2 then
+				setenv("checkGreats"..pname(player),false)
 				setenv("LastGreat"..pname(player),STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetAliveSeconds())
+				setenv("check"..pname(player),false)
 			end
 		end
 		if self:GetName() ~= "Judgment" then if param.FirstTrack ~= tonumber(ToEnumShortString(self:GetName())) then return end end

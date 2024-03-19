@@ -95,7 +95,7 @@ local function GraphDisplay(pn)
 	local lastGreatSecond = getenv("LastGreat"..pname(pn)) - CalcMinusStepSeconds(pn)
 
 	local combo = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):GetComboList()
-	local trueLast = #combo > 0 and combo[1]["StartSecond"]+combo[1]["SizeSeconds"] or 0
+	local trueLast = (#combo > 0 and combo[1]["StartSecond"] < PREFSMAN:GetPreference("TimingWindowSecondsW4")) and combo[1]["StartSecond"]+combo[1]["SizeSeconds"] or 0
 	local maxLast = lastGreatSecond ~= 0 and lastGreatSecond or lastPerfectSecond ~= 0 and lastPerfectSecond or lastMarvelousSecond
 	local lastGreatSecond = lastGreatSecond * (trueLast/maxLast)
 	local lastPerfectSecond = lastPerfectSecond * (trueLast/maxLast)
@@ -112,13 +112,13 @@ local function GraphDisplay(pn)
 		Def.ActorFrame {
 			Condition=not isSurvival(pn),
 			LoadActor(THEME:GetPathB("ScreenEvaluation","underlay/FGC "..pname(pn)))..{
-				Condition=not isVS() and getenv("EvalCombo"..pname(pn)) and lastPerfectSecond > 0 and not (isOni() and not isLifeline(pn)),
+				Condition=not isVS() and getenv("EvalCombo"..pname(pn)) and not (isOni() and not isLifeline(pn)),
 				InitCommand=function(self)
 					self:croptop(0.78) if not STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):FullComboOfScore('TapNoteScore_W3') == true then self:cropright(1-(lastGreatSecond/length)) end
 				end
 			},
 			LoadActor(THEME:GetPathB("ScreenEvaluation","underlay/FEC "..pname(pn)))..{
-				Condition=not isVS() and getenv("EvalCombo"..pname(pn)) and lastMarvelousSecond > 0 and not (isOni() and not isLifeline(pn)),
+				Condition=not isVS() and getenv("EvalCombo"..pname(pn)) and not (isOni() and not isLifeline(pn)),
 				InitCommand=function(self)
 					self:croptop(0.78) if not STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):FullComboOfScore('TapNoteScore_W2') == true then self:cropright(1-(lastPerfectSecond/length)) end
 				end
