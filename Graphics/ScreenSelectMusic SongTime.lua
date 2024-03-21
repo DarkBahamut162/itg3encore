@@ -28,7 +28,7 @@ return Def.ActorFrame{
 							local entries = trail:GetTrailEntries()
 							for i=1,#entries do
 								if isOutFox() then
-									local trueSeconds = LoadFromCache(entries[i]:GetSong(),entries[i]:GetSteps(),"TrueSeconds")
+									local trueSeconds = tonumber(LoadFromCache(entries[i]:GetSong(),entries[i]:GetSteps(),"TrueSeconds"))
 									if trueSeconds < 0 then trueSeconds = entries[i]:GetSong():GetFirstSecond() > entries[i]:GetSong():GetLastSecond() and 0 or entries[i]:GetSong():GetLastSecond()-entries[i]:GetSong():GetFirstSecond() end
 									length[pos+1] = length[pos+1] + trueSeconds
 								else
