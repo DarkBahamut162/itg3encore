@@ -295,6 +295,20 @@ function checkStopAtBeat(beat,timing)
 	return timing:GetElapsedTimeFromBeat(beat)
 end
 
+local function calcSPS(SPS,max)
+	local total, times = 0, 0
+	for _sps, _times in pairs(SPS) do
+		if (max and _sps > max / 6 and _sps < max * 2) or not max then
+			total = total + (_sps * _times)
+			times = times + _times
+		end
+	end
+
+	if total > 0 and times > 0 then total = total / times * 2 end
+
+	return total
+end
+
 function cacheStep(Song,Step)
     local chartint = 1
 	local currentBeat = 0
@@ -400,23 +414,9 @@ function cacheStep(Song,Step)
 		end
 	end
 	if currentNotes ~= 0 then noteCounter[currentNotes] = noteCounter[currentNotes] + 1 end
-	local total, times = 0, 0
-	for _sps, _times in pairs(stepsPerSec) do
-		total = total + (_sps * _times)
-		times = times + _times
-	end
 
-	if total > 0 and times > 0 then total = total / times * 2 end
-
-	local total2, times2 = 0, 0
-	for _sps2, _times2 in pairs(stepsPerSec) do
-		if _sps2 > total / 6 and _sps2 < total * 2 then
-			total2 = total2 + (_sps2 * _times2)
-			times2 = times2 + _times2
-		end
-	end
-
-	if total2 > 0 and times2 > 0 then total2 = total2 / times2 * 2 end
+	local total = calcSPS(stepsPerSec)
+	local total2 = calcSPS(stepsPerSec,total)
 
 	local hasLua = HasLua(Song,"BGCHANGES") or HasLua(Song,"FGCHANGES")
 
