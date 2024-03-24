@@ -38,7 +38,8 @@ return Def.ActorFrame{
 					if loadFoots and loadFoots ~= "" then output = addToOutput(output,"Foots: "..loadFoots," | ") end
 
 					if output == "" then
-						self:diffuseshift():effectcolor1(color("#FF0000")):effectcolor2(color("#FFFFFF")):effectclock("beat")
+						local EC = not courseMode and SongOrCourse:GetPreviewMusicPath() or " "
+						self:diffuseshift():effectcolor1(color("#FF0000")):effectcolor2(color("#FFFFFF")):effectclock(EC ~= "" and "beat" or "timerglobal")
 						output = "FAILED TO LOAD"
 					else
 						self:stopeffect()

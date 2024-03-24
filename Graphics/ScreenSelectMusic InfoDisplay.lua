@@ -29,13 +29,14 @@ return Def.ActorFrame{
 				--[[ Automate my video timestamping this way... Work smarter not harder... ]]--
 				--lua.ReportScriptError( SongOrCourse:GetGroupName().." | "..SongOrCourse:GetDisplayFullTitle().." / "..SongOrCourse:GetDisplayArtist() )
 				if SongOrCourse and (enableRounds or enableLua) then
+					local EC = SongOrCourse:GetPreviewMusicPath()
 					if enableRounds then
 						if SongOrCourse:IsLong() then
 							output = eventMode and "LONG" or "COUNTS AS 2 ROUNDS"
-							self:diffuseshift():effectcolor1(color("#FFFF00")):effectcolor2(color("#FFFFFF")):effectclock("beat")
+							self:diffuseshift():effectcolor1(color("#FFFF00")):effectcolor2(color("#FFFFFF")):effectclock(EC ~= "" and "beat" or "timerglobal")
 						elseif SongOrCourse:IsMarathon() then
 							output = eventMode and "MARATHON" or "COUNTS AS 3 ROUNDS"
-							self:diffuseshift():effectcolor1(color("#FF0000")):effectcolor2(color("#FFFFFF")):effectclock("beat")
+							self:diffuseshift():effectcolor1(color("#FF0000")):effectcolor2(color("#FFFFFF")):effectclock(EC ~= "" and "beat" or "timerglobal")
 						else
 							self:stopeffect()
 						end
@@ -44,12 +45,12 @@ return Def.ActorFrame{
 						if isOutFox() then
 							local step = GAMESTATE:GetCurrentSteps(GAMESTATE:GetMasterPlayerNumber())
 							if step and tobool(LoadFromCache(SongOrCourse,step,"HasLua")) then
-								self:rainbow():effectclock("beat")
+								self:rainbow():effectclock(EC ~= "" and "beat" or "timerglobal")
 								if output == "" then output = "LUA" else output = output.." & LUA" end
 							end
 						else
 							if HasLuaCheck() then
-								self:rainbow():effectclock("beat")
+								self:rainbow():effectclock(EC ~= "" and "beat" or "timerglobal")
 								if output == "" then output = "LUA" else output = output.." & LUA" end
 							end
 						end

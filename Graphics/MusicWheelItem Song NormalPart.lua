@@ -11,7 +11,7 @@ return Def.ActorFrame{
 				end
 
 				if isFav then
-					self:diffuseshift():effectcolor1(color("#FFFF00")):effectcolor2(color("#FFFFFF")):effectclock("beat")
+					self:diffuseshift():effectcolor1(color("#FFFF00")):effectcolor2(color("#FFFFFF")):effectclock(params.Song:GetPreviewMusicPath() ~= "" and "beat" or "timerglobal")
 				else
 					self:stopeffect()
 				end
