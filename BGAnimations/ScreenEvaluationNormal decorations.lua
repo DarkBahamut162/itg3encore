@@ -95,11 +95,12 @@ local function GraphDisplay(pn)
 	local lastGreatSecond = getenv("LastGreat"..pname(pn)) - CalcMinusStepSeconds(pn)
 
 	local combo = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):GetComboList()
-	local trueLast = (#combo > 0 and combo[1]["StartSecond"] < PREFSMAN:GetPreference("TimingWindowSecondsW4")) and combo[1]["StartSecond"]+combo[1]["SizeSeconds"] or 0
+	local trueLast = #combo > 0 and combo[1]["StartSecond"]+combo[1]["SizeSeconds"] or 0
 	local maxLast = lastGreatSecond ~= 0 and lastGreatSecond or lastPerfectSecond ~= 0 and lastPerfectSecond or lastMarvelousSecond
-	local lastGreatSecond = lastGreatSecond * (trueLast/maxLast)
-	local lastPerfectSecond = lastPerfectSecond * (trueLast/maxLast)
-	local lastMarvelousSecond = lastMarvelousSecond * (trueLast/maxLast)
+	local fix = trueLast < maxLast and trueLast/maxLast or 1
+	local lastGreatSecond = lastGreatSecond * fix
+	local lastPerfectSecond = lastPerfectSecond * fix
+	local lastMarvelousSecond = lastMarvelousSecond * fix
 
 	return Def.ActorFrame {
 		Def.GraphDisplay {

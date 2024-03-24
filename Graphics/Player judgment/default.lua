@@ -94,8 +94,8 @@ return Def.ActorFrame {
 		c.Judgment:visible( true )
 	end,
 	OffCommand=function(self)
-		if checkFantastics then setenv("LastFantastic"..pname(player),STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetAliveSeconds()) end
-		if checkPerfects then setenv("LastPerfect"..pname(player),STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetAliveSeconds()) end
-		if checkGreats then setenv("LastGreat"..pname(player),STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetAliveSeconds()) end
+		if getenv("checkFantastics"..pname(player)) then setenv("LastFantastic"..pname(player),STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetAliveSeconds()) end
+		if getenv("checkPerfects"..pname(player)) then setenv("LastPerfect"..pname(player),STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetAliveSeconds()) end
+		if getenv("checkGreats"..pname(player)) then setenv("LastGreat"..pname(player),STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetAliveSeconds()) end
 	end
 }
