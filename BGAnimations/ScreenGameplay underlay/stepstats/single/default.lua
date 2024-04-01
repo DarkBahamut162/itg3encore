@@ -53,6 +53,15 @@ if getenv("ShowStats"..pname(pn)) < 7 then
 			FadeOnCommand=function(self) self:sleep(2+(0.25*(i-1))):linear(1):diffusealpha(0) end
 		}
 		Bars[#Bars+1] = LoadActor("../w"..i)..{
+			InitCommand=function(self) self:vertalign(bottom):diffusealpha(0.25):addx(barCenter+barOffset[bgNum][i]+(barWidth[bgNum]+barSpace[bgNum])*(i-1)):addy(86):zoomx(0.01*barWidth[bgNum]):zoomy(0) end,
+			Condition=getenv("ShowStats"..pname(pn)) >= i,
+			JudgmentMessageCommand=function(self,param) if param.Player == pn then self:queuecommand("Update") end end,
+			UpdateCommand=function(self)
+				local Percent = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):GetPercentageOfTaps('TapNoteScore_'..score)
+				self:zoomy(Percent*barHeight)
+			end
+		}
+		Bars[#Bars+1] = LoadActor("../w"..i)..{
 			InitCommand=function(self) self:vertalign(bottom):addx(barCenter+barOffset[bgNum][i]+(barWidth[bgNum]+barSpace[bgNum])*(i-1)):addy(86):zoomx(0.01*barWidth[bgNum]):zoomy(0) end,
 			Condition=getenv("ShowStats"..pname(pn)) >= i,
 			JudgmentMessageCommand=function(self,param) if param.Player == pn then self:queuecommand("Update") end end,

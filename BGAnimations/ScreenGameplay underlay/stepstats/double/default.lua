@@ -32,6 +32,15 @@ if stats < 7 then
 	for i = 1,math.min(6,stats) do
 		local score = i < 6 and "W"..i or "Miss"
 		Bars[#Bars+1] = LoadActor("../w"..i)..{
+			InitCommand=function(self) self:vertalign(bottom):diffusealpha(0.25):x(barCenter+barWidth[bgNum]*(i-1)):y(164):zoomx(0.01*barWidth[bgNum]):zoomy(0) end,
+			Condition=stats >= i,
+			JudgmentMessageCommand=function(self,param) if param.Player == pn then self:queuecommand("Update") end end,
+			UpdateCommand=function(self)
+				local Percent = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):GetPercentageOfTaps('TapNoteScore_'..score)
+				self:zoomy(Percent*barHeight)
+			end
+		}
+		Bars[#Bars+1] = LoadActor("../w"..i)..{
 			InitCommand=function(self) self:vertalign(bottom):x(barCenter+barWidth[bgNum]*(i-1)):y(164):zoomx(0.01*barWidth[bgNum]):zoomy(0) end,
 			Condition=stats >= i,
 			JudgmentMessageCommand=function(self,param) if param.Player == pn then self:queuecommand("Update") end end,
