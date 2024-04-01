@@ -94,7 +94,8 @@ local function GraphDisplay(pn)
 	local lastPerfectSecond = getenv("LastPerfect"..pname(pn)) - CalcMinusStepSeconds(pn)
 	local lastGreatSecond = getenv("LastGreat"..pname(pn)) - CalcMinusStepSeconds(pn)
 
-	local combo = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):GetComboList()
+	local PSS = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn)
+	local combo = PSS:GetComboList()
 	local trueLast = #combo > 0 and combo[1]["StartSecond"]+combo[1]["SizeSeconds"] or 0
 	local maxLast = lastGreatSecond ~= 0 and lastGreatSecond or lastPerfectSecond ~= 0 and lastPerfectSecond or lastMarvelousSecond
 	local fix = trueLast < maxLast and trueLast/maxLast or 1
@@ -115,19 +116,19 @@ local function GraphDisplay(pn)
 			LoadActor(THEME:GetPathB("ScreenEvaluation","underlay/FGC "..pname(pn)))..{
 				Condition=not isVS() and getenv("EvalCombo"..pname(pn)) and not (isOni() and not isLifeline(pn)),
 				InitCommand=function(self)
-					self:croptop(0.78) if not STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):FullComboOfScore('TapNoteScore_W3') == true then self:cropright(1-(lastGreatSecond/length)) end
+					self:croptop(0.78) if not (PSS:FullComboOfScore('TapNoteScore_W3') and PlayerFullComboed(pn)) then self:cropright(1-(lastGreatSecond/length)) end
 				end
 			},
 			LoadActor(THEME:GetPathB("ScreenEvaluation","underlay/FEC "..pname(pn)))..{
 				Condition=not isVS() and getenv("EvalCombo"..pname(pn)) and not (isOni() and not isLifeline(pn)),
 				InitCommand=function(self)
-					self:croptop(0.78) if not STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):FullComboOfScore('TapNoteScore_W2') == true then self:cropright(1-(lastPerfectSecond/length)) end
+					self:croptop(0.78) if not (PSS:FullComboOfScore('TapNoteScore_W2') and PlayerFullComboed(pn)) then self:cropright(1-(lastPerfectSecond/length)) end
 				end
 			},
 			LoadActor(THEME:GetPathB("ScreenEvaluation","underlay/FFC "..pname(pn)))..{
 				Condition=not isVS() and getenv("EvalCombo"..pname(pn)) and not (isOni() and not isLifeline(pn)),
 				InitCommand=function(self)
-					self:croptop(0.78) if not STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):FullComboOfScore('TapNoteScore_W1') == true then self:cropright(1-(lastMarvelousSecond/length)) end
+					self:croptop(0.78) if not (PSS:FullComboOfScore('TapNoteScore_W1') and PlayerFullComboed(pn)) then self:cropright(1-(lastMarvelousSecond/length)) end
 				end
 			}
 		}
