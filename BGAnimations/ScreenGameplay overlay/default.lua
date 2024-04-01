@@ -20,7 +20,7 @@ local function setM(value,player)
 	GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Preferred"):MMod(value)
 	GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Stage"):MMod(value)
 	GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Song"):MMod(value)
-	GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Current"):MMod(value)	
+	GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Current"):MMod(value)
 end
 local function setA(value,player)
 	GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Preferred"):AMod(value)
@@ -66,32 +66,32 @@ local t = Def.ActorFrame{
 	end,
 	CodeMessageCommand = function(self, params)
 		if params.Name == 'SpeedUp' or params.Name == 'SpeedDown' then
-			PREVIOUS[params.PlayerNumber] = CURRENT[params.PlayerNumber]
-			if params.Name == 'SpeedUp' then
-				CURRENT[params.PlayerNumber] = CURRENT[params.PlayerNumber] + 25
-			elseif params.Name == 'SpeedDown' then
-				if CURRENT[params.PlayerNumber] > 25 then CURRENT[params.PlayerNumber] = CURRENT[params.PlayerNumber] - 25 end
-			end
+			if MOD[params.PlayerNumber] == "a" or MOD[params.PlayerNumber] == "ca" or MOD[params.PlayerNumber] == "av" then
+				c["MOD"..(params.PlayerNumber == PLAYER_1 and "1" or "2")]:playcommand("Block")
+			else
+				PREVIOUS[params.PlayerNumber] = CURRENT[params.PlayerNumber]
+				if params.Name == 'SpeedUp' then
+					CURRENT[params.PlayerNumber] = CURRENT[params.PlayerNumber] + 25
+				elseif params.Name == 'SpeedDown' then
+					if CURRENT[params.PlayerNumber] > 25 then CURRENT[params.PlayerNumber] = CURRENT[params.PlayerNumber] - 25 end
+				end
 
-			if MOD[params.PlayerNumber] == "x" then
-				setX(CURRENT[params.PlayerNumber],params.PlayerNumber)
-			elseif MOD[params.PlayerNumber] == "c" then
-				setC(CURRENT[params.PlayerNumber],params.PlayerNumber)
-			elseif MOD[params.PlayerNumber] == "m" then
-				setM(CURRENT[params.PlayerNumber],params.PlayerNumber)
-			elseif MOD[params.PlayerNumber] == "a" then
-				setA(CURRENT[params.PlayerNumber],params.PlayerNumber)
-			elseif MOD[params.PlayerNumber] == "ca" then
-				setCA(CURRENT[params.PlayerNumber],params.PlayerNumber)
-			elseif MOD[params.PlayerNumber] == "av" then
-				setAV(CURRENT[params.PlayerNumber],params.PlayerNumber)
-			end
+				if MOD[params.PlayerNumber] == "x" then
+					setX(CURRENT[params.PlayerNumber],params.PlayerNumber)
+				elseif MOD[params.PlayerNumber] == "c" then
+					setC(CURRENT[params.PlayerNumber],params.PlayerNumber)
+				elseif MOD[params.PlayerNumber] == "m" then
+					setM(CURRENT[params.PlayerNumber],params.PlayerNumber)
+				elseif MOD[params.PlayerNumber] == "a" then
+					setA(CURRENT[params.PlayerNumber],params.PlayerNumber)
+				elseif MOD[params.PlayerNumber] == "ca" then
+					setCA(CURRENT[params.PlayerNumber],params.PlayerNumber)
+				elseif MOD[params.PlayerNumber] == "av" then
+					setAV(CURRENT[params.PlayerNumber],params.PlayerNumber)
+				end
 
-			if PREVIOUS[params.PlayerNumber] ~= CURRENT[params.PlayerNumber] then
-				if params.PlayerNumber == PLAYER_1 then
-					c.MOD1:playcommand("Change")
-				else
-					c.MOD2:playcommand("Change")
+				if PREVIOUS[params.PlayerNumber] ~= CURRENT[params.PlayerNumber] then
+					c["MOD"..(params.PlayerNumber == PLAYER_1 and "1" or "2")]:playcommand("Change")
 				end
 			end
 		end
@@ -105,13 +105,16 @@ local t = Def.ActorFrame{
 			Name="MOD1",
 			InitCommand=function(self) self:shadowlength(1):zoom(0.4*WideScreenDiff()):x(THEME:GetMetric("ScreenGameplay","ScoreP1X")):y(THEME:GetMetric("ScreenGameplay","ScoreP1Y")-15*WideScreenDiff()) end,
 			OnCommand=function(self) self:settext(CURRENT[PLAYER_1] and "SPEED: " .. (CURRENT[PLAYER_1] / (MOD[PLAYER_1] == "x" and 100 or 1))..MOD[PLAYER_1] or "") end,
+			BlockCommand=function(self)
+				self:stoptweening():diffuse(color("1,0,0,1")):diffusealpha(1):settext("This MOD can't be changed while GamePlay"):sleep(1):linear(0.25):diffusealpha(0):queuecommand("TrueChange"):diffuse(color("1,1,1,1"))
+			end,
 			ChangeCommand=function(self)
-				local text ="SPEED CHANGE: " .. (PREVIOUS[PLAYER_1] / (MOD[PLAYER_1] == "x" and 100 or 1))..MOD[PLAYER_1] .. " -> " .. (CURRENT[PLAYER_1] / (MOD[PLAYER_1] == "x" and 100 or 1))..MOD[PLAYER_1]
+				local text = "SPEED CHANGE: " .. (PREVIOUS[PLAYER_1] / (MOD[PLAYER_1] == "x" and 100 or 1))..MOD[PLAYER_1] .. " -> " .. (CURRENT[PLAYER_1] / (MOD[PLAYER_1] == "x" and 100 or 1))..MOD[PLAYER_1]
 				self:stoptweening():diffusealpha(1):settext(text):sleep(1):linear(0.25):diffusealpha(0):queuecommand("TrueChange")
 			end,
 			TrueChangeCommand=function(self)
 				local text = "SPEED: " .. (CURRENT[PLAYER_1] / (MOD[PLAYER_1] == "x" and 100 or 1))..MOD[PLAYER_1]
-				self:settext(text):linear(0.25):diffusealpha(1)
+				self:diffusealpha(0):settext(text):linear(0.25):diffusealpha(1)
 			end
 		},
 		LoadFont("_eurostile normal")..{
@@ -120,13 +123,16 @@ local t = Def.ActorFrame{
 			Text=CURRENT[PLAYER_2] or "?",
 			InitCommand=function(self) self:shadowlength(1):zoom(0.4*WideScreenDiff()):x(THEME:GetMetric("ScreenGameplay","ScoreP2X")):y(THEME:GetMetric("ScreenGameplay","ScoreP2Y")-15*WideScreenDiff()) end,
 			OnCommand=function(self) self:settext(CURRENT[PLAYER_2] and "SPEED: " .. (CURRENT[PLAYER_2] / (MOD[PLAYER_2] == "x" and 100 or 1))..MOD[PLAYER_2] or "") end,
+			BlockCommand=function(self)
+				self:stoptweening():diffuse(color("1,0,0,1")):diffusealpha(1):settext("This MOD can't be changed while GamePlay"):sleep(1):linear(0.25):diffusealpha(0):queuecommand("TrueChange"):diffuse(color("1,1,1,1"))
+			end,
 			ChangeCommand=function(self)
 				local text ="SPEED CHANGE: " .. (PREVIOUS[PLAYER_2] / (MOD[PLAYER_2] == "x" and 100 or 1))..MOD[PLAYER_2] .. " -> " .. (CURRENT[PLAYER_2] / (MOD[PLAYER_2] == "x" and 100 or 1))..MOD[PLAYER_2]
 				self:stoptweening():diffusealpha(1):settext(text):sleep(1):linear(0.25):diffusealpha(0):queuecommand("TrueChange")
 			end,
 			TrueChangeCommand=function(self)
 				local text = "SPEED: " .. (CURRENT[PLAYER_2] / (MOD[PLAYER_2] == "x" and 100 or 1))..MOD[PLAYER_2]
-				self:settext(text):linear(0.25):diffusealpha(1)
+				self:diffusealpha(0):settext(text):linear(0.25):diffusealpha(1)
 			end
 		}
 	},
