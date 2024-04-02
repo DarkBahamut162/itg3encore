@@ -1,3 +1,13 @@
+function SelectMusicOrCourse()
+	if IsNetSMOnline() then
+		return "ScreenNetSelectMusic"..(isFinal() and "Final")
+	elseif GAMESTATE:IsCourseMode() then
+		return "ScreenSelectCourse"..(isFinal() and "Final")
+	else
+		return "ScreenSelectMusic"..(isFinal() and "Final")
+	end
+end
+
 Branch.TitleScreen = function()
 	if GAMESTATE:GetCoinMode() == 'CoinMode_Home' then
 		return "ScreenTitleMenu"
@@ -25,15 +35,15 @@ end
 
 Branch.AfterSelectStyle = function()
 	if getenv("Workout") then return "ScreenWorkoutMenu" end
-	if GAMESTATE:IsCourseMode() then return "ScreenSelectCourse" end
+	if GAMESTATE:IsCourseMode() then return "ScreenSelectCourse"..(isFinal() and "Final" or "") end
 	if IsNetSMOnline() then return SMOnlineScreen() end
 	if IsNetConnected() then return "ScreenNetSelectMusic" end
-	return "ScreenSelectMusic"
+	return "ScreenSelectMusic"..(isFinal() and "Final" or "")
 end
 
 Branch.AfterWorkoutMenu = function()
-	if GAMESTATE:IsCourseMode() then return "ScreenSelectCourse" end
-	return "ScreenSelectMusic"
+	if GAMESTATE:IsCourseMode() then return "ScreenSelectCourse"..(isFinal() and "Final" or "") end
+	return "ScreenSelectMusic"..(isFinal() and "Final" or "")
 end
 
 Branch.PostProfileSave = function()
