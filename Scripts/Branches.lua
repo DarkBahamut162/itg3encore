@@ -1,10 +1,10 @@
 function SelectMusicOrCourse()
 	if IsNetSMOnline() then
-		return "ScreenNetSelectMusic"..(isFinal() and "Final")
+		return "ScreenNetSelectMusic"..(isFinal() and "Final" or "")
 	elseif GAMESTATE:IsCourseMode() then
-		return "ScreenSelectCourse"..(isFinal() and "Final")
+		return "ScreenSelectCourse"..(isFinal() and "Final" or "")
 	else
-		return "ScreenSelectMusic"..(isFinal() and "Final")
+		return "ScreenSelectMusic"..(isFinal() and "Final" or "")
 	end
 end
 
