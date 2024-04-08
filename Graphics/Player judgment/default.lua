@@ -21,7 +21,11 @@ local TNSFrames = {
 	TapNoteScore_Miss = 5
 }
 
+local timing = GetTimingDifficulty()
+local timingChange = { 1.50,1.33,1.16,1.00,0.84,0.66,0.50,0.33,0.20 }
 local judgment = not GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentSteps(player):GetDifficulty() == 'Difficulty_Beginner' and "_beginner" or "_judgments"
+local JudgeScale = isOutFoxV() and GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Preferred"):JudgeScale() or 1
+local W5 = PREFSMAN:GetPreference("TimingWindowSecondsW5")*timingChange[timing]*JudgeScale
 
 setenv("checkFantastics"..pname(player),true)
 setenv("checkPerfects"..pname(player),true)
@@ -84,10 +88,11 @@ return Def.ActorFrame {
 			if not param.Early then iFrame = iFrame + 1 end
 		end
 		self:playcommand("Reset")
+
 		if tns == 'TapNoteScore_Miss' then
 			c.Judgment:rotationz(IsGame("po-mu") and (getenv("RotationLeft"..pname(player)) and 90 or -90) or 0 + (30 * StepEvenOdd(param.Player)))
 		else
-			c.Judgment:rotationz(IsGame("po-mu") and (getenv("RotationLeft"..pname(player)) and 90 or -90) or 0 + math.min(math.abs(param.TapNoteOffset), PREFSMAN:GetPreference("TimingWindowSecondsW5")) * 10 / PREFSMAN:GetPreference("TimingWindowSecondsW5") * StepEvenOdd(param.Player))
+			c.Judgment:rotationz(IsGame("po-mu") and (getenv("RotationLeft"..pname(player)) and 90 or -90) or 0 + math.min(math.abs(param.TapNoteOffset), W5) * 10 / W5 * StepEvenOdd(param.Player))
 		end
 		JudgeCmds[param.TapNoteScore](c.Judgment)
 		c.Judgment:setstate( iFrame )
