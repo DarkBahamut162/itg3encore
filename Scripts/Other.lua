@@ -385,3 +385,49 @@ function ComboTransformCommand( self, params )
 	self:x( 0 )
 	self:y( y + add )
 end
+
+function FindInTable(needle, haystack)
+	for i = 1, #haystack do
+		if needle == haystack[i] then
+			return i
+		end
+	end
+	return nil
+end
+
+local GameAndMenuButtons = {
+	dance		= { "Left", "Down", "Up", "Right" },
+	groove		= { "Left", "Down", "Up", "Right" },
+	pump		= { "DownLeft", "UpLeft", "Center", "UpRight", "DownRight" },
+	smx			= { "Left", "Down", "Up", "Right" },
+	["be-mu"]	= { "Key1", "Key7", "Scratch up", "Scratch down" },
+	techno		= { "Left", "Down", "Up", "Right" },
+	["po-mu"]	= { "Left Yellow", "Left Blue", "Red", "Right Blue", "Right Yellow" },
+}
+
+local LocalizedGameButtons = {}
+
+local DelocalizeGameButton = function(localized_btn)
+	local game = GAMESTATE:GetCurrentGame():GetName()
+	if not GameAndMenuButtons[game] then return false end
+
+	local language = THEME:GetCurLanguage()
+	if not LocalizedGameButtons[language] then
+		local t = {}
+		for gb in ivalues(GameAndMenuButtons[game]) do
+			t[THEME:GetString("GameButton", gb)] = gb
+		end
+		LocalizedGameButtons[language] = t
+	end
+
+	return LocalizedGameButtons[language][localized_btn]
+end
+
+function IsGameAndMenuButton(localized_btn)
+	if PREFSMAN:GetPreference("OnlyDedicatedMenuButtons") then return false end
+
+	local btn = DelocalizeGameButton(localized_btn)
+	if not btn then return false end
+
+	return FindInTable(btn, GameAndMenuButtons[GAMESTATE:GetCurrentGame():GetName()])
+end
