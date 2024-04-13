@@ -8,11 +8,13 @@ function SelectMusicOrCourse()
 	end
 end
 
+function IsAprilFools()
+	return MonthOfYear() + 1 == 4 and DayOfMonth() == 1
+end
+
 Branch.TitleScreen = function()
-	if GAMESTATE:GetCoinMode() == 'CoinMode_Home' then
-		return "ScreenTitleMenu"
-	end
-	return "ScreenTitleJoin"
+	if GAMESTATE:GetCoinMode() == 'CoinMode_Home' then return IsAprilFools() and "ScreenTitleMenuAlt" or "ScreenTitleMenu" end
+	return IsAprilFools() and "ScreenTitleAlt" or "ScreenTitleJoin"
 end
 
 Branch.StartGame = function()
@@ -29,7 +31,7 @@ Branch.BeforeSelectStyle = function()
 	if GAMESTATE:GetCoinMode() == 'CoinMode_Free' then
 		return "ScreenSelectPlayMode"
 	else
-		return "ScreenTitleMenu"
+		return Branch.TitleScreen()
 	end
 end
 
