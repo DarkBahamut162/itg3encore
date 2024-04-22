@@ -1,6 +1,5 @@
 return Def.ActorFrame{
 	Def.ActorFrame{
-		InitCommand=function(self) self:Center() end,
 		Def.Sprite{
 			Name="SongBackground",
 			InitCommand=function(self)
