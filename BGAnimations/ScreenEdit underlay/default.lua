@@ -16,7 +16,7 @@ return Def.ActorFrame{
 		}
 	},
 	LoadActor("bar")..{
-		InitCommand=function(self) self:CenterX():y(SCREEN_TOP+60*WideScreenDiff()):zoom(WideScreenDiff()):zoomtowidth(SCREEN_WIDTH) end
+		InitCommand=function(self) self:CenterX():y((IsGame("be-mu") or IsGame("po-mu")) and SCREEN_BOTTOM-60*WideScreenDiff() or SCREEN_TOP+60*WideScreenDiff()):zoom(WideScreenDiff()):zoomtowidth(SCREEN_WIDTH) end
 	},
 	LoadActor("sides")..{
 		InitCommand=function(self) self:x(SCREEN_LEFT):CenterY():horizalign(left):zoom(WideScreenDiff()):zoomtoheight(SCREEN_HEIGHT) end
