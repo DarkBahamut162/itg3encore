@@ -307,7 +307,7 @@ local t = Def.ActorFrame{
 	},
 	LoadActor(THEME:GetPathB("","_coins"))..{ InitCommand=function(self) self:visible(not GAMESTATE:IsDemonstration()) end },
 	JudgmentMessageCommand=function(self, params)
-		if params.Player == params.Player and not string.find(params.TapNoteScore,"Checkpoint") and enableOffsets then
+		if params.Player == params.Player and not string.find(params.TapNoteScore,"Checkpoint") and not string.find(params.TapNoteScore,"None") and enableOffsets then
 			local player = params.Player
 			if params.Notes then
 				for i,col in pairs(params.Notes) do
