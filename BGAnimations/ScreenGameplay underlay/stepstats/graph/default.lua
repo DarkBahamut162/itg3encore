@@ -5,7 +5,8 @@ local height  = SCREEN_HEIGHT / max
 local bgColor = color('0, 0, 0, 0.66')
 local normalizeAlpha = (1.0 - bgColor[4]) * 0.8
 local graphH = -max
-local rowLimit = getenv("ShowNoteGraph"..pname(pn)) == 2
+local showNoteGraph = getenv("ShowNoteGraph"..pname(pn))
+local rowLimit = showNoteGraph == 2
 
 local allowednotes = {
 	["TapNoteType_Tap"] = true,
@@ -26,6 +27,7 @@ local function UpdateGraph()
     local chartint = 1
     local absoluteSec = 0
     local previousSec = -999
+    local lastBeat = 0
 
     if SongOrCourse then
         for k,v in pairs( SongOrCourse:GetAllSteps() ) do
@@ -37,11 +39,6 @@ local function UpdateGraph()
 
         local timingData = StepOrTrails:GetTimingData()
 
-        for i=1,math.ceil(SongOrCourse:GetLastSecond()) do
-            stepsPerSecList[i] = 0
-        end
-
-
         for k,v in pairs( SongOrCourse:GetNoteData(chartint) ) do
             if timingData:IsJudgableAtBeat(v[1]) then
                 if allowednotes[v[3]] then
@@ -50,10 +47,67 @@ local function UpdateGraph()
                         local currentSec = math.ceil(timingData:GetElapsedTimeFromBeat(v[1]))
                         stepsPerSecList[currentSec] = stepsPerSecList[currentSec] and stepsPerSecList[currentSec] + 1 or 0
                     end
+                    if v["length"] then
+                        if v[1] + v["length"] > lastBeat then lastBeat = v[1] + v["length"] end
+                    else
+                        if v[1] > lastBeat then lastBeat = v[1] end
+                    end
                     if rowLimit then previousSec = absoluteSec end
                 end
             end
         end
+
+        for i=1,math.ceil(timingData:GetElapsedTimeFromBeat(lastBeat)) do
+            if not stepsPerSecList[i] then stepsPerSecList[i] = 0 end
+        end
+    end
+
+    return stepsPerSecList
+end
+
+local function UpdateGraphAlt()
+    local SongOrCourse = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentTrail(pn):GetTrailEntry(GAMESTATE:GetLoadingCourseSongIndex()):GetSong() or GAMESTATE:GetCurrentSong()
+    local StepOrTrails = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentTrail(pn):GetTrailEntry(GAMESTATE:GetLoadingCourseSongIndex()):GetSteps() or GAMESTATE:GetCurrentSteps(pn)
+	local stepsPerSecList = {}
+    local chartint = 1
+    local previousSec = -999
+    local combo = 1
+    local lastBeat = 0
+
+    if SongOrCourse then
+        for k,v in pairs( SongOrCourse:GetAllSteps() ) do
+            if v == StepOrTrails then
+                chartint = k
+                break
+            end
+        end
+
+        stepsPerSecList[SongOrCourse:GetLastSecond()] = 0
+
+        local timingData = StepOrTrails:GetTimingData()
+
+        for k,v in pairs( SongOrCourse:GetNoteData(chartint) ) do
+            if timingData:IsJudgableAtBeat(v[1]) then
+                if allowednotes[v[3]] then
+                    local currentSec = math.round(timingData:GetElapsedTimeFromBeat(v[1]),3)
+                    if previousSec ~= currentSec then
+                        combo = 1
+                        stepsPerSecList[currentSec] = 1/(currentSec-previousSec)
+                    else
+                        combo = combo + 1
+                        stepsPerSecList[currentSec] = stepsPerSecList[currentSec] / (combo-1) * combo
+                    end
+                    if v["length"] then
+                        if v[1] + v["length"] > lastBeat then lastBeat = v[1] + v["length"] end
+                    else
+                        if v[1] > lastBeat then lastBeat = v[1] end
+                    end
+                    previousSec = currentSec
+                end
+            end
+        end
+
+        stepsPerSecList[timingData:GetElapsedTimeFromBeat(lastBeat)] = 0
     end
 
     return stepsPerSecList
@@ -134,6 +188,50 @@ local function GetVertices(stepsPerSecList)
     return vertices
 end
 
+local function GetVerticesAlt(stepsPerSecList)
+    local stepsList = stepsPerSecList or {1}
+    local lenCorrection = 1.0
+    local vertices = {}
+    local last = 0
+    
+    for _i,_ in pairs( stepsList ) do
+        if _i > last then last = _i end
+    end
+
+    local addx = graphW / last
+
+    for i,value in pairs( stepsList ) do
+        local curX = (i-1) * graphW / last - 0
+        local nextX = (i * graphW / last) - 0
+        local curY = value/2
+        local nextY = value
+        local alpha = 0.65 + 0.3 * normalizeAlpha
+        local col = color('1, 0, 0, '..alpha)
+        vertices[#vertices+1] = {
+            {curX, graphH, 0},
+            {col[1], col[2], col[3], col[4]*0.5}
+        }
+        local colGB = math.min((math.max(curY, 0) * lenCorrection -12) * 0.0833, 1.0)
+        col = color(string.format('%.2f, %.2f, %.2f, %.2f', (1-colGB), colGB, colGB, alpha))
+        vertices[#vertices+1] = {
+            {curX, graphH - math.min(curY * lenCorrection * height, max), 0},
+            col
+        }
+        local colGB = math.min((math.max(nextY, 0) * lenCorrection -12) * 0.0833, 1.0)
+        col = color(string.format('%.2f, %.2f, %.2f, %.2f', (1-colGB), colGB, colGB, alpha))
+        vertices[#vertices+1] = {
+            {nextX, graphH - math.min(nextY * lenCorrection * height, max), 0},
+            col
+        }
+        col = color('1, 0, 0, '..alpha)
+        vertices[#vertices+1] = {
+            {nextX, graphH, 0},
+            {col[1], col[2], col[3], col[4]*0.5}
+        }
+    end
+    return vertices
+end
+
 local function GetVerticesAssist(insert)
     local assistList,lastSecond = insert[1],insert[2]
     local vertices = {}
@@ -169,22 +267,22 @@ return Def.ActorFrame{
         Def.ActorMultiVertex{
             DoneLoadingNextSongMessageCommand=function(self) self:playcommand("Init") end,
             InitCommand=function(self)
-                local vertices = GetVertices(UpdateGraph())
+                local vertices = showNoteGraph == 4 and GetVerticesAlt(UpdateGraphAlt()) or GetVertices(UpdateGraph())
                 self:SetDrawState({Mode = 'DrawMode_Quads'})
                 self:SetVertices(1, vertices)
                 self:SetNumVertices(#vertices)
                 self:rotationz(pn == PLAYER_1 and -90 or 90)
                 self:rotationx(pn == PLAYER_1 and 0 or 180)
                 self:x(pn == PLAYER_1 and-46 or 46):y(175)
-                self:diffusealpha(0):zoomy(0):linear(0.5):zoomy(1.0-0.4*math.max(854-SCREEN_WIDTH, 0)/214):diffusealpha(1)
+                self:diffusealpha(0):zoomy(0):linear(0.5):zoomy(1.0-0.4*math.max(854-SCREEN_WIDTH, 0)/214):diffusealpha(showNoteGraph == 4 and 0.5 or 1)
             end
         },
         Def.ActorMultiVertex{
             DoneLoadingNextSongMessageCommand=function(self) self:playcommand("Init") end,
             InitCommand=function(self)
-                local update = UpdateGraph()
-                for i=1,#update do update[i] = math.max(0,(update[i]-20)/4) end
-                local vertices = GetVertices(update)
+                local update = showNoteGraph == 4 and UpdateGraphAlt() or UpdateGraph()
+                for i,value in pairs( update ) do update[i] = math.max(0,(update[i]-20)/4) end
+                local vertices = showNoteGraph == 4 and GetVerticesAlt(update) or GetVertices(update)
                 self:SetDrawState({Mode = 'DrawMode_Quads'})
                 self:SetVertices(1, vertices)
                 self:SetNumVertices(#vertices)

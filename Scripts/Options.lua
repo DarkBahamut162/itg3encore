@@ -653,7 +653,7 @@ function OptionShowNoteGraph()
 		SelectType = "SelectOne",
 		OneChoiceForAllPlayers = false,
 		ExportOnChange = false,
-		Choices = { "Off","Row","All" },
+		Choices = { "Off","Row","All","SPS" },
 		LoadSelections = function(self, list, pn)
 			local selected = getenv("ShowNoteGraph"..pname(pn))
 			if selected and selected ~= 0 then
