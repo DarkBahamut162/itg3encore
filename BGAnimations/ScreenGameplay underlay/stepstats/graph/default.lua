@@ -7,6 +7,8 @@ local normalizeAlpha = (1.0 - bgColor[4]) * 0.8
 local graphH = -max
 local showNoteGraph = getenv("ShowNoteGraph"..pname(pn))
 local rowLimit = showNoteGraph == 2
+local lastSec = nil
+local lastBeat = nil
 
 local allowednotes = {
 	["TapNoteType_Tap"] = true,
@@ -27,7 +29,6 @@ local function UpdateGraph()
     local chartint = 1
     local absoluteSec = 0
     local previousSec = -999
-    local lastBeat = 0
 
     if SongOrCourse then
         for k,v in pairs( SongOrCourse:GetAllSteps() ) do
@@ -45,12 +46,12 @@ local function UpdateGraph()
                     if rowLimit then absoluteSec = timingData:GetElapsedTimeFromBeat(v[1]) end
                     if previousSec ~= absoluteSec then
                         local currentSec = math.ceil(timingData:GetElapsedTimeFromBeat(v[1]))
-                        stepsPerSecList[currentSec] = stepsPerSecList[currentSec] and stepsPerSecList[currentSec] + 1 or 0
+                        stepsPerSecList[currentSec] = stepsPerSecList[currentSec] and stepsPerSecList[currentSec] + 1 or 1
                     end
                     if v["length"] then
-                        if v[1] + v["length"] > lastBeat then lastBeat = v[1] + v["length"] end
+                        if not lastBeat or (v[1] + v["length"] > lastBeat) then lastBeat = v[1] + v["length"] end
                     else
-                        if v[1] > lastBeat then lastBeat = v[1] end
+                        if not lastBeat or (v[1] > lastBeat) then lastBeat = v[1] end
                     end
                     if rowLimit then previousSec = absoluteSec end
                 end
@@ -60,6 +61,8 @@ local function UpdateGraph()
         for i=1,math.ceil(timingData:GetElapsedTimeFromBeat(lastBeat)) do
             if not stepsPerSecList[i] then stepsPerSecList[i] = 0 end
         end
+
+        lastSec = timingData:GetElapsedTimeFromBeat(lastBeat)
     end
 
     return stepsPerSecList
@@ -82,8 +85,6 @@ local function UpdateGraphAlt()
             end
         end
 
-        stepsPerSecList[SongOrCourse:GetLastSecond()] = 0
-
         local timingData = StepOrTrails:GetTimingData()
 
         for k,v in pairs( SongOrCourse:GetNoteData(chartint) ) do
@@ -98,16 +99,20 @@ local function UpdateGraphAlt()
                         stepsPerSecList[currentSec] = stepsPerSecList[currentSec] / (combo-1) * combo
                     end
                     if v["length"] then
-                        if v[1] + v["length"] > lastBeat then lastBeat = v[1] + v["length"] end
+                        if not lastBeat or (v[1] + v["length"] > lastBeat) then lastBeat = v[1] + v["length"] end
                     else
-                        if v[1] > lastBeat then lastBeat = v[1] end
+                        if not lastBeat or (v[1] > lastBeat) then lastBeat = v[1] end
                     end
                     previousSec = currentSec
                 end
             end
         end
 
-        stepsPerSecList[timingData:GetElapsedTimeFromBeat(lastBeat)] = 0
+        for i=1,math.ceil(timingData:GetElapsedTimeFromBeat(lastBeat)) do
+            if not stepsPerSecList[i] then stepsPerSecList[i] = 0 end
+        end
+
+        lastSec = timingData:GetElapsedTimeFromBeat(lastBeat)
     end
 
     return stepsPerSecList
@@ -126,7 +131,6 @@ local function UpdateGraphAssist()
                 local data = split('=', v)
                 local numData = {tonumber(data[1]), tonumber(data[2])}
                 numData[2] = math.round(numData[2],3)
-                if numData[1] > SongOrCourse:GetLastBeat() then break end
                 if temp then
                     if numData[2] - temp < 0 then
                         assist[checkStopAtBeat(numData[1],timingData)] = -1
@@ -142,13 +146,12 @@ local function UpdateGraphAssist()
             for k,v in pairs(timingData:GetStops()) do
                 local data = split('=', v)
                 local numData = {tonumber(data[1]), tonumber(data[2])}
-                if numData[1] > SongOrCourse:GetLastBeat() then break end
                 assist[timingData:GetElapsedTimeFromBeat(numData[1])] = 0
             end
         end
     end
 
-    return {assist,SongOrCourse:GetLastSecond()}
+    return {assist,lastSec}
 end
 
 local function GetVertices(stepsPerSecList)
@@ -273,7 +276,7 @@ return Def.ActorFrame{
                 self:SetNumVertices(#vertices)
                 self:rotationz(pn == PLAYER_1 and -90 or 90)
                 self:rotationx(pn == PLAYER_1 and 0 or 180)
-                self:x(pn == PLAYER_1 and-46 or 46):y(175)
+                self:x(pn == PLAYER_1 and -46 or 46):y(175)
                 self:diffusealpha(0):zoomy(0):linear(0.5):zoomy(1.0-0.4*math.max(854-SCREEN_WIDTH, 0)/214):diffusealpha(showNoteGraph == 4 and 0.5 or 1)
             end
         },
@@ -288,14 +291,14 @@ return Def.ActorFrame{
                 self:SetNumVertices(#vertices)
                 self:rotationz(pn == PLAYER_1 and -90 or 90)
                 self:rotationx(pn == PLAYER_1 and 0 or 180)
-                self:x(pn == PLAYER_1 and-46 or 46):y(175)
+                self:x(pn == PLAYER_1 and -46 or 46):y(175)
                 self:blend(Blend.Subtract)
                 self:diffusealpha(0):zoomy(0):linear(0.5):zoomy(1.0-0.4*math.max(854-SCREEN_WIDTH, 0)/214):diffusealpha(1)
             end
         },
         Def.ActorMultiVertex{
             Condition=getenv("ShowSpeedAssist"..pname(pn)) or getenv("ShowStopAssist"..pname(pn)),
-            DoneLoadingNextSongMessageCommand=function(self) self:playcommand("Init") end,
+            DoneLoadingNextSongMessageCommand=function(self) self:sleep(0.05):playcommand("Init") end,
             InitCommand=function(self)
                 local vertices = GetVerticesAssist(UpdateGraphAssist())
                 self:SetDrawState({Mode = 'DrawMode_Quads'})
@@ -303,7 +306,7 @@ return Def.ActorFrame{
                 self:SetNumVertices(#vertices)
                 self:rotationz(pn == PLAYER_1 and -90 or 90)
                 self:rotationx(pn == PLAYER_1 and 0 or 180)
-                self:x(pn == PLAYER_1 and-46 or 46):y(175)
+                self:x(pn == PLAYER_1 and -46 or 46):y(175)
                 self:diffusealpha(0):zoomy(0):linear(0.5):zoomy(1.0-0.4*math.max(854-SCREEN_WIDTH, 0)/214):diffusealpha(1)
             end
         },
@@ -312,6 +315,6 @@ return Def.ActorFrame{
         DoneLoadingNextSongMessageCommand=function(self) self:queuecommand("RePos") end,
         InitCommand=function(self) self:x(pn == PLAYER_1 and -140 or 140):blend(Blend.Add):fadeleft(0.25):faderight(0.25):zoomy(0.5):cropleft(pn == PLAYER_1 and 0 or 0.25):cropright(pn == PLAYER_1 and 0.25 or 0):queuecommand("RePos") end,
         OnCommand=function(self) self:diffusealpha(0):linear(0.5):diffusealpha(1) end,
-        RePosCommand=function(self) self:y(176-352*(math.min(1,GAMESTATE:GetSongPosition():GetMusicSecondsVisible()/GAMESTATE:GetCurrentSong():GetLastSecond()))):sleep(1/60):queuecommand("RePos") end
+        RePosCommand=function(self) self:y(176-352*(math.min(1,GAMESTATE:GetSongPosition():GetMusicSecondsVisible()/lastSec))):sleep(1/60):queuecommand("RePos") end
     }
 }
