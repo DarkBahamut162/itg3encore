@@ -18,7 +18,7 @@ local function UpdateDynamic(self)
 			GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Song"):SuddenOffset(val,100)
 		end
 		if hidden or isVS() then
-			val = math.min(4,YoffsetBeat) / 3 - 1
+			val = math.min(4,YoffsetBeat / 2) / 3 - 1
 			GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Song"):HiddenOffset(val,100)
 		end
 	end
