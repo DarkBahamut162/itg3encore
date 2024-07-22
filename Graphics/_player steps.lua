@@ -40,7 +40,11 @@ return Def.ActorFrame{
 					if output == "" then
 						local EC = not courseMode and SongOrCourse:GetPreviewMusicPath() or " "
 						self:diffuseshift():effectcolor1(color("#FF0000")):effectcolor2(color("#FFFFFF")):effectclock(EC ~= "" and "beat" or "timerglobal")
-						output = "FAILED TO LOAD"
+						if StepsOrTrail:GetRadarValues(player):GetValue('RadarCategory_TapsAndHolds') == 0 then
+							output = "NOTHING TO LOAD"
+						else
+							output = "FAILED TO LOAD"
+						end
 					else
 						self:stopeffect()
 					end
