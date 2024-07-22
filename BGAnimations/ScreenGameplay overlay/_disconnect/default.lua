@@ -1,4 +1,4 @@
-local TitleSongFade = isOutFox() and LoadModule("Text.FadeSlide.lua") or Def.ActorFrame{ Create = function(this) return Def.ActorFrame{} end }
+local TitleSongFade = isOutFox() and LoadModule("Text.FadeSlide.lua"){ Width = 580/4*3 } or Def.ActorFrame{ Create = function(this) return Def.ActorFrame{} end }
 
 return Def.ActorFrame{
 	Def.ActorFrame{
@@ -54,7 +54,7 @@ return Def.ActorFrame{
 				local text = ""
 				local song = GAMESTATE:GetCurrentSong()
 				if song then text = song:GetDisplayFullTitle() end
-				if isOutFox() then TitleSongFade:SetText( text.."                                              " ) end
+				if isOutFox() then TitleSongFade:SetText( text ) end
 				self:settext(text)
 			end
 		},
