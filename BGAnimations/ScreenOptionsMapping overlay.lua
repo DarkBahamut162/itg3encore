@@ -102,7 +102,7 @@ end
 
 
 return Def.ActorFrame{
-	InitCommand=function(self) self:zoom(WideScreenDiff()) end,
+	InitCommand=function(self) self:zoom(math.min(2/3,WideScreenDiff())) end,
 	Def.Sprite{
 		Texture=THEME:GetPathG("","ControllerMockup"),
 		OnCommand=function(self) self:zoom(1.4) end

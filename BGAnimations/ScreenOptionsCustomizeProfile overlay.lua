@@ -468,8 +468,5 @@ args[#args+1] = Def.Sound{
 }
 
 args[#args+1] = number_entry:create_actors()
-args[#args+1] = LoadActor(THEME:GetPathB("ScreenWithMenuElements","underlay/_sides"))
-args[#args+1] = LoadActor(THEME:GetPathB("ScreenWithMenuElements","underlay/_base"))
-args[#args+1] = LoadActor(THEME:GetPathB("ScreenWithMenuElements","underlay/_normaltop"))
 
 return Def.ActorFrame(args)

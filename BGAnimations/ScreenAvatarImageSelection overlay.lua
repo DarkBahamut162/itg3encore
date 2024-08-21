@@ -169,8 +169,4 @@ t[#t+1] = Def.Sound{
 	NextMessageCommand=function(self) self:play() end
 }
 
-t[#t+1] = LoadActor(THEME:GetPathB("ScreenWithMenuElements","underlay/_sides"))
-t[#t+1] = LoadActor(THEME:GetPathB("ScreenWithMenuElements","underlay/_base"))
-t[#t+1] = LoadActor(THEME:GetPathB("ScreenWithMenuElements","underlay/_normaltop"))
-
 return t
