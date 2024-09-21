@@ -313,6 +313,8 @@ local function calcSPS(SPS,max)
 end
 
 function cacheStep(Song,Step)
+	if Song == nil then Song = SONGMAN:GetSongFromSteps(Step) end
+
     local chartint = 1
 	local currentBeat = 0
 	local currentNotes = 0
