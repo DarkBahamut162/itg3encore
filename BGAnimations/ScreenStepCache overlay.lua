@@ -6,6 +6,7 @@ local toBeCachedTotal = 0
 local alreadyCachedTotal = 0
 local cachedWrongVersionTotal = 0
 local errorTotal = 0
+local total = 0
 
 local s = 10
 local ss = 100
@@ -22,6 +23,8 @@ local cacheStepTypes = {
 	Pnm = true,
 	Techno = true
 }
+
+local stepsToCache = {}
 
 local InputHandler = function(event)
 	if not event.PlayerNumber or not event.button then return false end
@@ -71,6 +74,37 @@ end
 return Def.ActorFrame{
 	InitCommand=function(self) c = self:GetChildren() end,
 	OnCommand=function(self) SCREENMAN:GetTopScreen():AddInputCallback(InputHandler) end,
+	LoadFont("_z 36px shadowx")..{
+		Name="TBC",
+		InitCommand=function(self) self:x(SCREEN_LEFT+25*WideScreenDiff()*WideScreenDiff()):y(isFinal() and SCREEN_BOTTOM-66*WideScreenDiff() or SCREEN_BOTTOM-58*WideScreenDiff()):shadowlength(2):horizalign(left):maxwidth(SCREEN_WIDTH/3*2/WideScreenDiff()):zoom(0.5*WideScreenDiff()) end,
+		OnCommand=function(self) self:diffusealpha(0):sleep(0.5):linear(0.5):diffusealpha(1):playcommand("Check") end,
+		CheckCommand=function(self)
+			local songs = SONGMAN:GetAllSongs()
+			for curSong=1,#songs do
+				local steps = songs[curSong]:GetAllSteps()
+				for curStep=1,#steps do
+					if steps[curStep] then
+						local filename = split("/",steps[curStep]:GetFilename())
+						local stepType = split("_",steps[curStep]:GetStepsType())[2]
+						if cacheStepTypes[stepType] then total = total + 1 end
+					end
+				end
+				steps = nil
+			end
+			songs = nil
+			self:decelerate(0.5):cropleft(0):cropright(0):settext("To be cached: "..total.." Steps")
+		end
+	},
+	LoadFont("_z 36px shadowx")..{
+		Name="IBC",
+		InitCommand=function(self) self:x(SCREEN_LEFT+25*WideScreenDiff()*WideScreenDiff()):y(isFinal() and SCREEN_BOTTOM-50*WideScreenDiff() or SCREEN_BOTTOM-42*WideScreenDiff()):shadowlength(2):horizalign(left):maxwidth(SCREEN_WIDTH/3*2/WideScreenDiff()):zoom(0.5*WideScreenDiff()) end,
+		OnCommand=function(self) self:diffusealpha(0):sleep(0.5):linear(0.5):diffusealpha(1):playcommand("Check") end,
+		CheckCommand=function(self)
+			local files = FILEMAN:GetDirListing("/Cache/Steps/")
+			self:decelerate(0.5):cropleft(0):cropright(0):settext("In the cache: "..#files.." files")
+			files = nil
+		end
+	},
 	Def.ActorFrame{
 		Name="Timer",
 		InitCommand=function(self) self:x(SCREEN_LEFT+86*WideScreenDiff()):y(SCREEN_TOP+35*WideScreenDiff()):zoom(WideScreenDiff()) cs = self:GetChildren() end,
@@ -137,25 +171,30 @@ return Def.ActorFrame{
 							if cacheStepTypes[stepType] then
 								if #filename >= 4 and not steps[curStep]:IsAutogen() then
 									local cacheFile = getStepCacheFile(steps[curStep])
-									if not LoadModule("Config.Exists.lua")("Version",cacheFile) then
+									if not FILEMAN:DoesFileExist(cacheFile) then
+										stepsToCache[#stepsToCache+1] = steps[curStep]
 										toBeCachedTotal = toBeCachedTotal + 1
 									else
 										local version = LoadModule("Config.Load.lua")("Version",cacheFile)
 										if version and tonumber(version) ~= currentCacheVersion then
+											stepsToCache[#stepsToCache+1] = steps[curStep]
 											alreadyCachedTotal = alreadyCachedTotal + 1
 											cachedWrongVersionTotal = cachedWrongVersionTotal + 1
 										else
 											alreadyCachedTotal = alreadyCachedTotal + 1
 										end
 									end
+									cacheFile = nil
 								else
 									errorTotal = errorTotal + 1
 								end
 							end
 						end
 					end
+					steps = nil
 				end
 				checked = true
+				songs = nil
 				if toBeCachedTotal == 0 and cachedWrongVersionTotal == 0 then
 					updated = true
 				end
@@ -191,33 +230,15 @@ return Def.ActorFrame{
 			end
 		end,
 		UpdateCommand=function(self)
-			local songs = SONGMAN:GetAllSongs()
-			local currentCacheVersion = tonumber(getCacheVersion())
-
 			if not cancel then
-				for curSong=1,#songs do
-					local steps = songs[curSong]:GetAllSteps()
-					stepsTotal = stepsTotal + #steps
-					for curStep=1,#steps do
-						if steps[curStep] then
-							local filename = split("/",steps[curStep]:GetFilename())
-							local stepType = split("_",steps[curStep]:GetStepsType())[2]
-							if cacheStepTypes[stepType] then
-								if #filename >= 4 and not steps[curStep]:IsAutogen() then
-									local cacheFile = getStepCacheFile(steps[curStep])
-									if not LoadModule("Config.Exists.lua")("Version",cacheFile) then
-										cacheStep(songs[curSong],steps[curStep])
-									else
-										local version = LoadModule("Config.Load.lua")("Version",cacheFile)
-										if version and tonumber(version) ~= currentCacheVersion then
-											cacheStep(songs[curSong],steps[curStep])
-										end
-									end
-								end
-							end
-						end
+				for curStep=1,#stepsToCache do
+					if stepsToCache[curStep] then
+						local cacheFile = getStepCacheFile(stepsToCache[curStep])
+						cacheStep(nil,stepsToCache[curStep])
+						cacheFile = nil
 					end
 				end
+				stepsToCache = nil
 				checked = true
 				updated = true
 				self:queuecommand("Updated")
