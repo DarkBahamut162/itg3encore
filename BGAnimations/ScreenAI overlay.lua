@@ -209,9 +209,9 @@ local function SaveAI()
 	local configfile = RageFileUtil.CreateRageFile()
 	local output = ""
 	for i1 = 1, #totalSkillNames do
-		output = output.."["..totalSkillNames[i1].."]\n"
+		addToOutput(output,"["..totalSkillNames[i1].."]","\n")
 		for i2 = 1, #totalWeightNames do
-			output = output..totalWeightNames[i2].."="..AIini[totalSkillNames[i1]][totalWeightNames[i2]].."\n"
+			addToOutput(output,totalWeightNames[i2].."="..AIini[totalSkillNames[i1]][totalWeightNames[i2]],"\n")
 		end
 	end
 	configfile:Open("Data/AI.ini", 2)
