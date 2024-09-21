@@ -597,10 +597,14 @@ end
 function getAllTheBPMs(song,step,BPMtype)
 	local bpms = {0,0,0}
 	if BPMtype == 0 then
-		bpms = step:GetDisplayBpms()
-		bpms[1]=math.round(bpms[1])
-		bpms[2]=math.round(bpms[2])
-		bpms[3] = 0
+		if song:IsDisplayBpmSecret() or song:IsDisplayBpmRandom() then
+			bpms = {"???","???","???"}
+		else
+			bpms = step:GetDisplayBpms()
+			bpms[1]=math.round(bpms[1])
+			bpms[2]=math.round(bpms[2])
+			bpms[3] = 0
+		end
 	elseif BPMtype == 1 then
 		bpms = step:GetTimingData():GetActualBPM()
 		bpms[1]=math.round(bpms[1])
