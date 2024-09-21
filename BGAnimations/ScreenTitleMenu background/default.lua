@@ -138,101 +138,101 @@ return Def.ActorFrame{
 	},
 	Def.ActorFrame{
 		LoadActor("../_overlay/addons")..{
-			InitCommand=function(self) self:x(SCREEN_RIGHT):y(SCREEN_CENTER_Y+60+27.5*0*WideScreenDiff()):zoom(0.65*WideScreenDiff()):addy((IsHome() and isScreenTitle()) and -172.5 or 0) end,
+			InitCommand=function(self) self:x(SCREEN_RIGHT):y(SCREEN_CENTER_Y+60+27.5*0*WideScreenDiff()):zoom(0.65*WideScreenDiff()):addy((IsHome() and isScreenTitle()) and -200 or 0) end,
 			OnCommand=function(self) self:horizalign(right):addx(200):sleep(0.9):decelerate(0.25):addx(-200):playcommand("Fade") end,
 			FadeCommand=function(self) self:glow(1,1,1,0):sleep(2):linear(0.3):glow(1,1,1,0.25):sleep(0.05):glow(1,1,1,0):sleep(1):queuecommand("Fade") end,
 			ScreenChangedMessageCommand=function(self) self:stoptweening():playcommand("Init"):playcommand("On") end,
 			Condition=ITG3ADDONS and isFinal()
 		},
 		LoadActor("../_overlay/joinin")..{
-			InitCommand=function(self) self:x(SCREEN_RIGHT+20*WideScreenDiff()):y(SCREEN_CENTER_Y+60+27.5*0*WideScreenDiff()):zoom(0.475*WideScreenDiff()):addy((IsHome() and isScreenTitle()) and -172.5 or 0) end,
+			InitCommand=function(self) self:x(SCREEN_RIGHT+20*WideScreenDiff()):y(SCREEN_CENTER_Y+60+27.5*0*WideScreenDiff()):zoom(0.475*WideScreenDiff()):addy((IsHome() and isScreenTitle()) and -200 or 0) end,
 			OnCommand=function(self) self:horizalign(right):addx(200):sleep(0.9):decelerate(0.25):addx(-200):playcommand("Fade") end,
 			FadeCommand=function(self) self:glow(1,1,1,0):sleep(2):linear(0.3):glow(1,1,1,0.25):sleep(0.05):glow(1,1,1,0):sleep(1):queuecommand("Fade") end,
 			ScreenChangedMessageCommand=function(self) self:stoptweening():playcommand("Init"):playcommand("On") end,
 			Condition=ITG3ADDONS and not isFinal()
 		},
 		LoadFont("_v profile")..{
-			InitCommand=function(self) self:settext("ITG3 ADDONS"):shadowlength(1):x(SCREEN_RIGHT-106*WideScreenDiff()):y(SCREEN_CENTER_Y+60+27.5*0*WideScreenDiff()):addy((IsHome() and isScreenTitle()) and -172.5 or 0) end,
+			InitCommand=function(self) self:settext("ITG3 ADDONS"):shadowlength(1):x(SCREEN_RIGHT-106*WideScreenDiff()):y(SCREEN_CENTER_Y+60+27.5*0*WideScreenDiff()):addy((IsHome() and isScreenTitle()) and -200 or 0) end,
 			OnCommand=function(self) self:horizalign(left):addx(200):sleep(0.9):decelerate(0.25):addx(-200):zoom(0.7*WideScreenDiff()) end,
 			ScreenChangedMessageCommand=function(self) self:stoptweening():playcommand("Init"):playcommand("On") end,
 			Condition=ITG3ADDONS and not isFinal()
 		},
 		LoadActor("../_overlay/unlocks")..{
-			InitCommand=function(self) self:x(SCREEN_RIGHT):y(SCREEN_CENTER_Y+60+27.5*1*WideScreenDiff()):zoom(0.65*WideScreenDiff()):addy((IsHome() and isScreenTitle()) and -172.5 or 0) end,
+			InitCommand=function(self) self:x(SCREEN_RIGHT):y(SCREEN_CENTER_Y+60+27.5*1*WideScreenDiff()):zoom(0.65*WideScreenDiff()):addy((IsHome() and isScreenTitle()) and -200 or 0) end,
 			OnCommand=function(self) self:horizalign(right):addx(200):sleep(0.9):decelerate(0.25):addx(-200):playcommand("Fade") end,
 			FadeCommand=function(self) self:glow(1,1,1,0):sleep(2):linear(0.3):glow(1,1,1,0.25):sleep(0.05):glow(1,1,1,0):sleep(1):queuecommand("Fade") end,
 			ScreenChangedMessageCommand=function(self) self:stoptweening():playcommand("Init"):playcommand("On") end,
 			Condition=ITG3UNLOCKS and isFinal()
 		},
 		LoadActor("../_overlay/joinin")..{
-			InitCommand=function(self) self:x(SCREEN_RIGHT+20*WideScreenDiff()):y(SCREEN_CENTER_Y+60+27.5*1*WideScreenDiff()):zoom(0.475*WideScreenDiff()):addy((IsHome() and isScreenTitle()) and -172.5 or 0) end,
+			InitCommand=function(self) self:x(SCREEN_RIGHT+20*WideScreenDiff()):y(SCREEN_CENTER_Y+60+27.5*1*WideScreenDiff()):zoom(0.475*WideScreenDiff()):addy((IsHome() and isScreenTitle()) and -200 or 0) end,
 			OnCommand=function(self) self:horizalign(right):addx(200):sleep(0.9):decelerate(0.25):addx(-200):playcommand("Fade") end,
 			FadeCommand=function(self) self:glow(1,1,1,0):sleep(2):linear(0.3):glow(1,1,1,0.25):sleep(0.05):glow(1,1,1,0):sleep(1):queuecommand("Fade") end,
 			ScreenChangedMessageCommand=function(self) self:stoptweening():playcommand("Init"):playcommand("On") end,
 			Condition=ITG3UNLOCKS and not isFinal()
 		},
 		LoadFont("_v profile")..{
-			InitCommand=function(self) self:settext("ITG3 UNLOCKS"):shadowlength(1):x(SCREEN_RIGHT-106*WideScreenDiff()):y(SCREEN_CENTER_Y+60+27.5*1*WideScreenDiff()):addy((IsHome() and isScreenTitle()) and -172.5 or 0) end,
+			InitCommand=function(self) self:settext("ITG3 UNLOCKS"):shadowlength(1):x(SCREEN_RIGHT-106*WideScreenDiff()):y(SCREEN_CENTER_Y+60+27.5*1*WideScreenDiff()):addy((IsHome() and isScreenTitle()) and -200 or 0) end,
 			OnCommand=function(self) self:horizalign(left):addx(200):sleep(0.9):decelerate(0.25):addx(-200):zoom(0.7*WideScreenDiff()) end,
 			ScreenChangedMessageCommand=function(self) self:stoptweening():playcommand("Init"):playcommand("On") end,
 			Condition=ITG3UNLOCKS and not isFinal()
 		},
 		LoadActor("../_overlay/rebirth1")..{
-			InitCommand=function(self) self:x(SCREEN_RIGHT):y(SCREEN_CENTER_Y+60+27.5*2*WideScreenDiff()):zoom(0.65*WideScreenDiff()):addy((IsHome() and isScreenTitle()) and -172.5 or 0) end,
+			InitCommand=function(self) self:x(SCREEN_RIGHT):y(SCREEN_CENTER_Y+60+27.5*2*WideScreenDiff()):zoom(0.65*WideScreenDiff()):addy((IsHome() and isScreenTitle()) and -200 or 0) end,
 			OnCommand=function(self) self:horizalign(right):addx(200):sleep(0.9):decelerate(0.25):addx(-200):playcommand("Fade") end,
 			FadeCommand=function(self) self:glow(1,1,1,0):sleep(2):linear(0.3):glow(1,1,1,0.25):sleep(0.05):glow(1,1,1,0):sleep(1):queuecommand("Fade") end,
 			ScreenChangedMessageCommand=function(self) self:stoptweening():playcommand("Init"):playcommand("On") end,
 			Condition=REBIRTH and isFinal()
 		},
 		LoadActor("../_overlay/joinin")..{
-			InitCommand=function(self) self:x(SCREEN_RIGHT+20*WideScreenDiff()):y(SCREEN_CENTER_Y+60+27.5*2*WideScreenDiff()):zoom(0.475*WideScreenDiff()):addy((IsHome() and isScreenTitle()) and -172.5 or 0) end,
+			InitCommand=function(self) self:x(SCREEN_RIGHT+20*WideScreenDiff()):y(SCREEN_CENTER_Y+60+27.5*2*WideScreenDiff()):zoom(0.475*WideScreenDiff()):addy((IsHome() and isScreenTitle()) and -200 or 0) end,
 			OnCommand=function(self) self:horizalign(right):addx(200):sleep(0.9):decelerate(0.25):addx(-200):playcommand("Fade") end,
 			FadeCommand=function(self) self:glow(1,1,1,0):sleep(2):linear(0.3):glow(1,1,1,0.25):sleep(0.05):glow(1,1,1,0):sleep(1):queuecommand("Fade") end,
 			ScreenChangedMessageCommand=function(self) self:stoptweening():playcommand("Init"):playcommand("On") end,
 			Condition=REBIRTH and not isFinal()
 		},
 		LoadFont("_v profile")..{
-			InitCommand=function(self) self:settext("REBIRTH"):shadowlength(1):x(SCREEN_RIGHT-106*WideScreenDiff()):y(SCREEN_CENTER_Y+60+27.5*2*WideScreenDiff()):addy((IsHome() and isScreenTitle()) and -172.5 or 0) end,
+			InitCommand=function(self) self:settext("REBIRTH"):shadowlength(1):x(SCREEN_RIGHT-106*WideScreenDiff()):y(SCREEN_CENTER_Y+60+27.5*2*WideScreenDiff()):addy((IsHome() and isScreenTitle()) and -200 or 0) end,
 			OnCommand=function(self) self:horizalign(left):addx(200):sleep(0.9):decelerate(0.25):addx(-200):zoom(0.7*WideScreenDiff()) end,
 			ScreenChangedMessageCommand=function(self) self:stoptweening():playcommand("Init"):playcommand("On") end,
 			Condition=REBIRTH and not isFinal()
 		},
 		LoadActor("../_overlay/rebirth+")..{
-			InitCommand=function(self) self:x(SCREEN_RIGHT):y(SCREEN_CENTER_Y+60+27.5*3*WideScreenDiff()):zoom(0.65*WideScreenDiff()):addy((IsHome() and isScreenTitle()) and -172.5 or 0) end,
+			InitCommand=function(self) self:x(SCREEN_RIGHT):y(SCREEN_CENTER_Y+60+27.5*3*WideScreenDiff()):zoom(0.65*WideScreenDiff()):addy((IsHome() and isScreenTitle()) and -200 or 0) end,
 			OnCommand=function(self) self:horizalign(right):addx(200):sleep(0.9):decelerate(0.25):addx(-200):playcommand("Fade") end,
 			FadeCommand=function(self) self:glow(1,1,1,0):sleep(2):linear(0.3):glow(1,1,1,0.25):sleep(0.05):glow(1,1,1,0):sleep(1):queuecommand("Fade") end,
 			ScreenChangedMessageCommand=function(self) self:stoptweening():playcommand("Init"):playcommand("On") end,
 			Condition=REBIRTHPLUS and isFinal()
 		},
 		LoadActor("../_overlay/joinin")..{
-			InitCommand=function(self) self:x(SCREEN_RIGHT+20*WideScreenDiff()):y(SCREEN_CENTER_Y+60+27.5*3*WideScreenDiff()):zoom(0.475*WideScreenDiff()):addy((IsHome() and isScreenTitle()) and -172.5 or 0) end,
+			InitCommand=function(self) self:x(SCREEN_RIGHT+20*WideScreenDiff()):y(SCREEN_CENTER_Y+60+27.5*3*WideScreenDiff()):zoom(0.475*WideScreenDiff()):addy((IsHome() and isScreenTitle()) and -200 or 0) end,
 			OnCommand=function(self) self:horizalign(right):addx(200):sleep(0.9):decelerate(0.25):addx(-200):playcommand("Fade") end,
 			FadeCommand=function(self) self:glow(1,1,1,0):sleep(2):linear(0.3):glow(1,1,1,0.25):sleep(0.05):glow(1,1,1,0):sleep(1):queuecommand("Fade") end,
 			ScreenChangedMessageCommand=function(self) self:stoptweening():playcommand("Init"):playcommand("On") end,
 			Condition=REBIRTHPLUS and not isFinal()
 		},
 		LoadFont("_v profile")..{
-			InitCommand=function(self) self:settext("REBIRTH +"):shadowlength(1):x(SCREEN_RIGHT-106*WideScreenDiff()):y(SCREEN_CENTER_Y+60+27.5*3*WideScreenDiff()):addy((IsHome() and isScreenTitle()) and -172.5 or 0) end,
+			InitCommand=function(self) self:settext("REBIRTH +"):shadowlength(1):x(SCREEN_RIGHT-106*WideScreenDiff()):y(SCREEN_CENTER_Y+60+27.5*3*WideScreenDiff()):addy((IsHome() and isScreenTitle()) and -200 or 0) end,
 			OnCommand=function(self) self:horizalign(left):addx(200):sleep(0.9):decelerate(0.25):addx(-200):zoom(0.7*WideScreenDiff()) end,
 			ScreenChangedMessageCommand=function(self) self:stoptweening():playcommand("Init"):playcommand("On") end,
 			Condition=REBIRTHPLUS and not isFinal()
 		},
 		LoadActor("../_overlay/rebirth2")..{
-			InitCommand=function(self) self:x(SCREEN_RIGHT):y(SCREEN_CENTER_Y+60+27.5*4*WideScreenDiff()):zoom(0.65*WideScreenDiff()):addy((IsHome() and isScreenTitle()) and -172.5 or 0) end,
+			InitCommand=function(self) self:x(SCREEN_RIGHT):y(SCREEN_CENTER_Y+60+27.5*4*WideScreenDiff()):zoom(0.65*WideScreenDiff()):addy((IsHome() and isScreenTitle()) and -200 or 0) end,
 			OnCommand=function(self) self:horizalign(right):addx(200):sleep(0.9):decelerate(0.25):addx(-200):playcommand("Fade") end,
 			FadeCommand=function(self) self:glow(1,1,1,0):sleep(2):linear(0.3):glow(1,1,1,0.25):sleep(0.05):glow(1,1,1,0):sleep(1):queuecommand("Fade") end,
 			ScreenChangedMessageCommand=function(self) self:stoptweening():playcommand("Init"):playcommand("On") end,
 			Condition=REBIRTHTWO and isFinal()
 		},
 		LoadActor("../_overlay/joinin")..{
-			InitCommand=function(self) self:x(SCREEN_RIGHT+20*WideScreenDiff()):y(SCREEN_CENTER_Y+60+27.5*4*WideScreenDiff()):zoom(0.475*WideScreenDiff()):addy((IsHome() and isScreenTitle()) and -172.5 or 0) end,
+			InitCommand=function(self) self:x(SCREEN_RIGHT+20*WideScreenDiff()):y(SCREEN_CENTER_Y+60+27.5*4*WideScreenDiff()):zoom(0.475*WideScreenDiff()):addy((IsHome() and isScreenTitle()) and -200 or 0) end,
 			OnCommand=function(self) self:horizalign(right):addx(200):sleep(0.9):decelerate(0.25):addx(-200):playcommand("Fade") end,
 			FadeCommand=function(self) self:glow(1,1,1,0):sleep(2):linear(0.3):glow(1,1,1,0.25):sleep(0.05):glow(1,1,1,0):sleep(1):queuecommand("Fade") end,
 			ScreenChangedMessageCommand=function(self) self:stoptweening():playcommand("Init"):playcommand("On") end,
 			Condition=REBIRTHTWO and not isFinal()
 		},
 		LoadFont("_v profile")..{
-			InitCommand=function(self) self:settext("REBIRTH 2"):shadowlength(1):x(SCREEN_RIGHT-106*WideScreenDiff()):y(SCREEN_CENTER_Y+60+27.5*4*WideScreenDiff()):addy((IsHome() and isScreenTitle()) and -172.5 or 0) end,
+			InitCommand=function(self) self:settext("REBIRTH 2"):shadowlength(1):x(SCREEN_RIGHT-106*WideScreenDiff()):y(SCREEN_CENTER_Y+60+27.5*4*WideScreenDiff()):addy((IsHome() and isScreenTitle()) and -200 or 0) end,
 			OnCommand=function(self) self:horizalign(left):addx(200):sleep(0.9):decelerate(0.25):addx(-200):zoom(0.7*WideScreenDiff()) end,
 			ScreenChangedMessageCommand=function(self) self:stoptweening():playcommand("Init"):playcommand("On") end,
 			Condition=REBIRTHTWO and not isFinal()
@@ -355,6 +355,17 @@ return Def.ActorFrame{
 		RefreshCommand=function(self)
 			if not isTopScreen("ScreenLogo") then 
 				self:settext(ProductFamily() .. " " .. ProductVersion() .. " (" .. VersionDate() .. ")")
+			end
+		end
+	},
+	LoadFont("ScreenOptions serial number")..{
+		Condition=isOutFox(),
+		InitCommand=function(self) self:x(SCREEN_LEFT+25*WideScreenDiff()*WideScreenDiff()):y(isFinal() and SCREEN_BOTTOM-66*WideScreenDiff() or SCREEN_BOTTOM-58*WideScreenDiff()):shadowlength(2):horizalign(left):maxwidth(SCREEN_WIDTH/3*2/WideScreenDiff()):zoom(0.5*WideScreenDiff()) end,
+		OnCommand=function(self) self:diffusealpha(0):sleep(0.5):linear(0.5):diffusealpha(1):playcommand("Refresh") end,
+		ScreenChangedMessageCommand=function(self) self:playcommand("Refresh") end,
+		RefreshCommand=function(self)
+			if not isTopScreen("ScreenLogo") then 
+				self:settext("DB9's StepCache: v"..getCacheVersion())
 			end
 		end
 	},
