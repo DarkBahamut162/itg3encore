@@ -46,14 +46,17 @@ return Def.ActorFrame{
 							local step = GAMESTATE:GetCurrentSteps(GAMESTATE:GetMasterPlayerNumber())
 							if step and tobool(LoadFromCache(SongOrCourse,step,"HasLua")) then
 								self:rainbow():effectclock(EC ~= "" and "beat" or "timerglobal")
-								if output == "" then output = "LUA" else output = output.." & LUA" end
+								output = addToOutput(output,"LUA"," & ")
 							end
 						else
 							if HasLuaCheck() then
 								self:rainbow():effectclock(EC ~= "" and "beat" or "timerglobal")
-								if output == "" then output = "LUA" else output = output.." & LUA" end
+								output = addToOutput(output,"LUA"," & ")
 							end
 						end
+					end
+					if SongOrCourse:HasLyrics() then
+						output = addToOutput(output,"LYRICS"," & ")
 					end
 				else
 					self:stopeffect()
