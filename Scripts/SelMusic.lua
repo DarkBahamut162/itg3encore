@@ -270,10 +270,13 @@ end
 
 function getStepCacheFile(Step)
 	local filename = split("/",Step:GetFilename())
-	local Song = SONGMAN:GetSongFromSteps(Step)
-	local groupName = #filename >= 4 and filename[3] or Song:GetGroupName()
-	local songName = #filename >= 4 and filename[4] or Song:GetSongFolder()
-	return "Cache/Steps/Steps_"..groupName.."_"..songName.."_"..ToEnumShortString(Step:GetStepsType()).."_"..ToEnumShortString(Step:GetDifficulty()).."_"..Step:GetHash()
+	local groupName = filename[#filename-2]
+	local songName = filename[#filename-1]
+	if string.find(groupName,"@") then
+		local Song = SONGMAN:GetSongFromSteps(Step)
+		groupName = Song:GetGroupName()
+	end
+	return "Cache/Steps/Steps_"..groupName.."_"..songName.."_"..ToEnumShortString(Step:GetStepsType()).."_"..ToEnumShortString(Step:GetDifficulty()).."_"..Step:GetHash()..".db9"
 end
 
 function HasStopAtBeat(beat,timing)
