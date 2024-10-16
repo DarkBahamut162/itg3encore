@@ -18,6 +18,11 @@ local Prefs = {
 		Choices = { OptionNameString('Off'), OptionNameString('On') },
 		Values = { false, true }
 	},
+	DanceDifficultyType = {
+		Default = true,
+		Choices = { "Old", "X-Scale" },
+		Values = { false, true }
+	},
 	ShowClock = {
 		Default = false,
 		Choices = { OptionNameString('Off'), OptionNameString('On') },

@@ -1,5 +1,5 @@
 return Def.ActorFrame{
-	BeginCommand=function() InitOptions() end,
+	BeginCommand=function() InitOptions() resetRepeatCheck() end,
 	Def.ActorFrame{
 		Condition=isScreenTitle(),
 		LoadActor(THEME:GetPathB("ScreenEndingNormal","overlay/p1gradient"))..{

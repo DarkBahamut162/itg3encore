@@ -629,6 +629,10 @@ end
 
 local repeatCheck = {}
 
+function resetRepeatCheck()
+	repeatCheck = {}
+end
+
 --[[
 	This function gets called intentionally through MeterSetCommand inside Metrics.ini for [StepsDisplayListRow]
 	But for whatever reason, it gets called on ALL Changed*MessageCommands FOR ALL ENABLED PLAYERS.
@@ -661,7 +665,15 @@ function getCalculatedDifficulty(Step)
 		end
 	end
 
-	local DB9 = stepSum
+	local ddrtype = 1
+
+	if (IsGame("dance") or IsGame("groove")) then
+		if ThemePrefs.Get("DanceDifficultyType") == false then
+			ddrtype = 2/3
+		end
+	end
+
+	local DB9 = stepSum * ddrtype
 	local YA  = 0
 	local SPS = 0
 
@@ -669,8 +681,8 @@ function getCalculatedDifficulty(Step)
 		YA = GetConvertDifficulty(Song,Step,totalSeconds) / 2
 		if isOutFox() then SPS = tonumber(LoadFromCache(Song,Step,"StepsPerSecond")) / 2 end
 	else
-		YA = GetConvertDifficulty(Song,Step,totalSeconds) * (getColumnsPerPlayer(stepType[2],stepType[3],true) / 4)
-		if isOutFox() then SPS = tonumber(LoadFromCache(Song,Step,"StepsPerSecond")) * (getColumnsPerPlayer(stepType[2],stepType[3],true) / 4) end
+		YA = GetConvertDifficulty(Song,Step,totalSeconds) * (getColumnsPerPlayer(stepType[2],stepType[3],true) / 4) * ddrtype
+		if isOutFox() then SPS = tonumber(LoadFromCache(Song,Step,"StepsPerSecond")) * (getColumnsPerPlayer(stepType[2],stepType[3],true) / 4) * ddrtype end
 	end
 
 	local output = {}
