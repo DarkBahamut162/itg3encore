@@ -6,7 +6,7 @@ return Def.ActorFrame{
 	OnCommand=function(self) self:diffusealpha(0):sleep(0.85):linear(0.2):diffusealpha(1) end,
 	OffCommand=function(self) self:linear(0.4):diffusealpha(0) end,
 	LoadFont("_r bold 30px")..{
-		InitCommand=function(self) self:y(isFinal() and 72 or 73.5):zoom(isFinal() and 0.4 or 0.333):shadowlength(1):maxwidth(SCREEN_CENTER_X*1.5) end,
+		InitCommand=function(self) self:y(isFinal() and 72 or 73.5):zoom(isFinal() and 0.4 or 0.333):shadowlength(1):maxwidth(SCREEN_CENTER_X*1.6) end,
 		SetCommand=function(self)
 			if ThemePrefs.Get("ShowStepCounter") and isOutFox() and not GAMESTATE:IsCourseMode() then
 				local SongOrCourse = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentCourse() or GAMESTATE:GetCurrentSong()
@@ -14,12 +14,14 @@ return Def.ActorFrame{
 				local output = ""
 				local loadStepCounter = ""
 				local loadScratches = ""
+				local loadScratchJumps = ""
 				local loadFoots = ""
 
 				if SongOrCourse and StepsOrTrail then
 					loadStepCounter = LoadFromCache(SongOrCourse,StepsOrTrail,"StepCounter")
 					if IsGame("be-mu") then
 						loadScratches = LoadFromCache(SongOrCourse,StepsOrTrail,"Scratches")
+						loadScratchJumps = LoadFromCache(SongOrCourse,StepsOrTrail,"ScratchJumps")
 						if GetUserPrefN("StylePosition") == 2 then
 							loadFoots = LoadFromCache(SongOrCourse,StepsOrTrail,"Foots")
 						end
@@ -34,7 +36,7 @@ return Def.ActorFrame{
 							end
 						end
 					end
-					if loadScratches and loadScratches ~= "" then output = addToOutput(output,"Scratches: "..loadScratches," | ") end
+					if loadScratches and loadScratches ~= "" then output = addToOutput(output,"Scratches: "..loadScratches.."/"..loadScratchJumps," | ") end
 					if loadFoots and loadFoots ~= "" then output = addToOutput(output,"Foots: "..loadFoots," | ") end
 
 					if output == "" then

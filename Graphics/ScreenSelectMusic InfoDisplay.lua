@@ -41,6 +41,17 @@ return Def.ActorFrame{
 							self:stopeffect()
 						end
 					end
+					if isOutFox() and (IsGame("po-mu") or IsGame("be-mu")) then
+						local step = GAMESTATE:GetCurrentSteps(GAMESTATE:GetMasterPlayerNumber())
+						if step and not tobool(LoadFromCache(SongOrCourse,step,"HasKeys")) then
+							output = addToOutput(output,"NO KEYSOUNDS"," & ")
+							self:diffuse(Color("Red"))
+						end
+						if step and tobool(LoadFromCache(SongOrCourse,step,"HasNullMeasure")) then
+							output = addToOutput(output,"NULL MEASURE"," & ")
+							self:diffuse(Color("Red"))
+						end
+					end
 					if enableLua then
 						if isOutFox() then
 							local step = GAMESTATE:GetCurrentSteps(GAMESTATE:GetMasterPlayerNumber())

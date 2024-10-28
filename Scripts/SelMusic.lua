@@ -1,4 +1,4 @@
-local cacheVersion = "0.33"
+local cacheVersion = "0.37"
 
 function getCacheVersion()
 	return cacheVersion
@@ -312,6 +312,91 @@ local function calcSPS(SPS,max)
 	return total
 end
 
+function GetParameter(Step)
+	local filePath = Step:GetFilename()
+	local extBME = string.find(filePath, '.+%.bme') and true or false
+	local extBML = string.find(filePath, '.+%.bml') and true or false
+	local extBMS = string.find(filePath, '.+%.bms') and true or false
+	local extPMS = string.find(filePath, '.+%.pms') and true or false
+	if extBME or extBML or extBMS or extPMS then else return {} end
+    local file = RageFileUtil:CreateRageFile()
+	file:Open(filePath,1)
+	file:Seek(0)
+	local gLine = {}
+	local line
+	while true do
+		if file then
+			line = file:GetLine()
+			if file:AtEOF() then break elseif string.find(line,"#WAV[0-9A-Z]+") then
+				gLine[#gLine+1] = split(" ",line)[2]
+			end
+		end
+	end
+	file:Close()
+	file:destroy()
+	return gLine
+end
+
+function CheckNullMeasure(Step)
+	local filePath = Step:GetFilename()
+	local extBME = string.find(filePath, '.+%.bme') and true or false
+	local extBML = string.find(filePath, '.+%.bml') and true or false
+	local extBMS = string.find(filePath, '.+%.bms') and true or false
+	local extPMS = string.find(filePath, '.+%.pms') and true or false
+	if extBME or extBML or extBMS or extPMS then else return false end
+    local file = RageFileUtil:CreateRageFile()
+	file:Open(filePath,1)
+	file:Seek(0)
+	local line
+	local ret = false
+	local checkMeasure = {}
+	local checkMeasurelength = {}
+	local checkNotes = {}
+	local maxMeasure = 0
+	while file and not file:AtEOF() do
+		if file then
+			line = file:GetLine()
+			if string.match(line,":") then
+				local tmp = split(":",line)
+				local currentMeasure = string.sub(tmp[1],2,4)
+				if tonumber(currentMeasure) then
+					if tonumber(currentMeasure) > maxMeasure then maxMeasure = tonumber(currentMeasure) end
+					if string.match(line,"02:") then
+						checkMeasure[currentMeasure] = true
+						checkMeasurelength[currentMeasure] = tmp[2]
+					else
+						if not checkMeasurelength[currentMeasure] then checkMeasurelength[currentMeasure] = "1" end
+						checkNotes[currentMeasure] = true
+					end
+				end
+			end
+		end
+	end
+	file:Close()
+	file:destroy()
+	local nullCheck = {}
+	local earliestNull = 999
+	local latestNull = 0
+    for measure,length in pairs( checkMeasurelength ) do
+		if tonumber(measure) then
+			if tonumber(measure) > maxMeasure then maxMeasure = tonumber(measure) end
+		end
+		if tonumber(length) ~= 1 then
+			if not checkNotes[measure] then
+				nullCheck[measure] = true
+				if tonumber(measure) < earliestNull then earliestNull = tonumber(measure) end
+				if tonumber(measure) > latestNull then latestNull = tonumber(measure) end
+			end
+		end
+	end
+	if earliestNull ~= 999 and latestNull ~= 0 then
+		for measure=maxMeasure-(latestNull-earliestNull), maxMeasure do
+			if checkNotes[string.format("%03d",measure)] then ret = true end
+		end
+	end
+	return ret
+end
+
 function cacheStep(Song,Step)
 	if Song == nil then Song = SONGMAN:GetSongFromSteps(Step) end
 
@@ -341,23 +426,21 @@ function cacheStep(Song,Step)
 	local lastSec = 0
 	local stepsPerSec = {}
 	local currentSPS = 0
-	local scratches = 0
-	local foots = 0
-	local currentBPM,checkBPM,checking,checkCount,maxBPM,isStop = 0,0,false,0,0,false
+	local scratches,scratchJumps,foots = 0,0,0
+	local currentBPM,checkBPM,checkCount,maxBPM = 0,0,0,0
+	local checking,isStop,scratch = false,false,false
 
-	for _,v in pairs( Song:GetNoteData(chartint) ) do
+	local noteData = Song:GetNoteData(chartint)
+	for _,v in pairs( noteData ) do
 		if currentBeat < v[1] then
 			currentBeat = v[1]
-			if currentNotes ~= 0 then
-				noteCounter[currentNotes] = noteCounter[currentNotes] + 1
-			end
 			currentNotes, currentMines = 0, 0
 		end
 
 		if timingData:IsJudgableAtBeat(v[1]) then
 			if allowednotes[v[3]] then
 				currentBPM = math.round(timingData:GetBPMAtBeat(v[1]),3)
-				isStop = HasStopAtBeat(v[1],timingData)
+				if timingData:HasStops() then isStop = HasStopAtBeat(v[1],timingData) end
 				if currentBPM > maxBPM and not checking and not isStop then
 					checking = true
 					if currentBPM > checkBPM then checkBPM = currentBPM end
@@ -397,16 +480,19 @@ function cacheStep(Song,Step)
 					if #noteCounter == 6 or #noteCounter == 12 then
 						if v[2] == #noteCounter or (#noteCounter > 10 and v[2] == #noteCounter/2) then
 							scratches = scratches + 1
+							scratch = true
 						end
 					elseif #noteCounter == 7 or #noteCounter == 14 then
 						if v[2] == #noteCounter or (#noteCounter > 10 and v[2] == #noteCounter/2) then
 							foots = foots + 1
 						elseif v[2] == #noteCounter-1 or (#noteCounter > 10 and v[2] == #noteCounter/2-1) then
 							scratches = scratches + 1
+							scratch = true
 						end
 					elseif #noteCounter == 8 or #noteCounter == 16 then
 						if v[2] == 1 or (#noteCounter > 10 and v[2] == #noteCounter) then
 							scratches = scratches + 1
+							scratch = true
 						end
 					end
 				end
@@ -417,16 +503,45 @@ function cacheStep(Song,Step)
 				end
 			end
 		end
+
+		local checkBeat = false
+
+		if _ < #noteData then
+			if currentBeat < noteData[_+1][1] then
+				checkBeat = true
+			end
+		else
+			checkBeat = true
+		end
+
+		if checkBeat then
+			if currentNotes ~= 0 then noteCounter[currentNotes] = noteCounter[currentNotes] + 1 end
+			if scratch and currentNotes > 1 then
+				scratchJumps = scratchJumps + 1
+				scratch = false
+			end
+		end
 	end
-	if currentNotes ~= 0 then noteCounter[currentNotes] = noteCounter[currentNotes] + 1 end
+
+	noteData = nil
 
 	local total = calcSPS(stepsPerSec)
 	local total2 = calcSPS(stepsPerSec,total)
 
 	local hasLua = HasLua(Song,"BGCHANGES") or HasLua(Song,"FGCHANGES")
+	local hasKeys = false
+	local hasNullMeasure = false
+
+	if stepType[2] == "Bm" or stepType[2] == "Pnm" then
+		local keySounds = GetParameter(Step)
+		hasNullMeasure = CheckNullMeasure(Step)
+		if keySounds and #keySounds > 2 then hasKeys = true end
+	end
 
 	LoadModule("Config.Save.lua")("Version",cacheVersion,getStepCacheFile(Step))
 	LoadModule("Config.Save.lua")("HasLua",hasLua and "true" or "false",getStepCacheFile(Step))
+	LoadModule("Config.Save.lua")("HasKeys",hasKeys and "true" or "false",getStepCacheFile(Step))
+	LoadModule("Config.Save.lua")("HasNullMeasure",hasNullMeasure and "true" or "false",getStepCacheFile(Step))
 	if shockArrows ~= "" then LoadModule("Config.Save.lua")("ShockArrows",shockArrows,getStepCacheFile(Step)) end
 	LoadModule("Config.Save.lua")("StepCounter",table.concat(noteCounter,"_"),getStepCacheFile(Step))
 	LoadModule("Config.Save.lua")("StepsPerSecond",total2,getStepCacheFile(Step))
@@ -438,6 +553,7 @@ function cacheStep(Song,Step)
 			LoadModule("Config.Save.lua")("Foots",foots,getStepCacheFile(Step))
 		end
 		LoadModule("Config.Save.lua")("Scratches",scratches,getStepCacheFile(Step))
+		LoadModule("Config.Save.lua")("ScratchJumps",scratchJumps,getStepCacheFile(Step))
 	end
 end
 
@@ -630,7 +746,9 @@ end
 local repeatCheck = {}
 
 function resetRepeatCheck()
-	repeatCheck = {}
+	if IsGame("dance") or IsGame("groove") then
+		repeatCheck = {}
+	end
 end
 
 --[[
