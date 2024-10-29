@@ -22,6 +22,8 @@ Switch between **Encore Normal** and **Encore Final** mode
 Change the BPMDisplay type from **DisplayBPM** (default), **ActualBPM** (total range) and **CalculatedBPM** (playable range)
 - **ShowCalcDiff:**
 Show the calculated Difficulty of the currently selected stepchart *(currently banner only)*. Shows **DB9** *(average steps per second)*, **Y&A** *(RadarValue Calculation)* and **SPS (OutFox Only)** *(median steps per second per steps)*
+  - **DanceDifficultyType (Dance Mode Only):**
+Switch between **OLD & X-SCALE** difficulty ranges.
 - **ShowClock:**
 Shows **current time and date** on most/all menus
 - **ShowHasLua:**
@@ -82,14 +84,14 @@ What has been done so far:
 * All **cmd()** transformed to **function(self)**
 * Removed **D-Pad** Modifier since it breaks other Modifiers (like the new SpeedMod)
 * Better and sorted **ScreenPlayerOptions**
-  * Including various other mods added from SetpMania5/OutFox
+  * Including various other mods added for StepMania/ITGmania/OutFox
 * Added **MOD** & **BPM range** within **Name Badges** inside **ScreenPlayerOptions**
-  * TODO: Add **ShowBPMDisplayType** changes onto it
 * Added **TimingData** and **"GrooveRadar"** Display to **_panes** in **ScreenSelectMusic**
-* Added **StepCounter** to **_panes** in **ScreenSelectMusic** if enables
+* Added **StepCounter** to **_panes** in **ScreenSelectMusic** if enabled *(Project OutFox only)*
 * Added **Player Avatar** to **_panes** in **ScreenSelectMusic** *(Project OutFox AND WideScreen only)*
 * Added **CDTitle** next to **ScreenSelectMusic** banner frame *(WideScreen only)*
 * Added and combined both **HasLua** and **Rounds/Length specification** between **Artist** and **BPM** line
+* Added indication for **HasNoKeysounds** & **ContainsNullMeasure** in **BE-MU / PO-MU Mode** *(Project OutFox only)*
 * Better **StatsDisplay** going from a range of 1-6 instead of just 3
   * Added option for a fully functional **IIDX pacemaker** with selectable target meter
     * For 2 Player: <u>both players need to choose IIDX</u>
@@ -108,12 +110,13 @@ What has been done so far:
     * Added **LifeBar** for Oni Courses that have lives
 * Fixed **Rounds/Songs Display**
 * Added back **Rotation** to **Judgments** & **Holds** during Gameplay
-* Shows **ProductFamily**
+* Shows **ProductFamily** & **ProductVersion** in **ScreenTitleMenu**
+  * Shows **StepCacheVersion** *(Project OutFox only)*
 * Added most **Final Encore Theme** stuff while adding/adjusting a few other things.
 * Re-added **marvelous/perfect/great color bar** on top of the **LifeGraph** in **ScreenEvaluation**
 * Added ability to switch between **Normal Score**, **Percentage** and **EX Score** via **Player Options**
 * Fixed **Online Mode** *(I think?)*
-* Added ability to switch between
+* Added ability to switch between within **ScreenSelectStyle**
   * **Game Mode Styles**
   * **Rave and Battle Mode**
 
