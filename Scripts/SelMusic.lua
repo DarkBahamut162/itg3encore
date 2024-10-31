@@ -820,7 +820,7 @@ function getCalculatedDifficulty(Step)
 	end
 end
 
-function grooveRadar(song,step,timingData,RadarValues)
+function grooveRadar(song,step,RadarValues)
 	local stream,voltage,air,freeze,chaos = 0,0,0,0,0
 	local totalSeconds = isOutFox() and tonumber(LoadFromCache(song,step,"TrueSeconds")) or (song:GetLastSecond() - song:GetFirstSecond())
 	local totalBeats = (isOutFox() and tonumber(LoadFromCache(song,step,"TrueBeats")) or (song:GetLastBeat() - song:GetFirstBeat()))

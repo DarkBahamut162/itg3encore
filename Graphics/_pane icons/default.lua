@@ -35,7 +35,7 @@ return Def.ActorFrame{
 				mine = rv:GetValue('RadarCategory_Mines') > 0
 				hand = rv:GetValue('RadarCategory_Hands') > 0
 				roll = rv:GetValue('RadarCategory_Rolls') > 0
-				stream,voltage,air,freeze,chaos = grooveRadar(song,step,timingData,rv)
+				stream,voltage,air,freeze,chaos = grooveRadar(song,step,rv)
 			end
 		elseif course then
 			local trail = GAMESTATE:GetCurrentTrail(player)
