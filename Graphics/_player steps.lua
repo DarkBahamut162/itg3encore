@@ -36,8 +36,8 @@ return Def.ActorFrame{
 							end
 						end
 					end
-					if loadScratches and loadScratches ~= "" then output = addToOutput(output,"Scratches: "..loadScratches.."/"..loadScratchJumps," | ") end
-					if loadFoots and loadFoots ~= "" then output = addToOutput(output,"Foots: "..loadFoots," | ") end
+					if loadScratches and not (loadScratches == "" or loadScratches == "0") then output = addToOutput(output,"Scratches: "..loadScratches.."/"..loadScratchJumps," | ") end
+					if loadFoots and not (loadFoots == "" or loadFoots == "0") then output = addToOutput(output,"Foots: "..loadFoots," | ") end
 
 					if output == "" then
 						local EC = not courseMode and SongOrCourse:GetPreviewMusicPath() or " "
