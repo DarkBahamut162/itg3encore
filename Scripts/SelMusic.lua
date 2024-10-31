@@ -172,7 +172,10 @@ local allowednotes = {
 	["TapNoteType_TapNoteType_Tap"] = true,
 	["TapNoteType_TapNoteType_Lift"] = true,
 	["TapNoteSubType_TapNoteSubType_Hold"] = true,
-	["TapNoteSubType_TapNoteSubType_Roll"] = true
+	["TapNoteSubType_TapNoteSubType_Roll"] = true,
+	--I give up...
+	["Hold"] = true,
+	["Roll"] = true
 }
 
 function getColumnsPerPlayer(typ,style,calc)
