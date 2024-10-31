@@ -7,8 +7,8 @@ return Def.ActorFrame{
 	},
 	LoadFont("_r bold shadow 30px")..{
 		InitCommand=function(self) self:zoom(0.66*WideScreenDiff()):maxwidth(340):halign(0) end,
-		CurrentSongChangedMessageCommand=function(self) if not course then self:playcommand("Set") end end,
-		CurrentCourseChangedMessageCommand=function(self) if course then self:playcommand("Set") end end,
+		CurrentSongChangedMessageCommand=function(self) if not course then self:queuecommand("Set") end end,
+		CurrentCourseChangedMessageCommand=function(self) if course then self:queuecommand("Set") end end,
 		SetCommand=function(self)
 			local song = GAMESTATE:GetCurrentSong()
 			local course = GAMESTATE:GetCurrentCourse()
