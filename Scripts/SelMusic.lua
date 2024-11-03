@@ -49,20 +49,15 @@ end
 function GetScreenSelectMusicHelpText()
 	local ret = IsNetSMOnline() and THEME:GetString("ScreenNetSelectMusic", "HelpText") or THEME:GetString("ScreenSelectMusic", "HelpTextNormal")
 
-	if SelectButtonAvailable() then
-		if DifficultyChangingAvailable() or ModeMenuAvailable() then
-			ret = ret .. "::" .. THEME:GetString( "ScreenSelectMusic", "SelectButtonAvailableHelpTextAppend" )
-		end
-	else
-		if DifficultyChangingAvailable() then
-			ret = ret .. "::" .. THEME:GetString( "ScreenSelectMusic", "DifficultyChangingAvailableHelpTextAppend" )
-		end
-
-		if ModeMenuAvailable() then
-			ret = ret .. "::" .. THEME:GetString( "ScreenSelectMusic", "SortMenuAvailableHelpTextAppend" )
-		end
+	if true or SelectButtonAvailable() then
+		ret = ret .. "::" .. THEME:GetString( "ScreenSelectMusic", "SelectButtonAvailableHelpTextAppend" )
 	end
-
+	if DifficultyChangingAvailable() then
+		ret = ret .. "::" .. THEME:GetString( "ScreenSelectMusic", "DifficultyChangingAvailableHelpTextAppend" )
+	end
+	if ModeMenuAvailable() then
+		ret = ret .. "::" .. THEME:GetString( "ScreenSelectMusic", "SortMenuAvailableHelpTextAppend" )
+	end
 	if getenv("Workout") and IsHome() then
 		ret = ret .. "::" .. THEME:GetString( "ScreenSelectMusic", "WorkoutHelpTextAppend" )
 	end
