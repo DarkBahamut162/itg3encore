@@ -286,6 +286,40 @@ function SongMods()
 	return options
 end
 
+function ModeMenu()
+	local style = GAMESTATE:GetCurrentStyle()
+	local styleType = style:GetStyleType()
+	local doubles = (styleType == 'StyleType_OnePlayerTwoSides' or styleType == 'StyleType_TwoPlayersSharedSides')
+
+	local options = "Group,Title,Artist,Genre,Bpm,Length,"
+
+	if isITGmania() then
+		options = addToOutput(options,"Meter",",")
+	else
+		if (GAMESTATE:GetNumPlayersEnabled() == 1 and not doubles) then
+			options = addToOutput(options,"EasyMeter,MediumMeter,HardMeter,ChallengeMeter",",")
+		else
+			options = addToOutput(options,"DoubleEasyMeter,DoubleMediumMeter,DoubleHardMeter,DoubleChallengeMeter",",")
+		end
+	end
+
+	options = addToOutput(options,"Popularity,Recent",",")
+
+	if isITGmania() then
+		for player in ivalues(GAMESTATE:GetHumanPlayers()) do
+			if (PROFILEMAN:IsPersistentProfile(player)) then
+				options = addToOutput(options,"Top".. ToEnumShortString(player).."Grades",",")
+			end
+		end
+	else
+		options = addToOutput(options,"TopGrades",",")
+	end
+
+	options = addToOutput(options,"Dance,Battle,Rave",",")
+
+	return options
+end
+
 function getPercentValues()
 	local temp = ""
 	for i=0,10 do
