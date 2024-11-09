@@ -1,6 +1,21 @@
 InitRotationOptions()
 
+if ThemePrefs.Get("SLFavorites") > 0 then
+	for _, id in pairs(PROFILEMAN:GetLocalProfileIDs()) do
+		local profile = PROFILEMAN:GetLocalProfile(id)
+		local profileDir = PROFILEMAN:LocalProfileIDToDir(id) .. "favorites.txt"
+		if FILEMAN:DoesFileExist(profileDir) then
+			if ThemePrefs.Get("SLFavorites") == 1 then
+				SL2Other(profile:GetGUID(),profileDir)
+			elseif ThemePrefs.Get("SLFavorites") == 2 then
+				SL2OF(profile,profileDir)
+			end
+		end
+	end
+end
+
 return Def.ActorFrame{
+	OffCommand=function() if ThemePrefs.Get("SLFavorites") == 1 then SONGMAN:SetPreferredSongs(PROFILEMAN:GetProfile(GAMESTATE:GetMasterPlayerNumber()):GetGUID()) end end,
 	Def.Quad{
 		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+60*0.68*WideScreenDiff()):valign(0):diffuse(color("#000000FF")):zoomto(SCREEN_WIDTH,SCREEN_HEIGHT) end
 	},

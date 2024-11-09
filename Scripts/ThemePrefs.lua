@@ -47,6 +47,11 @@ local Prefs = {
 		Default = false,
 		Choices = { OptionNameString('Off'), OptionNameString('On') },
 		Values = { false, true }
+	},
+	SLFavorites = {
+		Default = 0,
+		Choices = { "Off", "SL", "OF" },
+		Values = { 0, 1, 2 }
 	}
 }
 
