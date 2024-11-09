@@ -315,7 +315,7 @@ function ModeMenu()
 		options = addToOutput(options,"TopGrades",",")
 	end
 
-	if isOutFoxV() and hasSL() and ThemePrefs.Get("SLFavorites") == 1 then
+	if isOutFoxV043() and hasSL() and ThemePrefs.Get("SLFavorites") == 1 then
 		options = addToOutput(options,"Preferred",",")
 	end
 
