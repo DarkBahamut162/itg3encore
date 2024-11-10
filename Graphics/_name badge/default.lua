@@ -11,7 +11,7 @@ local timingdata
 local bpm = {}
 local currentBPM = {}
 local absoluteBPM = {}
-local BPMtype = ThemePrefs.Get("ShowBPMDisplayType")
+local BPMtype = IsGame("pump") and 0 or ThemePrefs.Get("ShowBPMDisplayType")
 
 if GAMESTATE:IsCourseMode() then
 	if trail then

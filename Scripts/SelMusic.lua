@@ -799,7 +799,7 @@ function getCalculatedDifficulty(Step)
 		YA = GetConvertDifficulty(Song,Step,totalSeconds) / 2
 		if isOutFox() then SPS = tonumber(LoadFromCache(Song,Step,"StepsPerSecond")) / 2 end
 	else
-		YA = GetConvertDifficulty(Song,Step,totalSeconds) * (getColumnsPerPlayer(stepType[2],stepType[3],true) / 4) * ddrtype
+		if not IsGame("pump") then YA = GetConvertDifficulty(Song,Step,totalSeconds) * (getColumnsPerPlayer(stepType[2],stepType[3],true) / 4) * ddrtype end
 		if isOutFox() then SPS = tonumber(LoadFromCache(Song,Step,"StepsPerSecond")) * (getColumnsPerPlayer(stepType[2],stepType[3],true) / 4) * ddrtype end
 	end
 
@@ -822,16 +822,6 @@ end
 
 function grooveRadar(song,step,RadarValues)
 	local stream,voltage,air,freeze,chaos = 0,0,0,0,0
-	local totalSeconds = isOutFox() and tonumber(LoadFromCache(song,step,"TrueSeconds")) or (song:GetLastSecond() - song:GetFirstSecond())
-	local totalBeats = (isOutFox() and tonumber(LoadFromCache(song,step,"TrueBeats")) or (song:GetLastBeat() - song:GetFirstBeat()))
-	local avg_bps_OLD = song:GetLastBeat() / song:MusicLengthSeconds()
-	local avg_bps_NEW = totalBeats / totalSeconds
-
-	if totalSeconds < 0 and totalBeats < 0 then
-		totalSeconds = song:GetLastSecond() - song:GetFirstSecond()
-		totalBeats = song:GetLastBeat() - song:GetFirstBeat()
-		avg_bps_NEW = totalBeats / totalSeconds
-	end
 
 	stream = RadarValues:GetValue('RadarCategory_Stream')
 	voltage = RadarValues:GetValue('RadarCategory_Voltage')
@@ -839,11 +829,24 @@ function grooveRadar(song,step,RadarValues)
 	freeze = RadarValues:GetValue('RadarCategory_Freeze')
 	chaos = RadarValues:GetValue('RadarCategory_Chaos')
 
-	stream = stream * song:MusicLengthSeconds() / totalSeconds
-	voltage = voltage / avg_bps_OLD * avg_bps_NEW
-	air = air * song:MusicLengthSeconds() / totalSeconds
-	freeze = freeze * song:MusicLengthSeconds() / totalSeconds
-	chaos = chaos * song:MusicLengthSeconds() / totalSeconds
+	if not IsGame("pump") then
+		local totalSeconds = isOutFox() and tonumber(LoadFromCache(song,step,"TrueSeconds")) or (song:GetLastSecond() - song:GetFirstSecond())
+		local totalBeats = (isOutFox() and tonumber(LoadFromCache(song,step,"TrueBeats")) or (song:GetLastBeat() - song:GetFirstBeat()))
+		local avg_bps_OLD = song:GetLastBeat() / song:MusicLengthSeconds()
+		local avg_bps_NEW = totalBeats / totalSeconds
+
+		if totalSeconds < 0 and totalBeats < 0 then
+			totalSeconds = song:GetLastSecond() - song:GetFirstSecond()
+			totalBeats = song:GetLastBeat() - song:GetFirstBeat()
+			avg_bps_NEW = totalBeats / totalSeconds
+		end
+
+		stream = stream * song:MusicLengthSeconds() / totalSeconds
+		voltage = voltage / avg_bps_OLD * avg_bps_NEW
+		air = air * song:MusicLengthSeconds() / totalSeconds
+		freeze = freeze * song:MusicLengthSeconds() / totalSeconds
+		chaos = chaos * song:MusicLengthSeconds() / totalSeconds
+	end
 
 	return math.max(0,stream),math.max(0,voltage),math.max(0,air),math.max(0,freeze),math.max(0,chaos)
 end

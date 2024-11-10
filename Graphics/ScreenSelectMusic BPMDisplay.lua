@@ -1,4 +1,4 @@
-local BPMtype = ThemePrefs.Get("ShowBPMDisplayType")
+local BPMtype = IsGame("pump") and 0 or ThemePrefs.Get("ShowBPMDisplayType")
 local courseMode = GAMESTATE:IsCourseMode()
 
 local function getTrueBPMRange(self,bpm)
