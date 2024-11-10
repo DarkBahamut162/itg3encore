@@ -27,7 +27,6 @@ for i=1,3 do
 		InitCommand=function(self) self:x(scale(i,1,3,SCREEN_LEFT+300*WideScreenDiff(),SCREEN_RIGHT-100*WideScreenDiff())) end
 	}
 	for n=2,7 do
-		local diff
 		local num = LoadFont("_eurostile normal")..{
 			InitCommand=function(self) self:y(scale(n,1,7,SCREEN_CENTER_Y-150*WideScreenDiff(),SCREEN_CENTER_Y+10*WideScreenDiff())):zoom(0.6*WideScreenDiff()):halign(1) end,
 			BeginCommand=function(self)

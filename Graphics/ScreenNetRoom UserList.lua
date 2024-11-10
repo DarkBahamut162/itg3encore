@@ -23,7 +23,7 @@ return Def.ActorFrame{
 						userList = addToOutput(userList,children:GetText(),"\n")
 					else
 						for child in ivalues(topScreen:GetChild("Users")) do
-							userList = addToOutput(userList,children:GetText(),"\n")
+							userList = addToOutput(userList,child:GetText(),"\n")
 						end
 					end
 				end

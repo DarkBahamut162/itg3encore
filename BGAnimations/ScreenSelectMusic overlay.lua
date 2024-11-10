@@ -26,7 +26,7 @@ return Def.ActorFrame{
 			GAMESTATE:UpdateDiscordScreenInfo(text,"",1)
 		end
 	end,
-	OffCommand = function(self, params)
+	OffCommand = function(self)
 		if isOni() then
 			for pn in ivalues(GAMESTATE:GetEnabledPlayers()) do
 				local playeroptions = GAMESTATE:GetPlayerState(pn):GetPlayerOptions("ModsLevel_Preferred")

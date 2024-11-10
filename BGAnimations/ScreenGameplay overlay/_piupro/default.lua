@@ -75,7 +75,7 @@ local function ProgressMeterWidth(source)
 end
 
 local TopFrame = Def.ActorFrame {
-	OnCommand = function(self, ...) self:addy(-100):sleep(1.0):decelerate(0.4):addy(100) end,
+	OnCommand = function(self) self:addy(-100):sleep(1.0):decelerate(0.4):addy(100) end,
 	LoadLifeMeterFramePart("top frame 1") .. {
 		Name="Dummy",
 		InitCommand=function(self) self:visible(false) end
@@ -116,7 +116,7 @@ local function MakeLifeMeterLives(pn, frame)
 				self:settext(param.LivesLeft)
 			end
 		end,
-		UpdateCommand=function(self, param)
+		UpdateCommand=function(self)
 			local meter = SCREENMAN:GetTopScreen():GetLifeMeter(pn)
 			if meter then self:settext(meter:GetLivesLeft()) end
 		end

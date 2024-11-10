@@ -2,7 +2,6 @@ return Def.ActorFrame{
 	OnCommand = function(self)
 		if isOutFox() then
 			local player = GAMESTATE:GetMasterPlayerNumber()
-			local SongOrCourse = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentCourse() or GAMESTATE:GetCurrentSong()
 			local StepOrTrails = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentTrail(player) or GAMESTATE:GetCurrentSteps(player)
 			if GAMESTATE:GetCurrentSong() then
 				local lengthFull = string.len(GAMESTATE:GetCurrentSong():GetDisplayFullTitle()) + 3 + string.len(GAMESTATE:GetCurrentSong():GetGroupName())

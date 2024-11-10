@@ -122,7 +122,6 @@ local currentSkillName = ""
 local totalSkills = 0
 local totalWeights
 local totalList
-local weightsCounterCheck = true
 local selectHeld = false
 local totalSkillNames = {}
 local totalWeightNames = {}

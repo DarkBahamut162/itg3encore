@@ -27,7 +27,6 @@ return Def.ActorFrame{
 	LoadFont("_z bold gray 36px")..{
 		CurrentSongChangedMessageCommand=function(self) self:playcommand("Set") end,
 		SetCommand=function(self)
-			local curStage = GAMESTATE:GetCurrentStage()
 			if GAMESTATE:IsCourseMode() then
 				if GAMESTATE:GetCourseSongIndex()+1 > 5 then
 					self:settext("SONG ".. (GAMESTATE:GetCourseSongIndex()+1))

@@ -1,5 +1,5 @@
 local player = Var "Player"
-local pnMaxLives = { PlayerNumber_P1 = 0, PlayerNumber_P2 = 0 }
+local pnMaxLives = { PlayerNumber_P1 = 100, PlayerNumber_P2 = 100 }
 
 return Def.ActorFrame{
 	InitCommand=function(self)
@@ -7,16 +7,15 @@ return Def.ActorFrame{
 		if player == PLAYER_2 then self:x( _screen.cx + _screen.w/3.4 + 60 ) end
 	end,
 	Def.ActorFrame{
-		InitCommand=function(self) self:rotationz(-90):zoom(2):addx(player == PLAYER_1 and -100 or 100) end,
-		OnCommand=function(self) self:decelerate(0.8):addx(player == PLAYER_1 and 100 or -100) end,
+		InitCommand=function(self) self:rotationz(-90):zoom(2):addx(player == PLAYER_1 and -150 or 150) end,
+		OnCommand=function(self) self:decelerate(0.8):addx(player == PLAYER_1 and 150 or -150) end,
 		OffCommand=function(self)
 			if AnyPlayerFullComboed() then self:sleep(1) end
-			self:accelerate(0.8):addx(player == PLAYER_1 and -100 or 100)
+			self:accelerate(0.8):addx(player == PLAYER_1 and -150 or 150)
 		end,
 		HealthStateChangedMessageCommand=function(self, param)
-			local State = GAMESTATE:GetPlayerState(player)
-			if State:GetHealthState() == Health.Dead then
-				self:accelerate(0.8):addx(player == PLAYER_1 and -100 or 100)
+			if param.HealthState == Health.Dead and param.PlayerNumber == player then
+				self:accelerate(0.8):addx(player == PLAYER_1 and -150 or 150)
 			end
 		end,
 		LoadActor("meter black")..{
@@ -45,12 +44,12 @@ return Def.ActorFrame{
 			OnCommand=function(self) self:sleep(2.5):accelerate(0.3):diffusealpha(1):diffuseshift():effectcolor1(color("#00EAFF")):effectcolor2(color("#FFFFFF00")):effectclock('beat'):effectperiod(4) end
 		},
 		LoadActor("streak")..{
-			InitCommand=function(self) self:addx(174-308-21):addx(-100) end,
-			OnCommand=function(self) self:sleep(0.8):decelerate(0.6):addx(100) end
+			InitCommand=function(self) self:addx(174-308-21):addx(-150) end,
+			OnCommand=function(self) self:sleep(0.8):decelerate(0.6):addx(150) end
 		},
 		LoadActor("streak")..{
-			InitCommand=function(self) self:addx(155-308-21):addx(-100) end,
-			OnCommand=function(self) self:sleep(1):decelerate(0.6):addx(100) end
+			InitCommand=function(self) self:addx(155-308-21):addx(-150) end,
+			OnCommand=function(self) self:sleep(1):decelerate(0.6):addx(150) end
 		},
 		LoadActor("glow2")..{
 			InitCommand=function(self) self:blend(Blend.Add):addx(-5):diffusealpha(0) end,
@@ -59,13 +58,12 @@ return Def.ActorFrame{
 		}
 	},
 	Def.ActorFrame{
-		InitCommand=function(self) self:addx(player == PLAYER_1 and -100 or 100) end,
-		OnCommand=function(self) self:decelerate(0.8):addx(player == PLAYER_1 and 100 or -100) end,
-		OffCommand=function(self) self:accelerate(0.8):addx(player == PLAYER_1 and -100 or 100) end,
+		InitCommand=function(self) self:addx(player == PLAYER_1 and -150 or 150) end,
+		OnCommand=function(self) self:decelerate(0.8):addx(player == PLAYER_1 and 150 or -150) end,
+		OffCommand=function(self) self:accelerate(0.8):addx(player == PLAYER_1 and -150 or 150) end,
 		HealthStateChangedMessageCommand=function(self, param)
-			local State = GAMESTATE:GetPlayerState(player)
-			if State:GetHealthState() == Health.Dead then
-				self:accelerate(0.8):addx(player == PLAYER_1 and -100 or 100)
+			if param.HealthState == Health.Dead and param.PlayerNumber == player then
+				self:accelerate(0.8):addx(player == PLAYER_1 and -150 or 150)
 			end
 		end,
 		LoadFont("_angel glow")..{
@@ -90,7 +88,7 @@ return Def.ActorFrame{
 			BeginCommand=function(self)
 				local screen = SCREENMAN:GetTopScreen()
 				local glifemeter = screen:GetLifeMeter(player)
-				self:settext(glifemeter:GetTotalLives()):x(-1):y(5):maxwidth(28):valign(0)
+				self:settext(pnMaxLives[player]):x(-1):y(5):maxwidth(28):valign(0)
 			end,
 			LifeChangedMessageCommand=function(self,params)
 				if params.Player == player and pnMaxLives[player] ~= tonumber(self:GetText()) then

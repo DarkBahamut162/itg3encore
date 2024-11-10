@@ -46,7 +46,7 @@ local function setSpeeds(steps)
 	SpeedDowns = {}
 	timingData = steps:GetTimingData()
 
-	for k,v in pairs(timingData:GetBPMsAndTimes()) do
+	for v in ivalues(timingData:GetBPMsAndTimes()) do
 		local data = split('=', v)
 		local numData = {tonumber(data[1]), tonumber(data[2])}
 		numData[2] = math.round(numData[2],3)

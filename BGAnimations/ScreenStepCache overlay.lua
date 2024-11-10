@@ -84,7 +84,6 @@ return Def.ActorFrame{
 				local steps = songs[curSong]:GetAllSteps()
 				for curStep=1,#steps do
 					if steps[curStep] then
-						local filename = split("/",steps[curStep]:GetFilename())
 						local stepType = split("_",steps[curStep]:GetStepsType())[2]
 						if cacheStepTypes[stepType] then total = total + 1 end
 					end

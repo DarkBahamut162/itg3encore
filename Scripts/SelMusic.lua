@@ -407,10 +407,12 @@ function cacheStep(Song,Step)
 	local lastBeat = 0
 	local shockArrows = ""
 
-	for i,current in pairs( Song:GetAllSteps() ) do
-		if current == Step then
-			chartint = i
-			break
+	if not isOutFoxV043() then
+		for i,current in pairs( Song:GetAllSteps() ) do
+			if current == Step then
+				chartint = i
+				break
+			end
 		end
 	end
 
@@ -428,7 +430,7 @@ function cacheStep(Song,Step)
 	local currentBPM,checkBPM,checkCount,maxBPM = 0,0,0,0
 	local checking,isStop,scratch = false,false,false
 
-	local noteData = Song:GetNoteData(chartint)
+	local noteData = isOutFoxV043() and Step:GetNoteData() or Song:GetNoteData(chartint)
 	for _,v in pairs( noteData ) do
 		if currentBeat < v[1] then
 			currentBeat = v[1]
@@ -657,7 +659,7 @@ function getTrueBPMsCalculated(song,step)
 		local sets = timingdata:GetBPMsAndTimes()
 		local currentSet, lastSet
 		local BPMs, duration, lastDuration = {}, 0, 0
-		local fastestBPM, fastestBPM_backup = 0, 0
+		local fastestBPM = 0
 
 		for i, set in ipairs(sets) do
 			currentSet = split("=",set)

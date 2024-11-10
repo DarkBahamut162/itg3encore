@@ -30,8 +30,6 @@ for w,v in pairs(weight) do
 end
 
 local function animateScore(currentScore,fakeScore)
-	local percent = GAMESTATE:GetCurrentSong():GetLastSecond()/GAMESTATE:GetSongPosition():GetMusicSecondsVisible()
-
 	if currentScore > fakeScore + math.ceil((currentScore - fakeScore) / dif) then
 		displayScore = fakeScore + math.ceil((currentScore - fakeScore) / dif)
 	elseif currentScore <= fakeScore + math.ceil((currentScore - fakeScore) / dif) then

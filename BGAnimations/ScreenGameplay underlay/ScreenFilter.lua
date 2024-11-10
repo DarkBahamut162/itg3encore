@@ -182,7 +182,7 @@ else
 			end
 		}
 	else
-		for i, player in ipairs(GAMESTATE:GetHumanPlayers()) do
+		for player in ivalues(GAMESTATE:GetHumanPlayers()) do
 			local pNum = (player == PLAYER_1) and 1 or 2
 			filterAlphas[player] = tonumber(getenv("ScreenFilterP"..pNum))
 

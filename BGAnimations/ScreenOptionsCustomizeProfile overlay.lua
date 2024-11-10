@@ -58,7 +58,7 @@ local char_list = {}
 
 do
 	local all_chars = CHARMAN:GetAllCharacters()
-	for i, char in ipairs(char_list) do
+	for char in ivalues(char_list) do
 		char_list[#char_list+1] = {
 			setting = char:GetCharacterID(),
 			display_name = char:GetDisplayName()
@@ -138,7 +138,6 @@ local list_pos = 0
 local active_list = {}
 local left_showing = false
 local right_showing = false
-local sfx
 
 local function fade_actor_to(actor, alf)
 	actor:stoptweening():linear(0.2):diffusealpha(alf)

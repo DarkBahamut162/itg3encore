@@ -27,7 +27,6 @@ local bottomedge = {
 	{1,		1,		1}
 }
 
-local steps = {0,250,375,600,625,750,875,1000,1200}
 local courseMode = GAMESTATE:IsCourseMode()
 
 for key,value in pairs(topedge) do

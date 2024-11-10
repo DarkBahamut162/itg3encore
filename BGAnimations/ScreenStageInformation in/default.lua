@@ -31,7 +31,7 @@ if getenv("ShowModsP1") or getenv("ShowModsP2") then
 	end
 end
 
-for i,pn in ipairs(GAMESTATE:GetEnabledPlayers()) do
+for pn in ivalues(GAMESTATE:GetEnabledPlayers()) do
 	setenv("EvalCombo"..pname(pn),true)
 	setenv("LastFantastic"..pname(pn),0)
 	setenv("LastPerfect"..pname(pn),0)

@@ -38,22 +38,22 @@ return Def.ActorFrame{
 		LoadActor(THEME:GetPathB("","_overlay/awards"))..{
 			InitCommand=function(self) self:x(SCREEN_LEFT+238*WideScreenDiff()):y(SCREEN_CENTER_Y+(103+34*0)*WideScreenDiff()):zoom(0) end,
 			OnCommand=function(self) self:animate(0):sleep(1.35+0.5):playcommand("Update") end,
-			UpdateCommand=function(self,parent) StarIcon(self, PLAYER_1) self:bounceend(0.4):zoom(0.55*WideScreenDiff()) end
+			UpdateCommand=function(self) StarIcon(self, PLAYER_1) self:bounceend(0.4):zoom(0.55*WideScreenDiff()) end
 		},
 		LoadActor(THEME:GetPathB("","_overlay/awards"))..{
 			InitCommand=function(self) self:x(SCREEN_LEFT+235*WideScreenDiff()):y(SCREEN_CENTER_Y+(103+34*1)*WideScreenDiff()):zoom(0) end,
 			OnCommand=function(self) self:animate(0):sleep(1.40+0.5):playcommand("Update") end,
-			UpdateCommand=function(self,parent) QuadIcon(self, PLAYER_1) self:bounceend(0.4):zoom(0.55*WideScreenDiff()) end
+			UpdateCommand=function(self) QuadIcon(self, PLAYER_1) self:bounceend(0.4):zoom(0.55*WideScreenDiff()) end
 		},
 		LoadActor(THEME:GetPathB("","_overlay/awards"))..{
 			InitCommand=function(self) self:x(SCREEN_LEFT+238*WideScreenDiff()):y(SCREEN_CENTER_Y+(103+34*2)*WideScreenDiff()):zoom(0) end,
 			OnCommand=function(self) self:animate(0):sleep(1.45+0.5):playcommand("Update") end,
-			UpdateCommand=function(self,parent) PercentIcon(self, PLAYER_1) self:bounceend(0.4):zoom(0.55*WideScreenDiff()) end
+			UpdateCommand=function(self) PercentIcon(self, PLAYER_1) self:bounceend(0.4):zoom(0.55*WideScreenDiff()) end
 		},
 		LoadActor(THEME:GetPathB("","_overlay/awards"))..{
 			InitCommand=function(self) self:x(SCREEN_LEFT+238*WideScreenDiff()):y(SCREEN_CENTER_Y+(103+34*3)*WideScreenDiff()):zoom(0) end,
 			OnCommand=function(self) self:animate(0):sleep(1.50+0.5):playcommand("Update") end,
-			UpdateCommand=function(self,parent) CalorieIcon(self, PLAYER_1) self:bounceend(0.4):zoom(0.55*WideScreenDiff()) end
+			UpdateCommand=function(self) CalorieIcon(self, PLAYER_1) self:bounceend(0.4):zoom(0.55*WideScreenDiff()) end
 		}
     },
     Def.ActorFrame{
@@ -95,22 +95,22 @@ return Def.ActorFrame{
 		LoadActor(THEME:GetPathB("","_overlay/awards"))..{
 			InitCommand=function(self) self:x(SCREEN_RIGHT-238*WideScreenDiff()):y(SCREEN_CENTER_Y+(103+34*0)*WideScreenDiff()):zoom(0) end,
 			OnCommand=function(self) self:animate(0):sleep(1.35+0.5):playcommand("Update") end,
-			UpdateCommand=function(self,parent) StarIcon(self, PLAYER_1) self:bounceend(0.4):zoom(0.55*WideScreenDiff()) end
+			UpdateCommand=function(self) StarIcon(self, PLAYER_1) self:bounceend(0.4):zoom(0.55*WideScreenDiff()) end
 		},
 		LoadActor(THEME:GetPathB("","_overlay/awards"))..{
 			InitCommand=function(self) self:x(SCREEN_RIGHT-235*WideScreenDiff()):y(SCREEN_CENTER_Y+(103+34*1)*WideScreenDiff()):zoom(0) end,
 			OnCommand=function(self) self:animate(0):sleep(1.40+0.5):playcommand("Update") end,
-			UpdateCommand=function(self,parent) QuadIcon(self, PLAYER_1) self:bounceend(0.4):zoom(0.55*WideScreenDiff()) end
+			UpdateCommand=function(self) QuadIcon(self, PLAYER_1) self:bounceend(0.4):zoom(0.55*WideScreenDiff()) end
 		},
 		LoadActor(THEME:GetPathB("","_overlay/awards"))..{
 			InitCommand=function(self) self:x(SCREEN_RIGHT-238*WideScreenDiff()):y(SCREEN_CENTER_Y+(103+34*2)*WideScreenDiff()):zoom(0) end,
 			OnCommand=function(self) self:animate(0):sleep(1.45+0.5):playcommand("Update") end,
-			UpdateCommand=function(self,parent) PercentIcon(self, PLAYER_1) self:bounceend(0.4):zoom(0.55*WideScreenDiff()) end
+			UpdateCommand=function(self) PercentIcon(self, PLAYER_1) self:bounceend(0.4):zoom(0.55*WideScreenDiff()) end
 		},
 		LoadActor(THEME:GetPathB("","_overlay/awards"))..{
 			InitCommand=function(self) self:x(SCREEN_RIGHT-238*WideScreenDiff()):y(SCREEN_CENTER_Y+(103+34*3)*WideScreenDiff()):zoom(0) end,
 			OnCommand=function(self) self:animate(0):sleep(1.50+0.5):playcommand("Update") end,
-			UpdateCommand=function(self,parent) CalorieIcon(self, PLAYER_1) self:bounceend(0.4):zoom(0.55*WideScreenDiff()) end
+			UpdateCommand=function(self) CalorieIcon(self, PLAYER_1) self:bounceend(0.4):zoom(0.55*WideScreenDiff()) end
 		}
     },
     Def.ActorFrame{

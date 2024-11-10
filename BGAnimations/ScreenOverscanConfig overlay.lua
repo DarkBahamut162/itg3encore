@@ -23,7 +23,7 @@ local function valtexact(name, x, y, c)
 			local name_w = self:GetChild("Name"):GetWidth()
 			if name_w > widest_name then widest_name = name_w end
 			self:y(y)
-			for frame_name, frame in pairs(valtex_frames) do
+			for frame in ivalues(valtex_frames) do
 				frame:playcommand("recenter")
 			end
 		end,

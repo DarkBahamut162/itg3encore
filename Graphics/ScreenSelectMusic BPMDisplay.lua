@@ -68,7 +68,6 @@ return Def.ActorFrame{
 					end
 				end
 			else
-				local output = ""
 				local song = GAMESTATE:GetCurrentSong()
 				if song then
 					for pn in ivalues(GAMESTATE:GetEnabledPlayers()) do
@@ -81,8 +80,7 @@ return Def.ActorFrame{
 				if temp[PLAYER_1] == temp[PLAYER_2] then
 					self:settext(temp[PLAYER_1])
 				else
-					output = temp[PLAYER_1].."\n"..temp[PLAYER_2]
-					self:settext(output):diffuse(PlayerColor(PLAYER_2)):AddAttribute(0, {
+					self:settext(temp[PLAYER_1].."\n"..temp[PLAYER_2]):diffuse(PlayerColor(PLAYER_2)):AddAttribute(0, {
 						Length = string.len(temp[PLAYER_1]),
 						Diffuse = PlayerColor(PLAYER_1),
 					})

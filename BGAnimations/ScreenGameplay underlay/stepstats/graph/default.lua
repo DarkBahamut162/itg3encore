@@ -34,16 +34,18 @@ local function UpdateGraph()
     local previousSec = -999
 
     if SongOrCourse then
-        for k,v in pairs( SongOrCourse:GetAllSteps() ) do
-            if v == StepOrTrails then
-                chartint = k
-                break
+        if isOutFoxV043() then
+            for k,v in pairs( SongOrCourse:GetAllSteps() ) do
+                if v == StepOrTrails then
+                    chartint = k
+                    break
+                end
             end
         end
 
         local timingData = StepOrTrails:GetTimingData()
 
-        for k,v in pairs( SongOrCourse:GetNoteData(chartint) ) do
+        for v in ivalues(isOutFoxV043() and StepOrTrails:GetNoteData() or SongOrCourse:GetNoteData(chartint)) do
             if timingData:IsJudgableAtBeat(v[1]) then
                 if allowednotes[v[3]] then
                     if rowLimit then absoluteSec = timingData:GetElapsedTimeFromBeat(v[1]) end
@@ -81,16 +83,18 @@ local function UpdateGraphAlt()
     local lastBeat = 0
 
     if SongOrCourse then
-        for k,v in pairs( SongOrCourse:GetAllSteps() ) do
-            if v == StepOrTrails then
-                chartint = k
-                break
+        if not isOutFoxV043() then
+            for k,v in pairs( SongOrCourse:GetAllSteps() ) do
+                if v == StepOrTrails then
+                    chartint = k
+                    break
+                end
             end
         end
 
         local timingData = StepOrTrails:GetTimingData()
 
-        for k,v in pairs( SongOrCourse:GetNoteData(chartint) ) do
+        for v in ivalues(isOutFoxV043() and StepOrTrails:GetNoteData() or SongOrCourse:GetNoteData(chartint)) do
             if timingData:IsJudgableAtBeat(v[1]) then
                 if allowednotes[v[3]] then
                     local currentSec = math.round(timingData:GetElapsedTimeFromBeat(v[1]),3)
@@ -130,7 +134,7 @@ local function UpdateGraphAssist()
     if SongOrCourse then
         local timingData = StepOrTrails:GetTimingData()
         if getenv("ShowSpeedAssist"..pname(pn)) then
-            for k,v in pairs(timingData:GetBPMsAndTimes()) do
+            for v in ivalues(timingData:GetBPMsAndTimes()) do
                 local data = split('=', v)
                 local numData = {tonumber(data[1]), tonumber(data[2])}
                 numData[2] = math.round(numData[2],3)
@@ -146,7 +150,7 @@ local function UpdateGraphAssist()
         end
 
         if getenv("ShowStopAssist"..pname(pn)) then
-            for k,v in pairs(timingData:GetStops()) do
+            for v in ivalues(timingData:GetStops()) do
                 local data = split('=', v)
                 local numData = {tonumber(data[1]), tonumber(data[2])}
                 assist[timingData:GetElapsedTimeFromBeat(numData[1])] = 0
@@ -203,8 +207,6 @@ local function GetVerticesAlt(stepsPerSecList)
     for _i,_ in pairs( stepsList ) do
         if _i > last then last = _i end
     end
-
-    local addx = graphW / last
 
     for i,value in pairs( stepsList ) do
         local curX = (i-1) * graphW / last - 0

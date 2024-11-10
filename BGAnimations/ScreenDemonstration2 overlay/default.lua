@@ -2,7 +2,6 @@ local posX = THEME:GetMetric(Var "LoadingScreen","PlayerP1"..ToEnumShortString(G
 
 local width_square = 294
 local width_field = 2 * (64 + GAMESTATE:GetCurrentStyle():GetColumnInfo(GAMESTATE:GetMasterPlayerNumber(), GAMESTATE:GetCurrentStyle():ColumnsPerPlayer()).XOffset)
-local width_rect = 328
 
 local posX_now = SCREEN_WIDTH/4*3
 

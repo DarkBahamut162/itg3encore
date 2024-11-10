@@ -39,7 +39,7 @@ local function setStops(steps)
 	bpm1 = math.floor(timingData:GetActualBPM()[1])
 	bpm2 = math.floor(timingData:GetActualBPM()[2])
 
-	for k,v in pairs(timingData:GetStops()) do
+	for v in ivalues(timingData:GetStops()) do
 		local data = split('=', v)
 		Stops[#Stops+1] = { Time = timingData:GetElapsedTimeFromBeat(tonumber(data[1])), Length = tonumber(data[2]), BPM = timingData:GetBPMAtBeat(tonumber(data[1])) }
 	end

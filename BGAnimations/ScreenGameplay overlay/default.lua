@@ -43,7 +43,7 @@ end
 
 local judgments,offsetdata = {},{}
 if enableOffsets then
-	for i,player in pairs( GAMESTATE:GetEnabledPlayers() ) do
+	for player in ivalues(GAMESTATE:GetEnabledPlayers()) do
 		judgments[player] = {}
 		offsetdata[player] = {}
 		for i=1,GAMESTATE:GetCurrentStyle(player):ColumnsPerPlayer() do
@@ -312,7 +312,7 @@ local t = Def.ActorFrame{
 			if params.Notes then
 				for i,col in pairs(params.Notes) do
 					local tns = ToEnumShortString(params.TapNoteScore)
-					judgments[player][i][tns] = judgments[player][i][tns] + 1
+					if tns and tns ~= "" then judgments[player][i][tns] = judgments[player][i][tns] + 1 end
 				end
 				if params.TapNoteOffset then
 					local vStats = STATSMAN:GetCurStageStats():GetPlayerStageStats( player )
