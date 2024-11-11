@@ -33,7 +33,7 @@ end
 
 function keyMapped(key)
 	for i = 1,#key do
-		if key[1] ~= "" then return true end
+		if key[i] and key[i] ~= "" then return true end
 	end
 	return false
 end
@@ -354,7 +354,7 @@ end
 function InitOptions()
 	local KeyMaps = SetupKeymapArray() or {}
 
-	if #KeyMaps > 0 then
+	if KeyMaps and KeyMaps[GAMESTATE:GetCurrentGame():GetName()] then
 		setenv("EffectControlP1",keyMapped(KeyMaps[GAMESTATE:GetCurrentGame():GetName()]["1_EffectDown"]) and keyMapped(KeyMaps[GAMESTATE:GetCurrentGame():GetName()]["1_EffectUp"]))
 		setenv("EffectControlP2",keyMapped(KeyMaps[GAMESTATE:GetCurrentGame():GetName()]["2_EffectDown"]) and keyMapped(KeyMaps[GAMESTATE:GetCurrentGame():GetName()]["2_EffectUp"]))
 	end
