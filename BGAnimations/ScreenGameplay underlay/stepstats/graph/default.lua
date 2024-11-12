@@ -34,7 +34,7 @@ local function UpdateGraph()
     local previousSec = -999
 
     if SongOrCourse then
-        if isOutFoxV043() then
+        if not isOutFoxV043() then
             for k,v in pairs( SongOrCourse:GetAllSteps() ) do
                 if v == StepOrTrails then
                     chartint = k
