@@ -438,7 +438,6 @@ end
 
 function hasSL()
 	for _, id in pairs(PROFILEMAN:GetLocalProfileIDs()) do
-		local profile = PROFILEMAN:GetLocalProfile(id)
 		local profileDir = PROFILEMAN:LocalProfileIDToDir(id) .. "favorites.txt"
 		if FILEMAN:DoesFileExist(profileDir) then return true end
 	end
@@ -458,7 +457,7 @@ function SL2Other(profileID,profilePath)
 		fileOF:Write(contentSL)
 		fileOF:Close()
 		fileOF:destroy()
-		FILEMAN:FlushDirCache(THEME:GetCurrentThemeDirectory().."Other/")
+		if FILEMAN.FlushDirCache then FILEMAN:FlushDirCache(THEME:GetCurrentThemeDirectory().."Other/") end
 	end
 end
 

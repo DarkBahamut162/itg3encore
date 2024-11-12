@@ -50,8 +50,8 @@ local Prefs = {
 	},
 	SLFavorites = {
 		Default = 0,
-		Choices = { "Off", "SL", "OF" },
-		Values = { 0, 1, 2 }
+		Choices = isOutFoxV043() and { "Off", "SL", "OF" } or { "Off", "OF" },
+		Values = isOutFoxV043() and { 0, 1, 2 } or { 0, 2 }
 	}
 }
 
