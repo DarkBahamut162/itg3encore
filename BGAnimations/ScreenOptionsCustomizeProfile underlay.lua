@@ -68,6 +68,18 @@ end
 
 local menu_items = {
 	{
+		name = "profile",
+		question = "Set new profile name",
+		get = "GetDisplayName",
+		set = "SetDisplayName",
+		item_type = "string",
+	},{
+		name = "highscore",
+		question = "Set new highscoren name",
+		get = "GetLastUsedHighScoreName",
+		set = "SetLastUsedHighScoreName",
+		item_type = "string",
+	},{
 		name = "weight",
 		get = "GetWeightPounds",
 		set = "SetWeightPounds",
@@ -127,7 +139,7 @@ menu_items[#menu_items+1] = {
 }
 
 local menu_pos = 1
-local menu_start = (SCREEN_CENTER_Y-30)*WideScreenSemiDiff()
+local menu_start = (SCREEN_CENTER_Y-36)*WideScreenSemiDiff()
 local menu_x = 100*WideScreenDiff()
 local value_x = SCREEN_RIGHT-500*WideScreenDiff()
 local fader
@@ -206,6 +218,20 @@ local function input(event)
 				number_entry:update_cursor(number_entry.cursor_start)
 				number_entry.prompt_actor:playcommand("Set", {THEME:GetString("ScreenOptionsCustomizeProfile", item.name)})
 				cursor_on_menu = "numpad"
+				SCREENMAN:PlayStartSound()
+			elseif item.item_type == "string" then
+				SCREENMAN:AddNewScreenToTop("ScreenTextEntry")
+				local question = {
+					Question = item.question,
+					MaxInputLength = 255,
+					InitialAnswer = profile[item.get](profile),
+					OnOK = function(answer)
+						profile[item.set](profile, answer)
+						if item.name == "profile" then MESSAGEMAN:Broadcast("ChangeProfile") end
+						menu_values[menu_pos]:playcommand("Set", {item_value_to_text(item, answer)})
+					end
+				}
+				SCREENMAN:GetTopScreen():Load(question)
 				SCREENMAN:PlayStartSound()
 			elseif item.item_type == "list" then
 				cursor_on_menu = "list"
@@ -415,9 +441,13 @@ local ProfileImage = AvI and AvI or THEME:GetPathG("UserProfile","generic icon")
 
 args[#args+1] = Def.ActorFrame{
     Name = "InfoFrame",
-	InitCommand=function(self) self:zoom(WideScreenDiff()) end,
+	InitCommand=function(self) self:zoom(WideScreenDiff()):addy(-6) end,
     OnCommand=function(self) self:diffusealpha(0):addy(-20):decelerate(0.2):addy(20):diffusealpha(1) end,
     OffCommand=function(self) self:accelerate(0.2):addy(-20):diffusealpha(0) end,
+	Def.Quad{
+		OnCommand=function(self) self:xy( 0,136 ):halign(0):zoomto( SCREEN_WIDTH, itemspacing*4 ):diffusealpha(0):linear(0.2):diffuse( color("#00000076") ) end,
+		OffCommand=function(self) self:linear(0.2):diffusealpha(0) end
+	},
     Def.Sprite{
 		Condition=isOutFox(),
         InitCommand=function(self) self:Load( ProfileImage ) end,
@@ -426,17 +456,18 @@ args[#args+1] = Def.ActorFrame{
 	Def.BitmapText{
 		Font = "Common Normal",
 		Text = "Profile: "..profile:GetDisplayName(),
-		OnCommand=function(self) self:xy( isOutFox() and 150 or 50, 100 ):halign(0) end
+		OnCommand=function(self) self:xy( isOutFox() and 150 or 50, 100 ):halign(0):shadowlength(3) end,
+		ChangeProfileMessageCommand=function(self) self:settext("Profile: "..profile:GetDisplayName()) end
 	},
 	Def.BitmapText{
 		Font = "Common Normal",
 		Text = "GUID: "..profile:GetGUID(),
-		OnCommand=function(self) self:xy( isOutFox() and 150 or 50, 136 ):halign(0) end
+		OnCommand=function(self) self:xy( isOutFox() and 150 or 50, 136 ):halign(0):shadowlength(3) end
 	},
 	Def.BitmapText{
 		Font = "Common Normal",
 		Text = Screen.String("TotalTime").. ": "..SecondsToHHMMSS(profile:GetTotalGameplaySeconds()),
-		OnCommand=function(self) self:xy( isOutFox() and 150 or 50, 172 ):halign(0) end
+		OnCommand=function(self) self:xy( isOutFox() and 150 or 50, 172 ):halign(0):shadowlength(3) end
 	}
 }
 
@@ -466,6 +497,9 @@ args[#args+1] = Def.Sound{
 	NextMessageCommand=function(self) self:play() end
 }
 
+args[#args+1] = LoadActor(THEME:GetPathB("ScreenWithMenuElements","underlay/_sides"))
+args[#args+1] = LoadActor(THEME:GetPathB("ScreenWithMenuElements","underlay/_base"))
+args[#args+1] = LoadActor(THEME:GetPathB("ScreenWithMenuElements","underlay/_expandtop"))
 args[#args+1] = number_entry:create_actors()
 
 return Def.ActorFrame(args)
