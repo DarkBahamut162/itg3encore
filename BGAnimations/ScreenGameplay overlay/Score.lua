@@ -70,7 +70,7 @@ return Def.ActorFrame{
 			if IsGame("pump") then self:addy(10) if GAMESTATE:GetNumPlayersEnabled() == 1 and getenv("RotationSolo"..pname(player)) then self:CenterX() end end
 		end,
 		JudgmentMessageCommand=function(self,param)
-			local short = ToEnumShortString(param.TapNoteScore or param.HoldNoteScore)
+			local short = ToEnumShortString(param.HoldNoteScore and param.HoldNoteScore or param.TapNoteScore)
 			local update = weight[short] and weight[short] > 0
 			if param.Player == player and update then self:stoptweening():queuecommand("RedrawScore") end
 		end,
