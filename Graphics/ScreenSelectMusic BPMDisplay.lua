@@ -85,7 +85,7 @@ return Def.ActorFrame{
 						Diffuse = PlayerColor(PLAYER_1),
 					})
 				end
-			elseif temp[PLAYER_1] or temp[PLAYER_2] then
+			elseif temp[GAMESTATE:GetMasterPlayerNumber()] then
 				self:settext(temp[GAMESTATE:GetMasterPlayerNumber()])
 			else
 				self:settext("")
