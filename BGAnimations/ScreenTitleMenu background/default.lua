@@ -391,7 +391,7 @@ return Def.ActorFrame{
 				local coursesSurvivalSingle = 0
 				local coursesSurvivalDouble = 0
 
-				if (StepsTypeSingle() or StepsTypeDouble()) and (IsGame("dance") or isOutFoxV()) then
+				if (StepsTypeSingle() or StepsTypeDouble()) and (IsGame("dance") or isOutFoxV() or not isOutFox()) then
 					local StepsTypeSingle = StepsTypeSingle()[GetUserPrefN("StylePosition")]
 					local StepsTypeDouble = StepsTypeDouble()[GetUserPrefN("StylePosition")]
 					if #songs > 0 then
@@ -413,7 +413,7 @@ return Def.ActorFrame{
 						end
 					end
 					if GAMESTATE:GetCoinMode() == 'CoinMode_Home' then
-						if not IsGame("po-mu") and not IsGame("be-mu") then
+						if isOutFox() and ((not isOutFoxV() and IsGame("be-mu")) or (not isOutFoxV043() and IsGame("po-mu"))) then else
 							if #courses > 0 then
 								for i=1,#courses do
 									if courses[i]:GetCourseType() == "CourseType_Nonstop" then
@@ -446,10 +446,14 @@ return Def.ActorFrame{
 					end
 
 					if GAMESTATE:GetCoinMode() == 'CoinMode_Home' then
-						if IsGame("po-mu") or IsGame("be-mu") then
+						if isOutFox() and ((not isOutFoxV() and IsGame("be-mu")) or (not isOutFoxV043() and IsGame("po-mu"))) then
 							output = addToOutput(output,"Courses: ? marathons & ? survivals","\n")
 						else
-							output = addToOutput(output,"Courses: "..(coursesMarathonSingle+coursesMarathonDouble).." marathons & "..(coursesSurvivalSingle+coursesSurvivalDouble).." survivals","\n")
+							if coursesMarathonSingle == coursesMarathonDouble and coursesSurvivalSingle == coursesSurvivalDouble then
+								output = addToOutput(output,"Courses: "..(coursesMarathonSingle).." marathons & "..(coursesSurvivalSingle).." survivals","\n")
+							else
+								output = addToOutput(output,"Courses: "..coursesMarathonSingle.."S/"..coursesMarathonDouble.."D marathons & "..coursesSurvivalSingle.."S/"..coursesSurvivalDouble.."D survivals","\n")
+							end
 						end
 					end
 					output = addToOutput(output,"Current Game Mode: "..GAMESTATE:GetCurrentGame():GetName(),"\n")
