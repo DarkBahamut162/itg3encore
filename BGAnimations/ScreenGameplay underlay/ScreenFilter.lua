@@ -48,7 +48,7 @@ function getFilter(player,filterWidth,filterAlpha)
 			file = file .. "Light"
 		end
 	end
-	if special then
+	if special and FILEMAN:DoesFileExist("/Appearance/BackPlates/"..gameMode.."/"..string.gsub(gameMode,"-","")..file) then
 		if doubles then
 			local file2 = (gameMode == "be-mu" and stepsTypeNumber == 7) and "7P2" or file
 			local repos = 0
