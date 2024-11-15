@@ -80,7 +80,7 @@ return Def.ActorFrame{
 		Name="JudgePane",
 		BeginCommand=function(self) self:visible(GAMESTATE:IsHumanPlayer(pn)) end,
 		OnCommand=function(self)
-			if IsGame("be-mu") then
+			if IsGame("be-mu") or IsGame("beat") then
 				local move = pn == PLAYER_1 and 78 or -78
 				self:x(startX+(solo and move*WideScreenDiff() or 0))
 				self:y(solo and SCREEN_HEIGHT/6*WideScreenDiff() or 0)

@@ -2,7 +2,7 @@ local c,cDl,cDr,cUl,cUr
 local player = ...
 local pNum = (player == PLAYER_1) and 1 or 2
 local style = GAMESTATE:GetCurrentStyle()
-local rotate = (IsGame("be-mu") or IsGame("po-mu")) and -90 or 90
+local rotate = (IsGame("be-mu") or IsGame("beat") or IsGame("po-mu")) and -90 or 90
 local reverse = GAMESTATE:GetPlayerState(player):GetCurrentPlayerOptions():Reverse() ~= 0
 if reverse then rotate = rotate * -1 end
 
@@ -11,7 +11,7 @@ local currentMini = 1-math.round(GAMESTATE:GetPlayerState(player):GetPlayerOptio
 local filterWidth = isOutFox() and GAMESTATE:GetStyleFieldSize(pNum-1) * currentMini or 64 * 4 * currentMini
 
 if string.find(style:GetName(),"double") then
-	if IsGame("be-mu") then
+	if IsGame("be-mu") or IsGame("beat") then
 		filterWidth = filterWidth * 1.8
 	elseif IsGame("pump") then
 		filterWidth = filterWidth * 1.35

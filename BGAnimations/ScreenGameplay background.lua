@@ -7,7 +7,7 @@ local styleType = style:GetStyleType()
 local doubles = (styleType == 'StyleType_OnePlayerTwoSides' or styleType == 'StyleType_TwoPlayersSharedSides')
 
 local function width(pos)
-	if IsGame("be-mu") then
+	if IsGame("be-mu") or IsGame("beat") then
 		local width = {
 			[1] = 240,
 			[2] = 272
@@ -60,7 +60,7 @@ return Def.ActorFrame {
 		if not isTopScreen("ScreenDemonstration") and not isTopScreen("ScreenDemonstration2") and not isTopScreen("ScreenJukebox") then
 			self:playcommand("UpdateDiscordInfo")
 			for pn in ivalues(GAMESTATE:GetEnabledPlayers()) do
-				if GAMESTATE:GetNumPlayersEnabled() == 1 and not doubles and (IsGame("be-mu") or IsGame("po-mu")) then
+				if GAMESTATE:GetNumPlayersEnabled() == 1 and not doubles and (IsGame("be-mu") or IsGame("beat") or IsGame("po-mu")) then
 					if isOutFox() and not tobool(LoadFromCache(GAMESTATE:GetCurrentSong(),GAMESTATE:GetCurrentSteps(GAMESTATE:GetMasterPlayerNumber()),"HasLua")) or not HasLuaCheck() then
 						if getenv("RotationNormal"..pname(pn)) or getenv("RotationUpsideDown"..pname(pn)) then
 							SCREENMAN:GetTopScreen():GetChild("SongBackground"):GetChild(""):zoom(zoomS()):xy(pn == PLAYER_1 and xS() or 0,SCREEN_CENTER_Y-SCREEN_CENTER_Y*zoomS())

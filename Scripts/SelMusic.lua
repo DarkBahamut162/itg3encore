@@ -776,7 +776,7 @@ function getCalculatedDifficulty(Step)
 
 	if isOutFox() then
 		for i=1,#stepCounter do if stepCounter[i] then stepSum = stepSum + (stepCounter[i] * i) end end
-		if IsGame("be-mu") then
+		if IsGame("be-mu") or IsGame("beat") then
 			stepSum = stepSum / totalSeconds
 		else
 			stepSum = ( stepSum / totalSeconds ) * (getColumnsPerPlayer(stepType[2],stepType[3],true) / 2)
@@ -795,7 +795,7 @@ function getCalculatedDifficulty(Step)
 	local YA  = 0
 	local SPS = 0
 
-	if IsGame("be-mu") then
+	if IsGame("be-mu") or IsGame("beat") then
 		YA = GetConvertDifficulty(Song,Step,totalSeconds) / 2
 		if isOutFox() then SPS = tonumber(LoadFromCache(Song,Step,"StepsPerSecond")) / 2 end
 	else

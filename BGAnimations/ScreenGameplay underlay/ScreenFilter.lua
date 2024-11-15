@@ -83,7 +83,7 @@ if numPlayers == 1 then
 	local filterWidth = isOutFox() and GAMESTATE:GetStyleFieldSize(pNum-1) * currentMini or 64 * 4 * currentMini
 
 	if string.find(style:GetName(),"double") then
-		if IsGame("be-mu") then
+		if IsGame("be-mu") or IsGame("beat") then
 			if stepsTypeNumber == 5 then
 				filterWidth = filterWidth * 1.3
 			elseif stepsTypeNumber == 6 then
