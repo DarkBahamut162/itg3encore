@@ -75,7 +75,7 @@ local menu_items = {
 		item_type = "string",
 	},{
 		name = "highscore",
-		question = "Set new highscoren name",
+		question = "Set new highscore name",
 		get = "GetLastUsedHighScoreName",
 		set = "SetLastUsedHighScoreName",
 		item_type = "string",
@@ -84,13 +84,13 @@ local menu_items = {
 		get = "GetWeightPounds",
 		set = "SetWeightPounds",
 		item_type = "number",
-		auto_done = 10
+		auto_done = 100
 	},{
 		name = "voomax",
 		get = "GetVoomax",
 		set = "SetVoomax",
 		item_type = "number",
-		auto_done = 10
+		auto_done = 100
 	},{
 		name = "birth_year",
 		get = "GetBirthYear",
@@ -209,15 +209,39 @@ local function input(event)
 				profile[item.set](profile, value)
 				MESSAGEMAN:Broadcast("Change")
 			elseif item.item_type == "number" then
-				fade_actor_to(fader, .8)
-				fade_actor_to(number_entry.container, 1)
-				number_entry.value = profile[item.get](profile)
-				number_entry.value_actor:playcommand("Set", {number_entry.value})
-				number_entry.auto_done_value = item.auto_done
-				number_entry.max_value = item.max
-				number_entry:update_cursor(number_entry.cursor_start)
-				number_entry.prompt_actor:playcommand("Set", {THEME:GetString("ScreenOptionsCustomizeProfile", item.name)})
-				cursor_on_menu = "numpad"
+				if isOutFoxV() or not isOutFox() then
+					SCREENMAN:AddNewScreenToTop("ScreenTextEntry")
+					local question = {
+						Question = "Insert new value for "..string.gsub(" "..item.name, "%W%l", string.upper):sub(2),
+						MaxInputLength = string.len(""..item.auto_done),
+						InitialAnswer = profile[item.get](profile) == 0 and "" or profile[item.get](profile),
+						OnOK = function(answer)
+							if answer == "" then answer = "0" end
+							profile[item.set](profile, answer)
+							menu_values[menu_pos]:playcommand("Set", {item_value_to_text(item, answer)})
+						end,
+						ValidateAppend = function(answer,append)
+							return not ((answer == "" or answer == "0") and append == "0") and tonumber(append) ~= nil
+						end,
+						OnCancel = function()
+							SCREENMAN:PlayInvalidSound()
+						end,
+						FormatAnswerForDisplay = function(answer)
+							return answer == "" and 0 or tonumber(answer)
+						end
+					}
+					SCREENMAN:GetTopScreen():Load(question)
+				else
+					fade_actor_to(fader, .8)
+					fade_actor_to(number_entry.container, 1)
+					number_entry.value = profile[item.get](profile)
+					number_entry.value_actor:playcommand("Set", {number_entry.value})
+					number_entry.auto_done_value = item.auto_done
+					number_entry.max_value = item.max
+					number_entry:update_cursor(number_entry.cursor_start)
+					number_entry.prompt_actor:playcommand("Set", {THEME:GetString("ScreenOptionsCustomizeProfile", item.name)})
+					cursor_on_menu = "numpad"
+				end
 				SCREENMAN:PlayStartSound()
 			elseif item.item_type == "string" then
 				SCREENMAN:AddNewScreenToTop("ScreenTextEntry")
@@ -229,6 +253,9 @@ local function input(event)
 						profile[item.set](profile, answer)
 						if item.name == "profile" then MESSAGEMAN:Broadcast("ChangeProfile") end
 						menu_values[menu_pos]:playcommand("Set", {item_value_to_text(item, answer)})
+					end,
+					OnCancel = function()
+						SCREENMAN:PlayInvalidSound()
 					end
 				}
 				SCREENMAN:GetTopScreen():Load(question)
