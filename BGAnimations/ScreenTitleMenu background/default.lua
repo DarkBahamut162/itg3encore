@@ -449,11 +449,18 @@ return Def.ActorFrame{
 						if isOutFox() and ((not isOutFoxV() and IsGame("be-mu")) or (not isOutFoxV043() and IsGame("po-mu"))) then
 							output = addToOutput(output,"Courses: ? marathons & ? survivals","\n")
 						else
-							if coursesMarathonSingle == coursesMarathonDouble and coursesSurvivalSingle == coursesSurvivalDouble then
-								output = addToOutput(output,"Courses: "..(coursesMarathonSingle).." marathons & "..(coursesSurvivalSingle).." survivals","\n")
+							local temp = "Courses:"
+							if coursesMarathonSingle == coursesMarathonDouble then
+								temp = addToOutput(temp,coursesMarathonSingle.." marathons"," ")
 							else
-								output = addToOutput(output,"Courses: "..coursesMarathonSingle.."S/"..coursesMarathonDouble.."D marathons & "..coursesSurvivalSingle.."S/"..coursesSurvivalDouble.."D survivals","\n")
+								temp = addToOutput(temp,coursesMarathonSingle.."s/"..coursesMarathonDouble.."d marathons"," ")
 							end
+							if coursesSurvivalSingle == coursesSurvivalDouble then
+								temp = addToOutput(temp,coursesSurvivalSingle.." survivals"," & ")
+							else
+								temp = addToOutput(temp,coursesSurvivalSingle.."s/"..coursesSurvivalDouble.."d survivals"," & ")
+							end
+							output = addToOutput(output,temp,"\n")
 						end
 					end
 					output = addToOutput(output,"Current Game Mode: "..GAMESTATE:GetCurrentGame():GetName(),"\n")
