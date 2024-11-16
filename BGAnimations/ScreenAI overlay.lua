@@ -183,27 +183,6 @@ local function CheckChanges()
 	return false
 end
 
-function deepcopy(orig, copies)
-    copies = copies or {}
-    local orig_type = type(orig)
-    local copy
-    if orig_type == 'table' then
-        if copies[orig] then
-            copy = copies[orig]
-        else
-            copy = {}
-            copies[orig] = copy
-            for orig_key, orig_value in next, orig, nil do
-                copy[deepcopy(orig_key, copies)] = deepcopy(orig_value, copies)
-            end
-            setmetatable(copy, deepcopy(getmetatable(orig), copies))
-        end
-    else -- number, string, boolean, etc
-        copy = orig
-    end
-    return copy
-end
-
 local function SaveAI()
 	local configfile = RageFileUtil.CreateRageFile()
 	local output = ""
@@ -357,10 +336,10 @@ local InputHandler = function(event)
 					SOUND:PlayOnce(THEME:GetPathS("Common", "Start"), true)
 				elseif currentList < totalWeights + 3 then
 					if currentList == totalWeights + 1 then -- reset current skill
-						AIini[SkillsDefault[currentSkill]] = deepcopy(AIiniDefault[SkillsDefault[currentSkill]])
+						AIini[SkillsDefault[currentSkill]] = DeepCopy(AIiniDefault[SkillsDefault[currentSkill]])
 					elseif currentList == totalWeights + 2 then -- reset all skills
-						AIini = deepcopy(AIiniDefault)
-						AIiniOLD = deepcopy(AIini)
+						AIini = DeepCopy(AIiniDefault)
+						AIiniOLD = DeepCopy(AIini)
 					end
 					weight.Percent:playcommand("Update")
 					weight.WeightMiss:playcommand("Update")
@@ -379,7 +358,7 @@ local InputHandler = function(event)
 					SOUND:PlayOnce(THEME:GetPathS("ScreenPlayerOptions", "cancel all"), true)
 				elseif currentList == totalWeights + 3 then -- save ai
 					SaveAI()
-					AIiniOLD = deepcopy(AIini)
+					AIiniOLD = DeepCopy(AIini)
 					SOUND:PlayOnce(THEME:GetPathS("", "_save"), true)
 				end
 			elseif editing and not checking then -- change value
