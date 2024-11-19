@@ -46,7 +46,7 @@ return Def.ActorFrame{
 			if courseMode then
 				local course = GAMESTATE:GetCurrentCourse()
 				if course then
-					for pn in ivalues(GAMESTATE:GetEnabledPlayers()) do
+					for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
 						local trail = GAMESTATE:GetCurrentTrail(pn)
 						if trail then
 							local entries = trail:GetTrailEntries()
@@ -70,7 +70,7 @@ return Def.ActorFrame{
 			else
 				local song = GAMESTATE:GetCurrentSong()
 				if song then
-					for pn in ivalues(GAMESTATE:GetEnabledPlayers()) do
+					for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
 						local step = GAMESTATE:GetCurrentSteps(pn)
 						if step then temp[pn] = getTrueBPMRange(self,getAllTheBPMs(song,step,BPMtype)) end
 					end
