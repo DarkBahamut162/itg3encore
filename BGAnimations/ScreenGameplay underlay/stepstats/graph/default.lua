@@ -1,5 +1,5 @@
 local pn = ...
-local graphW  = SCREEN_HEIGHT-130
+local graphW  = SCREEN_HEIGHT-126.5
 local max     = 92
 local height  = SCREEN_HEIGHT / max
 local bgColor = color('0, 0, 0, 0.66')
