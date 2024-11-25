@@ -7,11 +7,13 @@ return Def.ActorFrame{
 	},
 	Def.ActorFrame{
 		Condition=GAMESTATE:IsAnyHumanPlayerUsingMemoryCard() and not check,
-		LoadActor(THEME:GetPathG("","profile "..(isFinal() and "final" or "normal")))..{
+		Def.Sprite {
+			Texture = THEME:GetPathG("","profile "..(isFinal() and "final" or "normal")),
 			InitCommand=function(self) self:Center():zoomx(SCREEN_WIDTH):zoomy(0.68*WideScreenDiff()) end,
 			OnCommand=function(self) self:linear(0.2):zoomy(0.0) setenv("USBCheck",true) end
 		},
-		LoadFont("_z 36px shadowx")..{
+		Def.BitmapText {
+			File = "_z 36px shadowx",
 			Text="LOADING USB PROFILES...",
 			InitCommand=function(self) self:Center():zoom(0.7*WideScreenDiff()) end,
 			OnCommand=function(self) self:linear(0.2):diffuse(color("0,0,0,0")) end
@@ -19,11 +21,13 @@ return Def.ActorFrame{
 	},
 	Def.ActorFrame{
 		Condition=not GAMESTATE:IsAnyHumanPlayerUsingMemoryCard() or (GAMESTATE:IsAnyHumanPlayerUsingMemoryCard() and check),
-		LoadActor(THEME:GetPathG("","lolhi "..(isFinal() and "final" or "normal")))..{
+		Def.Sprite {
+			Texture = THEME:GetPathG("","lolhi "..(isFinal() and "final" or "normal")),
 			InitCommand=function(self) self:Center():zoomx(SCREEN_WIDTH):zoomy(0.68*WideScreenDiff()) end,
 			OnCommand=function(self) self:linear(0.2):zoomy(0.0) end
 		},
-		LoadFont("_z 36px shadowx")..{
+		Def.BitmapText {
+			File = "_z 36px shadowx",
 			Text="LOADING...",
 			InitCommand=function(self) self:Center():zoom(0.7*WideScreenDiff()) end,
 			OnCommand=function(self) self:linear(0.2):diffuse(color("0,0,0,0")) end

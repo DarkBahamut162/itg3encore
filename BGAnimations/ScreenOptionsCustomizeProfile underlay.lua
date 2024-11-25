@@ -524,9 +524,9 @@ args[#args+1] = Def.Sound{
 	NextMessageCommand=function(self) self:play() end
 }
 
-args[#args+1] = LoadActor(THEME:GetPathB("ScreenWithMenuElements","underlay/_sides"))
-args[#args+1] = LoadActor(THEME:GetPathB("ScreenWithMenuElements","underlay/_base"))
-args[#args+1] = LoadActor(THEME:GetPathB("ScreenWithMenuElements","underlay/_expandtop"))
+args[#args+1] = loadfile(THEME:GetPathB("ScreenWithMenuElements","underlay/_sides"))()
+args[#args+1] = loadfile(THEME:GetPathB("ScreenWithMenuElements","underlay/_base"))()
+args[#args+1] = loadfile(THEME:GetPathB("ScreenWithMenuElements","underlay/_expandtop"))()
 args[#args+1] = number_entry:create_actors()
 
 return Def.ActorFrame(args)

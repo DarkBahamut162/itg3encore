@@ -4,7 +4,8 @@ return Def.ActorFrame{
 		InitCommand=function(self) self:x(THEME:GetMetric(Var "LoadingScreen","ScrollerX")-190*WideScreenDiff()):CenterY():zoom(WideScreenDiff()) end,
 		OnCommand=function(self) self:queuecommand("Bob") end,
 		BobCommand=function(self) self:accelerate(0.75):addx(-2):decelerate(0.75):addx(-2):accelerate(0.75):addx(2):decelerate(0.75):addx(2):queuecommand("Bob") end,
-		LoadActor("arrow")..{
+		Def.Sprite {
+			Texture = "arrow",
 			InitCommand=function(self) self:zoom(0.8):addx(-200*WideScreenSemiDiff()) end,
 			OnCommand=function(self) self:decelerate(0.5):addx(200*WideScreenSemiDiff()) end,
 			OffCommand=function(self) self:zbuffer(true):accelerate(0.5):addx(-300*WideScreenSemiDiff()) end,
@@ -16,7 +17,8 @@ return Def.ActorFrame{
 			MadeChoiceP1MessageCommand=function(self) self:playcommand("Off") end,
 			MadeChoiceP2MessageCommand=function(self) self:playcommand("Off") end
 		},
-		LoadActor("glow")..{
+		Def.Sprite {
+			Texture = "glow",
 			InitCommand=function(self) self:diffusealpha(0):zoom(0.8):addx(-200*WideScreenSemiDiff()):blend(Blend.Add) end,
 			OnCommand=function(self) self:decelerate(0.5):addx(200*WideScreenSemiDiff()) end,
 			OffCommand=function(self) self:zbuffer(true):accelerate(0.5):addx(-300*WideScreenSemiDiff()) end,
@@ -34,7 +36,8 @@ return Def.ActorFrame{
 		InitCommand=function(self) self:x(THEME:GetMetric(Var "LoadingScreen","ScrollerX")+190*WideScreenDiff()):CenterY():zoom(WideScreenDiff()) end,
 		OnCommand=function(self) self:queuecommand("Bob") end,
 		BobCommand=function(self) self:accelerate(0.75):addx(-2):decelerate(0.75):addx(-2):accelerate(0.75):addx(2):decelerate(0.75):addx(2):queuecommand("Bob") end,
-		LoadActor("arrow")..{
+		Def.Sprite {
+			Texture = "arrow",
 			InitCommand=function(self) self:rotationz(180):zoom(0.8):addx(200*WideScreenSemiDiff()) end,
 			OnCommand=function(self) self:decelerate(0.5):addx(-200*WideScreenSemiDiff()) end,
 			OffCommand=function(self) self:zbuffer(true):accelerate(0.5):addx(300*WideScreenSemiDiff()) end,
@@ -46,7 +49,8 @@ return Def.ActorFrame{
 			MadeChoiceP1MessageCommand=function(self) self:playcommand("Off") end,
 			MadeChoiceP2MessageCommand=function(self) self:playcommand("Off") end
 		},
-		LoadActor("glow")..{
+		Def.Sprite {
+			Texture = "glow",
 			InitCommand=function(self) self:rotationz(180):diffusealpha(0):zoom(0.8):addx(200*WideScreenSemiDiff()):blend(Blend.Add) end,
 			OnCommand=function(self) self:decelerate(0.5):addx(-200*WideScreenSemiDiff()) end,
 			OffCommand=function(self) self:zbuffer(true):accelerate(0.5):addx(300*WideScreenSemiDiff()) end,

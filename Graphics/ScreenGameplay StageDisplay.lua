@@ -24,7 +24,8 @@ return Def.ActorFrame{
 			end
 		end
 	},
-	LoadFont("_z bold gray 36px")..{
+	Def.BitmapText {
+		File = "_z bold gray 36px",
 		CurrentSongChangedMessageCommand=function(self) self:playcommand("Set") end,
 		SetCommand=function(self)
 			if GAMESTATE:IsCourseMode() then

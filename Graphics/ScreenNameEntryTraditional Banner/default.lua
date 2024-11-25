@@ -12,5 +12,5 @@ return Def.ActorFrame{
 			end
 		end
 	},
-	LoadActor(THEME:GetPathG("ScreenEvaluation","BannerFrame"))
+	loadfile(THEME:GetPathG("ScreenEvaluation","BannerFrame"))()
 }

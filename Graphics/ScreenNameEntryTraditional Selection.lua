@@ -5,7 +5,8 @@ setenv("HighScoreNameP1",GetDisplayNameFromProfileOrMemoryCard(PLAYER_1))
 setenv("HighScoreNameP2",GetDisplayNameFromProfileOrMemoryCard(PLAYER_2))
 
 return Def.ActorFrame{
-	LoadFont("ScreenNameEntryTraditional entry")..{
+	Def.BitmapText {
+		File = "ScreenNameEntryTraditional entry",
 		InitCommand=function(self) self:settext(getenv("HighScoreName"..pname(Player))):zoom(1.1):maxwidth(240) end,
 		EntryChangedMessageCommand=function(self,param)
 			if param.Player == Player then self:settext(getenv("HighScoreName"..pname(Player))) end

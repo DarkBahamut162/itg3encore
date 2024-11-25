@@ -4,7 +4,8 @@ if ShowStandardDecoration("StepsDisplay") then
 	for pn in ivalues(GAMESTATE:GetEnabledPlayers()) do
 		if not isTopScreen("ScreenEvaluationSummary") then
 			local t2 = Def.ActorFrame{
-				LoadActor(THEME:GetPathG("_difficulty icons",isFinal() and "final" or "normal"))..{
+				Def.Sprite {
+					Texture = THEME:GetPathG("_difficulty icons",isFinal() and "final" or "normal"),
 					InitCommand=function(self) self:zoomy(0.8):animate(0):zoomx((pn==PLAYER_2) and -0.8 or 0.8):playcommand("Update") end,
 					UpdateCommand=function(self)
 						local StepsOrTrail = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentTrail(pn) or GAMESTATE:GetCurrentSteps(pn)
@@ -18,32 +19,37 @@ if ShowStandardDecoration("StepsDisplay") then
 					end
 				}
 			}
-			t[#t+1] = StandardDecorationFromTable("StepsDisplay"..pname(pn), t2)
+			t[#t+1] = t2 .. {
+				InitCommand=function(self)
+					self:name("StepsDisplay"..pname(pn))
+					ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen")
+				end
+			}
 		end
 	end
 end
 
 for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
 	if GAMESTATE:IsPlayerEnabled(pn) then
-		t[#t+1] = LoadActor(THEME:GetPathG(Var "LoadingScreen", "MachineRecord"), pn ) .. {
+		t[#t+1] = loadfile(THEME:GetPathG(Var "LoadingScreen", "MachineRecord"))(pn) .. {
 			InitCommand=function(self)
 				self:player(pn):name("MachineRecord" .. PlayerNumberToString(pn))
 				ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen")
 			end
 		}
-		t[#t+1] = LoadActor(THEME:GetPathG(Var "LoadingScreen", "PersonalRecord"), pn)..{
+		t[#t+1] = loadfile(THEME:GetPathG(Var "LoadingScreen", "PersonalRecord"))(pn)..{
 			InitCommand=function(self)
 				self:player(pn):name("PersonalRecord" .. PlayerNumberToString(pn))
 				ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen")
 			end
 		}
-		t[#t+1] = LoadActor(THEME:GetPathG(Var "LoadingScreen", "AutoPlayer"), pn ) .. {
+		t[#t+1] = loadfile(THEME:GetPathG(Var "LoadingScreen", "AutoPlayer"))(pn) .. {
 			InitCommand=function(self)
 				self:player(pn):name("AutoPlayer" .. PlayerNumberToString(pn))
 				ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen")
 			end
 		}
-		t[#t+1] = LoadActor(THEME:GetPathG(Var "LoadingScreen", "PacemakerRecord"), pn)..{
+		t[#t+1] = loadfile(THEME:GetPathG(Var "LoadingScreen", "PacemakerRecord"))(pn)..{
 			InitCommand=function(self)
 				self:player(pn):name("PacemakerRecord" .. PlayerNumberToString(pn))
 				ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen")
@@ -113,19 +119,22 @@ local function GraphDisplay(pn)
 		},
 		Def.ActorFrame {
 			Condition=not isSurvival(pn),
-			LoadActor(THEME:GetPathB("ScreenEvaluation","underlay/FGC "..pname(pn)))..{
+			Def.Sprite {
+				Texture = THEME:GetPathB("ScreenEvaluation","underlay/FGC "..pname(pn)),
 				Condition=not isVS() and getenv("EvalCombo"..pname(pn)) and not (isOni() and not isLifeline(pn)),
 				InitCommand=function(self)
 					self:croptop(0.78) if not (PSS:FullComboOfScore('TapNoteScore_W3') and PlayerFullComboed(pn)) then self:cropright(1-(lastGreatSecond/length)) end
 				end
 			},
-			LoadActor(THEME:GetPathB("ScreenEvaluation","underlay/FEC "..pname(pn)))..{
+			Def.Sprite {
+				Texture = THEME:GetPathB("ScreenEvaluation","underlay/FEC "..pname(pn)),
 				Condition=not isVS() and getenv("EvalCombo"..pname(pn)) and not (isOni() and not isLifeline(pn)),
 				InitCommand=function(self)
 					self:croptop(0.78) if not (PSS:FullComboOfScore('TapNoteScore_W2') and PlayerFullComboed(pn)) then self:cropright(1-(lastPerfectSecond/length)) end
 				end
 			},
-			LoadActor(THEME:GetPathB("ScreenEvaluation","underlay/FFC "..pname(pn)))..{
+			Def.Sprite {
+				Texture = THEME:GetPathB("ScreenEvaluation","underlay/FFC "..pname(pn)),
 				Condition=not isVS() and getenv("EvalCombo"..pname(pn)) and not (isOni() and not isLifeline(pn)),
 				InitCommand=function(self)
 					self:croptop(0.78) if not (PSS:FullComboOfScore('TapNoteScore_W1') and PlayerFullComboed(pn)) then self:cropright(1-(lastMarvelousSecond/length)) end
@@ -138,7 +147,12 @@ end
 if ShowStandardDecoration("GraphDisplay") then
 	for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
 		if GAMESTATE:IsPlayerEnabled(pn) then
-			t[#t+1] = StandardDecorationFromTable("GraphDisplay"..pname(pn), GraphDisplay(pn))
+			t[#t+1] = GraphDisplay(pn) .. {
+				InitCommand=function(self)
+					self:name("GraphDisplay"..pname(pn))
+					ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen")
+				end
+			}
 		end
 	end
 end
@@ -158,13 +172,18 @@ end
 if ShowStandardDecoration("ComboGraph") then
 	for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
 		if GAMESTATE:IsPlayerEnabled(pn) then
-			t[#t+1] = StandardDecorationFromTable("ComboGraph"..pname(pn), ComboGraph(pn))
+			t[#t+1] = ComboGraph(pn) .. {
+				InitCommand=function(self)
+					self:name("ComboGraph"..pname(pn))
+					ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen")
+				end
+			}
 		end
 	end
 end
 
 local function StageAward( pn )
-	return LoadActor(THEME:GetPathG("ScreenEvaluation", "StageAward"), pn)..{
+	return loadfile(THEME:GetPathG("ScreenEvaluation", "StageAward"))(pn)..{
 		InitCommand=function(self) self:player(pn):name("StageAward"..pname(pn)) end
 	}
 end
@@ -172,13 +191,18 @@ end
 if ShowStandardDecoration("StageAward") then
 	for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
 		if GAMESTATE:IsPlayerEnabled(pn) then
-			t[#t+1] = StandardDecorationFromTable("StageAward"..pname(pn), StageAward(pn))
+			t[#t+1] = StageAward(pn) .. {
+				InitCommand=function(self)
+					self:name("StageAward"..pname(pn))
+					ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen")
+				end
+			}
 		end
 	end
 end
 
 local function PeakComboAward( pn )
-	return LoadActor( THEME:GetPathG(Var "LoadingScreen", "PeakComboAward"), pn ) .. {
+	return loadfile( THEME:GetPathG(Var "LoadingScreen", "PeakComboAward"))(pn) .. {
 		InitCommand=function(self) self:player(pn):name("PeakComboAward"..pname(pn)) end
 	}
 end
@@ -186,7 +210,12 @@ end
 if ShowStandardDecoration("PeakComboAward") then
 	for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
 		if GAMESTATE:IsPlayerEnabled(pn) then
-			t[#t+1] = StandardDecorationFromTable("PeakComboAward"..pname(pn), PeakComboAward(pn))
+			t[#t+1] = PeakComboAward(pn) .. {
+				InitCommand=function(self)
+					self:name("PeakComboAward"..pname(pn))
+					ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen")
+				end
+			}
 		end
 	end
 end

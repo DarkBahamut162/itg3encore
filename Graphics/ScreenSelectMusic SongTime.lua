@@ -7,12 +7,14 @@ local EC = " "
 
 return Def.ActorFrame{
 	BeginCommand = function(self) c = self:GetChildren() end,
-	LoadFont("titlemenu")..{
+	Def.BitmapText {
+		File = "titlemenu",
 		Name="Time",
 		Text="Time:",
 		InitCommand=function(self) self:x(-103):zoom(1.05):halign(1) end
 	},
-	LoadFont("_r bold bevel numbers")..{
+	Def.BitmapText {
+		File = "_r bold bevel numbers",
 		InitCommand=function(self) self:x(98):halign(1) end,
 		SetCommand=function(self)
 			local curSelection = nil
@@ -74,7 +76,8 @@ return Def.ActorFrame{
 		CurrentTrailP1ChangedMessageCommand=function(self) if course then self:queuecommand("Set") end end,
 		CurrentTrailP2ChangedMessageCommand=function(self) if course then self:queuecommand("Set") end end
 	},
-	LoadFont("_r bold bevel numbers")..{
+	Def.BitmapText {
+		File = "_r bold bevel numbers",
 		InitCommand=function(self) self:x(98):y(-30):halign(1) end,
 		SetTimeMessageCommand=function(self)
 			if length[3] ~= 0.0 then
@@ -90,7 +93,8 @@ return Def.ActorFrame{
 			end
 		end
 	},
-	LoadFont("_r bold bevel numbers")..{
+	Def.BitmapText {
+		File = "_r bold bevel numbers",
 		InitCommand=function(self) self:x(98):y(-60):halign(1) end,
 		SetTimeMessageCommand=function(self)
 			if length[3] ~= 0.0 and length[2] ~= length[3] then

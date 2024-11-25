@@ -1,5 +1,6 @@
 return Def.ActorFrame{
-	LoadActor(THEME:GetPathB("ScreenSelectMusic","background/CJ126 Eval "..(isFinal() and "Final" or "Normal")))..{
+	Def.Sprite {
+		Texture = THEME:GetPathB("ScreenSelectMusic","background/CJ126 Eval "..(isFinal() and "Final" or "Normal")),
 		InitCommand=function(self) self:FullScreen():diffusealpha(isFinal() and 0.2 or 1) end
 	},
 	Def.Sprite{

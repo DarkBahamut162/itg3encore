@@ -7,11 +7,11 @@ elseif getenv("ShowStatsP1") > 0 or getenv("ShowStatsP2") > 0 or getenv("ShowNot
 end
 
 t[#t+1] = Def.ActorFrame{
-	LoadActor("ScreenFilter"),
-	LoadActor("beginner")..{ Condition=isRegular() and GAMESTATE:GetEasiestStepsDifficulty() == 'Difficulty_Beginner' },
-	LoadActor("stepstats")..{ Condition=stats },
-	LoadActor("danger")..{ Condition=not isOni() and PREFSMAN:GetPreference("ShowDanger") },
-	LoadActor("dead")
+	loadfile(THEME:GetPathB("ScreenGameplay","underlay/ScreenFilter"))(),
+	loadfile(THEME:GetPathB("ScreenGameplay","underlay/beginner"))()..{ Condition=isRegular() and GAMESTATE:GetEasiestStepsDifficulty() == 'Difficulty_Beginner' },
+	loadfile(THEME:GetPathB("ScreenGameplay","underlay/stepstats"))()..{ Condition=stats },
+	loadfile(THEME:GetPathB("ScreenGameplay","underlay/danger"))()..{ Condition=not isOni() and PREFSMAN:GetPreference("ShowDanger") },
+	loadfile(THEME:GetPathB("ScreenGameplay","underlay/dead"))()
 }
 
 return t

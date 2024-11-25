@@ -1,22 +1,24 @@
 return Def.ActorFrame{
 	Def.ActorFrame{
 		InitCommand=function(self) self:y(SCREEN_CENTER_Y-157*WideScreenDiff()) end,
-		LoadActor(THEME:GetPathG("_name","badge"),PLAYER_1)..{
+		loadfile(THEME:GetPathG("_name","badge"))(PLAYER_1)..{
 			InitCommand=function(self) self:x(SCREEN_CENTER_X+64*WideScreenDiff()):zoom(WideScreenDiff()):addx(-SCREEN_WIDTH):player(PLAYER_1) end,
 			OnCommand=function(self) self:sleep(0.25):decelerate(0.3):addx(SCREEN_WIDTH) end,
 			OffCommand=function(self) self:accelerate(0.3):addx(-SCREEN_WIDTH) end
 		},
-		LoadActor(THEME:GetPathG("_name","badge"),PLAYER_2)..{
+		loadfile(THEME:GetPathG("_name","badge"))(PLAYER_2)..{
 			InitCommand=function(self) self:x(SCREEN_CENTER_X-64*(isFinal() and 1.25 or 1.2)*WideScreenDiff()+SCREEN_WIDTH/2):zoom(WideScreenDiff()):addx(SCREEN_WIDTH):player(PLAYER_2) end,
 			OnCommand=function(self) self:sleep(0.25):decelerate(0.3):addx(-SCREEN_WIDTH) end,
 			OffCommand=function(self) self:accelerate(0.3):addx(SCREEN_WIDTH) end
 		}
 	},
-	LoadActor(THEME:GetPathB("ScreenOptions","overlay/_frame"))..{
+	Def.Sprite {
+		Texture = THEME:GetPathB("ScreenOptions","overlay/_frame"),
 		InitCommand=function(self) self:Center() end,
 		OnCommand=function(self) self:diffusealpha(0):zoom(0.7*WideScreenDiff()):bounceend(0.3):diffusealpha(0.7):zoom(WideScreenDiff()) end
 	},
-	LoadActor(THEME:GetPathB("ScreenOptions","overlay/_frame"))..{
+	Def.Sprite {
+		Texture = THEME:GetPathB("ScreenOptions","overlay/_frame"),
 		InitCommand=function(self) self:Center():blend(Blend.Add) end,
 		OnCommand=function(self) self:diffuseblink():effectcolor1(color("0.8,0.8,0.8,0.85")):effectperiod(1):effectoffset(0):effectclock('beat'):diffusealpha(0):zoom(0.7*WideScreenDiff()):bounceend(0.3):diffusealpha(1):zoom(WideScreenDiff()) end,
 		OffCommand=function(self) self:diffusealpha(1):accelerate(0.3):diffusealpha(0) end
@@ -30,5 +32,5 @@ return Def.ActorFrame{
 		OnCommand=function(self) self:diffusealpha(1):sleep(0.2):linear(0.4):diffusealpha(0) end,
 		OffCommand=function(self) self:visible(false) end
 	},
-	LoadActor(THEME:GetPathB("","_coins"))
+	loadfile(THEME:GetPathB("","_coins"))()
 }

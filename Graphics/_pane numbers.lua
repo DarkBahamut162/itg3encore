@@ -26,7 +26,8 @@ return Def.ActorFrame{
 	CurrentCourseChangedMessageCommand=function(self) if courseMode then self:RunCommandsRecursively( function(self) self:stoptweening():playcommand("Set") end )  end end,
 	["CurrentSteps".. pname(player) .."ChangedMessageCommand"]=function(self) if not courseMode then self:RunCommandsRecursively( function(self) self:stoptweening():playcommand("Set") end )  end end,
 	["CurrentTrail".. pname(player) .."ChangedMessageCommand"]=function(self) if courseMode then self:RunCommandsRecursively( function(self) self:stoptweening():playcommand("Set") end )  end end,
-	LoadFont("smallnumbers")..{
+	Def.BitmapText {
+		File = "smallnumbers",
 		Name="Jumps",
 		InitCommand=function(self) self:x(-127+100):diffusealpha(0):maxwidth(22) end,
 		SetCommand=function(self)
@@ -65,7 +66,8 @@ return Def.ActorFrame{
 		SelectMenuClosedMessageCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(0) end,
 		OffCommand=function(self) self:stoptweening():linear(0.12):diffusealpha(0) end
 	},
-	LoadFont("smallnumbers")..{
+	Def.BitmapText {
+		File = "smallnumbers",
 		Name="Holds",
 		InitCommand=function(self) self:x(-102+100):diffusealpha(0):maxwidth(22) end,
 		SetCommand=function(self)
@@ -104,7 +106,8 @@ return Def.ActorFrame{
 		SelectMenuClosedMessageCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(0) end,
 		OffCommand=function(self) self:stoptweening():linear(0.12):diffusealpha(0) end
 	},
-	LoadFont("smallnumbers")..{
+	Def.BitmapText {
+		File = "smallnumbers",
 		Name="Mines",
 		InitCommand=function(self) self:x(-77+100):diffusealpha(0):maxwidth(22) end,
 		SetCommand=function(self)
@@ -143,7 +146,8 @@ return Def.ActorFrame{
 		SelectMenuClosedMessageCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(0) end,
 		OffCommand=function(self) self:stoptweening():linear(0.12):diffusealpha(0) end
 	},
-	LoadFont("smallnumbers")..{
+	Def.BitmapText {
+		File = "smallnumbers",
 		Name="Hands",
 		InitCommand=function(self) self:x(-52+100):diffusealpha(0):maxwidth(22) end,
 		SetCommand=function(self)
@@ -182,7 +186,8 @@ return Def.ActorFrame{
 		SelectMenuClosedMessageCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(0) end,
 		OffCommand=function(self) self:stoptweening():linear(0.12):diffusealpha(0) end
 	},
-	LoadFont("smallnumbers")..{
+	Def.BitmapText {
+		File = "smallnumbers",
 		Name="Rolls",
 		InitCommand=function(self) self:x(-27+100):diffusealpha(0):maxwidth(22) end,
 		SetCommand=function(self)

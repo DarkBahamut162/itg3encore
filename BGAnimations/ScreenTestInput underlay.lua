@@ -1,7 +1,7 @@
 return Def.ActorFrame {
-	LoadActor(THEME:GetPathB("ScreenWithMenuElements","underlay/_sides")),
-	LoadActor(THEME:GetPathB("ScreenWithMenuElements","underlay/_base")),
-	LoadActor(THEME:GetPathB("ScreenWithMenuElements","underlay/_normaltop")),
+	loadfile(THEME:GetPathB("ScreenWithMenuElements","underlay/_sides"))(),
+	loadfile(THEME:GetPathB("ScreenWithMenuElements","underlay/_base"))(),
+	loadfile(THEME:GetPathB("ScreenWithMenuElements","underlay/_normaltop"))(),
 	Def.DeviceList {
 		Font="Common Normal",
 		InitCommand= function (self)

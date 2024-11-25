@@ -15,7 +15,8 @@ local function GetPosition(pn)
 end
 
 return Def.ActorFrame{
-	LoadActor("bluebeam")..{
+	Def.Sprite {
+		Texture = "bluebeam",
 		InitCommand=function(self) self:blend(Blend.Add):x(GetPosition(pn)):y(SCREEN_CENTER_Y-SCREEN_HEIGHT/9+15):diffusealpha(0):zoom(0.3):cropleft(0.5):cropright(0.5) end,
 		OffCommand=function(self) if PlayerFullComboed(pn) then self:queuecommand("CheckScore") end end,
 		CheckScoreCommand=function(self)
@@ -37,9 +38,10 @@ return Def.ActorFrame{
 			else
 				self:visible(false)
 			end
-		end,
+		end
 	},
-	LoadActor("full combo text")..{
+	Def.Sprite {
+		Texture = "full combo text",
 		InitCommand=function(self) self:x(GetPosition(pn)):y(SCREEN_CENTER_Y-SCREEN_HEIGHT/8+15):diffusealpha(0):shadowlength(0) end,
 		OffCommand=function(self) if PlayerFullComboed(pn) then self:queuecommand("CheckScore") end end,
 		CheckScoreCommand=function(self)
@@ -60,7 +62,8 @@ return Def.ActorFrame{
 			end
 		end
 	},
-	LoadActor("full combo glow")..{
+	Def.Sprite {
+		Texture = "full combo glow",
 		InitCommand=function(self) self:x(GetPosition(pn)):y(SCREEN_CENTER_Y-SCREEN_HEIGHT/8+15):diffusealpha(0) end,
 		OffCommand=function(self) if PlayerFullComboed(pn) then self:queuecommand("CheckScore") end end,
 		CheckScoreCommand=function(self)
@@ -81,7 +84,8 @@ return Def.ActorFrame{
 			end
 		end
 	},
-	LoadActor("_fan")..{
+	Def.Sprite {
+		Texture = "_fan",
 		InitCommand=function(self) self:x(GetPosition(pn)):y(SCREEN_HEIGHT/2):zoomx(1.25):blend(Blend.Add):cropleft(0.5):cropright(0.5):faderight(0.5):fadeleft(0.5):zoomtoheight(SCREEN_HEIGHT*1.5):diffusealpha(0) end,
 		OffCommand=function(self) if PlayerFullComboed(pn) then self:queuecommand("CheckScore") end end,
 		CheckScoreCommand=function(self)
@@ -106,7 +110,8 @@ return Def.ActorFrame{
 			end
 		end
 	},
-	LoadActor("_fan")..{
+	Def.Sprite {
+		Texture = "_fan",
 		InitCommand=function(self) self:x(GetPosition(pn)):y(SCREEN_HEIGHT/2):blend(Blend.Add):fadetop(0.1):fadebottom(0.5):zoomtoheight(SCREEN_HEIGHT*2):diffusealpha(0) end,
 		OffCommand=function(self) if PlayerFullComboed(pn) then self:queuecommand("CheckScore") end end,
 		CheckScoreCommand=function(self)
@@ -126,7 +131,8 @@ return Def.ActorFrame{
 			end
 		end
 	},
-	LoadActor(THEME:GetPathG("","blueflare"))..{
+	Def.Sprite {
+		Texture = THEME:GetPathG("","blueflare"),
 		InitCommand=function(self) self:x(GetPosition(pn)):blend(Blend.Add):y(SCREEN_CENTER_Y-SCREEN_HEIGHT/9+15):diffusealpha(0):zoom(0.3) end,
 		OffCommand=function(self) if PlayerFullComboed(pn) then self:queuecommand("CheckScore") end end,
 		CheckScoreCommand=function(self)
@@ -147,8 +153,8 @@ return Def.ActorFrame{
 			end
 		end
 	},
-
-	LoadActor("orangebeam")..{
+	Def.Sprite {
+		Texture = "orangebeam",
 		InitCommand=function(self) self:blend(Blend.Add):x(GetPosition(pn)):y(SCREEN_CENTER_Y-SCREEN_HEIGHT/9+15):diffusealpha(0):zoom(0.3):cropleft(0.5):cropright(0.5) end,
 		OffCommand=function(self) if PlayerFullComboed(pn) then self:queuecommand("CheckScore") end end,
 		CheckScoreCommand=function(self)
@@ -172,7 +178,8 @@ return Def.ActorFrame{
 			end
 		end
 	},
-	LoadActor("full combo text")..{
+	Def.Sprite {
+		Texture = "full combo text",
 		InitCommand=function(self) self:x(GetPosition(pn)):y(SCREEN_CENTER_Y-SCREEN_HEIGHT/8+15):diffusealpha(0):shadowlength(0) end,
 		OffCommand=function(self) if PlayerFullComboed(pn) then self:queuecommand("CheckScore") end end,
 		CheckScoreCommand=function(self)
@@ -193,7 +200,8 @@ return Def.ActorFrame{
 			end
 		end
 	},
-	LoadActor("full combo glow")..{
+	Def.Sprite {
+		Texture = "full combo glow",
 		InitCommand=function(self) self:x(GetPosition(pn)):y(SCREEN_CENTER_Y-SCREEN_HEIGHT/8+15):diffusealpha(0) end,
 		OffCommand=function(self) if PlayerFullComboed(pn) then self:queuecommand("CheckScore") end end,
 		CheckScoreCommand=function(self)
@@ -214,7 +222,8 @@ return Def.ActorFrame{
 			end
 		end
 	},
-	LoadActor("_ex")..{
+	Def.Sprite {
+		Texture = "_ex",
 		InitCommand=function(self) self:x(GetPosition(pn)):y(SCREEN_HEIGHT/2):zoomx(1.25):blend(Blend.Add):cropleft(0.5):cropright(0.5):faderight(0.5):fadeleft(0.5):zoomtoheight(SCREEN_HEIGHT*1.5):diffusealpha(0) end,
 		OffCommand=function(self) if PlayerFullComboed(pn) then self:queuecommand("CheckScore") end end,
 		CheckScoreCommand=function(self)
@@ -239,7 +248,8 @@ return Def.ActorFrame{
 			end
 		end
 	},
-	LoadActor("_ex")..{
+	Def.Sprite {
+		Texture = "_ex",
 		InitCommand=function(self) self:x(GetPosition(pn)):y(SCREEN_HEIGHT/2):blend(Blend.Add):fadetop(0.1):fadebottom(0.5):zoomtoheight(SCREEN_HEIGHT*2):diffusealpha(0) end,
 		OffCommand=function(self) if PlayerFullComboed(pn) then self:queuecommand("CheckScore") end end,
 		CheckScoreCommand=function(self)
@@ -259,7 +269,8 @@ return Def.ActorFrame{
 			end
 		end
 	},
-	LoadActor(THEME:GetPathG("","orangeflare"))..{
+	Def.Sprite {
+		Texture = THEME:GetPathG("","orangeflare"),
 		InitCommand=function(self) self:x(GetPosition(pn)):blend(Blend.Add):y(SCREEN_CENTER_Y-SCREEN_HEIGHT/9+15):diffusealpha(0):zoom(0.3) end,
 		OffCommand=function(self) if PlayerFullComboed(pn) then self:queuecommand("CheckScore") end end,
 		CheckScoreCommand=function(self)
@@ -280,8 +291,8 @@ return Def.ActorFrame{
 			end
 		end
 	},
-
-	LoadActor("greenbeam")..{
+	Def.Sprite {
+		Texture = "greenbeam",
 		InitCommand=function(self) self:blend(Blend.Add):x(GetPosition(pn)):y(SCREEN_CENTER_Y-SCREEN_HEIGHT/9+15):diffusealpha(0):zoom(0.3):cropleft(0.5):cropright(0.5) end,
 		OffCommand=function(self) if PlayerFullComboed(pn) then self:queuecommand("CheckScore") end end,
 		CheckScoreCommand=function(self)
@@ -305,7 +316,8 @@ return Def.ActorFrame{
 			end
 		end
 	},
-	LoadActor("full combo text")..{
+	Def.Sprite {
+		Texture = "full combo text",
 		InitCommand=function(self) self:x(GetPosition(pn)):y(SCREEN_CENTER_Y-SCREEN_HEIGHT/8+15):diffusealpha(0):shadowlength(0) end,
 		OffCommand=function(self) if PlayerFullComboed(pn) then self:queuecommand("CheckScore") end end,
 		CheckScoreCommand=function(self)
@@ -326,7 +338,8 @@ return Def.ActorFrame{
 			end
 		end
 	},
-	LoadActor("full combo glow")..{
+	Def.Sprite {
+		Texture = "full combo glow",
 		InitCommand=function(self) self:x(GetPosition(pn)):y(SCREEN_CENTER_Y-SCREEN_HEIGHT/8+15):diffusealpha(0) end,
 		OffCommand=function(self) if PlayerFullComboed(pn) then self:queuecommand("CheckScore") end end,
 		CheckScoreCommand=function(self)
@@ -347,7 +360,8 @@ return Def.ActorFrame{
 			end
 		end
 	},
-	LoadActor("_great")..{
+	Def.Sprite {
+		Texture = "_great",
 		InitCommand=function(self) self:x(GetPosition(pn)):y(SCREEN_HEIGHT/2):zoomx(1.25):blend(Blend.Add):cropleft(0.5):cropright(0.5):faderight(0.5):fadeleft(0.5):zoomtoheight(SCREEN_HEIGHT*1.5):diffusealpha(0) end,
 		OffCommand=function(self) if PlayerFullComboed(pn) then self:queuecommand("CheckScore") end end,
 		CheckScoreCommand=function(self)
@@ -372,7 +386,8 @@ return Def.ActorFrame{
 			end
 		end
 	},
-	LoadActor("_great")..{
+	Def.Sprite {
+		Texture = "_great",
 		InitCommand=function(self) self:x(GetPosition(pn)):y(SCREEN_HEIGHT/2):blend(Blend.Add):fadetop(0.1):fadebottom(0.5):zoomtoheight(SCREEN_HEIGHT*2):diffusealpha(0) end,
 		OffCommand=function(self) if PlayerFullComboed(pn) then self:queuecommand("CheckScore") end end,
 		CheckScoreCommand=function(self)
@@ -392,7 +407,8 @@ return Def.ActorFrame{
 			end
 		end
 	},
-	LoadActor(THEME:GetPathG("","greenflare"))..{
+	Def.Sprite {
+		Texture = THEME:GetPathG("","greenflare"),
 		InitCommand=function(self) self:x(GetPosition(pn)):blend(Blend.Add):y(SCREEN_CENTER_Y-SCREEN_HEIGHT/9+15):diffusealpha(0):zoom(0.3) end,
 		OffCommand=function(self) if PlayerFullComboed(pn) then self:queuecommand("CheckScore") end end,
 		CheckScoreCommand=function(self)

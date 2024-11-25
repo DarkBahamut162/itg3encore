@@ -1,7 +1,8 @@
 local Player = ...
 if not Player then error("[ScreenNameEntryTraditional DifficultyMeter] needs player.") end
 
-return LoadFont("_v 26px bold white")..{
+return Def.BitmapText {
+	File = "_v 26px bold white",
 	ChangeDisplayedFeatMessageCommand=function(self,param)
 		if param.Player == Player then
 			if GAMESTATE:IsCourseMode() then

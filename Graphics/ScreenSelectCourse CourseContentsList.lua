@@ -28,7 +28,8 @@ return Def.ActorFrame{
 		CurrentTrailP2ChangedMessageCommand=function(self) self:playcommand("Set") end,
 		Display = Def.ActorFrame {
 			InitCommand=function(self) self:setsize(270,44) end,
-			LoadFont("_r bold 30px") .. {
+			Def.BitmapText {
+				File = "_r bold 30px",
 				InitCommand=function(self) self:x(-145):zoom(0.8):shadowlength(0):halign(1) end,
 				SetSongCommand=function(self, params)
 					if params.PlayerNumber ~= GAMESTATE:GetMasterPlayerNumber() then return end

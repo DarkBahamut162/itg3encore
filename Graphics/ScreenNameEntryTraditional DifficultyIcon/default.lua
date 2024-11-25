@@ -10,7 +10,8 @@ local DifficultyToFrame = {
 	['Difficulty_Edit']			= 5
 }
 
-return LoadActor("DifficultyIcon "..(isFinal() and "final" or "normal"))..{
+return Def.Sprite {
+	Texture = THEME:GetPathG("ScreenNameEntryTraditional","DifficultyIcon/DifficultyIcon "..(isFinal() and "final" or "normal")),
 	InitCommand=function(self) self:animate(false) end,
 	ChangeDisplayedFeatMessageCommand=function(self,param)
 		if param.Player == Player then

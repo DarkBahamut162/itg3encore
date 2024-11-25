@@ -45,7 +45,7 @@ end
 
 for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
 	if not getenv("HighScoreable"..pname(pn)) then
-		t[#t+1] = LoadActor(THEME:GetPathG("ScreenNameEntryTraditional","OutOfRanking"))..{
+		t[#t+1] = loadfile(THEME:GetPathG("ScreenNameEntryTraditional","OutOfRanking"))()..{
 			InitCommand=function(self)
 				self:player(pn)
 				self:name("OutOfRanking" .. PlayerNumberToString(pn))
@@ -112,14 +112,14 @@ for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
 				end
 			end
 		}
-		t[#t+1] = LoadActor(THEME:GetPathG("ScreenNameEntryTraditional","Keyboard"),pn)..{
+		t[#t+1] = loadfile(THEME:GetPathG("ScreenNameEntryTraditional","Keyboard"))(pn)..{
 			InitCommand=function(self)
 				self:player(pn)
 				self:name("Keyboard" .. PlayerNumberToString(pn))
 				ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen")
 			end
 		}
-		t[#t+1] = LoadActor(THEME:GetPathG("ScreenNameEntryTraditional","Selection"),pn)..{
+		t[#t+1] = loadfile(THEME:GetPathG("ScreenNameEntryTraditional","Selection"))(pn)..{
 			InitCommand=function(self)
 				self:player(pn)
 				self:name("Selection" .. PlayerNumberToString(pn))
@@ -127,28 +127,28 @@ for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
 			end
 		}
 	end
-	t[#t+1] = LoadActor(THEME:GetPathG("ScreenNameEntryTraditional","Wheel"),pn)..{
+	t[#t+1] = loadfile(THEME:GetPathG("ScreenNameEntryTraditional","Wheel"))(pn)..{
 		InitCommand=function(self)
 			self:player(pn)
 			self:name("Wheel" .. PlayerNumberToString(pn))
 			ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen")
 		end
 	}
-	t[#t+1] = LoadActor(THEME:GetPathG("ScreenNameEntryTraditional","Score"),pn)..{
+	t[#t+1] = loadfile(THEME:GetPathG("ScreenNameEntryTraditional","Score"))(pn)..{
 		InitCommand=function(self)
 			self:player(pn)
 			self:name("Score" .. PlayerNumberToString(pn))
 			ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen")
 		end
 	}
-	t[#t+1] = LoadActor(THEME:GetPathG("ScreenNameEntryTraditional","DifficultyIcon"),pn)..{
+	t[#t+1] = loadfile(THEME:GetPathG("ScreenNameEntryTraditional","DifficultyIcon"))(pn)..{
 		InitCommand=function(self)
 			self:player(pn)
 			self:name("DifficultyIcon" .. PlayerNumberToString(pn))
 			ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen")
 		end
 	}
-	t[#t+1] = LoadActor(THEME:GetPathG("ScreenNameEntryTraditional","DifficultyMeter"),pn)..{
+	t[#t+1] = loadfile(THEME:GetPathG("ScreenNameEntryTraditional","DifficultyMeter"))(pn)..{
 		InitCommand=function(self)
 			self:player(pn)
 			self:name("DifficultyMeter" .. PlayerNumberToString(pn))
@@ -157,7 +157,12 @@ for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
 	}
 end
 
-t[#t+1] = StandardDecorationFromFile("Banner","Banner")
+t[#t+1] = loadfile(THEME:GetPathG(Var "LoadingScreen", "Banner"))() .. {
+	InitCommand=function(self)
+		self:name("Banner")
+		ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen")
+	end
+}
 t[#t+1] = Def.Actor{
 	OnCommand=function(self) SCREENMAN:GetTopScreen():AddInputCallback(InputHandler) end,
 	EntryFinishedMessageCommand=function(self,param) finished[param.Player] = true end

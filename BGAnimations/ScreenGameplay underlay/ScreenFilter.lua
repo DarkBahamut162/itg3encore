@@ -54,15 +54,18 @@ function getFilter(player,filterWidth,filterAlpha)
 			local repos = 0
 			if gameMode == "be-mu" and stepsTypeNumber == 7 then repos = 30 elseif gameMode == "po-mu" and pomuREST == "Nine" then repos = 15 end
 			return Def.ActorFrame{
-				LoadActor("/Appearance/BackPlates/"..gameMode.."/"..string.gsub(gameMode,"-","")..file)..{
+				Def.Sprite {
+					Texture = "/Appearance/BackPlates/"..gameMode.."/"..string.gsub(gameMode,"-","")..file,
 					InitCommand=function(self) self:x((-filterWidth/4)-repos):zoomto(filterWidth/2,SCREEN_HEIGHT*4):diffusealpha(filterAlpha) end
 				},
-				LoadActor("/Appearance/BackPlates/"..gameMode.."/"..string.gsub(gameMode,"-","")..file2)..{
+				Def.Sprite {
+					Texture = "/Appearance/BackPlates/"..gameMode.."/"..string.gsub(gameMode,"-","")..file2,
 					InitCommand=function(self) self:x((filterWidth/4)+repos):zoomto(filterWidth/2,SCREEN_HEIGHT*4):diffusealpha(filterAlpha) end
 				}
 			}
 		else
-			return LoadActor("/Appearance/BackPlates/"..gameMode.."/"..string.gsub(gameMode,"-","")..file)..{
+			return Def.Sprite {
+				Texture = "/Appearance/BackPlates/"..gameMode.."/"..string.gsub(gameMode,"-","")..file,
 				InitCommand=function(self) self:zoomto(filterWidth,SCREEN_HEIGHT*4):diffusealpha(filterAlpha) end
 			}
 		end
@@ -139,8 +142,8 @@ if numPlayers == 1 then
 			end
 		end,
 		getFilter(player,filterWidth,filterAlpha),
-		LoadActor("SpeedAssist", player),
-		LoadActor("StopAssist", player)
+		loadfile(THEME:GetPathB("ScreenGameplay","underlay/SpeedAssist"))(player),
+		loadfile(THEME:GetPathB("ScreenGameplay","underlay/StopAssist"))(player)
 	}
 else
 	if styleType == "TwoPlayersSharedSides" then
@@ -222,8 +225,8 @@ else
 					end
 				end,
 				getFilter(player,filterWidth,filterAlphas[player]),
-				LoadActor("SpeedAssist", player),
-				LoadActor("StopAssist", player)
+				loadfile(THEME:GetPathB("ScreenGameplay","underlay/SpeedAssist"))(player),
+				loadfile(THEME:GetPathB("ScreenGameplay","underlay/StopAssist"))(player)
 			}
 		end
 	end

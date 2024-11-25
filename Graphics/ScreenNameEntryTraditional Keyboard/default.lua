@@ -7,7 +7,8 @@ local function CreateScrollerItem(char,altName)
 	if not altName then altName = char end
 	return Def.ActorFrame{
 		Name="Character_"..altName,
-		LoadFont("ScreenNameEntryTraditional entry")..{
+		Def.BitmapText {
+			File = "ScreenNameEntryTraditional entry",
 			Text=char,
 			BeginCommand=function(self) self:zoom(textZoom):shadowlength(4) end
 		}
@@ -115,5 +116,7 @@ return Def.ActorFrame{
 		TransformFunction=function(self,offset,itemIndex,numItems) self:x(offset*40) end,
 		children = scrollItems
 	},
-	LoadActor("cursor "..(isFinal() and "final" or "normal"))
+	Def.Sprite {
+		Texture = "cursor "..(isFinal() and "final" or "normal")
+	}
 }

@@ -3,7 +3,8 @@ assert( player )
 
 local posX = 0
 
-return LoadFont("_r bold 30px")..{
+return Def.BitmapText {
+	File = "_r bold 30px",
 	Name="DeltaSeconds",
 	InitCommand=function(self)
 		self:valign(1):halign(0):zoom(0.5*WideScreenDiff()):y(72.5*WideScreenDiff())

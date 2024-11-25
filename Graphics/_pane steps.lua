@@ -46,7 +46,8 @@ return Def.ActorFrame{
 	InitCommand=function(self) self:y(-1) if IsUsingWideScreen() and hasAvatar(player) then self:x(player == PLAYER_1 and 48 or -48) end end,
 	OnCommand=function(self) self:diffusealpha(0):sleep(0.85):linear(0.2):diffusealpha(1) end,
 	OffCommand=function(self) self:accelerate(0.2):diffusealpha(0) end,
-	LoadFont("_z 36px shadowx")..{
+	Def.BitmapText {
+		File = "_z 36px shadowx",
 		Name="StepCount",
 		InitCommand=function(self) self:x(-67):y(120+4):zoom(0.35):diffusealpha(0):shadowlength(1) end,
 		SetCommand=function(self)
@@ -104,7 +105,8 @@ return Def.ActorFrame{
 		["CurrentSteps".. pname(player) .."ChangedMessageCommand"]=function(self) if not courseMode then self:playcommand("Set") end end,
 		["CurrentTrail".. pname(player) .."ChangedMessageCommand"]=function(self) if courseMode then self:playcommand("Set") end end
 	},
-	LoadFont("_v 26px bold white")..{
+	Def.BitmapText {
+		File = "_v 26px bold white",
 		Name="Label",
 		InitCommand=function(self) self:x(-67):y(120+17):settext("STEPS"):shadowlength(1):zoomx(0.45):zoomy(0.4):diffusebottomedge(color("#8F8F8F")) end
 	}

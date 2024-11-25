@@ -64,23 +64,32 @@ return Def.ActorFrame{
 	Def.Quad{
 		OnCommand=function(self) self:FullScreen():diffusecolor(Color.Black) end
 	},
-	LoadActor("top"),
-	LoadActor("bottom"),
-	LoadActor("highlight")..{
+	loadfile(THEME:GetPathB("ScreenStageInformation","in/top"))(),
+	loadfile(THEME:GetPathB("ScreenStageInformation","in/bottom"))(),
+	Def.Sprite {
+		Texture = "highlight",
 		InitCommand=function(self) self:x(SCREEN_CENTER_X+5*WideScreenDiff()):y(SCREEN_CENTER_Y+60*WideScreenDiff()) end,
 		OnCommand=function(self) self:diffusealpha(0):decelerate(0.2):diffusealpha(1) end
 	},
 	Def.ActorFrame{
 		Name="P1Frame",
 		InitCommand=function(self) self:visible(GAMESTATE:IsPlayerEnabled(PLAYER_1)) end,
-		LoadActor("_left gradient")..{ InitCommand=function(self) self:x(SCREEN_LEFT):y(SCREEN_CENTER_Y+130*WideScreenDiff()):zoom(WideScreenDiff()):halign(0) end },
-		LoadActor("_p1")..{ InitCommand=function(self) self:x(SCREEN_LEFT):y(SCREEN_CENTER_Y+130*WideScreenDiff()):zoom(WideScreenDiff()):halign(0) end },
-		LoadFont("_r bold 30px")..{
+		Def.Sprite {
+			Texture = "_left gradient",
+			InitCommand=function(self) self:x(SCREEN_LEFT):y(SCREEN_CENTER_Y+130*WideScreenDiff()):zoom(WideScreenDiff()):halign(0) end
+		},
+		Def.Sprite {
+			Texture = "_p1",
+			InitCommand=function(self) self:x(SCREEN_LEFT):y(SCREEN_CENTER_Y+130*WideScreenDiff()):zoom(WideScreenDiff()):halign(0) end
+		},
+		Def.BitmapText {
+			File = "_r bold 30px",
 			Text="Step Artist:",
 			InitCommand=function(self) self:x(SCREEN_LEFT+5*WideScreenDiff()):y(SCREEN_CENTER_Y+152*WideScreenDiff()):zoom(0.6*WideScreenDiff()):halign(0):shadowlength(2) end,
 			BeginCommand=function(self) self:visible(GAMESTATE:IsPlayerEnabled(PLAYER_1) and isRegular() or isVS()) end
 		},
-		LoadFont("_r bold 30px")..{
+		Def.BitmapText {
+			File = "_r bold 30px",
 			Name="AuthorText",
 			InitCommand=function(self) self:x(SCREEN_LEFT+100*WideScreenDiff()):y(SCREEN_CENTER_Y+152*WideScreenDiff()):shadowlength(2):halign(0):zoom(0.6*WideScreenDiff()) end,
 			SetCommand=function(self)
@@ -95,7 +104,8 @@ return Def.ActorFrame{
 			end,
 			OnCommand=function(self) self:playcommand("Set") end
 		},
-		LoadFont("_r bold 30px")..{
+		Def.BitmapText {
+			File = "_r bold 30px",
 			Name="PlayerName",
 			InitCommand=function(self) self:x(SCREEN_LEFT+44*WideScreenDiff()):y(SCREEN_CENTER_Y+122*WideScreenDiff()):shadowlength(2):halign(0):zoom(0.8*WideScreenDiff()) end,
 			SetCommand=function(self)
@@ -111,14 +121,22 @@ return Def.ActorFrame{
 	Def.ActorFrame{
 		Name="P2Frame",
 		InitCommand=function(self) self:visible(GAMESTATE:IsPlayerEnabled(PLAYER_2)) end,
-		LoadActor("_right gradient")..{ InitCommand=function(self) self:x(SCREEN_RIGHT):y(SCREEN_CENTER_Y+130*WideScreenDiff()):zoom(WideScreenDiff()):halign(1) end },
-		LoadActor("_p2")..{ InitCommand=function(self) self:x(SCREEN_RIGHT):y(SCREEN_CENTER_Y+130*WideScreenDiff()):zoom(WideScreenDiff()):halign(1) end },
-		LoadFont("_r bold 30px")..{
+		Def.Sprite {
+			Texture = "_right gradient",
+			InitCommand=function(self) self:x(SCREEN_RIGHT):y(SCREEN_CENTER_Y+130*WideScreenDiff()):zoom(WideScreenDiff()):halign(1) end
+		},
+		Def.Sprite {
+			Texture = "_p2",
+			InitCommand=function(self) self:x(SCREEN_RIGHT):y(SCREEN_CENTER_Y+130*WideScreenDiff()):zoom(WideScreenDiff()):halign(1) end
+		},
+		Def.BitmapText {
+			File = "_r bold 30px",
 			Text=":Step Artist",
 			InitCommand=function(self) self:x(SCREEN_RIGHT-5*WideScreenDiff()):y(SCREEN_CENTER_Y+152*WideScreenDiff()):zoom(0.6*WideScreenDiff()):halign(1):shadowlength(2) end,
 			BeginCommand=function(self) self:visible(GAMESTATE:IsPlayerEnabled(PLAYER_2) and isRegular() or isVS()) end
 		},
-		LoadFont("_r bold 30px")..{
+		Def.BitmapText {
+			File = "_r bold 30px",
 			Name="AuthorText",
 			InitCommand=function(self) self:x(SCREEN_RIGHT-100*WideScreenDiff()):y(SCREEN_CENTER_Y+152*WideScreenDiff()):shadowlength(2):halign(1):zoom(0.6*WideScreenDiff()) end,
 			SetCommand=function(self)
@@ -133,7 +151,8 @@ return Def.ActorFrame{
 			end,
 			OnCommand=function(self) self:playcommand("Set") end
 		},
-		LoadFont("_r bold 30px")..{
+		Def.BitmapText {
+			File = "_r bold 30px",
 			Name="PlayerName",
 			InitCommand=function(self) self:x(SCREEN_RIGHT-44*WideScreenDiff()):y(SCREEN_CENTER_Y+122*WideScreenDiff()):shadowlength(2):halign(1):zoom(0.8*WideScreenDiff()) end,
 			SetCommand=function(self)
@@ -153,11 +172,13 @@ return Def.ActorFrame{
 		Def.ActorFrame{
 			Name="Main",
 			InitCommand=function(self) self:y(SCREEN_CENTER_Y+60*WideScreenDiff()):zoom(WideScreenDiff()) end,
-			LoadActor(THEME:GetPathG("_gameplay","stage "..curStage))..{
+			Def.Sprite {
+				Texture = THEME:GetPathG("_gameplay","stage "..curStage),
 				InitCommand=function(self) self:cropright(1.3) end,
 				OnCommand=function(self) self:sleep(0.22):linear(1):cropright(-0.3) end
 			},
-			LoadActor(THEME:GetPathG("_white","gameplay stage "..curStage))..{
+			Def.Sprite {
+				Texture = THEME:GetPathG("_white","gameplay stage "..curStage),
 				InitCommand=function(self) self:cropleft(-0.3):cropright(1):faderight(0.1):fadeleft(0.1) end,
 				OnCommand=function(self) self:sleep(0.22):linear(1):cropleft(1):cropright(-0.3) end
 			}
@@ -165,7 +186,8 @@ return Def.ActorFrame{
 		Def.ActorFrame{
 			Name="Reflect",
 			InitCommand=function(self) self:y(SCREEN_CENTER_Y+86*WideScreenDiff()) end,
-			LoadActor(THEME:GetPathG("_gameplay","stage "..curStage))..{
+			Def.Sprite {
+				Texture = THEME:GetPathG("_gameplay","stage "..curStage),
 				InitCommand=function(self) self:rotationz(180):zoomx(-1*WideScreenDiff()):diffusealpha(0.6):fadetop(2):cropright(1.3) end,
 				OnCommand=function(self) self:linear(1.225):cropright(-0.3) end
 			}
@@ -175,7 +197,8 @@ return Def.ActorFrame{
 		Name="Tutorial",
 		InitCommand=function(self) self:CenterX() end,
 		Condition=not GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentSong() == SONGMAN:FindSong('In The Groove/Training1/'),
-		LoadFont("_big blue glow")..{
+		Def.BitmapText {
+			File = "_big blue glow",
 			Text="Welcome to the::tutorial program",
 			OnCommand=function(self) self:y(SCREEN_CENTER_Y-112):diffusealpha(0):zoom(4*WideScreenDiff()):sleep(0.0):linear(0.3):diffusealpha(1):zoom(WideScreenDiff()) end
 		}
@@ -187,11 +210,13 @@ return Def.ActorFrame{
 		Def.ActorFrame{
 			Name="Main",
 			InitCommand=function(self) self:y(SCREEN_CENTER_Y+60*WideScreenDiff()):zoom(WideScreenDiff()) end,
-			LoadActor(THEME:GetPathG("_gameplay","course song 1"))..{
+			Def.Sprite {
+				Texture = THEME:GetPathG("_gameplay","course song 1"),
 				InitCommand=function(self) self:cropright(1.3) end,
 				OnCommand=function(self) self:sleep(0.07):linear(1):cropright(-0.3) end
 			},
-			LoadActor(THEME:GetPathG("_white","gameplay course song 1"))..{
+			Def.Sprite {
+				Texture = THEME:GetPathG("_white","gameplay course song 1"),
 				InitCommand=function(self) self:cropleft(-0.3):cropright(1):faderight(0.1):fadeleft(0.1) end,
 				OnCommand=function(self) self:sleep(0.07):linear(1):cropleft(1):cropright(-0.3) end
 			}
@@ -199,21 +224,25 @@ return Def.ActorFrame{
 		Def.ActorFrame{
 			Name="Reflect",
 			InitCommand=function(self) self:y(SCREEN_CENTER_Y+86) end,
-			LoadActor(THEME:GetPathG("_gameplay","course song 1"))..{
+			Def.Sprite {
+				Texture = THEME:GetPathG("_gameplay","course song 1"),
 				InitCommand=function(self) self:rotationz(180):zoomx(-1*WideScreenDiff()):diffusealpha(0.6):fadetop(2):cropright(1.3) end,
 				OnCommand=function(self) self:linear(1.225):cropright(-0.3) end
 			}
 		}
 	},
-	LoadActor(THEME:GetPathG("","blueflare"))..{
+	Def.Sprite {
+		Texture = THEME:GetPathG("","blueflare"),
 		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+12.5):blend(Blend.Add):draworder(115) end,
 		OnCommand=function(self) self:zoomx(15*WideScreenDiff()):zoomtoheight(SCREEN_HEIGHT+SCREEN_HEIGHT/4/WideScreenDiff()):linear(1):zoomtoheight(0):diffusealpha(0.0) end
 	},
-	LoadActor("shot")..{
+	Def.Sprite {
+		Texture = "shot",
 		InitCommand=function(self) self:diffusealpha(0):blend(Blend.Add) end,
 		OnCommand=function(self) self:CenterY():zoomx(-2*WideScreenDiff()):zoomy(4*WideScreenDiff()):diffusealpha(1):CenterX():linear(0.9):diffusealpha(0):zoomy(0):x(SCREEN_CENTER_X-250*WideScreenDiff()) end
 	},
-	LoadActor("shot")..{
+	Def.Sprite {
+		Texture = "shot",
 		InitCommand=function(self) self:diffusealpha(0):blend(Blend.Add) end,
 		OnCommand=function(self) self:CenterY():zoomx(2*WideScreenDiff()):zoomy(4*WideScreenDiff()):diffusealpha(1):CenterX():linear(0.9):diffusealpha(0):zoomy(0):x(SCREEN_CENTER_X+250*WideScreenDiff()) end
 	},
@@ -226,7 +255,8 @@ return Def.ActorFrame{
 				if params.File ~= "" then self:cropright(1-params.Percent/100) end
 			end
 		},
-		LoadFont("_z bold 19px")..{
+		Def.BitmapText {
+			File = "_z bold 19px",
 			InitCommand=function(self)  self:CenterX():y(SCREEN_CENTER_Y+192*WideScreenDiff()):vertspacing(-13*WideScreenDiff()):valign(1):zoom(0.5*WideScreenDiff()):maxwidth(SCREEN_WIDTH*2) end,
 			LoadingKeysoundMessageCommand=function(self,params)
 				if params.File ~= "" then self:settext(Basename(params.File).."\n"..string.format("%.0f", params.Percent).."%") end

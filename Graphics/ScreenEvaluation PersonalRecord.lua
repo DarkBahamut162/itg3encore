@@ -8,7 +8,8 @@ if hasPersonalRecord and not STATSMAN:GetCurStageStats():GetPlayerStageStats(pla
 end
 
 return Def.ActorFrame{
-	LoadFont("_v 26px bold white")..{
+	Def.BitmapText {
+		File = "_v 26px bold white",
 		Text="New Personal Record!",
 		InitCommand=function(self) self:zoomx(0.6):zoomy(0.5):shadowlength(2*WideScreenDiff()):cropright(1):visible(hasPersonalRecord) end,
 		OnCommand=function(self) self:sleep(3):linear(0.3):cropright(0):diffuseshift():effectcolor1(color("#00C0FF")) end

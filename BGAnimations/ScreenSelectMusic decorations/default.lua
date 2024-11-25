@@ -1,7 +1,8 @@
 local t = LoadFallbackB()
 local courseMode = GAMESTATE:IsCourseMode()
 
-t[#t+1] = LoadFont("_v 26px bold shadow") .. {
+t[#t+1] = Def.BitmapText {
+	File = "_v 26px bold shadow",
 	InitCommand=function(self) self:x(SCREEN_CENTER_X+140*WideScreenDiff()):y(SCREEN_CENTER_Y-160*WideScreenDiff()):zoom(0.5*WideScreenDiff()) end,
 	OnCommand=function(self) if isFinal() then self:addx(SCREEN_WIDTH) else self:addy(-100):addx(-24):halign(1) end self:decelerate(0.75) if isFinal() then self:addx(-SCREEN_WIDTH) else self:addy(100) end end,
 	OffCommand=function(self) self:accelerate(0.75) if isFinal() then self:addx(SCREEN_WIDTH) else self:addy(-100) end  end,
@@ -17,8 +18,18 @@ t[#t+1] = LoadFont("_v 26px bold shadow") .. {
 	end
 }
 
-t[#t+1] = StandardDecorationFromFile("BannerReflection","BannerReflection")
-t[#t+1] = StandardDecorationFromFile("Triangle","Triangle")
+t[#t+1] = loadfile(THEME:GetPathG(Var "LoadingScreen", "BannerReflection"))() .. {
+	InitCommand=function(self)
+		self:name("BannerReflection")
+		ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen")
+	end
+}
+t[#t+1] = loadfile(THEME:GetPathG(Var "LoadingScreen", "Triangle"))() .. {
+	InitCommand=function(self)
+		self:name("Triangle")
+		ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen")
+	end
+}
 
 if not isOutFoxV() then
 	t[#t+1] = Def.FadingBanner{
@@ -85,36 +96,43 @@ for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
 	}
 end
 
-t[#t+1] = LoadActor(THEME:GetPathS("OptionsList","opened"))..{
+t[#t+1] = Def.Sound {
+	File = THEME:GetPathS("OptionsList","opened"),
 	OptionsListOpenedMessageCommand=function(self) self:play() end
 }
 
-t[#t+1] = LoadActor(THEME:GetPathS("OptionsList","closed"))..{
+t[#t+1] = Def.Sound {
+	File = THEME:GetPathS("OptionsList","closed"),
 	OptionsListClosedMessageCommand=function(self) self:play() end
 }
 
-t[#t+1] = LoadActor(THEME:GetPathS("OptionsList","left"))..{
+t[#t+1] = Def.Sound {
+	File = THEME:GetPathS("OptionsList","left"),
 	OptionsListRightMessageCommand=function(self) self:queuecommand("Refresh") end,
 	OptionsListLeftMessageCommand=function(self) self:queuecommand("Refresh") end,
 	OptionsListQuickChangeMessageCommand=function(self) self:queuecommand("Refresh") end,
 	RefreshCommand=function(self)self:play() end
 }
 
-t[#t+1] = LoadActor(THEME:GetPathS("OptionsList","start"))..{
+t[#t+1] = Def.Sound {
+	File = THEME:GetPathS("OptionsList","start"),
 	OptionsListStartMessageCommand=function(self) self:queuecommand("Refresh") end,
 	OptionsListResetMessageCommand=function(self) self:queuecommand("Refresh") end,
 	RefreshCommand=function(self) self:play() end
 }
-t[#t+1] = LoadActor(THEME:GetPathS("OptionsList","pop"))..{
+t[#t+1] = Def.Sound {
+	File = THEME:GetPathS("OptionsList","pop"),
 	OptionsListPopMessageCommand=function(self) self:queuecommand("Refresh") end,
 	RefreshCommand=function(self) self:play() end
 }
-t[#t+1] = LoadActor(THEME:GetPathS("OptionsList","push"))..{
+t[#t+1] = Def.Sound {
+	File = THEME:GetPathS("OptionsList","push"),
 	OptionsListPushMessageCommand=function(self) self:queuecommand("Refresh") end,
 	RefreshCommand=function(self) self:play() end
 }
 
-t[#t+1] = LoadActor(THEME:GetPathS("ScreenSelectMusic","select down"))..{
+t[#t+1] = Def.Sound {
+	File = THEME:GetPathS("ScreenSelectMusic","select down"),
 	SelectMenuOpenedMessageCommand=function(self) self:queuecommand("Refresh") end,
 	RefreshCommand=function(self) self:play() end
 }
@@ -165,13 +183,50 @@ t[#t+1] = Def.ActorFrame {
 }
 
 t[#t+1] = Def.ActorFrame{
-	LoadActor(THEME:GetPathG('ScreenSelectMusic','BannerFrame')),
-	StandardDecorationFromFile("ArtistDisplay","ArtistDisplay"),
-	StandardDecorationFromFile("BPMDisplay","BPMDisplay"),
-	StandardDecorationFromFile("InfoDisplay","InfoDisplay"),
-	StandardDecorationFromFileOptional("SongTime","SongTime"),
-	StandardDecorationFromFileOptional("StepsDisplayList","StepsDisplayList"),
-	StandardDecorationFromFileOptional("CourseContentsList","CourseContentsList")
+	loadfile(THEME:GetPathG('ScreenSelectMusic','BannerFrame'))(),
+	loadfile(THEME:GetPathG(Var "LoadingScreen", "ArtistDisplay"))() .. {
+		InitCommand=function(self)
+			self:name("ArtistDisplay")
+			ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen")
+		end
+	},
+	loadfile(THEME:GetPathG(Var "LoadingScreen", "BPMDisplay"))() .. {
+		InitCommand=function(self)
+			self:name("BPMDisplay")
+			ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen")
+		end
+	},
+	loadfile(THEME:GetPathG(Var "LoadingScreen", "InfoDisplay"))() .. {
+		InitCommand=function(self)
+			self:name("InfoDisplay")
+			ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen")
+		end
+	}
 }
+
+if ShowStandardDecoration("SongTime") then
+	t[#t+1] = loadfile(THEME:GetPathG(Var "LoadingScreen", "SongTime"))() .. {
+		InitCommand=function(self)
+			self:name("SongTime")
+			ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen")
+		end
+	}
+end
+if ShowStandardDecoration("StepsDisplayList") then
+	t[#t+1] = loadfile(THEME:GetPathG(Var "LoadingScreen", "StepsDisplayList"))() .. {
+		InitCommand=function(self)
+			self:name("StepsDisplayList")
+			ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen")
+		end
+	}
+end
+if ShowStandardDecoration("CourseContentsList") then
+	t[#t+1] = loadfile(THEME:GetPathG(Var "LoadingScreen", "CourseContentsList"))() .. {
+		InitCommand=function(self)
+			self:name("CourseContentsList")
+			ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen")
+		end
+	}
+end
 
 return t

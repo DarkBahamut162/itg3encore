@@ -50,7 +50,8 @@ return Def.ActorFrame{
 		self:queuecommand("RedrawScore"):addy(-100):sleep(0.5):decelerate(0.8):addy(100)
 	end,
 	OffCommand=function(self) stopping = true if not IsGame("pump") then if AnyPlayerFullComboed() then self:sleep(1) end self:accelerate(0.8):addy(-100) end end,
-	LoadFont("_r bold numbers") .. {
+	Def.BitmapText {
+		File = "_r bold numbers",
 		Name="Score"..pname(player),
 		InitCommand=function(self)
 			self:visible(not getenv("HideScore"..pname(player))):diffuse(PlayerColor(player)):x(math.floor(scale(player == PLAYER_1 and 0.25 or 0.75,0,1,SCREEN_LEFT,SCREEN_RIGHT))):zoom(WideScreenDiff())

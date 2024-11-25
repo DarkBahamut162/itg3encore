@@ -1,5 +1,6 @@
 return Def.ActorFrame{
-	LoadActor("MusicWheelItem _Song NormalPart"..(isFinal() and "Final" or "Normal"))..{
+	Def.Sprite {
+		Texture = "MusicWheelItem _Song NormalPart"..(isFinal() and "Final" or "Normal"),
 		SetMessageCommand=function(self,params)
 			if isOutFoxV() and params.Song then
 				local isFav = {PLAYER_1 = false, PLAYER_2 = false}

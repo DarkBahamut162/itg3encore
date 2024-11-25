@@ -38,14 +38,16 @@ return Def.ActorFrame{
 			name:settext(nameText)
 			score:settext(scoreText)
 		end,
-		LoadFont("_z 36px shadowx")..{
+		Def.BitmapText {
+			File = "_z 36px shadowx",
 			Name="ScoreName",
 			Text="MACH",
 			InitCommand=function(self) self:y(85):diffusealpha(0):zoom(0.55):shadowlength(2):maxwidth(175) end,
 			OnCommand=function(self) self:sleep(0.5):linear(0.2):diffusealpha(1) end,
 			OffCommand=function(self) self:linear(0.4):diffusealpha(0) end
 		},
-		LoadFont("_z 36px shadowx")..{
+		Def.BitmapText {
+			File = "_z 36px shadowx",
 			Name="ScorePercent",
 			Text="0.00%",
 			InitCommand=function(self) self:y(100):diffusealpha(0):zoom(0.55):shadowlength(2):maxwidth(175):diffusebottomedge(color("#AAAAAA")) end,
@@ -78,14 +80,16 @@ return Def.ActorFrame{
 			name:settext(nameText)
 			score:settext(scoreText)
 		end,
-		LoadFont("_z 36px shadowx")..{
+		Def.BitmapText {
+			File = "_z 36px shadowx",
 			Name="ScoreName",
 			Text="CARD",
 			InitCommand=function(self) self:y(85):diffusealpha(0):zoom(0.55):shadowlength(2):maxwidth(175) end,
 			OnCommand=function(self) self:sleep(0.85):linear(0.2):diffusealpha(1) end,
 			OffCommand=function(self) self:linear(0.4):diffusealpha(0) end
 		},
-		LoadFont("_z 36px shadowx")..{
+		Def.BitmapText {
+			File = "_z 36px shadowx",
 			Name="ScorePercent",
 			Text="0.00%",
 			InitCommand=function(self) self:y(100):diffusealpha(0):zoom(0.55):shadowlength(2):maxwidth(175):diffusebottomedge(PlayerColor(player)) end,

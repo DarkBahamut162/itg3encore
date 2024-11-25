@@ -1,8 +1,51 @@
+local t = Def.ActorFrame{}
+local tOnline = Def.ActorFrame{}
+
+if ShowStandardDecoration("StyleIcon") then
+	t[#t+1] = loadfile(THEME:GetPathG(Var "LoadingScreen", "StyleIcon"))() .. {
+		InitCommand=function(self)
+			self:name("StyleIcon")
+			ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen")
+		end
+	}
+end
+if ShowStandardDecoration("StageDisplay") then
+	t[#t+1] = loadfile(THEME:GetPathG(Var "LoadingScreen", "StageDisplay"))() .. {
+		InitCommand=function(self)
+			self:name("StageDisplay")
+			ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen")
+		end
+	}
+end
+if IsNetSMOnline() and ShowStandardDecoration("UserList") then
+	tOnline[#tOnline+1] = loadfile(THEME:GetPathG(Var "LoadingScreen", "UserList"))() .. {
+		InitCommand=function(self)
+			self:name("UserList")
+			ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen")
+		end
+	}
+end
+
 local Online = IsNetSMOnline() and Def.ActorFrame{
-	StandardDecorationFromFile("ArtistDisplay"..pname(GAMESTATE:GetMasterPlayerNumber()),"ArtistDisplay"..pname(GAMESTATE:GetMasterPlayerNumber())),
-	StandardDecorationFromFile("BPMDisplay"..pname(GAMESTATE:GetMasterPlayerNumber()),"BPMDisplay"..pname(GAMESTATE:GetMasterPlayerNumber())),
-	StandardDecorationFromFile("SongTime"..pname(GAMESTATE:GetMasterPlayerNumber()),"SongTime"..pname(GAMESTATE:GetMasterPlayerNumber())),
-	StandardDecorationFromFileOptional("UserList","UserList"),
+	loadfile(THEME:GetPathG(Var "LoadingScreen", "ArtistDisplay"..pname(GAMESTATE:GetMasterPlayerNumber())))() .. {
+		InitCommand=function(self)
+			self:name("ArtistDisplay"..pname(GAMESTATE:GetMasterPlayerNumber()))
+			ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen")
+		end
+	},
+	loadfile(THEME:GetPathG(Var "LoadingScreen", "BPMDisplay"..pname(GAMESTATE:GetMasterPlayerNumber())))() .. {
+		InitCommand=function(self)
+			self:name("BPMDisplay"..pname(GAMESTATE:GetMasterPlayerNumber()))
+			ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen")
+		end
+	},
+	loadfile(THEME:GetPathG(Var "LoadingScreen", "SongTime"..pname(GAMESTATE:GetMasterPlayerNumber())))() .. {
+		InitCommand=function(self)
+			self:name("SongTime"..pname(GAMESTATE:GetMasterPlayerNumber()))
+			ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen")
+		end
+	},
+	tOnline
 } or Def.ActorFrame{}
 local courseMode = GAMESTATE:IsCourseMode()
 
@@ -51,10 +94,12 @@ return Def.ActorFrame{
 			self:playcommand((GAMESTATE:GetCurrentSong() or GAMESTATE:GetCurrentCourse()) and "Show" or "Hide")
 		end,
 		SelectMenuClosedMessageCommand=function(self) self:playcommand("Hide") end,
-		LoadActor(THEME:GetPathG("_pane","elements/_artist "..(isFinal() and "final" or "normal")))..{
+		Def.Sprite {
+			Texture = THEME:GetPathG("_pane","elements/_artist "..(isFinal() and "final" or "normal")),
 			InitCommand=function(self) self:horizalign(left):zoom(0.5*WideScreenDiff()) end
 		},
-		LoadFont("_v 26px bold white")..{
+		Def.BitmapText {
+			File = "_v 26px bold white",
 			InitCommand=function(self) self:maxwidth(350):horizalign(left):x(20*WideScreenDiff()):y(2*WideScreenDiff()):shadowlength(0.5):zoom(0.5*WideScreenDiff()) end,
 			CurrentSongChangedMessageCommand=function(self) if not courseMode then if not GAMESTATE:GetCurrentSong() then self:playcommand("SelectMenuClosedMessageCommand") end end end,
 			CurrentCourseChangedMessageCommand=function(self) if courseMode then if not GAMESTATE:GetCurrentCourse() then self:playcommand("SelectMenuClosedMessageCommand") end end end,
@@ -105,10 +150,12 @@ return Def.ActorFrame{
 			self:playcommand((GAMESTATE:GetCurrentSong() or GAMESTATE:GetCurrentCourse()) and "Show" or "Hide")
 		end,
 		SelectMenuClosedMessageCommand=function(self) self:playcommand("Hide") end,
-		LoadActor(THEME:GetPathG("_pane","elements/_artist "..(isFinal() and "final" or "normal")))..{
+		Def.Sprite {
+			Texture = THEME:GetPathG("_pane","elements/_artist "..(isFinal() and "final" or "normal")),
 			InitCommand=function(self) self:horizalign(left):zoomx(-0.5*WideScreenDiff()):zoomy(0.5*WideScreenDiff()) end
 		},
-		LoadFont("_v 26px bold white")..{
+		Def.BitmapText {
+			File = "_v 26px bold white",
 			InitCommand=function(self) self:maxwidth(350):horizalign(right):x(-20*WideScreenDiff()):y(2*WideScreenDiff()):shadowlength(0.5):zoom(0.5*WideScreenDiff()) end,
 			CurrentSongChangedMessageCommand=function(self) if not courseMode then if not GAMESTATE:GetCurrentSong() then self:playcommand("SelectMenuClosedMessageCommand") end end end,
 			CurrentCourseChangedMessageCommand=function(self) if courseMode then if not GAMESTATE:GetCurrentCourse() then self:playcommand("SelectMenuClosedMessageCommand") end end end,
@@ -151,17 +198,20 @@ return Def.ActorFrame{
 	Def.ActorFrame{
 		Name="Pane",
 		InitCommand=function(self) self:draworder(-1) end,
-		LoadActor(THEME:GetPathG("_pane","elements/_ldifficulty "..(isFinal() and "final" or "normal")))..{
+		Def.Sprite {
+			Texture = THEME:GetPathG("_pane","elements/_ldifficulty "..(isFinal() and "final" or "normal")),
 			InitCommand=function(self) self:x(SCREEN_CENTER_X+12*WideScreenDiff()):y(SCREEN_BOTTOM-8*WideScreenDiff()):zoom(WideScreenDiff()):horizalign(right):vertalign(bottom):player(PLAYER_1) end,
 			OnCommand=function(self) self:addx(-SCREEN_WIDTH):sleep(0.5):decelerate(0.75):addx(SCREEN_WIDTH) end,
 			OffCommand=function(self) self:accelerate(0.75):addx(-SCREEN_WIDTH) end
 		},
-		LoadActor(THEME:GetPathG("_pane","elements/_ldifficulty "..(isFinal() and "final" or "normal")))..{
+		Def.Sprite {
+			Texture = THEME:GetPathG("_pane","elements/_ldifficulty "..(isFinal() and "final" or "normal")),
 			InitCommand=function(self) self:x(SCREEN_CENTER_X-12*WideScreenDiff()):y(SCREEN_BOTTOM-8*WideScreenDiff()):zoomx(-1*WideScreenDiff()):zoomy(WideScreenDiff()):horizalign(right):vertalign(bottom):player(PLAYER_2) end,
 			OnCommand=function(self) self:addx(SCREEN_WIDTH):sleep(0.5):decelerate(0.75):addx(-SCREEN_WIDTH) end,
 			OffCommand=function(self) self:accelerate(0.75):addx(SCREEN_WIDTH) end
 		},
-		LoadActor(THEME:GetPathG("_pane","elements/_lbase "..(isFinal() and "final" or "normal")))..{
+		Def.Sprite {
+			Texture = THEME:GetPathG("_pane","elements/_lbase "..(isFinal() and "final" or "normal")),
 			InitCommand=function(self) self:x(SCREEN_CENTER_X+26*WideScreenDiff()):y(SCREEN_BOTTOM):zoom(WideScreenDiff()):horizalign(right):vertalign(bottom) end,
 			CurrentStepsP2ChangedMessageCommand=function(self) if IsNetSMOnline() then self:queuecommand("Recolor") end end,
 			CurrentSongChangedMessageCommand=function(self) if IsNetSMOnline() then self:queuecommand("Recolor") end end,
@@ -174,7 +224,8 @@ return Def.ActorFrame{
 			OnCommand=function(self) self:addx(-SCREEN_WIDTH):decelerate(0.75):addx(SCREEN_WIDTH) end,
 			OffCommand=function(self) self:sleep(0.5):accelerate(0.75):addx(-SCREEN_WIDTH) end
 		},
-		LoadActor(THEME:GetPathG("_pane","elements/_basewidth "..(isFinal() and "final" or "normal")))..{
+		Def.Sprite {
+			Texture = THEME:GetPathG("_pane","elements/_basewidth "..(isFinal() and "final" or "normal")),
 			InitCommand=function(self) self:x(SCREEN_CENTER_X-174*WideScreenDiff()):y(SCREEN_BOTTOM):zoom(WideScreenDiff()):horizalign(right):vertalign(bottom):zoomtowidth(SCREEN_WIDTH/2) end,
 			CurrentStepsP2ChangedMessageCommand=function(self) if IsNetSMOnline() then self:queuecommand("Recolor") end end,
 			CurrentSongChangedMessageCommand=function(self) if IsNetSMOnline() then self:queuecommand("Recolor") end end,
@@ -187,7 +238,8 @@ return Def.ActorFrame{
 			OnCommand=function(self) self:addx(-SCREEN_WIDTH):decelerate(0.75):addx(SCREEN_WIDTH) end,
 			OffCommand=function(self) self:sleep(0.5):accelerate(0.75):addx(-SCREEN_WIDTH) end
 		},
-		LoadActor(THEME:GetPathG("_pane","elements/_lbase "..(isFinal() and "final" or "normal")))..{
+		Def.Sprite {
+			Texture = THEME:GetPathG("_pane","elements/_lbase "..(isFinal() and "final" or "normal")),
 			InitCommand=function(self) self:x(SCREEN_CENTER_X+174*WideScreenDiff()):y(SCREEN_BOTTOM):zoomx(-1*WideScreenDiff()):zoomy(WideScreenDiff()):horizalign(left):vertalign(bottom) end,
 			CurrentStepsP1ChangedMessageCommand=function(self) if IsNetSMOnline() then self:queuecommand("Recolor") end end,
 			CurrentSongChangedMessageCommand=function(self) if IsNetSMOnline() then self:queuecommand("Recolor") end end,
@@ -205,7 +257,8 @@ return Def.ActorFrame{
 			OnCommand=function(self) self:addx(SCREEN_WIDTH):decelerate(0.75):addx(-SCREEN_WIDTH) end,
 			OffCommand=function(self) self:sleep(0.5):accelerate(0.75):addx(SCREEN_WIDTH) end
 		},
-		LoadActor(THEME:GetPathG("_pane","elements/_basewidth "..(isFinal() and "final" or "normal")))..{
+		Def.Sprite {
+			Texture = THEME:GetPathG("_pane","elements/_basewidth "..(isFinal() and "final" or "normal")),
 			InitCommand=function(self) self:x(SCREEN_CENTER_X+174*WideScreenDiff()):y(SCREEN_BOTTOM):zoom(WideScreenDiff()):horizalign(left):vertalign(bottom):zoomtowidth(SCREEN_WIDTH/2) end,
 			CurrentStepsP1ChangedMessageCommand=function(self) if IsNetSMOnline() then self:queuecommand("Recolor") end end,
 			CurrentSongChangedMessageCommand=function(self) if IsNetSMOnline() then self:queuecommand("Recolor") end end,
@@ -244,12 +297,14 @@ return Def.ActorFrame{
 				local isDouble = (styleType == 'StyleType_OnePlayerTwoSides' or styleType == 'StyleType_TwoPlayersSharedSides')
 				self:visible(GAMESTATE:IsPlayerEnabled(PLAYER_1) and not isDouble)
 			end,
-			LoadActor(THEME:GetPathG("_pane elements/_lneon",isFinal() and "final" or "normal"))..{
+			Def.Sprite {
+				Texture = THEME:GetPathG("_pane elements/_lneon",isFinal() and "final" or "normal"),
 				InitCommand=function(self) self:x(SCREEN_CENTER_X-90*WideScreenDiff()):y(SCREEN_BOTTOM-76*WideScreenDiff()):zoom(WideScreenDiff()):horizalign(right):vertalign(bottom):diffuseshift():effectcolor1(color("#bed0ff")):effectcolor2(color("#767676")):effectoffset(0):effectclock("beat") end,
 				OnCommand=function(self) self:addx(-SCREEN_WIDTH):decelerate(0.75):addx(SCREEN_WIDTH) end,
 				OffCommand=function(self) self:sleep(0.5):accelerate(0.75):addx(-SCREEN_WIDTH) end
 			},
-			LoadActor(THEME:GetPathG("_pane elements/_neonwidth",isFinal() and "final" or "normal"))..{
+			Def.Sprite {
+				Texture = THEME:GetPathG("_pane elements/_neonwidth",isFinal() and "final" or "normal"),
 				InitCommand=function(self) self:x(SCREEN_CENTER_X-146*WideScreenDiff()):y(SCREEN_BOTTOM-76*WideScreenDiff()):zoom(WideScreenDiff()):horizalign(right):vertalign(bottom):zoomtowidth(SCREEN_WIDTH/2):diffuseshift():effectcolor1(color("#bed0ff")):effectcolor2(color("#767676")):effectoffset(0):effectclock("beat") end,
 				OnCommand=function(self) self:addx(-SCREEN_WIDTH):decelerate(0.75):addx(SCREEN_WIDTH) end,
 				OffCommand=function(self) self:sleep(0.5):accelerate(0.75):addx(-SCREEN_WIDTH) end
@@ -263,12 +318,14 @@ return Def.ActorFrame{
 				local isDouble = (styleType == 'StyleType_OnePlayerTwoSides' or styleType == 'StyleType_TwoPlayersSharedSides')
 				self:visible(GAMESTATE:IsPlayerEnabled(PLAYER_2) and not isDouble)
 			end,
-			LoadActor(THEME:GetPathG("_pane elements/_lneon",isFinal() and "final" or "normal"))..{
+			Def.Sprite {
+				Texture = THEME:GetPathG("_pane elements/_lneon",isFinal() and "final" or "normal"),
 				InitCommand=function(self) self:x(SCREEN_CENTER_X+146*WideScreenDiff()):y(SCREEN_BOTTOM-76*WideScreenDiff()):zoomx(-1*WideScreenDiff()):zoomy(WideScreenDiff()):horizalign(left):vertalign(bottom):diffuseshift():effectcolor1(color("#bed0ff")):effectcolor2(color("#767676")):effectoffset(0):effectclock("beat") end,
 				OnCommand=function(self) self:addx(SCREEN_WIDTH):decelerate(0.75):addx(-SCREEN_WIDTH) end,
 				OffCommand=function(self) self:sleep(0.5):accelerate(0.75):addx(SCREEN_WIDTH) end
 			},
-			LoadActor(THEME:GetPathG("_pane elements/_neonwidth",isFinal() and "final" or "normal"))..{
+			Def.Sprite {
+				Texture = THEME:GetPathG("_pane elements/_neonwidth",isFinal() and "final" or "normal"),
 				InitCommand=function(self) self:x(SCREEN_CENTER_X+146*WideScreenDiff()):y(SCREEN_BOTTOM-76*WideScreenDiff()):zoom(WideScreenDiff()):horizalign(left):vertalign(bottom):zoomtowidth(SCREEN_WIDTH/2):diffuseshift():effectcolor1(color("#bed0ff")):effectcolor2(color("#767676")):effectoffset(0):effectclock("beat") end,
 				OnCommand=function(self) self:addx(SCREEN_WIDTH):decelerate(0.75):addx(-SCREEN_WIDTH) end,
 				OffCommand=function(self) self:sleep(0.5):accelerate(0.75):addx(SCREEN_WIDTH) end
@@ -284,12 +341,14 @@ return Def.ActorFrame{
 			end,
 			Def.ActorFrame{
 				Name="LeftSide",
-				LoadActor(THEME:GetPathG("_pane elements/_lneon",isFinal() and "final" or "normal"))..{
+				Def.Sprite {
+					Texture = THEME:GetPathG("_pane elements/_lneon",isFinal() and "final" or "normal"),
 					InitCommand=function(self) self:x(SCREEN_CENTER_X-90*WideScreenDiff()):y(SCREEN_BOTTOM-76*WideScreenDiff()):zoom(WideScreenDiff()):horizalign(right):vertalign(bottom):diffuseshift():effectcolor1(color("#bed0ff")):effectcolor2(color("#767676")):effectoffset(0):effectclock("beat") end,
 					OnCommand=function(self) self:addx(-SCREEN_WIDTH):decelerate(0.75):addx(SCREEN_WIDTH) end,
 					OffCommand=function(self) self:sleep(0.5):accelerate(0.75):addx(-SCREEN_WIDTH) end
 				},
-				LoadActor(THEME:GetPathG("_pane elements/_neonwidth",isFinal() and "final" or "normal"))..{
+				Def.Sprite {
+					Texture = THEME:GetPathG("_pane elements/_neonwidth",isFinal() and "final" or "normal"),
 					InitCommand=function(self) self:x(SCREEN_CENTER_X-146*WideScreenDiff()):y(SCREEN_BOTTOM-76*WideScreenDiff()):zoom(WideScreenDiff()):horizalign(right):vertalign(bottom):zoomtowidth(SCREEN_WIDTH/2):diffuseshift():effectcolor1(color("#bed0ff")):effectcolor2(color("#767676")):effectoffset(0):effectclock("beat") end,
 					OnCommand=function(self) self:addx(-SCREEN_WIDTH):decelerate(0.75):addx(SCREEN_WIDTH) end,
 					OffCommand=function(self) self:sleep(0.5):accelerate(0.75):addx(-SCREEN_WIDTH) end
@@ -297,12 +356,14 @@ return Def.ActorFrame{
 			},
 			Def.ActorFrame{
 				Name="RightSide",
-				LoadActor(THEME:GetPathG("_pane elements/_lneon",isFinal() and "final" or "normal"))..{
+				Def.Sprite {
+					Texture = THEME:GetPathG("_pane elements/_lneon",isFinal() and "final" or "normal"),
 					InitCommand=function(self) self:x(SCREEN_CENTER_X+146*WideScreenDiff()):y(SCREEN_BOTTOM-76*WideScreenDiff()):zoomx(-1*WideScreenDiff()):zoomy(WideScreenDiff()):horizalign(left):vertalign(bottom):diffuseshift():effectcolor1(color("#bed0ff")):effectcolor2(color("#767676")):effectoffset(0):effectclock("beat") end,
 					OnCommand=function(self) self:addx(SCREEN_WIDTH):decelerate(0.75):addx(-SCREEN_WIDTH) end,
 					OffCommand=function(self) self:sleep(0.5):accelerate(0.75):addx(SCREEN_WIDTH) end
 				},
-				LoadActor(THEME:GetPathG("_pane elements/_neonwidth",isFinal() and "final" or "normal"))..{
+				Def.Sprite {
+					Texture = THEME:GetPathG("_pane elements/_neonwidth",isFinal() and "final" or "normal"),
 					InitCommand=function(self) self:x(SCREEN_CENTER_X+146*WideScreenDiff()):y(SCREEN_BOTTOM-76*WideScreenDiff()):zoom(WideScreenDiff()):horizalign(left):vertalign(bottom):zoomtowidth(SCREEN_WIDTH/2):diffuseshift():effectcolor1(color("#bed0ff")):effectcolor2(color("#767676")):effectoffset(0):effectclock("beat") end,
 					OnCommand=function(self) self:addx(SCREEN_WIDTH):decelerate(0.75):addx(-SCREEN_WIDTH) end,
 					OffCommand=function(self) self:sleep(0.5):accelerate(0.75):addx(SCREEN_WIDTH) end
@@ -317,32 +378,31 @@ return Def.ActorFrame{
 			Name="PaneDisplayP1",
 			Condition=GAMESTATE:IsHumanPlayer(PLAYER_1),
 			InitCommand=function(self) self:x(SCREEN_LEFT+SCREEN_WIDTH/5.415/WideScreenDiff()):player(PLAYER_1) end,
-			LoadActor(THEME:GetPathG("_pane","icons"),PLAYER_1),
-			LoadActor(THEME:GetPathG("_pane","fill"),PLAYER_1),
-			LoadActor(THEME:GetPathG("_pane","steps"),PLAYER_1),
-			LoadActor(THEME:GetPathG("_pane","numbers"),PLAYER_1)..{ InitCommand=function(self) self:y(129) end },
-			LoadActor(THEME:GetPathG("_pane","avatar"),PLAYER_1),
-			LoadActor(THEME:GetPathG("_player","scores"),PLAYER_1),
-			LoadActor(THEME:GetPathG("_player","steps"),PLAYER_1)
+			loadfile(THEME:GetPathG("_pane","icons"))(PLAYER_1),
+			loadfile(THEME:GetPathG("_pane","fill"))(PLAYER_1),
+			loadfile(THEME:GetPathG("_pane","steps"))(PLAYER_1),
+			loadfile(THEME:GetPathG("_pane","numbers"))(PLAYER_1)..{ InitCommand=function(self) self:y(129) end },
+			loadfile(THEME:GetPathG("_pane","avatar"))(PLAYER_1),
+			loadfile(THEME:GetPathG("_player","scores"))(PLAYER_1),
+			loadfile(THEME:GetPathG("_player","steps"))(PLAYER_1)
 		},
 		Def.ActorFrame{
 			Name="PaneDisplayP2",
 			Condition=GAMESTATE:IsHumanPlayer(PLAYER_2),
 			InitCommand=function(self) self:x(SCREEN_RIGHT-SCREEN_WIDTH/5.415/WideScreenDiff()):player(PLAYER_2) end,
-			LoadActor(THEME:GetPathG("_pane","icons"),PLAYER_2),
-			LoadActor(THEME:GetPathG("_pane","fill"),PLAYER_2),
-			LoadActor(THEME:GetPathG("_pane","steps"),PLAYER_2),
-			LoadActor(THEME:GetPathG("_pane","numbers"),PLAYER_2)..{ InitCommand=function(self) self:y(129) end },
-			LoadActor(THEME:GetPathG("_pane","avatar"),PLAYER_2),
-			LoadActor(THEME:GetPathG("_player","scores"),PLAYER_2),
-			LoadActor(THEME:GetPathG("_player","steps"),PLAYER_2)
+			loadfile(THEME:GetPathG("_pane","icons"))(PLAYER_2),
+			loadfile(THEME:GetPathG("_pane","fill"))(PLAYER_2),
+			loadfile(THEME:GetPathG("_pane","steps"))(PLAYER_2),
+			loadfile(THEME:GetPathG("_pane","numbers"))(PLAYER_2)..{ InitCommand=function(self) self:y(129) end },
+			loadfile(THEME:GetPathG("_pane","avatar"))(PLAYER_2),
+			loadfile(THEME:GetPathG("_player","scores"))(PLAYER_2),
+			loadfile(THEME:GetPathG("_player","steps"))(PLAYER_2)
 		}
 	},
-	LoadActor(THEME:GetPathB("ScreenWithMenuElements","underlay/_sides"))..{ InitCommand=function(self) self:ztest(true) end },
-	LoadActor(THEME:GetPathB("ScreenWithMenuElements","underlay/_base")),
-	LoadActor(THEME:GetPathB("ScreenWithMenuElements","underlay/_expandtop")),
-	StandardDecorationFromFileOptional("StyleIcon","StyleIcon"),
-	StandardDecorationFromFileOptional("StageDisplay","StageDisplay"),
+	loadfile(THEME:GetPathB("ScreenWithMenuElements","underlay/_sides"))()..{ InitCommand=function(self) self:ztest(true) end },
+	loadfile(THEME:GetPathB("ScreenWithMenuElements","underlay/_base"))(),
+	loadfile(THEME:GetPathB("ScreenWithMenuElements","underlay/_expandtop"))(),
+	t,
 
 	Def.ActorFrame{
 		Name="SelButtonMenu",
@@ -363,14 +423,16 @@ return Def.ActorFrame{
 		},
 		Def.ActorFrame{
 			InitCommand=function(self) self:x(SCREEN_CENTER_X-100*WideScreenDiff()) end,
-			LoadFont("_v 26px bold black")..{
+			Def.BitmapText {
+				File = "_v 26px bold black",
 				Text="&MENULEFT;",
 				OnCommand=function(self) self:addy(36*WideScreenDiff()):x(-5*WideScreenDiff()):horizalign(right):zoomx(0.5*WideScreenDiff()):zoomy(0.7*WideScreenDiff()):diffusealpha(0):shadowlength(0) end,
 				OffCommand=function(self) self:linear(0.3):diffusealpha(0) end,
 				SelectMenuOpenedMessageCommand=function(self) self:stoptweening():bounceend(0.2):diffusealpha(1):zoomx(0.7*WideScreenDiff()) end,
 				SelectMenuClosedMessageCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(0):zoomx(0.5*WideScreenDiff()) end
 			},
-			LoadFont("_v 26px bold black")..{
+			Def.BitmapText {
+				File = "_v 26px bold black",
 				Text="Easier",
 				OnCommand=function(self) self:addy(36*WideScreenDiff()):x(0):horizalign(left):zoomx(0.5*WideScreenDiff()):zoomy(0.7*WideScreenDiff()):diffusealpha(0):diffuseramp():effectperiod(1):effectoffset(0.20):effectclock('beat'):effectcolor1(color("#FFFFFF")):effectcolor2(color("#20D020")):shadowlength(0) end,
 				OffCommand=function(self) self:linear(0.3):diffusealpha(0) end,
@@ -380,14 +442,16 @@ return Def.ActorFrame{
 		},
 		Def.ActorFrame{
 			InitCommand=function(self) self:x(SCREEN_CENTER_X+100*WideScreenDiff()) end,
-			LoadFont("_v 26px bold black")..{
+			Def.BitmapText {
+				File = "_v 26px bold black",
 				Text="Harder",
 				OnCommand=function(self) self:addy(36*WideScreenDiff()):x(0):horizalign(right):zoomx(0.5*WideScreenDiff()):zoomy(0.7*WideScreenDiff()):diffusealpha(0):diffuseramp():effectperiod(1):effectoffset(0.20):effectclock('beat'):effectcolor1(color("#FFFFFF")):effectcolor2(color("#E06060")):shadowlength(0) end,
 				OffCommand=function(self) self:linear(0.3):diffusealpha(0) end,
 				SelectMenuOpenedMessageCommand=function(self) self:stoptweening():bounceend(0.2):diffusealpha(1):zoomx(0.7*WideScreenDiff()) end,
 				SelectMenuClosedMessageCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(0):zoomx(0.5*WideScreenDiff()) end
 			},
-			LoadFont("_v 26px bold black")..{
+			Def.BitmapText {
+				File = "_v 26px bold black",
 				Text="&MENURIGHT;",
 				OnCommand=function(self) self:addy(36*WideScreenDiff()):x(15*WideScreenDiff()):zoomx(0.5*WideScreenDiff()):zoomy(0.7*WideScreenDiff()):diffusealpha(0):shadowlength(0) end,
 				OffCommand=function(self) self:linear(0.3):diffusealpha(0) end,
@@ -396,7 +460,8 @@ return Def.ActorFrame{
 			}
 		}
 	},
-	LoadActor(THEME:GetPathG("ScreenSelectMusic","OptionsMessage"))..{
+	Def.Sprite {
+		Texture = THEME:GetPathG("ScreenSelectMusic","OptionsMessage"),
 		InitCommand=function(self) self:Center():pause():diffusealpha(0) end,
 		ShowPressStartForOptionsCommand=function(self) self:zoom(1.15*WideScreenDiff()):diffusealpha(0):decelerate(0.07):zoom(WideScreenDiff()):diffusealpha(1) end,
 		ShowEnteringOptionsCommand=function(self) self:stoptweening():zoomy(0):setstate(1):accelerate(0.07):zoomy(WideScreenDiff()) end,
@@ -405,72 +470,56 @@ return Def.ActorFrame{
 	Def.ActorFrame{
 		Name="OptionsListBaseP1",
 		InitCommand=function(self) self:x(SCREEN_CENTER_X-220*WideScreenDiff()):y(SCREEN_CENTER_Y+22*WideScreenDiff()):zoomy(WideScreenDiff()):zoomx(isFinal() and 1.1*WideScreenDiff() or 1*WideScreenDiff()) end,
-		LoadActor(THEME:GetPathG("options pane",isFinal() and "final" or "normal"))..{
+		Def.Sprite {
+			Texture = THEME:GetPathG("options pane",isFinal() and "final" or "normal"),
 			InitCommand=function(self) self:diffusealpha(0):zoomx(0.6) end,
 			OptionsListOpenedMessageCommand=function(self,params)
-				if params.Player == PLAYER_1 then
-					self:stoptweening():linear(0.2):diffusealpha(1):zoomx(1)
-				end
+				if params.Player == PLAYER_1 then self:stoptweening():linear(0.2):diffusealpha(1):zoomx(1) end
 			end,
 			OptionsListClosedMessageCommand=function(self,params)
-				if params.Player == PLAYER_1 then
-					self:stoptweening():linear(0.2):diffusealpha(0):zoomx(0.6)
-				end
+				if params.Player == PLAYER_1 then self:stoptweening():linear(0.2):diffusealpha(0):zoomx(0.6) end
 			end
 		},
-		LoadActor(THEME:GetPathG("options pane",isFinal() and "final" or "normal"))..{
+		Def.Sprite {
+			Texture = THEME:GetPathG("options pane",isFinal() and "final" or "normal"),
 			InitCommand=function(self) self:blend(Blend.Add):diffusealpha(0) end,
 			OptionsListOpenedMessageCommand=function(self,params)
-				if params.Player == PLAYER_1 then
-					self:stoptweening():diffusealpha(0)
-				end
+				if params.Player == PLAYER_1 then self:stoptweening():diffusealpha(0) end
 			end,
 			OptionsListClosedMessageCommand=function(self,params)
-				if params.Player == PLAYER_1 then
-					self:stoptweening():diffusealpha(0)
-				end
+				if params.Player == PLAYER_1 then self:stoptweening():diffusealpha(0) end
 			end,
 			OptionsListResetMessageCommand=function(self,params)
-				if params.Player == PLAYER_1 then
-					self:stoptweening():diffusealpha(1):linear(0.2):diffusealpha(0)
-				end
+				if params.Player == PLAYER_1 then self:stoptweening():diffusealpha(1):linear(0.2):diffusealpha(0) end
 			end
 		}
 	},
 	Def.ActorFrame{
 		Name="OptionsListBaseP2",
 		InitCommand=function(self) self:x(SCREEN_CENTER_X+220*WideScreenDiff()):y(SCREEN_CENTER_Y+22*WideScreenDiff()):zoomy(WideScreenDiff()):zoomx(isFinal() and 1.1*WideScreenDiff() or 1*WideScreenDiff()) end,
-		LoadActor(THEME:GetPathG("options pane",isFinal() and "final" or "normal"))..{
+		Def.Sprite {
+			Texture = THEME:GetPathG("options pane",isFinal() and "final" or "normal"),
 			InitCommand=function(self) self:zoomx(-1):diffusealpha(0):zoomx(0.6) end,
 			OptionsListOpenedMessageCommand=function(self,params)
-				if params.Player == PLAYER_2 then
-					self:stoptweening():linear(0.2):diffusealpha(1):zoomx(1)
-				end
+				if params.Player == PLAYER_2 then self:stoptweening():linear(0.2):diffusealpha(1):zoomx(1) end
 			end,
 			OptionsListClosedMessageCommand=function(self,params)
-				if params.Player == PLAYER_2 then
-					self:stoptweening():linear(0.2):diffusealpha(0):zoomx(0.6)
-				end
+				if params.Player == PLAYER_2 then self:stoptweening():linear(0.2):diffusealpha(0):zoomx(0.6) end
 			end
 		},
-		LoadActor(THEME:GetPathG("options pane",isFinal() and "final" or "normal"))..{
+		Def.Sprite {
+			Texture = THEME:GetPathG("options pane",isFinal() and "final" or "normal"),
 			InitCommand=function(self) self:zoomx(-1):blend(Blend.Add):diffusealpha(0) end,
 			OptionsListOpenedMessageCommand=function(self,params)
-				if params.Player == PLAYER_2 then
-					self:stoptweening():diffusealpha(0)
-				end
+				if params.Player == PLAYER_2 then self:stoptweening():diffusealpha(0) end
 			end,
 			OptionsListClosedMessageCommand=function(self,params)
-				if params.Player == PLAYER_2 then
-					self:stoptweening():diffusealpha(0)
-				end
+				if params.Player == PLAYER_2 then self:stoptweening():diffusealpha(0) end
 			end,
 			OptionsListResetMessageCommand=function(self,params)
-				if params.Player == PLAYER_2 then
-					self:stoptweening():diffusealpha(1):linear(0.2):diffusealpha(0)
-				end
+				if params.Player == PLAYER_2 then self:stoptweening():diffusealpha(1):linear(0.2):diffusealpha(0) end
 			end
 		}
 	},
-	LoadActor(THEME:GetPathB("","_coins"))
+	loadfile(THEME:GetPathB("","_coins"))()
 }

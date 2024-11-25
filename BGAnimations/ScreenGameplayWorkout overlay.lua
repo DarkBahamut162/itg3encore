@@ -89,5 +89,5 @@ return Def.ActorFrame{
 			GoalCompleteP2Command=function(self) if not completeGoal[PLAYER_2] then self:zoom(2*WideScreenDiff()):linear(0.5):zoom(0.7*WideScreenDiff()):diffusealpha(1) completeGoal[PLAYER_2] = true end end
 		}
 	},
-	LoadActor("ScreenGameplay overlay")
+	loadfile(THEME:GetPathB("ScreenGameplay","overlay"))()
 }

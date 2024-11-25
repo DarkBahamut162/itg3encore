@@ -100,7 +100,8 @@ local t = Def.ActorFrame{
 		InitCommand = function(self) c = self:GetChildren() end,
 		OnCommand=function(self) self:addy(-100):sleep(0.5):decelerate(0.8):addy(100) end,
 		OffCommand=function(self) if not IsGame("pump") then if AnyPlayerFullComboed() then self:sleep(1) end self:accelerate(0.8):addy(-100) end end,
-		LoadFont("_eurostile normal")..{
+		Def.BitmapText {
+			File = "_eurostile normal",
 			Condition=GAMESTATE:IsPlayerEnabled(PLAYER_1) and getenv("EffectControlP1"),
 			Name="MOD1",
 			InitCommand=function(self) self:shadowlength(1):zoom(0.4*WideScreenDiff()):x(THEME:GetMetric("ScreenGameplay","ScoreP1X")):y(THEME:GetMetric("ScreenGameplay","ScoreP1Y")-15*WideScreenDiff()) end,
@@ -117,7 +118,8 @@ local t = Def.ActorFrame{
 				self:diffusealpha(0):settext(text):linear(0.25):diffusealpha(1)
 			end
 		},
-		LoadFont("_eurostile normal")..{
+		Def.BitmapText {
+			File = "_eurostile normal",
 			Condition=GAMESTATE:IsPlayerEnabled(PLAYER_2) and getenv("EffectControlP2"),
 			Name="MOD2",
 			Text=CURRENT[PLAYER_2] or "?",
@@ -136,13 +138,14 @@ local t = Def.ActorFrame{
 			end
 		}
 	},
-	LoadActor(GetSongFrame()),
+	loadfile(THEME:GetPathB("ScreenGameplay","overlay/"..GetSongFrame()))(),
 	Def.ActorFrame{
 		Name="RaveNames",
 		InitCommand=function(self) self:CenterX():y(SCREEN_TOP+69*WideScreenDiff()):visible(isVS()) end,
 		OnCommand=function(self) self:addy(-100):sleep(0.5):decelerate(0.8):addy(100) end,
 		OffCommand=function(self) if not IsGame("pump") then if AnyPlayerFullComboed() then self:sleep(1) end self:accelerate(0.8):addy(-100) end end,
-		LoadFont("_v 26px bold black")..{
+		Def.BitmapText {
+			File = "_v 26px bold black",
 			InitCommand=function(self) self:x(-254*WideScreenDiff()):zoom(0.55*WideScreenDiff()):shadowlength(0):maxwidth(160) end,
 			BeginCommand=function(self)
 				if GAMESTATE:IsHumanPlayer(PLAYER_1) then
@@ -152,7 +155,8 @@ local t = Def.ActorFrame{
 				end
 			end
 		},
-		LoadFont("_v 26px bold black")..{
+		Def.BitmapText {
+			File = "_v 26px bold black",
 			InitCommand=function(self) self:x(254*WideScreenDiff()):zoom(0.55*WideScreenDiff()):shadowlength(0):maxwidth(160) end,
 			BeginCommand=function(self)
 				if GAMESTATE:IsHumanPlayer(PLAYER_2) then
@@ -170,22 +174,26 @@ local t = Def.ActorFrame{
 	Def.ActorFrame{
 		Name="ScreenStageHoldovers",
 		InitCommand=function(self) self:visible(not GAMESTATE:IsDemonstration() and not GAMESTATE:IsCourseMode()) end,
-		LoadActor(THEME:GetPathB("ScreenStageInformation","in/bottom/bar"))..{
+		Def.Sprite {
+			Texture = THEME:GetPathB("ScreenStageInformation","in/bottom/bar"),
 			InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+136*WideScreenDiff()):zoomy(WideScreenDiff()):zoomtowidth(SCREEN_WIDTH):faderight(0.8):fadeleft(0.8) end,
 			OnCommand=function(self) self:sleep(2.25):cropright(0):linear(0.6):cropleft(1) end
 		},
 		Def.ActorFrame{
 			Name="InfoP1",
 			InitCommand=function(self) self:visible(GAMESTATE:IsPlayerEnabled(PLAYER_1)) end,
-			LoadActor(THEME:GetPathB("ScreenStageInformation","in/_left gradient"))..{
+			Def.Sprite {
+				Texture = THEME:GetPathB("ScreenStageInformation","in/_left gradient"),
 				InitCommand=function(self) self:x(SCREEN_LEFT):y(SCREEN_CENTER_Y+130*WideScreenDiff()):zoom(WideScreenDiff()):horizalign(left) end,
 				OnCommand=function(self) self:sleep(1):linear(1):diffusealpha(0) end
 			},
-			LoadActor(THEME:GetPathB("ScreenStageInformation","in/_p1"))..{
+			Def.Sprite {
+				Texture = THEME:GetPathB("ScreenStageInformation","in/_p1"),
 				InitCommand=function(self) self:x(SCREEN_LEFT):y(SCREEN_CENTER_Y+130*WideScreenDiff()):zoom(WideScreenDiff()):horizalign(left) end,
 				OnCommand=function(self) self:sleep(1):linear(1):diffusealpha(0) end
 			},
-			LoadFont("_r bold 30px")..{
+			Def.BitmapText {
+				File = "_r bold 30px",
 				Text="Step Artist:",
 				InitCommand=function(self) self:x(SCREEN_LEFT+5*WideScreenDiff()):y(SCREEN_CENTER_Y+152*WideScreenDiff()):zoom(0.6*WideScreenDiff()):halign(0):shadowlength(2*WideScreenDiff()) end,
 				BeginCommand=function(self)
@@ -193,7 +201,8 @@ local t = Def.ActorFrame{
 				end,
 				OnCommand=function(self) self:sleep(1):linear(1):diffusealpha(0) end
 			},
-			LoadFont("_r bold 30px")..{
+			Def.BitmapText {
+				File = "_r bold 30px",
 				Name="AuthorText",
 				InitCommand=function(self) self:x(SCREEN_LEFT+100*WideScreenDiff()):y(SCREEN_CENTER_Y+152*WideScreenDiff()):shadowlength(2*WideScreenDiff()):halign(0):zoom(0.6*WideScreenDiff()) end,
 				BeginCommand=function(self)
@@ -208,7 +217,8 @@ local t = Def.ActorFrame{
 				end,
 				OnCommand=function(self) self:sleep(1):linear(1):diffusealpha(0) end
 			},
-			LoadFont("_r bold 30px")..{
+			Def.BitmapText {
+				File = "_r bold 30px",
 				Name="PlayerName",
 				InitCommand=function(self) self:x(SCREEN_LEFT+44*WideScreenDiff()):y(SCREEN_CENTER_Y+122*WideScreenDiff()):shadowlength(2*WideScreenDiff()):halign(0):zoom(0.8*WideScreenDiff()) end,
 				BeginCommand=function(self)
@@ -224,15 +234,18 @@ local t = Def.ActorFrame{
 		Def.ActorFrame{
 			Name="InfoP2",
 			InitCommand=function(self) self:visible(GAMESTATE:IsPlayerEnabled(PLAYER_2)) end,
-			LoadActor(THEME:GetPathB("ScreenStageInformation","in/_right gradient"))..{
+			Def.Sprite {
+				Texture = THEME:GetPathB("ScreenStageInformation","in/_right gradient"),
 				InitCommand=function(self) self:x(SCREEN_RIGHT):y(SCREEN_CENTER_Y+130*WideScreenDiff()):zoom(WideScreenDiff()):horizalign(right) end,
 				OnCommand=function(self) self:sleep(1):linear(1):diffusealpha(0) end
 			},
-			LoadActor(THEME:GetPathB("ScreenStageInformation","in/_p2"))..{
+			Def.Sprite {
+				Texture = THEME:GetPathB("ScreenStageInformation","in/_p2"),
 				InitCommand=function(self) self:x(SCREEN_RIGHT):y(SCREEN_CENTER_Y+130*WideScreenDiff()):zoom(WideScreenDiff()):horizalign(right) end,
 				OnCommand=function(self) self:sleep(1):linear(1):diffusealpha(0) end
 			},
-			LoadFont("_r bold 30px")..{
+			Def.BitmapText {
+				File = "_r bold 30px",
 				Text=":Step Artist",
 				InitCommand=function(self) self:x(SCREEN_RIGHT-5*WideScreenDiff()):y(SCREEN_CENTER_Y+152*WideScreenDiff()):zoom(0.6*WideScreenDiff()):halign(1):shadowlength(2*WideScreenDiff()) end,
 				BeginCommand=function(self)
@@ -240,7 +253,8 @@ local t = Def.ActorFrame{
 				end,
 				OnCommand=function(self) self:sleep(1):linear(1):diffusealpha(0) end
 			},
-			LoadFont("_r bold 30px")..{
+			Def.BitmapText {
+				File = "_r bold 30px",
 				Name="AuthorText",
 				InitCommand=function(self) self:x(SCREEN_RIGHT-100*WideScreenDiff()):y(SCREEN_CENTER_Y+152*WideScreenDiff()):shadowlength(2*WideScreenDiff()):halign(1):zoom(0.6*WideScreenDiff()) end,
 				BeginCommand=function(self)
@@ -255,7 +269,8 @@ local t = Def.ActorFrame{
 				end,
 				OnCommand=function(self) self:sleep(1):linear(1):diffusealpha(0) end
 			},
-			LoadFont("_r bold 30px")..{
+			Def.BitmapText {
+				File = "_r bold 30px",
 				Name="PlayerName",
 				InitCommand=function(self) self:x(SCREEN_RIGHT-44*WideScreenDiff()):y(SCREEN_CENTER_Y+122*WideScreenDiff()):shadowlength(2*WideScreenDiff()):halign(1):zoom(0.8*WideScreenDiff()) end,
 				BeginCommand=function(self)
@@ -269,7 +284,8 @@ local t = Def.ActorFrame{
 			}
 		}
 	},
-	LoadFont("_r bold 30px")..{
+	Def.BitmapText {
+		File = "_r bold 30px",
 		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+127*WideScreenDiff()):maxwidth(SCREEN_WIDTH/8*7/WideScreenDiff()):shadowlength(2*WideScreenDiff()):zoom(0.5*WideScreenDiff()):diffusealpha(1) end,
 		SetCommand=function(self)
 			local song = GAMESTATE:GetCurrentSong()
@@ -279,7 +295,8 @@ local t = Def.ActorFrame{
 		end,
 		OnCommand=function(self) self:playcommand("Set"):sleep(1.5):linear(1):diffusealpha(0) end
 	},
-	LoadFont("_r bold 30px")..{
+	Def.BitmapText {
+		File = "_r bold 30px",
 		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+147*WideScreenDiff()):maxwidth(SCREEN_WIDTH/8*6.8/WideScreenDiff()):shadowlength(2*WideScreenDiff()):zoom(0.4*WideScreenDiff()):diffusealpha(1) end,
 		SetCommand=function(self)
 			local song = GAMESTATE:GetCurrentSong()
@@ -292,20 +309,23 @@ local t = Def.ActorFrame{
 	Def.ActorFrame{
 		Name="DemonstrationFrame",
 		BeginCommand=function(self) self:visible(GAMESTATE:IsDemonstration() and not isTopScreen('ScreenJukebox')) end,
-		LoadActor("_metallic streak")..{
+		Def.Sprite {
+			Texture = "_metallic streak",
 			InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+43*WideScreenDiff()):zoomtowidth(SCREEN_WIDTH) end,
 			OnCommand=function(self) self:diffusealpha(0.9):fadeleft(1):faderight(1) end
 		},
-		LoadFont("_z 36px black")..{
+		Def.BitmapText {
+			File = "_z 36px black",
 			Text="DEMO",
 			InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+43*WideScreenDiff()):zoom(0.7*WideScreenDiff()) end,
 			OnCommand=function(self) self:pulse():effectmagnitude(1.0,0.95,0):effectclock('beat'):effectperiod(1) end
 		},
-		LoadActor("demonstration gradient")..{
+		Def.Sprite {
+			Texture = "demonstration gradient",
 			InitCommand=function(self) self:FullScreen():diffusealpha(0.8) end
 		}
 	},
-	LoadActor(THEME:GetPathB("","_coins"))..{ InitCommand=function(self) self:visible(not GAMESTATE:IsDemonstration()) end },
+	loadfile(THEME:GetPathB("","_coins"))()..{ InitCommand=function(self) self:visible(not GAMESTATE:IsDemonstration()) end },
 	JudgmentMessageCommand=function(self, params)
 		if params.Player == params.Player and not string.find(params.TapNoteScore,"Checkpoint") and not string.find(params.TapNoteScore,"None") and enableOffsets then
 			local player = params.Player
@@ -332,10 +352,10 @@ local t = Def.ActorFrame{
 }
 
 for pn in ivalues(GAMESTATE:GetEnabledPlayers()) do
-	t[#t+1] = LoadActor("DeltaSeconds", pn)..{ Condition=isOni() and not isLifeline(pn) or isSurvival(pn) }
-	t[#t+1] = LoadActor("FCSplash", pn)
-	t[#t+1] = LoadActor("Score", pn)..{ Condition=isRegular() or isNonstop() or isLifeline(pn) }
-	t[#t+1] = LoadActor("Dynamic", pn)
+	t[#t+1] = loadfile(THEME:GetPathB("ScreenGameplay","overlay/DeltaSeconds"))(pn)..{ Condition=isOni() and not isLifeline(pn) or isSurvival(pn) }
+	t[#t+1] = loadfile(THEME:GetPathB("ScreenGameplay","overlay/FCSplash"))(pn)
+	t[#t+1] = loadfile(THEME:GetPathB("ScreenGameplay","overlay/Score"))(pn)..{ Condition=isRegular() or isNonstop() or isLifeline(pn) }
+	t[#t+1] = loadfile(THEME:GetPathB("ScreenGameplay","overlay/Dynamic"))(pn)
 end
 
 return t

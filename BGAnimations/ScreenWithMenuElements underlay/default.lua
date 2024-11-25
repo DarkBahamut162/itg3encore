@@ -1,4 +1,4 @@
 return Def.ActorFrame{
-	LoadActor("back"),
-	LoadActor("fore")
+	loadfile(THEME:GetPathB("ScreenWithMenuElements","underlay/back"))(),
+	loadfile(THEME:GetPathB("ScreenWithMenuElements","underlay/fore"))()
 }

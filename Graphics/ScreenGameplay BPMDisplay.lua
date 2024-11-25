@@ -31,13 +31,15 @@ end
 
 return Def.ActorFrame{
 	InitCommand=function(self) self:SetUpdateFunction(UpdateSingleBPM) end,
-	LoadFont("_eurostile normal")..{
+	Def.BitmapText {
+		File = "_eurostile normal",
 		Text="BPM",
 		InitCommand=function(self) self:shadowlength(1):zoomx(0):zoomy(0.6):sleep(1):accelerate(0.25):zoomx(0.6):sleep(1):decelerate(0.25):zoomx(0) end
 	},
 	Def.ActorFrame{
 		Name="Single",
-		LoadFont("_eurostile normal")..{
+		Def.BitmapText {
+			File = "_eurostile normal",
 			Name="BPMDisplay",
 			InitCommand=function(self) self:maxwidth(60):shadowlength(1):zoom(0.6):diffusealpha(0):sleep(2.5):accelerate(0.25):diffusealpha(1) end
 		}
@@ -45,15 +47,18 @@ return Def.ActorFrame{
 	Def.ActorFrame{
 		Name="Versus",
 		InitCommand=function(self) self:zoomx(0) end,
-		LoadFont("_eurostile normal")..{
+		Def.BitmapText {
+			File = "_eurostile normal",
 			Name="BPMDisplayP1",
 			InitCommand=function(self) self:x(-22.5):maxwidth(60):shadowlength(1):zoom(0.6):diffusealpha(0):sleep(2.5):accelerate(0.25):diffusealpha(1) end
 		},
-		LoadFont("_eurostile normal")..{
+		Def.BitmapText {
+			File = "_eurostile normal",
 			Text="|",
 			InitCommand=function(self) self:x(0):shadowlength(1):zoom(0.6):diffusealpha(0):sleep(2.5):accelerate(0.25):diffusealpha(1) end
 		},
-		LoadFont("_eurostile normal")..{
+		Def.BitmapText {
+			File = "_eurostile normal",
 			Name="BPMDisplayP2",
 			InitCommand=function(self) self:x(22.5):maxwidth(60):shadowlength(1):zoom(0.6):diffusealpha(0):sleep(2.5):accelerate(0.25):diffusealpha(1) end
 		}

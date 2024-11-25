@@ -113,13 +113,21 @@ end
 
 if not isTopScreen("ScreenJukeboxMenu") and GAMESTATE:IsHumanPlayer(player) then
 	return Def.ActorFrame{
-		LoadActor("_name frame "..(isFinal() and "final" or "normal"))..{ InitCommand=function(self) self:zoomx(1.75):xy(-205.5,5) end },
-		LoadFont("_v 26px bold white")..{
+		Def.Sprite {
+			Texture = "_name frame "..(isFinal() and "final" or "normal"),
+			InitCommand=function(self) self:zoomx(1.75):xy(-205.5,5) end
+		},
+		Def.BitmapText {
+			File = "_v 26px bold white",
 			InitCommand=function(self) self:xy(-280,4):maxwidth(160):zoom(0.5):shadowlength(2):diffuse(PlayerColor(player)) end,
 			BeginCommand=function(self) self:settext( GetDisplayNameFromProfileOrMemoryCard(player) ) end
 		},
-		LoadActor(iconName)..{ InitCommand=function(self) self:xy(-232,4):shadowlength(2) end },
-		LoadFont("_v 26px bold white")..{
+		Def.Sprite {
+			Texture = iconName,
+			InitCommand=function(self) self:xy(-232,4):shadowlength(2) end
+		},
+		Def.BitmapText {
+			File = "_v 26px bold white",
 			InitCommand=function(self) self:xy(-226,4):maxwidth(260):halign(0):zoom(0.5):shadowlength(2):diffuse(PlayerColor(player)) end,
 			BeginCommand=function(self)
 				checkInitSpeedMods()

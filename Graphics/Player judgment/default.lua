@@ -33,7 +33,8 @@ setenv("checkGreats"..pname(player),true)
 setenv("check"..pname(player),true)
 
 return Def.ActorFrame {
-	LoadActor(judgment) .. {
+	Def.Sprite {
+		Texture = judgment,
 		Name="Judgment",
 		InitCommand=function(self) self:pause():visible(false) end,
 		ResetCommand=function(self) self:finishtweening():x(0):y(IsGame("po-mu") and -45 or 0):stopeffect():visible(false) end

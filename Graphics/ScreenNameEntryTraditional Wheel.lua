@@ -41,23 +41,27 @@ local function MakeHighScoreWheelItem(index)
 					end
 				end
 			end,
-			LoadFont(wheelItemFont)..{
+			Def.BitmapText {
+				File = wheelItemFont,
 				Name="Rank",
 				Text=index+1,
 				InitCommand=function(self) self:x(-158):shadowlength(2) end,
 				FocusCommand=wheelItemFocus,
 			},
-			LoadFont(wheelItemFont)..{
+			Def.BitmapText {
+				File = wheelItemFont,
 				Name="Name",
 				InitCommand=function(self) self:x(-89):maxwidth(110):shadowlength(2) end,
 				FocusCommand=wheelItemFocus,
 			},
-			LoadFont(wheelItemFont)..{
+			Def.BitmapText {
+				File = wheelItemFont,
 				Name="Score",
 				InitCommand=function(self) self:x(87):halign(1):maxwidth(120):shadowlength(2) end,
 				FocusCommand=wheelItemFocus,
 			},
-			LoadFont(wheelItemFont)..{
+			Def.BitmapText {
+				File = wheelItemFont,
 				Name="Date",
 				InitCommand=function(self) self:x(132):maxwidth(80):shadowlength(2) end,
 				FocusCommand=wheelItemFocus,

@@ -9,48 +9,58 @@ return Def.ActorFrame{
 	},
 	Def.ActorFrame{
 		Condition=GAMESTATE:IsAnyHumanPlayerUsingMemoryCard(),
-		LoadActor(THEME:GetPathG("","profile "..(isFinal() and "final" or "normal")))..{
+		Def.Sprite {
+			Texture = THEME:GetPathG("","profile "..(isFinal() and "final" or "normal")),
 			InitCommand=function(self) self:Center():zoomx(SCREEN_WIDTH):zoomy(0) end,
 			OnCommand=function(self) self:linear(0.5):zoomy(0.68*WideScreenDiff()) end
 		},
-		LoadFont("_z 36px shadowx")..{
+		Def.BitmapText {
+			File = "_z 36px shadowx",
 			Text="LOADING USB PROFILES...",
 			InitCommand=function(self) self:Center():zoom(0.7*WideScreenDiff()):cropright(1.3):faderight(0.1) end,
 			OnCommand=function(self) self:sleep(0.25):linear(0.7):cropright(-0.3) end
 		},
-		LoadActor(THEME:GetPathG("","redflare"))..{
+		Def.Sprite {
+			Texture = THEME:GetPathG("","redflare"),
 			InitCommand=function(self) self:draworder(115):blend(Blend.Add):Center():zoomx(15*WideScreenDiff()):zoomtoheight(SCREEN_HEIGHT+SCREEN_HEIGHT/4/WideScreenDiff()) end,
 			OnCommand=function(self) self:decelerate(0.9):zoomtoheight(0):diffusealpha(0.5) end
 		},
-		LoadActor(THEME:GetPathG("","redflare"))..{
+		Def.Sprite {
+			Texture = THEME:GetPathG("","redflare"),
 			InitCommand=function(self) self:draworder(115):blend(Blend.Add):Center():zoomx(15*WideScreenDiff()):zoomtoheight(SCREEN_HEIGHT+SCREEN_HEIGHT/4/WideScreenDiff()) end,
 			OnCommand=function(self) self:decelerate(0.9):zoomtoheight(0):diffusealpha(0.5) end
 		},
-		LoadActor(THEME:GetPathG("","_flare"))..{
+		Def.Sprite {
+			Texture = THEME:GetPathG("","_flare"),
 			InitCommand=function(self) self:blend(Blend.Add):x(SCREEN_CENTER_X+10*WideScreenDiff()):CenterY():zoom(1.7*WideScreenDiff()) end,
 			OnCommand=function(self) self:linear(1.6):rotationz(460):zoom(0) end
 		}
 	},
 	Def.ActorFrame{
 		Condition=not GAMESTATE:IsAnyHumanPlayerUsingMemoryCard(),
-		LoadActor(THEME:GetPathG("","lolhi "..(isFinal() and "final" or "normal")))..{
+		Def.Sprite {
+			Texture = THEME:GetPathG("","lolhi "..(isFinal() and "final" or "normal")),
 			InitCommand=function(self) self:Center():zoomx(SCREEN_WIDTH):zoomy(0) end,
 			OnCommand=function(self) self:linear(0.5):zoomy(0.68*WideScreenDiff()) end
 		},
-		LoadFont("_z 36px shadowx")..{
+		Def.BitmapText {
+			File = "_z 36px shadowx",
 			Text="LOADING...",
 			InitCommand=function(self) self:Center():zoom(0.7*WideScreenDiff()):cropright(1.3):faderight(0.1) end,
 			OnCommand=function(self) self:sleep(0.25):linear(0.7):cropright(-0.3) end
 		},
-		LoadActor(THEME:GetPathG("","_disk "..(isFinal() and "final" or "normal")))..{
+		Def.Sprite {
+			Texture = THEME:GetPathG("","_disk "..(isFinal() and "final" or "normal")),
 			InitCommand=function(self) self:x(SCREEN_CENTER_X-120*WideScreenDiff()):CenterY():zoom(WideScreenDiff()):diffusealpha(0) end,
 			OnCommand=function(self) self:spin():diffusealpha(1) end
 		},
-		LoadActor(THEME:GetPathG("","blueflare"))..{
+		Def.Sprite {
+			Texture = THEME:GetPathG("","blueflare"),
 			InitCommand=function(self) self:draworder(115):blend(Blend.Add):Center():zoomx(15*WideScreenDiff()):zoomtoheight(SCREEN_HEIGHT+SCREEN_HEIGHT/4/WideScreenDiff()) end,
 			OnCommand=function(self) self:decelerate(0.9):zoomtoheight(0):diffusealpha(0.5) end
 		},
-		LoadActor(THEME:GetPathG("","_flare"))..{
+		Def.Sprite {
+			Texture = THEME:GetPathG("","_flare"),
 			InitCommand=function(self) self:blend(Blend.Add):x(SCREEN_CENTER_X-120*WideScreenDiff()):CenterY():zoom(0.5*WideScreenDiff()) end,
 			OnCommand=function(self) self:linear(1.6):rotationz(460):zoom(0) end
 		}

@@ -1,5 +1,6 @@
 return Def.ActorFrame{
-	LoadFont("_z bold 19px")..{
+	Def.BitmapText {
+		File = "_z bold 19px",
 		InitCommand=function(self) self:shadowlength(1) end,
 		BeginCommand=function(self) self:playcommand("Set") end,
 		CurrentSongChangedMessageCommand=function(self) self:finishtweening():playcommand("Set") end,

@@ -19,23 +19,27 @@ return Def.ActorFrame{
 	end,
 	GainFocusCommand=function(self) self:zoom(1.0*WideScreenDiff()) end,
 	LoseFocusCommand=function(self) self:zoom(0.6*WideScreenDiff()) end,
-	LoadActor("title")..{
+	Def.Sprite {
+		Texture = "title",
 		InitCommand=function(self) self:zoom(0):x(-73):y(-117*WideScreenDiff()) end,
 		GainFocusCommand=function(self) self:zoom(0):bounceend(0.1):zoom(0.4425*WideScreenDiff()) end,
 		LoseFocusCommand=function(self) self:bouncebegin(0.1):zoom(0) end
 	},
-	LoadActor("frame")..{
+	Def.Sprite {
+		Texture = "frame",
 		InitCommand=function(self) self:zoom(0):x(-73):y(-80*WideScreenDiff()) end,
 		GainFocusCommand=function(self) self:zoom(0):bounceend(0.1):zoom(1.1*WideScreenDiff()) end,
 		LoseFocusCommand=function(self) self:bouncebegin(0.1):zoom(0) end
 	},
-	LoadActor(THEME:GetPathG("","greenflare"))..{
+	Def.Sprite {
+		Texture = THEME:GetPathG("","greenflare"),
 		InitCommand=function(self) self:x(-73):y(-70*WideScreenDiff()):blend(Blend.Add):diffusealpha(0) end,
 		GainFocusCommand=function(self) self:finishtweening():zoom(0):diffusealpha(0):zoomx(7*WideScreenDiff()):zoomy(4*WideScreenDiff()):diffusealpha(1):linear(0.2):zoomy(0):diffusealpha(0) end,
 		LoseFocusCommand=function(self) self:diffusealpha(0) end,
 		OffCommand=function(self) self:diffusealpha(0) end
 	},
-	LoadActor(THEME:GetPathG("","greenflare"))..{
+	Def.Sprite {
+		Texture = THEME:GetPathG("","greenflare"),
 		InitCommand=function(self) self:x(-73):y(-70*WideScreenDiff()):blend(Blend.Add):diffusealpha(0) end,
 		GainFocusCommand=function(self) self:finishtweening():zoom(0):diffusealpha(0):zoomx(7*WideScreenDiff()):zoomy(4*WideScreenDiff()):diffusealpha(1):linear(0.4):zoomy(0):diffusealpha(0) end,
 		LoseFocusCommand=function(self) self:diffusealpha(0) end,

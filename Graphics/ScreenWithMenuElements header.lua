@@ -1,11 +1,11 @@
---lua.ReportScriptError( ("Hello %s"):format(Var "LoadingScreen") )
 return Def.ActorFrame{
-	LoadActor( THEME:GetPathG("_dynamic","headers"), Var "LoadingScreen" )..{
+	loadfile( THEME:GetPathG("_dynamic","headers"))( Var "LoadingScreen" )..{
 		Condition=not isFinal(),
 		InitCommand=function(self) self:xy(SCREEN_CENTER_X,30*WideScreenDiff()) end,
 		OnCommand=function(self) self:zoom(1.3*WideScreenDiff()) end
 	},
-	LoadFont("_z bold gray 36px")..{
+	Def.BitmapText {
+		File = "_z bold gray 36px",
 		InitCommand=function(self)
 			self:x(isFinal() and SCREEN_CENTER_X or SCREEN_RIGHT-20*WideScreenDiff()):y(isFinal() and 32*WideScreenDiff() or 28*WideScreenDiff()):shadowlength(2):halign(isFinal() and 0.5 or 1)
 			:zoom(0.5*WideScreenDiff()):cropright(1.3):faderight(0.1):settext(THEME:GetString(Var "LoadingScreen","HeaderText"))

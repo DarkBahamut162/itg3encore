@@ -4,7 +4,8 @@ local courseMode = GAMESTATE:IsCourseMode()
 local eventMode = GAMESTATE:IsEventMode()
 
 return Def.ActorFrame{
-	LoadFont("_v 26px bold white")..{
+	Def.BitmapText {
+		File = "_v 26px bold white",
 		InitCommand=function(self) self:shadowlength(2.5):zoom(0.5*WideScreenDiff()):y(-17.5*WideScreenDiff()) end,
 		SetCommand=function(self)
 			local SongOrCourse = courseMode and GAMESTATE:GetCurrentCourse() or GAMESTATE:GetCurrentSong()

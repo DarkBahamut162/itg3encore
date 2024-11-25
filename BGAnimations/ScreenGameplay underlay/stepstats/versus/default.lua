@@ -23,7 +23,7 @@ if getenv("ShowStatsP1") == nil or getenv("ShowStatsP2") == nil then return Def.
 		if GAMESTATE:IsHumanPlayer(pn) and bgNum[pn] > 0 then
 			t[#t+1] = Def.ActorFrame{
 				Name="Player"..pname(pn),
-				LoadActor("../double",pn)..{
+				loadfile(THEME:GetPathB("ScreenGameplay","underlay/stepstats/double"))(pn)..{
 					InitCommand=function(self) self:zoom((atLeastOneHighscoreExists and IIDX or not IIDX) and 3/4 or 1) end
 				}
 			}
@@ -37,7 +37,8 @@ if getenv("ShowStatsP1") == nil or getenv("ShowStatsP2") == nil then return Def.
 		local diffuses = {color("#60B5C7"),color("#FEA859"),color("#4AB812"),color("#D064FB"),color("#F76D47"),color("#FB0808")}
 		local texts = {"F","E","G","D","W","M"}
 		for i = 1,math.min(6,math.max(bgNum[PLAYER_1],bgNum[PLAYER_2])) do
-			Judgments[#Judgments+1] = LoadFont("ScreenGameplay judgment")..{
+			Judgments[#Judgments+1] = Def.BitmapText {
+				File = "ScreenGameplay judgment",
 				InitCommand=function(self) self:shadowlength(1):y(SCREEN_TOP+(85+13*(i-1))*WideScreenDiff()-SCREEN_HEIGHT/2):zoom(0.5*WideScreenDiff()):diffuse(diffuses[i]):settext(texts[i]) end
 			}
 		end
@@ -57,7 +58,8 @@ if getenv("ShowStatsP1") == nil or getenv("ShowStatsP2") == nil then return Def.
 			}
 			for i = 1,math.min(6,math.max(bgNum[PLAYER_1],bgNum[PLAYER_2])) do
 				local score = i < 6 and "W"..i or "Miss"
-				Numbers[#Numbers+1] = LoadFont("_z numbers")..{
+				Numbers[#Numbers+1] = Def.BitmapText {
+					File = "_z numbers",
 					InitCommand=function(self) self:x(pn == PLAYER_1 and -8*WideScreenDiff() or 8*WideScreenDiff()):y(SCREEN_TOP+(85+13*(i-1))*WideScreenDiff()-SCREEN_HEIGHT/2)
 						:zoom(0.6*WideScreenDiff()):maxwidth(125):horizalign(pn == PLAYER_1 and right or left):queuecommand("Update") end,
 					Condition=bgNum[PLAYER_1] >= i or bgNum[PLAYER_2] >= i,
@@ -90,7 +92,8 @@ if getenv("ShowStatsP1") == nil or getenv("ShowStatsP2") == nil then return Def.
 		local diffuses = atLeastOneHighscoreExists and {color("#16AFF3"),color("#00000000"),color("#00000000"),color("#09FF10"),color("#EA3548")} or {color("#16AFF3"),color("#00000000"),color("#EA3548")}
 		local texts = atLeastOneHighscoreExists and {"P","","","H","T"} or {"P","","T"}
 		for i = 1,#texts do
-			Judgments[#Judgments+1] = LoadFont("ScreenGameplay judgment")..{
+			Judgments[#Judgments+1] = Def.BitmapText {
+				File = "ScreenGameplay judgment",
 				InitCommand=function(self) self:shadowlength(1):y(SCREEN_TOP+(85+16*(i-1))*WideScreenDiff()-SCREEN_HEIGHT/2):zoom(0.5*WideScreenDiff()):diffuse(diffuses[i]):settext(texts[i]) end
 			}
 		end
@@ -108,7 +111,8 @@ if getenv("ShowStatsP1") == nil or getenv("ShowStatsP2") == nil then return Def.
 			InitCommand=function(self) self:CenterX() end,
 			Def.ActorFrame{
 				InitCommand=function(self) self:y(SCREEN_TOP+85*WideScreenDiff()) end,
-				LoadFont("_z numbers")..{
+				Def.BitmapText {
+					File = "_z numbers",
 					Name="PlayerPointsP1",
 					Text="0",
 					OnCommand=function(self)
@@ -118,14 +122,16 @@ if getenv("ShowStatsP1") == nil or getenv("ShowStatsP2") == nil then return Def.
 					JudgmentMessageCommand=function(self,param) if param.Player == PLAYER_1 then self:queuecommand("Update") end end,
 					UpdateCommand=function(self) self:settext(STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_1):GetActualDancePoints()) end
 				},
-				LoadFont("_z numbers")..{
+				Def.BitmapText {
+					File = "_z numbers",
 					Condition=topscore[PLAYER_1] ~= nil,
 					Name="HighscorePointsP1",
 					OnCommand=function(self)
 						self:maxwidth(100):horizalign(right):zoom(0.75*WideScreenDiff()):shadowlength(0):addy(16*3*WideScreenDiff()):addx(-5*WideScreenDiff()):diffuse(PlayerColor(PLAYER_1)):settext(math.ceil(topscore[PLAYER_1]:GetPercentDP()*STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_1):GetPossibleDancePoints()))
 					end
 				},
-				LoadFont("_z numbers")..{
+				Def.BitmapText {
+					File = "_z numbers",
 					Name="TargetPointsP1",
 					Text="0",
 					OnCommand=function(self)
@@ -134,7 +140,8 @@ if getenv("ShowStatsP1") == nil or getenv("ShowStatsP2") == nil then return Def.
 						:settext(math.ceil(target*STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_1):GetPossibleDancePoints()))
 					end
 				},
-				LoadFont("_z numbers")..{
+				Def.BitmapText {
+					File = "_z numbers",
 					Name="PlayerPointsP2",
 					Text="0",
 					OnCommand=function(self)
@@ -144,14 +151,16 @@ if getenv("ShowStatsP1") == nil or getenv("ShowStatsP2") == nil then return Def.
 					JudgmentMessageCommand=function(self,param) if param.Player == PLAYER_2 then self:queuecommand("Update") end end,
 					UpdateCommand=function(self) self:settext(STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_2):GetActualDancePoints()) end
 				},
-				LoadFont("_z numbers")..{
+				Def.BitmapText {
+					File = "_z numbers",
 					Condition=topscore[PLAYER_2] ~= nil,
 					Name="HighscorePointsP2",
 					OnCommand=function(self)
 						self:maxwidth(100):horizalign(left):zoom(0.75*WideScreenDiff()):shadowlength(0):addy(16*3*WideScreenDiff()):addx(5*WideScreenDiff()):diffuse(PlayerColor(PLAYER_2)):settext(math.ceil(topscore[PLAYER_2]:GetPercentDP()*STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_2):GetPossibleDancePoints()))
 					end
 				},
-				LoadFont("_z numbers")..{
+				Def.BitmapText {
+					File = "_z numbers",
 					Name="TargetPointsP2",
 					Text="0",
 					OnCommand=function(self)
@@ -160,7 +169,8 @@ if getenv("ShowStatsP1") == nil or getenv("ShowStatsP2") == nil then return Def.
 						:settext(math.ceil(target*STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_2):GetPossibleDancePoints()))
 					end
 				},
-				LoadFont("_z numbers")..{
+				Def.BitmapText {
+					File = "_z numbers",
 					Name="PlayerHighscoreDifferenceP1",
 					OnCommand=function(self)
 						self:diffuse(color("#00FF00")):maxwidth(100):horizalign(right):zoom(0.75*WideScreenDiff()):shadowlength(0):addy(16*1*WideScreenDiff()):addx(-5*WideScreenDiff())
@@ -175,7 +185,8 @@ if getenv("ShowStatsP1") == nil or getenv("ShowStatsP2") == nil then return Def.
 						self:settextf( "%+04d", (curPlayerDP-curHighscoreDP) )
 					end
 				},
-				LoadFont("_z numbers")..{
+				Def.BitmapText {
+					File = "_z numbers",
 					Name="PlayerTargetDifferenceP1",
 					OnCommand=function(self)
 						self:diffuse(color("#FF0000")):maxwidth(100):horizalign(right):zoom(0.75*WideScreenDiff()):shadowlength(0):addy(atLeastOneHighscoreExists and 16*2*WideScreenDiff() or 16*1*WideScreenDiff()):addx(-5*WideScreenDiff()):settextf( "%+04d", 0 )
@@ -190,7 +201,8 @@ if getenv("ShowStatsP1") == nil or getenv("ShowStatsP2") == nil then return Def.
 						self:settextf( "%+04d", (curPlayerDP-curTargetDP) )
 					end
 				},
-				LoadFont("_z numbers")..{
+				Def.BitmapText {
+					File = "_z numbers",
 					Name="PlayerHighscoreDifferenceP2",
 					OnCommand=function(self)
 						self:diffuse(color("#00FF00")):maxwidth(100):horizalign(left):zoom(0.75*WideScreenDiff()):shadowlength(0):addy(16*1*WideScreenDiff()):addx(5*WideScreenDiff())
@@ -205,7 +217,8 @@ if getenv("ShowStatsP1") == nil or getenv("ShowStatsP2") == nil then return Def.
 						self:settextf( "%+04d", (curPlayerDP-curHighscoreDP) )
 					end
 				},
-				LoadFont("_z numbers")..{
+				Def.BitmapText {
+					File = "_z numbers",
 					Name="PlayerTargetDifferenceP2",
 					OnCommand=function(self)
 						self:diffuse(color("#FF0000")):maxwidth(100):horizalign(left):zoom(0.75*WideScreenDiff()):shadowlength(0):addy(atLeastOneHighscoreExists and 16*2*WideScreenDiff() or 16*1*WideScreenDiff()):addx(5*WideScreenDiff()):settextf( "%+04d", 0 )

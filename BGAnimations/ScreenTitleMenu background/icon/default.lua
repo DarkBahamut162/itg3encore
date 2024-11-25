@@ -1,12 +1,14 @@
 return Def.ActorFrame{
 	Def.ActorFrame{
 		Name="Stages",
-		LoadActor("_icon")..{
+		Def.Sprite {
+			Texture = "_icon",
 			Condition=not isFinal(),
 			InitCommand=function(self) self:x(SCREEN_RIGHT-200*WideScreenDiff()):y(isFinal() and SCREEN_TOP+24*WideScreenDiff() or SCREEN_TOP+32*WideScreenDiff()):zoom(WideScreenDiff()) end,
 			OnCommand=function(self) self:diffusealpha(0):sleep(0.7):linear(0.4):diffusealpha(1) end
 		},
-		LoadFont("_v 26px bold black")..{
+		Def.BitmapText {
+			File = "_v 26px bold black",
 			Text=PREFSMAN:GetPreference('SongsPerPlay'),
 			InitCommand=function(self) self:x(SCREEN_RIGHT-199*WideScreenDiff()):y(isFinal() and SCREEN_TOP+19*WideScreenDiff() or SCREEN_TOP+27*WideScreenDiff()):zoom(0.8*WideScreenDiff()) end,
 			OnCommand=function(self)
@@ -14,7 +16,8 @@ return Def.ActorFrame{
 				if GAMESTATE:IsEventMode() then self:settext("∞") end
 			end
 		},
-		LoadFont("_v 26px bold black")..{
+		Def.BitmapText {
+			File = "_v 26px bold black",
 			Text="ROUNDS",
 			InitCommand=function(self) self:x(SCREEN_RIGHT-200*WideScreenDiff()):y(isFinal() and SCREEN_TOP+36*WideScreenDiff() or SCREEN_TOP+42*WideScreenDiff()):zoom(0.4*WideScreenDiff()) end,
 			OnCommand=function(self) self:diffusealpha(0):sleep(0.7):linear(0.4):diffusealpha(1) end
@@ -23,7 +26,8 @@ return Def.ActorFrame{
 	Def.ActorFrame{
 		Name="Difficulty",
 		InitCommand=function(self) self:x(SCREEN_RIGHT+(-200+53*1)*WideScreenDiff()):zoom(WideScreenDiff()) end,
-		LoadActor("_icon")..{
+		Def.Sprite {
+			Texture = "_icon",
 			Condition=not isFinal(),
 			InitCommand=function(self) self:y(isFinal() and SCREEN_TOP+24 or SCREEN_TOP+32) end,
 			OnCommand=function(self) self:diffusealpha(0):sleep(0.7):linear(0.4):diffusealpha(1) end
@@ -107,7 +111,8 @@ return Def.ActorFrame{
 					OnCommand=function(self) self:sleep(0.7):linear(0.4):diffusealpha(1):diffuse(isFinal() and color("#ff0000") or color("#000000")) end
 				}
 			},
-			LoadFont("_v 26px bold black")..{
+			Def.BitmapText {
+				File = "_v 26px bold black",
 				Text="DIFFICULTY",
 				InitCommand=function(self) self:y(6):zoom(0.4):maxwidth(120) end,
 				OnCommand=function(self) self:diffusealpha(0):sleep(0.7):linear(0.4):diffusealpha(1) end
@@ -117,7 +122,8 @@ return Def.ActorFrame{
 	Def.ActorFrame{
 		Name="Timing",
 		InitCommand=function(self) self:x(SCREEN_RIGHT+(-200+53*2)*WideScreenDiff()):zoom(WideScreenDiff()) end,
-		LoadActor("_icon")..{
+		Def.Sprite {
+			Texture = "_icon",
 			Condition=not isFinal(),
 			InitCommand=function(self) self:y(isFinal() and SCREEN_TOP+24 or SCREEN_TOP+32) end,
 			OnCommand=function(self) self:diffusealpha(0):sleep(0.7):linear(0.4):diffusealpha(1) end
@@ -219,7 +225,8 @@ return Def.ActorFrame{
 					OnCommand=function(self) self:sleep(0.7):linear(0.4):diffusealpha(1):diffuse(isFinal() and color("#ff0000") or color("#000000")) end
 				}
 			},
-			LoadFont("_v 26px bold black")..{
+			Def.BitmapText {
+				File = "_v 26px bold black",
 				Text="TIMING",
 				InitCommand=function(self) self:y(6):zoom(0.4) end,
 				OnCommand=function(self) self:diffusealpha(0):sleep(0.7):linear(0.4):diffusealpha(1) end
@@ -248,17 +255,20 @@ return Def.ActorFrame{
 				line2:zoom(0.4*WideScreenDiff())
 			end
 		end,
-		LoadActor("_icon")..{
+		Def.Sprite {
+			Texture = "_icon",
 			Condition=not isFinal(),
 			InitCommand=function(self) self:x(SCREEN_RIGHT+(-200+53*3)*WideScreenDiff()):y(isFinal() and SCREEN_TOP+24 or SCREEN_TOP+32):zoom(WideScreenDiff()) end,
 			OnCommand=function(self) self:diffusealpha(0):sleep(0.7):linear(0.4):diffusealpha(1) end
 		},
-		LoadFont("_v 26px bold black")..{
+		Def.BitmapText {
+			File = "_v 26px bold black",
 			Name="Line1",
 			InitCommand=function(self) self:x(SCREEN_RIGHT+(-199+53*3)*WideScreenDiff()):y(isFinal() and SCREEN_TOP+18 or SCREEN_TOP+26) end,
 			OnCommand=function(self) self:diffusealpha(0):sleep(0.7):linear(0.4):diffusealpha(1) end
 		},
-		LoadFont("_v 26px bold black")..{
+		Def.BitmapText {
+			File = "_v 26px bold black",
 			Name="Line2",
 			InitCommand=function(self) self:x(SCREEN_RIGHT+(-199+53*3)*WideScreenDiff()):y(isFinal() and SCREEN_TOP+30 or SCREEN_TOP+38) end,
 			OnCommand=function(self) self:diffusealpha(0):sleep(0.7):linear(0.4):diffusealpha(1) end
@@ -267,17 +277,20 @@ return Def.ActorFrame{
 	Def.ActorFrame{
 		Name="USBSongs",
 		InitCommand=function(self) self:visible(false) end,
-		LoadActor("_icon")..{
+		Def.Sprite {
+			Texture = "_icon",
 			Condition=not isFinal(),
 			InitCommand=function(self) self:x(SCREEN_RIGHT+(-200+53*3)*WideScreenDiff()):y(isFinal() and SCREEN_TOP+24 or SCREEN_TOP+32):zoom(WideScreenDiff()) end,
 			OnCommand=function(self) self:diffusealpha(0):sleep(0.7):linear(0.4):diffusealpha(1) end
 		},
-		LoadFont("_v 26px bold black")..{
+		Def.BitmapText {
+			File = "_v 26px bold black",
 			Text="USB",
 			InitCommand=function(self) self:x(SCREEN_RIGHT+(-200+53*3)*WideScreenDiff()):y(isFinal() and SCREEN_TOP+19 or SCREEN_TOP+27):zoom(0.6*WideScreenDiff()) end,
 			OnCommand=function(self) self:diffusealpha(0):sleep(0.7):linear(0.4):diffusealpha(1) end
 		},
-		LoadFont("_v 26px bold black")..{
+		Def.BitmapText {
+			File = "_v 26px bold black",
 			Text="SONGS",
 			InitCommand=function(self) self:x(SCREEN_RIGHT+(-200+53*3)*WideScreenDiff()):y(isFinal() and SCREEN_TOP+32 or SCREEN_TOP+40):zoom(0.4*WideScreenDiff()) end,
 			OnCommand=function(self) self:diffusealpha(0):sleep(0.7):linear(0.4):diffusealpha(1) end

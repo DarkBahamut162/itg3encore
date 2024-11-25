@@ -1,9 +1,11 @@
 return Def.ActorFrame{
-	LoadActor("_top")..{
+	Def.Sprite {
+		Texture = "_top",
 		InitCommand=function(self) self:FullScreen():diffusealpha(0) end,
 		OnCommand=function(self) self:accelerate(0.3):diffusealpha(1) end
 	},
-	LoadActor("_shadow")..{
+	Def.Sprite {
+		Texture = "_shadow",
 		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y-94*WideScreenDiff()):zoom(WideScreenDiff()) end,
 		OnCommand=function(self) self:linear(1):y(SCREEN_CENTER_Y-61*WideScreenDiff()) end
 	},
@@ -11,7 +13,8 @@ return Def.ActorFrame{
 		Name="BannerSection",
 		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y-77*WideScreenDiff()):zoom(WideScreenDiff()) end,
 		OnCommand=function(self) self:linear(1):y(SCREEN_CENTER_Y-77*WideScreenDiff()+33*WideScreenDiff()) end,
-		LoadActor("_banner mask")..{
+		Def.Sprite {
+			Texture = "_banner mask",
 			InitCommand=function(self) self:zbuffer(true):blend(Blend.NoEffect) end
 		},
 		Def.Banner{
@@ -29,9 +32,12 @@ return Def.ActorFrame{
 				self:scaletoclipped(292,114)
 			end
 		},
-		LoadActor("_banner glass")
+		Def.Sprite {
+			Texture = "_banner glass"
+		}
 	},
-	LoadActor(THEME:GetPathB("ScreenStageInformation","in/_flares"))..{
+	Def.Sprite {
+		Texture = THEME:GetPathB("ScreenStageInformation","in/_flares"),
 		InitCommand=function(self) self:Center() end,
 		OnCommand=function(self) self:diffusealpha(1):zoom(WideScreenDiff()):linear(1):rotationz(250):diffusealpha(0) end
 	}

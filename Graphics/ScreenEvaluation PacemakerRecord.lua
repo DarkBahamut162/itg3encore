@@ -32,7 +32,8 @@ if (total == 1 and (getenv("ShowStatsP1") == 7 or getenv("ShowStatsP2") == 7)) o
 end
 
 return Def.ActorFrame{
-	LoadFont("_v 26px bold white")..{
+	Def.BitmapText {
+		File = "_v 26px bold white",
 		Text=PacemakerRecord,
 		InitCommand=function(self) self:zoomx(0.6):zoomy(0.5):shadowlength(1):cropright(1):maxwidth(333) end,
 		OnCommand=function(self) self:sleep(3):linear(0.3):cropright(0):diffuseshift():effectcolor1(color("#00C0FF")) end

@@ -1,11 +1,13 @@
 local course = GAMESTATE:IsCourseMode()
 
 return Def.ActorFrame{
-	LoadFont("_v 26px bold white")..{
+	Def.BitmapText {
+		File = "_v 26px bold white",
 		Text="ARTIST:",
 		InitCommand=function(self) self:shadowlength(2.5):zoom(0.5*WideScreenDiff()):y(-17.5*WideScreenDiff()):halign(0) end
 	},
-	LoadFont("_r bold shadow 30px")..{
+	Def.BitmapText {
+		File = "_r bold shadow 30px",
 		InitCommand=function(self) self:zoom(0.66*WideScreenDiff()):maxwidth(340):halign(0) end,
 		CurrentSongChangedMessageCommand=function(self) if not course then self:queuecommand("Set") end end,
 		CurrentCourseChangedMessageCommand=function(self) if course then self:queuecommand("Set") end end,

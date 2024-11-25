@@ -11,7 +11,8 @@ local itemColors = {
 local itemColor = itemColors[gc:GetName()] or itemColors.default
 
 return Def.ActorFrame{
-	LoadFont(isScreenTitle() and "_ScreenTitleMenu choices" or "stencil")..{
+	Def.BitmapText {
+		File = isScreenTitle() and "_ScreenTitleMenu choices" or "stencil",
 		InitCommand=function(self) self:settext(gc:GetText()):halign(1) end,
 		GainFocusCommand=function(self) self:diffuseshift():effectperiod(0.5):effectcolor1(itemColor):effectcolor2(Alpha(itemColor,0.5)):effectclock("timer"):zoom(0.8*WideScreenDiff()) end,
 		LoseFocusCommand=function(self) self:stoptweening():stopeffect():zoom(0.7*WideScreenDiff()) end,

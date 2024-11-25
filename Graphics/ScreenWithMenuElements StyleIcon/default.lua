@@ -8,12 +8,12 @@ end
 
 if GameModeEnabled() and style then
 	return Def.ActorFrame{
-		LoadActor(THEME:GetPathG("ScreenWithMenuElements","StyleIcon/"..stepsType.."/"..GetUserPrefN("StylePosition")))..{
-			InitCommand=function(self)
-				self:addy(-3):shadowcolor(color("#000000")):shadowlengthx(0):shadowlengthy(2):diffusealpha(1/3)
-			end
+		Def.Sprite {
+			Texture = THEME:GetPathG("ScreenWithMenuElements","StyleIcon/"..stepsType.."/"..GetUserPrefN("StylePosition")),
+			InitCommand=function(self) self:addy(-3):shadowcolor(color("#000000")):shadowlengthx(0):shadowlengthy(2):diffusealpha(1/3) end
 		},
-		LoadActor(THEME:GetPathG("ScreenWithMenuElements","StyleIcon/"..stepsType.."/"..GetUserPrefN("StylePosition")))..{
+		Def.Sprite {
+			Texture = THEME:GetPathG("ScreenWithMenuElements","StyleIcon/"..stepsType.."/"..GetUserPrefN("StylePosition")),
 			InitCommand=function(self)
 				self:addy(-3):shadowcolor(color("#000000")):shadowlengthx(0):shadowlengthy(2)
 				if not players[PLAYER_1] then self:cropleft(0.5) end

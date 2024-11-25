@@ -1,6 +1,9 @@
 local t = Def.ActorFrame{
 	InitCommand=function(self) self:runcommandsonleaves(function(child) child:ztest(true) end) end,
-	LoadActor("_song frame "..(isFinal() and "final" or "normal"))..{InitCommand=function(self) self:zoom(WideScreenDiff()) end},
+	Def.Sprite {
+		Texture = "_song frame "..(isFinal() and "final" or "normal"),
+		InitCommand=function(self) self:zoom(WideScreenDiff()) end
+	},
 	Def.Banner{
 		InitCommand=function(self) self:x(-276*WideScreenDiff()):halign(0):scaletoclipped(128*WideScreenDiff(),40*WideScreenDiff()):diffusealpha(0.5):fadeleft(0.25):faderight(0.25) end,
 		SetCommand=function(self, params)
@@ -9,7 +12,8 @@ local t = Def.ActorFrame{
 			end
 		end
 	},
-	LoadFont("_v 26px bold white")..{
+	Def.BitmapText {
+		File = "_v 26px bold white",
 		InitCommand=function(self) self:x(-292*WideScreenDiff()):halign(0):zoom(0.6*WideScreenDiff()):shadowlength(1):wrapwidthpixels(264):maxwidth(264):maxheight(58) end,
 		SetCommand=function(self, params)
 			if params.Song then
@@ -25,11 +29,13 @@ local Scores = Def.ActorFrame{
 }
 
 for i=1,4 do
-	Scores[#Scores+1] = LoadFont("_v 26px bold black")..{
+	Scores[#Scores+1] = Def.BitmapText {
+		File = "_v 26px bold black",
 		Name="Name"..i,
 		InitCommand=function(self) self:x(scale(i,1,4,-48*WideScreenDiff(),240*WideScreenDiff())):y(-8*WideScreenDiff()):zoomx(0.875*WideScreenDiff()):zoomy(0.625*WideScreenDiff()):maxwidth(100) end
 	}
-	Scores[#Scores+1] = LoadFont("_futurist numbers metallic")..{
+	Scores[#Scores+1] = Def.BitmapText {
+		File = "_futurist numbers metallic",
 		Name="Score"..i,
 		InitCommand=function(self) self:x(scale(i,1,4,-48*WideScreenDiff(),240*WideScreenDiff())):y(12*WideScreenDiff()):zoomx(0.5*WideScreenDiff()):zoomy(0.75*WideScreenDiff()) end
 	}

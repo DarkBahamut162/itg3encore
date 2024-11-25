@@ -31,7 +31,8 @@ local Bars = Def.ActorFrame{}
 if stats < 7 then
 	for i = 1,math.min(6,stats) do
 		local score = i < 6 and "W"..i or "Miss"
-		Bars[#Bars+1] = LoadActor("../w"..i)..{
+		Bars[#Bars+1] = Def.Sprite {
+			Texture = "../w"..i,
 			InitCommand=function(self) self:vertalign(bottom):diffusealpha(0.25):x(barCenter+barWidth[bgNum]*(i-1)):y(164):zoomx(0.01*barWidth[bgNum]):zoomy(0) end,
 			Condition=stats >= i,
 			JudgmentMessageCommand=function(self,param) if param.Player == pn then self:queuecommand("Update") end end,
@@ -40,7 +41,8 @@ if stats < 7 then
 				self:zoomy(Percent*barHeight)
 			end
 		}
-		Bars[#Bars+1] = LoadActor("../w"..i)..{
+		Bars[#Bars+1] = Def.Sprite {
+			Texture = "../w"..i,
 			InitCommand=function(self) self:vertalign(bottom):x(barCenter+barWidth[bgNum]*(i-1)):y(164):zoomx(0.01*barWidth[bgNum]):zoomy(0) end,
 			Condition=stats >= i,
 			JudgmentMessageCommand=function(self,param) if param.Player == pn then self:queuecommand("Update") end end,
@@ -75,18 +77,19 @@ return Def.ActorFrame{
 				self:accelerate(0.8):addx(pn == PLAYER_1 and 100*getenv("ShowStatsSize"..pname(pn)) or -100*getenv("ShowStatsSize"..pname(pn)))
 			end
 		end,
-		LoadActor("../graph",pn)..{
+		loadfile(THEME:GetPathB("ScreenGameplay","underlay/stepstats/graph"))(pn)..{
 			Condition=getenv("ShowNoteGraph"..pname(pn)) > 1,
 			InitCommand=function(self) self:x(pn == PLAYER_1 and 53 or -53):y(-15):zoom(0.5) end
 		},
-		LoadActor("d_bg",pn),
+		loadfile(THEME:GetPathB("ScreenGameplay","underlay/stepstats/double/d_bg"))(pn),
 		Def.ActorFrame{
 			Condition=stats < 7,
 			Bars
 		},
 		Def.ActorFrame{
 			Condition=stats == 7,
-			LoadActor("../w1")..{
+			Def.Sprite {
+				Texture = "../w1",
 				OnCommand=function(self)
 					self:vertalign(bottom):x(barCenter):y(164):zoomx(0.01*barWidth[bgNum]):zoomy(barHeight):diffusealpha(0.25)
 					if topscore == nil then self:cropright(0.5) end
@@ -100,7 +103,8 @@ return Def.ActorFrame{
 					self:zoomy(((DPMax-(DPCurMax-DP))/DPMax)*barHeight)
 				end
 			},
-			LoadActor("../w3")..{
+			Def.Sprite {
+				Texture = "../w3",
 				OnCommand=function(self)
 					self:vertalign(bottom):x(barCenter+(barWidth[bgNum])*(topscore ~= nil and 1 or 0)):y(164):zoomx(0.01*barWidth[bgNum]):zoomy(0):diffusealpha(0.25)
 					if topscore ~= nil then self:zoomy(topscore:GetPercentDP()*barHeight) else self:zoomy(barHeight):cropleft(0.5) end
@@ -114,13 +118,15 @@ return Def.ActorFrame{
 					self:zoomy(((DPMax-(DPCurMax-DP))/DPMax)*barHeight)
 				end
 			},
-			LoadActor("../w6")..{
+			Def.Sprite {
+				Texture = "../w6",
 				OnCommand=function(self)
 					local target = THEME:GetMetric("PlayerStageStats", "GradePercentTier" .. string.format("%02d", 18-getenv("SetPacemaker"..pname(pn))))
 					self:vertalign(bottom):x(barCenter+(barWidth[bgNum])*(topscore ~= nil and 2 or 1)):y(164):zoomx(0.01*barWidth[bgNum]):zoomy(target*barHeight):diffusealpha(0.25)
 				end
 			},
-			LoadActor("../w1")..{
+			Def.Sprite {
+				Texture = "../w1",
 				InitCommand=function(self)
 					self:vertalign(bottom):x(barCenter):y(164):zoomx(0.01*barWidth[bgNum]):zoomy(0)
 					if topscore == nil then self:cropright(0.5) end
@@ -131,7 +137,8 @@ return Def.ActorFrame{
 					self:zoomy(DP*barHeight)
 				end
 			},
-			LoadActor("../w3")..{
+			Def.Sprite {
+				Texture = "../w3",
 				InitCommand=function(self)
 					self:vertalign(bottom):x(barCenter+barWidth[bgNum]*(topscore ~= nil and 1 or 0)):y(164):zoomx(0.01*barWidth[bgNum]):zoomy(0)
 					if topscore == nil then self:cropleft(0.5) end
@@ -149,7 +156,8 @@ return Def.ActorFrame{
 					end
 				end
 			},
-			LoadActor("../w6")..{
+			Def.Sprite {
+				Texture = "../w6",
 				InitCommand=function(self) self:vertalign(bottom):x(barCenter+barWidth[bgNum]*(topscore ~= nil and 2 or 1)):y(164):zoomx(0.01*barWidth[bgNum]):zoomy(0) end,
 				JudgmentMessageCommand=function(self,param) if param.Player == pn then self:queuecommand("Update") end end,
 				UpdateCommand=function(self)
@@ -164,12 +172,14 @@ return Def.ActorFrame{
 		Def.ActorFrame{
 			InitCommand=function(self) self:x(pn == PLAYER_1 and -62 or 62):y(144):zoom(0.33) end,
 			Def.ActorFrame{
-				LoadFont("_z bold gray 36px")..{
+				Def.BitmapText {
+					File = "_z bold gray 36px",
 					Condition=stats < 7,
 					Text="STATS",
 					OnCommand=function(self) self:zoom(0.5):halign(0):shadowlength(1):addy(-174) end
 				},
-				LoadFont("_z bold gray 36px")..{
+				Def.BitmapText {
+					File = "_z bold gray 36px",
 					Condition=stats == 7,
 					Text="PACE",
 					OnCommand=function(self) self:zoom(0.5):halign(0):shadowlength(1):addy(-174) end
@@ -177,71 +187,83 @@ return Def.ActorFrame{
 				Def.ActorFrame{
 					Condition=stats < 7,
 					InitCommand=function(self) self:y(-150) end,
-					LoadFont("ScreenGameplay judgment")..{
+					Def.BitmapText {
+						File = "ScreenGameplay judgment",
 						Name="LabelW1",
 						Text="F",
 						InitCommand=function(self) self:maxwidth(125):halign(1):addy(10-5):shadowlength(1):diffuse(TapNoteScoreToColor("TapNoteScore_W1")) end
 					},
-					LoadFont("ScreenGameplay judgment")..{
+					Def.BitmapText {
+						File = "ScreenGameplay judgment",
 						Name="LabelW2",
 						Text="E",
 						InitCommand=function(self) self:maxwidth(125):halign(1):addy(35-4):shadowlength(1):diffuse(TapNoteScoreToColor("TapNoteScore_W2")) end
 					},
-					LoadFont("ScreenGameplay judgment")..{
+					Def.BitmapText {
+						File = "ScreenGameplay judgment",
 						Name="LabelW3",
 						Text="G",
 						InitCommand=function(self) self:maxwidth(125):halign(1):addy(60-3):shadowlength(1):diffuse(TapNoteScoreToColor("TapNoteScore_W3")) end
 					},
-					LoadFont("ScreenGameplay judgment")..{
+					Def.BitmapText {
+						File = "ScreenGameplay judgment",
 						Name="LabelW4",
 						Text="D",
 						InitCommand=function(self) self:maxwidth(125):halign(1):addy(85-2):shadowlength(1):diffuse(TapNoteScoreToColor("TapNoteScore_W4")) end
 					},
-					LoadFont("ScreenGameplay judgment")..{
+					Def.BitmapText {
+						File = "ScreenGameplay judgment",
 						Name="LabelW5",
 						Text="W",
 						InitCommand=function(self) self:maxwidth(125):halign(1):addy(110-1):shadowlength(1):diffuse(TapNoteScoreToColor("TapNoteScore_W5")) end
 					},
-					LoadFont("ScreenGameplay judgment")..{
+					Def.BitmapText {
+						File = "ScreenGameplay judgment",
 						Name="LabelMiss",
 						Text="M",
 						InitCommand=function(self) self:maxwidth(125):halign(1):addy(135):shadowlength(1):diffuse(TapNoteScoreToColor("TapNoteScore_Miss")) end
 					},
-					LoadFont("_z numbers")..{
+					Def.BitmapText {
+						File = "_z numbers",
 						Name="NumbersW1",
 						InitCommand=function(self) self:maxwidth(125):halign(1):addy(10-5):addx(125):shadowlength(1):diffuse(TapNoteScoreToColor('TapNoteScore_W1')):queuecommand("Update") end,
 						JudgmentMessageCommand=function(self,param) if param.Player == pn then self:queuecommand("Update") end end,
 						UpdateCommand=function(self) self:settext(STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):GetTapNoteScores('TapNoteScore_W1')) end
 					},
-					LoadFont("_z numbers")..{
+					Def.BitmapText {
+						File = "_z numbers",
 						Name="NumbersW2",
 						Text="?",
 						InitCommand=function(self) self:maxwidth(125):halign(1):addy(35-4):addx(125):shadowlength(1):diffuse(TapNoteScoreToColor('TapNoteScore_W2')):queuecommand("Update") end,
 						JudgmentMessageCommand=function(self,param) if param.Player == pn then self:queuecommand("Update") end end,
 						UpdateCommand=function(self) if stats >= 2 then self:settext(STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):GetTapNoteScores('TapNoteScore_W2')) end end
 					},
-					LoadFont("_z numbers")..{
+					Def.BitmapText {
+						File = "_z numbers",
 						Name="NumbersW3",
 						Text="?",
 						InitCommand=function(self) self:maxwidth(125):halign(1):addy(60-3):addx(125):shadowlength(1):diffuse(TapNoteScoreToColor('TapNoteScore_W3')):queuecommand("Update") end,
 						JudgmentMessageCommand=function(self,param) if param.Player == pn then self:queuecommand("Update") end end,
 						UpdateCommand=function(self) if stats >= 3 then self:settext(STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):GetTapNoteScores('TapNoteScore_W3')) end end
 					},
-					LoadFont("_z numbers")..{
+					Def.BitmapText {
+						File = "_z numbers",
 						Name="NumbersW4",
 						Text="?",
 						InitCommand=function(self) self:maxwidth(125):halign(1):addy(85-2):addx(125):shadowlength(1):diffuse(TapNoteScoreToColor('TapNoteScore_W4')):queuecommand("Update") end,
 						JudgmentMessageCommand=function(self,param) if param.Player == pn then self:queuecommand("Update") end end,
 						UpdateCommand=function(self) if stats >= 4 then self:settext(STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):GetTapNoteScores('TapNoteScore_W4')) end end
 					},
-					LoadFont("_z numbers")..{
+					Def.BitmapText {
+						File = "_z numbers",
 						Name="NumbersW5",
 						Text="?",
 						InitCommand=function(self) self:maxwidth(125):halign(1):addy(110-1):addx(125):shadowlength(1):diffuse(TapNoteScoreToColor('TapNoteScore_W5')):queuecommand("Update") end,
 						JudgmentMessageCommand=function(self,param) if param.Player == pn then self:queuecommand("Update") end end,
 						UpdateCommand=function(self) if stats >= 5 then self:settext(STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):GetTapNoteScores('TapNoteScore_W5')) end end
 					},
-					LoadFont("_z numbers")..{
+					Def.BitmapText {
+						File = "_z numbers",
 						Name="NumbersMiss",
 						Text="?",
 						InitCommand=function(self) self:maxwidth(125):halign(1):addy(135):addx(125):shadowlength(1):diffuse(TapNoteScoreToColor('TapNoteScore_Miss')):queuecommand("Update") end,
@@ -252,14 +274,16 @@ return Def.ActorFrame{
 				Def.ActorFrame{
 					Condition=stats == 7,
 					InitCommand=function(self) self:y(-140) end,
-					LoadFont("ScreenGameplay judgment")..{
+					Def.BitmapText {
+						File = "ScreenGameplay judgment",
 						Name="PlayerName",
 						Text="P",
 						OnCommand=function(self)
 							self:maxwidth(125):halign(1):shadowlength(1):addy(0):diffuse(TapNoteScoreToColor("TapNoteScore_W1"))
 						end
 					},
-					LoadFont("ScreenGameplay judgment")..{
+					Def.BitmapText {
+						File = "ScreenGameplay judgment",
 						Condition=topscore ~= nil,
 						Name="HighscoreName",
 						Text="H",
@@ -267,14 +291,16 @@ return Def.ActorFrame{
 							self:maxwidth(125):halign(1):shadowlength(1):addy(90):diffuse(TapNoteScoreToColor("TapNoteScore_W3"))
 						end
 					},
-					LoadFont("ScreenGameplay judgment")..{
+					Def.BitmapText {
+						File = "ScreenGameplay judgment",
 						Name="TargetName",
 						Text="T",
 						OnCommand=function(self)
 							self:maxwidth(125):halign(1):shadowlength(1):addy(120):diffuse(TapNoteScoreToColor("TapNoteScore_Miss"))
 						end
 					},
-					LoadFont("_z numbers")..{
+					Def.BitmapText {
+						File = "_z numbers",
 						Name="PlayerPoints",
 						OnCommand=function(self)
 							self:maxwidth(125):halign(1):shadowlength(1):addy(0):addx(125):diffuse(PlayerColor(pn)):settext(STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):GetActualDancePoints())
@@ -282,22 +308,25 @@ return Def.ActorFrame{
 						JudgmentMessageCommand=function(self,param) if param.Player == pn then self:queuecommand("Update") end end,
 						UpdateCommand=function(self) self:settext(STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):GetActualDancePoints()) end
 					},
-					LoadFont("_z numbers")..{
+					Def.BitmapText {
+						File = "_z numbers",
 						Condition=topscore ~= nil,
 						Name="HighscorePoints",
 						OnCommand=function(self)
 							self:maxwidth(125):halign(1):shadowlength(1):addy(90):addx(125):diffuse(PlayerColor(pn)):settext(math.ceil(topscore:GetPercentDP()*STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):GetPossibleDancePoints()))
 						end
 					},
-					LoadFont("_z numbers")..{
+					Def.BitmapText {
+						File = "_z numbers",
 						Name="TargetPoints",
 						OnCommand=function(self)
 							local target = THEME:GetMetric("PlayerStageStats","GradePercentTier"..string.format("%02d",18-getenv("SetPacemaker"..pname(pn))))
 							self:maxwidth(125):halign(1):shadowlength(1):addy(120):addx(125):diffuse(PlayerColor(pn)):settext(math.ceil(target*STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):GetPossibleDancePoints()))
 						end
 					},
-	
-					LoadFont("_z numbers")..{
+
+					Def.BitmapText {
+						File = "_z numbers",
 						Condition=topscore ~= nil,
 						Name="PlayerHighscoreDifference",
 						OnCommand=function(self) self:diffuse(color("#00FF00")):halign(1):shadowlength(1):addy(30):addx(125):queuecommand("Update") end,
@@ -310,7 +339,8 @@ return Def.ActorFrame{
 							self:settextf("%+04d",(curPlayerDP-curHighscoreDP))
 						end
 					},
-					LoadFont("_z numbers")..{
+					Def.BitmapText {
+						File = "_z numbers",
 						Name="PlayerTargetDifference",
 						OnCommand=function(self)
 							self:diffuse(color("#FF0000")):halign(1):shadowlength(1):addy(60):addx(125):queuecommand("Update")
@@ -344,22 +374,26 @@ return Def.ActorFrame{
 						self:GetChild("MineCounter"):settext(pss:GetTapNoteScores('TapNoteScore_HitMine').."/"..mines)
 						self:GetChild("HoldCounter"):settext(pss:GetHoldNoteScores('HoldNoteScore_LetGo').."/"..holdsAndRolls)
 					end,
-					
-					LoadFont("ScreenGameplay judgment")..{
+
+					Def.BitmapText {
+						File = "ScreenGameplay judgment",
 						Name="HoldName",
 						Text="DROP'D",
 						OnCommand=function(self) self:maxwidth(125):halign(1):shadowlength(1):addy(50):fadeleft(pn == PLAYER_1 and 1 or 0):faderight(pn == PLAYER_2 and 1 or 0):linear(1):fadeleft(0):faderight(0) end
 					},
-					LoadFont("ScreenGameplay judgment")..{
+					Def.BitmapText {
+						File = "ScreenGameplay judgment",
 						Name="MineName",
 						Text="MINED",
 						OnCommand=function(self) self:maxwidth(125):halign(1):shadowlength(1):addy(15):fadeleft(pn == PLAYER_1 and 1 or 0):faderight(pn == PLAYER_2 and 1 or 0):linear(1):fadeleft(0):faderight(0) end
 					},
-					LoadFont("ScreenGameplay judgment")..{
+					Def.BitmapText {
+						File = "ScreenGameplay judgment",
 						Name="HoldCounter",
 						OnCommand=function(self) self:maxwidth(125):halign(1):shadowlength(1):addy(50):addx(125) end
 					},
-					LoadFont("ScreenGameplay judgment")..{
+					Def.BitmapText {
+						File = "ScreenGameplay judgment",
 						Name="MineCounter",
 						OnCommand=function(self) self:maxwidth(125):halign(1):shadowlength(1):addy(15):addx(125) end
 					}

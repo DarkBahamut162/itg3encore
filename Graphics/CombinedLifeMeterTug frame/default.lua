@@ -1,4 +1,8 @@
 return Def.ActorFrame{
-    LoadActor("CombinedMeterframe"),
-    LoadActor("_glass")
+    Def.Sprite {
+        Texture = "CombinedMeterframe",
+    },
+    Def.Sprite {
+        Texture = "_glass",
+    }
 }

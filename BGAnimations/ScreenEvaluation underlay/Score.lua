@@ -1,7 +1,8 @@
 local player = ...
 local scoreType = getenv("SetScoreType"..pname(GAMESTATE:IsHumanPlayer(player) and player or OtherPlayer[player]))
 return Def.ActorFrame{
-	LoadFont("_r bold numbers") .. {
+	Def.BitmapText {
+		File = "_r bold numbers",
 		Name="Score"..pname(player),
 		InitCommand=function(self)
 			self:diffuse(PlayerColor(player))

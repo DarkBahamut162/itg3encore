@@ -5,7 +5,8 @@ local courseMode = GAMESTATE:IsCourseMode()
 return Def.ActorFrame{
 	OnCommand=function(self) self:diffusealpha(0):sleep(0.85):linear(0.2):diffusealpha(1) end,
 	OffCommand=function(self) self:linear(0.4):diffusealpha(0) end,
-	LoadFont("_r bold 30px")..{
+	Def.BitmapText {
+		File = "_r bold 30px",
 		InitCommand=function(self) self:y(isFinal() and 72 or 73.5):zoom(isFinal() and 0.4 or 0.333):shadowlength(1):maxwidth(SCREEN_CENTER_X*1.6) end,
 		SetCommand=function(self)
 			if ThemePrefs.Get("ShowStepCounter") and isOutFox() and not GAMESTATE:IsCourseMode() then

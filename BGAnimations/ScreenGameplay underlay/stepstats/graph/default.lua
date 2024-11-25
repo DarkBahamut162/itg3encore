@@ -264,10 +264,12 @@ local function GetVerticesAssist(insert)
 end
 
 return Def.ActorFrame{
-    LoadActor("notegraph")..{
+    Def.Sprite {
+        Texture = "notegraph",
         InitCommand=function(self) self:cropleft(pn == PLAYER_1 and 0 or 1):cropright(pn == PLAYER_1 and 1 or 0):zoomy(2/3):sleep(0.5):linear(0.5):x(pn == PLAYER_1 and -100 or 100):cropleft(pn == PLAYER_1 and 0 or 0.5):cropright(pn == PLAYER_1 and 0.5 or 0) end
     },
-    LoadActor("notegraph")..{
+    Def.Sprite {
+        Texture = "notegraph",
         InitCommand=function(self) self:cropleft(pn == PLAYER_1 and 0 or 1):cropright(pn == PLAYER_1 and 1 or 0):zoomy(2/3):sleep(0.5):linear(0.5):x(pn == PLAYER_1 and -100 or 100):cropleft(pn == PLAYER_1 and 0 or 0.5):cropright(pn == PLAYER_1 and 0.5 or 0) end,
         OnCommand=function(self) self:blend(Blend.Add):diffuseramp():effectcolor1(color("#FFFFFF00")):effectcolor2(color("#FFFFFF")):effectperiod(0.5):effect_hold_at_full(0.5):effectclock('beat') end
     },
@@ -316,7 +318,8 @@ return Def.ActorFrame{
             end
         },
     },
-    LoadActor(THEME:GetPathG("horiz-line","short"))..{
+    Def.Sprite {
+        Texture = THEME:GetPathG("horiz-line","short"),
         DoneLoadingNextSongMessageCommand=function(self) self:queuecommand("RePos") end,
         InitCommand=function(self) self:x(pn == PLAYER_1 and -140 or 140):blend(Blend.Add):fadeleft(0.25):faderight(0.25):zoomy(0.5):cropleft(pn == PLAYER_1 and 0 or 0.25):cropright(pn == PLAYER_1 and 0.25 or 0):queuecommand("RePos") end,
         OnCommand=function(self) self:diffusealpha(0):linear(0.5):diffusealpha(1) end,

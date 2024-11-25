@@ -39,15 +39,23 @@ return Def.ActorFrame{
 		TweenOffCommand=function(self) if AnyPlayerFullComboed() then self:sleep(1) end self:accelerate(0.8):addy(-100) end,
 		Def.SongMeterDisplay{
 			InitCommand=function(self) self:SetStreamWidth(292) end,
-			Stream=LoadActor("meter stream "..(isFinal() and "final" or "normal")),
-			Tip=LoadActor("tip")..{
+			Stream=Def.Sprite {
+				Texture = "meter stream "..(isFinal() and "final" or "normal")
+			},
+			Tip=Def.Sprite {
+				Texture = "tip",
 				OnCommand=function(self) self:zoom(0):sleep(1.8):zoom(1):diffuseshift():effectcolor1(color("1,1,1,1")):effectcolor2(color("1,1,1,0.5")):effectclock("beat"):effectperiod(4) end
 			}
 		}
 	},
 	Def.ActorFrame{
 		OnCommand=function(self) self:visible(not isVS()) end,
-		StandardDecorationFromFile("BPMDisplay","BPMDisplay"),
+		loadfile(THEME:GetPathG(Var "LoadingScreen", "BPMDisplay"))() .. {
+			InitCommand=function(self)
+				self:name("BPMDisplay")
+				ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen")
+			end
+		}
 	},
 	Def.ActorFrame{
 		InitCommand=function(self) c = self:GetChildren() end,
@@ -57,36 +65,47 @@ return Def.ActorFrame{
 		TweenOffCommand=function(self) if AnyPlayerFullComboed() then self:sleep(1) end self:accelerate(0.8):addy(-100) end,
 		Def.ActorFrame{
 			Name="SongFrame",
-			LoadActor("_uplight top")..{
+			Def.Sprite {
+				Texture = "_uplight top",
 				InitCommand=function(self) self:CenterX():y(SCREEN_TOP+22*WideScreenDiff()):zoom(WideScreenDiff()):diffusealpha(0) end,
 				OnCommand=function(self) self:effectclock('beat'):diffuseramp():effectcolor1(color("#007892")):effectcolor2(color("#00EAFF")):effectperiod(0.5):effect_hold_at_full(0.5):diffusealpha(0):linear(0.4):diffusealpha(1) end
 			},
-			LoadActor("_uplight top")..{
+			Def.Sprite {
+				Texture = "_uplight top",
 				InitCommand=function(self) self:CenterX():y(SCREEN_TOP+22*WideScreenDiff()):zoom(WideScreenDiff()):diffusealpha(0):blend(Blend.Add) end,
 				OnCommand=function(self) self:effectclock('beat'):diffuseramp():effectcolor1(color("#FFFFFF00")):effectcolor2(color("#00EAFF")):effectperiod(0.5):effect_hold_at_full(0.5):diffusealpha(0):linear(0.4):diffusealpha(1) end
 			},
-			LoadActor("width "..(isFinal() and "final" or "normal"))..{
+			Def.Sprite {
+				Texture = "width "..(isFinal() and "final" or "normal"),
 				InitCommand=function(self) self:x(SCREEN_CENTER_X-190*WideScreenDiff()):y(SCREEN_TOP+22*WideScreenDiff()):zoom(WideScreenDiff()):halign(1) end,
 				OnCommand=function(self) self:sleep(1.5):linear(0.1):zoomtowidth(SCREEN_WIDTH/2-200*WideScreenDiff()) end
 			},
-			LoadActor("width "..(isFinal() and "final" or "normal"))..{
+			Def.Sprite {
+				Texture = "width "..(isFinal() and "final" or "normal"),
 				InitCommand=function(self) self:x(SCREEN_CENTER_X+190*WideScreenDiff()):y(SCREEN_TOP+22*WideScreenDiff()):zoom(WideScreenDiff()):halign(0) end,
 				OnCommand=function(self) self:sleep(1.5):linear(0.1):zoomtowidth(SCREEN_WIDTH/2-200*WideScreenDiff()) end
 			},
-			LoadActor("left "..(isFinal() and "final" or "normal"))..{
+			Def.Sprite {
+				Texture = "left "..(isFinal() and "final" or "normal"),
 				InitCommand=function(self) self:x(SCREEN_CENTER_X-193*WideScreenDiff()):y(SCREEN_TOP+22*WideScreenDiff()):zoom(WideScreenDiff()):halign(1) end,
 				OnCommand=function(self) self:sleep(1.5):linear(0.1):x(SCREEN_LEFT+16*WideScreenDiff()) end
 			},
-			LoadActor("left "..(isFinal() and "final" or "normal"))..{
+			Def.Sprite {
+				Texture = "left "..(isFinal() and "final" or "normal"),
 				InitCommand=function(self) self:x(SCREEN_CENTER_X+193*WideScreenDiff()):y(SCREEN_TOP+22*WideScreenDiff()):zoom(WideScreenDiff()):halign(1):zoomx(-1) end,
 				OnCommand=function(self) self:sleep(1.5):linear(0.1):x(SCREEN_RIGHT-16*WideScreenDiff()) end
 			},
-			LoadActor("_base normal "..(isFinal() and "final" or "normal"))..{ InitCommand=function(self) self:CenterX():y(SCREEN_TOP+22*WideScreenDiff()):zoom(WideScreenDiff()) end },
-			LoadActor("_neons top "..(isFinal() and "final" or "normal"))..{
+			Def.Sprite {
+				Texture = "_base normal "..(isFinal() and "final" or "normal"),
+				InitCommand=function(self) self:CenterX():y(SCREEN_TOP+22*WideScreenDiff()):zoom(WideScreenDiff()) end
+			},
+			Def.Sprite {
+				Texture = "_neons top "..(isFinal() and "final" or "normal"),
 				InitCommand=function(self) self:CenterX():y(SCREEN_TOP+22*WideScreenDiff()):zoom(WideScreenDiff()):blend(Blend.Add) end,
 				OnCommand=function(self) self:effectclock('beat'):diffuseramp():effectcolor1(color("#007892")):effectcolor2(color("#00EAFF")):effectperiod(0.5):effect_hold_at_full(0.5):diffusealpha(0):linear(0.4):diffusealpha(1) end
 			},
-			LoadActor("_neons top "..(isFinal() and "final" or "normal"))..{
+			Def.Sprite {
+				Texture = "_neons top "..(isFinal() and "final" or "normal"),
 				InitCommand=function(self) self:CenterX():y(SCREEN_TOP+22*WideScreenDiff()):zoom(WideScreenDiff()) end,
 				OnCommand=function(self) self:effectclock('beat'):diffuseramp():effectcolor1(color("#FFFFFF00")):effectcolor2(color("#00EAFF")):effectperiod(0.5):effect_hold_at_full(0.5):diffusealpha(0):linear(0.4):diffusealpha(1) end
 			},
@@ -96,7 +115,8 @@ return Def.ActorFrame{
 					OnCommand=function(self) self:zoom(0.5*WideScreenDiff()):shadowlength(2*WideScreenDiff()):zoomy(0):sleep(2):decelerate(0.3):zoomy(0.45*WideScreenDiff()) end,
 				}
 			},
-			LoadFont("_r bold 30px")..{
+			Def.BitmapText {
+				File = "_r bold 30px",
 				InitCommand=function(self) self:visible(not isOutFox()):CenterX():y(SCREEN_TOP+24*WideScreenDiff()):maxwidth(573):diffusebottomedge(color("#dedede")) end,
 				OnCommand=function(self) self:zoom(0.5*WideScreenDiff()):shadowlength(2*WideScreenDiff()):zoomy(0):sleep(2):decelerate(0.3):zoomy(0.45*WideScreenDiff()):animate(0):playcommand("Update") end,
 				CurrentSongChangedMessageCommand=function(self) self:playcommand("Update") end,
@@ -113,20 +133,27 @@ return Def.ActorFrame{
 		},
 		Def.ActorFrame{
 			Name="BPMFrame",
-			LoadActor("_uplight bottom")..{
+			Def.Sprite {
+				Texture = "_uplight bottom",
 				InitCommand=function(self) self:CenterX():y(SCREEN_TOP+45*WideScreenDiff()):zoom(WideScreenDiff()):diffusealpha(0):visible(not isVS()) end,
 				OnCommand=function(self) self:effectclock('beat'):diffuseramp():effectcolor1(color("#007892")):effectcolor2(color("#00EAFF")):effectperiod(0.5):effect_hold_at_full(0.5):diffusealpha(0):linear(0.4):diffusealpha(1) end
 			},
-			LoadActor("_uplight bottom")..{
+			Def.Sprite {
+				Texture = "_uplight bottom",
 				InitCommand=function(self) self:CenterX():y(SCREEN_TOP+45*WideScreenDiff()):zoom(WideScreenDiff()):diffusealpha(0):blend(Blend.Add):visible(not isVS()) end,
 				OnCommand=function(self) self:effectclock('beat'):diffuseramp():effectcolor1(color("#FFFFFF00")):effectcolor2(color("#00EAFF")):effectperiod(0.5):effect_hold_at_full(0.5):diffusealpha(0):linear(0.4):diffusealpha(1) end
 			},
-			LoadActor("_base bpm "..(isFinal() and "final" or "normal"))..{ InitCommand=function(self) self:CenterX():y(SCREEN_TOP+58*WideScreenDiff()):zoom(WideScreenDiff()):visible(not isVS()) end },
-			LoadActor("_neons bottom "..(isFinal() and "final" or "normal"))..{
+			Def.Sprite {
+				Texture = "_base bpm "..(isFinal() and "final" or "normal"),
+				InitCommand=function(self) self:CenterX():y(SCREEN_TOP+58*WideScreenDiff()):zoom(WideScreenDiff()):visible(not isVS()) end
+			},
+			Def.Sprite {
+				Texture = "_neons bottom "..(isFinal() and "final" or "normal"),
 				InitCommand=function(self) self:CenterX():y(SCREEN_TOP+60*WideScreenDiff()):zoom(WideScreenDiff()):blend(Blend.Add):visible(not isVS()) end,
 				OnCommand=function(self) self:effectclock('beat'):diffuseramp():effectcolor1(color("#007892")):effectcolor2(color("#00EAFF")):effectperiod(0.5):effect_hold_at_full(0.5):diffusealpha(0):linear(0.4):diffusealpha(1) end
 			},
-			LoadActor("_neons bottom "..(isFinal() and "final" or "normal"))..{
+			Def.Sprite {
+				Texture = "_neons bottom "..(isFinal() and "final" or "normal"),
 				InitCommand=function(self) self:CenterX():y(SCREEN_TOP+60*WideScreenDiff()):zoom(WideScreenDiff()):visible(not isVS()) end,
 				OnCommand=function(self) self:effectclock('beat'):diffuseramp():effectcolor1(color("#FFFFFF00")):effectcolor2(color("#00EAFF")):effectperiod(0.5):effect_hold_at_full(0.5):diffusealpha(0):linear(0.4):diffusealpha(1) end
 			}
@@ -147,7 +174,8 @@ return Def.ActorFrame{
 			OnCommand=function(self) self:x(SCREEN_CENTER_X-240*WideScreenDiff()):y(SCREEN_TOP+27*WideScreenDiff()):zoom(WideScreenDiff()):addx(-SCREEN_WIDTH/2) end,
 			TweenOnCommand=function(self) self:sleep(1.5):decelerate(0.5):addx(SCREEN_WIDTH/2) end,
 			TweenOffCommand=function(self) self:accelerate(0.8):addx(-SCREEN_WIDTH/2) end,
-			LoadActor(THEME:GetPathG("_difficulty icons",isFinal() and "final" or "normal"))..{
+			Def.Sprite {
+				Texture = THEME:GetPathG("_difficulty icons",isFinal() and "final" or "normal"),
 				InitCommand=function(self) self:pause():playcommand("Update") end,
 				CurrentSongChangedMessageCommand=function(self) self:playcommand("Update") end,
 				UpdateCommand=function(self)
@@ -172,7 +200,8 @@ return Def.ActorFrame{
 					end
 				end
 			},
-			LoadActor("difficulty glow "..(isFinal() and "final" or "normal"))..{
+			Def.Sprite {
+				Texture = "difficulty glow "..(isFinal() and "final" or "normal"),
 				InitCommand=function(self) self:blend(Blend.Add):diffusealpha(0):draworder(110) end,
 				OnCommand=function(self) self:sleep(2.4):decelerate(0.5):diffusealpha(1):sleep(0.2):decelerate(0.8):diffusealpha(0):sleep(0) end,
 				OffCommand=function(self) self:stoptweening():decelerate(0.3):diffusealpha(0) end
@@ -184,7 +213,8 @@ return Def.ActorFrame{
 			OnCommand=function(self) self:x(SCREEN_CENTER_X+240*WideScreenDiff()):y(SCREEN_TOP+27*WideScreenDiff()):zoom(WideScreenDiff()):addx(SCREEN_WIDTH/2) end,
 			TweenOnCommand=function(self) self:sleep(1.5):decelerate(0.5):addx(-SCREEN_WIDTH/2) end,
 			TweenOffCommand=function(self) self:accelerate(0.8):addx(SCREEN_WIDTH/2) end,
-			LoadActor(THEME:GetPathG("_difficulty icons",isFinal() and "final" or "normal"))..{
+			Def.Sprite {
+				Texture = THEME:GetPathG("_difficulty icons",isFinal() and "final" or "normal"),
 				InitCommand=function(self) self:pause():zoomx(-1):playcommand("Update") end,
 				CurrentSongChangedMessageCommand=function(self) self:playcommand("Update") end,
 				UpdateCommand=function(self)
@@ -209,7 +239,8 @@ return Def.ActorFrame{
 					end
 				end
 			},
-			LoadActor("difficulty glow "..(isFinal() and "final" or "normal"))..{
+			Def.Sprite {
+				Texture = "difficulty glow "..(isFinal() and "final" or "normal"),
 				InitCommand=function(self) self:zoomx(-1):blend(Blend.Add):diffusealpha(0):draworder(110) end,
 				OnCommand=function(self) self:sleep(2.4):decelerate(0.5):diffusealpha(1):sleep(0.2):decelerate(0.8):diffusealpha(0):sleep(0) end,
 				OffCommand=function(self) self:stoptweening():decelerate(0.3):diffusealpha(0) end

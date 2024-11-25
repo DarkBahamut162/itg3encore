@@ -1,20 +1,23 @@
 local t = Def.ActorFrame{
 	Def.ActorFrame{
 		InitCommand=function(self) self:x(-30*WideScreenDiff()):y(scale(1,1,7,SCREEN_CENTER_Y-150*WideScreenDiff(),SCREEN_CENTER_Y+10*WideScreenDiff())) end,
-		LoadFont("_eurostile normal")..{
+		Def.BitmapText {
+			File = "_eurostile normal",
 			Text="Actual",
 			InitCommand=function(self) self:x(scale(1,1,3,SCREEN_LEFT+300*WideScreenDiff(),SCREEN_RIGHT-100*WideScreenDiff())):zoom(0.5*WideScreenDiff()) end
 		},
-		LoadFont("_eurostile normal")..{
+		Def.BitmapText {
+			File = "_eurostile normal",
 			Text="Possible",
 			InitCommand=function(self) self:x(scale(2,1,3,SCREEN_LEFT+300*WideScreenDiff(),SCREEN_RIGHT-100*WideScreenDiff())):zoom(0.5*WideScreenDiff()) end
 		},
-		LoadFont("_eurostile normal")..{
+		Def.BitmapText {
+			File = "_eurostile normal",
 			Text="Star Complete",
 			InitCommand=function(self) self:x(scale(3,1,3,SCREEN_LEFT+300*WideScreenDiff(),SCREEN_RIGHT-100*WideScreenDiff())):zoom(0.5*WideScreenDiff()) end
 		}
 	},
-	LoadActor(THEME:GetPathB("_summary","difficulties"))..{
+	loadfile(THEME:GetPathB("_summary","difficulties"))()..{
 		InitCommand=function(self) self:x(SCREEN_LEFT+110*WideScreenDiff()) end
 	}
 }
@@ -27,7 +30,8 @@ for i=1,3 do
 		InitCommand=function(self) self:x(scale(i,1,3,SCREEN_LEFT+300*WideScreenDiff(),SCREEN_RIGHT-100*WideScreenDiff())) end
 	}
 	for n=2,7 do
-		local num = LoadFont("_eurostile normal")..{
+		local num = Def.BitmapText {
+			File = "_eurostile normal",
 			InitCommand=function(self) self:y(scale(n,1,7,SCREEN_CENTER_Y-150*WideScreenDiff(),SCREEN_CENTER_Y+10*WideScreenDiff())):zoom(0.6*WideScreenDiff()):halign(1) end,
 			BeginCommand=function(self)
 				local val, text
@@ -67,11 +71,13 @@ local shortGrade = GetGradeFromPercent(GetTotalPercentComplete(prof,StepsTypeDou
 local totals = Def.ActorFrame{
 	Def.ActorFrame{
 		InitCommand=function(self) self:y(SCREEN_CENTER_Y+70*WideScreenDiff()) end,
-		LoadFont("_eurostile normal")..{
+		Def.BitmapText {
+			File = "_eurostile normal",
 			Text="Total Actual",
 			InitCommand=function(self) self:x(SCREEN_CENTER_X-260*WideScreenDiff()):y(-24*WideScreenDiff()):horizalign(left):zoom(0.6*WideScreenDiff()) end
 		},
-		LoadFont("_r bold numbers")..{
+		Def.BitmapText {
+			File = "_r bold numbers",
 			InitCommand=function(self) self:x(SCREEN_CENTER_X+106*WideScreenDiff()):y(-24*WideScreenDiff()):horizalign(right):zoom(0.7*WideScreenDiff()) end,
 			BeginCommand=function(self)
 				local val = 0
@@ -85,11 +91,13 @@ local totals = Def.ActorFrame{
 				self:settext(string.format("%5.2f",val))
 			end
 		},
-		LoadFont("_eurostile normal")..{
+		Def.BitmapText {
+			File = "_eurostile normal",
 			Text="Total Possible",
 			InitCommand=function(self) self:x(SCREEN_CENTER_X-260*WideScreenDiff()):y(-4*WideScreenDiff()):horizalign(left):zoom(0.6*WideScreenDiff()) end
 		},
-		LoadFont("_r bold numbers")..{
+		Def.BitmapText {
+			File = "_r bold numbers",
 			InitCommand=function(self) self:x(SCREEN_CENTER_X+106*WideScreenDiff()):y(-4*WideScreenDiff()):horizalign(right):zoom(0.7*WideScreenDiff()) end,
 			BeginCommand=function(self)
 				local val = 0
@@ -103,11 +111,13 @@ local totals = Def.ActorFrame{
 				self:settext(string.format("%5.2f",val))
 			end
 		},
-		LoadFont("_eurostile normal")..{
+		Def.BitmapText {
+			File = "_eurostile normal",
 			Text="Star Complete",
 			InitCommand=function(self) self:x(SCREEN_CENTER_X-260*WideScreenDiff()):y(20*WideScreenDiff()):horizalign(left):zoom(0.8*WideScreenDiff()) end
 		},
-		LoadFont("_r bold numbers")..{
+		Def.BitmapText {
+			File = "_r bold numbers",
 			InitCommand=function(self) self:x(SCREEN_CENTER_X+136*WideScreenDiff()):y(20*WideScreenDiff()):horizalign(right):zoom(WideScreenDiff()) end,
 			BeginCommand=function(self)
 				local val = GetTotalPercentComplete(prof,StepsTypeDouble()[GetUserPrefN("StylePosition")])
@@ -120,7 +130,7 @@ local totals = Def.ActorFrame{
 				self:effectcolor1(color("0.5,0.7,1,1"))
 			end
 		},
-		LoadActor( THEME:GetPathG("GradeDisplayEval",shortGrade) )..{
+		loadfile( THEME:GetPathG("GradeDisplayEval",shortGrade) )()..{
 			InitCommand=function(self) self:x(SCREEN_CENTER_X+200*WideScreenDiff()):y(0):zoom(0.9*WideScreenDiff()) end
 		}
 	}

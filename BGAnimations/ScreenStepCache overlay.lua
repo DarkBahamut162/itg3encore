@@ -74,7 +74,8 @@ end
 return Def.ActorFrame{
 	InitCommand=function(self) c = self:GetChildren() end,
 	OnCommand=function(self) SCREENMAN:GetTopScreen():AddInputCallback(InputHandler) end,
-	LoadFont("_z 36px shadowx")..{
+	Def.BitmapText {
+		File = "_z 36px shadowx",
 		Name="TBC",
 		InitCommand=function(self) self:x(SCREEN_LEFT+25*WideScreenDiff()*WideScreenDiff()):y(isFinal() and SCREEN_BOTTOM-66*WideScreenDiff() or SCREEN_BOTTOM-58*WideScreenDiff()):shadowlength(2):horizalign(left):maxwidth(SCREEN_WIDTH/3*2/WideScreenDiff()):zoom(0.5*WideScreenDiff()) end,
 		OnCommand=function(self) self:diffusealpha(0):sleep(0.5):linear(0.5):diffusealpha(1):playcommand("Check") end,
@@ -94,7 +95,8 @@ return Def.ActorFrame{
 			self:decelerate(0.5):cropleft(0):cropright(0):settext("To be cached: "..total.." Steps")
 		end
 	},
-	LoadFont("_z 36px shadowx")..{
+	Def.BitmapText {
+		File = "_z 36px shadowx",
 		Name="IBC",
 		InitCommand=function(self) self:x(SCREEN_LEFT+25*WideScreenDiff()*WideScreenDiff()):y(isFinal() and SCREEN_BOTTOM-50*WideScreenDiff() or SCREEN_BOTTOM-42*WideScreenDiff()):shadowlength(2):horizalign(left):maxwidth(SCREEN_WIDTH/3*2/WideScreenDiff()):zoom(0.5*WideScreenDiff()) end,
 		OnCommand=function(self) self:diffusealpha(0):sleep(0.5):linear(0.5):diffusealpha(1):playcommand("Check") end,
@@ -109,7 +111,8 @@ return Def.ActorFrame{
 		InitCommand=function(self) self:x(SCREEN_LEFT+86*WideScreenDiff()):y(SCREEN_TOP+35*WideScreenDiff()):zoom(WideScreenDiff()) cs = self:GetChildren() end,
 		OnCommand=function(self) self:draworder(101):addy(-100):decelerate(0.8):addy(100) end,
 		OffCommand=function(self) self:accelerate(0.7):addy(-200) end,
-		LoadFont("_z numbers")..{
+		Def.BitmapText {
+			File = "_z numbers",
 			Name="Seconds",
 			Text=s..".",
 			InitCommand=function(self) self:stoptweening():shadowlength(0):zoom(1.1):x(2):horizalign(right) end,
@@ -134,7 +137,8 @@ return Def.ActorFrame{
 				end
 			end
 		},
-		LoadFont("_z numbers")..{
+		Def.BitmapText {
+			File = "_z numbers",
 			Name="DeciSeconds",
 			Text=ss%10,
 			InitCommand=function(self) self:stoptweening():shadowlength(0):zoom(0.85):x(1):y(2):halign(0) end,
@@ -149,7 +153,8 @@ return Def.ActorFrame{
 			end
 		}
 	},
-	LoadFont("_z 36px shadowx")..{
+	Def.BitmapText {
+		File = "_z 36px shadowx",
 		Name="Cache",
 		Text="The StepCache will be checked in 10 seconds.\nThis might take a little while...",
 		InitCommand=function(self) self:Center():zoom(0.6*WideScreenDiff()):shadowlength(2):cropleft(0.5):cropright(0.5):maxwidth(SCREEN_WIDTH/0.7/WideScreenDiff()) end,
@@ -249,29 +254,34 @@ return Def.ActorFrame{
 			self:settext("The StepCache has been updated!")
 		end
 	},
-	LoadActor(THEME:GetPathG("ScreenPrompt","Cursor"))..{
+	Def.Sprite {
+		Texture = THEME:GetPathG("ScreenPrompt","Cursor"),
 		Name="Cursor",
 		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+SCREEN_CENTER_Y/3):zoom(WideScreenDiff()):diffusealpha(0) end,
 		YesCommand=function(self) self:x(SCREEN_CENTER_X-SCREEN_CENTER_X/3) end,
 		NoCommand=function(self) self:x(SCREEN_CENTER_X+SCREEN_CENTER_X/3) end,
 		OkCommand=function(self) self:CenterX() end,
 	},
-	LoadFont("_r bold 30px")..{
+	Def.BitmapText {
+		File = "_r bold 30px",
 		Name="OK",
 		Text="OK",
 		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+SCREEN_CENTER_Y/3):zoom(WideScreenDiff()):diffusealpha(0) end,
 	},
-	LoadFont("_r bold 30px")..{
+	Def.BitmapText {
+		File = "_r bold 30px",
 		Name="YES",
 		Text="Yes",
 		InitCommand=function(self) self:x(SCREEN_CENTER_X-SCREEN_CENTER_X/3):y(SCREEN_CENTER_Y+SCREEN_CENTER_Y/3):zoom(WideScreenDiff()):diffusealpha(0) end,
 	},
-	LoadFont("_r bold 30px")..{
+	Def.BitmapText {
+		File = "_r bold 30px",
 		Name="NO",
 		Text="No",
 		InitCommand=function(self) self:x(SCREEN_CENTER_X+SCREEN_CENTER_X/3):y(SCREEN_CENTER_Y+SCREEN_CENTER_Y/3):zoom(WideScreenDiff()):diffusealpha(0) end,
 	},
-	LoadFont("_z 36px shadowx")..{
+	Def.BitmapText {
+		File = "_z 36px shadowx",
 		Name="UpdateImminent",
 		Text="Update imminent...",
 		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+SCREEN_CENTER_Y/3):zoom(0.6*WideScreenDiff()):diffusealpha(0) end,

@@ -107,7 +107,8 @@ local function MakeLifeMeterLives(pn, frame)
 		LoadActor(frame) .. { InitCommand=function(self) self:zoomx(pn == PLAYER_1 and 1 or -1) end }
 	}
 
-	f[#f+1] = LoadFont("_v 26px bold shadow") .. {
+	f[#f+1] = Def.BitmapText {
+		File = "_v 26px bold shadow",
 		Name = "LivesLeft",
 		InitCommand=function(self) self:zoom(1/3):shadowlength(0):x(0) end,
 		BeginCommand=function(self) self:playcommand("Update") end,
@@ -250,7 +251,7 @@ local function MakeLifeMeter(side)
 		LoadActor("meter grad") .. { Name = "Grad" },
 		LoadActor("meter danger") .. { Condition = showDanger , Name = "Danger" },
 		LoadActor("meter honeycomb") .. { Name = "Hex" },
-		LoadActor("life meter ticks", TicksWidth) .. { Name = "Tick" },
+		loadfile(THEME:GetPathB("ScreenGameplay","overlay/_piupro/life meter ticks"))(TicksWidth) .. { Name = "Tick" },
 		LoadActor("meter filled color") .. { Name = "Filled" },
 		LoadActor("meter honeycomb") .. { Name = "FilledHex" },
 		LoadActor("meter danger") .. { Name = "Dead" },
@@ -423,7 +424,6 @@ for side in ivalues(PlayerNumber) do
 			c.BubbleColor:RunCommandsRecursively( function(self) self:diffuse(DifficultyColor) end )
 
 			local DifficultyColor = {DifficultyColor[1], DifficultyColor[1], DifficultyColor[2], DifficultyColor[4]}
-			Trace(DifficultyColor[1])
 
 			for x=1,3 do DifficultyColor[x] = 1 - ((1-DifficultyColor[x]) * 0.25) end
 
@@ -435,7 +435,8 @@ end
 
 TopFrame[#TopFrame+1] = LoadLifeMeterFramePart("top frame 1") .. { OnCommand = function(self) self:hide_if(not SingleLifeMeter()) end }
 TopFrame[#TopFrame+1] = LoadLifeMeterFramePart("top frame 2") .. { OnCommand = function(self) self:hide_if(SingleLifeMeter()) end }
-TopFrame[#TopFrame+1] = LoadFont("_v 26px bold shadow") .. {
+TopFrame[#TopFrame+1] = Def.BitmapText {
+	File = "_v 26px bold shadow",
 	InitCommand=function(self) self:zoom(0.4):maxwidth(832):settext("TITLE"):CenterX():y(6):shadowlength(0):playcommand("Title") end,
 	CurrentSongChangedMessageCommand=function(self) self:playcommand("Title") end,
 	TitleCommand=function(self)
@@ -505,7 +506,8 @@ for side in ivalues(PlayerNumber) do
 		LoadActor(side == PLAYER_1 and "difficulty frame p1" or "difficulty frame p2") .. {
 			InitCommand=function(self) self:x(66 * fFlip):y(17) end
 		},
-		LoadFont("_v 26px bold white") .. {
+		Def.BitmapText {
+			File = "_v 26px bold white",
 			Name="Meter",
 			InitCommand=function(self) self:zoom(0.5):x(68 * fFlip):y(17):shadowlength(1) end
 		},
@@ -535,7 +537,8 @@ local Overlay = Def.ActorFrame { TopFrame }
 if Var "LoadingScreen" ~= "ScreenDemonstration" then
 	local LastCoins = 0
 	local CreditsString = THEME:GetString("ScreenSystemLayer", "CreditsCredits")
-	CreditsText = LoadFont("_v 26px bold white") .. {
+	CreditsText = Def.BitmapText {
+		File = "_v 26px bold white",
 		InitCommand=function(self) self:shadowlength(1):visible(GAMESTATE:GetCoinMode() == "CoinMode_Pay"):CenterX():y(SCREEN_BOTTOM-10):zoom(0.5):playcommand("Update") end,
 		CoinInsertedMessageCommand=function(self) self:playcommand("Update") end,
 		UpdateCommand=function(self)

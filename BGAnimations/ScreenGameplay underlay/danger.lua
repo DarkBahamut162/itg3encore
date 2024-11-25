@@ -19,7 +19,8 @@ return Def.ActorFrame{
 					end
 				end
 			end,
-			LoadActor(THEME:GetPathB("_shared","danger/single"))..{
+			Def.Sprite {
+				Texture = THEME:GetPathB("_shared","danger/single"),
 				InitCommand=function(self) self:faderight(0.1):fadeleft(0.1):fadetop(0.1):fadebottom(0.1):stretchto(SCREEN_LEFT,SCREEN_TOP,SCREEN_CENTER_X,SCREEN_BOTTOM):diffusealpha(0) end,
 				ShowCommand=function(self) self:linear(0.3):diffusealpha(1):diffuseshift():effectcolor1(color("1,0,0,0.3")):effectcolor2(color("1,0,0,0.8")) end,
 				HideCommand=function(self) self:stopeffect():stoptweening():linear(0.5):diffusealpha(0) end
@@ -29,12 +30,14 @@ return Def.ActorFrame{
 				ShowCommand=function(self) self:linear(0.3):diffusealpha(1):diffuseshift():effectcolor1(color("1,0,0,0.3")):effectcolor2(color("1,0,0,0.8")) end,
 				HideCommand=function(self) self:stopeffect():stoptweening():linear(0.5):diffusealpha(0) end
 			},
-			LoadActor(THEME:GetPathB("_shared","danger/_danger text "..(isFinal() and "final" or "normal")))..{
+			Def.Sprite {
+				Texture = THEME:GetPathB("_shared","danger/_danger text "..(isFinal() and "final" or "normal")),
 				InitCommand=function(self) self:x(SCREEN_CENTER_X-SCREEN_WIDTH/4):y(SCREEN_CENTER_Y+140):diffusealpha(0) end,
 				ShowCommand=function(self) self:linear(0.3):diffusealpha(1) end,
 				HideCommand=function(self) self:stopeffect():stoptweening():linear(0.5):diffusealpha(0) end
 			},
-			LoadActor(THEME:GetPathB("_shared","danger/_danger glow "..(isFinal() and "final" or "normal")))..{
+			Def.Sprite {
+				Texture = THEME:GetPathB("_shared","danger/_danger glow "..(isFinal() and "final" or "normal")),
 				InitCommand=function(self) self:x(SCREEN_CENTER_X-SCREEN_WIDTH/4):y(SCREEN_CENTER_Y+140):cropleft(-0.3):cropright(1):faderight(0.1):fadeleft(0.1) end,
 				ShowCommand=function(self) self:cropleft(-0.3):cropright(1):faderight(0.1):fadeleft(0.1):sleep(0.5):linear(0.7):cropleft(1):cropright(-0.3):sleep(0.8):queuecommand("Show") end,
 				HideCommand=function(self) self:stopeffect():stoptweening():linear(0.5):diffusealpha(0) end
@@ -60,7 +63,8 @@ return Def.ActorFrame{
 					end
 				end
 			end,
-			LoadActor(THEME:GetPathB("_shared","danger/double"))..{
+			Def.Sprite {
+				Texture = THEME:GetPathB("_shared","danger/double"),
 				InitCommand=function(self) self:cropleft(centerCheck and 0.25 or 0):cropright(centerCheck and 0.25 or 0):faderight(0.1):fadeleft(0.1):fadetop(0.1):fadebottom(0.1):stretchto(SCREEN_LEFT,SCREEN_TOP,SCREEN_RIGHT,SCREEN_BOTTOM):diffusealpha(0) end,
 				ShowCommand=function(self) self:linear(0.3):diffusealpha(1):diffuseshift():effectcolor1(color("1,0,0,0.3")):effectcolor2(color("1,0,0,0.8")) end,
 				HideCommand=function(self) self:stopeffect():stoptweening():linear(0.5):diffusealpha(0) end
@@ -70,12 +74,14 @@ return Def.ActorFrame{
 				ShowCommand=function(self) self:linear(0.3):diffusealpha(1):diffuseshift():effectcolor1(color("1,0,0,0.3")):effectcolor2(color("1,0,0,0.8")) end,
 				HideCommand=function(self) self:stopeffect():stoptweening():linear(0.5):diffusealpha(0) end
 			},
-			LoadActor(THEME:GetPathB("_shared","danger/_danger text "..(isFinal() and "final" or "normal")))..{
+			Def.Sprite {
+				Texture = THEME:GetPathB("_shared","danger/_danger text "..(isFinal() and "final" or "normal")),
 				InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+140):diffusealpha(0) end,
 				ShowCommand=function(self) self:linear(0.3):diffusealpha(1) end,
 				HideCommand=function(self) self:stopeffect():stoptweening():linear(0.5):diffusealpha(0) end
 			},
-			LoadActor(THEME:GetPathB("_shared","danger/_danger glow "..(isFinal() and "final" or "normal")))..{
+			Def.Sprite {
+				Texture = THEME:GetPathB("_shared","danger/_danger glow "..(isFinal() and "final" or "normal")),
 				InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+140):cropleft(-0.3):cropright(1):faderight(0.1):fadeleft(0.1) end,
 				ShowCommand=function(self) self:cropleft(-0.3):cropright(1):faderight(0.1):fadeleft(0.1):sleep(0.5):linear(0.7):cropleft(1):cropright(-0.3):sleep(0.8):queuecommand("Show") end,
 				HideCommand=function(self) self:stopeffect():stoptweening():linear(0.5):diffusealpha(0) end
@@ -101,7 +107,8 @@ return Def.ActorFrame{
 					end
 				end
 			end,
-			LoadActor(THEME:GetPathB("_shared","danger/single"))..{
+			Def.Sprite {
+				Texture = THEME:GetPathB("_shared","danger/single"),
 				InitCommand=function(self) self:faderight(0.1):fadeleft(0.1):fadetop(0.1):fadebottom(0.1):stretchto(SCREEN_CENTER_X,SCREEN_TOP,SCREEN_RIGHT,SCREEN_BOTTOM):diffusealpha(0) end,
 				ShowCommand=function(self) self:linear(0.3):diffusealpha(1):diffuseshift():effectcolor1(color("1,0,0,0.3")):effectcolor2(color("1,0,0,0.8")) end,
 				HideCommand=function(self) self:stopeffect():stoptweening():linear(0.5):diffusealpha(0) end
@@ -111,12 +118,14 @@ return Def.ActorFrame{
 				ShowCommand=function(self) self:linear(0.3):diffusealpha(1):diffuseshift():effectcolor1(color("1,0,0,0.3")):effectcolor2(color("1,0,0,0.8")) end,
 				HideCommand=function(self) self:stopeffect():stoptweening():linear(0.5):diffusealpha(0) end
 			},
-			LoadActor(THEME:GetPathB("_shared","danger/_danger text "..(isFinal() and "final" or "normal")))..{
+			Def.Sprite {
+				Texture = THEME:GetPathB("_shared","danger/_danger text "..(isFinal() and "final" or "normal")),
 				InitCommand=function(self) self:x(SCREEN_CENTER_X+SCREEN_WIDTH/4):y(SCREEN_CENTER_Y+140):diffusealpha(0) end,
 				ShowCommand=function(self) self:linear(0.3):diffusealpha(1) end,
 				HideCommand=function(self) self:stopeffect():stoptweening():linear(0.5):diffusealpha(0) end
 			},
-			LoadActor(THEME:GetPathB("_shared","danger/_danger glow "..(isFinal() and "final" or "normal")))..{
+			Def.Sprite {
+				Texture = THEME:GetPathB("_shared","danger/_danger glow "..(isFinal() and "final" or "normal")),
 				InitCommand=function(self) self:x(SCREEN_CENTER_X+SCREEN_WIDTH/4):y(SCREEN_CENTER_Y+140):cropleft(-0.3):cropright(1):faderight(0.1):fadeleft(0.1) end,
 				ShowCommand=function(self) self:cropleft(-0.3):cropright(1):faderight(0.1):fadeleft(0.1):sleep(0.5):linear(0.7):cropleft(1):cropright(-0.3):sleep(0.8):queuecommand("Show") end,
 				HideCommand=function(self) self:stopeffect():stoptweening():linear(0.5):diffusealpha(0) end

@@ -15,20 +15,23 @@ local ComboMiss = THEME:GetMetric("Combo","MissComboCommand")
 local LastSeenCombo = 0
 
 return Def.ActorFrame {
-	LoadFont( "Combo", "numbers" ) .. {
+	Def.BitmapText {
+		File = "Combo numbers",
 		Name="Number",
 		OnCommand=THEME:GetMetric("Combo", "NumberOnCommand")
 	},
-	LoadActor("_combo "..(isFinal() and "final" or "normal")) .. {
+	Def.Sprite {
+		Texture = "_combo "..(isFinal() and "final" or "normal"),
 		Name="ComboLabel",
 		OnCommand=THEME:GetMetric("Combo", "LabelOnCommand")
 	},
-	LoadActor("_misses "..(isFinal() and "final" or "normal")) .. {
+	Def.Sprite {
+		Texture = "_misses "..(isFinal() and "final" or "normal"),
 		Name="MissesLabel",
 		OnCommand=THEME:GetMetric("Combo", "LabelOnCommand")
 	},
-	LoadActor( THEME:GetPathG("Combo","100Milestone") )..{ Name="OneHundredMilestone" },
-	LoadActor( THEME:GetPathG("Combo","1000Milestone") )..{ Name="OneThousandMilestone" },
+	loadfile( THEME:GetPathG("Combo","100Milestone") )()..{ Name="OneHundredMilestone" },
+	loadfile( THEME:GetPathG("Combo","1000Milestone") )()..{ Name="OneThousandMilestone" },
 	InitCommand = function(self)
 		c = self:GetChildren()
 		c.Number:visible(false)
