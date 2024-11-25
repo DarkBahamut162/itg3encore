@@ -409,6 +409,8 @@ function InitOptions()
 	setenv("ShowMovePlayerStatsP2",3)
 	setenv("SetScoreTypeP1",2)
 	setenv("SetScoreTypeP2",2)
+	setenv("SetScoreDirectionP1",1)
+	setenv("SetScoreDirectionP2",1)
 	setenv("ScreenFilterP1",0)
 	setenv("ScreenFilterP2",0)
 
@@ -571,25 +573,32 @@ function OptionSetScoreType()
 	local t = {
 		Name="SetScoreType",
 		LayoutType = "ShowAllInRow",
-		SelectType = "SelectOne",
+		SelectType = "SelectMultiple",
 		OneChoiceForAllPlayers = false,
 		ExportOnChange = false,
-		Choices = { "Score","Percent","EX" },
+		Choices = { "Score","Percent","EX","Additive","Subtractive" },
 		LoadSelections = function(self, list, pn)
-			local selected = getenv("SetScoreType"..pname(pn))
-			if selected and selected ~= 0 then
-				list[selected] = true
+			local scoreType = getenv("SetScoreType"..pname(pn))
+			local scoreDirection = getenv("SetScoreDirection"..pname(pn))
+			if scoreType and scoreType ~= 0 then
+				list[scoreType] = true
 			else
-				list[1] = true
+				list[2] = true
+			end
+			if scoreDirection and scoreDirection ~= 0 then
+				list[scoreDirection+3] = true
+			else
+				list[4] = true
 			end
 		end,
-		SaveSelections = function(self, list, pn)
-			for i, choice in ipairs(self.Choices) do
-				if list[i] then
-					setenv("SetScoreType"..pname(pn),i)
-					break
-				end
+		SaveSelections = function() end,
+		NotifyOfSelection= function(self, pn, choice)
+			if choice <= 3 then
+				setenv("SetScoreType"..pname(pn),choice)
+			else
+				setenv("SetScoreDirection"..pname(pn),choice-3)
 			end
+			return true
 		end
 	}
 	setmetatable(t, t)
