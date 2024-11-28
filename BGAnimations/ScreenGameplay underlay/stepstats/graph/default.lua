@@ -241,6 +241,7 @@ local function GetVerticesAlt(stepsPerSecList)
 end
 
 local function GetVerticesAssist(insert)
+    local graphW = SCREEN_HEIGHT-130
     local assistList,lastSecond = insert[1],insert[2]
     local vertices = {}
     local col = color('1, 1, 1, 1')
