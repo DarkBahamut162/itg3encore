@@ -410,7 +410,7 @@ return Def.ActorFrame{
 		Def.HelpDisplay {
 			File=THEME:GetPathF("HelpDisplay", "text"),
 			InitCommand=function(self)
-				local s = isOutFox() and THEME:GetString("ScreenSelectMusic", "HelpSelectTextOutFox") or THEME:GetString("ScreenSelectMusic", "HelpSelectText")
+				local s = isOutFox() and THEME:GetString("ScreenSelectMusic", "HelpSelectTextOutFox"..(ThemePrefs.Get("SLFavorites") and "WithSL" or "")) or THEME:GetString("ScreenSelectMusic", "HelpSelectText"..(ThemePrefs.Get("SLFavorites") and "WithSL" or ""))
 				self:SetSecsBetweenSwitches(THEME:GetMetric("HelpDisplay","TipSwitchTime"))
 				self:SetTipsColonSeparated(s)
 				self:maxwidth(269)

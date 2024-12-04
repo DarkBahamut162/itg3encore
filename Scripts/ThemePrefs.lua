@@ -49,9 +49,9 @@ local Prefs = {
 		Values = { false, true }
 	},
 	SLFavorites = {
-		Default = 0,
-		Choices = isOutFoxV043() and { "Off", "SL", "OF" } or { "Off", "OF" },
-		Values = isOutFoxV043() and { 0, 1, 2 } or { 0, 2 }
+		Default = false,
+		Choices = { OptionNameString('Off'), OptionNameString('On') },
+		Values = { false, true }
 	}
 }
 
