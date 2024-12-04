@@ -34,6 +34,10 @@ Shows **earlies** and **lates** of any timing window **during evaluation** exclu
 Shows either **amount of rounds** or **length specification** during song selection
 - **ShowStepCounter (OutFox Only):**
 Shows **total step quantification amounts** (might be useful especially for BEMU/POMU, including scratches and foots)
+- **SLFavorites:**
+Activate ability to favorite songs like in SL.
+  - Hold **SELECT** and press **UP** to un/favorite *(in StepMania/ITGmania)*
+  - Hold **SELECT** and press **DOWN** to un/favorite *(in OutFox because it uses the upper config for OF Favorites)*
 
 ---
 
@@ -79,23 +83,13 @@ Shows **total step quantification amounts** (might be useful especially for BEMU
 
 I could have actually forked it but I didn't. My reasoning was that it wasn't going to be ITG3 anymore but it was being turned into ITG3Encore (something else while starting off using the same code).
 
-What has been done so far:
+### What has been done so far:
 
+**Overall:**
 * All **cmd()** transformed to **function(self)**
-* Removed **D-Pad** Modifier since it breaks other Modifiers (like the new SpeedMod)
-* Better and sorted **ScreenPlayerOptions**
-  * Including various other mods added for StepMania/ITGmania/OutFox
-* Added **MOD** & **BPM range** within **Name Badges** inside **ScreenPlayerOptions**
-* Added **TimingData** and **"GrooveRadar"** Display to **_panes** in **ScreenSelectMusic**
-* Added **StepCounter** to **_panes** in **ScreenSelectMusic** if enabled *(Project OutFox only)*
-* Added **Player Avatar** to **_panes** in **ScreenSelectMusic** *(Project OutFox AND WideScreen only)*
-* Added **CDTitle** next to **ScreenSelectMusic** banner frame *(WideScreen only)*
-* Added and combined both **HasLua** and **Rounds/Length specification** between **Artist** and **BPM** line
-* Added indication for **HasNoKeysounds** & **ContainsNullMeasure** in **BE-MU / PO-MU Mode** *(Project OutFox only)*
-* Better **StatsDisplay** going from a range of 1-6 instead of just 3
-  * Added option for a fully functional **IIDX pacemaker** with selectable target meter
-    * For 2 Player: <u>both players need to choose IIDX</u>
-  * Added **NoteGraph** during GamePlay *(red: 0-20 | black: 20-100)*
+* All **LoadActor()** transformed to **Def.\***
+* Added most **Final Encore Theme** stuff while adding/adjusting a few other things.
+* Fixed **Online Mode** *(I think?)*
 * Actually fixed **Course Mode** (Battle, Marathon & Survival Mode)
   * Fixed/Better **Song List**
   * Displays **_panes** & **StepArtists** and correctly calculate their difficulty color
@@ -103,22 +97,51 @@ What has been done so far:
   * Added **LifeMeterBattery** for Courses with Lives
     * Looks and functions similar to **Pump It Up Pro 2**
   * Re-Added stuff in **Course Mode**
-    * **Song Time** & **HAS MODS**
+    * **SongTime** & **HasMods**
     * **RemainingTime** & **DeltaSeconds**
     * Forced implementation of **NoteSkin** via ApplyGameCommand
     * Forced implementation of **SpeedMods** if GamePlay is in Oni mode
-    * Added **LifeBar** for Oni Courses that have lives
-* Fixed **Rounds/Songs Display**
-* Added back **Rotation** to **Judgments** & **Holds** during Gameplay
-* Shows **ProductFamily** & **ProductVersion** in **ScreenTitleMenu**
-  * Shows **StepCacheVersion** *(Project OutFox only)*
-* Added most **Final Encore Theme** stuff while adding/adjusting a few other things.
-* Re-added **marvelous/perfect/great color bar** on top of the **LifeGraph** in **ScreenEvaluation**
+
+**ScreenTitleMenu:**
+* Shows **ProductFamily** & **ProductVersion**
+* Shows **StepCacheVersion** *(Project OutFox only)*
+* Shows **Current Game Mode** and **Current Style**
+* Shows total amount of playable **Single/Double Songs/Courses** in current **GameMode/Style** *(if able)*
+
+**ScreenSelectStyle:**
+* Added ability to switch between:
+  * **Game Mode Styles** *(hold select and press left/right)*
+  * **Rave and Battle Mode** *(hold select and press up/down)*
+
+**ScreenSelectMusic:**
+* Added **TimingData** and **"GrooveRadar"** Display to **_panes**
+* Added **StepCounter** to **_panes** if enabled *(Project OutFox only)*
+* Added **Player Avatar** to **_panes** if selected in profile *(Project OutFox AND WideScreen only)*
+* Added **CDTitle** next to the banner frame *(WideScreen only)*
+* Added and combined both **HasLua** and **Rounds/Length specification** between **Artist** and **BPM** line
+  * Added indication for **HasNoKeysounds** & **ContainsNullMeasure** in **BE-MU / PO-MU Mode** *(Project OutFox only)*
+
+**ScreenPlayerOptions:**
+* Removed **D-Pad** Modifier since it breaks other Modifiers (like the new SpeedMod)
+* Better and sorted **List of Options**
+  * Including various other mods added for StepMania/ITGmania/OutFox
+* Added **Player's MOD** & **BPM range** within **Name Badges**
 * Added ability to switch between **Normal Score**, **Percentage** and **EX Score** via **Player Options**
-* Fixed **Online Mode** *(I think?)*
-* Added ability to switch between within **ScreenSelectStyle**
-  * **Game Mode Styles**
-  * **Rave and Battle Mode**
+  * Added ability to choose between **additive** or **subtractive** style
+
+**ScreenGameplay:**
+* Better **StatsDisplay** going from a range of 1-6 instead of just 3
+  * Added option for a fully functional **IIDX pacemaker** with selectable target meter
+    * For 2 Player: <u>both players need to choose IIDX</u>
+  * Added **NoteGraph** *(red: 0-20 | black: 20-100)*
+* Fixed **Rounds/Songs Display**
+* Added back **Rotation** to **Judgments** & **Holds**
+* Ability to change SpeedMod by 25/0.25 *(by pressing EffectDown/EffectUp)*
+  * Disabled on OutFox-specific ones *(Amod/CAmon/AVmon)*
+
+**ScreenEvaluation:**
+* Re-added **marvelous/perfect/great color bar** on top of the **LifeGraph**
+---
 
 The following has been re-introduced from **OpenITG's ITG3Encore Theme**:
 * **BPM Display** during GamePlay *(Disabled in Battle Mode & shows both players BPM if they are different from one another)*
