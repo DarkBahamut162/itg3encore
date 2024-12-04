@@ -32,29 +32,6 @@ local function SL2Other(player,profilePath)
     SONGMAN:SetPreferredSongs(player)
 end
 
-local function SLCombine()
-	local fileSL = RageFileUtil.CreateRageFile()
-	local contentSL = {}
-	if fileSL:Open(getSLFavoritesPath(PLAYER_1), 1) then
-		contentSL[PLAYER_1] = fileSL:Read()
-		fileSL:Close()
-		fileSL:destroy()
-	end
-	if fileSL:Open(getSLFavoritesPath(PLAYER_2), 1) then
-		contentSL[PLAYER_2] = fileSL:Read()
-		fileSL:Close()
-		fileSL:destroy()
-	end
-	local fileOF = RageFileUtil.CreateRageFile()
-	if fileOF:Open(THEME:GetCurrentThemeDirectory().."Other/SongManager both.txt", 2) then
-		fileOF:Write(contentSL[PLAYER_1].."\n"..contentSL[PLAYER_2])
-		fileOF:Close()
-		fileOF:destroy()
-		if FILEMAN.FlushDirCache then FILEMAN:FlushDirCache(THEME:GetCurrentThemeDirectory().."Other/") end
-	end
-    SONGMAN:SetPreferredSongs("both")
-end
-
 --not sure if needed anymore... shouldn't cross systems...
 function SL2OF(profile,filePath)
 	local file = RageFileUtil.CreateRageFile()
@@ -84,6 +61,30 @@ end
 
 local function getOFFavoritesPath(player)
     return PROFILEMAN:GetProfileDir(ProfileSlot[player]) .. "Stats.xml"
+end
+
+local function SLCombine()
+	local fileSL1 = RageFileUtil.CreateRageFile()
+	local fileSL2 = RageFileUtil.CreateRageFile()
+	local contentSL = {}
+	if fileSL1:Open(getSLFavoritesPath(PLAYER_1), 1) then
+		contentSL[PLAYER_1] = fileSL1:Read()
+		fileSL1:Close()
+		fileSL1:destroy()
+	end
+	if fileSL2:Open(getSLFavoritesPath(PLAYER_2), 1) then
+		contentSL[PLAYER_2] = fileSL2:Read()
+		fileSL2:Close()
+		fileSL2:destroy()
+	end
+	local fileOF = RageFileUtil.CreateRageFile()
+	if fileOF:Open(THEME:GetCurrentThemeDirectory().."Other/SongManager both.txt", 2) then
+		fileOF:Write(contentSL[PLAYER_1].."\n"..contentSL[PLAYER_2])
+		fileOF:Close()
+		fileOF:destroy()
+		if FILEMAN.FlushDirCache then FILEMAN:FlushDirCache(THEME:GetCurrentThemeDirectory().."Other/") end
+	end
+    SONGMAN:SetPreferredSongs("both")
 end
 
 function setOFFavorites(pn)
