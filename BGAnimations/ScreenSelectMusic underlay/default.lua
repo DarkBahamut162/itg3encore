@@ -29,10 +29,15 @@ local InputHandler = function(event)
 			if GAMESTATE:GetCurrentSong() then
 				if isOutFox() and not isOutFoxV() then
 					setOFFavorites(event.PlayerNumber) changed = false
-				else addOrRemoveFavorite(event.PlayerNumber) updateFavorites() changed = true end
+				else
+					if PROFILEMAN:IsPersistentProfile(event.PlayerNumber) then
+						changed = true
+						addOrRemoveFavorite(event.PlayerNumber) updateFavorites() 
+					end
+				end
 			end
 		elseif (event.GameButton == "MenuDown" or event.GameButton == "Down") and selectHeld[event.PlayerNumber] and isOutFox() and active then
-			if GAMESTATE:GetCurrentSong() then
+			if GAMESTATE:GetCurrentSong() and PROFILEMAN:IsPersistentProfile(event.PlayerNumber) then
 				changed = true
 				addOrRemoveFavorite(event.PlayerNumber)
 				updateFavorites()
