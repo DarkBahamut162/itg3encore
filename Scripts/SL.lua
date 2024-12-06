@@ -1,6 +1,7 @@
 local ProfileSlot = {
     [PLAYER_1] = "ProfileSlot_Player1",
-    [PLAYER_2] = "ProfileSlot_Player2"
+    [PLAYER_2] = "ProfileSlot_Player2",
+    ["Machine"] = "ProfileSlot_Machine",
 }
 
 local SLFavorites = {}
@@ -60,7 +61,8 @@ local function getSLFavoritesPath(player)
 end
 
 local function getOFFavoritesPath(player)
-    return PROFILEMAN:GetProfileDir(ProfileSlot[player]) .. "Stats.xml"
+    local selected = PROFILEMAN:IsPersistentProfile(player) and player or "Machine"
+    return PROFILEMAN:GetProfileDir(ProfileSlot[selected]) .. "Stats.xml"
 end
 
 local function SLCombine()
