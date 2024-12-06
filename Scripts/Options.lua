@@ -461,6 +461,17 @@ function OptionOrientation()
 	return t
 end
 
+local function PlayfieldMods()
+	return {
+		[1] = "EffectVibrate",
+		[2] = "EffectSpin",
+		[3] = "EffectSpinReverse",
+		[4] = "EffectBounce",
+		[5] = "EffectPulse",
+		[6] = "EffectWag",
+	}
+end
+
 function OptionPlayfield()
 	local t = {
 		Name = "PlayfieldMods",
@@ -477,13 +488,16 @@ function OptionPlayfield()
 			list[5] = getenv("EffectPulse"..pname(pn))
 			list[6] = getenv("EffectWag"..pname(pn))
 		end,
-		SaveSelections = function(self, list, pn)
-			setenv("EffectVibrate"..pname(pn),list[1])
-			setenv("EffectSpin"..pname(pn),list[2])
-			setenv("EffectSpinReverse"..pname(pn),list[3])
-			setenv("EffectBounce"..pname(pn),list[4])
-			setenv("EffectPulse"..pname(pn),list[5])
-			setenv("EffectWag"..pname(pn),list[6])
+		SaveSelections = function() end,
+		NotifyOfSelection= function(self, pn, choice)
+			for i, mod in ipairs(PlayfieldMods()) do
+				local output = false
+				if i == choice then
+					if not getenv(mod..pname(pn)) then output = true end
+				end
+				setenv(mod..pname(pn),output)
+			end
+			return true
 		end
 	}
 	setmetatable(t, t)
