@@ -12,7 +12,8 @@ function getSLFavorites(player)
 end
 
 function getOFFavorites(player)
-    return OFFavorites[player] or {}
+    local selected = PROFILEMAN:IsPersistentProfile(player) and player or "Machine"
+    return OFFavorites[selected] or {}
 end
 
 local function SL2Other(player,profilePath)
@@ -61,8 +62,7 @@ local function getSLFavoritesPath(player)
 end
 
 local function getOFFavoritesPath(player)
-    local selected = PROFILEMAN:IsPersistentProfile(player) and player or "Machine"
-    return PROFILEMAN:GetProfileDir(ProfileSlot[selected]) .. "Stats.xml"
+    return PROFILEMAN:GetProfileDir(ProfileSlot[player]) .. "Stats.xml"
 end
 
 local function SLCombine()
@@ -89,10 +89,11 @@ local function SLCombine()
     SONGMAN:SetPreferredSongs("both")
 end
 
-function setOFFavorites(pn)
-    OFFavorites[ToEnumShortString(pn)] = {}
+function setOFFavorites(player)
+    local selected = PROFILEMAN:IsPersistentProfile(player) and player or "Machine"
+    OFFavorites[selected] = {}
 	local file = RageFileUtil.CreateRageFile()
-	file:Open(getOFFavoritesPath(pn),1)
+	file:Open(getOFFavoritesPath(selected),1)
 	file:Seek(1)
 	local line
     local reading = false
@@ -101,7 +102,7 @@ function setOFFavorites(pn)
 			line = file:GetLine()
             if line == "<FavSongs/>" or line == "</FavSongs>" then break elseif line == "<FavSongs>" then reading = true elseif reading then
                 local line = split("/", line)
-                OFFavorites[ToEnumShortString(pn)][#OFFavorites[ToEnumShortString(pn)] + 1] = SONGMAN:FindSong(line[3] .. "/" .. line[4])
+                OFFavorites[selected][#OFFavorites[selected] + 1] = SONGMAN:FindSong(line[3] .. "/" .. line[4])
             end
 		end
 	end
@@ -164,7 +165,6 @@ function generateFavoritesForMusicWheel()
                     end
                 end
             end
-            if isOutFox() and not isOutFoxV() then setOFFavorites(pn) end
 
             if strToWrite ~= "" then
                 local path = getSLFavoritesPath(pn)
@@ -178,6 +178,7 @@ function generateFavoritesForMusicWheel()
                 end
             end
         end
+        if isOutFox() and not isOutFoxV() then setOFFavorites(pn) end
     end
     if check == 2 then
         SLCombine()

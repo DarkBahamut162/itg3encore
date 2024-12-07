@@ -13,9 +13,9 @@ return Def.ActorFrame{
 					local isFav = false
 
 					if isOutFoxV() then
-						isFav = PROFILEMAN:GetProfile(PLAYER_1):SongIsFavorite(params.Song)
+						isFav = GetPlayerOrMachineProfile(PLAYER_1):SongIsFavorite(params.Song)
 					elseif isOutFox() then
-						isFav = FindInTable(params.Song, getOFFavorites(ToEnumShortString(PLAYER_1)))
+						isFav = FindInTable(params.Song, getOFFavorites(PLAYER_1))
 					end
 
 					if isFav then
@@ -53,10 +53,10 @@ return Def.ActorFrame{
 				if params.Song then
 					local isFav = false
 
-					if isOutFox() then
-						isFav = FindInTable(params.Song, getOFFavorites(ToEnumShortString(PLAYER_2)))
-					elseif isOutFoxV() then
-						isFav = PROFILEMAN:GetProfile(PLAYER_2):SongIsFavorite(params.Song)
+					if isOutFoxV() then
+						isFav = GetPlayerOrMachineProfile(PLAYER_2):SongIsFavorite(params.Song)
+					elseif isOutFox() then
+						isFav = FindInTable(params.Song, getOFFavorites(PLAYER_2))
 					end
 
 					if isFav then
