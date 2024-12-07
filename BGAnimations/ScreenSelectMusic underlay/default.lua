@@ -1,6 +1,7 @@
 local selectHeld = { PLAYER_1 = false, PLAYER_2 = false }
 local insideFavorites = false
 local changed = false
+local outfoxed = false
 local active = ThemePrefs.Get("SLFavorites")
 
 local function reloadPreferredSortSM()
@@ -25,10 +26,11 @@ end
 local InputHandler = function(event)
 	if not event.PlayerNumber or not event.button then return false end
 	if event.type == "InputEventType_FirstPress" then
-		if (event.GameButton == "MenuUp" or event.GameButton == "Up") and selectHeld[event.PlayerNumber] and ((isOutFox() and not isOutFoxV()) or (not isOutFox() and active)) then
+		if (event.GameButton == "MenuUp" or event.GameButton == "Up") and selectHeld[event.PlayerNumber] then
 			if GAMESTATE:GetCurrentSong() then
-				if isOutFox() and not isOutFoxV() then
-					setOFFavorites(event.PlayerNumber) changed = false
+				if isOutFox() then
+					if not isOutFoxV() then setOFFavorites(event.PlayerNumber) end
+					outfoxed = true
 				else
 					if PROFILEMAN:IsPersistentProfile(event.PlayerNumber) then
 						changed = true
@@ -58,8 +60,10 @@ return Def.ActorFrame{
 		local s = GAMESTATE:GetSortOrder()
 		if s ~= nil then
 			if SortOrderToLocalizedString(s) == "Preferred" then
-				if not isITGmania() and changed then reloadPreferredSortSM() end
+				if not isITGmania() and changed and not outfoxed then reloadPreferredSortSM() end
 				insideFavorites = true
+				outfoxed = false
+				changed = false
 			else insideFavorites = false end
 		end
 	end,
