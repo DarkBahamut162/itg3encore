@@ -8,7 +8,7 @@ return Def.ActorFrame{
 		LoseFocusCommand=function(self) self:visible(false) end
 	},
 	Def.ActorFrame{
-		InitCommand=function(self) self:x(SCREEN_RIGHT-110*WideScreenDiff()):y(SCREEN_CENTER_Y+155-270):horizalign(right) end,
+		InitCommand=function(self) self:x(SCREEN_RIGHT-110*WideScreenDiff()):y(SCREEN_CENTER_Y+20-135*WideScreenDiff()):horizalign(right) end,
 		Def.Sprite {
 			Texture = THEME:GetPathG("_join","icons/title1"),
 			OnCommand=function(self) self:y(-3):zoomto(155*WideScreenDiff(),80*WideScreenDiff()) end,

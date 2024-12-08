@@ -1,23 +1,6 @@
 local t = LoadFallbackB()
 local courseMode = GAMESTATE:IsCourseMode()
 
-t[#t+1] = Def.BitmapText {
-	File = "_v 26px bold shadow",
-	InitCommand=function(self) self:x(SCREEN_CENTER_X+140*WideScreenDiff()):y(SCREEN_CENTER_Y-160*WideScreenDiff()):zoom(0.5*WideScreenDiff()) end,
-	OnCommand=function(self) if isFinal() then self:addx(SCREEN_WIDTH) else self:addy(-100/WideScreenDiff()):addx(-24):halign(1) end self:decelerate(0.75) if isFinal() then self:addx(-SCREEN_WIDTH) else self:addy(100/WideScreenDiff()) end end,
-	OffCommand=function(self) self:accelerate(0.75) if isFinal() then self:addx(SCREEN_WIDTH) else self:addy(-100/WideScreenDiff()) end  end,
-	BeginCommand=function(self) self:playcommand("Set") end,
-	SortOrderChangedMessageCommand=function(self) self:playcommand("Set") end,
-	SetCommand=function(self)
-		local s = GAMESTATE:GetSortOrder()
-		if s ~= nil then
-			local s = SortOrderToLocalizedString( s )
-			self:settext( "SORT: " .. string.upper( s ) )
-			self:playcommand("Sort")
-		else return end
-	end
-}
-
 t[#t+1] = loadfile(THEME:GetPathG(Var "LoadingScreen", "BannerReflection"))() .. {
 	InitCommand=function(self)
 		self:name("BannerReflection")
@@ -228,5 +211,22 @@ if ShowStandardDecoration("CourseContentsList") then
 		end
 	}
 end
+
+t[#t+1] = Def.BitmapText {
+	File = "_v 26px bold shadow",
+	InitCommand=function(self) self:x(isFinal() and SCREEN_CENTER_X+140*WideScreenDiff() or SCREEN_CENTER_X+124*WideScreenDiff()):y(SCREEN_CENTER_Y-154*WideScreenDiff()):zoom(0.5*WideScreenDiff()) end,
+	OnCommand=function(self) if isFinal() then self:addx(SCREEN_WIDTH) else self:addy(-100/WideScreenDiff()):addx(-24):halign(1) end self:decelerate(0.75) if isFinal() then self:addx(-SCREEN_WIDTH) else self:addy(100/WideScreenDiff()) end end,
+	OffCommand=function(self) self:accelerate(0.75) if isFinal() then self:addx(SCREEN_WIDTH) else self:addy(-100/WideScreenDiff()) end  end,
+	BeginCommand=function(self) self:playcommand("Set") end,
+	SortOrderChangedMessageCommand=function(self) self:playcommand("Set") end,
+	SetCommand=function(self)
+		local s = GAMESTATE:GetSortOrder()
+		if s ~= nil then
+			local s = SortOrderToLocalizedString( s )
+			self:settext( "SORT: " .. string.upper( s ) )
+			self:playcommand("Sort")
+		else return end
+	end
+}
 
 return t

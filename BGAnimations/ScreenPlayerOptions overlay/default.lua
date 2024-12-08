@@ -7,7 +7,7 @@ return Def.ActorFrame{
 			OffCommand=function(self) self:accelerate(0.3):addx(-SCREEN_WIDTH) end
 		},
 		loadfile(THEME:GetPathG("_name","badge"))(PLAYER_2)..{
-			InitCommand=function(self) self:x(SCREEN_CENTER_X+24*WideScreenDiff()+SCREEN_WIDTH/2):zoom(WideScreenDiff()):addx(SCREEN_WIDTH):player(PLAYER_2) end,
+			InitCommand=function(self) self:x(SCREEN_CENTER_X+24*WideScreenDiff()+(WideScreenDiff() < 1 and SCREEN_WIDTH/2 or 320)):zoom(WideScreenDiff()):addx(SCREEN_WIDTH):player(PLAYER_2) end,
 			OnCommand=function(self) self:sleep(0.25):decelerate(0.3):addx(-SCREEN_WIDTH) end,
 			OffCommand=function(self) self:accelerate(0.3):addx(SCREEN_WIDTH) end
 		}
