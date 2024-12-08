@@ -389,7 +389,7 @@ return Def.ActorFrame{
 		Def.ActorFrame{
 			Name="PaneDisplayP2",
 			Condition=GAMESTATE:IsHumanPlayer(PLAYER_2),
-			InitCommand=function(self) self:x(SCREEN_RIGHT-SCREEN_WIDTH/5.415/WideScreenDiff()):player(PLAYER_2) end,
+			InitCommand=function(self) self:x(SCREEN_RIGHT/WideScreenDiff()-SCREEN_WIDTH/5.415/WideScreenDiff()):player(PLAYER_2) end,
 			loadfile(THEME:GetPathG("_pane","icons"))(PLAYER_2),
 			loadfile(THEME:GetPathG("_pane","fill"))(PLAYER_2),
 			loadfile(THEME:GetPathG("_pane","steps"))(PLAYER_2),
