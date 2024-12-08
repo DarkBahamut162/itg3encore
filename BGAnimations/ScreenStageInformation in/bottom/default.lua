@@ -11,7 +11,7 @@ return Def.ActorFrame{
 	},
 	Def.Banner{
 		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+103*WideScreenDiff()):blend(Blend.Add):fadetop(0.3):croptop(0.3):diffusetopedge(color("#FFFFFF00")):ztest(true) end,
-		OnCommand=function(self) self:playcommand("Set"):rotationz(180):zoomx(-1*WideScreenDiff()):zoomy(WideScreenDiff()):linear(1):y(SCREEN_CENTER_Y+103-33*WideScreenDiff()):diffusealpha(0.2) end,
+		OnCommand=function(self) self:playcommand("Set"):rotationz(180):zoomx(-1*WideScreenDiff()):zoomy(WideScreenDiff()):linear(1):y(SCREEN_CENTER_Y+103*WideScreenDiff()-33*WideScreenDiff()):diffusealpha(0.2) end,
 		SetCommand=function(self)
 			local sel
 			if GAMESTATE:IsCourseMode() then
