@@ -107,9 +107,9 @@ return Def.ActorFrame{
 	},
 	Def.ActorFrame{
 		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y-10):zoom(WideScreenDiff()) end,
-		OnCommand=function(self) if IsHome() and isScreenTitle() then self:CenterX():sleep(0.6):x(SCREEN_CENTER_X-(142/3)*WideScreenDiff()) end end,
+		OnCommand=function(self) if IsHome() and isScreenTitle() then self:CenterX():sleep(0.6):x(SCREEN_CENTER_X-(142/3)*(WideScreenDiff_(16/10))) end end,
 		SetCommand=function(self) if IsHome() and isScreenTitle() then self:x(SCREEN_CENTER_X-(142/3)*WideScreenDiff()) else self:CenterX() end end,
-		ZoomCommand=function(self) if true or SCREEN_WIDTH < 680 then self:zoom(WideScreenDiff()) end end,
+		ZoomCommand=function(self) if IsHome() and isScreenTitle() then self:zoom(WideScreenDiff_(16/10)) else self:zoom(WideScreenDiff()) end end,
 		ScreenChangedMessageCommand=function(self) self:playcommand("Set"):playcommand("Zoom") end,
 		Def.ActorFrame{
 			Name="LogoFrame",
@@ -296,13 +296,13 @@ return Def.ActorFrame{
 		Def.Sprite {
 			Texture = "up",
 			Condition=isFinal(),
-			InitCommand=function(self) self:CenterX():y(SCREEN_TOP-500*WideScreenDiff()):zoom(WideScreenDiff()):valign(0):zoomtowidth(SCREEN_WIDTH) end,
+			InitCommand=function(self) self:CenterX():y(SCREEN_TOP-500*WideScreenDiff()):zoom(WideScreenDiff()):valign(0):zoomtowidth(WideScreenDiff_(16/10) < 1 and SCREEN_WIDTH*4/3 or SCREEN_WIDTH) end,
 			OnCommand=function(self) self:decelerate(0.4):y(SCREEN_TOP) end,
 			OffCommand=function(self) self:accelerate(0.5):addy(-500) end
 		},
 		Def.Sprite {
 			Texture = "base "..(isFinal() and "final" or "normal"),
-			InitCommand=function(self) self:CenterX():y(SCREEN_BOTTOM+100*WideScreenDiff()):zoom(WideScreenDiff()):valign(1) if isFinal() then self:zoomtowidth(SCREEN_WIDTH) end end,
+			InitCommand=function(self) self:CenterX():y(SCREEN_BOTTOM+100*WideScreenDiff()):zoom(WideScreenDiff()):valign(1) if isFinal() then self:zoomtowidth(WideScreenDiff_(16/10) < 1 and SCREEN_WIDTH*4/3 or SCREEN_WIDTH) end end,
 			OnCommand=function(self) self:decelerate(0.4):y(SCREEN_BOTTOM) end,
 			OffCommand=function(self) self:accelerate(0.5):addy(100) end
 		}
@@ -421,7 +421,7 @@ return Def.ActorFrame{
 	},
 	Def.BitmapText {
 		File = "_r bold 30px",
-		InitCommand=function(self) self:x(isFinal() and SCREEN_CENTER_X+5*WideScreenDiff() or SCREEN_LEFT+35*WideScreenDiff()):y(isFinal() and SCREEN_TOP+50*WideScreenDiff() or SCREEN_TOP+40*WideScreenDiff()):shadowlength(2):valign(0):halign(isFinal() and 0.5 or 0):maxwidth(isFinal() and SCREEN_WIDTH/4*3/WideScreenDiff() or SCREEN_WIDTH/WideScreenDiff()):zoom(0.6*WideScreenDiff()) end,
+		InitCommand=function(self) self:x(isFinal() and SCREEN_CENTER_X+5*WideScreenDiff() or SCREEN_LEFT+5):y(isFinal() and SCREEN_TOP+50*WideScreenDiff() or SCREEN_TOP+40*WideScreenDiff()):shadowlength(2):valign(0):halign(isFinal() and 0.5 or 0):maxwidth(isFinal() and SCREEN_WIDTH/4*3/WideScreenDiff_(16/9) or SCREEN_WIDTH/WideScreenDiff()):zoom(0.6*WideScreenDiff()) end,
 		OnCommand=function(self) self:diffusealpha(0):sleep(0.5):linear(0.5):diffusealpha(1) end,
 		BeginCommand=function(self) self:playcommand("Refresh") end,
 		ScreenChangedMessageCommand=function(self) self:playcommand("Refresh") end,

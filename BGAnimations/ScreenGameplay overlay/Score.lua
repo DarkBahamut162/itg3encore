@@ -84,7 +84,7 @@ return Def.ActorFrame{
 		File = "_r bold numbers",
 		Name="Score"..pname(player),
 		InitCommand=function(self)
-			self:visible(not getenv("HideScore"..pname(player))):diffuse(PlayerColor(player)):x(math.floor(scale(player == PLAYER_1 and 0.25 or 0.75,0,1,SCREEN_LEFT,SCREEN_RIGHT))):zoom(WideScreenDiff())
+			self:visible(not getenv("HideScore"..pname(player))):diffuse(PlayerColor(player)):x(math.floor(scale(player == PLAYER_1 and 0.25 or 0.75,0,1,SCREEN_LEFT,SCREEN_RIGHT))):zoom(WideScreenDiff_(16/10))
 			if getenv("Workout") then
 				if IsGame("pump") then
 					if getenv("RotationSolo"..pname(player)) then

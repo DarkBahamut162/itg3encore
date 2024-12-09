@@ -285,7 +285,7 @@ return Def.ActorFrame{
                 self:rotationz(pn == PLAYER_1 and -90 or 90)
                 self:rotationx(pn == PLAYER_1 and 0 or 180)
                 self:x(pn == PLAYER_1 and -46 or 46):y(175)
-                self:diffusealpha(0):zoomy(0):linear(0.5):zoomy(1.0-0.4*math.max(854-SCREEN_WIDTH, 0)/214):diffusealpha(showNoteGraph == 4 and 0.5 or 1)
+                self:diffusealpha(0):zoomy(0):linear(0.5):zoomy(1.0-0.4*math.max(854-SCREEN_WIDTH/WideScreenDiff_(16/9), 0)/214):diffusealpha(showNoteGraph == 4 and 0.5 or 1)
             end
         },
         Def.ActorMultiVertex{
@@ -301,7 +301,7 @@ return Def.ActorFrame{
                 self:rotationx(pn == PLAYER_1 and 0 or 180)
                 self:x(pn == PLAYER_1 and -46 or 46):y(175)
                 self:blend(Blend.Subtract)
-                self:diffusealpha(0):zoomy(0):linear(0.5):zoomy(1.0-0.4*math.max(854-SCREEN_WIDTH, 0)/214):diffusealpha(1)
+                self:diffusealpha(0):zoomy(0):linear(0.5):zoomy(1.0-0.4*math.max(854-SCREEN_WIDTH/WideScreenDiff_(16/9), 0)/214):diffusealpha(1)
             end
         },
         Def.ActorMultiVertex{
@@ -315,7 +315,7 @@ return Def.ActorFrame{
                 self:rotationz(pn == PLAYER_1 and -90 or 90)
                 self:rotationx(pn == PLAYER_1 and 0 or 180)
                 self:x(pn == PLAYER_1 and -46 or 46):y(175)
-                self:diffusealpha(0):zoomy(0):linear(0.5):zoomy(1.0-0.4*math.max(854-SCREEN_WIDTH, 0)/214):diffusealpha(1)
+                self:diffusealpha(0):zoomy(0):linear(0.5):zoomy(1.0-0.4*math.max(854-SCREEN_WIDTH/WideScreenDiff_(16/9), 0)/214):diffusealpha(1)
             end
         },
     },

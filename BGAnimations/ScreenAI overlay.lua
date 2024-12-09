@@ -453,7 +453,7 @@ return Def.ActorFrame{
 	OnCommand=function(self) SCREENMAN:GetTopScreen():AddInputCallback(InputHandler) end,
 	Def.ActorFrame{
 		Name="Skill",
-		InitCommand=function(self) self:x(SCREEN_LEFT+86*WideScreenDiff()):y(SCREEN_TOP+80*WideScreenDiff()) skill = self:GetChildren() end,
+		InitCommand=function(self) self:x(SCREEN_LEFT+86*WideScreenDiff_(16/10)):y(SCREEN_TOP+80*WideScreenDiff()) skill = self:GetChildren() end,
         Def.BitmapText {
             File = "_z bold 36px",
 			Name="Current",
@@ -465,7 +465,7 @@ return Def.ActorFrame{
             File = "_z bold 36px",
 			Name="Default",
 			Text="Default Values",
-			InitCommand=function(self) self:x(SCREEN_CENTER_X-86*WideScreenDiff()):shadowlength(1):zoom(1/3*WideScreenDiff()):horizalign(left):diffusebottomedge(color("0.75,0.75,0.75")) end
+			InitCommand=function(self) self:x(SCREEN_CENTER_X-86*WideScreenDiff_(16/10)):shadowlength(1):zoom(1/3*WideScreenDiff()):horizalign(left):diffusebottomedge(color("0.75,0.75,0.75")) end
 		},
         Def.BitmapText {
             File = "_z bold 36px",
@@ -489,7 +489,7 @@ return Def.ActorFrame{
 	},
 	Def.ActorFrame{
 		Name="Weight",
-		InitCommand=function(self) self:x(SCREEN_LEFT+86*WideScreenDiff()):y(SCREEN_TOP+160*WideScreenDiff()) weight = self:GetChildren() end,
+		InitCommand=function(self) self:x(SCREEN_LEFT+86*WideScreenDiff_(16/10)):y(SCREEN_TOP+160*WideScreenDiff()) weight = self:GetChildren() end,
 		Def.Quad{
 			Name="Current",
 			InitCommand=function(self) self:CenterX():zoomto(SCREEN_WIDTH,16*WideScreenDiff()):diffuseshift():effectcolor1(color("#bed0ff80")):effectcolor2(color("#76767640")):effectoffset(0):effectclock("timerglobal"):faderight(0.5) end

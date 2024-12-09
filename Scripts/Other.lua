@@ -283,11 +283,19 @@ function Center1Player()
 end
 
 function WideScreenDiff()
-	return math.min(1,GetScreenAspectRatio() / (16/10))
+	return math.min(1,GetScreenAspectRatio() / (4/3))
+end
+
+function WideScreenDiff_(aspect)
+	return math.min(1,GetScreenAspectRatio() / aspect)
 end
 
 function WideScreenSemiDiff()
 	return 1-(1-WideScreenDiff())*0.5
+end
+
+function WideScreenSemiDiff_(aspect)
+	return 1-(1-WideScreenDiff_(aspect))*0.5
 end
 
 function GetLives(player)

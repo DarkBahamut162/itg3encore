@@ -20,7 +20,7 @@ return Def.ActorFrame{
 	},
 	Def.Sprite {
 		Texture = "focus square "..(isFinal() and "final" or "normal"),
-		InitCommand=function(self) self:x(posX):y(SCREEN_CENTER_Y+60):zoomx(width_field/width_square*WideScreenDiff()):zoomy(1.05):diffuseblink():effectperiod(0.5):diffusealpha(0) end,
+		InitCommand=function(self) self:x(posX):y(SCREEN_CENTER_Y+60):zoomx(width_field/width_square*WideScreenDiff_(16/10)):zoomy(1.05):diffuseblink():effectperiod(0.5):diffusealpha(0) end,
 		OnCommand=function(self) self:sleep(6):linear(0.3):diffusealpha(1):sleep(4):linear(0.3):diffusealpha(0) end
 	},
 	Def.BitmapText {
@@ -31,7 +31,7 @@ return Def.ActorFrame{
 	},
 	Def.Sprite {
 		Texture = "focus rect "..(isFinal() and "final" or "normal"),
-		InitCommand=function(self) self:x(posX):y(SCREEN_CENTER_Y-124):zoomx(width_field/width_square*WideScreenDiff()):zoomy(0.8*WideScreenDiff()):diffuseblink():effectperiod(0.5):diffusealpha(0) end,
+		InitCommand=function(self) self:x(posX):y(SCREEN_CENTER_Y-124):zoomx(width_field/width_square*WideScreenDiff_(16/10)):zoomy(0.8*WideScreenDiff_(16/10)):diffuseblink():effectperiod(0.5):diffusealpha(0) end,
 		OnCommand=function(self) self:sleep(12):linear(0.3):diffusealpha(1):sleep(4):linear(0.3):diffusealpha(0) end
 	},
 	Def.BitmapText {
@@ -42,7 +42,7 @@ return Def.ActorFrame{
 	},
 	Def.Sprite {
 		Texture = "focus rect "..(isFinal() and "final" or "normal"),
-		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+15):zoom(WideScreenDiff()):rotationz(90):diffuseblink():effectperiod(0.5):diffusealpha(0) end,
+		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+15):zoom(WideScreenDiff_(16/10)):rotationz(90):diffuseblink():effectperiod(0.5):diffusealpha(0) end,
 		OnCommand=function(self) self:sleep(18):linear(0.3):diffusealpha(1):sleep(4):linear(0.3):diffusealpha(0) end
 	},
 	Def.BitmapText {

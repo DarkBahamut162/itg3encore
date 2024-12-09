@@ -7,7 +7,7 @@ return Def.BitmapText {
 	File = "_r bold 30px",
 	Name="DeltaSeconds",
 	InitCommand=function(self)
-		self:valign(1):halign(0):zoom(0.5*WideScreenDiff()):y(72.5*WideScreenDiff())
+		self:visible(not getenv("HideScore"..pname(player))):valign(1):halign(0):zoom(0.5*WideScreenDiff_(16/10)):y(72.5*WideScreenDiff())
 		if player == PLAYER_1 then
 			posX = THEME:GetMetric(Var "LoadingScreen","PlayerP1OnePlayerOneSideX")
 		else
@@ -17,12 +17,12 @@ return Def.BitmapText {
 			if GAMESTATE:GetNumPlayersEnabled() == 1 and getenv("RotationSolo"..pname(player)) then posX = THEME:GetMetric(Var "LoadingScreen","PlayerP1OnePlayerTwoSidesX") end
 			self:addy(10)
 		end
-		self:x(posX + 72*WideScreenDiff()):shadowlength(1):skewx(-0.125)
+		self:x(posX + 72*WideScreenDiff_(16/10)):shadowlength(1):skewx(-0.125)
 	end,
 	CurrentSongChangedMessageCommand=function(self)
 		if GAMESTATE:IsCourseMode() then 
 			local gainSeconds = GAMESTATE:GetCurrentCourse(player):GetCourseEntry(GAMESTATE:GetCourseSongIndex()):GetGainSeconds()
-			self:stoptweening():diffuseshift():diffusealpha(1):zoom(0.75*WideScreenDiff()):linear(0.3):zoom(0.6*WideScreenDiff()):sleep(3):linear(0.5):diffusealpha(0)
+			self:stoptweening():diffuseshift():diffusealpha(1):zoom(0.75*WideScreenDiff_(16/10)):linear(0.3):zoom(0.6*WideScreenDiff_(16/10)):sleep(3):linear(0.5):diffusealpha(0)
 			self:settextf("%+1.1fs", gainSeconds)
 		end
 	end,
@@ -36,7 +36,7 @@ return Def.BitmapText {
 					local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(player)
 					local time = pss:GetLifeRemainingSeconds()
 					local width = time < 10*60 and 72 or 86
-					self:stoptweening():stopeffect():x( posX + width*WideScreenDiff() ):diffusealpha(1):zoom(0.75*WideScreenDiff()):linear(0.3):zoom(0.6*WideScreenDiff()):sleep(1):diffusealpha(0)
+					self:stoptweening():stopeffect():x( posX + width*WideScreenDiff_(16/10) ):diffusealpha(1):zoom(0.75*WideScreenDiff_(16/10)):linear(0.3):zoom(0.6*WideScreenDiff_(16/10)):sleep(1):diffusealpha(0)
 					self:playcommand( "GainSeconds" )
 					self:playcommand( tns )
 					self:settextf( "%+1.1fs", PREFSMAN:GetPreference(prefname) )

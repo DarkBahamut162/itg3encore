@@ -25,7 +25,7 @@ local profile_id = GAMESTATE:GetEditLocalProfileID()
 -- enter a number, and the prompt is updated by running its SetCommand.
 local number_entry = new_numpad_entry{
 	Name = "number_entry",
-	InitCommand=function(self) self:diffusealpha(0):xy(_screen.cx, _screen.cy):zoom(WideScreenDiff()) end,
+	InitCommand=function(self) self:diffusealpha(0):xy(_screen.cx, _screen.cy):zoom(WideScreenDiff_(16/10)) end,
 	InvalidValueCommand=function(self) SCREENMAN:PlayInvalidSound() end,
 	EntryDoneCommand=function(self) SCREENMAN:PlayStartSound() end,
 	value_color = PlayerColor(master),
@@ -139,9 +139,9 @@ menu_items[#menu_items+1] = {
 }
 
 local menu_pos = 1
-local menu_start = (SCREEN_CENTER_Y-36)*WideScreenSemiDiff()
-local menu_x = 100*WideScreenDiff()
-local value_x = SCREEN_RIGHT-500*WideScreenDiff()
+local menu_start = (SCREEN_CENTER_Y-36)*WideScreenSemiDiff_(16/10)
+local menu_x = 100*WideScreenDiff_(16/10)
+local value_x = SCREEN_RIGHT-500*WideScreenDiff_(16/10)
 local fader
 local cursor_on_menu = "main"
 local menu_item_actors = {}
@@ -370,7 +370,7 @@ for i, item in ipairs(menu_items) do
 				Name = "val",
 				Font = "Common Normal",
 				Text = value_text,
-				InitCommand=function(self) self:diffuse(Color.White):zoom(0.75*WideScreenDiff()):horizalign(left) end,
+				InitCommand=function(self) self:diffuse(Color.White):zoom(0.75*WideScreenDiff_(16/10)):horizalign(left) end,
 				SetCommand=function(self, param) self:settext(param[1]) end
 			}
 		}
@@ -454,7 +454,7 @@ for i, item in ipairs(menu_items) do
 				-- you change this from an BitmapText to a ActorFrame, you will have
 				-- to make the FitCommand of your cursor look at the children.
 				menu_item_actors[i] = self
-				self:x(menu_x*WideScreenDiff()):diffuse(Color.White):horizalign(left):zoom(0.75*WideScreenDiff()):diffusealpha(0):linear(0.2):diffusealpha(1)
+				self:x(value_x-16):diffuse(Color.White):horizalign(right):zoom(0.75*WideScreenDiff_(16/10)):diffusealpha(0):linear(0.2):diffusealpha(1)
 			end,
 			UpdateCursorMessageCommand=function(self,param) self:stoptweening():linear(0.16):diffusealpha(param.ind == i and 1 or 0.6) end,
 			OffCommand=function(self) self:linear(0.2):diffusealpha(0) end
@@ -468,11 +468,11 @@ local ProfileImage = AvI and AvI or THEME:GetPathG("UserProfile","generic icon")
 
 args[#args+1] = Def.ActorFrame{
     Name = "InfoFrame",
-	InitCommand=function(self) self:zoom(WideScreenDiff()):addy(-6) end,
+	InitCommand=function(self) self:zoom(WideScreenDiff_(16/10)):addy(-6) end,
     OnCommand=function(self) self:diffusealpha(0):addy(-20):decelerate(0.2):addy(20):diffusealpha(1) end,
     OffCommand=function(self) self:accelerate(0.2):addy(-20):diffusealpha(0) end,
 	Def.Quad{
-		OnCommand=function(self) self:xy( 0,136 ):halign(0):zoomto( SCREEN_WIDTH, itemspacing*4 ):diffusealpha(0):linear(0.2):diffuse( color("#00000076") ) end,
+		OnCommand=function(self) self:xy( 0,136 ):halign(0):zoomto( SCREEN_WIDTH/WideScreenDiff_(16/10), itemspacing*4 ):diffusealpha(0):linear(0.2):diffuse( color("#00000076") ) end,
 		OffCommand=function(self) self:linear(0.2):diffusealpha(0) end
 	},
     Def.Sprite{
