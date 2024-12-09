@@ -18,7 +18,6 @@ local perfect = 0
 if offsetInfo then
 	for t in ivalues(offsetInfo[PLAYER_1]) do
 		if t[2] and type(t[2]) == "number" then
-			t[2] = (math.floor(t[2]*1000))/1000
 			if t[2] < 0 then
 				early[t[3]] = early[t[3]] + 1
 			elseif t[2] > 0 then
@@ -32,6 +31,7 @@ end
 
 return Def.ActorFrame{
 	Def.ActorFrame{
+		InitCommand=function(self) if WideScreenDiff_(1.4) < 1 and ThemePrefs.Get("ShowOffset") and getenv("EvalComboP1") then self:zoomx(5/6) end end,
 		Name="JudgeFrames",
 		Def.ActorFrame{
 			Name="W1",
@@ -138,6 +138,7 @@ return Def.ActorFrame{
 	},
 	Def.ActorFrame{
 		Condition=ThemePrefs.Get("ShowOffset") and getenv("EvalComboP1"),
+		InitCommand=function(self) if WideScreenDiff_(1.4) < 1 then self:zoomx(5/6) end end,
 		Name="OffsetFrames",
 		Def.ActorFrame{
 			Name="W1",

@@ -41,7 +41,6 @@ if offsetInfo then
 	for pn in ivalues(GAMESTATE:GetEnabledPlayers()) do
 		for t in ivalues(offsetInfo[pn]) do
 			if t[2] and type(t[2]) == "number" then
-				t[2] = (math.floor(t[2]*1000))/1000
 				if t[2] < 0 then
 					early[pn][t[3]] = early[pn][t[3]] + 1
 				elseif t[2] > 0 then
