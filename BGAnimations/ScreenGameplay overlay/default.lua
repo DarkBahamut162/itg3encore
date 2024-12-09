@@ -317,7 +317,7 @@ local t = Def.ActorFrame{
 		Def.BitmapText {
 			File = "_z 36px black",
 			Text="DEMO",
-			InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+43*WideScreenDiff()):zoom(0.7*WideScreenDiff()) end,
+			InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+43*WideScreenDiff()):zoom(0.7*WideScreenSemiDiff()) end,
 			OnCommand=function(self) self:pulse():effectmagnitude(1.0,0.95,0):effectclock('beat'):effectperiod(1) end
 		},
 		Def.Sprite {

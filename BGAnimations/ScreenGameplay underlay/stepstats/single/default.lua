@@ -99,7 +99,7 @@ return Def.ActorFrame{
 			end
 			if graph then
 				local plus = pn == PLAYER_1 and 72 or -72
-				self:addx(solo and plus/2 or plus)
+				self:addx(solo and plus/2*WideScreenDiff() or plus*WideScreenDiff())
 			end
 			self:zoom(solo and 0.75*WideScreenDiff() or 1*WideScreenDiff())
 			:addx(pn == PLAYER_1 and SCREEN_WIDTH/2 or -SCREEN_WIDTH/2)
