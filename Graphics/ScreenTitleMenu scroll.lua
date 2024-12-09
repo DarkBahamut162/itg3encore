@@ -14,8 +14,8 @@ return Def.ActorFrame{
 	Def.BitmapText {
 		File = isScreenTitle() and "_ScreenTitleMenu choices" or "stencil",
 		InitCommand=function(self) self:settext(gc:GetText()):halign(1) end,
-		GainFocusCommand=function(self) self:diffuseshift():effectperiod(0.5):effectcolor1(itemColor):effectcolor2(Alpha(itemColor,0.5)):effectclock("timer"):zoom(0.8*WideScreenDiff()) end,
-		LoseFocusCommand=function(self) self:stoptweening():stopeffect():zoom(0.7*WideScreenDiff()) end,
+		GainFocusCommand=function(self) self:diffuseshift():effectperiod(0.5):effectcolor1(itemColor):effectcolor2(Alpha(itemColor,0.5)):effectclock("timer"):zoom(0.8*WideScreenSemiDiff()) end,
+		LoseFocusCommand=function(self) self:stoptweening():stopeffect():zoom(0.7*WideScreenSemiDiff()) end,
 		DisabledCommand=function(self) self:diffuse(color("0.5,0.5,0.5,1")) end
 	}
 }
