@@ -117,7 +117,7 @@ I could have actually forked it but I didn't. My reasoning was that it wasn't go
 * Added **TimingData** and **"GrooveRadar"** Display to **_panes**
 * Added **StepCounter** to **_panes** if enabled *(Project OutFox only)*
 * Added **Player Avatar** to **_panes** if selected in profile *(Project OutFox AND WideScreen only)*
-* Added **CDTitle** next to the banner frame *(WideScreen only)*
+* Added **CDTitle** next to the banner frame *(VerticalScreen & WideScreen only)*
 * Added and combined both **HasLua** and **Rounds/Length specification** between **Artist** and **BPM** line
   * Added indication for **HasNoKeysounds** & **ContainsNullMeasure** in **BE-MU / PO-MU Mode** *(Project OutFox only)*
 

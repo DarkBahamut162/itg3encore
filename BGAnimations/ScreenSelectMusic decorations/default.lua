@@ -154,13 +154,20 @@ local function CDTitleUpdate(self)
 end
 
 t[#t+1] = Def.ActorFrame {
-	Condition=IsUsingWideScreen(),
-	InitCommand=function(self) self:x(SCREEN_CENTER_X+302):y(SCREEN_CENTER_Y-88):rotationz(90):SetUpdateFunction(CDTitleUpdate) end,
+	Condition=IsUsingWideScreen() or GetScreenAspectRatio() <= 1,
+	InitCommand=function(self)
+		self:SetUpdateFunction(CDTitleUpdate)
+		if IsUsingWideScreen() then
+			self:x(SCREEN_CENTER_X+302):y(SCREEN_CENTER_Y-88):rotationz(90)
+		elseif GetScreenAspectRatio() <= 1 then
+			self:x(SCREEN_CENTER_X+302*WideScreenDiff()):y(SCREEN_CENTER_Y-154*WideScreenDiff()):zoom(WideScreenDiff())
+		end
+	end,
 	OnCommand=function(self) self:addx(SCREEN_WIDTH):decelerate(0.75):addx(-SCREEN_WIDTH) end,
 	OffCommand=function(self) self:accelerate(0.75):addx(SCREEN_WIDTH) end,
 	Def.Sprite {
 		Name="CDTitle",
-		InitCommand=function(self) self:vertalign(bottom) end,
+		InitCommand=function(self)self:vertalign(bottom) if GetScreenAspectRatio() <= 1 then self:horizalign(right) end end,
 		OnCommand=function(self) self:effectclock('beat'):diffuseramp():effectoffset(0.2):effectcolor1(color("#808080FF")):effectcolor2(color("#FFFFFFFF")):effectperiod(1):diffusealpha(0):linear(0.4):diffusealpha(1) end
 	}
 }
@@ -214,8 +221,8 @@ end
 
 t[#t+1] = Def.BitmapText {
 	File = "_v 26px bold shadow",
-	InitCommand=function(self) self:x(isFinal() and SCREEN_CENTER_X+140*WideScreenDiff() or SCREEN_CENTER_X+124*WideScreenDiff()):y(SCREEN_CENTER_Y-154*WideScreenDiff()):zoom(0.5*WideScreenDiff()) end,
-	OnCommand=function(self) if isFinal() then self:addx(SCREEN_WIDTH) else self:addy(-100/WideScreenDiff()):addx(-24):halign(1) end self:decelerate(0.75) if isFinal() then self:addx(-SCREEN_WIDTH) else self:addy(100/WideScreenDiff()) end end,
+	InitCommand=function(self) self:x(SCREEN_CENTER_X+140*WideScreenDiff()):y(SCREEN_CENTER_Y-154*WideScreenDiff()):zoom(0.5*WideScreenDiff()) end,
+	OnCommand=function(self) if isFinal() then self:addx(SCREEN_WIDTH) else self:addy(-100/WideScreenDiff()) end self:decelerate(0.75) if isFinal() then self:addx(-SCREEN_WIDTH) else self:addy(100/WideScreenDiff()) end end,
 	OffCommand=function(self) self:accelerate(0.75) if isFinal() then self:addx(SCREEN_WIDTH) else self:addy(-100/WideScreenDiff()) end  end,
 	BeginCommand=function(self) self:playcommand("Set") end,
 	SortOrderChangedMessageCommand=function(self) self:playcommand("Set") end,
