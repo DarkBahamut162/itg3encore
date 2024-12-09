@@ -38,7 +38,7 @@ local commands = {
             Name="AFT",
             InitCommand=function(self)
                 this.AftContainer = self
-                self:SetWidth(this.Width):SetHeight(this.Height):EnableAlphaBuffer(true):Create():SetUpdateFunction(ScrollerUpdate)
+                self:SetWidth(math.max(this.Width,SCREEN_WIDTH)):SetHeight(this.Height):EnableAlphaBuffer(true):Create():SetUpdateFunction(ScrollerUpdate)
             end,
             Def.ActorFrame{
                 Name="TextContainer",
