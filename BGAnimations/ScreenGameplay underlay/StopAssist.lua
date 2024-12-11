@@ -5,7 +5,7 @@ local style = GAMESTATE:GetCurrentStyle()
 
 local mlevel = GAMESTATE:IsCourseMode() and "ModsLevel_Stage" or "ModsLevel_Preferred"
 local currentMini = 1-math.round(GAMESTATE:GetPlayerState(player):GetPlayerOptions(mlevel):Mini()*50) / 100
-local filterWidth = isOutFox() and GAMESTATE:GetStyleFieldSize(pNum-1) * currentMini or 64 * 4 * currentMini
+local filterWidth = isOutFox() and GAMESTATE:GetStyleFieldSize(player) * currentMini or style:GetWidth(player) * currentMini
 
 if string.find(style:GetName(),"double") then
 	if IsGame("be-mu") or IsGame("beat") then
