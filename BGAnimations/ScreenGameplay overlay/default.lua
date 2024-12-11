@@ -97,6 +97,7 @@ local t = Def.ActorFrame{
 		end
 	end,
 	Def.ActorFrame{
+		Condition=not getenv("Workout"),
 		InitCommand = function(self) c = self:GetChildren() end,
 		OnCommand=function(self) self:addy(-100):sleep(0.5):decelerate(0.8):addy(100) end,
 		OffCommand=function(self) if not IsGame("pump") then if AnyPlayerFullComboed() then self:sleep(1) end self:accelerate(0.8):addy(-100) end end,
