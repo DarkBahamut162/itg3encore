@@ -276,7 +276,7 @@ return Def.ActorFrame{
     },
     Def.ActorFrame{
         Def.ActorMultiVertex{
-            DoneLoadingNextSongMessageCommand=function(self) self:playcommand("Init") end,
+            DoneLoadingNextSongMessageCommand=function(self) self:diffusealpha(0):playcommand("Init") end,
             InitCommand=function(self)
                 local vertices = showNoteGraph == 4 and GetVerticesAlt(UpdateGraphAlt()) or GetVertices(UpdateGraph())
                 self:SetDrawState({Mode = 'DrawMode_Quads'})
@@ -289,7 +289,7 @@ return Def.ActorFrame{
             end
         },
         Def.ActorMultiVertex{
-            DoneLoadingNextSongMessageCommand=function(self) self:playcommand("Init") end,
+            DoneLoadingNextSongMessageCommand=function(self) self:diffusealpha(0):playcommand("Init") end,
             InitCommand=function(self)
                 local update = showNoteGraph == 4 and UpdateGraphAlt() or UpdateGraph()
                 for i,value in pairs( update ) do update[i] = math.max(0,(update[i]-20)/4) end
@@ -306,7 +306,7 @@ return Def.ActorFrame{
         },
         Def.ActorMultiVertex{
             Condition=getenv("ShowSpeedAssist"..pname(pn)) or getenv("ShowStopAssist"..pname(pn)),
-            DoneLoadingNextSongMessageCommand=function(self) self:sleep(0.05):playcommand("Init") end,
+            DoneLoadingNextSongMessageCommand=function(self) self:diffusealpha(0):playcommand("Init") end,
             InitCommand=function(self)
                 local vertices = GetVerticesAssist(UpdateGraphAssist())
                 self:SetDrawState({Mode = 'DrawMode_Quads'})
