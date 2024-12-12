@@ -4,7 +4,6 @@ local pn = GAMESTATE:GetMasterPlayerNumber()
 local graph = getenv("ShowNoteGraph"..pname(pn)) > 1
 local solo = getenv("RotationSolo"..pname(pn))
 local startX = pn == PLAYER_1 and SCREEN_WIDTH/4 or -SCREEN_WIDTH/4
-startX = startX * WideScreenDiff_(16/10)
 if graph and getenv("ShowStats"..pname(pn)) == 0 then startX = startX * 2 end
 local SongOrCourse,StepsOrTrail,scorelist,topscore
 local mines,holds,rolls,holdsAndRolls = 0,0,0,0
@@ -99,7 +98,7 @@ return Def.ActorFrame{
 				self:y(solo and 34*WideScreenDiff_(16/10) or 0)
 			end
 			if graph then
-				local plus = pn == PLAYER_1 and 72 or -72
+				local plus = pn == PLAYER_1 and 72*WideScreenDiff_(16/10) or -72*WideScreenDiff_(16/10)
 				self:addx(solo and plus/2*WideScreenDiff_(16/10) or plus*WideScreenDiff_(16/10))
 			end
 			self:zoom(solo and 0.75*WideScreenDiff_(16/10) or 1*WideScreenDiff_(16/10))
