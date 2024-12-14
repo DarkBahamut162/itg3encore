@@ -58,7 +58,7 @@ local MeterX = {
 local function LoadLifeMeterFramePart(f)
 	return LoadActor( THEME:GetPathG("_frame", "1D"),
 		{ 121/784, 80/784, 48/784, 106/784, 74/784, 106/784, 48/784, 80/784, 121/784 },
-		LoadActor( f )
+		Def.Sprite { Texture = f }
 	) .. {
 		InitCommand=function(self) self:CenterX():y(SCREEN_TOP+32):playcommand("SetSize", { Width=LifeMeterTotalWidth() }) end
 	}
@@ -82,10 +82,8 @@ local TopFrame = Def.ActorFrame {
 	},
 	Def.SongMeterDisplay {
 		InitCommand=function(self) self:CenterX():y(SCREEN_TOP+6) end,
-		Stream = LoadActor("progress bar"),
-		Tip = LoadActor( "progress tip" ) .. {
-			InitCommand=function(self) self:halign(0) end
-		},
+		Stream = Def.Sprite { Texture = "progress bar" },
+		Tip = Def.Sprite { Texture = "progress tip", InitCommand=function(self) self:halign(0) end },
 		BeginCommand=function(self)
 			local Dummy = self:GetParent():GetChild("Dummy")
 			local Width = ProgressMeterWidth(Dummy)
@@ -104,7 +102,7 @@ local function Quantize( f, fRoundInterval ) return math.floor( (f + fRoundInter
 
 local function MakeLifeMeterLives(pn, frame)
 	local f = Def.ActorFrame {
-		LoadActor(frame) .. { InitCommand=function(self) self:zoomx(pn == PLAYER_1 and 1 or -1) end }
+		Def.Sprite { Texture = frame, InitCommand=function(self) self:zoomx(pn == PLAYER_1 and 1 or -1) end }
 	}
 
 	f[#f+1] = Def.BitmapText {
@@ -247,14 +245,14 @@ local function MakeLifeMeter(side)
 
 	local f = Def.ActorFrame {
 		Def.Quad { Name = "HexMask" },
-		LoadActor("meter tip") .. { Name = "Tip" },
-		LoadActor("meter grad") .. { Name = "Grad" },
-		LoadActor("meter danger") .. { Condition = showDanger , Name = "Danger" },
-		LoadActor("meter honeycomb") .. { Name = "Hex" },
+		Def.Sprite { Texture = "meter tip", Name = "Tip" },
+		Def.Sprite { Texture = "meter grad", Name = "Grad" },
+		Def.Sprite { Texture = "meter danger", Condition = showDanger , Name = "Danger" },
+		Def.Sprite { Texture = "meter honeycomb", Name = "Hex" },
 		loadfile(THEME:GetPathB("ScreenGameplay","overlay/_piupro/life meter ticks"))(TicksWidth) .. { Name = "Tick" },
-		LoadActor("meter filled color") .. { Name = "Filled" },
-		LoadActor("meter honeycomb") .. { Name = "FilledHex" },
-		LoadActor("meter danger") .. { Name = "Dead" },
+		Def.Sprite { Texture = "meter filled color", Name = "Filled" },
+		Def.Sprite { Texture = "meter honeycomb", Name = "FilledHex" },
+		Def.Sprite { Texture = "meter danger", Name = "Dead" },
 		Def.Actor { Name = "TweenHelper" },
 		Def.Actor { Name = "HexTweenHelper" }
 	}
@@ -387,7 +385,7 @@ for side in ivalues(PlayerNumber) do
 	local function LoadBubblePart(part)
 		return LoadActor( THEME:GetPathG("_frame", "1D"),
 			{ 15/348, 318/348, 15/348 },
-			LoadActor(part)
+			Def.Sprite { Texture = part }
 		)
 	end
 
@@ -452,7 +450,7 @@ TopFrame[#TopFrame+1] = Def.BitmapText {
 }
 
 local function MakeStageCreditIcons(pn)
-	local Icon = LoadActor("stage credit icon") .. { InitCommand=function(self) self:pause() end }
+	local Icon = Def.Sprite { Texture = "stage credit icon", InitCommand=function(self) self:pause() end }
 	local Total
 
 	if GAMESTATE:IsCourseMode() then
@@ -499,11 +497,13 @@ for side in ivalues(PlayerNumber) do
 	local pn = Player[side]
 	local fFlip = (side == PLAYER_1 and 1 or -1 )
 	local PlayerFrame = Def.ActorFrame{
-		LoadActor(side == PLAYER_1 and "difficulty color p1" or "difficulty color p2") .. {
+		Def.Sprite {
+			Texture = side == PLAYER_1 and "difficulty color p1" or "difficulty color p2",
 			Name="Color",
 			InitCommand=function(self) self:x(66 * fFlip):y(17) end
 		},
-		LoadActor(side == PLAYER_1 and "difficulty frame p1" or "difficulty frame p2") .. {
+		Def.Sprite {
+			Texture = side == PLAYER_1 and "difficulty frame p1" or "difficulty frame p2",
 			InitCommand=function(self) self:x(66 * fFlip):y(17) end
 		},
 		Def.BitmapText {
