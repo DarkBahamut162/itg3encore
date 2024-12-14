@@ -373,8 +373,11 @@ function JudgmentTransformCommand( self, params )
 	local ShowMovePlayerStats = getenv("ShowMovePlayerStats"..pname(params.Player)) or 3
 	local add = SCREEN_CENTER_Y/5*(ShowMovePlayerStats-3)
 	if params.bReverse then y = y * -1 end
+	local zoom = isOutFox() and 1 or (1+math.min(1,NotefieldZoom()))/2
+
 	self:x( 0 )
-	self:y( y + add )
+	self:y( y*zoom + add )
+	self:zoom( zoom )
 end
 
 function JudgmentTransformSharedCommand( self, params )
@@ -382,8 +385,11 @@ function JudgmentTransformSharedCommand( self, params )
 	local ShowMovePlayerStats = getenv("ShowMovePlayerStats"..pname(params.Player)) or 3
 	local add = SCREEN_CENTER_Y/5*(ShowMovePlayerStats-3)
 	if params.bReverse then y = 30 end
+	local zoom = isOutFox() and 1 or (1+math.min(1,NotefieldZoom()))/2
+
 	self:x( 0 )
-	self:y( y + add )
+	self:y( y*zoom + add )
+	self:zoom( zoom )
 end
 
 function ComboTransformCommand( self, params )
@@ -391,9 +397,11 @@ function ComboTransformCommand( self, params )
 	local ShowMovePlayerStats = getenv("ShowMovePlayerStats"..pname(params.Player)) or 3
 	local add = SCREEN_CENTER_Y/5*(ShowMovePlayerStats-3)
 	if params.bReverse then y = -40 end
+	local zoom = isOutFox() and 1 or (1+math.min(1,NotefieldZoom()))/2
 
 	self:x( 0 )
-	self:y( y + add )
+	self:y( y*zoom + add )
+	self:zoom( zoom )
 end
 
 function FindInTable(needle, haystack)
