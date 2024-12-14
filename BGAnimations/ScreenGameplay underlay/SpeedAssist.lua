@@ -1,6 +1,5 @@
 local c,cDl,cDr,cUl,cUr
 local player = ...
-local pNum = (player == PLAYER_1) and 1 or 2
 local style = GAMESTATE:GetCurrentStyle()
 local rotate = (IsGame("be-mu") or IsGame("beat") or IsGame("po-mu")) and -90 or 90
 local reverse = GAMESTATE:GetPlayerState(player):GetCurrentPlayerOptions():Reverse() ~= 0
@@ -15,7 +14,7 @@ local widthZoom = Center1Player() and 1 or WideScreenDiff()
 
 if not isOutFox() then filterWidth = filterWidth * math.min(1,NotefieldZoom()) end
 if isOutFox() then filterWidth = filterWidth * WideScreenDiff() end
-if getenv("EffectVibrateP"..pNum) then filterWidth = filterWidth + (30 * currentMini) end
+if getenv("EffectVibrate"..pname(player)) then filterWidth = filterWidth + (30 * currentMini) end
 
 local SpeedDowns,SpeedUps,timingData,temp
 
@@ -58,7 +57,7 @@ local function Update(self, delta)
 		tmpDelta = totalDelta
 
 		local ms = GAMESTATE:GetCurMusicSeconds()
-		if getenv("ShowSpeedAssistP"..pNum) then
+		if getenv("ShowSpeedAssist"..pname(player)) then
 			if SpeedDowns[SDi] and SpeedDowns[SDi] - 1 < ms then
 				SDa = true
 				SDi = SDi + 1

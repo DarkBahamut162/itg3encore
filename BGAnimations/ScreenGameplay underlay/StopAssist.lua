@@ -1,6 +1,5 @@
 local c
 local player = ...
-local pNum = (player == PLAYER_1) and 1 or 2
 local style = GAMESTATE:GetCurrentStyle()
 
 local mlevel = GAMESTATE:IsCourseMode() and "ModsLevel_Stage" or "ModsLevel_Preferred"
@@ -12,7 +11,7 @@ local widthZoom = Center1Player() and 1 or WideScreenDiff()
 
 if not isOutFox() then filterWidth = filterWidth * math.min(1,NotefieldZoom()) end
 if isOutFox() then filterWidth = filterWidth * WideScreenDiff() end
-if getenv("EffectVibrateP"..pNum) then filterWidth = filterWidth + (30 * currentMini) end
+if getenv("EffectVibrate"..pname(player)) then filterWidth = filterWidth + (30 * currentMini) end
 
 local playeroptions = GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Preferred")
 local Stops,timingData,truebpms,bpm1,bpm2
@@ -41,7 +40,7 @@ local function Update(self, delta)
 		tmpDelta = totalDelta
 
 		local ms = GAMESTATE:GetCurMusicSeconds()
-		if getenv("ShowStopAssistP"..pNum) then
+		if getenv("ShowStopAssist"..pname(player)) then
 			if Stops[Si] and Stops[Si]["Time"] < ms then
 				if playeroptions:XMod() then speedMod = playeroptions:XMod()*Stops[Si]["BPM"] end
 				if playeroptions:CMod() then speedMod = playeroptions:CMod() end

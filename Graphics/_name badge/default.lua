@@ -1,6 +1,6 @@
 local player = ...
 assert(player,"[_name/default.lua] requires a player to be passed in.")
-local iconName = "_icon p"..(player == PLAYER_1 and 1 or 2)
+local iconName = "_icon "..pname(player)
 
 local pX = 0.0
 local pXmod = ""
