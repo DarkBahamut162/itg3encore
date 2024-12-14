@@ -19,7 +19,7 @@ local doubles = (styleType == 'OnePlayerTwoSides' or styleType == 'TwoPlayersSha
 
 function getFilter(player,filterWidth,filterAlpha)
 	if not isOutFox() then filterWidth = filterWidth * math.min(1,NotefieldZoom()) end
-	if isOutFox() then filterWidth = filterWidth * WideScreenDiff() end
+	if isOutFox() then filterWidth = filterWidth * math.min(1,NotefieldZoomOutFox()) end
 
 	local file = ""
 	local pomuREST = ""

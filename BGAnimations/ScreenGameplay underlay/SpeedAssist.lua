@@ -13,7 +13,7 @@ local filterWidth = style:GetWidth(player) * currentMini
 local widthZoom = Center1Player() and 1 or WideScreenDiff()
 
 if not isOutFox() then filterWidth = filterWidth * math.min(1,NotefieldZoom()) end
-if isOutFox() then filterWidth = filterWidth * WideScreenDiff() end
+if isOutFox() then filterWidth = filterWidth * math.min(1,NotefieldZoomOutFox()) end
 if getenv("EffectVibrate"..pname(player)) then filterWidth = filterWidth + (30 * currentMini) end
 
 local SpeedDowns,SpeedUps,timingData,temp

@@ -262,3 +262,13 @@ function NotefieldZoom()
 
 	return field_space / style_width
 end
+
+function NotefieldZoomOutFox()
+	local style_width = GAMESTATE:GetCurrentStyle():GetWidth(GAMESTATE:GetMasterPlayerNumber())
+	if GAMESTATE:GetNumPlayersEnabled() == 1 then
+		return (SCREEN_WIDTH - 36 - 36) / style_width
+	end
+	local field_space = SCREEN_CENTER_X - 40 * WideScreenDiff_(16/10) - 40 * WideScreenDiff_(16/10)
+
+	return field_space / style_width
+end
