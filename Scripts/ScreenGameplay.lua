@@ -200,3 +200,65 @@ function Actor:LyricCommand(side)
 	self:diffusealpha(0)
 	return self
 end
+
+function GameplayMarginsFix(enabled_players,styletype)
+	local style = GAMESTATE:GetCurrentStyle()
+	if styletype == nil then styletype = style:GetStyleType() end
+	if enabled_players == nil then enabled_players = GAMESTATE:GetEnabledPlayers() end
+	local other = {
+		[PLAYER_1] = PLAYER_2,
+		[PLAYER_2] = PLAYER_1
+	}
+	local margins = {
+		[PLAYER_1] = {40, 40},
+		[PLAYER_2] = {40, 40}
+	}
+
+	if Center1Player() then
+		local style_width = style:GetWidth(GAMESTATE:GetMasterPlayerNumber())
+		local pn = enabled_players[1]
+		local center = _screen.cx
+		local left = center - style_width
+		local right = _screen.w - center - style_width
+		if not THEME:GetMetric("ScreenGameplay","AllowCenter1Player") then
+			center = (_screen.w - style_width) / WideScreenDiff()
+			left = center / 4 * WideScreenDiff()
+			right = center / 4 * WideScreenDiff()
+		end
+		return math.abs(left), -math.abs(center), math.abs(right)
+	end
+
+	local half_screen = _screen.w / 2
+	local left = {[PLAYER_1]= 0, [PLAYER_2]= half_screen}
+
+	for i, pn in ipairs(enabled_players) do
+		local edge = left[pn]
+		local center = THEME:GetMetric("ScreenGameplay","Player"..ToEnumShortString(pn)..ToEnumShortString(styletype).."X")
+		local style_width = style:GetWidth(pn)
+
+		center = center - edge
+		margins[pn][1] = center - (style_width / 2)
+		margins[pn][2] = half_screen - center - (style_width / 2)
+
+		if #enabled_players == 1 then
+			margins[other[pn]][1] = margins[pn][2]
+			margins[other[pn]][2] = margins[pn][1]
+		end
+	end
+
+	local left = margins[PLAYER_1][1]
+	local center = margins[PLAYER_1][2] + margins[PLAYER_2][1]
+	local right = margins[PLAYER_2][2]
+
+	return math.abs(left), math.abs(center), math.abs(right)
+end
+
+function NotefieldZoom()
+	local style = GAMESTATE:GetCurrentStyle()
+	local leftPX, centerPX, rightPX = GameplayMarginsFix()
+	local screen_space = Center1Player() and SCREEN_WIDTH or SCREEN_CENTER_X
+	local field_space = screen_space - math.abs(leftPX) - math.abs(rightPX)
+	local style_width = style:GetWidth(GAMESTATE:GetMasterPlayerNumber())
+
+	return field_space / style_width
+end

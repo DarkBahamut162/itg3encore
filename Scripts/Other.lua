@@ -274,11 +274,9 @@ end
 function Center1Player()
 	local styleType = GAMESTATE:GetCurrentStyle():GetStyleType()
 	if styleType == "StyleType_OnePlayerTwoSides" or styleType == "StyleType_TwoPlayersSharedSides" then
-		return false
-	elseif PREFSMAN:GetPreference("Center1Player") then
-		return styleType == "StyleType_OnePlayerOneSide"
+		return true
 	else
-		return false
+		return getenv("RotationSolo"..pname(GAMESTATE:GetMasterPlayerNumber()))
 	end
 end
 

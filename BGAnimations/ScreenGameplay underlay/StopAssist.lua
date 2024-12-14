@@ -5,23 +5,13 @@ local style = GAMESTATE:GetCurrentStyle()
 
 local mlevel = GAMESTATE:IsCourseMode() and "ModsLevel_Stage" or "ModsLevel_Preferred"
 local currentMini = 1-math.round(GAMESTATE:GetPlayerState(player):GetPlayerOptions(mlevel):Mini()*50) / 100
-local filterWidth = isOutFox() and GAMESTATE:GetStyleFieldSize(player) * currentMini or style:GetWidth(player) * currentMini
+local currentTiny = 1-math.round(GAMESTATE:GetPlayerState(player):GetPlayerOptions(mlevel):Tiny()*50) / 100
+currentMini = currentMini * currentTiny
+local filterWidth = style:GetWidth(player) * currentMini
+local widthZoom = Center1Player() and 1 or WideScreenDiff()
 
-if string.find(style:GetName(),"double") then
-	if IsGame("be-mu") or IsGame("beat") then
-		filterWidth = filterWidth * 1.8
-	elseif IsGame("pump") then
-		filterWidth = filterWidth * 1.35
-	elseif IsGame("smx") then
-		filterWidth = filterWidth * 1.45
-	elseif IsGame("po-mu") then
-		filterWidth = filterWidth * 1.65
-	elseif IsGame("techno") then
-		filterWidth = filterWidth * 1.8375
-	else
-		filterWidth = filterWidth * 1.4
-	end
-end
+if not isOutFox() then filterWidth = filterWidth * math.min(1,NotefieldZoom()) end
+if isOutFox() then filterWidth = filterWidth * WideScreenDiff() end
 if getenv("EffectVibrateP"..pNum) then filterWidth = filterWidth + (30 * currentMini) end
 
 local playeroptions = GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Preferred")
@@ -67,6 +57,8 @@ local function Update(self, delta)
 end
 
 local PY = GAMESTATE:GetPlayerState(player):GetPlayerOptions('ModsLevel_Preferred'):UsingReverse() and THEME:GetMetric("Player","ReceptorArrowsYReverse") or THEME:GetMetric("Player","ReceptorArrowsYStandard")
+local adjust = isOutFox() and 47-(47 * WideScreenDiff()) or 0
+
 if GAMESTATE:GetNumPlayersEnabled() == 1 then
 	if getenv("RotationRight"..pname(player)) and player == PLAYER_1 then
 		PY = PY - SCREEN_CENTER_X
@@ -89,7 +81,7 @@ return Def.ActorFrame{
 	Def.Quad{
 		Name="Stop",
 		OnCommand=function(self)
-			self:y(PY):valign(0):zoomtowidth(filterWidth-8):zoomtoheight(0):diffusecolor(Color.White):blend(Blend.Add)
+			self:y(PY-adjust):valign(0):zoomtowidth(filterWidth-8*widthZoom):zoomtoheight(0):diffusecolor(Color.White):blend(Blend.Add)
 		end
 	}
 }

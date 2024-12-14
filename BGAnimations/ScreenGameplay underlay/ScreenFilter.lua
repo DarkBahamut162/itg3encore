@@ -18,6 +18,9 @@ local special = false
 local doubles = (styleType == 'OnePlayerTwoSides' or styleType == 'TwoPlayersSharedSides')
 
 function getFilter(player,filterWidth,filterAlpha)
+	if not isOutFox() then filterWidth = filterWidth * math.min(1,NotefieldZoom()) end
+	if isOutFox() then filterWidth = filterWidth * WideScreenDiff() end
+
 	local file = ""
 	local pomuREST = ""
 	if isOutFoxV() then
@@ -83,29 +86,10 @@ if numPlayers == 1 then
 
 	local mlevel = GAMESTATE:IsCourseMode() and "ModsLevel_Stage" or "ModsLevel_Preferred"
 	local currentMini = 1-math.round(GAMESTATE:GetPlayerState(player):GetPlayerOptions(mlevel):Mini()*50) / 100
-	local filterWidth = isOutFox() and GAMESTATE:GetStyleFieldSize(player) * currentMini or style:GetWidth(player) * currentMini
+	local currentTiny = 1-math.round(GAMESTATE:GetPlayerState(player):GetPlayerOptions(mlevel):Tiny()*50) / 100
+	currentMini = currentMini * currentTiny
+	local filterWidth = style:GetWidth(player) * currentMini
 
-	if string.find(style:GetName(),"double") then
-		if IsGame("be-mu") or IsGame("beat") then
-			if stepsTypeNumber == 5 then
-				filterWidth = filterWidth * 1.3
-			elseif stepsTypeNumber == 6 then
-				filterWidth = filterWidth * 1.5
-			elseif stepsTypeNumber == 7 then
-				filterWidth = filterWidth * 1.625
-			end
-		elseif IsGame("pump") then
-			filterWidth = filterWidth * 1.35
-		elseif IsGame("smx") then
-			filterWidth = filterWidth * 1.45
-		elseif IsGame("po-mu") then
-			filterWidth = filterWidth * 1.575
-		elseif IsGame("techno") then
-			filterWidth = filterWidth * 1.8375
-		else
-			filterWidth = filterWidth * 1.4
-		end
-	end
 	if getenv("EffectVibrateP"..pNum) then filterWidth = filterWidth + (30 * currentMini) end
 
 	local pos
@@ -154,7 +138,9 @@ else
 
 		local mlevel = GAMESTATE:IsCourseMode() and "ModsLevel_Stage" or "ModsLevel_Preferred"
 		local currentMini = 1-math.round(GAMESTATE:GetPlayerState(player):GetPlayerOptions(mlevel):Mini()*50) / 100
-		local filterWidth = isOutFox() and GAMESTATE:GetStyleFieldSize(player) * currentMini or style:GetWidth(player) * currentMini
+		local currentTiny = 1-math.round(GAMESTATE:GetPlayerState(player):GetPlayerOptions(mlevel):Tiny()*50) / 100
+		currentMini = currentMini * currentTiny
+		local filterWidth = style:GetWidth(player) * currentMini
 
 		if getenv("EffectVibrateP"..pNum) then filterWidth = filterWidth + (30 * currentMini) end
 
@@ -191,7 +177,9 @@ else
 
 			local mlevel = GAMESTATE:IsCourseMode() and "ModsLevel_Stage" or "ModsLevel_Preferred"
 			local currentMini = 1-math.round(GAMESTATE:GetPlayerState(player):GetPlayerOptions(mlevel):Mini()*50) / 100
-			local filterWidth = isOutFox() and GAMESTATE:GetStyleFieldSize(player) * currentMini or style:GetWidth(player) * currentMini
+			local currentTiny = 1-math.round(GAMESTATE:GetPlayerState(player):GetPlayerOptions(mlevel):Tiny()*50) / 100
+			currentMini = currentMini * currentTiny
+			local filterWidth = style:GetWidth(player) * currentMini
 
 			if getenv("EffectVibrateP"..pNum) then filterWidth = filterWidth + (30 * currentMini) end
 
