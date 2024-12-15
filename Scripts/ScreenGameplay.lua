@@ -1,5 +1,5 @@
 function OffsetLifebarHeight(pn)
-	if getenv("RotationLeft"..pname(pn)) or getenv("RotationRight"..pname(pn)) then
+	if getenv("Rotation"..pname(pn)) == 2 or getenv("Rotation"..pname(pn)) == 3 then
 		return SCREEN_CENTER_Y
 	else
 		return SCREEN_CENTER_Y+30

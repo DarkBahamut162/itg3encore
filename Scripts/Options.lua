@@ -330,18 +330,57 @@ function getPercentValues()
 	return split(",",temp)
 end
 
+local function LoadUserPref(pn, option, default)
+	if not PROFILEMAN:IsPersistentProfile(pn) then return default end
+    local f = RageFileUtil.CreateRageFile()
+    local output = default
+	local file = PROFILEMAN:GetProfileDir('ProfileSlot_Player'..pn:sub(-1))..'UserPrefs/'..THEME:GetCurThemeName()..'/'..option
+    if f:Open(file, 1) then
+		output = f:GetLine()
+        f:Close()
+    end
+    f:destroy()
+
+    return output
+end
+
+function LoadUserPrefB(pn, option, default)
+	if GAMESTATE:IsHumanPlayer(pn) then
+		return tobool(LoadUserPref(pn, option, default))
+	else
+		return default
+	end
+end
+
+function LoadUserPrefN(pn, option, default)
+	if GAMESTATE:IsHumanPlayer(pn) then
+		return tonumber(LoadUserPref(pn, option, default))
+	else
+		return default
+	end
+end
+
+local function SaveUserPref(pn, option, value)
+	if not PROFILEMAN:IsPersistentProfile(pn) then return value end
+    local f = RageFileUtil.CreateRageFile()
+	local file = PROFILEMAN:GetProfileDir('ProfileSlot_Player'..pn:sub(-1))..'UserPrefs/'..THEME:GetCurThemeName()..'/'..option
+    if f:Open(file, 2) then
+		f:Write(tostring(value))
+        f:Close()
+    end
+    f:destroy()
+
+	return value
+end
+
 function InitRotationOptions()
 	if not getenv("RotationCheck") then
 		if GAMESTATE:GetNumPlayersEnabled() == 1 and PREFSMAN:GetPreference("Center1Player") then
-			setenv("RotationNormalP1",false)
-			setenv("RotationNormalP2",false)
-			setenv("RotationSoloP1",true)
-			setenv("RotationSoloP2",true)
+			setenv("RotationP1",LoadUserPrefN(PLAYER_1, "Effect", 5))
+			setenv("RotationP2",LoadUserPrefN(PLAYER_2, "Effect", 5))
 		else
-			setenv("RotationNormalP1",true)
-			setenv("RotationNormalP2",true)
-			setenv("RotationSoloP1",false)
-			setenv("RotationSoloP2",false)
+			setenv("RotationP1",1)
+			setenv("RotationP2",1)
 		end
 		setenv("RotationCheck",true)
 	end
@@ -355,6 +394,10 @@ function InitOptions()
 		setenv("EffectControlP2",keyMapped(KeyMaps[GAMESTATE:GetCurrentGame():GetName()]["2_EffectDown"]) and keyMapped(KeyMaps[GAMESTATE:GetCurrentGame():GetName()]["2_EffectUp"]))
 	end
 
+	GAMESTATE:SetFailTypeExplicitlySet(true)
+	setenv("HighScoreableP1",false)
+	setenv("HighScoreableP2",false)
+
 	if GetUserPrefN("StylePosition") == nil then
 		SetUserPref("StylePosition",1)
 	elseif GetUserPrefN("StylePosition") > #ChoiceSingle() then
@@ -362,69 +405,45 @@ function InitOptions()
 	end
 
 	setenv("BattleMode","rave")
+end
 
-	GAMESTATE:SetFailTypeExplicitlySet(true)
-	setenv("HighScoreableP1",false)
-	setenv("HighScoreableP2",false)
+function InitPlayerOptions()
+	for pn in ivalues(GAMESTATE:GetEnabledPlayers()) do
+		if not isVS() then
+			setenv("Effect"..pname(pn),LoadUserPrefN(pn, "Effect", 0))
+		else
+			setenv("Effect"..pname(pn),0)
+		end
 
-	setenv("RotationLeftP1",false)
-	setenv("RotationLeftP2",false)
-	setenv("RotationRightP1",false)
-	setenv("RotationRightP2",false)
-	setenv("RotationUpsideDownP1",false)
-	setenv("RotationUpsideDownP2",false)
+		setenv("HideScore"..pname(pn),LoadUserPrefB(pn, "HideScore", false))
+		setenv("HideCombo"..pname(pn),LoadUserPrefB(pn, "HideCombo", false))
+		setenv("HideLife"..pname(pn),LoadUserPrefB(pn, "HideLife", false))
 
-	setenv("EffectWagP1",false)
-	setenv("EffectWagP2",false)
-	setenv("EffectPulseP1",false)
-	setenv("EffectPulseP2",false)
-	setenv("EffectBounceP1",false)
-	setenv("EffectBounceP2",false)
-	setenv("EffectSpinReverseP1",false)
-	setenv("EffectSpinReverseP2",false)
-	setenv("EffectSpinP1",false)
-	setenv("EffectSpinP2",false)
-	setenv("EffectVibrateP1",false)
-	setenv("EffectVibrateP2",false)
+		setenv("UnderCombo"..pname(pn),LoadUserPrefB(pn, "UnderCombo", false))
+		setenv("UnderTapJudgments"..pname(pn),LoadUserPrefB(pn, "UnderTapJudgments", false))
+		setenv("UnderHoldJudgments"..pname(pn),LoadUserPrefB(pn, "UnderHoldJudgments", false))
 
-	setenv("HideScoreP1",false)
-	setenv("HideScoreP2",false)
-	setenv("HideComboP1",false)
-	setenv("HideComboP2",false)
-	setenv("HideLifeP1",false)
-	setenv("HideLifeP2",false)
+		setenv("ShowMovePlayerStats"..pname(pn),LoadUserPrefN(pn, "ShowMovePlayerStats", 3))
+		setenv("SetScoreType"..pname(pn),LoadUserPrefN(pn, "SetScoreType", 2))
+		setenv("SetScoreDirection"..pname(pn),LoadUserPrefN(pn, "SetScoreDirection", 1))
+		setenv("ScreenFilter"..pname(pn),LoadUserPrefN(pn, "ScreenFilter", 0))
 
-	setenv("UnderComboP1",false)
-	setenv("UnderComboP2",false)
-	setenv("UnderTapJudgmentsP1",false)
-	setenv("UnderTapJudgmentsP2",false)
-	setenv("UnderHoldJudgmentsP1",false)
-	setenv("UnderHoldJudgmentsP2",false)
+		if not isVS() then
+			setenv("ShowStats"..pname(pn),LoadUserPrefN(pn, "ShowStats", 0))
+			setenv("ShowStatsSize"..pname(pn),LoadUserPrefN(pn, "ShowStatsSize", 1))
+			setenv("ShowNoteGraph"..pname(pn),LoadUserPrefN(pn, "ShowNoteGraph", 1))
+			setenv("SetPacemaker"..pname(pn),LoadUserPrefN(pn, "SetPacemaker", 0))
+		else
+			setenv("ShowStats"..pname(pn),0)
+			setenv("ShowStatsSize"..pname(pn),1)
+			setenv("ShowNoteGraph"..pname(pn),1)
+			setenv("SetPacemaker"..pname(pn),0)
+		end
 
-	setenv("ShowMovePlayerStatsP1",3)
-	setenv("ShowMovePlayerStatsP2",3)
-	setenv("SetScoreTypeP1",2)
-	setenv("SetScoreTypeP2",2)
-	setenv("SetScoreDirectionP1",1)
-	setenv("SetScoreDirectionP2",1)
-	setenv("ScreenFilterP1",0)
-	setenv("ScreenFilterP2",0)
-
-	setenv("ShowStatsP1",0)
-	setenv("ShowStatsP2",0)
-	setenv("ShowStatsSizeP1",1)
-	setenv("ShowStatsSizeP2",1)
-	setenv("ShowNoteGraphP1",1)
-	setenv("ShowNoteGraphP2",1)
-	setenv("SetPacemakerP1",0)
-	setenv("SetPacemakerP2",0)
-	
-	setenv("ShowModsP1",false)
-	setenv("ShowModsP2",false)
-	setenv("ShowSpeedAssistP1",false)
-	setenv("ShowSpeedAssistP2",false)
-	setenv("ShowStopAssistP1",false)
-	setenv("ShowStopAssistP2",false)
+		setenv("ShowMods"..pname(pn),LoadUserPrefB(pn, "ShowMods", false))
+		setenv("ShowSpeedAssist"..pname(pn),LoadUserPrefB(pn, "ShowSpeedAssist", false))
+		setenv("ShowStopAssist"..pname(pn),LoadUserPrefB(pn, "ShowStopAssist", false))
+	end
 
 end
 
@@ -443,33 +462,21 @@ function OptionOrientation()
 		ExportOnChange = false,
 		Choices = AvailableArrowDirections(),
 		LoadSelections = function(self, list, pn)
-			list[1] = getenv("RotationNormal"..pname(pn))
-			list[2] = getenv("RotationLeft"..pname(pn))
-			list[3] = getenv("RotationRight"..pname(pn))
-			list[4] = getenv("RotationUpsideDown"..pname(pn))
-			if GAMESTATE:GetNumPlayersEnabled() == 1 then list[5] = getenv("RotationSolo"..pname(pn)) end
+			local selected = getenv("Rotation"..pname(pn))
+			if selected and selected ~= 0 and #self.Choices <= selected then
+				list[selected] = true
+			else
+				list[1] = true
+			end
 		end,
 		SaveSelections = function(self, list, pn)
-			setenv("RotationNormal"..pname(pn),list[1])
-			setenv("RotationLeft"..pname(pn),list[2])
-			setenv("RotationRight"..pname(pn),list[3])
-			setenv("RotationUpsideDown"..pname(pn),list[4])
-			if GAMESTATE:GetNumPlayersEnabled() == 1 then setenv("RotationSolo"..pname(pn),list[5]) end
+			for i, choice in ipairs(self.Choices) do
+				if list[i] then setenv("Rotation"..pname(pn),SaveUserPref(pn, "Rotation", i)) end
+			end
 		end
 	}
 	setmetatable(t, t)
 	return t
-end
-
-local function PlayfieldMods()
-	return {
-		[1] = "EffectVibrate",
-		[2] = "EffectSpin",
-		[3] = "EffectSpinReverse",
-		[4] = "EffectBounce",
-		[5] = "EffectPulse",
-		[6] = "EffectWag",
-	}
 end
 
 function OptionPlayfield()
@@ -481,22 +488,15 @@ function OptionPlayfield()
 		ExportOnChange = false,
 		Choices = { "Vibrate", "Spin Right", "Spin Left", "Bob", "Pulse", "Wag" },
 		LoadSelections = function(self, list, pn)
-			list[1] = getenv("EffectVibrate"..pname(pn))
-			list[2] = getenv("EffectSpin"..pname(pn))
-			list[3] = getenv("EffectSpinReverse"..pname(pn))
-			list[4] = getenv("EffectBounce"..pname(pn))
-			list[5] = getenv("EffectPulse"..pname(pn))
-			list[6] = getenv("EffectWag"..pname(pn))
+			local selected = getenv("Effect"..pname(pn))
+			if selected and selected ~= 0 then
+				list[selected] = true
+			end
 		end,
 		SaveSelections = function() end,
 		NotifyOfSelection= function(self, pn, choice)
-			for i, mod in ipairs(PlayfieldMods()) do
-				local output = false
-				if i == choice then
-					if not getenv(mod..pname(pn)) then output = true end
-				end
-				setenv(mod..pname(pn),output)
-			end
+			local selected = getenv("Effect"..pname(pn))
+			setenv("Effect"..pname(pn),SaveUserPref(pn, "Effect", selected == choice and 0 or choice))
 			return true
 		end
 	}
@@ -518,9 +518,9 @@ function OptionTournamentOptions()
 			list[3] = getenv("HideLife"..pname(pn))
 		end,
 		SaveSelections = function(self, list, pn)
-			setenv("HideScore"..pname(pn),list[1])
-			setenv("HideCombo"..pname(pn),list[2])
-			setenv("HideLife"..pname(pn),list[3])
+			setenv("HideScore"..pname(pn),SaveUserPref(pn, "HideScore", list[1]))
+			setenv("HideCombo"..pname(pn),SaveUserPref(pn, "HideCombo", list[2]))
+			setenv("HideLife"..pname(pn),SaveUserPref(pn, "HideLife", list[3]))
 		end
 	}
 	setmetatable(t, t)
@@ -541,9 +541,9 @@ function OptionUnderFieldOptions()
 			list[3] = getenv("UnderHoldJudgments"..pname(pn))
 		end,
 		SaveSelections = function(self, list, pn)
-			setenv("UnderCombo"..pname(pn),list[1])
-			setenv("UnderTapJudgments"..pname(pn),list[2])
-			setenv("UnderHoldJudgments"..pname(pn),list[3])
+			setenv("UnderCombo"..pname(pn),SaveUserPref(pn, "UnderCombo", list[1]))
+			setenv("UnderTapJudgments"..pname(pn),SaveUserPref(pn, "UnderTapJudgments", list[2]))
+			setenv("UnderHoldJudgments"..pname(pn),SaveUserPref(pn, "UnderHoldJudgments", list[3]))
 		end
 	}
 	setmetatable(t, t)
@@ -569,7 +569,7 @@ function OptionMovePlayerStats()
 		SaveSelections = function(self, list, pn)
 			for i, choice in ipairs(self.Choices) do
 				if list[i] then
-					setenv("ShowMovePlayerStats"..pname(pn),i)
+					setenv("ShowMovePlayerStats"..pname(pn),SaveUserPref(pn, "ShowMovePlayerStats", i))
 					break
 				end
 			end
@@ -604,9 +604,9 @@ function OptionSetScoreType()
 		SaveSelections = function() end,
 		NotifyOfSelection= function(self, pn, choice)
 			if choice <= 3 then
-				setenv("SetScoreType"..pname(pn),choice)
+				setenv("SetScoreType"..pname(pn),SaveUserPref(pn, "SetScoreType", choice))
 			else
-				setenv("SetScoreDirection"..pname(pn),choice-3)
+				setenv("SetScoreDirection"..pname(pn),SaveUserPref(pn, "SetScoreDirection", choice-3))
 			end
 			return true
 		end
@@ -624,21 +624,16 @@ function OptionRowScreenFilter()
 		ExportOnChange = false,
 		Choices = getPercentValues(),
 		LoadSelections = function(self, list, pn)
-			local filterValue = getenv("ScreenFilter"..pname(pn))
-			if filterValue ~= nil then
-				local val = filterValue*10+1
-				list[val] = true
-			else
-				setenv("ScreenFilter"..pname(pn),0)
-				list[1] = true
-			end
+			local filterValue = getenv("ScreenFilter"..pname(pn)) or 0
+			local val = filterValue*10+1
+			list[val] = true
 		end,
 		SaveSelections = function(self, list, pn)
 			local val = 0
 			for i=1,#list do
 				if list[i] then val = (i-1)/10 end
 			end
-			setenv("ScreenFilter"..pname(pn),val)
+			setenv("ScreenFilter"..pname(pn),SaveUserPref(pn, "ScreenFilter", val))
 		end
 	}
 	setmetatable(t, t)
@@ -654,17 +649,13 @@ function OptionShowStats()
 		ExportOnChange = false,
 		Choices = { "Off","W1","W2","W3","W4","W5","Miss","IIDX" },
 		LoadSelections = function(self, list, pn)
-			local selected = getenv("ShowStats"..pname(pn))+1
-			if selected and selected ~= 0 then
-				list[selected] = true
-			else
-				list[1] = true
-			end
+			local selected = (getenv("ShowStats"..pname(pn)) or 0) + 1
+			list[selected] = true
 		end,
 		SaveSelections = function(self, list, pn)
 			for i, choice in ipairs(self.Choices) do
 				if list[i] then
-					setenv("ShowStats"..pname(pn),i-1)
+					setenv("ShowStats"..pname(pn),SaveUserPref(pn, "ShowStats", i-1))
 					break
 				end
 			end
@@ -693,7 +684,7 @@ function OptionShowStatsSize()
 		SaveSelections = function(self, list, pn)
 			for i, choice in ipairs(self.Choices) do
 				if list[i] then
-					setenv("ShowStatsSize"..pname(pn),i)
+					setenv("ShowStatsSize"..pname(pn),SaveUserPref(pn, "ShowStatsSize", i))
 					break
 				end
 			end
@@ -722,7 +713,7 @@ function OptionShowNoteGraph()
 		SaveSelections = function(self, list, pn)
 			for i, choice in ipairs(self.Choices) do
 				if list[i] then
-					setenv("ShowNoteGraph"..pname(pn),i)
+					setenv("ShowNoteGraph"..pname(pn),SaveUserPref(pn, "ShowNoteGraph", i))
 					break
 				end
 			end
@@ -751,7 +742,7 @@ function OptionSetPacemaker()
 		SaveSelections = function(self, list, pn)
 			for i, choice in ipairs(self.Choices) do
 				if list[i] then
-					setenv("SetPacemaker"..pname(pn),i)
+					setenv("SetPacemaker"..pname(pn),SaveUserPref(pn, "SetPacemaker", i))
 					break
 				end
 			end
@@ -774,8 +765,8 @@ function OptionShowAssists()
 			list[2] = getenv("ShowStopAssist"..pname(pn))
 		end,
 		SaveSelections = function(self, list, pn)
-			setenv("ShowSpeedAssist"..pname(pn),list[1])
-			setenv("ShowStopAssist"..pname(pn),list[2])
+			setenv("ShowSpeedAssist"..pname(pn),SaveUserPref(pn, "ShowSpeedAssist", list[1]))
+			setenv("ShowStopAssist"..pname(pn),SaveUserPref(pn, "ShowStopAssist", list[2]))
 		end
 	}
 	setmetatable(t, t)
@@ -794,7 +785,7 @@ function OptionShowModifiers()
 			list[1] = getenv("ShowMods"..pname(pn))
 		end,
 		SaveSelections = function(self, list, pn)
-			setenv("ShowMods"..pname(pn),list[1])
+			setenv("ShowMods"..pname(pn),SaveUserPref(pn, "ShowMods", list[1]))
 		end
 	}
 	setmetatable(t, t)
@@ -810,12 +801,15 @@ function OptionOrientationRestricted()
 		ExportOnChange = false,
 		Choices = { "Normal", "Solo-Centered" },
 		LoadSelections = function(self, list, pn)
-			list[1] = getenv("RotationNormal"..pname(pn))
-			list[2] = getenv("RotationSolo"..pname(pn))
+			list[1] = getenv("Rotation"..pname(pn)) == 1
+			list[2] = getenv("Rotation"..pname(pn)) == 5
 		end,
 		SaveSelections = function(self, list, pn)
-			setenv("RotationNormal"..pname(pn),list[1])
-			setenv("RotationSolo"..pname(pn),list[2])
+			for i, choice in ipairs(self.Choices) do
+				if list[i] then
+					setenv("Rotation"..pname(pn),SaveUserPref(pn, "Rotation", (i-1)*4+1))
+				end
+			end
 		end
 	}
 	setmetatable(t, t)
@@ -853,17 +847,17 @@ function DisplayCustomModifiersText(pn)
 		if getenv("HideCombo"..pname(pn)) then output = addToOutput(output,"Hide Combo",", ") end
 	end
 
-	if getenv("RotationLeft"..pname(pn)) then output = addToOutput(output,"Rotated Left",", ") end
-	if getenv("RotationRight"..pname(pn)) then output = addToOutput(output,"Rotated Right",", ") end
-	if getenv("RotationUpsideDown"..pname(pn)) then output = addToOutput(output,"Rotated Downward",", ") end
-	if getenv("RotationSolo"..pname(pn)) then output = addToOutput(output,"Centered",", ") end
+	if getenv("Rotation"..pname(pn)) == 2 then output = addToOutput(output,"Rotated Left",", ")
+	elseif getenv("Rotation"..pname(pn)) == 3 then output = addToOutput(output,"Rotated Right",", ")
+	elseif getenv("Rotation"..pname(pn)) == 4 then output = addToOutput(output,"Rotated Downward",", ")
+	elseif getenv("Rotation"..pname(pn)) == 5 then output = addToOutput(output,"Centered",", ") end
 
-	if getenv("EffectWag"..pname(pn)) then output = addToOutput(output,"Wag",", ")
-	elseif getenv("EffectPulse"..pname(pn)) then output = addToOutput(output,"Pulse",", ")
-	elseif getenv("EffectBounce"..pname(pn)) then output = addToOutput(output,"Bounce",", ")
-	elseif getenv("EffectSpinReverse"..pname(pn)) then output = addToOutput(output,"Spin Left",", ")
-	elseif getenv("EffectSpin"..pname(pn)) then output = addToOutput(output,"Spin Right",", ")
-	elseif getenv("EffectVibrate"..pname(pn)) then output = addToOutput(output,"Vibrate",", ") end
+	if getenv("Effect"..pname(pn)) == 6 then output = addToOutput(output,"Wag",", ")
+	elseif getenv("Effect"..pname(pn)) == 5 then output = addToOutput(output,"Pulse",", ")
+	elseif getenv("Effect"..pname(pn)) == 4 then output = addToOutput(output,"Bounce",", ")
+	elseif getenv("Effect"..pname(pn)) == 3 then output = addToOutput(output,"Spin Left",", ")
+	elseif getenv("Effect"..pname(pn)) == 2 then output = addToOutput(output,"Spin Right",", ")
+	elseif getenv("Effect"..pname(pn)) == 1 then output = addToOutput(output,"Vibrate",", ") end
 
 	if getenv("ShowMods"..pname(pn)) then output = addToOutput(output,"Show Mods",", ") end
 	if getenv("ShowStats"..pname(pn)) > 0 then

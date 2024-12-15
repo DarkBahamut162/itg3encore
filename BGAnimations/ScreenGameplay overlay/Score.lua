@@ -87,7 +87,7 @@ return Def.ActorFrame{
 			self:visible(not getenv("HideScore"..pname(player))):diffuse(PlayerColor(player)):x(math.floor(scale(player == PLAYER_1 and 0.25 or 0.75,0,1,SCREEN_LEFT,SCREEN_RIGHT))):zoom(WideScreenDiff())
 			if getenv("Workout") then
 				if IsGame("pump") then
-					if getenv("RotationSolo"..pname(player)) then
+					if getenv("Rotation"..pname(player)) == 5 then
 						self:y(SCREEN_TOP+61*WideScreenDiff())
 					else
 						self:y(SCREEN_TOP+41*WideScreenDiff())
@@ -98,7 +98,7 @@ return Def.ActorFrame{
 			else
 				self:y(SCREEN_TOP+61*WideScreenDiff())
 			end
-			if IsGame("pump") then self:addy(10) if GAMESTATE:GetNumPlayersEnabled() == 1 and getenv("RotationSolo"..pname(player)) then self:CenterX() end end
+			if IsGame("pump") then self:addy(10) if GAMESTATE:GetNumPlayersEnabled() == 1 and getenv("Rotation"..pname(player)) == 5 then self:CenterX() end end
 		end,
 		JudgmentMessageCommand=function(self,param)
 			local short = ToEnumShortString(param.HoldNoteScore and param.HoldNoteScore or param.TapNoteScore)

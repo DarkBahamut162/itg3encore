@@ -13,25 +13,23 @@ if isOni() then
 	end
 end
 
-if getenv("ShowStatsP1") > 0 or getenv("ShowStatsP2") > 0 then
-	if GAMESTATE:IsCourseMode() then
-		if IsCourseSecret() then
-			setenv("ShowStatsP1",0)
-			setenv("ShowStatsP2",0)
-		end
-	end
-end
-
-if getenv("ShowModsP1") or getenv("ShowModsP2") then
-	if not GAMESTATE:IsCourseMode() and not isVS() then
-		if not HasLuaCheck() then
-			setenv("ShowModsP1",false)
-			setenv("ShowModsP2",false)
-		end
-	end
-end
-
 for pn in ivalues(GAMESTATE:GetEnabledPlayers()) do
+	if getenv("ShowStats"..pname(pn)) > 0 then
+		if GAMESTATE:IsCourseMode() then
+			if IsCourseSecret() then
+				setenv("ShowStats"..pname(pn),0)
+			end
+		end
+	end
+
+	if getenv("ShowMods"..pname(pn)) then
+		if not GAMESTATE:IsCourseMode() and not isVS() then
+			if not HasLuaCheck() then
+				setenv("ShowMods"..pname(pn),false)
+			end
+		end
+	end
+
 	setenv("EvalCombo"..pname(pn),true)
 	setenv("LastFantastic"..pname(pn),0)
 	setenv("LastPerfect"..pname(pn),0)

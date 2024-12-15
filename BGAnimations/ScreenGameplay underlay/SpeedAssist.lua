@@ -154,9 +154,9 @@ return Def.ActorFrame{
 		c.SpeedDown:diffusealpha(0)
 		c.SpeedUp:diffusealpha(0)
 		if GAMESTATE:GetNumPlayersEnabled() == 1 then
-			if getenv("RotationRight"..pname(player)) and player == PLAYER_1 then
+			if getenv("Rotation"..pname(player)) == 3 and player == PLAYER_1 then
 				self:y(-SCREEN_CENTER_X)
-			elseif getenv("RotationLeft"..pname(player)) and player == PLAYER_2 then
+			elseif getenv("Rotation"..pname(player)) == 2 and player == PLAYER_2 then
 				self:y(-SCREEN_CENTER_X)
 			end
 		end

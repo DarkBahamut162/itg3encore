@@ -1,7 +1,7 @@
 local posX = SCREEN_CENTER_X
-if GAMESTATE:GetMasterPlayerNumber() == PLAYER_1 and getenv("RotationSoloP1") then
+if GAMESTATE:GetMasterPlayerNumber() == PLAYER_1 and getenv("RotationP1") == 5 then
 	posX = SCREEN_CENTER_X-SCREEN_WIDTH/4/WideScreenSemiDiff()
-elseif GAMESTATE:GetMasterPlayerNumber() == PLAYER_2 and getenv("RotationSoloP2") then
+elseif GAMESTATE:GetMasterPlayerNumber() == PLAYER_2 and getenv("RotationP2") == 5 then
 	posX = SCREEN_CENTER_X+SCREEN_WIDTH/4/WideScreenSemiDiff()
 end
 

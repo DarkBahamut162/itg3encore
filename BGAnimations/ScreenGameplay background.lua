@@ -62,9 +62,9 @@ return Def.ActorFrame {
 			for pn in ivalues(GAMESTATE:GetEnabledPlayers()) do
 				if GAMESTATE:GetNumPlayersEnabled() == 1 and not doubles and (IsGame("be-mu") or IsGame("beat") or IsGame("po-mu")) then
 					if isOutFox() and not tobool(LoadFromCache(GAMESTATE:GetCurrentSong(),GAMESTATE:GetCurrentSteps(GAMESTATE:GetMasterPlayerNumber()),"HasLua")) or not HasLuaCheck() then
-						if getenv("RotationNormal"..pname(pn)) or getenv("RotationUpsideDown"..pname(pn)) then
+						if getenv("Rotation"..pname(pn)) == 1 or getenv("Rotation"..pname(pn)) == 4 then
 							SCREENMAN:GetTopScreen():GetChild("SongBackground"):GetChild(""):zoom(zoomS()):xy(pn == PLAYER_1 and xS() or 0,SCREEN_CENTER_Y-SCREEN_CENTER_Y*zoomS())
-						elseif getenv("RotationSolo"..pname(pn)) then
+						elseif getenv("Rotation"..pname(pn)) == 5 then
 							SCREENMAN:GetTopScreen():GetChild("SongBackground"):GetChild(""):zoom(zoomM())
 							if zoomM() < 1/3 then c.PC2:playcommand("MULTI") end
 							c.PC3:playcommand("MULTI")
@@ -79,32 +79,32 @@ return Def.ActorFrame {
 				if SCREENMAN:GetTopScreen():GetChild("Player"..pname(pn)) and SCREENMAN:GetTopScreen():GetChild("Player"..pname(pn)):GetChild("NoteField") then
 					local rotationZ = 0
 					local posX = SCREEN_CENTER_X
-					if getenv("RotationLeft"..pname(pn)) then
+					if getenv("Rotation"..pname(pn)) == 2 then
 						rotationZ = 270
 						if pn == PLAYER_1 then
 							posX = SCREEN_CENTER_X-SCREEN_WIDTH/4
 						elseif pn == PLAYER_2 then
 							posX = SCREEN_CENTER_X-SCREEN_WIDTH/4
 						end
-					elseif getenv("RotationRight"..pname(pn)) then
+					elseif getenv("Rotation"..pname(pn)) == 3 then
 						rotationZ = 90
 						if pn == PLAYER_1 then
 							posX = SCREEN_CENTER_X+SCREEN_WIDTH/4
 						elseif pn == PLAYER_2 then
 							posX = SCREEN_CENTER_X+SCREEN_WIDTH/4
 						end
-					elseif getenv("RotationUpsideDown"..pname(pn)) then
+					elseif getenv("Rotation"..pname(pn)) == 4 then
 						rotationZ = 180
 						if pn == PLAYER_1 then
 							posX = SCREEN_CENTER_X-SCREEN_WIDTH/4
 						elseif pn == PLAYER_2 then
 							posX = SCREEN_CENTER_X+SCREEN_WIDTH/4
 						end
-					elseif getenv("RotationSolo"..pname(pn)) and not doubles then
+					elseif getenv("Rotation"..pname(pn)) == 5 and not doubles then
 						if ToEnumShortString(GAMESTATE:GetCurrentStyle():GetStyleType()) == "OnePlayerOneSide" then
 							posX = SCREEN_CENTER_X
 						end
-					elseif getenv("RotationNormal"..pname(pn)) and not doubles then
+					elseif getenv("Rotation"..pname(pn)) == 1 and not doubles then
 						if pn == PLAYER_1 then
 							posX = SCREEN_CENTER_X-SCREEN_WIDTH/4
 						elseif pn == PLAYER_2 then
@@ -118,17 +118,17 @@ return Def.ActorFrame {
 					local mlevel = GAMESTATE:IsCourseMode() and "ModsLevel_Stage" or "ModsLevel_Preferred"
 					local currentMini = 1-math.round(GAMESTATE:GetPlayerState(pn):GetPlayerOptions(mlevel):Mini()*50) / 100
 
-					if getenv("EffectVibrate"..pname(pn)) then
+					if getenv("Effect"..pname(pn)) == 1 then
 						SCREENMAN:GetTopScreen():GetChild("Player"..pname(pn)):vibrate():effectmagnitude(20*currentMini,20*currentMini,20*currentMini)
-					elseif getenv("EffectSpin"..pname(pn)) then
+					elseif getenv("Effect"..pname(pn)) == 2 then
 						SCREENMAN:GetTopScreen():GetChild("Player"..pname(pn)):spin():effectclock('beat'):effectmagnitude(0,0,45*currentMini)
-					elseif getenv("EffectSpinReverse"..pname(pn)) then
+					elseif getenv("Effect"..pname(pn)) == 3 then
 						SCREENMAN:GetTopScreen():GetChild("Player"..pname(pn)):spin():effectclock('beat'):effectmagnitude(0,0,-45*currentMini)
-					elseif getenv("EffectBounce"..pname(pn)) then
+					elseif getenv("Effect"..pname(pn)) == 4 then
 						SCREENMAN:GetTopScreen():GetChild("Player"..pname(pn)):bob():effectclock('beat'):effectmagnitude(30*currentMini,30*currentMini,30*currentMini)
-					elseif getenv("EffectPulse"..pname(pn)) then
+					elseif getenv("Effect"..pname(pn)) == 5 then
 						SCREENMAN:GetTopScreen():GetChild("Player"..pname(pn)):pulse():effectclock('beat')
-					elseif getenv("EffectWag"..pname(pn)) then
+					elseif getenv("Effect"..pname(pn)) == 6 then
 						SCREENMAN:GetTopScreen():GetChild("Player"..pname(pn)):wag():effectclock('beat')
 					end
 				end

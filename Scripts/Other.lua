@@ -276,7 +276,7 @@ function Center1Player()
 	if styleType == "StyleType_OnePlayerTwoSides" or styleType == "StyleType_TwoPlayersSharedSides" then
 		return true
 	else
-		return getenv("RotationSolo"..pname(GAMESTATE:GetMasterPlayerNumber()))
+		return getenv("Rotation"..pname(GAMESTATE:GetMasterPlayerNumber())) == 5
 	end
 end
 

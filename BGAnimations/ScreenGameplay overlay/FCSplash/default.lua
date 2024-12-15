@@ -1,7 +1,7 @@
 local pn = ...
 assert(pn)
 
-local IsUsingSoloSingles = getenv("RotationSolo"..pname(pn))
+local IsUsingSoloSingles = getenv("Rotation"..pname(pn)) == 5
 local NumPlayers = GAMESTATE:GetNumPlayersEnabled()
 local NumSides = GAMESTATE:GetNumSidesJoined()
 

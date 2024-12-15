@@ -11,7 +11,7 @@ local widthZoom = Center1Player() and 1 or WideScreenDiff()
 
 if not isOutFox() then filterWidth = filterWidth * math.min(1,NotefieldZoom()) end
 if isOutFox() then filterWidth = filterWidth * math.min(1,NotefieldZoomOutFox()) end
-if getenv("EffectVibrate"..pname(player)) then filterWidth = filterWidth + (30 * currentMini) end
+if getenv("Effect"..pname(player)) == 1 then filterWidth = filterWidth + (30 * currentMini) end
 
 local playeroptions = GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Preferred")
 local Stops,timingData,truebpms,bpm1,bpm2
@@ -59,9 +59,9 @@ local PY = GAMESTATE:GetPlayerState(player):GetPlayerOptions('ModsLevel_Preferre
 local adjust = isOutFox() and 47-(47 * WideScreenDiff()) or 0
 
 if GAMESTATE:GetNumPlayersEnabled() == 1 then
-	if getenv("RotationRight"..pname(player)) and player == PLAYER_1 then
+	if getenv("Rotation"..pname(player)) == 3 and player == PLAYER_1 then
 		PY = PY - SCREEN_CENTER_X
-	elseif getenv("RotationLeft"..pname(player)) and player == PLAYER_2 then
+	elseif getenv("Rotation"..pname(player)) == 2 and player == PLAYER_2 then
 		PY = PY - SCREEN_CENTER_X
 	end
 end

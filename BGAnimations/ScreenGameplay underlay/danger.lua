@@ -1,4 +1,4 @@
-local centerCheck = getenv("RotationSolo"..pname(GAMESTATE:GetMasterPlayerNumber())) or 0
+local centerCheck = getenv("Rotation"..pname(GAMESTATE:GetMasterPlayerNumber())) == 5 or false
 return Def.ActorFrame{
 	Def.ActorFrame{
 		Name="DangerP1",

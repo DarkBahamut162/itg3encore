@@ -1,9 +1,10 @@
 local t = Def.ActorFrame{ Name="GameplayUnderlay" }
 local stats = false
 
-if getenv("ShowStatsP1") == nil and getenv("ShowStatsP2") == nil then
-elseif getenv("ShowStatsP1") > 0 or getenv("ShowStatsP2") > 0 or getenv("ShowNoteGraphP1") > 1 or getenv("ShowNoteGraphP2") > 1 then
-	stats = true
+for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
+	if (getenv("ShowStats"..pname(pn)) and getenv("ShowStats"..pname(pn)) > 0) or (getenv("ShowNoteGraph"..pname(pn)) and getenv("ShowNoteGraph"..pname(pn)) > 0) then
+		stats = true
+	end
 end
 
 t[#t+1] = Def.ActorFrame{

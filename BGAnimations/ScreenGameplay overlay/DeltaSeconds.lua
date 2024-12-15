@@ -14,7 +14,7 @@ return Def.BitmapText {
 			posX = THEME:GetMetric(Var "LoadingScreen","PlayerP2OnePlayerOneSideX")
 		end
 		if IsGame("pump") then
-			if GAMESTATE:GetNumPlayersEnabled() == 1 and getenv("RotationSolo"..pname(player)) then posX = THEME:GetMetric(Var "LoadingScreen","PlayerP1OnePlayerTwoSidesX") end
+			if GAMESTATE:GetNumPlayersEnabled() == 1 and getenv("Rotation"..pname(player)) == 5 then posX = THEME:GetMetric(Var "LoadingScreen","PlayerP1OnePlayerTwoSidesX") end
 			self:addy(10)
 		end
 		self:x(posX + 72*WideScreenDiff_(16/9)):shadowlength(1):skewx(-0.125)

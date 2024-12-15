@@ -1,6 +1,9 @@
 local t = Def.ActorFrame{}
 local tOnline = Def.ActorFrame{}
 
+InitRotationOptions()
+InitPlayerOptions()
+
 if ShowStandardDecoration("StyleIcon") then
 	t[#t+1] = loadfile(THEME:GetPathG(Var "LoadingScreen", "StyleIcon"))() .. {
 		InitCommand=function(self)

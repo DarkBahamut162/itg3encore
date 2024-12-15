@@ -18,6 +18,7 @@ local special = false
 local doubles = (styleType == 'OnePlayerTwoSides' or styleType == 'TwoPlayersSharedSides')
 
 function getFilter(player,filterWidth,filterAlpha)
+	if filterAlpha == nil then filterAlpha = 0 end
 	if not isOutFox() then filterWidth = filterWidth * math.min(1,NotefieldZoom()) end
 	if isOutFox() then filterWidth = filterWidth * math.min(1,NotefieldZoomOutFox()) end
 
@@ -89,7 +90,7 @@ if numPlayers == 1 then
 	currentMini = currentMini * currentTiny
 	local filterWidth = style:GetWidth(player) * currentMini
 
-	if getenv("EffectVibrate"..pname(player)) then filterWidth = filterWidth + (30 * currentMini) end
+	if getenv("Effect"..pname(player)) == 1 then filterWidth = filterWidth + (30 * currentMini) end
 
 	local pos
 	local metricName = string.format("Player%s%sX",pname(player),styleType)
@@ -98,29 +99,28 @@ if numPlayers == 1 then
 	t[#t+1] = Def.ActorFrame{
 		InitCommand=function(self) self:x(pos):CenterY() end,
 		OnCommand=function(self)
-			if getenv("RotationLeft"..pname(player)) then
+			if getenv("Rotation"..pname(player)) == 2 then
 				self:rotationz(-90)
 				self:y(SCREEN_CENTER_Y)
-			elseif getenv("RotationRight"..pname(player)) then
+			elseif getenv("Rotation"..pname(player)) == 3 then
 				self:rotationz(90)
 				self:y(SCREEN_CENTER_Y)
-			elseif getenv("RotationUpsideDown"..pname(player)) then
+			elseif getenv("Rotation"..pname(player)) == 4 then
 				self:rotationz(180)
 				self:y(SCREEN_CENTER_Y)
-			elseif getenv("RotationSolo"..pname(player)) then
+			elseif getenv("Rotation"..pname(player)) == 5 then
 				self:CenterX()
 			end
 
-			if getenv("EffectVibrate"..pname(player)) then
-			elseif getenv("EffectSpin"..pname(player)) then
+			if getenv("Effect"..pname(player)) == 2 then
 				self:spin():effectclock('beat'):effectmagnitude(0,0,45*currentMini)
-			elseif getenv("EffectSpinReverse"..pname(player)) then
+			elseif getenv("Effect"..pname(player)) == 3 then
 				self:spin():effectclock('beat'):effectmagnitude(0,0,-45*currentMini)
-			elseif getenv("EffectBounce"..pname(player)) then
+			elseif getenv("Effect"..pname(player)) == 4 then
 				self:bob():effectclock('beat'):effectmagnitude(30*currentMini,30*currentMini,30*currentMini)
-			elseif getenv("EffectPulse"..pname(player)) then
+			elseif getenv("Effect"..pname(player)) == 5 then
 				self:pulse():effectclock('beat')
-			elseif getenv("EffectWag"..pname(player)) then
+			elseif getenv("Effect"..pname(player)) == 6 then
 				self:wag():effectclock('beat')
 			end
 		end,
@@ -140,30 +140,29 @@ else
 		currentMini = currentMini * currentTiny
 		local filterWidth = style:GetWidth(player) * currentMini
 
-		if getenv("EffectVibrate"..pname(player)) then filterWidth = filterWidth + (30 * currentMini) end
+		if getenv("Effect"..pname(player)) == 1 then filterWidth = filterWidth + (30 * currentMini) end
 
 		t[#t+1] = Def.Quad{
 			Name="RoutineFilter",
 			InitCommand=function(self) self:x(THEME:GetMetric("ScreenGameplay",metricName)):CenterY():zoomto(filterWidth,SCREEN_HEIGHT*4):diffusecolor(filterColor):diffusealpha(filterAlphas[player]) end,
 			OnCommand=function(self)
-				if getenv("RotationLeft"..pname(player)) then
+				if getenv("Rotation"..pname(player)) == 2 then
 					self:rotationz(-90):y(SCREEN_CENTER_Y+8)
-				elseif getenv("RotationRight"..pname(player)) then
+				elseif getenv("Rotation"..pname(player)) == 3 then
 					self:rotationz(90):y(SCREEN_CENTER_Y+8)
-				elseif getenv("RotationUpsideDown"..pname(player)) then
+				elseif getenv("Rotation"..pname(player)) == 4 then
 					self:y(SCREEN_CENTER_Y+20)
 				end
 
-				if getenv("EffectVibrate"..pname(player)) then
-				elseif getenv("EffectSpin"..pname(player)) then
+				if getenv("Effect"..pname(player)) == 2 then
 					self:spin():effectclock('beat'):effectmagnitude(0,0,45*currentMini)
-				elseif getenv("EffectSpinReverse"..pname(player)) then
+				elseif getenv("Effect"..pname(player)) == 3 then
 					self:spin():effectclock('beat'):effectmagnitude(0,0,-45*currentMini)
-				elseif getenv("EffectBounce"..pname(player)) then
+				elseif getenv("Effect"..pname(player)) == 4 then
 					self:bob():effectclock('beat'):effectmagnitude(30*currentMini,30*currentMini,30*currentMini)
-				elseif getenv("EffectPulse"..pname(player)) then
+				elseif getenv("Effect"..pname(player)) == 5 then
 					self:pulse():effectclock('beat')
-				elseif getenv("EffectWag"..pname(player)) then
+				elseif getenv("Effect"..pname(player)) == 6 then
 					self:wag():effectclock('beat')
 				end
 			end
@@ -178,7 +177,7 @@ else
 			currentMini = currentMini * currentTiny
 			local filterWidth = style:GetWidth(player) * currentMini
 
-			if getenv("EffectVibrate"..pname(player)) then filterWidth = filterWidth + (30 * currentMini) end
+			if getenv("Effect"..pname(player)) == 1 then filterWidth = filterWidth + (30 * currentMini) end
 
 			local metricName = string.format("Player%s%sX",pname(player),styleType)
 			local pos = THEME:GetMetric("ScreenGameplay",metricName)
@@ -186,26 +185,25 @@ else
 			t[#t+1] = Def.ActorFrame{
 				InitCommand=function(self) self:x(pos):CenterY() end,
 				OnCommand=function(self)
-					if getenv("RotationLeft"..pname(player)) then
+					if getenv("Rotation"..pname(player)) == 2 then
 						self:rotationz(-90)
 						self:y(SCREEN_CENTER_Y+10)
-					elseif getenv("RotationRight"..pname(player)) then
+					elseif getenv("Rotation"..pname(player)) == 3 then
 						self:rotationz(90)
 						self:y(SCREEN_CENTER_Y+10)
-					elseif getenv("RotationUpsideDown"..pname(player)) then
+					elseif getenv("Rotation"..pname(player)) == 4 then
 						self:y(0)
 					end
 		
-					if getenv("EffectVibrate"..pname(player)) then
-					elseif getenv("EffectSpin"..pname(player)) then
+					if getenv("Effect"..pname(player)) == 2 then
 						self:spin():effectclock('beat'):effectmagnitude(0,0,45*currentMini)
-					elseif getenv("EffectSpinReverse"..pname(player)) then
+					elseif getenv("Effect"..pname(player)) == 3 then
 						self:spin():effectclock('beat'):effectmagnitude(0,0,-45*currentMini)
-					elseif getenv("EffectBounce"..pname(player)) then
+					elseif getenv("Effect"..pname(player)) == 4 then
 						self:bob():effectclock('beat'):effectmagnitude(30*currentMini,30*currentMini,30*currentMini)
-					elseif getenv("EffectPulse"..pname(player)) then
+					elseif getenv("Effect"..pname(player)) == 5 then
 						self:pulse():effectclock('beat')
-					elseif getenv("EffectWag"..pname(player)) then
+					elseif getenv("Effect"..pname(player)) == 6 then
 						self:wag():effectclock('beat')
 					end
 				end,
