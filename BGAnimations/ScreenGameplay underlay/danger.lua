@@ -3,13 +3,8 @@ return Def.ActorFrame{
 	Def.ActorFrame{
 		Name="DangerP1",
 		Def.ActorFrame{
+			Condition=not isDouble() and not centerCheck,
 			Name="Single",
-			BeginCommand=function(self)
-				local style = GAMESTATE:GetCurrentStyle()
-				local styleType = style:GetStyleType()
-				local bDoubles = (styleType == 'StyleType_OnePlayerTwoSides' or styleType == 'StyleType_TwoPlayersSharedSides')
-				self:visible(not bDoubles and not centerCheck)
-			end,
 			HealthStateChangedMessageCommand=function(self, param)
 				if param.PlayerNumber == PLAYER_1 then
 					if param.HealthState == Health.Danger then
@@ -45,15 +40,10 @@ return Def.ActorFrame{
 		}
 	},
 	Def.ActorFrame{
+		Condition=isDouble() or centerCheck,
 		Name="DangerDouble",
 		Def.ActorFrame{
 			Name="Double",
-			BeginCommand=function(self)
-				local style = GAMESTATE:GetCurrentStyle()
-				local styleType = style:GetStyleType()
-				local bDoubles = (styleType == 'StyleType_OnePlayerTwoSides' or styleType == 'StyleType_TwoPlayersSharedSides')
-				self:visible(bDoubles or centerCheck)
-			end,
 			HealthStateChangedMessageCommand=function(self, param)
 				if param.PlayerNumber == GAMESTATE:GetMasterPlayerNumber() then
 					if param.HealthState == Health.Danger then
@@ -89,15 +79,10 @@ return Def.ActorFrame{
 		}
 	},
 	Def.ActorFrame{
+		Condition=not isDouble() and not centerCheck,
 		Name="DangerP2",
 		Def.ActorFrame{
 			Name="Single",
-			BeginCommand=function(self)
-				local style = GAMESTATE:GetCurrentStyle()
-				local styleType = style:GetStyleType()
-				local bDoubles = (styleType == 'StyleType_OnePlayerTwoSides' or styleType == 'StyleType_TwoPlayersSharedSides')
-				self:visible(not bDoubles and not centerCheck)
-			end,
 			HealthStateChangedMessageCommand=function(self, param)
 				if param.PlayerNumber == PLAYER_2 then
 					if param.HealthState == Health.Danger then

@@ -227,6 +227,11 @@ function isPlayMode(mode)
 	return GAMESTATE:GetPlayMode() == mode
 end
 
+function isDouble()
+	local style = GAMESTATE:GetCurrentStyle():GetStyleType()
+	return styleType == 'StyleType_OnePlayerTwoSides' or styleType == 'StyleType_TwoPlayersSharedSides'
+end
+
 function isITGmania()
 	return ProductFamily() == "ITGmania"
 end
@@ -272,8 +277,7 @@ function addToOutput(output,add,pre)
 end
 
 function Center1Player()
-	local styleType = GAMESTATE:GetCurrentStyle():GetStyleType()
-	if styleType == "StyleType_OnePlayerTwoSides" or styleType == "StyleType_TwoPlayersSharedSides" then
+	if isDouble() then
 		return true
 	else
 		return getenv("Rotation"..pname(GAMESTATE:GetMasterPlayerNumber())) == 5

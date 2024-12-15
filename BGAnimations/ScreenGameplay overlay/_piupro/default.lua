@@ -1,10 +1,7 @@
 local showDanger = PREFSMAN:GetPreference("ShowDanger")
 
 local function SingleLifeMeter()
-	local style = GAMESTATE:GetCurrentStyle()
-	local styleType = style:GetStyleType()
-	local doubles = (styleType == 'StyleType_OnePlayerTwoSides' or styleType == 'StyleType_TwoPlayersSharedSides')
-	return GAMESTATE:GetNumPlayersEnabled() == 1 and doubles
+	return GAMESTATE:GetNumPlayersEnabled() == 1 and isDouble()
 end
 
 local MaxGauntletLivesToShow = SingleLifeMeter() and 60 or 30

@@ -41,14 +41,9 @@ return Def.ActorFrame{
 		OffCommand=function(self) self:accelerate(0.3):addx(EvalTweenDistance()) end
 	},
 	Def.Sprite {
+		Condition=not isDouble() and not isVS(),
 		Texture = "light",
 		InitCommand=function(self) self:x(SCREEN_CENTER_X-2*WideScreenDiff()):y(SCREEN_CENTER_Y+110-150*WideScreenDiff()):zoom(WideScreenDiff()):diffusealpha(0) end,
-		BeginCommand=function(self)
-			local style = GAMESTATE:GetCurrentStyle()
-			local styleType = style:GetStyleType()
-			local doubles = (styleType == 'StyleType_OnePlayerTwoSides' or styleType == 'StyleType_TwoPlayersSharedSides')
-			self:visible(not doubles and not isVS())
-		end,
 		OnCommand=function(self) self:sleep(3.5):linear(0.8):diffusealpha(1):diffuseramp():effectperiod(2):effectoffset(0.20):effectclock("beat"):effectcolor1(color("#FFFFFF00")):effectcolor2(color("#FFFFFFFF")) end,
 		OffCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(0) end
 	},

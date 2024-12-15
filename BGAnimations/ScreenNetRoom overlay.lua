@@ -70,13 +70,8 @@ return Def.ActorFrame{
 			end
 		end,
 		Def.ActorFrame{
+			Condition=GAMESTATE:IsPlayerEnabled(PLAYER_1) and not isDouble(),
 			Name="LightP1",
-			InitCommand=function(self)
-				local style = GAMESTATE:GetCurrentStyle()
-				local styleType = style:GetStyleType()
-				local isDouble = (styleType == 'StyleType_OnePlayerTwoSides' or styleType == 'StyleType_TwoPlayersSharedSides')
-				self:visible(GAMESTATE:IsPlayerEnabled(PLAYER_1) and not isDouble)
-			end,
 			Def.Sprite {
 				Texture = THEME:GetPathG("_pane elements/_lneon",isFinal() and "final" or "normal"),
 				InitCommand=function(self) self:x(SCREEN_CENTER_X-90*WideScreenDiff()):y(SCREEN_BOTTOM-76*WideScreenDiff()):zoom(WideScreenDiff()):horizalign(right):vertalign(bottom):diffuseshift():effectcolor1(color("#bed0ff")):effectcolor2(color("#767676")):effectoffset(0):effectclock("beat") end,
@@ -91,13 +86,8 @@ return Def.ActorFrame{
 			}
 		},
 		Def.ActorFrame{
+			Condition=GAMESTATE:IsPlayerEnabled(PLAYER_2) and not isDouble(),
 			Name="LightP2",
-			InitCommand=function(self)
-				local style = GAMESTATE:GetCurrentStyle()
-				local styleType = style:GetStyleType()
-				local isDouble = (styleType == 'StyleType_OnePlayerTwoSides' or styleType == 'StyleType_TwoPlayersSharedSides')
-				self:visible(GAMESTATE:IsPlayerEnabled(PLAYER_2) and not isDouble)
-			end,
 			Def.Sprite {
 				Texture = THEME:GetPathG("_pane elements/_lneon",isFinal() and "final" or "normal"),
 				InitCommand=function(self) self:x(SCREEN_CENTER_X+146*WideScreenDiff()):y(SCREEN_BOTTOM-76*WideScreenDiff()):zoomx(-1*WideScreenDiff()):zoomy(WideScreenDiff()):horizalign(left):vertalign(bottom):diffuseshift():effectcolor1(color("#bed0ff")):effectcolor2(color("#767676")):effectoffset(0):effectclock("beat") end,
@@ -112,13 +102,8 @@ return Def.ActorFrame{
 			}
 		},
 		Def.ActorFrame{
+			Condition=isDouble(),
 			Name="LightDouble",
-			InitCommand=function(self)
-				local style = GAMESTATE:GetCurrentStyle()
-				local styleType = style:GetStyleType()
-				local isDouble = (styleType == 'StyleType_OnePlayerTwoSides' or styleType == 'StyleType_TwoPlayersSharedSides')
-				self:visible(isDouble)
-			end,
 			Def.ActorFrame{
 				Name="LeftSide",
 				Def.Sprite {

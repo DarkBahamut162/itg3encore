@@ -15,7 +15,6 @@ local stepsType = ToEnumShortString(style:GetStepsType())
 local stepsTypeNumber = tonumber(string.match(stepsType, "%d+"))
 local gameMode = GAMESTATE:GetCurrentGame():GetName()
 local special = false
-local doubles = (styleType == 'OnePlayerTwoSides' or styleType == 'TwoPlayersSharedSides')
 
 function getFilter(player,filterWidth,filterAlpha)
 	if filterAlpha == nil then filterAlpha = 0 end
@@ -53,7 +52,7 @@ function getFilter(player,filterWidth,filterAlpha)
 		end
 	end
 	if special and FILEMAN:DoesFileExist("/Appearance/BackPlates/"..gameMode.."/"..string.gsub(gameMode,"-","")..file) then
-		if doubles then
+		if isDouble() then
 			local file2 = (gameMode == "be-mu" and stepsTypeNumber == 7) and "7P2" or file
 			local repos = 0
 			if gameMode == "be-mu" and stepsTypeNumber == 7 then repos = 30 elseif gameMode == "po-mu" and pomuREST == "Nine" then repos = 15 end

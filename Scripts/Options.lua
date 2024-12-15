@@ -226,22 +226,19 @@ function StepsTypeDouble()
 end
 
 function SongMods()
-	local style = GAMESTATE:GetCurrentStyle()
-	local styleType = style:GetStyleType()
-	local doubles = (styleType == 'StyleType_OnePlayerTwoSides' or styleType == 'StyleType_TwoPlayersSharedSides')
 	local add,add2 = "",isOutFoxV() and ",27" or ""
 
 	if isOutFox() and not isOni() then
-		add = (GAMESTATE:GetNumPlayersEnabled() == 1 and not doubles) and "20S,20G," or "20G,"
+		add = (GAMESTATE:GetNumPlayersEnabled() == 1 and not isDouble()) and "20S,20G," or "20G,"
 	else
-		add = (GAMESTATE:GetNumPlayersEnabled() == 1 and not doubles) and "20S," or ""
+		add = (GAMESTATE:GetNumPlayersEnabled() == 1 and not isDouble()) and "20S," or ""
 	end
 
 	local fail = isOutFoxV() and "FV" or "F"
 	local options = "1,2,4,"..fail..",0,3,5,RE,RE2,AE,AE2,AE3"..(isOutFox() and ",AE4" or "")..",17,9,"
 
 	if isRegular() then
-		if doubles then
+		if isDouble() then
 			options = addToOutput(options,"23,10,11",",")
 		else
 			options = addToOutput(options,"22,23,10,11",",")
@@ -269,7 +266,7 @@ function SongMods()
 	end
 
 	if GAMESTATE:IsCourseMode() then
-		if (GAMESTATE:GetNumPlayersEnabled() == 1 and not doubles) then
+		if (GAMESTATE:GetNumPlayersEnabled() == 1 and not isDouble()) then
 			options = "1,3,22R"
 		else
 			options = "1,3"
@@ -287,16 +284,12 @@ function SongMods()
 end
 
 function ModeMenu()
-	local style = GAMESTATE:GetCurrentStyle()
-	local styleType = style:GetStyleType()
-	local doubles = (styleType == 'StyleType_OnePlayerTwoSides' or styleType == 'StyleType_TwoPlayersSharedSides')
-
 	local options = "Group,Title,Artist,Genre,Bpm,Length,"
 
 	if isITGmania() then
 		options = addToOutput(options,"Meter",",")
 	else
-		if not doubles then
+		if not isDouble() then
 			options = addToOutput(options,"EasyMeter,MediumMeter,HardMeter,ChallengeMeter",",")
 		else
 			options = addToOutput(options,"DoubleEasyMeter,DoubleMediumMeter,DoubleHardMeter,DoubleChallengeMeter",",")
@@ -824,7 +817,6 @@ end
 function DisplayCustomModifiersText(pn)
 	local style = GAMESTATE:GetCurrentStyle()
 	local styleType = style:GetStyleType()
-	local doubles = (styleType == 'StyleType_OnePlayerTwoSides' or styleType == 'StyleType_TwoPlayersSharedSides')
 	local output = ""
 
 	if getenv("UnderCombo"..pname(pn)) and getenv("UnderTapJudgments"..pname(pn)) and getenv("UnderHoldJudgments"..pname(pn)) then
@@ -861,7 +853,7 @@ function DisplayCustomModifiersText(pn)
 
 	if getenv("ShowMods"..pname(pn)) then output = addToOutput(output,"Show Mods",", ") end
 	if getenv("ShowStats"..pname(pn)) > 0 then
-		if GAMESTATE:GetNumPlayersEnabled() == 2 and not doubles then
+		if GAMESTATE:GetNumPlayersEnabled() == 2 and not isDouble() then
 			if getenv("ShowNoteGraph"..pname(pn)) > 1 then
 				output = addToOutput(output,"Show Stats",", ")
 			else

@@ -2,10 +2,6 @@ local c
 local mlevel = GAMESTATE:IsCourseMode() and "ModsLevel_Stage" or "ModsLevel_Preferred"
 local currentMini = 1-math.round(GAMESTATE:GetPlayerState(GAMESTATE:GetMasterPlayerNumber()):GetPlayerOptions(mlevel):Mini()*50) / 100
 
-local style = GAMESTATE:GetCurrentStyle()
-local styleType = style:GetStyleType()
-local doubles = (styleType == 'StyleType_OnePlayerTwoSides' or styleType == 'StyleType_TwoPlayersSharedSides')
-
 local function width(pos)
 	if IsGame("be-mu") or IsGame("beat") then
 		local width = {
@@ -60,7 +56,7 @@ return Def.ActorFrame {
 		if not isTopScreen("ScreenDemonstration") and not isTopScreen("ScreenDemonstration2") and not isTopScreen("ScreenJukebox") and not isTopScreen("ScreenCreditsGameplay") then
 			self:playcommand("UpdateDiscordInfo")
 			for pn in ivalues(GAMESTATE:GetEnabledPlayers()) do
-				if GAMESTATE:GetNumPlayersEnabled() == 1 and not doubles and (IsGame("be-mu") or IsGame("beat") or IsGame("po-mu")) then
+				if GAMESTATE:GetNumPlayersEnabled() == 1 and not isDouble() and (IsGame("be-mu") or IsGame("beat") or IsGame("po-mu")) then
 					if isOutFox() and not tobool(LoadFromCache(GAMESTATE:GetCurrentSong(),GAMESTATE:GetCurrentSteps(GAMESTATE:GetMasterPlayerNumber()),"HasLua")) or not HasLuaCheck() then
 						if getenv("Rotation"..pname(pn)) == 1 or getenv("Rotation"..pname(pn)) == 4 then
 							SCREENMAN:GetTopScreen():GetChild("SongBackground"):GetChild(""):zoom(zoomS()):xy(pn == PLAYER_1 and xS() or 0,SCREEN_CENTER_Y-SCREEN_CENTER_Y*zoomS())
@@ -100,11 +96,11 @@ return Def.ActorFrame {
 						elseif pn == PLAYER_2 then
 							posX = SCREEN_CENTER_X+SCREEN_WIDTH/4
 						end
-					elseif getenv("Rotation"..pname(pn)) == 5 and not doubles then
+					elseif getenv("Rotation"..pname(pn)) == 5 and not isDouble() then
 						if ToEnumShortString(GAMESTATE:GetCurrentStyle():GetStyleType()) == "OnePlayerOneSide" then
 							posX = SCREEN_CENTER_X
 						end
-					elseif getenv("Rotation"..pname(pn)) == 1 and not doubles then
+					elseif getenv("Rotation"..pname(pn)) == 1 and not isDouble() then
 						if pn == PLAYER_1 then
 							posX = SCREEN_CENTER_X-SCREEN_WIDTH/4
 						elseif pn == PLAYER_2 then

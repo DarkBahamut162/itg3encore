@@ -1,12 +1,8 @@
 local centerCheck = getenv("Rotation"..pname(GAMESTATE:GetMasterPlayerNumber())) == 5 or false
 return Def.ActorFrame{
 	Def.ActorFrame{
+		Condition=not isDouble() and not centerCheck,
 		Name="DeadSingle",
-		BeginCommand=function(self)
-			local style = GAMESTATE:GetCurrentStyle()
-			local styleType = style:GetStyleType()
-			self:visible( styleType ~= "StyleType_OnePlayerTwoSides" and styleType ~= "StyleType_TwoPlayersSharedSides" and not centerCheck )
-		end,
 		HealthStateChangedMessageCommand=function(self, param)
 			if param.HealthState == Health.Dead then
 				local dead = self:GetChild("Dead"..pname(param.PlayerNumber))
@@ -26,12 +22,8 @@ return Def.ActorFrame{
 	},
 
 	Def.ActorFrame{
+		Condition=isDouble() or centerCheck,
 		Name="DeadDouble",
-		BeginCommand=function(self)
-			local style = GAMESTATE:GetCurrentStyle()
-			local styleType = style:GetStyleType()
-			self:visible( styleType == "StyleType_OnePlayerTwoSides" or styleType == "StyleType_TwoPlayersSharedSides" or centerCheck )
-		end,
 		HealthStateChangedMessageCommand=function(self, param)
 			if param.HealthState == Health.Dead then
 				self:RunCommandsOnChildren(function(self) self:playcommand("Show") end)
