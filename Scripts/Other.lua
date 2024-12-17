@@ -306,7 +306,6 @@ function GetLives(player)
 	local lives = 1
 
 	if GAMESTATE:IsCourseMode() then
-		songs = GAMESTATE:GetCurrentCourse()
 		steps = GAMESTATE:GetCurrentTrail(player)
 		for entry in ivalues(steps:GetTrailEntries()) do
 			stepCounter = stepCounter + entry:GetSteps():GetRadarValues(player):GetValue('RadarCategory_TapsAndHolds')

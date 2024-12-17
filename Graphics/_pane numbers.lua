@@ -31,20 +31,16 @@ return Def.ActorFrame{
 		Name="Jumps",
 		InitCommand=function(self) self:x(-127+100):diffusealpha(0):maxwidth(22) end,
 		SetCommand=function(self)
-			local song = GAMESTATE:GetCurrentSong()
-			local course = GAMESTATE:GetCurrentCourse()
+			local SongOrCourse = courseMode and GAMESTATE:GetCurrentCourse() or GAMESTATE:GetCurrentSong()
 			local num, numSongs = 0, 1
-			if song then
-				local steps = GAMESTATE:GetCurrentSteps(player)
-				if steps then num = steps:GetRadarValues(player):GetValue('RadarCategory_Jumps') end
-			elseif course then
-				local trail = GAMESTATE:GetCurrentTrail(player)
-				if trail then
-					num = trail:GetRadarValues(player):GetValue('RadarCategory_Jumps')
-					numSongs = TrailUtil.GetNumSongs(trail)
+			if SongOrCourse then
+				local StepsOrTrail = courseMode and GAMESTATE:GetCurrentTrail(player) or GAMESTATE:GetCurrentSteps(player)
+				if StepsOrTrail then
+					num = StepsOrTrail:GetRadarValues(player):GetValue('RadarCategory_Jumps')
+					if courseMode then numSongs = TrailUtil.GetNumSongs(StepsOrTrail) end
 				end
 			end
-			if song or course then
+			if SongOrCourse then
 				self:visible(true)
 				local itemColor = color(colors[1][1]..","..colors[1][2]..","..colors[1][3]..",1")
 				if num <= stats[1][1] then itemColor = color(colors[1][1]..","..colors[1][2]..","..colors[1][3]..",1")
@@ -71,20 +67,16 @@ return Def.ActorFrame{
 		Name="Holds",
 		InitCommand=function(self) self:x(-102+100):diffusealpha(0):maxwidth(22) end,
 		SetCommand=function(self)
-			local song = GAMESTATE:GetCurrentSong()
-			local course = GAMESTATE:GetCurrentCourse()
+			local SongOrCourse = courseMode and GAMESTATE:GetCurrentCourse() or GAMESTATE:GetCurrentSong()
 			local num, numSongs = 0, 1
-			if song then
-				local steps = GAMESTATE:GetCurrentSteps(player)
-				if steps then num = steps:GetRadarValues(player):GetValue('RadarCategory_Holds') end
-			elseif course then
-				local trail = GAMESTATE:GetCurrentTrail(player)
-				if trail then
-					num = trail:GetRadarValues(player):GetValue('RadarCategory_Holds')
-					numSongs = TrailUtil.GetNumSongs(trail)
+			if SongOrCourse then
+				local StepsOrTrail = courseMode and GAMESTATE:GetCurrentTrail(player) or GAMESTATE:GetCurrentSteps(player)
+				if StepsOrTrail then
+					num = StepsOrTrail:GetRadarValues(player):GetValue('RadarCategory_Jumps')
+					if courseMode then numSongs = TrailUtil.GetNumSongs(StepsOrTrail) end
 				end
 			end
-			if song or course then
+			if SongOrCourse then
 				self:visible(true)
 				local itemColor = color(colors[1][1]..","..colors[1][2]..","..colors[1][3]..",1")
 				if num <= stats[2][1] then itemColor = color(colors[1][1]..","..colors[1][2]..","..colors[1][3]..",1")
@@ -111,20 +103,16 @@ return Def.ActorFrame{
 		Name="Mines",
 		InitCommand=function(self) self:x(-77+100):diffusealpha(0):maxwidth(22) end,
 		SetCommand=function(self)
-			local song = GAMESTATE:GetCurrentSong()
-			local course = GAMESTATE:GetCurrentCourse()
+			local SongOrCourse = courseMode and GAMESTATE:GetCurrentCourse() or GAMESTATE:GetCurrentSong()
 			local num, numSongs = 0, 1
-			if song then
-				local steps = GAMESTATE:GetCurrentSteps(player)
-				if steps then num = steps:GetRadarValues(player):GetValue('RadarCategory_Mines') end
-			elseif course then
-				local trail = GAMESTATE:GetCurrentTrail(player)
-				if trail then
-					num = trail:GetRadarValues(player):GetValue('RadarCategory_Mines')
-					numSongs = TrailUtil.GetNumSongs(trail)
+			if SongOrCourse then
+				local StepsOrTrail = courseMode and GAMESTATE:GetCurrentTrail(player) or GAMESTATE:GetCurrentSteps(player)
+				if StepsOrTrail then
+					num = StepsOrTrail:GetRadarValues(player):GetValue('RadarCategory_Jumps')
+					if courseMode then numSongs = TrailUtil.GetNumSongs(StepsOrTrail) end
 				end
 			end
-			if song or course then
+			if SongOrCourse then
 				self:visible(true)
 				local itemColor = color(colors[1][1]..","..colors[1][2]..","..colors[1][3]..",1")
 				if num <= stats[3][1] then itemColor = color(colors[1][1]..","..colors[1][2]..","..colors[1][3]..",1")
@@ -151,20 +139,16 @@ return Def.ActorFrame{
 		Name="Hands",
 		InitCommand=function(self) self:x(-52+100):diffusealpha(0):maxwidth(22) end,
 		SetCommand=function(self)
-			local song = GAMESTATE:GetCurrentSong()
-			local course = GAMESTATE:GetCurrentCourse()
+			local SongOrCourse = courseMode and GAMESTATE:GetCurrentCourse() or GAMESTATE:GetCurrentSong()
 			local num, numSongs = 0, 1
-			if song then
-				local steps = GAMESTATE:GetCurrentSteps(player)
-				if steps then num = steps:GetRadarValues(player):GetValue('RadarCategory_Hands') end
-			elseif course then
-				local trail = GAMESTATE:GetCurrentTrail(player)
-				if trail then
-					num = trail:GetRadarValues(player):GetValue('RadarCategory_Hands')
-					numSongs = TrailUtil.GetNumSongs(trail)
+			if SongOrCourse then
+				local StepsOrTrail = courseMode and GAMESTATE:GetCurrentTrail(player) or GAMESTATE:GetCurrentSteps(player)
+				if StepsOrTrail then
+					num = StepsOrTrail:GetRadarValues(player):GetValue('RadarCategory_Jumps')
+					if courseMode then numSongs = TrailUtil.GetNumSongs(StepsOrTrail) end
 				end
 			end
-			if song or course then
+			if SongOrCourse then
 				self:visible(true)
 				local itemColor = color(colors[1][1]..","..colors[1][2]..","..colors[1][3]..",1")
 				if num <= stats[4][1] then itemColor = color(colors[1][1]..","..colors[1][2]..","..colors[1][3]..",1")
@@ -191,20 +175,16 @@ return Def.ActorFrame{
 		Name="Rolls",
 		InitCommand=function(self) self:x(-27+100):diffusealpha(0):maxwidth(22) end,
 		SetCommand=function(self)
-			local song = GAMESTATE:GetCurrentSong()
-			local course = GAMESTATE:GetCurrentCourse()
+			local SongOrCourse = courseMode and GAMESTATE:GetCurrentCourse() or GAMESTATE:GetCurrentSong()
 			local num, numSongs = 0, 1
-			if song then
-				local steps = GAMESTATE:GetCurrentSteps(player)
-				if steps then num = steps:GetRadarValues(player):GetValue('RadarCategory_Rolls') end
-			elseif course then
-				local trail = GAMESTATE:GetCurrentTrail(player)
-				if trail then
-					num = trail:GetRadarValues(player):GetValue('RadarCategory_Rolls')
-					numSongs = TrailUtil.GetNumSongs(trail)
+			if SongOrCourse then
+				local StepsOrTrail = courseMode and GAMESTATE:GetCurrentTrail(player) or GAMESTATE:GetCurrentSteps(player)
+				if StepsOrTrail then
+					num = StepsOrTrail:GetRadarValues(player):GetValue('RadarCategory_Jumps')
+					if courseMode then numSongs = TrailUtil.GetNumSongs(StepsOrTrail) end
 				end
 			end
-			if song or course then
+			if SongOrCourse then
 				self:visible(true)
 				local itemColor = color(colors[1][1]..","..colors[1][2]..","..colors[1][3]..",1")
 				if num <= stats[5][1] then itemColor = color(colors[1][1]..","..colors[1][2]..","..colors[1][3]..",1")

@@ -3,13 +3,14 @@ return Def.ActorFrame{
 		if isOutFox() then
 			local player = GAMESTATE:GetMasterPlayerNumber()
 			local StepOrTrails = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentTrail(player) or GAMESTATE:GetCurrentSteps(player)
-			if GAMESTATE:GetCurrentSong() then
-				local lengthFull = string.len(GAMESTATE:GetCurrentSong():GetDisplayFullTitle()) + 3 + string.len(GAMESTATE:GetCurrentSong():GetGroupName())
-				local lengthMain = string.len(GAMESTATE:GetCurrentSong():GetDisplayMainTitle()) + 3 + string.len(GAMESTATE:GetCurrentSong():GetGroupName())
-				local title = lengthFull < 128 and GAMESTATE:GetCurrentSong():GetDisplayFullTitle() or
-							--string.sub(GAMESTATE:GetCurrentSong():GetDisplayFullTitle(),1,122-string.len(GAMESTATE:GetCurrentSong():GetGroupName())) .. "..."
-							lengthMain < 128 and GAMESTATE:GetCurrentSong():GetDisplayMainTitle() or string.sub(GAMESTATE:GetCurrentSong():GetDisplayMainTitle(),1,122-string.len(GAMESTATE:GetCurrentSong():GetGroupName())) .. "..."
-				local songname = title .. " - " .. GAMESTATE:GetCurrentSong():GetGroupName()
+			local song = GAMESTATE:GetCurrentSong()
+			if song then
+				local lengthFull = string.len(song:GetDisplayFullTitle()) + 3 + string.len(song:GetGroupName())
+				local lengthMain = string.len(song:GetDisplayMainTitle()) + 3 + string.len(song:GetGroupName())
+				local title = lengthFull < 128 and song:GetDisplayFullTitle() or
+							--string.sub(song:GetDisplayFullTitle(),1,122-string.len(song:GetGroupName())) .. "..."
+							lengthMain < 128 and song:GetDisplayMainTitle() or string.sub(song:GetDisplayMainTitle(),1,122-string.len(song:GetGroupName())) .. "..."
+				local songname = title .. " - " .. song:GetGroupName()
 				local Difficulty = ToEnumShortString( StepOrTrails:GetDifficulty() ) .. " " .. StepOrTrails:GetMeter()
 				local Percentage = STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetPercentDancePoints()
 				local autoPlayer = getenv("EvalCombo"..pname(player)) and "" or " | AUTOPLAYER"
@@ -140,10 +141,8 @@ return Def.ActorFrame{
 		OnCommand=function(self) self:diffusealpha(0):sleep(3):linear(0.3):diffusealpha(1) end,
 		OffCommand=function(self) self:linear(0.2):diffusealpha(0) end,
 		UpdateCommand=function(self)
-			local song = GAMESTATE:GetCurrentSong()
-			local course = GAMESTATE:GetCurrentCourse()
-			if song then self:settext( song:GetDisplayFullTitle() ) end
-			if course then self:settext( course:GetDisplayFullTitle() ) end
+			local SongOrCourse = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentCourse() or GAMESTATE:GetCurrentSong()
+			if SongOrCourse then self:settext( SongOrCourse:GetDisplayFullTitle() ) end
 		end
 	},
 	loadfile(THEME:GetPathB("ScreenEvaluation","underlay/Score"))(PLAYER_1)..{Condition=GAMESTATE:IsPlayerEnabled(PLAYER_1)},

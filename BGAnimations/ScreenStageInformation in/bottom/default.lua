@@ -13,14 +13,8 @@ return Def.ActorFrame{
 		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+103*WideScreenDiff()):blend(Blend.Add):fadetop(0.3):croptop(0.3):diffusetopedge(color("#FFFFFF00")):ztest(true) end,
 		OnCommand=function(self) self:playcommand("Set"):rotationz(180):zoomx(-1*WideScreenDiff()):zoomy(WideScreenDiff()):linear(1):y(SCREEN_CENTER_Y+103*WideScreenDiff()-33*WideScreenDiff()):diffusealpha(0.2) end,
 		SetCommand=function(self)
-			local sel
-			if GAMESTATE:IsCourseMode() then
-				sel = GAMESTATE:GetCurrentCourse()
-				if sel then self:LoadFromCourse(sel) end
-			else
-				sel = GAMESTATE:GetCurrentSong()
-				if sel then self:LoadFromSong(sel) end
-			end
+			local sel = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentCourse() or GAMESTATE:GetCurrentSong()
+			if sel then if GAMESTATE:IsCourseMode() then self:LoadFromCourse(sel) else self:LoadFromSong(sel) end end
 			self:scaletoclipped(292,114)
 		end
 	},

@@ -38,14 +38,11 @@ return Def.ActorFrame{
 		SetCommand=function(self)
 			local yZoom = 0
 			local numSongs = 1
-			local song = GAMESTATE:GetCurrentSong()
-			local course = GAMESTATE:GetCurrentCourse()
+			local SongOrCourse = courseMode and GAMESTATE:GetCurrentCourse() or GAMESTATE:GetCurrentSong()
 			local steps
-			if song then
-				steps = GAMESTATE:GetCurrentSteps(player)
-			elseif course then
-				steps = GAMESTATE:GetCurrentTrail(player)
-				if steps then numSongs = TrailUtil.GetNumSongs(steps) end
+			if SongOrCourse then
+				steps = courseMode and GAMESTATE:GetCurrentTrail(player) or GAMESTATE:GetCurrentSteps(player)
+				if courseMode then if steps then numSongs = TrailUtil.GetNumSongs(steps) end end
 			else
 				yZoom = 0
 			end
@@ -76,14 +73,11 @@ return Def.ActorFrame{
 		SetCommand=function(self)
 			local yZoom = 0
 			local numSongs = 1
-			local song = GAMESTATE:GetCurrentSong()
-			local course = GAMESTATE:GetCurrentCourse()
+			local SongOrCourse = courseMode and GAMESTATE:GetCurrentCourse() or GAMESTATE:GetCurrentSong()
 			local steps
-			if song then
-				steps = GAMESTATE:GetCurrentSteps(player)
-			elseif course then
-				steps = GAMESTATE:GetCurrentTrail(player)
-				if steps then numSongs = TrailUtil.GetNumSongs(steps) end
+			if SongOrCourse then
+				steps = courseMode and GAMESTATE:GetCurrentTrail(player) or GAMESTATE:GetCurrentSteps(player)
+				if courseMode then if steps then numSongs = TrailUtil.GetNumSongs(steps) end end
 			else
 				yZoom = 0
 			end
@@ -114,14 +108,11 @@ return Def.ActorFrame{
 		SetCommand=function(self)
 			local yZoom = 0
 			local numSongs = 1
-			local song = GAMESTATE:GetCurrentSong()
-			local course = GAMESTATE:GetCurrentCourse()
+			local SongOrCourse = courseMode and GAMESTATE:GetCurrentCourse() or GAMESTATE:GetCurrentSong()
 			local steps
-			if song then
-				steps = GAMESTATE:GetCurrentSteps(player)
-			elseif course then
-				steps = GAMESTATE:GetCurrentTrail(player)
-				if steps then numSongs = TrailUtil.GetNumSongs(steps) end
+			if SongOrCourse then
+				steps = courseMode and GAMESTATE:GetCurrentTrail(player) or GAMESTATE:GetCurrentSteps(player)
+				if courseMode then if steps then numSongs = TrailUtil.GetNumSongs(steps) end end
 			else
 				yZoom = 0
 			end
@@ -152,14 +143,11 @@ return Def.ActorFrame{
 		SetCommand=function(self)
 			local yZoom = 0
 			local numSongs = 1
-			local song = GAMESTATE:GetCurrentSong()
-			local course = GAMESTATE:GetCurrentCourse()
+			local SongOrCourse = courseMode and GAMESTATE:GetCurrentCourse() or GAMESTATE:GetCurrentSong()
 			local steps
-			if song then
-				steps = GAMESTATE:GetCurrentSteps(player)
-			elseif course then
-				steps = GAMESTATE:GetCurrentTrail(player)
-				if steps then numSongs = TrailUtil.GetNumSongs(steps) end
+			if SongOrCourse then
+				steps = courseMode and GAMESTATE:GetCurrentTrail(player) or GAMESTATE:GetCurrentSteps(player)
+				if courseMode then if steps then numSongs = TrailUtil.GetNumSongs(steps) end end
 			else
 				yZoom = 0
 			end
@@ -190,14 +178,11 @@ return Def.ActorFrame{
 		SetCommand=function(self)
 			local yZoom = 0
 			local numSongs = 1
-			local song = GAMESTATE:GetCurrentSong()
-			local course = GAMESTATE:GetCurrentCourse()
+			local SongOrCourse = courseMode and GAMESTATE:GetCurrentCourse() or GAMESTATE:GetCurrentSong()
 			local steps
-			if song then
-				steps = GAMESTATE:GetCurrentSteps(player)
-			elseif course then
-				steps = GAMESTATE:GetCurrentTrail(player)
-				if steps then numSongs = TrailUtil.GetNumSongs(steps) end
+			if SongOrCourse then
+				steps = courseMode and GAMESTATE:GetCurrentTrail(player) or GAMESTATE:GetCurrentSteps(player)
+				if courseMode then if steps then numSongs = TrailUtil.GetNumSongs(steps) end end
 			else
 				yZoom = 0
 			end

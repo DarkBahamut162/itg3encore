@@ -192,9 +192,10 @@ function generateFavoritesForMusicWheel()
 end
 
 function addOrRemoveFavorite(player)
-    if GAMESTATE:GetCurrentSong() then
+    local song = GAMESTATE:GetCurrentSong()
+    if song then
 		local path = getSLFavoritesPath(player)
-        local songDir = GAMESTATE:GetCurrentSong():GetSongDir()
+        local songDir = song:GetSongDir()
         local arr = split("/", songDir)
         songDir = arr[3] .. "/" .. arr[4]
         local favoritesString = lua.ReadFile(path) or ""
@@ -202,7 +203,7 @@ function addOrRemoveFavorite(player)
         if not PROFILEMAN:IsPersistentProfile(player) then
             favoritesString = ""
         elseif favoritesString then
-			local songTitle = GAMESTATE:GetCurrentSong():GetDisplayFullTitle()
+			local songTitle = song:GetDisplayFullTitle()
 			local profileName = PROFILEMAN:GetPlayerName(player) == "" and ToEnumShortString(player) or PROFILEMAN:GetPlayerName(player)
             if string.match(favoritesString, strPlainText(arr[3] .. "/" .. arr[4]) .. "\n") then
                 favoritesString = string.gsub(favoritesString, strPlainText(arr[3] .. "/" .. arr[4]) .. "\n", "")

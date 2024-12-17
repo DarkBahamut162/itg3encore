@@ -26,8 +26,10 @@ local allowednotes = {
 }
 
 local function UpdateGraph()
-    local SongOrCourse = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentTrail(pn):GetTrailEntry(GAMESTATE:GetLoadingCourseSongIndex()):GetSong() or GAMESTATE:GetCurrentSong()
-    local StepOrTrails = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentTrail(pn):GetTrailEntry(GAMESTATE:GetLoadingCourseSongIndex()):GetSteps() or GAMESTATE:GetCurrentSteps(pn)
+    lastSec = 0
+    lastBeat = 0
+    local SongOrCourse = GAMESTATE:GetCurrentSong()
+    local StepOrTrails = GAMESTATE:GetCurrentSteps(pn)
 	local stepsPerSecList = {0}
     local chartint = 1
     local absoluteSec = 0
@@ -74,8 +76,10 @@ local function UpdateGraph()
 end
 
 local function UpdateGraphAlt()
-    local SongOrCourse = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentTrail(pn):GetTrailEntry(GAMESTATE:GetLoadingCourseSongIndex()):GetSong() or GAMESTATE:GetCurrentSong()
-    local StepOrTrails = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentTrail(pn):GetTrailEntry(GAMESTATE:GetLoadingCourseSongIndex()):GetSteps() or GAMESTATE:GetCurrentSteps(pn)
+    lastSec = 0
+    lastBeat = 0
+    local SongOrCourse = GAMESTATE:GetCurrentSong()
+    local StepOrTrails = GAMESTATE:GetCurrentSteps(pn)
 	local stepsPerSecList = {}
     local chartint = 1
     local previousSec = -999
@@ -126,8 +130,8 @@ local function UpdateGraphAlt()
 end
 
 local function UpdateGraphAssist()
-    local SongOrCourse = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentTrail(pn):GetTrailEntry(GAMESTATE:GetLoadingCourseSongIndex()):GetSong() or GAMESTATE:GetCurrentSong()
-    local StepOrTrails = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentTrail(pn):GetTrailEntry(GAMESTATE:GetLoadingCourseSongIndex()):GetSteps() or GAMESTATE:GetCurrentSteps(pn)
+    local SongOrCourse = GAMESTATE:GetCurrentSong()
+    local StepOrTrails = GAMESTATE:GetCurrentSteps(pn)
 	local assist = {}
     local temp = nil
 
@@ -158,7 +162,7 @@ local function UpdateGraphAssist()
         end
     end
 
-    return {assist,lastSec}
+    return assist
 end
 
 local function GetVertices(stepsPerSecList)
@@ -242,10 +246,10 @@ end
 
 local function GetVerticesAssist(insert)
     local graphW = SCREEN_HEIGHT-130
-    local assistList,lastSecond = insert[1],insert[2]
+    local assistList = insert
     local vertices = {}
     local col = color('1, 1, 1, 1')
-    local length = lastSecond/352/2
+    local length = lastSec/352/2
 
     for sec,typ in pairs(assistList) do
         if typ < 0 then
@@ -256,10 +260,10 @@ local function GetVerticesAssist(insert)
             col = color('1, 1, 1, 0.25')
         end
 
-        vertices[#vertices+1] = { {(sec-length)*graphW/lastSecond, graphH*2, 0},col }
-        vertices[#vertices+1] = { {(sec-length)*graphW/lastSecond, graphH, 0},col }
-        vertices[#vertices+1] = { {(sec+length)*graphW/lastSecond, graphH, 0},col }
-        vertices[#vertices+1] = { {(sec+length)*graphW/lastSecond, graphH*2, 0},col }
+        vertices[#vertices+1] = { {(sec-length)*graphW/lastSec, graphH*2, 0},col }
+        vertices[#vertices+1] = { {(sec-length)*graphW/lastSec, graphH, 0},col }
+        vertices[#vertices+1] = { {(sec+length)*graphW/lastSec, graphH, 0},col }
+        vertices[#vertices+1] = { {(sec+length)*graphW/lastSec, graphH*2, 0},col }
     end
     return vertices
 end
@@ -306,8 +310,8 @@ return Def.ActorFrame{
         },
         Def.ActorMultiVertex{
             Condition=getenv("ShowSpeedAssist"..pname(pn)) or getenv("ShowStopAssist"..pname(pn)),
-            DoneLoadingNextSongMessageCommand=function(self) self:diffusealpha(0):playcommand("Init") end,
-            InitCommand=function(self)
+            DoneLoadingNextSongMessageCommand=function(self) self:diffusealpha(0):sleep(1/60):playcommand("Draw") end,
+            DrawCommand=function(self)
                 local vertices = GetVerticesAssist(UpdateGraphAssist())
                 self:SetDrawState({Mode = 'DrawMode_Quads'})
                 self:SetVertices(1, vertices)

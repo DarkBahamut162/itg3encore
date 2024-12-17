@@ -3,13 +3,10 @@ local courseMode = GAMESTATE:IsCourseMode()
 return Def.FadingBanner{
 	InitCommand=function(self) self:playcommand("Set"):ztest(true):vertalign(bottom):zoomy(-1) end,
 	SetCommand=function(self)
-		local song = GAMESTATE:GetCurrentSong()
-		local course = GAMESTATE:GetCurrentCourse()
+		local SongOrCourse = courseMode and GAMESTATE:GetCurrentCourse() or GAMESTATE:GetCurrentSong()
 		local sortOrder = GAMESTATE:GetSortOrder()
-		if song then
-			self:LoadFromSong(song)
-		elseif course then
-			self:LoadFromCourse(course)
+		if SongOrCourse then
+			if courseMode then self:LoadFromCourse(SongOrCourse) else self:LoadFromSong(SongOrCourse) end
 		elseif sortOrder == 'SortOrder_ModeMenu' then
 			self:LoadFromSortOrder('SortOrder_ModeMenu')
 		else

@@ -74,18 +74,17 @@ end
 
 local function CalcMinusStepSeconds(pn)
 	local fSecs = 0
-	local played = #STATSMAN:GetPlayedStageStats(1):GetPlayedSongs()
-	local SongOrCourse = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentCourse() or GAMESTATE:GetCurrentSong()
-	local StepsOrTrail = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentTrail(pn) or GAMESTATE:GetCurrentSteps(pn)
+
 	if GAMESTATE:IsCourseMode() then
+		local played = #STATSMAN:GetPlayedStageStats(1):GetPlayedSongs()
 		for i = 1, played do
-			local trail = StepsOrTrail:GetTrailEntry(i)
+			local trail = GAMESTATE:GetCurrentTrail(pn):GetTrailEntry(i)
 			if trail then
 				fSecs = fSecs + trail:GetSong():GetFirstSecond()
 			end
 		end
 	else
-		fSecs = fSecs + SongOrCourse:GetFirstSecond()
+		fSecs = fSecs + GAMESTATE:GetCurrentSong():GetFirstSecond()
 	end
 
     local songoptions = GAMESTATE:GetSongOptionsObject("ModsLevel_Song")

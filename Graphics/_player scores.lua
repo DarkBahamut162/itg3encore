@@ -15,8 +15,8 @@ return Def.ActorFrame{
 			local name = self:GetChild("ScoreName")
 			local score = self:GetChild("ScorePercent")
 			local profile = PROFILEMAN:GetMachineProfile()
-			local SongOrCourse = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentCourse() or GAMESTATE:GetCurrentSong()
-			local StepOrTrails = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentTrail(player) or GAMESTATE:GetCurrentSteps(player)
+			local SongOrCourse = courseMode and GAMESTATE:GetCurrentCourse() or GAMESTATE:GetCurrentSong()
+			local StepOrTrails = courseMode and GAMESTATE:GetCurrentTrail(player) or GAMESTATE:GetCurrentSteps(player)
 			local scoreText = "?"
 			local nameText = "?"
 
@@ -63,8 +63,8 @@ return Def.ActorFrame{
 			local name = self:GetChild("ScoreName")
 			local score = self:GetChild("ScorePercent")
 			local profile = PROFILEMAN:GetProfile(player)
-			local SongOrCourse = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentCourse() or GAMESTATE:GetCurrentSong()
-			local StepOrTrails = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentTrail(player) or GAMESTATE:GetCurrentSteps(player)
+			local SongOrCourse = courseMode and GAMESTATE:GetCurrentCourse() or GAMESTATE:GetCurrentSong()
+			local StepOrTrails = courseMode and GAMESTATE:GetCurrentTrail(player) or GAMESTATE:GetCurrentSteps(player)
 			local scoreText = "?"
 			local nameText = "YOU"
 

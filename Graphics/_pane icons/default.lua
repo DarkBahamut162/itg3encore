@@ -3,7 +3,6 @@ assert(player,"[Graphics/_pane icons] player required")
 
 local bpm,stop,delay,warp,scroll,speed,fake,attack,jump,hold,mine,hand,roll = false,false,false,false,false,false,false,false,false,false,false,false,false
 local stream,voltage,air,freeze,chaos = 0,0,0,0,0
-local song,course
 local courseMode = GAMESTATE:IsCourseMode()
 
 return Def.ActorFrame{
@@ -13,10 +12,10 @@ return Def.ActorFrame{
 	["CurrentSteps".. pname(player) .."ChangedMessageCommand"]=function(self) if not courseMode then self:playcommand("MasterSet") end end,
 	["CurrentTrail".. pname(player) .."ChangedMessageCommand"]=function(self) if courseMode then self:playcommand("MasterSet") end end,
 	MasterSetCommand=function(self)
-		song,course = GAMESTATE:GetCurrentSong(),GAMESTATE:GetCurrentCourse()
+		local SongOrCourse = courseMode and GAMESTATE:GetCurrentCourse() or GAMESTATE:GetCurrentSong()
 		bpm,stop,delay,warp,scroll,speed,fake,attack,jump,hold,mine,hand,roll = false,false,false,false,false,false,false,false,false,false,false,false,false
 		stream,voltage,air,freeze,chaos = 0,0,0,0,0
-		if song then
+		if not courseMode and SongOrCourse then
 			local step = GAMESTATE:GetCurrentSteps(player)
 			if step then
 				local timingData = step:GetTimingData()
@@ -35,9 +34,9 @@ return Def.ActorFrame{
 				mine = rv:GetValue('RadarCategory_Mines') > 0
 				hand = rv:GetValue('RadarCategory_Hands') > 0
 				roll = rv:GetValue('RadarCategory_Rolls') > 0
-				stream,voltage,air,freeze,chaos = grooveRadar(song,step,rv)
+				stream,voltage,air,freeze,chaos = grooveRadar(SongOrCourse,step,rv)
 			end
-		elseif course then
+		elseif courseMode and SongOrCourse then
 			local trail = GAMESTATE:GetCurrentTrail(player)
 			if trail then
 				for entry in ivalues(trail:GetTrailEntries()) do

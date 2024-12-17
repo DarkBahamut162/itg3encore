@@ -52,14 +52,14 @@ return Def.ActorFrame{
 		InitCommand=function(self) self:x(-67):y(120+4):zoom(0.35):diffusealpha(0):shadowlength(1) end,
 		SetCommand=function(self)
 			local val = 0
-			local SongOrCourse = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentCourse() or GAMESTATE:GetCurrentSong()
-			local StepOrTrails = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentTrail(player) or GAMESTATE:GetCurrentSteps(player)
+			local SongOrCourse = courseMode and GAMESTATE:GetCurrentCourse() or GAMESTATE:GetCurrentSong()
+			local StepOrTrails = courseMode and GAMESTATE:GetCurrentTrail(player) or GAMESTATE:GetCurrentSteps(player)
 			local numSongs
 
-			if SongOrCourse and StepOrTrails and (not GAMESTATE:IsCourseMode() or (GAMESTATE:IsCourseMode() and not IsCourseSecret())) then
-				numSongs = GAMESTATE:IsCourseMode() and TrailUtil.GetNumSongs(StepOrTrails) or 1
+			if SongOrCourse and StepOrTrails and (not courseMode or (courseMode and not IsCourseSecret())) then
+				numSongs = courseMode and TrailUtil.GetNumSongs(StepOrTrails) or 1
 				val = StepOrTrails:GetRadarValues(player):GetValue('RadarCategory_TapsAndHolds')
-				if not GAMESTATE:IsCourseMode() or (GAMESTATE:IsCourseMode() and not IsCourseSecret()) then
+				if not courseMode or (courseMode and not IsCourseSecret()) then
 					if val == 0 then
 						self:diffusetopedge(color("#"..topedge[1][1]..topedge[1][2]..topedge[1][3]))
 						self:diffusebottomedge(color("#"..bottomedge[1][1]..bottomedge[1][2]..bottomedge[1][3]))

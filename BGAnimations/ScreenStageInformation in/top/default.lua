@@ -21,14 +21,8 @@ return Def.ActorFrame{
 			InitCommand=function(self) self:diffusealpha(0):ztest(true) end,
 			OnCommand=function(self) self:playcommand("Set"):linear(1):diffusealpha(1) end,
 			SetCommand=function(self)
-				local sel
-				if GAMESTATE:IsCourseMode() then
-					sel = GAMESTATE:GetCurrentCourse()
-					if sel then self:LoadFromCourse(sel) end
-				else
-					sel = GAMESTATE:GetCurrentSong()
-					if sel then self:LoadFromSong(sel) end
-				end
+				local sel = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentCourse() or GAMESTATE:GetCurrentSong()
+				if sel then if GAMESTATE:IsCourseMode() then self:LoadFromCourse(sel) else self:LoadFromSong(sel) end end
 				self:scaletoclipped(292,114)
 			end
 		},

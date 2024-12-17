@@ -19,13 +19,12 @@ if not isOutFoxV() then
 		InitCommand=function(self) self:x(SCREEN_CENTER_X+140*WideScreenDiff()):y(SCREEN_CENTER_Y-91*WideScreenDiff()):addx(SCREEN_WIDTH):decelerate(0.75):addx(-SCREEN_WIDTH):ztest(true):vertalign(bottom):playcommand("Set") end,
 		OffCommand=function(self) self:accelerate(0.75):addx(SCREEN_WIDTH) end,
 		SetCommand=function(self)
-			local song = GAMESTATE:GetCurrentSong()
-			local course = GAMESTATE:GetCurrentCourse()
+			local SongOrCourse = courseMode and GAMESTATE:GetCurrentCourse() or GAMESTATE:GetCurrentSong()
 			local sortOrder = GAMESTATE:GetSortOrder()
-			if song then
-				self:LoadFromSong(song)
-			elseif course then
-				self:LoadFromCourse(course)
+			if courseMode and SongOrCourse then
+				self:LoadFromCourse(SongOrCourse)
+			elseif not courseMode and SongOrCourse then
+				self:LoadFromSong(SongOrCourse)
 			elseif sortOrder == 'SortOrder_ModeMenu' then
 				self:LoadFromSortOrder('SortOrder_ModeMenu')
 			else
@@ -123,46 +122,46 @@ t[#t+1] = Def.Sound {
 local function CDTitleUpdate(self)
 	local song = GAMESTATE:GetCurrentSong()
 	local cdtitle = self:GetChild("CDTitle")
-	local height = cdtitle:GetHeight()
-	local width = cdtitle:GetWidth()
 	local size = 100
 
 	if song then
 		if song:HasCDTitle() then
-			cdtitle:visible(true)
 			cdtitle:Load(song:GetCDTitlePath())
+			local height = cdtitle:GetHeight()
+			local width = cdtitle:GetWidth()
+
+			if height >= size and width >= size then
+				if height >= width then
+					cdtitle:zoom(size/height)
+				else
+					cdtitle:zoom(size/width)
+				end
+			elseif height >= size then
+				cdtitle:zoom(size/height)
+			elseif width >= size then
+				cdtitle:zoom(size/width)
+			else 
+				cdtitle:zoom(1)
+			end
+			cdtitle:visible(true)
 		else
 			cdtitle:visible(false)
 		end
 	else
 		cdtitle:visible(false)
 	end
-
-	if height >= size and width >= size then
-		if height >= width then
-			cdtitle:zoom(size/height)
-		else
-			cdtitle:zoom(size/width)
-		end
-	elseif height >= size then
-		cdtitle:zoom(size/height)
-	elseif width >= size then
-		cdtitle:zoom(size/width)
-	else 
-		cdtitle:zoom(1)
-	end
 end
 
 t[#t+1] = Def.ActorFrame {
-	Condition=IsUsingWideScreen() or GetScreenAspectRatio() <= 1,
+	Condition=not courseMode and (IsUsingWideScreen() or GetScreenAspectRatio() <= 1),
 	InitCommand=function(self)
-		self:SetUpdateFunction(CDTitleUpdate)
 		if IsUsingWideScreen() then
 			self:x(SCREEN_CENTER_X+302):y(SCREEN_CENTER_Y-88):rotationz(90)
 		elseif GetScreenAspectRatio() <= 1 then
 			self:x(SCREEN_CENTER_X+302*WideScreenDiff()):y(SCREEN_CENTER_Y-154*WideScreenDiff()):zoom(WideScreenDiff())
 		end
 	end,
+	CurrentSongChangedMessageCommand=function(self) if not courseMode then CDTitleUpdate(self) end end,
 	OnCommand=function(self) self:addx(SCREEN_WIDTH):decelerate(0.75):addx(-SCREEN_WIDTH) end,
 	OffCommand=function(self) self:accelerate(0.75):addx(SCREEN_WIDTH) end,
 	Def.Sprite {

@@ -99,13 +99,11 @@ end
 
 function PlayerFullComboed(pn)
 	if GAMESTATE:IsPlayerEnabled(pn) then
-		local SongOrCourse, StepsOrTrail
+		local StepsOrTrail
 
 		if GAMESTATE:IsCourseMode() then
-			SongOrCourse = GAMESTATE:GetCurrentCourse()
 			StepsOrTrail = GAMESTATE:GetCurrentTrail(pn)
 		else
-			SongOrCourse = GAMESTATE:GetCurrentSong()
 			StepsOrTrail = GAMESTATE:GetCurrentSteps(pn)
 		end
 
