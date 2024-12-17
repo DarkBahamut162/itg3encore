@@ -72,7 +72,7 @@ return Def.ActorFrame{
 			if SongOrCourse then
 				local StepsOrTrail = courseMode and GAMESTATE:GetCurrentTrail(player) or GAMESTATE:GetCurrentSteps(player)
 				if StepsOrTrail then
-					num = StepsOrTrail:GetRadarValues(player):GetValue('RadarCategory_Jumps')
+					num = StepsOrTrail:GetRadarValues(player):GetValue('RadarCategory_Holds')
 					if courseMode then numSongs = TrailUtil.GetNumSongs(StepsOrTrail) end
 				end
 			end
@@ -108,7 +108,7 @@ return Def.ActorFrame{
 			if SongOrCourse then
 				local StepsOrTrail = courseMode and GAMESTATE:GetCurrentTrail(player) or GAMESTATE:GetCurrentSteps(player)
 				if StepsOrTrail then
-					num = StepsOrTrail:GetRadarValues(player):GetValue('RadarCategory_Jumps')
+					num = StepsOrTrail:GetRadarValues(player):GetValue('RadarCategory_Mines')
 					if courseMode then numSongs = TrailUtil.GetNumSongs(StepsOrTrail) end
 				end
 			end
@@ -144,7 +144,7 @@ return Def.ActorFrame{
 			if SongOrCourse then
 				local StepsOrTrail = courseMode and GAMESTATE:GetCurrentTrail(player) or GAMESTATE:GetCurrentSteps(player)
 				if StepsOrTrail then
-					num = StepsOrTrail:GetRadarValues(player):GetValue('RadarCategory_Jumps')
+					num = StepsOrTrail:GetRadarValues(player):GetValue('RadarCategory_Hands')
 					if courseMode then numSongs = TrailUtil.GetNumSongs(StepsOrTrail) end
 				end
 			end
@@ -180,7 +180,7 @@ return Def.ActorFrame{
 			if SongOrCourse then
 				local StepsOrTrail = courseMode and GAMESTATE:GetCurrentTrail(player) or GAMESTATE:GetCurrentSteps(player)
 				if StepsOrTrail then
-					num = StepsOrTrail:GetRadarValues(player):GetValue('RadarCategory_Jumps')
+					num = StepsOrTrail:GetRadarValues(player):GetValue('RadarCategory_Rolls')
 					if courseMode then numSongs = TrailUtil.GetNumSongs(StepsOrTrail) end
 				end
 			end
