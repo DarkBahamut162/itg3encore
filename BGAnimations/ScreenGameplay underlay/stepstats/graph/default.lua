@@ -167,7 +167,6 @@ end
 
 local function GetVertices(stepsPerSecList)
     local stepsList = stepsPerSecList or {1}
-    local lenCorrection = 1.0
     local addx = graphW / #stepsList
     local vertices = {}
     for i=1, #stepsList + 1 do
@@ -181,16 +180,16 @@ local function GetVertices(stepsPerSecList)
             {curX, graphH, 0},
             {col[1], col[2], col[3], col[4]*0.5}
         }
-        local colGB = math.min((math.max(curY, 0) * lenCorrection -12) * 0.0833, 1.0)
+        local colGB = math.min((math.max(curY, 0) -12) * 0.0833, 1.0)
         col = color(string.format('%.2f, %.2f, %.2f, %.2f', (1-colGB), colGB, colGB, alpha))
         vertices[#vertices+1] = {
-            {curX, graphH - math.min(curY * lenCorrection * height, max), 0},
+            {curX, graphH - math.min(curY * height, max), 0},
             col
         }
-        local colGB = math.min((math.max(nextY, 0) * lenCorrection -12) * 0.0833, 1.0)
+        local colGB = math.min((math.max(nextY, 0) -12) * 0.0833, 1.0)
         col = color(string.format('%.2f, %.2f, %.2f, %.2f', (1-colGB), colGB, colGB, alpha))
         vertices[#vertices+1] = {
-            {nextX, graphH - math.min(nextY * lenCorrection * height, max), 0},
+            {nextX, graphH - math.min(nextY * height, max), 0},
             col
         }
         col = color('1, 0, 0, '..alpha)
@@ -204,7 +203,6 @@ end
 
 local function GetVerticesAlt(stepsPerSecList)
     local stepsList = stepsPerSecList or {1}
-    local lenCorrection = 1.0
     local vertices = {}
     local last = 0
     
@@ -223,16 +221,16 @@ local function GetVerticesAlt(stepsPerSecList)
             {curX, graphH, 0},
             {col[1], col[2], col[3], col[4]*0.5}
         }
-        local colGB = math.min((math.max(curY, 0) * lenCorrection -12) * 0.0833, 1.0)
+        local colGB = math.min((math.max(curY, 0) -12) * 0.0833, 1.0)
         col = color(string.format('%.2f, %.2f, %.2f, %.2f', (1-colGB), colGB, colGB, alpha))
         vertices[#vertices+1] = {
-            {curX, graphH - math.min(curY * lenCorrection * height, max), 0},
+            {curX, graphH - math.min(curY * height, max), 0},
             col
         }
-        local colGB = math.min((math.max(nextY, 0) * lenCorrection -12) * 0.0833, 1.0)
+        local colGB = math.min((math.max(nextY, 0) -12) * 0.0833, 1.0)
         col = color(string.format('%.2f, %.2f, %.2f, %.2f', (1-colGB), colGB, colGB, alpha))
         vertices[#vertices+1] = {
-            {nextX, graphH - math.min(nextY * lenCorrection * height, max), 0},
+            {nextX, graphH - math.min(nextY * height, max), 0},
             col
         }
         col = color('1, 0, 0, '..alpha)
@@ -279,8 +277,9 @@ return Def.ActorFrame{
         OnCommand=function(self) self:blend(Blend.Add):diffuseramp():effectcolor1(color("#FFFFFF00")):effectcolor2(color("#FFFFFF")):effectperiod(0.5):effect_hold_at_full(0.5):effectclock('beat') end
     },
     Def.ActorFrame{
+        DoneLoadingNextSongMessageCommand=function(self) self:diffusealpha(0):sleep(1):linear(0.5):diffusealpha(1) end,
         Def.ActorMultiVertex{
-            DoneLoadingNextSongMessageCommand=function(self) self:diffusealpha(0):playcommand("Init") end,
+            DoneLoadingNextSongMessageCommand=function(self) self:playcommand("Init") end,
             InitCommand=function(self)
                 local vertices = showNoteGraph == 4 and GetVerticesAlt(UpdateGraphAlt()) or GetVertices(UpdateGraph())
                 self:SetDrawState({Mode = 'DrawMode_Quads'})
@@ -289,11 +288,11 @@ return Def.ActorFrame{
                 self:rotationz(pn == PLAYER_1 and -90 or 90)
                 self:rotationx(pn == PLAYER_1 and 0 or 180)
                 self:x(pn == PLAYER_1 and -46 or 46):y(175)
-                self:diffusealpha(0):zoomy(0):linear(0.5):zoomy(1.0-0.4*math.max(854-SCREEN_WIDTH/WideScreenDiff_(16/9), 0)/214):diffusealpha(showNoteGraph == 4 and 0.5 or 1)
+                self:diffusealpha(showNoteGraph == 4 and 0.5 or 1)
             end
         },
         Def.ActorMultiVertex{
-            DoneLoadingNextSongMessageCommand=function(self) self:diffusealpha(0):playcommand("Init") end,
+            DoneLoadingNextSongMessageCommand=function(self) self:playcommand("Init") end,
             InitCommand=function(self)
                 local update = showNoteGraph == 4 and UpdateGraphAlt() or UpdateGraph()
                 for i,value in pairs( update ) do update[i] = math.max(0,(update[i]-20)/4) end
@@ -305,12 +304,11 @@ return Def.ActorFrame{
                 self:rotationx(pn == PLAYER_1 and 0 or 180)
                 self:x(pn == PLAYER_1 and -46 or 46):y(175)
                 self:blend(Blend.Subtract)
-                self:diffusealpha(0):zoomy(0):linear(0.5):zoomy(1.0-0.4*math.max(854-SCREEN_WIDTH/WideScreenDiff_(16/9), 0)/214):diffusealpha(1)
             end
         },
         Def.ActorMultiVertex{
             Condition=getenv("ShowSpeedAssist"..pname(pn)) or getenv("ShowStopAssist"..pname(pn)),
-            DoneLoadingNextSongMessageCommand=function(self) self:diffusealpha(0):sleep(1/60):playcommand("Draw") end,
+            DoneLoadingNextSongMessageCommand=function(self) self:sleep(1/60):playcommand("Draw") end,
             DrawCommand=function(self)
                 local vertices = GetVerticesAssist(UpdateGraphAssist())
                 self:SetDrawState({Mode = 'DrawMode_Quads'})
@@ -319,7 +317,6 @@ return Def.ActorFrame{
                 self:rotationz(pn == PLAYER_1 and -90 or 90)
                 self:rotationx(pn == PLAYER_1 and 0 or 180)
                 self:x(pn == PLAYER_1 and -46 or 46):y(175)
-                self:diffusealpha(0):zoomy(0):linear(0.5):zoomy(1.0-0.4*math.max(854-SCREEN_WIDTH/WideScreenDiff_(16/9), 0)/214):diffusealpha(1)
             end
         },
     },
