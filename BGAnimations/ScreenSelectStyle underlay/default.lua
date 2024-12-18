@@ -87,7 +87,7 @@ return Def.ActorFrame{
 	},
 	Def.Sprite {
 		Texture = THEME:GetPathG("explanation","frame"),
-		InitCommand=function(self) self:x(SCREEN_CENTER_X+100*((WideScreenDiff()+WideScreenSemiDiff())/2)):y(SCREEN_CENTER_Y+130):zoom(WideScreenDiff()):diffusealpha(0) end,
+		InitCommand=function(self) self:x(SCREEN_CENTER_X+100*((WideScreenDiff()+WideScreenSemiDiff())/2)):y(SCREEN_CENTER_Y+130):zoom(WideScreenDiff_(16/10)):diffusealpha(0) end,
 		OnCommand=function(self) self:linear(0.5):diffusealpha(1.0) end,
 		MadeChoiceP1MessageCommand=function(self) self:playcommand("GoOff") end,
 		MadeChoiceP2MessageCommand=function(self) self:playcommand("GoOff") end,

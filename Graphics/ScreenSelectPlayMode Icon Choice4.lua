@@ -3,7 +3,7 @@ return Def.ActorFrame{
 	Def.BitmapText {
 		File = "_r bold glow 30px",
 		Text="Beat the clock by stepping\naccurately with modifiers",
-		InitCommand=function(self) self:x(SCREEN_CENTER_X-102*((WideScreenDiff()+WideScreenSemiDiff())/2)):y(SCREEN_CENTER_Y+125*WideScreenSemiDiff()):zoomx(0.8*WideScreenDiff()):zoomy(0.7*WideScreenDiff()):maxwidth(369):shadowlength(0) end,
+		InitCommand=function(self) self:x(SCREEN_CENTER_X-102*((WideScreenDiff()+WideScreenSemiDiff())/2)):y(SCREEN_CENTER_Y+125*WideScreenSemiDiff()):zoomx(0.8*WideScreenDiff()):zoomy(0.7*WideScreenDiff_(16/10)):maxwidth(369*WideScreenDiff_(16/10)):shadowlength(0) end,
 		GainFocusCommand=function(self) self:visible(true):finishtweening():cropright(1):linear(0.5):cropright(0) end,
 		LoseFocusCommand=function(self) self:visible(false) end
 	},
