@@ -383,7 +383,7 @@ return Def.ActorFrame{
 	},
 	Def.BitmapText {
 		File = "ScreenOptions serial number",
-		InitCommand=function(self) self:x(SCREEN_CENTER_X+110*WideScreenDiff()):y(isFinal() and SCREEN_BOTTOM-50*WideScreenDiff() or SCREEN_BOTTOM-42*WideScreenDiff()):shadowlength(2):horizalign(left):maxwidth((IsHome() and isScreenTitle()) and SCREEN_WIDTH/9*5/WideScreenDiff() or SCREEN_WIDTH/3*2/WideScreenDiff()):zoom(0.5*WideScreenDiff()) end,
+		InitCommand=function(self) self:x(SCREEN_CENTER_X+110*WideScreenDiff()):y(isFinal() and SCREEN_BOTTOM-50*WideScreenDiff() or SCREEN_BOTTOM-42*WideScreenDiff()):shadowlength(2):horizalign(left):maxwidth(SCREEN_WIDTH/5*3/WideScreenDiff()):zoom(0.5*WideScreenDiff()) end,
 		OnCommand=function(self) self:diffusealpha(0):sleep(0.5):linear(0.5):diffusealpha(1):playcommand("Refresh") end,
 		ScreenChangedMessageCommand=function(self) self:playcommand("Refresh") end,
 		RefreshCommand=function(self)
@@ -398,7 +398,7 @@ return Def.ActorFrame{
 	},
 	Def.BitmapText {
 		File = "ScreenOptions serial number",
-		InitCommand=function(self) self:x(SCREEN_LEFT+25*WideScreenDiff()*WideScreenDiff()):y(isFinal() and SCREEN_BOTTOM-50*WideScreenDiff() or SCREEN_BOTTOM-42*WideScreenDiff()):shadowlength(2):horizalign(left):maxwidth(SCREEN_WIDTH/3*2/WideScreenDiff()):zoom(0.5*WideScreenDiff()) end,
+		InitCommand=function(self) self:x(SCREEN_LEFT+25*WideScreenDiff()):y(isFinal() and SCREEN_BOTTOM-50*WideScreenDiff() or SCREEN_BOTTOM-42*WideScreenDiff()):shadowlength(2):horizalign(left):maxwidth(SCREEN_WIDTH/5*3/WideScreenDiff()):zoom(0.5*WideScreenDiff()) end,
 		OnCommand=function(self) self:diffusealpha(0):sleep(0.5):linear(0.5):diffusealpha(1):playcommand("Refresh") end,
 		ScreenChangedMessageCommand=function(self) self:playcommand("Refresh") end,
 		RefreshCommand=function(self)
@@ -410,7 +410,7 @@ return Def.ActorFrame{
 	Def.BitmapText {
 		File = "ScreenOptions serial number",
 		Condition=isOutFox(),
-		InitCommand=function(self) self:x(SCREEN_LEFT+25*WideScreenDiff()*WideScreenDiff()):y(isFinal() and SCREEN_BOTTOM-66*WideScreenDiff() or SCREEN_BOTTOM-58*WideScreenDiff()):shadowlength(2):horizalign(left):maxwidth(SCREEN_WIDTH/3*2/WideScreenDiff()):zoom(0.5*WideScreenDiff()) end,
+		InitCommand=function(self) self:x(SCREEN_LEFT+25*WideScreenDiff()):y(isFinal() and SCREEN_BOTTOM-66*WideScreenDiff() or SCREEN_BOTTOM-58*WideScreenDiff()):shadowlength(2):horizalign(left):maxwidth(SCREEN_WIDTH/5*3/WideScreenDiff()):zoom(0.5*WideScreenDiff()) end,
 		OnCommand=function(self) self:diffusealpha(0):sleep(0.5):linear(0.5):diffusealpha(1):playcommand("Refresh") end,
 		ScreenChangedMessageCommand=function(self) self:playcommand("Refresh") end,
 		RefreshCommand=function(self)
@@ -463,21 +463,19 @@ return Def.ActorFrame{
 							end
 						end
 					end
-					if GAMESTATE:GetCoinMode() == 'CoinMode_Home' then
-						if isOutFox() and ((not isOutFoxV() and IsGame("be-mu")) or (not isOutFoxV043() and IsGame("po-mu"))) then else
-							if #courses > 0 then
-								for i=1,#courses do
-									if courses[i]:GetCourseType() == "CourseType_Nonstop" then
-										if courses[i]:IsPlayableIn(StepsTypeSingle) then coursesMarathonSingle = coursesMarathonSingle + 1 end
-										if StepsTypeDouble and songsDouble > 0 then
-											if courses[i]:IsPlayableIn(StepsTypeDouble) then coursesMarathonDouble = coursesMarathonDouble + 1 end
-										end
+					if isOutFox() and ((not isOutFoxV() and IsGame("be-mu")) or (not isOutFoxV043() and IsGame("po-mu"))) then else
+						if #courses > 0 then
+							for i=1,#courses do
+								if courses[i]:GetCourseType() == "CourseType_Nonstop" then
+									if courses[i]:IsPlayableIn(StepsTypeSingle) then coursesMarathonSingle = coursesMarathonSingle + 1 end
+									if StepsTypeDouble and songsDouble > 0 then
+										if courses[i]:IsPlayableIn(StepsTypeDouble) then coursesMarathonDouble = coursesMarathonDouble + 1 end
 									end
-									if courses[i]:GetCourseType() == "CourseType_Oni" or courses[i]:GetCourseType() == "CourseType_Survival" then
-										if courses[i]:IsPlayableIn(StepsTypeSingle) then coursesSurvivalSingle = coursesSurvivalSingle + 1 end
-										if StepsTypeDouble and songsDouble > 0 then
-											if courses[i]:IsPlayableIn(StepsTypeDouble) then coursesSurvivalDouble = coursesSurvivalDouble + 1 end
-										end
+								end
+								if courses[i]:GetCourseType() == "CourseType_Oni" or courses[i]:GetCourseType() == "CourseType_Survival" then
+									if courses[i]:IsPlayableIn(StepsTypeSingle) then coursesSurvivalSingle = coursesSurvivalSingle + 1 end
+									if StepsTypeDouble and songsDouble > 0 then
+										if courses[i]:IsPlayableIn(StepsTypeDouble) then coursesSurvivalDouble = coursesSurvivalDouble + 1 end
 									end
 								end
 							end
@@ -496,23 +494,21 @@ return Def.ActorFrame{
 						output = addToOutput(output,"Songs: "..songsSingle.." singles ("..groupsSingleCount.." groups) & "..songsDouble.." doubles ("..groupsDoubleCount.." groups)","\n")
 					end
 
-					if GAMESTATE:GetCoinMode() == 'CoinMode_Home' then
-						if isOutFox() and ((not isOutFoxV() and IsGame("be-mu")) or (not isOutFoxV043() and IsGame("po-mu"))) then
-							output = addToOutput(output,"Courses: ? marathons & ? survivals","\n")
+					if isOutFox() and ((not isOutFoxV() and IsGame("be-mu")) or (not isOutFoxV043() and IsGame("po-mu"))) then
+						output = addToOutput(output,"Courses: ? marathons & ? survivals","\n")
+					else
+						local temp = "Courses:"
+						if coursesMarathonSingle == coursesMarathonDouble then
+							temp = addToOutput(temp,coursesMarathonSingle.." marathons"," ")
 						else
-							local temp = "Courses:"
-							if coursesMarathonSingle == coursesMarathonDouble then
-								temp = addToOutput(temp,coursesMarathonSingle.." marathons"," ")
-							else
-								temp = addToOutput(temp,coursesMarathonSingle.."s/"..coursesMarathonDouble.."d marathons"," ")
-							end
-							if coursesSurvivalSingle == coursesSurvivalDouble then
-								temp = addToOutput(temp,coursesSurvivalSingle.." survivals"," & ")
-							else
-								temp = addToOutput(temp,coursesSurvivalSingle.."s/"..coursesSurvivalDouble.."d survivals"," & ")
-							end
-							output = addToOutput(output,temp,"\n")
+							temp = addToOutput(temp,coursesMarathonSingle.."s/"..coursesMarathonDouble.."d marathons"," ")
 						end
+						if coursesSurvivalSingle == coursesSurvivalDouble then
+							temp = addToOutput(temp,coursesSurvivalSingle.." survivals"," & ")
+						else
+							temp = addToOutput(temp,coursesSurvivalSingle.."s/"..coursesSurvivalDouble.."d survivals"," & ")
+						end
+						output = addToOutput(output,temp,"\n")
 					end
 					output = addToOutput(output,"Current Game Mode: "..GAMESTATE:GetCurrentGame():GetName(),"\n")
 					output = addToOutput(output,"Current Style: "..StyleName()[GetUserPrefN("StylePosition")],"\n")

@@ -98,7 +98,7 @@ return Def.ActorFrame{
 	Def.BitmapText {
 		File = "_v 26px bold shadow",
 		Name="Center",
-		InitCommand=function(self) self:x(SCREEN_CENTER_X):y(SCREEN_CENTER_Y-160*WideScreenDiff()):zoom(0.5*WideScreenDiff()):cropleft(0.5):cropright(0.5):settext(output) end,
+		InitCommand=function(self) self:x(SCREEN_CENTER_X):y(SCREEN_CENTER_Y-162*WideScreenDiff()):zoom(0.5*WideScreenDiff()):cropleft(0.5):cropright(0.5):settext(output) end,
 		OnCommand=function(self) self:decelerate(0.5):cropleft(0):cropright(0) end,
 		OffCommand=function(self) self:accelerate(0.5):cropleft(0.5):cropright(0.5) end
 	},
