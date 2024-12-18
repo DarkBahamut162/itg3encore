@@ -452,3 +452,7 @@ function IsGameAndMenuButton(localized_btn)
 
 	return FindInTable(btn, GameAndMenuButtons[GAMESTATE:GetCurrentGame():GetName()])
 end
+
+WideScaleFixed = function(AR4_3, AR16_9)
+	return clamp(scale( SCREEN_WIDTH, 640, 854, AR4_3, AR16_9 ), AR4_3, AR16_9)
+end
