@@ -29,7 +29,7 @@ return Def.ActorFrame{
 			else
 				--[[ Automate my video timestamping this way... Work smarter not harder... ]]--
 				--lua.ReportScriptError( SongOrCourse:GetGroupName().." | "..SongOrCourse:GetDisplayFullTitle().." / "..SongOrCourse:GetDisplayArtist() )
-				if SongOrCourse and (enableRounds or enableLua) then
+				if SongOrCourse then
 					local EC = SongOrCourse:GetPreviewMusicPath()
 					if enableRounds then
 						if SongOrCourse:IsLong() then
@@ -52,6 +52,9 @@ return Def.ActorFrame{
 							output = addToOutput(output,"NULL MEASURE"," & ")
 							self:diffuse(Color("Red"))
 						end
+					end
+					if HasVideo(SongOrCourse,"BGCHANGES") then
+						output = addToOutput(output,"VIDEO"," & ")
 					end
 					if enableLua then
 						if isOutFox() then

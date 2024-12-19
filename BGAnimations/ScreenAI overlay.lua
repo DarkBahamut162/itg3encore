@@ -128,7 +128,7 @@ local totalWeightNames = {}
 
 for line = 1, #file do
 	if string.find(file[line],"%[") then
-		currentSkillName = file[line]:match("%[(.*)%]")
+		currentSkillName = file[line]:match("%[(.-)%]")
 		totalSkills = totalSkills + 1
 		totalWeights = 0
 		totalSkillNames[totalSkills] = currentSkillName

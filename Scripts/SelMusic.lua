@@ -1,4 +1,6 @@
 local cacheVersion = "0.37"
+--local stepCache = {}
+local typeList = {"avi","f4v","flv","mkv","mp4","mpeg","mpg","mov","ogv","webm","wmv"}
 
 function getCacheVersion()
 	return cacheVersion
@@ -67,8 +69,7 @@ end
 
 function GetSMParameter(song,parameter)
 	local filePath = song:GetSongFilePath()
-	local suffix = string.match(filePath, '.+%.([^.]+)')
-	if suffix ~= 'sm' and suffix ~= 'ssc' then return "" end
+	if filePath:sub(-2) ~= 'sm' and filePath:sub(-3) ~= 'ssc' then return "" end
 	local file = RageFileUtil.CreateRageFile()
 	file:Open(filePath,1)
 	file:Seek(0)
@@ -77,10 +78,10 @@ function GetSMParameter(song,parameter)
 	while true do
 		if file then
 			line = file:GetLine()
-			if string.find(line,"#NOTES:.*") or string.find(line,"#NOTEDATA:.*") or file:AtEOF() then break
-			elseif (string.find(line,"^.*#"..parameter..":.*") and (not string.find(line,"^%/%/.*"))) or gLine ~= "" then
+			if string.find(line,"#NOTES:") or string.find(line,"#NOTEDATA:") or file:AtEOF() then break
+			elseif string.find(line,"#"..parameter..":") or gLine ~= "" then
 				gLine = gLine..""..split("//",line)[1]
-				if string.find(line,".*;") then break end
+				if string.find(line,";") then break end
 			end
 		end
 	end
@@ -131,6 +132,30 @@ function HasLua(song,changes)
 							local checkFolder = FILEMAN:GetDirListing("/Songs/"..groupName.."/"..songFolder.."/"..current.."/")
 							for insideFiles in ivalues( checkFolder ) do
 								if string.find(insideFiles,".lua",0,true) then return true end
+							end
+						end
+					end
+				end
+			end
+		end
+	end
+	return false
+end
+
+function HasVideo(song,changes)
+	local var = GetSMParameter(song,changes)
+	local parameter, current
+	if var ~= "" then
+		parameter = split(",",var)
+		if parameter ~= "" then
+			for i=1,#parameter do
+				parameter[i] = split("=",parameter[i])
+				if #parameter[i] >= 2 then
+					current = parameter[i][2]
+					if current ~= "" then
+						for typ in ivalues(typeList) do
+							if string.find(current,typ,0,true) then
+								return true
 							end
 						end
 					end
@@ -312,10 +337,10 @@ end
 
 function GetParameter(Step)
 	local filePath = Step:GetFilename()
-	local extBME = string.find(filePath, '.+%.bme') and true or false
-	local extBML = string.find(filePath, '.+%.bml') and true or false
-	local extBMS = string.find(filePath, '.+%.bms') and true or false
-	local extPMS = string.find(filePath, '.+%.pms') and true or false
+	local extBME = filePath:sub(-3) == "bme" and true or false
+	local extBML = filePath:sub(-3) == "bml" and true or false
+	local extBMS = filePath:sub(-3) == "bms" and true or false
+	local extPMS = filePath:sub(-3) == "pms" and true or false
 	if extBME or extBML or extBMS or extPMS then else return {} end
     local file = RageFileUtil:CreateRageFile()
 	file:Open(filePath,1)
@@ -337,10 +362,10 @@ end
 
 function CheckNullMeasure(Step)
 	local filePath = Step:GetFilename()
-	local extBME = string.find(filePath, '.+%.bme') and true or false
-	local extBML = string.find(filePath, '.+%.bml') and true or false
-	local extBMS = string.find(filePath, '.+%.bms') and true or false
-	local extPMS = string.find(filePath, '.+%.pms') and true or false
+	local extBME = filePath:sub(-3) == "bme" and true or false
+	local extBML = filePath:sub(-3) == "bml" and true or false
+	local extBMS = filePath:sub(-3) == "bms" and true or false
+	local extPMS = filePath:sub(-3) == "pms" and true or false
 	if extBME or extBML or extBMS or extPMS then else return false end
     local file = RageFileUtil:CreateRageFile()
 	file:Open(filePath,1)
@@ -405,7 +430,8 @@ function cacheStep(Song,Step)
 	local noteCounter = {}
 	local firstBeat = 999
 	local lastBeat = 0
-	local shockArrows = ""
+	--local shockArrows = ""
+	--local NoteDensity = 0
 
 	if not isOutFoxV043() then
 		for i,current in pairs( Song:GetAllSteps() ) do
@@ -429,6 +455,9 @@ function cacheStep(Song,Step)
 	local scratches,scratchJumps,foots = 0,0,0
 	local currentBPM,checkBPM,checkCount,maxBPM = 0,0,0,0
 	local checking,isStop,scratch = false,false,false
+	--local ChaosValue = 0
+	--local previousBeat = 0
+	--local FreezeLength = 0
 
 	local noteData = isOutFoxV043() and Step:GetNoteData() or Song:GetNoteData(chartint)
 	for _,v in pairs( noteData ) do
@@ -436,6 +465,9 @@ function cacheStep(Song,Step)
 			currentBeat = v[1]
 			currentNotes, currentMines = 0, 0
 		end
+
+		--local fourBeatCounter = tablelength(Song:GetNoteData(chartint,v[1],v[1]+4))
+		--if NoteDensity < fourBeatCounter then NoteDensity = fourBeatCounter end
 
 		if timingData:IsJudgableAtBeat(v[1]) then
 			if allowednotes[v[3]] then
@@ -471,6 +503,7 @@ function cacheStep(Song,Step)
 					lastSec = currentSec
 				end
 				if v["length"] then
+					--FreezeLength = FreezeLength + v["length"]
 					if currentBeat + v["length"] > lastBeat then lastBeat = currentBeat + v["length"] end
 				else
 					if currentBeat > lastBeat then lastBeat = currentBeat end
@@ -496,11 +529,11 @@ function cacheStep(Song,Step)
 						end
 					end
 				end
-			elseif v[3] == "TapNoteType_Mine" then
-				currentMines = currentMines + 1
-				if currentMines == getColumnsPerPlayer(stepType[2],stepType[3]) then
-					shockArrows = addToOutput(shockArrows,Step:GetTimingData():GetElapsedTimeFromBeat(v[1]),"_")
-				end
+			--elseif v[3] == "TapNoteType_Mine" then
+			--	currentMines = currentMines + 1
+			--	if currentMines == getColumnsPerPlayer(stepType[2],stepType[3]) then
+			--		shockArrows = addToOutput(shockArrows,Step:GetTimingData():GetElapsedTimeFromBeat(v[1]),"_")
+			--	end
 			end
 		end
 
@@ -516,6 +549,10 @@ function cacheStep(Song,Step)
 
 		if checkBeat then
 			if currentNotes ~= 0 then noteCounter[currentNotes] = noteCounter[currentNotes] + 1 end
+			--[[
+			ChaosValue = ChaosValue + ChaosCalc(currentBeat,previousBeat,currentNotes)
+			previousBeat = currentBeat
+			]]--
 			if scratch and currentNotes > 1 then
 				scratchJumps = scratchJumps + 1
 				scratch = false
@@ -538,37 +575,89 @@ function cacheStep(Song,Step)
 		if keySounds and #keySounds > 2 then hasKeys = true end
 	end
 
-	LoadModule("Config.Save.lua")("Version",cacheVersion,getStepCacheFile(Step))
-	LoadModule("Config.Save.lua")("HasLua",hasLua and "true" or "false",getStepCacheFile(Step))
-	LoadModule("Config.Save.lua")("HasKeys",hasKeys and "true" or "false",getStepCacheFile(Step))
-	LoadModule("Config.Save.lua")("HasNullMeasure",hasNullMeasure and "true" or "false",getStepCacheFile(Step))
-	if shockArrows ~= "" then LoadModule("Config.Save.lua")("ShockArrows",shockArrows,getStepCacheFile(Step)) end
-	LoadModule("Config.Save.lua")("StepCounter",table.concat(noteCounter,"_"),getStepCacheFile(Step))
-	LoadModule("Config.Save.lua")("StepsPerSecond",total2,getStepCacheFile(Step))
-	LoadModule("Config.Save.lua")("TrueBeats",lastBeat-firstBeat,getStepCacheFile(Step))
-	LoadModule("Config.Save.lua")("TrueMaxBPM",maxBPM,getStepCacheFile(Step))
-	LoadModule("Config.Save.lua")("TrueSeconds",Step:GetTimingData():GetElapsedTimeFromBeat(lastBeat)-Step:GetTimingData():GetElapsedTimeFromBeat(firstBeat),getStepCacheFile(Step))
-	if stepType[2] == "Bm" then
-		if #noteCounter == 7 or #noteCounter == 14 then
-			LoadModule("Config.Save.lua")("Foots",foots,getStepCacheFile(Step))
+	if getenv("cacheing") then
+		local list = {
+			["Version"] = cacheVersion,
+			["HasLua"] = hasLua and "true" or "false",
+			["HasKeys"] = hasKeys and "true" or "false",
+			["HasNullMeasure"] = hasNullMeasure and "true" or "false",
+			["StepCounter"] = table.concat(noteCounter,"_"),
+			["StepsPerSecond"] = total2,
+			["TrueBeats"] = lastBeat-firstBeat,
+			["TrueMaxBPM"] = maxBPM,
+			["TrueSeconds"] = Step:GetTimingData():GetElapsedTimeFromBeat(lastBeat)-Step:GetTimingData():GetElapsedTimeFromBeat(firstBeat)
+		}
+
+		--if shockArrows ~= "" then list["ShockArrows"] = shockArrows end
+		if stepType[2] == "Bm" then
+			if #noteCounter == 7 or #noteCounter == 14 then
+				list["Foots"] = foots
+			end
+			list["Scratches"] = scratches
+			list["ScratchJumps"] = scratchJumps
 		end
-		LoadModule("Config.Save.lua")("Scratches",scratches,getStepCacheFile(Step))
-		LoadModule("Config.Save.lua")("ScratchJumps",scratchJumps,getStepCacheFile(Step))
+
+		LoadModule("Config.SaveAll.lua")(list,getStepCacheFile(Step))
+	else
+		LoadModule("Config.Save.lua")("Version",cacheVersion,getStepCacheFile(Step))
+		LoadModule("Config.Save.lua")("HasLua",hasLua and "true" or "false",getStepCacheFile(Step))
+		LoadModule("Config.Save.lua")("HasKeys",hasKeys and "true" or "false",getStepCacheFile(Step))
+		LoadModule("Config.Save.lua")("HasNullMeasure",hasNullMeasure and "true" or "false",getStepCacheFile(Step))
+		--if shockArrows ~= "" then LoadModule("Config.Save.lua")("ShockArrows",shockArrows,getStepCacheFile(Step)) end
+		LoadModule("Config.Save.lua")("StepCounter",table.concat(noteCounter,"_"),getStepCacheFile(Step))
+		LoadModule("Config.Save.lua")("StepsPerSecond",total2,getStepCacheFile(Step))
+		LoadModule("Config.Save.lua")("TrueBeats",lastBeat-firstBeat,getStepCacheFile(Step))
+		LoadModule("Config.Save.lua")("TrueMaxBPM",maxBPM,getStepCacheFile(Step))
+		LoadModule("Config.Save.lua")("TrueSeconds",Step:GetTimingData():GetElapsedTimeFromBeat(lastBeat)-Step:GetTimingData():GetElapsedTimeFromBeat(firstBeat),getStepCacheFile(Step))
+		if stepType[2] == "Bm" then
+			if #noteCounter == 7 or #noteCounter == 14 then
+				LoadModule("Config.Save.lua")("Foots",foots,getStepCacheFile(Step))
+			end
+			LoadModule("Config.Save.lua")("Scratches",scratches,getStepCacheFile(Step))
+			LoadModule("Config.Save.lua")("ScratchJumps",scratchJumps,getStepCacheFile(Step))
+		end
+		--LoadModule("Config.Save.lua")("ChaosValue",ChaosValue,getStepCacheFile(Step))
+		--LoadModule("Config.Save.lua")("FreezeLength",FreezeLength,getStepCacheFile(Step))
+		--LoadModule("Config.Save.lua")("NoteDensity",NoteDensity,getStepCacheFile(Step))
 	end
 end
 
-function LoadFromCache(Song,Step,value)
+function LoadFromCache(Song,Step,key)
 	local version = LoadModule("Config.Load.lua")("Version",getStepCacheFile(Step))
-	if not LoadModule("Config.Exists.lua")(value,getStepCacheFile(Step)) then
+	if not version or version ~= cacheVersion then
 		cacheStep(Song,Step)
-	elseif not version or version ~= cacheVersion then
+	elseif not LoadModule("Config.Exists.lua")(key,getStepCacheFile(Step)) then
 		cacheStep(Song,Step)
 	end
-	return LoadModule("Config.Load.lua")(value,getStepCacheFile(Step))
+
+	return LoadModule("Config.Load.lua")(key,getStepCacheFile(Step))
 end
 
-local typeList = {'avi','mkv','mp4','mpeg','mpg','wmv'}
+--[[
+function LoadFromCache(Song,Step,key)
+	local file = getStepCacheFile(Step)
+	if not FILEMAN:DoesFileExist(file) then
+		stepCache[file] = cacheStep(Song,Step)
+	else
+		local version = LoadModule("Config.Load.lua")("Version",file)
 
+		if not version or version ~= cacheVersion then
+			stepCache[file] = cacheStep(Song,Step)
+		elseif not LoadModule("Config.Exist.lua")(key,file) then
+			stepCache[file] = cacheStep(Song,Step)
+		end
+	end
+
+	if stepCache[file] ~= nil and stepCache[file][key] ~= nil then
+		return stepCache[file][key]
+	else
+		if stepCache[file] == nil then stepCache[file] = {} end
+		if stepCache[file][key] == nil then stepCache[file][key] = LoadModule("Config.Load.lua")(key,file) end
+	end
+
+	return stepCache[file][key] or LoadModule("Config.Load.lua")(key,file)
+end
+]]--
 function GetMinSecondsToStep()
 	local song = GAMESTATE:GetCurrentSong()
 	local firstSec, firstBeat = 1, 0
@@ -588,8 +677,8 @@ function GetMinSecondsToStep()
 			line[1] = tonumber(line[1])
 			firstFile = line[2]
 			if line[1] >= 0 then break elseif line[1] < 0 and line[1] > -20 * firstBpm / 60 then
-				for i=1, #typeList do
-					if string.find(line[2], typeList[i]) then firstBeat = line[1] break end
+				for typ in ivalues(typeList) do
+					if string.find(line[2], typ) then firstBeat = line[1] break end
 				end
 			end
 		end

@@ -19,7 +19,7 @@ function SetupKeymapArray()
 
 	for key in ivalues(keys) do
 		if string.find(key,"%[") and string.find(key,"%]") then
-			group = key:match("%[(.*)%]")
+			group = key:match("%[(.-)%]")
 			KeyMaps[group] = {}
 		elseif string.len(key) > 0 then
 			local splitted = split("=",key)

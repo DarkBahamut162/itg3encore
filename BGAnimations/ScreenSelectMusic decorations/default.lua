@@ -190,32 +190,33 @@ t[#t+1] = Def.ActorFrame{
 			self:name("InfoDisplay")
 			ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen")
 		end
-	}
-}
-
-if ShowStandardDecoration("SongTime") then
-	t[#t+1] = loadfile(THEME:GetPathG(Var "LoadingScreen", "SongTime"))() .. {
+	},
+	loadfile(THEME:GetPathG(Var "LoadingScreen", "SongTime"))() .. {
 		InitCommand=function(self)
 			self:name("SongTime")
 			ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen")
 		end
 	}
-end
-if ShowStandardDecoration("StepsDisplayList") then
-	t[#t+1] = loadfile(THEME:GetPathG(Var "LoadingScreen", "StepsDisplayList"))() .. {
-		InitCommand=function(self)
-			self:name("StepsDisplayList")
-			ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen")
-		end
-	}
-end
-if ShowStandardDecoration("CourseContentsList") then
-	t[#t+1] = loadfile(THEME:GetPathG(Var "LoadingScreen", "CourseContentsList"))() .. {
-		InitCommand=function(self)
-			self:name("CourseContentsList")
-			ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen")
-		end
-	}
+}
+
+if not courseMode then
+	if ShowStandardDecoration("StepsDisplayList") then
+		t[#t+1] = loadfile(THEME:GetPathG(Var "LoadingScreen", "StepsDisplayList"))() .. {
+			InitCommand=function(self)
+				self:name("StepsDisplayList")
+				ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen")
+			end
+		}
+	end
+else
+	if ShowStandardDecoration("CourseContentsList") then
+		t[#t+1] = loadfile(THEME:GetPathG(Var "LoadingScreen", "CourseContentsList"))() .. {
+			InitCommand=function(self)
+				self:name("CourseContentsList")
+				ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen")
+			end
+		}
+	end
 end
 
 t[#t+1] = Def.BitmapText {

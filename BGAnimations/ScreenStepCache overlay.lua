@@ -1,7 +1,6 @@
 local checked = false
 local updated = false
 local cancel = false
-local stepsTotal = 0
 local toBeCachedTotal = 0
 local alreadyCachedTotal = 0
 local cachedWrongVersionTotal = 0
@@ -101,6 +100,7 @@ return Def.ActorFrame{
 		InitCommand=function(self) self:x(SCREEN_LEFT+25*WideScreenDiff()*WideScreenDiff()):y(isFinal() and SCREEN_BOTTOM-50*WideScreenDiff() or SCREEN_BOTTOM-42*WideScreenDiff()):shadowlength(2):horizalign(left):maxwidth(SCREEN_WIDTH/3*2/WideScreenDiff()):zoom(0.5*WideScreenDiff()) end,
 		OnCommand=function(self) self:diffusealpha(0):sleep(0.5):linear(0.5):diffusealpha(1):playcommand("Check") end,
 		CheckCommand=function(self)
+			if FILEMAN.FlushDirCache then FILEMAN:FlushDirCache("/Cache/Steps/") end
 			local files = FILEMAN:GetDirListing("/Cache/Steps/")
 			self:decelerate(0.5):cropleft(0):cropright(0):settext("In the cache: "..#files.." files")
 			files = nil
@@ -163,11 +163,10 @@ return Def.ActorFrame{
 		UpdatingCommand=function(self) self:settext("Updating..."):sleep(0.1):queuecommand("Update") end,
 		CheckCommand=function(self)
 			local songs = SONGMAN:GetAllSongs()
-			local currentCacheVersion = tonumber(getCacheVersion())
+			local currentCacheVersion = getCacheVersion()
 			if not cancel then
 				for curSong=1,#songs do
 					local steps = songs[curSong]:GetAllSteps()
-					stepsTotal = stepsTotal + #steps
 					for curStep=1,#steps do
 						if steps[curStep] then
 							local filename = split("/",steps[curStep]:GetFilename())
@@ -180,7 +179,7 @@ return Def.ActorFrame{
 										toBeCachedTotal = toBeCachedTotal + 1
 									else
 										local version = LoadModule("Config.Load.lua")("Version",cacheFile)
-										if version and tonumber(version) ~= currentCacheVersion then
+										if not version or version ~= currentCacheVersion then
 											stepsToCache[#stepsToCache+1] = steps[curStep]
 											alreadyCachedTotal = alreadyCachedTotal + 1
 											cachedWrongVersionTotal = cachedWrongVersionTotal + 1
@@ -235,6 +234,7 @@ return Def.ActorFrame{
 		end,
 		UpdateCommand=function(self)
 			if not cancel then
+				setenv("cacheing",true)
 				for curStep=1,#stepsToCache do
 					if stepsToCache[curStep] then
 						local cacheFile = getStepCacheFile(stepsToCache[curStep])
@@ -242,6 +242,7 @@ return Def.ActorFrame{
 						cacheFile = nil
 					end
 				end
+				setenv("cacheing",false)
 				stepsToCache = nil
 				checked = true
 				updated = true
