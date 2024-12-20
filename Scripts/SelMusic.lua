@@ -379,12 +379,12 @@ function CheckNullMeasure(Step)
 	while file and not file:AtEOF() do
 		if file then
 			line = file:GetLine()
-			if string.match(line,":") then
+			if string.find(line,":") then
 				local tmp = split(":",line)
 				local currentMeasure = string.sub(tmp[1],2,4)
 				if tonumber(currentMeasure) then
 					if tonumber(currentMeasure) > maxMeasure then maxMeasure = tonumber(currentMeasure) end
-					if string.match(line,"02:") then
+					if string.find(line,"02:") then
 						checkMeasure[currentMeasure] = true
 						checkMeasurelength[currentMeasure] = tmp[2]
 					else

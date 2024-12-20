@@ -205,7 +205,7 @@ function addOrRemoveFavorite(player)
         elseif favoritesString then
 			local songTitle = song:GetDisplayFullTitle()
 			local profileName = PROFILEMAN:GetPlayerName(player) == "" and ToEnumShortString(player) or PROFILEMAN:GetPlayerName(player)
-            if string.match(favoritesString, strPlainText(arr[3] .. "/" .. arr[4]) .. "\n") then
+            if string.find(favoritesString, strPlainText(arr[3] .. "/" .. arr[4]) .. "\n") then
                 favoritesString = string.gsub(favoritesString, strPlainText(arr[3] .. "/" .. arr[4]) .. "\n", "")
                 if SONGMAN:FindSong(songDir) then
                     local song = SONGMAN:FindSong(songDir)
