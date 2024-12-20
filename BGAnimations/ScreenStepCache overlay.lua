@@ -250,6 +250,7 @@ return Def.ActorFrame{
 			end
 		end,
 		UpdatedCommand=function(self)
+			if FILEMAN.FlushDirCache then FILEMAN:FlushDirCache("/Cache/Steps/") end
 			c.Cursor:queuecommand("Ok"):diffusealpha(1)
 			c.OK:diffusealpha(1)
 			self:settext("The StepCache has been updated!")
