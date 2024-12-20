@@ -575,6 +575,8 @@ function cacheStep(Song,Step)
 		if keySounds and #keySounds > 2 then hasKeys = true end
 	end
 
+	local file = getStepCacheFile(Step)
+
 	if getenv("cacheing") then
 		local list = {
 			["Version"] = cacheVersion,
@@ -597,28 +599,28 @@ function cacheStep(Song,Step)
 			list["ScratchJumps"] = scratchJumps
 		end
 
-		LoadModule("Config.SaveAll.lua")(list,getStepCacheFile(Step))
+		LoadModule("Config.SaveAll.lua")(list,file)
 	else
-		LoadModule("Config.Save.lua")("Version",cacheVersion,getStepCacheFile(Step))
-		LoadModule("Config.Save.lua")("HasLua",hasLua and "true" or "false",getStepCacheFile(Step))
-		LoadModule("Config.Save.lua")("HasKeys",hasKeys and "true" or "false",getStepCacheFile(Step))
-		LoadModule("Config.Save.lua")("HasNullMeasure",hasNullMeasure and "true" or "false",getStepCacheFile(Step))
-		--if shockArrows ~= "" then LoadModule("Config.Save.lua")("ShockArrows",shockArrows,getStepCacheFile(Step)) end
-		LoadModule("Config.Save.lua")("StepCounter",table.concat(noteCounter,"_"),getStepCacheFile(Step))
-		LoadModule("Config.Save.lua")("StepsPerSecond",total2,getStepCacheFile(Step))
-		LoadModule("Config.Save.lua")("TrueBeats",lastBeat-firstBeat,getStepCacheFile(Step))
-		LoadModule("Config.Save.lua")("TrueMaxBPM",maxBPM,getStepCacheFile(Step))
-		LoadModule("Config.Save.lua")("TrueSeconds",Step:GetTimingData():GetElapsedTimeFromBeat(lastBeat)-Step:GetTimingData():GetElapsedTimeFromBeat(firstBeat),getStepCacheFile(Step))
+		LoadModule("Config.Save.lua")("Version",cacheVersion,file)
+		LoadModule("Config.Save.lua")("HasLua",hasLua and "true" or "false",file)
+		LoadModule("Config.Save.lua")("HasKeys",hasKeys and "true" or "false",file)
+		LoadModule("Config.Save.lua")("HasNullMeasure",hasNullMeasure and "true" or "false",file)
+		--if shockArrows ~= "" then LoadModule("Config.Save.lua")("ShockArrows",shockArrows,file) end
+		LoadModule("Config.Save.lua")("StepCounter",table.concat(noteCounter,"_"),file)
+		LoadModule("Config.Save.lua")("StepsPerSecond",total2,file)
+		LoadModule("Config.Save.lua")("TrueBeats",lastBeat-firstBeat,file)
+		LoadModule("Config.Save.lua")("TrueMaxBPM",maxBPM,file)
+		LoadModule("Config.Save.lua")("TrueSeconds",Step:GetTimingData():GetElapsedTimeFromBeat(lastBeat)-Step:GetTimingData():GetElapsedTimeFromBeat(firstBeat),file)
 		if stepType[2] == "Bm" then
 			if #noteCounter == 7 or #noteCounter == 14 then
-				LoadModule("Config.Save.lua")("Foots",foots,getStepCacheFile(Step))
+				LoadModule("Config.Save.lua")("Foots",foots,file)
 			end
-			LoadModule("Config.Save.lua")("Scratches",scratches,getStepCacheFile(Step))
-			LoadModule("Config.Save.lua")("ScratchJumps",scratchJumps,getStepCacheFile(Step))
+			LoadModule("Config.Save.lua")("Scratches",scratches,file)
+			LoadModule("Config.Save.lua")("ScratchJumps",scratchJumps,file)
 		end
-		--LoadModule("Config.Save.lua")("ChaosValue",ChaosValue,getStepCacheFile(Step))
-		--LoadModule("Config.Save.lua")("FreezeLength",FreezeLength,getStepCacheFile(Step))
-		--LoadModule("Config.Save.lua")("NoteDensity",NoteDensity,getStepCacheFile(Step))
+		--LoadModule("Config.Save.lua")("ChaosValue",ChaosValue,file)
+		--LoadModule("Config.Save.lua")("FreezeLength",FreezeLength,file)
+		--LoadModule("Config.Save.lua")("NoteDensity",NoteDensity,file)
 	end
 end
 
