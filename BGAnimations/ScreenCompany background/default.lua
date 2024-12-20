@@ -1,3 +1,8 @@
+if isOutFoxV() and not PREFSMAN:GetPreference("GimmickMode") then
+	PREFSMAN:SetPreference("GimmickMode", 1)
+	GAMEMAN:SetGame(GAMESTATE:GetCurrentGame():GetName(),THEME:GetCurThemeName())
+end
+
 return Def.ActorFrame{
 	Def.Sprite {
 		Texture="roxor video",
