@@ -42,6 +42,7 @@ return Def.ActorFrame{
 		Name="BPMDisplay",
 		Font="BPMDisplay bpm",
 		InitCommand=function(self) self:halign(1):zoom(0.66*WideScreenDiff()):maxwidth(120):maxheight(32):vertspacing(-10) end,
+		RateChangedMessageCommand=function(self, params) self:playcommand("Set") end,
 		SetCommand=function(self)
 			local temp = {}
 			if courseMode then

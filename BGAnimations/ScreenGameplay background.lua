@@ -47,7 +47,7 @@ return Def.ActorFrame {
 				end
 				return GAMESTATE:GetCurrentCourse():GetDisplayFullTitle().. " (Song ".. stats:GetPlayerStageStats( player ):GetSongsPassed()+1 .. ")" or ""
 			end
-			GAMESTATE:UpdateDiscordSongPlaying(GAMESTATE:IsCourseMode() and courselength() or state,songname,(song:GetLastSecond() - GAMESTATE:GetCurMusicSeconds())/GAMESTATE:GetSongOptionsObject('ModsLevel_Song'):MusicRate())
+			GAMESTATE:UpdateDiscordSongPlaying(GAMESTATE:IsCourseMode() and courselength() or state,songname,(song:GetLastSecond() - GAMESTATE:GetCurMusicSeconds())/math.round(GAMESTATE:GetSongOptionsObject("ModsLevel_Song"):MusicRate(),1))
 		end
 	end,
 	InitCommand = function(self) c = self:GetChildren() end,

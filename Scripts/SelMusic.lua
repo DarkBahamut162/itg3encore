@@ -808,29 +808,36 @@ function getAllTheBPMs(song,step,BPMtype)
 			bpms = {"???","???","???"}
 		else
 			bpms = step:GetDisplayBpms()
-			bpms[1]=math.round(bpms[1])
-			bpms[2]=math.round(bpms[2])
+			bpms[1]=bpms[1]
+			bpms[2]=bpms[2]
 			bpms[3] = 0
 		end
 	elseif BPMtype == 1 then
 		bpms = step:GetTimingData():GetActualBPM()
-		bpms[1]=math.round(bpms[1])
-		bpms[2]=math.round(bpms[2])
+		bpms[1]=bpms[1]
+		bpms[2]=bpms[2]
 		bpms[3] = 0
 	elseif BPMtype == 2 then
 		local trueBPM = isOutFox() and tonumber(LoadFromCache(song,step,"TrueMaxBPM")) or 0
 		if isOutFox() and trueBPM > 0 then
 			bpms = step:GetTimingData():GetActualBPM()
-			bpms[1]=math.round(bpms[1])
-			bpms[2]=math.round(bpms[2])
-			bpms[3]=math.round(trueBPM)
+			bpms[1]=bpms[1]
+			bpms[2]=bpms[2]
+			bpms[3]=trueBPM
 		else
 			bpms = getTrueBPMsCalculated(song,step)
-			bpms[1]=math.round(bpms[1])
-			bpms[2]=math.round(bpms[2])
-			bpms[3]=math.round(bpms[3])
+			bpms[1]=bpms[1]
+			bpms[2]=bpms[2]
+			bpms[3]=bpms[3]
 		end
 	end
+
+	local MusicRate = math.round(GAMESTATE:GetSongOptionsObject("ModsLevel_Song"):MusicRate(),1)
+
+	bpms[1]=math.round(bpms[1]*MusicRate)
+	bpms[2]=math.round(bpms[2]*MusicRate)
+	bpms[3]=math.round(bpms[3]*MusicRate)
+
 	return bpms
 end
 

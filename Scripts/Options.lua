@@ -810,7 +810,7 @@ function OptionOrientationRestricted()
 end
 
 function GetRateMod()
-	local msrate = string.format( "%.1f", GAMESTATE:GetSongOptionsObject("ModsLevel_Preferred"):MusicRate() )
+	local msrate = math.round(GAMESTATE:GetSongOptionsObject("ModsLevel_Song"):MusicRate(),1)
 	if msrate == "1.0" then return '' else return msrate..'x Rate' end
 end
 

@@ -13,35 +13,37 @@ local currentBPM = {}
 local absoluteBPM = {}
 local BPMtype = IsGame("pump") and 0 or ThemePrefs.Get("ShowBPMDisplayType")
 
-if GAMESTATE:IsCourseMode() then
-	if trail then
-		local entries = trail:GetTrailEntries()
-		for i=1, #entries do
-			local song = entries[i]:GetSong()
-			step = entries[i]:GetSteps()
-			timingdata = step:GetTimingData()
-			bpm = getAllTheBPMs(song,step,BPMtype)
-			absoluteBPM = timingdata:GetActualBPM()
-			if i == 1 then
-				currentBPM[1] = bpm[1]
-				currentBPM[2] = bpm[2]
-				currentBPM[3] = bpm[3]
-			else
-				if bpm[1] < currentBPM[1] then currentBPM[1] = bpm[1] end
-				if bpm[2] > currentBPM[2] then currentBPM[2] = bpm[2] end
-				if bpm[3] > currentBPM[3] then currentBPM[3] = bpm[3] end
+local function checkInitBPMs()
+	if GAMESTATE:IsCourseMode() then
+		if trail then
+			local entries = trail:GetTrailEntries()
+			for i=1, #entries do
+				local song = entries[i]:GetSong()
+				step = entries[i]:GetSteps()
+				timingdata = step:GetTimingData()
+				bpm = getAllTheBPMs(song,step,BPMtype)
+				absoluteBPM = timingdata:GetActualBPM()
+				if i == 1 then
+					currentBPM[1] = bpm[1]
+					currentBPM[2] = bpm[2]
+					currentBPM[3] = bpm[3]
+				else
+					if bpm[1] < currentBPM[1] then currentBPM[1] = bpm[1] end
+					if bpm[2] > currentBPM[2] then currentBPM[2] = bpm[2] end
+					if bpm[3] > currentBPM[3] then currentBPM[3] = bpm[3] end
+				end
 			end
 		end
-	end
-else
-	if step then
-		local song = GAMESTATE:GetCurrentSong()
-		timingdata = step:GetTimingData()
-		bpm = getAllTheBPMs(song,step,BPMtype)
-		absoluteBPM = step:GetTimingData():GetActualBPM()
-		currentBPM[1] = bpm[1]
-		currentBPM[2] = bpm[2]
-		currentBPM[3] = bpm[3]
+	else
+		if step then
+			local song = GAMESTATE:GetCurrentSong()
+			timingdata = step:GetTimingData()
+			bpm = getAllTheBPMs(song,step,BPMtype)
+			absoluteBPM = step:GetTimingData():GetActualBPM()
+			currentBPM[1] = bpm[1]
+			currentBPM[2] = bpm[2]
+			currentBPM[3] = bpm[3]
+		end
 	end
 end
 
@@ -128,15 +130,20 @@ if not isTopScreen("ScreenJukeboxMenu") and GAMESTATE:IsHumanPlayer(player) then
 		},
 		Def.BitmapText {
 			File = "_v 26px bold white",
-			InitCommand=function(self) self:xy(-226,4):maxwidth(260):halign(0):zoom(0.5):shadowlength(2):diffuse(PlayerColor(player)) end,
-			BeginCommand=function(self)
-				checkInitSpeedMods()
+			InitCommand=function(self) self:xy(-226,4):maxwidth(260):halign(0):zoom(0.5):shadowlength(2):diffuse(PlayerColor(player))  end,
+			BeginCommand=function(self) checkInitBPMs() checkInitSpeedMods() end,
+			OnCommand=function(self)
 				bpmtext = modifiedBPM(pX,pXmod)
 				self:settextf("MOD: %s%s  BPM: %s",pXmod == "x" and pX/100 or pX,pXmod,bpmtext)
 			end,
 			SpeedChoiceChangedMessageCommand=function(self,param)
-				bpmtext = modifiedBPM(param.speed,param.mode)
-				self:settextf("MOD: %s%s  BPM: %s",param.mode == "x" and param.speed/100 or param.speed,param.mode,bpmtext)
+				pX = param.speed
+				pXmod = param.mode
+				self:playcommand("On")
+			end,
+			RateChangedMessageCommand=function(self,param)
+				checkInitBPMs()
+				self:playcommand("On")
 			end
 		}
 	}
