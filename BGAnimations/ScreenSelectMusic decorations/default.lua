@@ -222,8 +222,8 @@ end
 t[#t+1] = Def.BitmapText {
 	File = "_v 26px bold shadow",
 	InitCommand=function(self) self:x(SCREEN_CENTER_X+140*WideScreenDiff()):y(SCREEN_CENTER_Y-154*WideScreenDiff()):zoom(0.5*WideScreenDiff()) end,
-	OnCommand=function(self) if isFinal() then self:addx(SCREEN_WIDTH):decelerate(0.75):addx(-SCREEN_WIDTH) else self:addy(-100/WideScreenDiff()):decelerate(0.8):addy(100/WideScreenDiff()) end end,
-	OffCommand=function(self) if isFinal() then self:accelerate(0.75):addx(SCREEN_WIDTH) else self:accelerate(0.5):addy(-100/WideScreenDiff()) end  end,
+	OnCommand=function(self) self:addx(SCREEN_WIDTH):decelerate(0.75):addx(-SCREEN_WIDTH) end,
+	OffCommand=function(self) self:accelerate(0.75):addx(SCREEN_WIDTH) end,
 	BeginCommand=function(self) self:playcommand("Set") end,
 	SortOrderChangedMessageCommand=function(self) self:playcommand("Set") end,
 	SetCommand=function(self)
