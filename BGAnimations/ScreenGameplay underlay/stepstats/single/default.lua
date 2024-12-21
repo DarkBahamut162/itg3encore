@@ -206,6 +206,28 @@ return Def.ActorFrame{
 				InitCommand=function(self)
 					local target = THEME:GetMetric("PlayerStageStats", "GradePercentTier" .. string.format("%02d", 18-getenv("SetPacemaker"..pname(pn))))
 					self:y(-target*barHeight+barHeight/2):valign(0):zoomx(1.25):zoomy(0.5):diffusealpha(0.5):fadeleft(0.25):faderight(0.25):diffuse(color("#FF0000")):diffuseramp():effectcolor1(color("#FF000080")):effectcolor2(color("#FF0000FF")):effectperiod(0.5):effect_hold_at_full(0.5):effectclock('beat')
+				end,
+				JudgmentMessageCommand=function(self,param) if param.Player == pn and topscore ~= nil and self:GetDiffuseAlpha() == 1 then self:queuecommand("Update") end end,
+				UpdateCommand=function(self)
+					local target = THEME:GetMetric("PlayerStageStats", "GradePercentTier" .. string.format("%02d", 18-getenv("SetPacemaker"..pname(pn))))
+					local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn)
+					local DPCur = pss:GetActualDancePoints()
+					local DPMax = pss:GetPossibleDancePoints()
+					self:diffusealpha(DPCur < DPMax*target and 1 or 0)
+				end
+			},
+			Def.Sprite {
+				Texture = THEME:GetPathG("horiz-line","short"),
+				Condition=topscore ~= nil,
+				InitCommand=function(self)
+					self:x(-barWidth[bgNum]/2):y(-topscore:GetPercentDP()*barHeight+barHeight/2):valign(0):zoomx(1.25/3*2):zoomy(0.5):diffusealpha(0.5):fadeleft(0.25):faderight(0.25):diffuse(color("#00FF00")):diffuseramp():effectcolor1(color("#00FF0080")):effectcolor2(color("#00FF00FF")):effectperiod(0.5):effect_hold_at_full(0.5):effectclock('beat')
+				end,
+				JudgmentMessageCommand=function(self,param) if param.Player == pn and topscore ~= nil and self:GetDiffuseAlpha() == 1 then self:queuecommand("Update") end end,
+				UpdateCommand=function(self)
+					local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn)
+					local DPCur = pss:GetActualDancePoints()
+					local DPMax = pss:GetPossibleDancePoints()
+					self:diffusealpha(DPCur < DPMax*topscore:GetPercentDP() and 1 or 0)
 				end
 			},
 			Def.Sprite {
@@ -300,38 +322,6 @@ return Def.ActorFrame{
 						if topscore then self:maxheight(15):addy(-0.5) end
 					end
 				},
-
-				Def.BitmapText {
-					File = "_z numbers",
-					Condition=topscore ~= nil,
-					Name="PlayerHighscoreDifference",
-					OnCommand=function(self) self:diffuse(color("#00FF00")):maxwidth(90):horizalign(left):zoom(0.3):shadowlength(0):addy(148):addx(100):queuecommand("Update") end,
-					JudgmentMessageCommand=function(self,param) if param.Player == pn and topscore ~= nil then self:queuecommand("Update") end end,
-					UpdateCommand=function(self)
-						local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn)
-						local DPCurMax = pss:GetCurrentPossibleDancePoints()
-						local curPlayerDP = pss:GetActualDancePoints()
-						local curHighscoreDP = math.ceil(DPCurMax*topscore:GetPercentDP())
-						self:settextf("%+04d",(curPlayerDP-curHighscoreDP))
-					end
-				},
-				Def.BitmapText {
-					File = "_z numbers",
-					Name="PlayerTargetDifference",
-					OnCommand=function(self)
-						self:diffuse(color("#FF0000")):maxwidth(90):horizalign(left):zoom(0.3):shadowlength(0):addy(147):addx(100):queuecommand("Update")
-						if topscore then self:addy(6.5) end
-					end,
-					JudgmentMessageCommand=function(self,param) if param.Player == pn then self:queuecommand("Update") end end,
-					UpdateCommand=function(self)
-						local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn)
-						local DPCurMax = pss:GetCurrentPossibleDancePoints()
-						local curPlayerDP = pss:GetActualDancePoints()
-						local target = THEME:GetMetric("PlayerStageStats","GradePercentTier"..string.format("%02d",18-getenv("SetPacemaker"..pname(pn))))
-						local curTargetDP = math.ceil(DPCurMax*target)
-						self:settextf("%+04d",(curPlayerDP-curTargetDP))
-					end
-				},
 			},
 			Def.Sprite {
 				Texture = "../w1",
@@ -414,7 +404,61 @@ return Def.ActorFrame{
 					local target = THEME:GetMetric("PlayerStageStats","GradePercentTier"..string.format("%02d",18-getenv("SetPacemaker"..pname(pn))))
 					self:zoomy(DPCurMax/DPMax*target*barHeight)
 				end
-			}
+			},
+
+			Def.BitmapText {
+				File = "_z numbers",
+				Condition=topscore ~= nil,
+				Name="PlayerHighscoreDifference",
+				OnCommand=function(self) self:diffuse(color("#00FF00")):maxwidth(90):zoom(0.5):shadowlength(0):x(barCenter+(barWidth[bgNum]+barSpace[bgNum])*(topscore ~= nil and 1 or 0)):queuecommand("Update") end,
+				JudgmentMessageCommand=function(self,param) if param.Player == pn and topscore ~= nil then self:queuecommand("Update") end end,
+				UpdateCommand=function(self)
+					local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn)
+					local DPCurMax = pss:GetCurrentPossibleDancePoints()
+					local curPlayerDP = pss:GetActualDancePoints()
+					local curHighscoreDP = math.ceil(DPCurMax*topscore:GetPercentDP())
+					
+					local DPCurMax = pss:GetCurrentPossibleDancePoints()
+					local DPMax = pss:GetPossibleDancePoints()
+					local DP = pss:GetActualDancePoints()
+
+					local addX = (curHighscoreDP/DPMax)*barHeight
+					local score = (curPlayerDP-curHighscoreDP)
+					self:settextf("%+04d",score)
+					if score >= 0 then 
+						self:diffuse(color("#00FF00")):y((barHeight/2-addX-6))
+					else
+						self:diffuse(color("#008000")):y((barHeight/2-addX+6))
+					end
+				end
+			},
+			Def.BitmapText {
+				File = "_z numbers",
+				Name="PlayerTargetDifference",
+				OnCommand=function(self)
+					self:diffuse(color("#FF0000")):maxwidth(90):zoom(0.5):shadowlength(0):x(barCenter+(barWidth[bgNum]+barSpace[bgNum])*(topscore ~= nil and 2 or 1)):queuecommand("Update")
+					if topscore then self:addy(6.5) end
+				end,
+				JudgmentMessageCommand=function(self,param) if param.Player == pn then self:queuecommand("Update") end end,
+				UpdateCommand=function(self)
+					local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn)
+					local DPCurMax = pss:GetCurrentPossibleDancePoints()
+					local curPlayerDP = pss:GetActualDancePoints()
+					local target = THEME:GetMetric("PlayerStageStats","GradePercentTier"..string.format("%02d",18-getenv("SetPacemaker"..pname(pn))))
+					local curTargetDP = math.ceil(DPCurMax*target)
+					
+					local DPMax = pss:GetPossibleDancePoints()
+					
+					local addX = (curTargetDP/DPMax)*barHeight
+					local score = curPlayerDP-curTargetDP
+					self:settextf("%+04d",score)
+					if score >= 0 then 
+						self:diffuse(color("#FF0000")):y((barHeight/2-addX-6))
+					else
+						self:diffuse(color("#800000")):y((barHeight/2-addX+6))
+					end
+				end
+			},
 		}
 	}
 }
