@@ -3,7 +3,7 @@ assert(player,"[Graphics/_pane icons] player required")
 
 return Def.ActorFrame{
 	Condition=IsUsingWideScreen() and hasAvatar(player),
-	InitCommand=function(self) self:y((ThemePrefs.Get("ShowStepCounter") and isOutFox()) and 3 or -1) end,
+	InitCommand=function(self) self:y(ThemePrefs.Get("ShowStepCounter") and 3 or -1) end,
 	OnCommand=function(self) self:addx(player == PLAYER_1 and -SCREEN_CENTER_X or SCREEN_CENTER_X):sleep(0.4):decelerate(0.3):addx(player == PLAYER_1 and SCREEN_CENTER_X or -SCREEN_CENTER_X) end,
 	OffCommand=function(self) self:accelerate(0.2):diffusealpha(0) end,
 	Def.Sprite{
