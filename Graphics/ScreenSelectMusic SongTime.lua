@@ -64,11 +64,18 @@ return Def.ActorFrame{
 					end
 				end
 			end
-			for i=1,#length do if length[i] < 0 then length[i] = 0.001 else length[i] = math.round(length[i],3) end end
+
+			local MusicRate = math.round(GAMESTATE:GetSongOptionsObject("ModsLevel_Song"):MusicRate(),1)
+
+			for i=1,#length do
+				if length[i] < 0 then length[i] = 0.001 else length[i] = math.round(length[i],3) end
+				length[i] = length[i] / MusicRate
+			end
 			MESSAGEMAN:Broadcast('SetTime')
 			if length[1] >= 6000 then c.Time:x(-103-(math.floor(math.log10(length[1]/6000)+1)*28)) else c.Time:x(-103) end
 			self:settext( SecondsToMMSSMsMs(length[1]) )
 		end,
+		RateChangedMessageCommand=function(self, params) self:playcommand("Set") end,
 		CurrentSongChangedMessageCommand=function(self) if not course then self:queuecommand("Set") end end,
 		CurrentStepsP1ChangedMessageCommand=function(self) if not course then self:queuecommand("Set") end end,
 		CurrentStepsP2ChangedMessageCommand=function(self) if not course then self:queuecommand("Set") end end,
