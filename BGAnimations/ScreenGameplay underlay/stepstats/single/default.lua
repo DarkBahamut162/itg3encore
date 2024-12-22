@@ -410,7 +410,7 @@ return Def.ActorFrame{
 				File = "_z numbers",
 				Condition=topscore ~= nil,
 				Name="PlayerHighscoreDifference",
-				OnCommand=function(self) self:diffuse(color("#00FF00")):maxwidth(90):zoom(0.5):shadowlength(0):x(barCenter+(barWidth[bgNum]+barSpace[bgNum])*(topscore ~= nil and 1 or 0)):queuecommand("Update") end,
+				OnCommand=function(self) self:diffuse(color("#00FF00")):maxwidth(barWidth[bgNum]*2):zoom(0.5):shadowlength(0):x(barCenter+(barWidth[bgNum]+barSpace[bgNum])*(topscore ~= nil and 1 or 0)):queuecommand("Update") end,
 				JudgmentMessageCommand=function(self,param) if param.Player == pn and topscore ~= nil then self:queuecommand("Update") end end,
 				UpdateCommand=function(self)
 					local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn)
@@ -436,7 +436,7 @@ return Def.ActorFrame{
 				File = "_z numbers",
 				Name="PlayerTargetDifference",
 				OnCommand=function(self)
-					self:diffuse(color("#FF0000")):maxwidth(90):zoom(0.5):shadowlength(0):x(barCenter+(barWidth[bgNum]+barSpace[bgNum])*(topscore ~= nil and 2 or 1)):queuecommand("Update")
+					self:diffuse(color("#FF0000")):maxwidth(barWidth[bgNum]*2):zoom(0.5):shadowlength(0):x(barCenter+(barWidth[bgNum]+barSpace[bgNum])*(topscore ~= nil and 2 or 1)):queuecommand("Update")
 					if topscore then self:addy(6.5) end
 				end,
 				JudgmentMessageCommand=function(self,param) if param.Player == pn then self:queuecommand("Update") end end,
