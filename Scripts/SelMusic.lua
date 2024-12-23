@@ -335,7 +335,7 @@ local function calcSPS(SPS,max)
 	return total
 end
 
-function GetParameter(Step)
+function GetParameter(Step,minAmount)
 	local filePath = Step:GetFilename()
 	local extBME = filePath:sub(-3) == "bme" and true or false
 	local extBML = filePath:sub(-3) == "bml" and true or false
@@ -343,6 +343,7 @@ function GetParameter(Step)
 	local extPMS = filePath:sub(-3) == "pms" and true or false
 	if extBME or extBML or extBMS or extPMS then else return {} end
     local file = RageFileUtil:CreateRageFile()
+	local count = 0
 	file:Open(filePath,1)
 	file:Seek(0)
 	local gLine = {}
@@ -350,8 +351,9 @@ function GetParameter(Step)
 	while true do
 		if file then
 			line = file:GetLine()
-			if file:AtEOF() then break elseif string.find(line,"#WAV[0-9A-Z]+") then
+			if file:AtEOF() or (minAmount and count >= minAmount) then break elseif string.find(line,"#WAV[0-9A-Z]+") then
 				gLine[#gLine+1] = split(" ",line)[2]
+				if minAmount then count = count + 1 end
 			end
 		end
 	end
@@ -381,14 +383,14 @@ function CheckNullMeasure(Step)
 			line = file:GetLine()
 			if string.find(line,":") then
 				local tmp = split(":",line)
-				local currentMeasure = string.sub(tmp[1],2,4)
-				if tonumber(currentMeasure) then
-					if tonumber(currentMeasure) > maxMeasure then maxMeasure = tonumber(currentMeasure) end
+				local currentMeasure = tonumber(string.sub(tmp[1],2,4))
+				if currentMeasure then
+					if currentMeasure > maxMeasure then maxMeasure = currentMeasure end
 					if string.find(line,"02:") then
 						checkMeasure[currentMeasure] = true
-						checkMeasurelength[currentMeasure] = tmp[2]
+						checkMeasurelength[currentMeasure] = tonumber(tmp[2])
 					else
-						if not checkMeasurelength[currentMeasure] then checkMeasurelength[currentMeasure] = "1" end
+						if not checkMeasurelength[currentMeasure] then checkMeasurelength[currentMeasure] = 1 end
 						checkNotes[currentMeasure] = true
 					end
 				end
@@ -401,14 +403,14 @@ function CheckNullMeasure(Step)
 	local earliestNull = 999
 	local latestNull = 0
     for measure,length in pairs( checkMeasurelength ) do
-		if tonumber(measure) then
-			if tonumber(measure) > maxMeasure then maxMeasure = tonumber(measure) end
+		if measure then
+			if measure > maxMeasure then maxMeasure = measure end
 		end
-		if tonumber(length) ~= 1 then
+		if length ~= 1 then
 			if not checkNotes[measure] then
 				nullCheck[measure] = true
-				if tonumber(measure) < earliestNull then earliestNull = tonumber(measure) end
-				if tonumber(measure) > latestNull then latestNull = tonumber(measure) end
+				if measure < earliestNull then earliestNull = measure end
+				if measure > latestNull then latestNull = measure end
 			end
 		end
 	end
@@ -570,7 +572,7 @@ function cacheStep(Song,Step)
 	local hasNullMeasure = false
 
 	if stepType[2] == "Bm" or stepType[2] == "Pnm" then
-		local keySounds = GetParameter(Step)
+		local keySounds = GetParameter(Step,3)
 		hasNullMeasure = CheckNullMeasure(Step)
 		if keySounds and #keySounds > 2 then hasKeys = true end
 	end
@@ -808,27 +810,19 @@ function getAllTheBPMs(song,step,BPMtype)
 			bpms = {"???","???","???"}
 		else
 			bpms = step:GetDisplayBpms()
-			bpms[1]=bpms[1]
-			bpms[2]=bpms[2]
 			bpms[3] = 0
 		end
 	elseif BPMtype == 1 then
 		bpms = step:GetTimingData():GetActualBPM()
-		bpms[1]=bpms[1]
-		bpms[2]=bpms[2]
 		bpms[3] = 0
 	elseif BPMtype == 2 then
 		local trueBPM = isOutFox() and tonumber(LoadFromCache(song,step,"TrueMaxBPM")) or 0
+		--local trueBPM = isOutFox() and getTrueMaxBPM(song,step) or 0
 		if isOutFox() and trueBPM > 0 then
 			bpms = step:GetTimingData():GetActualBPM()
-			bpms[1]=bpms[1]
-			bpms[2]=bpms[2]
 			bpms[3]=trueBPM
 		else
 			bpms = getTrueBPMsCalculated(song,step)
-			bpms[1]=bpms[1]
-			bpms[2]=bpms[2]
-			bpms[3]=bpms[3]
 		end
 	end
 
@@ -861,6 +855,8 @@ function getCalculatedDifficulty(Step)
 
 	local OG = Step:GetMeter()
 	local Song = SONGMAN:GetSongFromSteps(Step)
+	--local totalSeconds = isOutFox() and getTrueSeconds(Song,Step)["TrueSeconds"] or (Song:GetLastSecond() - Song:GetFirstSecond())
+	--local stepCounter = isOutFox() and getStepCounter(Song,Step)["StepCounter"] or {}
 	local totalSeconds = isOutFox() and tonumber(LoadFromCache(Song,Step,"TrueSeconds")) or (Song:GetLastSecond() - Song:GetFirstSecond())
 	local stepCounter = isOutFox() and split("_",LoadFromCache(Song,Step,"StepCounter")) or {}
 	local stepType = split("_",Step:GetStepsType())
@@ -896,9 +892,11 @@ function getCalculatedDifficulty(Step)
 	if IsGame("be-mu") or IsGame("beat") then
 		YA = GetConvertDifficulty(Song,Step,totalSeconds) / 2
 		if isOutFox() then SPS = tonumber(LoadFromCache(Song,Step,"StepsPerSecond")) / 2 end
+		--if isOutFox() then SPS = getSPS(Song,Step) / 2 end
 	else
 		if not IsGame("pump") then YA = GetConvertDifficulty(Song,Step,totalSeconds) * (getColumnsPerPlayer(stepType[2],stepType[3],true) / 4) * ddrtype end
 		if isOutFox() then SPS = tonumber(LoadFromCache(Song,Step,"StepsPerSecond")) * (getColumnsPerPlayer(stepType[2],stepType[3],true) / 4) * ddrtype end
+		--if isOutFox() then SPS = getSPS(Song,Step) * (getColumnsPerPlayer(stepType[2],stepType[3],true) / 4) * ddrtype end
 	end
 
 	local output = {}
@@ -928,6 +926,9 @@ function grooveRadar(song,step,RadarValues)
 	chaos = RadarValues:GetValue('RadarCategory_Chaos')
 
 	if not IsGame("pump") then
+		--local trueValues = isOutFox() and getTrueSeconds(song,step) or {}
+		--local totalSeconds = isOutFox() and trueValues["TrueSeconds"] or (song:GetLastSecond() - song:GetFirstSecond())
+		--local totalBeats = isOutFox() and trueValues["TrueBeats"] or (song:GetLastBeat() - song:GetFirstBeat())
 		local totalSeconds = isOutFox() and tonumber(LoadFromCache(song,step,"TrueSeconds")) or (song:GetLastSecond() - song:GetFirstSecond())
 		local totalBeats = (isOutFox() and tonumber(LoadFromCache(song,step,"TrueBeats")) or (song:GetLastBeat() - song:GetFirstBeat()))
 		local avg_bps_OLD = song:GetLastBeat() / song:MusicLengthSeconds()
