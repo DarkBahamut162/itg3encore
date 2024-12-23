@@ -1,13 +1,4 @@
 return function(key,value,file)
-	if not FILEMAN:DoesFileExist(file) then
-		local Createfile = RageFileUtil.CreateRageFile()
-		if Createfile:Open(file, 2) then
-			Createfile:Write("")
-			Createfile:Close()
-		end
-		Createfile:destroy()
-	end
-
     local configcontent = ""
     local configfile = RageFileUtil.CreateRageFile()
     if configfile:Open(file, 1) then
