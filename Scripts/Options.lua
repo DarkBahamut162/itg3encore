@@ -811,7 +811,7 @@ end
 
 function GetRateMod()
 	local msrate = math.round(GAMESTATE:GetSongOptionsObject("ModsLevel_Song"):MusicRate(),1)
-	if msrate == "1.0" then return '' else return msrate..'x Rate' end
+	if msrate == 1 then return '' else return msrate..'x Rate' end
 end
 
 function DisplayCustomModifiersText(pn)
