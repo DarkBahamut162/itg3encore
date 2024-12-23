@@ -1,4 +1,4 @@
-local cacheVersion = "0.37"
+local cacheVersion = "0.38"
 --local stepCache = {}
 local typeList = {"avi","f4v","flv","mkv","mp4","mpeg","mpg","mov","ogv","webm","wmv"}
 
@@ -311,6 +311,27 @@ function HasStopAtBeat(beat,timing)
 	return false
 end
 
+function HasDelayAtBeat(beat,timing)
+	for _,v in pairs(timing:GetDelays()) do
+		if tonumber(split('=', v)[1]) == beat then
+			return true
+		end
+	end
+	return false
+end
+
+function HasWarpAtBeat(beat,timing)
+	for _,v in pairs(timing:GetWarps()) do
+		local warp = split('=', v)
+		warp[1] = tonumber(warp[1])
+		warp[2] = tonumber(warp[2])
+		if warp[1] <= beat and beat < warp[1] + warp[2] then
+			return true
+		end
+	end
+	return false
+end
+
 function checkStopAtBeat(beat,timing)
 	for _,v in pairs(timing:GetStops()) do
 		local data = split('=', v)
@@ -428,7 +449,7 @@ function cacheStep(Song,Step)
     local chartint = 1
 	local currentBeat = 0
 	local currentNotes = 0
-	local currentMines = 0
+	--local currentMines = 0
 	local noteCounter = {}
 	local firstBeat = 999
 	local lastBeat = 0
@@ -451,10 +472,10 @@ function cacheStep(Song,Step)
 	end
 
 	local timingData = Step:GetTimingData()
-	local lastSec = 0
+	local currentSec,lastSec = 0,0
 	local stepsPerSec = {}
 	local currentSPS = 0
-	local scratches,scratchJumps,foots = 0,0,0
+	local scratches,foots = 0,0
 	local currentBPM,checkBPM,checkCount,maxBPM = 0,0,0,0
 	local checking,isStop,scratch = false,false,false
 	--local ChaosValue = 0
@@ -465,7 +486,9 @@ function cacheStep(Song,Step)
 	for _,v in pairs( noteData ) do
 		if currentBeat < v[1] then
 			currentBeat = v[1]
-			currentNotes, currentMines = 0, 0
+			currentNotes = 0
+			--currentMines = 0
+			lastSec = currentSec
 		end
 
 		--local fourBeatCounter = tablelength(Song:GetNoteData(chartint,v[1],v[1]+4))
@@ -490,20 +513,7 @@ function cacheStep(Song,Step)
 					checking = false
 				end
 
-				local currentSec = timingData:GetElapsedTimeFromBeat(v[1])
 				currentNotes = currentNotes + 1
-				if lastSec > 0 then
-					if lastSec < currentSec then
-						currentSPS = 1 / (currentSec - lastSec)
-						if stepsPerSec[currentSPS] then stepsPerSec[currentSPS] = stepsPerSec[currentSPS] + 1 else stepsPerSec[currentSPS] = 1 end
-						lastSec = currentSec
-					elseif lastSec == currentSec then
-						local currentSPS_ = currentSPS * currentNotes
-						if stepsPerSec[currentSPS_] then stepsPerSec[currentSPS_] = stepsPerSec[currentSPS_] + 1 else stepsPerSec[currentSPS_] = 1 end
-					end
-				else
-					lastSec = currentSec
-				end
 				if v["length"] then
 					--FreezeLength = FreezeLength + v["length"]
 					if currentBeat + v["length"] > lastBeat then lastBeat = currentBeat + v["length"] end
@@ -531,11 +541,11 @@ function cacheStep(Song,Step)
 						end
 					end
 				end
-			--elseif v[3] == "TapNoteType_Mine" then
-			--	currentMines = currentMines + 1
-			--	if currentMines == getColumnsPerPlayer(stepType[2],stepType[3]) then
-			--		shockArrows = addToOutput(shockArrows,Step:GetTimingData():GetElapsedTimeFromBeat(v[1]),"_")
-			--	end
+				--elseif v[3] == "TapNoteType_Mine" then
+				--	currentMines = currentMines + 1
+				--	if currentMines == getColumnsPerPlayer(stepType[2],stepType[3]) then
+				--		shockArrows = addToOutput(shockArrows,Step:GetTimingData():GetElapsedTimeFromBeat(v[1]),"_")
+				--	end
 			end
 		end
 
@@ -550,13 +560,19 @@ function cacheStep(Song,Step)
 		end
 
 		if checkBeat then
-			if currentNotes ~= 0 then noteCounter[currentNotes] = noteCounter[currentNotes] + 1 end
+			if currentNotes ~= 0 then
+				noteCounter[currentNotes] = noteCounter[currentNotes] + 1
+				currentSec = timingData:GetElapsedTimeFromBeat(v[1])
+				if lastSec > 0 then
+					currentSPS = 1 / (currentSec - lastSec) * currentNotes
+					if stepsPerSec[currentSPS] then stepsPerSec[currentSPS] = stepsPerSec[currentSPS] + 1 else stepsPerSec[currentSPS] = 1 end
+				end
+			end
 			--[[
 			ChaosValue = ChaosValue + ChaosCalc(currentBeat,previousBeat,currentNotes)
 			previousBeat = currentBeat
 			]]--
 			if scratch and currentNotes > 1 then
-				scratchJumps = scratchJumps + 1
 				scratch = false
 			end
 		end
@@ -598,7 +614,6 @@ function cacheStep(Song,Step)
 				list["Foots"] = foots
 			end
 			list["Scratches"] = scratches
-			list["ScratchJumps"] = scratchJumps
 		end
 
 		LoadModule("Config.SaveAll.lua")(list,file)
@@ -618,7 +633,6 @@ function cacheStep(Song,Step)
 				LoadModule("Config.Save.lua")("Foots",foots,file)
 			end
 			LoadModule("Config.Save.lua")("Scratches",scratches,file)
-			LoadModule("Config.Save.lua")("ScratchJumps",scratchJumps,file)
 		end
 		--LoadModule("Config.Save.lua")("ChaosValue",ChaosValue,file)
 		--LoadModule("Config.Save.lua")("FreezeLength",FreezeLength,file)
