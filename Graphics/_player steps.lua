@@ -15,14 +15,12 @@ return Def.ActorFrame{
 				local output = ""
 				local loadStepCounter = ""
 				local loadScratches = ""
-				local loadScratchJumps = ""
 				local loadFoots = ""
 
 				if SongOrCourse and StepsOrTrail then
 					loadStepCounter = LoadFromCache(SongOrCourse,StepsOrTrail,"StepCounter")
 					if IsGame("be-mu") then
 						loadScratches = LoadFromCache(SongOrCourse,StepsOrTrail,"Scratches")
-						loadScratchJumps = LoadFromCache(SongOrCourse,StepsOrTrail,"ScratchJumps")
 						if GetUserPrefN("StylePosition") == 2 then
 							loadFoots = LoadFromCache(SongOrCourse,StepsOrTrail,"Foots")
 						end
@@ -37,7 +35,7 @@ return Def.ActorFrame{
 							end
 						end
 					end
-					if loadScratches and not (loadScratches == "" or loadScratches == "0") then output = addToOutput(output,"Scratches: "..loadScratches.."/"..loadScratchJumps," | ") end
+					if loadScratches and not (loadScratches == "" or loadScratches == "0") then output = addToOutput(output,"Scratches: "..loadScratches," | ") end
 					if loadFoots and not (loadFoots == "" or loadFoots == "0") then output = addToOutput(output,"Foots: "..loadFoots," | ") end
 
 					if output == "" then
