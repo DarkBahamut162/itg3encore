@@ -16,6 +16,8 @@ You also might need to switch your **VideoRenderer** to **OpenGL** as **GLAD** b
 ## Information:
 Most additional features have been moved to an additional **Theme Options** menu. They are as follows:
 
+- **AnimateSongTitle:**
+Have the Song Title scroll during GamePlay (not possible on d3d)
 - **EncoreThemeMode:**
 Switch between **Encore Normal** and **Encore Final** mode
 - **ShowBPMDisplayType:**

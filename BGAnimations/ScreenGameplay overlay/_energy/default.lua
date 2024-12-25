@@ -1,4 +1,15 @@
-local TitleSongFade = isOutFox() and LoadModule("Text.FadeSlide.lua") or Def.ActorFrame{ Create = function(this) return Def.ActorFrame{} end }
+local animate = canRender() and ThemePrefs.Get("AnimateSongTitle")
+local TitleSongFade
+
+if animate then
+	if isOutFox() then
+		TitleSongFade = LoadModule("Text.FadeSlide.lua")
+	else
+		TitleSongFade = LoadModuleSM("Text.FadeSlide.lua")
+	end
+else
+	TitleSongFade = Def.ActorFrame{ Create = function(this) return Def.ActorFrame{} end }
+end
 
 return Def.ActorFrame{
 	Def.ActorFrame{
@@ -108,14 +119,14 @@ return Def.ActorFrame{
 		},
 		Def.BitmapText {
 			File = "_r bold 30px",
-			InitCommand=function(self) self:visible(not isOutFox()):CenterX():y(SCREEN_TOP+24*WideScreenDiff()):maxwidth(573):diffusebottomedge(color("#dedede")) end,
+			InitCommand=function(self) self:visible(not animate):CenterX():y(SCREEN_TOP+24*WideScreenDiff()):maxwidth(573):diffusebottomedge(color("#dedede")) end,
 			OnCommand=function(self) self:zoom(0.5*WideScreenDiff()):shadowlength(2*WideScreenDiff()):zoomy(0):sleep(2):decelerate(0.3):zoomy(0.45*WideScreenDiff()):animate(0):playcommand("Update") end,
 			CurrentSongChangedMessageCommand=function(self) self:playcommand("Update") end,
 			UpdateCommand=function(self)
 				local text = ""
 				local song = GAMESTATE:GetCurrentSong()
 				if song then text = song:GetDisplayFullTitle() end
-				if isOutFox() then TitleSongFade:SetText( text ) end
+				if animate then TitleSongFade:SetText( text ) end
 				self:settext(text)
 			end
 		}

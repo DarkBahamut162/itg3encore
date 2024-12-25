@@ -3,6 +3,11 @@ local function OptionNameString(str)
 end
 
 local Prefs = {
+	AnimateSongTitle = {
+		Default = false,
+		Choices = { OptionNameString('Off'), OptionNameString('On') },
+		Values = { false, true }
+	},
 	EncoreThemeMode = {
 		Default = false,
 		Choices = { OptionNameString('Normal'), OptionNameString('Final') },

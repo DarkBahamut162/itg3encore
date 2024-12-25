@@ -453,6 +453,10 @@ function IsGameAndMenuButton(localized_btn)
 	return FindInTable(btn, GameAndMenuButtons[GAMESTATE:GetCurrentGame():GetName()])
 end
 
-WideScaleFixed = function(AR4_3, AR16_9)
+function WideScaleFixed(AR4_3, AR16_9)
 	return clamp(scale( SCREEN_WIDTH, 640, 854, AR4_3, AR16_9 ), AR4_3, AR16_9)
+end
+
+function canRender()
+	return "d3d" ~= string.lower(split(',',PREFSMAN:GetPreference('VideoRenderers'))[1])
 end
