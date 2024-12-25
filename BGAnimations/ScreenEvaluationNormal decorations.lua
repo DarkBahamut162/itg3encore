@@ -109,11 +109,16 @@ local function GraphDisplay(pn)
 	local lastMarvelousSecond = lastMarvelousSecond * fix
 
 	return Def.ActorFrame {
+		Def.Quad{
+			Condition=not isOutFox(),
+			OnCommand=function(self) self:valign(1):zoomto(194,SCREEN_WIDTH):MaskSource(true):y(-34) end
+		},
 		Def.GraphDisplay {
 			InitCommand=function(self) self:Load("GraphDisplay"..pname(pn)) end,
 			BeginCommand=function(self)
 				local ss = SCREENMAN:GetTopScreen():GetStageStats()
 				self:Set( ss, ss:GetPlayerStageStats(pn) ):player( pn )
+				if not isOutFox() then self:MaskDest() end
 			end
 		},
 		Def.ActorFrame {

@@ -31,6 +31,9 @@ setenv("checkFantastics"..pname(player),true)
 setenv("checkPerfects"..pname(player),true)
 setenv("checkGreats"..pname(player),true)
 setenv("check"..pname(player),true)
+setenv("checkAuto"..pname(player),true)
+
+if not isOutFox() then GAMESTATE:ApplyGameCommand('mod,savescore',player) end
 
 return Def.ActorFrame {
 	Def.Sprite {
@@ -59,11 +62,14 @@ return Def.ActorFrame {
 		local iNumStates = c.Judgment:GetNumStates()
 		local iFrame = TNSFrames[tns]
 
-		if (GAMESTATE:GetPlayerState(player):GetPlayerController() == 'PlayerController_Autoplay') or
-		(GAMESTATE:GetPlayerState(player):GetPlayerController() == 'PlayerController_Cpu') then
+		if ((GAMESTATE:GetPlayerState(player):GetPlayerController() == 'PlayerController_Autoplay') or
+		(GAMESTATE:GetPlayerState(player):GetPlayerController() == 'PlayerController_Cpu')) and
+		getenv("checkAuto"..pname(player)) then
+			if not isOutFox() then GAMESTATE:ApplyGameCommand('mod,no savescore',player) end
 			setenv("checkFantastics"..pname(player),false)
 			setenv("checkPerfects"..pname(player),false)
 			setenv("checkGreats"..pname(player),false)
+			setenv("checkAuto"..pname(player),false)
 			setenv("check"..pname(player),false)
 			setenv("EvalCombo"..pname(player),false)
 		end
