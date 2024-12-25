@@ -110,7 +110,7 @@ local function GraphDisplay(pn)
 
 	return Def.ActorFrame {
 		Def.Quad{
-			Condition=not isOutFox(),
+			Condition=not isOutFox() and isVS(),
 			OnCommand=function(self) self:valign(1):zoomto(194,SCREEN_WIDTH):MaskSource(true):y(-34) end
 		},
 		Def.GraphDisplay {
@@ -118,7 +118,7 @@ local function GraphDisplay(pn)
 			BeginCommand=function(self)
 				local ss = SCREENMAN:GetTopScreen():GetStageStats()
 				self:Set( ss, ss:GetPlayerStageStats(pn) ):player( pn )
-				if not isOutFox() then self:MaskDest() end
+				if not isOutFox() and isVS() then self:MaskDest() end
 			end
 		},
 		Def.ActorFrame {
