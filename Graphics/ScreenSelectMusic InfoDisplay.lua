@@ -31,6 +31,7 @@ return Def.ActorFrame{
 				--lua.ReportScriptError( SongOrCourse:GetGroupName().." | "..SongOrCourse:GetDisplayFullTitle().." / "..SongOrCourse:GetDisplayArtist() )
 				if SongOrCourse then
 					local EC = SongOrCourse:GetPreviewMusicPath()
+					local step = nil
 					if enableRounds then
 						if SongOrCourse:IsLong() then
 							output = eventMode and "LONG" or "COUNTS AS 2 ROUNDS"
@@ -43,7 +44,7 @@ return Def.ActorFrame{
 						end
 					end
 					if isOutFox() and (IsGame("po-mu") or IsGame("be-mu")) then
-						local step = GAMESTATE:GetCurrentSteps(GAMESTATE:GetMasterPlayerNumber())
+						if not step then step = GAMESTATE:GetCurrentSteps(GAMESTATE:GetMasterPlayerNumber()) end
 						if step and not tobool(LoadFromCache(SongOrCourse,step,"HasKeys")) then
 							output = addToOutput(output,"NO KEYSOUNDS"," & ")
 							self:diffuse(Color("Red"))
@@ -58,7 +59,7 @@ return Def.ActorFrame{
 					end
 					if enableLua then
 						if isOutFox() then
-							local step = GAMESTATE:GetCurrentSteps(GAMESTATE:GetMasterPlayerNumber())
+							if not step then step = GAMESTATE:GetCurrentSteps(GAMESTATE:GetMasterPlayerNumber()) end
 							if step and tobool(LoadFromCache(SongOrCourse,step,"HasLua")) then
 								self:rainbow():effectclock(EC ~= "" and "beat" or "timerglobal")
 								output = addToOutput(output,"LUA"," & ")

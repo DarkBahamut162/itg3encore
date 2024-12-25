@@ -13,18 +13,9 @@ return Def.ActorFrame{
 				local SongOrCourse = courseMode and GAMESTATE:GetCurrentCourse() or GAMESTATE:GetCurrentSong()
 				local StepsOrTrail = courseMode and GAMESTATE:GetCurrentTrail(player) or GAMESTATE:GetCurrentSteps(player)
 				local output = ""
-				local loadStepCounter = ""
-				local loadScratches = ""
-				local loadFoots = ""
 
 				if SongOrCourse and StepsOrTrail then
-					loadStepCounter = LoadFromCache(SongOrCourse,StepsOrTrail,"StepCounter")
-					if IsGame("be-mu") then
-						loadScratches = LoadFromCache(SongOrCourse,StepsOrTrail,"Scratches")
-						if GetUserPrefN("StylePosition") == 2 then
-							loadFoots = LoadFromCache(SongOrCourse,StepsOrTrail,"Foots")
-						end
-					end
+					local loadStepCounter = LoadFromCache(SongOrCourse,StepsOrTrail,"StepCounter")
 					if loadStepCounter and loadStepCounter ~= "" then
 						loadStepCounter = split("_",loadStepCounter)
 						for i=1,#loadStepCounter do
@@ -35,8 +26,14 @@ return Def.ActorFrame{
 							end
 						end
 					end
-					if loadScratches and not (loadScratches == "" or loadScratches == "0") then output = addToOutput(output,"Scratches: "..loadScratches," | ") end
-					if loadFoots and not (loadFoots == "" or loadFoots == "0") then output = addToOutput(output,"Foots: "..loadFoots," | ") end
+					if IsGame("be-mu") then
+						local loadScratches = LoadFromCache(SongOrCourse,StepsOrTrail,"Scratches")
+						if loadScratches and not (loadScratches == "" or loadScratches == "0") then output = addToOutput(output,"Scratches: "..loadScratches," | ") end
+						if GetUserPrefN("StylePosition") == 2 then
+							local loadFoots = LoadFromCache(SongOrCourse,StepsOrTrail,"Foots")
+							if loadFoots and not (loadFoots == "" or loadFoots == "0") then output = addToOutput(output,"Foots: "..loadFoots," | ") end
+						end
+					end
 
 					if output == "" then
 						local EC = not courseMode and SongOrCourse:GetPreviewMusicPath() or " "
