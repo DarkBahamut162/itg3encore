@@ -302,34 +302,51 @@ function getStepCacheFile(Step)
 	return "Cache/Steps/Steps_"..groupName.."_"..songName.."_"..ToEnumShortString(Step:GetStepsType()).."_"..ToEnumShortString(Step:GetDifficulty()).."_"..Step:GetHash()..".db9"
 end
 
-function HasStopAtBeat(beat,timing)
-	for _,v in pairs(timing:GetStops()) do
-		if tonumber(split('=', v)[1]) == beat then
-			return true
+function HasStopAtBeat(beat,stops)
+	while stops and stops[1] do
+		local stop = tonumber(split('=', stops[1])[1])
+		if beat < stop then
+			return false, stops
+		elseif beat == stop then
+			table.remove(stops,1)
+			return true, stops
+		elseif beat > stop then
+			table.remove(stops,1)
 		end
 	end
-	return false
+	return false, stop
 end
 
-function HasDelayAtBeat(beat,timing)
-	for _,v in pairs(timing:GetDelays()) do
-		if tonumber(split('=', v)[1]) == beat then
-			return true
+function HasDelayAtBeat(beat,delays)
+	while delays and delays[1] do
+		local delay = tonumber(split('=', delays[1])[1])
+		if beat < delay then
+			return false, delays
+		elseif beat == delay then
+			table.remove(delays,1)
+			return true, delays
+		elseif beat > delay then
+			table.remove(delays,1)
 		end
 	end
-	return false
+	return false, delays
 end
 
-function HasWarpAtBeat(beat,timing)
-	for _,v in pairs(timing:GetWarps()) do
-		local warp = split('=', v)
+function HasWarpAtBeat(beat,warps)
+	while warps and warps[1] do
+		local warp = split('=', warps[1])
 		warp[1] = tonumber(warp[1])
 		warp[2] = tonumber(warp[2])
-		if warp[1] <= beat and beat < warp[1] + warp[2] then
-			return true
+		if beat < warp[1] then
+			return false, warps
+		elseif warp[1] <= beat and beat < warp[1] + warp[2] then
+			table.remove(delays,1)
+			return true, warps
+		elseif beat >= warp[1] + warp[2] then
+			table.remove(warps,1)
 		end
 	end
-	return false
+	return false, warps
 end
 
 function checkStopAtBeat(beat,timing)
@@ -342,7 +359,7 @@ function checkStopAtBeat(beat,timing)
 	return timing:GetElapsedTimeFromBeat(beat)
 end
 
-local function calcSPS(SPS,max)
+function calcSPS(SPS,max)
 	local total, times = 0, 0
 	for _sps, _times in pairs(SPS) do
 		if (max and _sps > max / 6 and _sps < max * 2) or not max then
@@ -451,7 +468,7 @@ function cacheStep(Song,Step)
 	local currentNotes = 0
 	--local currentMines = 0
 	local noteCounter = {}
-	local firstBeat = 999
+	local firstBeat = nil
 	local lastBeat = 0
 	--local shockArrows = ""
 	--local NoteDensity = 0
@@ -474,13 +491,14 @@ function cacheStep(Song,Step)
 	local timingData = Step:GetTimingData()
 	local currentSec,lastSec = 0,0
 	local stepsPerSec = {}
-	local currentSPS = 0
 	local scratches,foots = 0,0
 	local currentBPM,checkBPM,checkCount,maxBPM = 0,0,0,0
-	local checking,isStop,scratch = false,false,false
+	local checking = false
 	--local ChaosValue = 0
 	--local previousBeat = 0
 	--local FreezeLength = 0
+	local stops = timingData:GetStops()
+	local delays = timingData:GetDelays()
 
 	local noteData = isOutFoxV043() and Step:GetNoteData() or Song:GetNoteData(chartint)
 	for _,v in pairs( noteData ) do
@@ -496,23 +514,6 @@ function cacheStep(Song,Step)
 
 		if timingData:IsJudgableAtBeat(v[1]) then
 			if allowednotes[v[3]] then
-				currentBPM = math.round(timingData:GetBPMAtBeat(v[1]),3)
-				if timingData:HasStops() then isStop = HasStopAtBeat(v[1],timingData) end
-				if currentBPM > maxBPM and not checking and not isStop then
-					checking = true
-					if currentBPM > checkBPM then checkBPM = currentBPM end
-					checkCount = 0
-				elseif math.abs(1-checkBPM/currentBPM) <= 0.02 and checking and not isStop then
-					checkCount = checkCount + 1
-					if checkCount > 4 then
-						if currentBPM > checkBPM then checkBPM = currentBPM end
-						if currentBPM > maxBPM then maxBPM = checkBPM end
-					end
-				else
-					checkBPM = 0
-					checking = false
-				end
-
 				currentNotes = currentNotes + 1
 				if v["length"] then
 					--FreezeLength = FreezeLength + v["length"]
@@ -520,24 +521,21 @@ function cacheStep(Song,Step)
 				else
 					if currentBeat > lastBeat then lastBeat = currentBeat end
 				end
-				if currentBeat < firstBeat then firstBeat = currentBeat end
+				if not firstBeat then firstBeat = currentBeat end
 				if stepType[2] == "Bm" then
 					if #noteCounter == 6 or #noteCounter == 12 then
 						if v[2] == #noteCounter or (#noteCounter > 10 and v[2] == #noteCounter/2) then
 							scratches = scratches + 1
-							scratch = true
 						end
 					elseif #noteCounter == 7 or #noteCounter == 14 then
 						if v[2] == #noteCounter or (#noteCounter > 10 and v[2] == #noteCounter/2) then
 							foots = foots + 1
 						elseif v[2] == #noteCounter-1 or (#noteCounter > 10 and v[2] == #noteCounter/2-1) then
 							scratches = scratches + 1
-							scratch = true
 						end
 					elseif #noteCounter == 8 or #noteCounter == 16 then
 						if v[2] == 1 or (#noteCounter > 10 and v[2] == #noteCounter) then
 							scratches = scratches + 1
-							scratch = true
 						end
 					end
 				end
@@ -547,33 +545,48 @@ function cacheStep(Song,Step)
 				--		shockArrows = addToOutput(shockArrows,Step:GetTimingData():GetElapsedTimeFromBeat(v[1]),"_")
 				--	end
 			end
-		end
 
-		local checkBeat = false
+			local checkBeat = false
 
-		if _ < #noteData then
-			if currentBeat < noteData[_+1][1] then
+			if _ < #noteData then
+				if currentBeat < noteData[_+1][1] then
+					checkBeat = true
+				end
+			else
 				checkBeat = true
 			end
-		else
-			checkBeat = true
-		end
 
-		if checkBeat then
-			if currentNotes ~= 0 then
-				noteCounter[currentNotes] = noteCounter[currentNotes] + 1
-				currentSec = timingData:GetElapsedTimeFromBeat(v[1])
-				if lastSec > 0 then
-					currentSPS = 1 / (currentSec - lastSec) * currentNotes
-					if stepsPerSec[currentSPS] then stepsPerSec[currentSPS] = stepsPerSec[currentSPS] + 1 else stepsPerSec[currentSPS] = 1 end
+			if checkBeat then
+				if currentNotes ~= 0 then
+					currentBPM = math.round(timingData:GetBPMAtBeat(v[1]),3)
+					if stops and #stops > 0 then isStop, stops = HasStopAtBeat(v[1],stops) end
+					if delays and #delays > 0 then isDelay, delays = HasDelayAtBeat(v[1],delays) end
+					if currentBPM > maxBPM and not checking and not (isStop or isDelay) then
+						checking = true
+						if currentBPM > checkBPM then checkBPM = currentBPM end
+						checkCount = 0
+					elseif math.abs(1-checkBPM/currentBPM) <= 0.02 and checking and not (isStop or isDelay) then
+						checkCount = checkCount + 1
+						if checkCount > 4 then
+							if currentBPM > checkBPM then checkBPM = currentBPM end
+							if currentBPM > maxBPM then maxBPM = checkBPM end
+						end
+					else
+						checkBPM = 0
+						checking = false
+					end
+
+					noteCounter[currentNotes] = noteCounter[currentNotes] + 1
+					currentSec = timingData:GetElapsedTimeFromBeat(v[1])
+					if lastSec > 0 then
+						local currentSPS = 1 / (currentSec - lastSec) * currentNotes
+						if stepsPerSec[currentSPS] then stepsPerSec[currentSPS] = stepsPerSec[currentSPS] + 1 else stepsPerSec[currentSPS] = 1 end
+					end
 				end
-			end
-			--[[
-			ChaosValue = ChaosValue + ChaosCalc(currentBeat,previousBeat,currentNotes)
-			previousBeat = currentBeat
-			]]--
-			if scratch and currentNotes > 1 then
-				scratch = false
+				--[[
+				ChaosValue = ChaosValue + ChaosCalc(currentBeat,previousBeat,currentNotes)
+				previousBeat = currentBeat
+				]]--
 			end
 		end
 	end
@@ -640,15 +653,130 @@ function cacheStep(Song,Step)
 	end
 end
 
-function LoadFromCache(Song,Step,key)
-	local version = LoadModule("Config.Load.lua")("Version",getStepCacheFile(Step))
-	if not version or version ~= cacheVersion then
-		cacheStep(Song,Step)
-	elseif not LoadModule("Config.Exists.lua")(key,getStepCacheFile(Step)) then
-		cacheStep(Song,Step)
+function cacheStepSM(Song,Step)
+	if Song == nil then Song = SONGMAN:GetSongFromSteps(Step) end
+
+	local stepType = split("_",Step:GetStepsType())
+	local timingData = Step:GetTimingData()
+	local stepsPerSec = {}
+	local noteCounter = {}
+	local firstBeat = nil
+	local lastBeat = 0
+	local lastSec = 0
+	local currentBPM,checkBPM,checkCount,maxBPM = 0,0,0,0
+
+	local stops = timingData:GetStops()
+	local delays = timingData:GetDelays()
+	local warps = timingData:GetWarps()
+
+	for i=1,getColumnsPerPlayer(stepType[2],stepType[3]) do
+		noteCounter[i] = 0
 	end
 
-	return LoadModule("Config.Load.lua")(key,getStepCacheFile(Step))
+	local chart = ParseChartInfo(Step)
+	local beat = 0
+	if chart then
+		chart = split("\n,\n",chart)
+		local currentMeasure = -1
+		for measure in ivalues(chart) do
+			currentMeasure = currentMeasure + 1
+			local rows = split("\n",measure)
+			local currentRow = -1
+			for row in ivalues(rows) do
+				currentRow = currentRow + 1
+				beat = (currentMeasure*4)+(currentRow/#rows*4)
+				local _, count = string.gsub(row, "[L124]", "")
+				if count > 0 then
+					local isStop, isDelay, isWarp = false, false, false
+					currentBPM = math.round(timingData:GetBPMAtBeat(beat),3)
+					if stops and #stops > 0 then isStop,stops = HasStopAtBeat(beat,stops) end
+					if delays and #delays > 0 then isDelay,delays = HasDelayAtBeat(beat,delays) end
+					if warps and #warps > 0 then isWarp,warps = HasWarpsAtBeat(beat,warps) end
+					local isJudgableAtBeat = not isWarp or (isWarp and (isStop or isDelay))
+					if isJudgableAtBeat then
+						if currentBPM > maxBPM and not checking and not (isStop or isDelay) then
+							checking = true
+							if currentBPM > checkBPM then checkBPM = currentBPM end
+							checkCount = 0
+						elseif math.abs(1-checkBPM/currentBPM) <= 0.02 and checking and not (isStop or isDelay) then
+							checkCount = checkCount + 1
+							if checkCount > 4 then
+								if currentBPM > checkBPM then checkBPM = currentBPM end
+								if currentBPM > maxBPM then maxBPM = checkBPM end
+							end
+						else
+							checkBPM = 0
+							checking = false
+						end
+
+						local currentSec = timingData:GetElapsedTimeFromBeat(beat)
+						noteCounter[count] = noteCounter[count] + 1
+						if not firstBeat then firstBeat = beat end
+						lastBeat = beat
+
+						if lastSec > 0 then
+							local currentSPS = 1 / (currentSec - lastSec) * count
+							if stepsPerSec[currentSPS] then stepsPerSec[currentSPS] = stepsPerSec[currentSPS] + 1 else stepsPerSec[currentSPS] = 1 end
+						end
+						lastSec = currentSec
+					end
+				end
+				if string.find(row,"[L1234]") then
+					lastBeat = beat
+				end
+			end
+		end
+
+		local firstSecond = timingData:GetElapsedTimeFromBeat(firstBeat)
+		local lastSecond = timingData:GetElapsedTimeFromBeat(lastBeat)
+		local total = calcSPS(stepsPerSec)
+		local total2 = calcSPS(stepsPerSec,total)
+		local hasLua = HasLua(SongOrCourse,"BGCHANGES") or HasLua(SongOrCourse,"FGCHANGES")
+		local file = getStepCacheFile(Step)
+
+		if getenv("cacheing") then
+			local list = {
+				["Version"] = cacheVersion,
+				["HasLua"] = hasLua and "true" or "false",
+				["StepCounter"] = table.concat(noteCounter,"_"),
+				["StepsPerSecond"] = total2,
+				["TrueBeats"] = lastBeat-firstBeat,
+				["TrueMaxBPM"] = maxBPM,
+				["TrueSeconds"] = lastSecond-firstSecond
+			}
+
+			LoadModuleSM("Config.SaveAll.lua")(list,file)
+		else
+			LoadModuleSM("Config.Save.lua")("Version",cacheVersion,file)
+			LoadModuleSM("Config.Save.lua")("HasLua",hasLua and "true" or "false",file)
+			LoadModuleSM("Config.Save.lua")("StepCounter",table.concat(noteCounter,"_"),file)
+			LoadModuleSM("Config.Save.lua")("StepsPerSecond",total2,file)
+			LoadModuleSM("Config.Save.lua")("TrueBeats",lastBeat-firstBeat,file)
+			LoadModuleSM("Config.Save.lua")("TrueMaxBPM",maxBPM,file)
+			LoadModuleSM("Config.Save.lua")("TrueSeconds",lastSecond-firstSecond,file)
+		end
+	else
+		local file = getStepCacheFile(Step)
+		LoadModuleSM("Config.Save.lua")("Version","0",file)
+	end
+end
+
+function LoadFromCache(Song,Step,key)
+	local version = LoadModule("Config.Load.lua")("Version",getStepCacheFile(Step))
+
+	if version == "0" and not isOutFox() then
+		return nil
+	elseif not version or version ~= cacheVersion then
+		if isOutFox() then cacheStep(Song,Step) else cacheStepSM(Song,Step) end
+	elseif not LoadModule("Config.Exists.lua")(key,getStepCacheFile(Step)) then
+		if isOutFox() then cacheStep(Song,Step) else cacheStepSM(Song,Step) end
+	end
+
+	if isOutFox() then
+		return LoadModule("Config.Load.lua")(key,getStepCacheFile(Step))
+	else
+		return LoadModuleSM("Config.Load.lua")(key,getStepCacheFile(Step))
+	end
 end
 
 --[[
@@ -676,6 +804,7 @@ function LoadFromCache(Song,Step,key)
 	return stepCache[file][key] or LoadModule("Config.Load.lua")(key,file)
 end
 ]]--
+
 function GetMinSecondsToStep()
 	local song = GAMESTATE:GetCurrentSong()
 	local firstSec, firstBeat = 1, 0
