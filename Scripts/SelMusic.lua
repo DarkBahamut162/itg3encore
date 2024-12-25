@@ -340,7 +340,7 @@ function HasWarpAtBeat(beat,warps)
 		if beat < warp[1] then
 			return false, warps
 		elseif warp[1] <= beat and beat < warp[1] + warp[2] then
-			table.remove(delays,1)
+			table.remove(warps,1)
 			return true, warps
 		elseif beat >= warp[1] + warp[2] then
 			table.remove(warps,1)
@@ -691,7 +691,7 @@ function cacheStepSM(Song,Step)
 					currentBPM = math.round(timingData:GetBPMAtBeat(beat),3)
 					if stops and #stops > 0 then isStop,stops = HasStopAtBeat(beat,stops) end
 					if delays and #delays > 0 then isDelay,delays = HasDelayAtBeat(beat,delays) end
-					if warps and #warps > 0 then isWarp,warps = HasWarpsAtBeat(beat,warps) end
+					if warps and #warps > 0 then isWarp,warps = HasWarpAtBeat(beat,warps) end
 					local isJudgableAtBeat = not isWarp or (isWarp and (isStop or isDelay))
 					if isJudgableAtBeat then
 						if currentBPM > maxBPM and not checking and not (isStop or isDelay) then
@@ -731,7 +731,7 @@ function cacheStepSM(Song,Step)
 		local lastSecond = timingData:GetElapsedTimeFromBeat(lastBeat)
 		local total = calcSPS(stepsPerSec)
 		local total2 = calcSPS(stepsPerSec,total)
-		local hasLua = HasLua(SongOrCourse,"BGCHANGES") or HasLua(SongOrCourse,"FGCHANGES")
+		local hasLua = HasLua(Song,"BGCHANGES") or HasLua(Song,"FGCHANGES")
 		local file = getStepCacheFile(Step)
 
 		if getenv("cacheing") then
