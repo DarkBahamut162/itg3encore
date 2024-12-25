@@ -971,9 +971,9 @@ function getAllTheBPMs(song,step,BPMtype)
 
 	local MusicRate = math.round(GAMESTATE:GetSongOptionsObject("ModsLevel_Song"):MusicRate(),1)
 
-	bpms[1]=math.round(bpms[1]*MusicRate)
-	bpms[2]=math.round(bpms[2]*MusicRate)
-	bpms[3]=math.round(bpms[3]*MusicRate)
+	if tonumber(bpms[1]) then bpms[1]=math.round(bpms[1]*MusicRate) end
+	if tonumber(bpms[2]) then bpms[2]=math.round(bpms[2]*MusicRate) end
+	if tonumber(bpms[3]) then bpms[3]=math.round(bpms[3]*MusicRate) end
 
 	return bpms
 end
