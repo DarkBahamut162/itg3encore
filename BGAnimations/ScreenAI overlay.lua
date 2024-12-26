@@ -192,9 +192,13 @@ local function SaveAI()
 			output = addToOutput(output,totalWeightNames[i2].."="..AIini[totalSkillNames[i1]][totalWeightNames[i2]],"\n")
 		end
 	end
-	configfile:Open("Data/AI.ini", 2)
-	configfile:Write(output)
-	configfile:Close()
+	if configfile:Open("Data/AI.ini", 2) then
+		SOUND:PlayOnce(THEME:GetPathS("", "_save"), true)
+		configfile:Write(output)
+		configfile:Close()
+	else
+		SOUND:PlayOnce( THEME:GetPathS( 'MemoryCardManager', "error" ) )
+	end
 	configfile:destroy()
 end
 
@@ -359,7 +363,6 @@ local InputHandler = function(event)
 				elseif currentList == totalWeights + 3 then -- save ai
 					SaveAI()
 					AIiniOLD = DeepCopy(AIini)
-					SOUND:PlayOnce(THEME:GetPathS("", "_save"), true)
 				end
 			elseif editing and not checking then -- change value
 				if currentList <= totalWeights then
