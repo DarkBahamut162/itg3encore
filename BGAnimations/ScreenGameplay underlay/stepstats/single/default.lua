@@ -207,7 +207,7 @@ return Def.ActorFrame{
 					local target = THEME:GetMetric("PlayerStageStats", "GradePercentTier" .. string.format("%02d", 18-getenv("SetPacemaker"..pname(pn))))
 					self:y(-target*barHeight+barHeight/2):valign(0):zoomx(1.25):zoomy(0.5):diffusealpha(0.5):fadeleft(0.25):faderight(0.25):diffuse(color("#FF0000")):diffuseramp():effectcolor1(color("#FF000080")):effectcolor2(color("#FF0000FF")):effectperiod(0.5):effect_hold_at_full(0.5):effectclock('beat')
 				end,
-				JudgmentMessageCommand=function(self,param) if param.Player == pn and topscore ~= nil and self:GetDiffuseAlpha() == 1 then self:queuecommand("Update") end end,
+				JudgmentMessageCommand=function(self,param) if param.Player == pn and self:GetDiffuseAlpha() == 1 then self:queuecommand("Update") end end,
 				UpdateCommand=function(self)
 					local target = THEME:GetMetric("PlayerStageStats", "GradePercentTier" .. string.format("%02d", 18-getenv("SetPacemaker"..pname(pn))))
 					local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn)

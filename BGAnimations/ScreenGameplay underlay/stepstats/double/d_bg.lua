@@ -23,7 +23,7 @@ return Def.ActorFrame{
 			InitCommand=function(self)
 				self:y(-target*268+164):valign(0):zoomx(0.08):zoomy(0.5):diffusealpha(1):fadeleft(0.25):faderight(0.25):diffuse(color("#FF0000")):diffuseramp():effectcolor1(color("#FF000080")):effectcolor2(color("#FF0000FF")):effectperiod(0.5):effect_hold_at_full(0.5):effectclock('beat')
 			end,
-			JudgmentMessageCommand=function(self,param) if param.Player == pn and topscore ~= nil and self:GetDiffuseAlpha() == 1 then self:queuecommand("Update") end end,
+			JudgmentMessageCommand=function(self,param) if param.Player == pn and self:GetDiffuseAlpha() == 1 then self:queuecommand("Update") end end,
 			UpdateCommand=function(self)
 				local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn)
 				local DPCur = pss:GetActualDancePoints()
