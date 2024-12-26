@@ -608,48 +608,53 @@ function cacheStep(Song,Step)
 
 	local file = getStepCacheFile(Step)
 
-	if getenv("cacheing") then
-		local list = {
-			["Version"] = cacheVersion,
-			["HasLua"] = hasLua and "true" or "false",
-			["HasKeys"] = hasKeys and "true" or "false",
-			["HasNullMeasure"] = hasNullMeasure and "true" or "false",
-			["StepCounter"] = table.concat(noteCounter,"_"),
-			["StepsPerSecond"] = total2,
-			["TrueBeats"] = lastBeat-firstBeat,
-			["TrueMaxBPM"] = maxBPM,
-			["TrueSeconds"] = Step:GetTimingData():GetElapsedTimeFromBeat(lastBeat)-Step:GetTimingData():GetElapsedTimeFromBeat(firstBeat)
-		}
+	if firstBeat then
+		if getenv("cacheing") then
+			local list = {
+				["Version"] = cacheVersion,
+				["HasLua"] = hasLua and "true" or "false",
+				["HasKeys"] = hasKeys and "true" or "false",
+				["HasNullMeasure"] = hasNullMeasure and "true" or "false",
+				["StepCounter"] = table.concat(noteCounter,"_"),
+				["StepsPerSecond"] = total2,
+				["TrueBeats"] = lastBeat-firstBeat,
+				["TrueMaxBPM"] = maxBPM,
+				["TrueSeconds"] = Step:GetTimingData():GetElapsedTimeFromBeat(lastBeat)-Step:GetTimingData():GetElapsedTimeFromBeat(firstBeat)
+			}
 
-		--if shockArrows ~= "" then list["ShockArrows"] = shockArrows end
-		if stepType[2] == "Bm" then
-			if #noteCounter == 7 or #noteCounter == 14 then
-				list["Foots"] = foots
+			--if shockArrows ~= "" then list["ShockArrows"] = shockArrows end
+			if stepType[2] == "Bm" then
+				if #noteCounter == 7 or #noteCounter == 14 then
+					list["Foots"] = foots
+				end
+				list["Scratches"] = scratches
 			end
-			list["Scratches"] = scratches
-		end
 
-		LoadModule("Config.SaveAll.lua")(list,file)
+			LoadModule("Config.SaveAll.lua")(list,file)
+		else
+			LoadModule("Config.Save.lua")("Version",cacheVersion,file)
+			LoadModule("Config.Save.lua")("HasLua",hasLua and "true" or "false",file)
+			LoadModule("Config.Save.lua")("HasKeys",hasKeys and "true" or "false",file)
+			LoadModule("Config.Save.lua")("HasNullMeasure",hasNullMeasure and "true" or "false",file)
+			--if shockArrows ~= "" then LoadModule("Config.Save.lua")("ShockArrows",shockArrows,file) end
+			LoadModule("Config.Save.lua")("StepCounter",table.concat(noteCounter,"_"),file)
+			LoadModule("Config.Save.lua")("StepsPerSecond",total2,file)
+			LoadModule("Config.Save.lua")("TrueBeats",lastBeat-firstBeat,file)
+			LoadModule("Config.Save.lua")("TrueMaxBPM",maxBPM,file)
+			LoadModule("Config.Save.lua")("TrueSeconds",Step:GetTimingData():GetElapsedTimeFromBeat(lastBeat)-Step:GetTimingData():GetElapsedTimeFromBeat(firstBeat),file)
+			if stepType[2] == "Bm" then
+				if #noteCounter == 7 or #noteCounter == 14 then
+					LoadModule("Config.Save.lua")("Foots",foots,file)
+				end
+				LoadModule("Config.Save.lua")("Scratches",scratches,file)
+			end
+			--LoadModule("Config.Save.lua")("ChaosValue",ChaosValue,file)
+			--LoadModule("Config.Save.lua")("FreezeLength",FreezeLength,file)
+			--LoadModule("Config.Save.lua")("NoteDensity",NoteDensity,file)
+		end
 	else
-		LoadModule("Config.Save.lua")("Version",cacheVersion,file)
-		LoadModule("Config.Save.lua")("HasLua",hasLua and "true" or "false",file)
-		LoadModule("Config.Save.lua")("HasKeys",hasKeys and "true" or "false",file)
-		LoadModule("Config.Save.lua")("HasNullMeasure",hasNullMeasure and "true" or "false",file)
-		--if shockArrows ~= "" then LoadModule("Config.Save.lua")("ShockArrows",shockArrows,file) end
-		LoadModule("Config.Save.lua")("StepCounter",table.concat(noteCounter,"_"),file)
-		LoadModule("Config.Save.lua")("StepsPerSecond",total2,file)
-		LoadModule("Config.Save.lua")("TrueBeats",lastBeat-firstBeat,file)
-		LoadModule("Config.Save.lua")("TrueMaxBPM",maxBPM,file)
-		LoadModule("Config.Save.lua")("TrueSeconds",Step:GetTimingData():GetElapsedTimeFromBeat(lastBeat)-Step:GetTimingData():GetElapsedTimeFromBeat(firstBeat),file)
-		if stepType[2] == "Bm" then
-			if #noteCounter == 7 or #noteCounter == 14 then
-				LoadModule("Config.Save.lua")("Foots",foots,file)
-			end
-			LoadModule("Config.Save.lua")("Scratches",scratches,file)
-		end
-		--LoadModule("Config.Save.lua")("ChaosValue",ChaosValue,file)
-		--LoadModule("Config.Save.lua")("FreezeLength",FreezeLength,file)
-		--LoadModule("Config.Save.lua")("NoteDensity",NoteDensity,file)
+		local file = getStepCacheFile(Step)
+		LoadModule("Config.Save.lua")("Version","0",file)
 	end
 end
 
@@ -726,45 +731,53 @@ function cacheStepSM(Song,Step)
 				end
 			end
 		end
-
-		local firstSecond = timingData:GetElapsedTimeFromBeat(firstBeat)
-		local lastSecond = timingData:GetElapsedTimeFromBeat(lastBeat)
-		local total = calcSPS(stepsPerSec)
-		local total2 = calcSPS(stepsPerSec,total)
-		local hasLua = HasLua(Song,"BGCHANGES") or HasLua(Song,"FGCHANGES")
-		local file = getStepCacheFile(Step)
-
-		if getenv("cacheing") then
-			local list = {
-				["Version"] = cacheVersion,
-				["HasLua"] = hasLua and "true" or "false",
-				["StepCounter"] = table.concat(noteCounter,"_"),
-				["StepsPerSecond"] = total2,
-				["TrueBeats"] = lastBeat-firstBeat,
-				["TrueMaxBPM"] = maxBPM,
-				["TrueSeconds"] = lastSecond-firstSecond
-			}
-
-			LoadModuleSM("Config.SaveAll.lua")(list,file)
+		if firstBeat then
+			local firstSecond = timingData:GetElapsedTimeFromBeat(firstBeat)
+			local lastSecond = timingData:GetElapsedTimeFromBeat(lastBeat)
+			local total = calcSPS(stepsPerSec)
+			local total2 = calcSPS(stepsPerSec,total)
+			local hasLua = HasLua(Song,"BGCHANGES") or HasLua(Song,"FGCHANGES")
+			local file = getStepCacheFile(Step)
+	
+			if getenv("cacheing") then
+				local list = {
+					["Version"] = cacheVersion,
+					["HasLua"] = hasLua and "true" or "false",
+					["StepCounter"] = table.concat(noteCounter,"_"),
+					["StepsPerSecond"] = total2,
+					["TrueBeats"] = lastBeat-firstBeat,
+					["TrueMaxBPM"] = maxBPM,
+					["TrueSeconds"] = lastSecond-firstSecond
+				}
+	
+				LoadModuleSM("Config.SaveAll.lua")(list,file)
+			else
+				LoadModuleSM("Config.Save.lua")("Version",cacheVersion,file)
+				LoadModuleSM("Config.Save.lua")("HasLua",hasLua and "true" or "false",file)
+				LoadModuleSM("Config.Save.lua")("StepCounter",table.concat(noteCounter,"_"),file)
+				LoadModuleSM("Config.Save.lua")("StepsPerSecond",total2,file)
+				LoadModuleSM("Config.Save.lua")("TrueBeats",lastBeat-firstBeat,file)
+				LoadModuleSM("Config.Save.lua")("TrueMaxBPM",maxBPM,file)
+				LoadModuleSM("Config.Save.lua")("TrueSeconds",lastSecond-firstSecond,file)
+			end
 		else
-			LoadModuleSM("Config.Save.lua")("Version",cacheVersion,file)
-			LoadModuleSM("Config.Save.lua")("HasLua",hasLua and "true" or "false",file)
-			LoadModuleSM("Config.Save.lua")("StepCounter",table.concat(noteCounter,"_"),file)
-			LoadModuleSM("Config.Save.lua")("StepsPerSecond",total2,file)
-			LoadModuleSM("Config.Save.lua")("TrueBeats",lastBeat-firstBeat,file)
-			LoadModuleSM("Config.Save.lua")("TrueMaxBPM",maxBPM,file)
-			LoadModuleSM("Config.Save.lua")("TrueSeconds",lastSecond-firstSecond,file)
+			local file = getStepCacheFile(Step)
+			LoadModuleSM("Config.Save.lua")("Version","0",file)
 		end
 	else
-		local file = getStepCacheFile(Step)
-		LoadModuleSM("Config.Save.lua")("Version","0",file)
+		if isOutFox() then
+			cacheStep(Song,Step)
+		else
+			local file = getStepCacheFile(Step)
+			LoadModuleSM("Config.Save.lua")("Version","0",file)
+		end
 	end
 end
 
 function LoadFromCache(Song,Step,key)
 	local version = isOutFox() and LoadModule("Config.Load.lua")("Version",getStepCacheFile(Step)) or LoadModuleSM("Config.Load.lua")("Version",getStepCacheFile(Step))
 
-	if version == "0" and not isOutFox() then
+	if version == "0" then
 		return nil
 	elseif not version or version ~= cacheVersion then
 		if isOutFox() then cacheStep(Song,Step) else cacheStepSM(Song,Step) end
@@ -1000,7 +1013,7 @@ function getCalculatedDifficulty(Step)
 	--local totalSeconds = isOutFox() and getTrueSeconds(Song,Step)["TrueSeconds"] or (Song:GetLastSecond() - Song:GetFirstSecond())
 	--local stepCounter = isOutFox() and getStepCounter(Song,Step)["StepCounter"] or {}
 	local usesStepCache = ThemePrefs.Get("UseStepCache")
-	local skip = (usesStepCache and not isOutFox()) and LoadFromCache(Song,Step,"Version") == nil or false
+	local skip = usesStepCache and LoadFromCache(Song,Step,"Version") == nil or false
 	if skip then
 		repeatCheck[value] = OG
 		return OG
