@@ -237,15 +237,20 @@ return Def.ActorFrame{
 		end,
 		UpdateCommand=function(self)
 			if not cancel then
+				--local start = GetTimeSinceStart()
 				setenv("cacheing",true)
 				for curStep=1,#stepsToCache do
 					if stepsToCache[curStep] then
 						local cacheFile = getStepCacheFile(stepsToCache[curStep])
-						if isOutFox() then cacheStep(nil,stepsToCache[curStep]) else cacheStepSM(nil,stepsToCache[curStep]) end
+						local song = SONGMAN:GetSongFromSteps(stepsToCache[curStep])
+						local filePath = song:GetSongFilePath()
+						local quick = filePath:sub(-2) == 'sm' or filePath:sub(-3) == 'ssc'
+						if not isOutFox() or (quick and isOutFoxV()) then cacheStepSM(nil,stepsToCache[curStep]) else cacheStep(nil,stepsToCache[curStep]) end
 						cacheFile = nil
 					end
 				end
 				setenv("cacheing",false)
+				--lua.ReportScriptError( "DURATION = "..(GetTimeSinceStart()-start) )
 				stepsToCache = nil
 				checked = true
 				updated = true
