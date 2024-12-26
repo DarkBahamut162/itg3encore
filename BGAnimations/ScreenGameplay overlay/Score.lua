@@ -1,6 +1,7 @@
 local player = ...
 local scoreType = getenv("SetScoreType"..pname(player)) or 2
 local scoreDirection = getenv("SetScoreDirection"..pname(player)) or 1
+local animate = ThemePrefs.Get("AnimatePlayerScore")
 local displayScore = 0
 local maxScore = 0
 local weight = {
@@ -22,7 +23,9 @@ local weight = {
     W4 = 0,
     W5 = 0
 }
-local stopping,stop = false,false
+local stopping,stop = false,true
+local time = GetTimeSinceStart()
+local update = true
 local dif = 1
 
 if scoreType == 1 then dif = 4 elseif scoreType == 2 then dif = 10 elseif scoreType == 3 then dif = 5 end
@@ -32,27 +35,41 @@ for w,v in pairs(weight) do
 end
 
 local function animateScore(currentScore,fakeScore)
-	if scoreDirection == 1 then
-		if currentScore > fakeScore + math.ceil((currentScore - fakeScore) / dif) then
-			displayScore = fakeScore + math.ceil((currentScore - fakeScore) / dif)
-		elseif currentScore <= fakeScore + math.ceil((currentScore - fakeScore) / dif) then
-			if stopping then stop = true end
-			displayScore = currentScore
-		end
+	if not animate then
+		stop = true
+		return currentScore
 	else
-		if currentScore < fakeScore - math.ceil((fakeScore - currentScore) / dif) then
-			displayScore = fakeScore - math.ceil((fakeScore - currentScore) / dif)
-		elseif currentScore <= fakeScore - math.ceil((fakeScore - currentScore) / dif) then
-			if stopping then stop = true end
-			displayScore = currentScore
+		if scoreDirection == 1 then
+			if currentScore > fakeScore + math.ceil((currentScore - fakeScore) / dif) then
+				displayScore = fakeScore + math.ceil((currentScore - fakeScore) / dif)
+			elseif currentScore <= fakeScore + math.ceil((currentScore - fakeScore) / dif) then
+				if stopping then stop = true end
+				displayScore = currentScore
+			end
+		else
+			if currentScore < fakeScore - math.ceil((fakeScore - currentScore) / dif) then
+				displayScore = fakeScore - math.ceil((fakeScore - currentScore) / dif)
+			elseif currentScore <= fakeScore - math.ceil((fakeScore - currentScore) / dif) then
+				if stopping then stop = true end
+				displayScore = currentScore
+			end
 		end
-	end
 
-	return displayScore
+		return displayScore
+	end
 end
 
 local function UpdateScore(self)
-	if not stop and (displayScore > 0 or (isSurvival(player) and GAMESTATE:GetSongPosition():GetMusicSecondsVisible() >= GAMESTATE:GetCurrentSong():GetFirstSecond())) then self:GetChild("Score"..pname(player)):queuecommand("RedrawScore") end
+	if animate then
+		if (GetTimeSinceStart() - time) >= 1/60 then
+			update = true
+			time = GetTimeSinceStart()
+		else
+			update = false
+		end
+	end
+
+	if not stop and update and (displayScore > 0 or (isSurvival(player) and GAMESTATE:GetSongPosition():GetMusicSecondsVisible() >= GAMESTATE:GetCurrentSong():GetFirstSecond())) then self:GetChild("Score"..pname(player)):queuecommand("RedrawScore") end
 end
 
 return Def.ActorFrame{
@@ -101,6 +118,7 @@ return Def.ActorFrame{
 			if IsGame("pump") then self:addy(10) if GAMESTATE:GetNumPlayersEnabled() == 1 and getenv("Rotation"..pname(player)) == 5 then self:CenterX() end end
 		end,
 		JudgmentMessageCommand=function(self,param)
+			if stop then stop = false end
 			local short = ToEnumShortString(param.HoldNoteScore and param.HoldNoteScore or param.TapNoteScore)
 			local update = weight[short] and weight[short] ~= 0
 			if param.Player == player and update then self:stoptweening():queuecommand("RedrawScore") end
@@ -144,7 +162,7 @@ return Def.ActorFrame{
 				self:settextf("%04d",output) -- EX
 				self:ClearAttributes()
 				self:AddAttribute(0, {
-					Length = math.max(4-string.len(''..output), 0),
+					Length = math.max(output >= 0 and 4-string.len(''..output) or 0, 0),
 					Diffuse = PlayerColorSemi(player),
 				})
 			end

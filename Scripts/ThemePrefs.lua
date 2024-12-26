@@ -3,6 +3,11 @@ local function OptionNameString(str)
 end
 
 local Prefs = {
+	AnimatePlayerScore = {
+		Default = false,
+		Choices = { OptionNameString('Off'), OptionNameString('On') },
+		Values = { false, true }
+	},
 	AnimateSongTitle = {
 		Default = false,
 		Choices = { OptionNameString('Off'), OptionNameString('On') },
