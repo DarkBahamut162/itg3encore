@@ -1000,8 +1000,13 @@ function getCalculatedDifficulty(Step)
 	--local totalSeconds = isOutFox() and getTrueSeconds(Song,Step)["TrueSeconds"] or (Song:GetLastSecond() - Song:GetFirstSecond())
 	--local stepCounter = isOutFox() and getStepCounter(Song,Step)["StepCounter"] or {}
 	local usesStepCache = ThemePrefs.Get("UseStepCache")
+	local skip = (usesStepCache and not isOutFox()) and LoadFromCache(Song,Step,"Version") == nil or false
+	if skip then
+		repeatCheck[value] = OG
+		return OG
+	end
 	local totalSeconds = usesStepCache and tonumber(LoadFromCache(Song,Step,"TrueSeconds")) or (Song:GetLastSecond() - Song:GetFirstSecond())
-	local stepCounter = usesStepCache and split("_",LoadFromCache(Song,Step,"StepCounter")) or {}
+	local stepCounter = usesStepCache and split("_",LoadFromCache(Song,Step,"StepCounter") or "") or {}
 	local stepType = split("_",Step:GetStepsType())
 	local stepSum = isOutFox() and 0 or math.round(Step:GetRadarValues(GAMESTATE:GetMasterPlayerNumber()):GetValue('RadarCategory_TapsAndHolds') / totalSeconds * getColumnsPerPlayer(stepType[2],stepType[3],true) / 2)
 
