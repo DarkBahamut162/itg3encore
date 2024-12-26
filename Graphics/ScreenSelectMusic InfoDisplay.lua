@@ -2,6 +2,7 @@ local enableRounds = ThemePrefs.Get("ShowRounds")
 local enableLua = ThemePrefs.Get("ShowHasLua")
 local courseMode = GAMESTATE:IsCourseMode()
 local eventMode = GAMESTATE:IsEventMode()
+local usesStepCache = ThemePrefs.Get("UseStepCache")
 
 return Def.ActorFrame{
 	Def.BitmapText {
@@ -43,7 +44,7 @@ return Def.ActorFrame{
 							self:stopeffect()
 						end
 					end
-					if isOutFox() and (IsGame("po-mu") or IsGame("be-mu")) then
+					if usesStepCache and (IsGame("po-mu") or IsGame("be-mu")) then
 						if not step then step = GAMESTATE:GetCurrentSteps(GAMESTATE:GetMasterPlayerNumber()) end
 						if step and not tobool(LoadFromCache(SongOrCourse,step,"HasKeys")) then
 							output = addToOutput(output,"NO KEYSOUNDS"," & ")
@@ -58,7 +59,7 @@ return Def.ActorFrame{
 						output = addToOutput(output,"VIDEO"," & ")
 					end
 					if enableLua then
-						if isOutFox() then
+						if usesStepCache then
 							if not step then step = GAMESTATE:GetCurrentSteps(GAMESTATE:GetMasterPlayerNumber()) end
 							if step and tobool(LoadFromCache(SongOrCourse,step,"HasLua")) then
 								self:rainbow():effectclock(EC ~= "" and "beat" or "timerglobal")

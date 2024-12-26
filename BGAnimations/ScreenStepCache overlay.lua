@@ -3,6 +3,7 @@ local updated = false
 local cancel = false
 local toBeCachedTotal = 0
 local alreadyCachedTotal = 0
+local unableToBeCachedTotal = 0
 local cachedWrongVersionTotal = 0
 local errorTotal = 0
 local total = 0
@@ -178,8 +179,10 @@ return Def.ActorFrame{
 										stepsToCache[#stepsToCache+1] = steps[curStep]
 										toBeCachedTotal = toBeCachedTotal + 1
 									else
-										local version = LoadModule("Config.Load.lua")("Version",cacheFile)
-										if not version or version ~= currentCacheVersion then
+										local version = isOutFox() and LoadModule("Config.Load.lua")("Version",cacheFile) or LoadModuleSM("Config.Load.lua")("Version",cacheFile)
+										if version == "0" then
+											unableToBeCachedTotal = unableToBeCachedTotal + 1
+										elseif not version or version ~= currentCacheVersion then
 											stepsToCache[#stepsToCache+1] = steps[curStep]
 											alreadyCachedTotal = alreadyCachedTotal + 1
 											cachedWrongVersionTotal = cachedWrongVersionTotal + 1
@@ -238,7 +241,7 @@ return Def.ActorFrame{
 				for curStep=1,#stepsToCache do
 					if stepsToCache[curStep] then
 						local cacheFile = getStepCacheFile(stepsToCache[curStep])
-						cacheStep(nil,stepsToCache[curStep])
+						if isOutFox() then cacheStep(nil,stepsToCache[curStep]) else cacheStepSM(nil,stepsToCache[curStep]) end
 						cacheFile = nil
 					end
 				end

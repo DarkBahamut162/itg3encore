@@ -9,7 +9,7 @@ return Def.ActorFrame{
 		File = "_r bold 30px",
 		InitCommand=function(self) self:y(isFinal() and 72 or 73.5):zoom(isFinal() and 0.4 or 0.333):shadowlength(1):maxwidth(SCREEN_CENTER_X*1.6) end,
 		SetCommand=function(self)
-			if ThemePrefs.Get("ShowStepCounter") and not courseMode then
+			if ThemePrefs.Get("ShowStepCounter") and ThemePrefs.Get("UseStepCache") and not courseMode then
 				local SongOrCourse = courseMode and GAMESTATE:GetCurrentCourse() or GAMESTATE:GetCurrentSong()
 				local StepsOrTrail = courseMode and GAMESTATE:GetCurrentTrail(player) or GAMESTATE:GetCurrentSteps(player)
 				local output = ""

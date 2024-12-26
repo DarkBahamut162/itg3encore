@@ -25,7 +25,7 @@ local Prefs = {
 	},
 	DanceDifficultyType = {
 		Default = true,
-		Choices = { "Old", "X-Scale" },
+		Choices = { "Old", "New" },
 		Values = { false, true }
 	},
 	ShowClock = {
@@ -54,6 +54,11 @@ local Prefs = {
 		Values = { false, true }
 	},
 	SLFavorites = {
+		Default = false,
+		Choices = { OptionNameString('Off'), OptionNameString('On') },
+		Values = { false, true }
+	},
+	UseStepCache = {
 		Default = false,
 		Choices = { OptionNameString('Off'), OptionNameString('On') },
 		Values = { false, true }

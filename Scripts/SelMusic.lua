@@ -762,13 +762,11 @@ function cacheStepSM(Song,Step)
 end
 
 function LoadFromCache(Song,Step,key)
-	local version = LoadModule("Config.Load.lua")("Version",getStepCacheFile(Step))
+	local version = isOutFox() and LoadModule("Config.Load.lua")("Version",getStepCacheFile(Step)) or LoadModuleSM("Config.Load.lua")("Version",getStepCacheFile(Step))
 
 	if version == "0" and not isOutFox() then
 		return nil
 	elseif not version or version ~= cacheVersion then
-		if isOutFox() then cacheStep(Song,Step) else cacheStepSM(Song,Step) end
-	elseif not LoadModule("Config.Exists.lua")(key,getStepCacheFile(Step)) then
 		if isOutFox() then cacheStep(Song,Step) else cacheStepSM(Song,Step) end
 	end
 
@@ -959,9 +957,10 @@ function getAllTheBPMs(song,step,BPMtype)
 		bpms = step:GetTimingData():GetActualBPM()
 		bpms[3] = 0
 	elseif BPMtype == 2 then
-		local trueBPM = isOutFox() and tonumber(LoadFromCache(song,step,"TrueMaxBPM")) or 0
+		local usesStepCache = ThemePrefs.Get("UseStepCache")
+		local trueBPM = usesStepCache and tonumber(LoadFromCache(song,step,"TrueMaxBPM")) or -1
 		--local trueBPM = isOutFox() and getTrueMaxBPM(song,step) or 0
-		if isOutFox() and trueBPM > 0 then
+		if usesStepCache and trueBPM >= 0 then
 			bpms = step:GetTimingData():GetActualBPM()
 			bpms[3]=trueBPM
 		else
@@ -1000,8 +999,9 @@ function getCalculatedDifficulty(Step)
 	local Song = SONGMAN:GetSongFromSteps(Step)
 	--local totalSeconds = isOutFox() and getTrueSeconds(Song,Step)["TrueSeconds"] or (Song:GetLastSecond() - Song:GetFirstSecond())
 	--local stepCounter = isOutFox() and getStepCounter(Song,Step)["StepCounter"] or {}
-	local totalSeconds = isOutFox() and tonumber(LoadFromCache(Song,Step,"TrueSeconds")) or (Song:GetLastSecond() - Song:GetFirstSecond())
-	local stepCounter = isOutFox() and split("_",LoadFromCache(Song,Step,"StepCounter")) or {}
+	local usesStepCache = ThemePrefs.Get("UseStepCache")
+	local totalSeconds = usesStepCache and tonumber(LoadFromCache(Song,Step,"TrueSeconds")) or (Song:GetLastSecond() - Song:GetFirstSecond())
+	local stepCounter = usesStepCache and split("_",LoadFromCache(Song,Step,"StepCounter")) or {}
 	local stepType = split("_",Step:GetStepsType())
 	local stepSum = isOutFox() and 0 or math.round(Step:GetRadarValues(GAMESTATE:GetMasterPlayerNumber()):GetValue('RadarCategory_TapsAndHolds') / totalSeconds * getColumnsPerPlayer(stepType[2],stepType[3],true) / 2)
 
@@ -1011,7 +1011,7 @@ function getCalculatedDifficulty(Step)
 		stepSum = math.round(Step:GetRadarValues(GAMESTATE:GetMasterPlayerNumber()):GetValue('RadarCategory_TapsAndHolds') / totalSeconds * getColumnsPerPlayer(stepType[2],stepType[3],true) / 2)
 	end
 
-	if isOutFox() then
+	if usesStepCache then
 		for i=1,#stepCounter do if stepCounter[i] then stepSum = stepSum + (stepCounter[i] * i) end end
 		if IsGame("be-mu") or IsGame("beat") then
 			stepSum = stepSum / totalSeconds
@@ -1034,12 +1034,12 @@ function getCalculatedDifficulty(Step)
 
 	if IsGame("be-mu") or IsGame("beat") then
 		YA = GetConvertDifficulty(Song,Step,totalSeconds) / 2
-		if isOutFox() then SPS = tonumber(LoadFromCache(Song,Step,"StepsPerSecond")) / 2 end
-		--if isOutFox() then SPS = getSPS(Song,Step) / 2 end
+		if usesStepCache then SPS = tonumber(LoadFromCache(Song,Step,"StepsPerSecond")) / 2 end
+		--if usesStepCache then SPS = getSPS(Song,Step) / 2 end
 	else
 		if not IsGame("pump") then YA = GetConvertDifficulty(Song,Step,totalSeconds) * (getColumnsPerPlayer(stepType[2],stepType[3],true) / 4) * ddrtype end
-		if isOutFox() then SPS = tonumber(LoadFromCache(Song,Step,"StepsPerSecond")) * (getColumnsPerPlayer(stepType[2],stepType[3],true) / 4) * ddrtype end
-		--if isOutFox() then SPS = getSPS(Song,Step) * (getColumnsPerPlayer(stepType[2],stepType[3],true) / 4) * ddrtype end
+		if usesStepCache then SPS = tonumber(LoadFromCache(Song,Step,"StepsPerSecond")) * (getColumnsPerPlayer(stepType[2],stepType[3],true) / 4) * ddrtype end
+		--if usesStepCache then SPS = getSPS(Song,Step) * (getColumnsPerPlayer(stepType[2],stepType[3],true) / 4) * ddrtype end
 	end
 
 	local output = {}
@@ -1072,8 +1072,9 @@ function grooveRadar(song,step,RadarValues)
 		--local trueValues = isOutFox() and getTrueSeconds(song,step) or {}
 		--local totalSeconds = isOutFox() and trueValues["TrueSeconds"] or (song:GetLastSecond() - song:GetFirstSecond())
 		--local totalBeats = isOutFox() and trueValues["TrueBeats"] or (song:GetLastBeat() - song:GetFirstBeat())
-		local totalSeconds = isOutFox() and tonumber(LoadFromCache(song,step,"TrueSeconds")) or (song:GetLastSecond() - song:GetFirstSecond())
-		local totalBeats = (isOutFox() and tonumber(LoadFromCache(song,step,"TrueBeats")) or (song:GetLastBeat() - song:GetFirstBeat()))
+		local usesStepCache = ThemePrefs.Get("UseStepCache")
+		local totalSeconds = usesStepCache and tonumber(LoadFromCache(song,step,"TrueSeconds")) or song:GetLastSecond() - song:GetFirstSecond()
+		local totalBeats = usesStepCache and tonumber(LoadFromCache(song,step,"TrueBeats")) or song:GetLastBeat() - song:GetFirstBeat()
 		local avg_bps_OLD = song:GetLastBeat() / song:MusicLengthSeconds()
 		local avg_bps_NEW = totalBeats / totalSeconds
 
