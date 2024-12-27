@@ -114,25 +114,21 @@ function GetSongFolderName(song)
 end
 
 function HasLua(song,changes)
-	local var = GetSMParameter(song,changes)
-	local parameter, current
-	if var ~= "" then
-		parameter = split(",",var)
-		if parameter ~= "" then
-			for i=1,#parameter do
-				parameter[i] = split("=",parameter[i])
-				if #parameter[i] >= 2 then
-					current = parameter[i][2]
-					if current ~= "" then
-						if string.find(current,".lua",0,true) then
-							return true
-						elseif string.find(current,".",0,true) then else
-							local groupName = song:GetGroupName()
-							local songFolder = isOutFox() and song:GetSongFolder() or GetSongFolderName(song)
-							local checkFolder = FILEMAN:GetDirListing("/Songs/"..groupName.."/"..songFolder.."/"..current.."/")
-							for insideFiles in ivalues( checkFolder ) do
-								if string.find(insideFiles,".lua",0,true) then return true end
-							end
+	local parameter = GetSMParameter(song,changes)
+	if parameter ~= "" then
+		parameter = split(",",parameter)
+		for i=1,#parameter do
+			parameter[i] = split("=",parameter[i])
+			for current in ivalues({2,7}) do
+				if parameter[i][current] then
+					if string.find(parameter[i][current],".lua",0,true) then
+						return true
+					elseif string.find(parameter[i][current],".",0,true) then else
+						local groupName = song:GetGroupName()
+						local songFolder = isOutFox() and song:GetSongFolder() or GetSongFolderName(song)
+						local checkFolder = FILEMAN:GetDirListing("/Songs/"..groupName.."/"..songFolder.."/"..parameter[i][current].."/")
+						for insideFiles in ivalues( checkFolder ) do
+							if string.find(insideFiles,".lua",0,true) then return true end
 						end
 					end
 				end
@@ -143,20 +139,16 @@ function HasLua(song,changes)
 end
 
 function HasVideo(song,changes)
-	local var = GetSMParameter(song,changes)
-	local parameter, current
-	if var ~= "" then
-		parameter = split(",",var)
-		if parameter ~= "" then
-			for i=1,#parameter do
-				parameter[i] = split("=",parameter[i])
-				if #parameter[i] >= 2 then
-					current = parameter[i][2]
-					if current ~= "" then
-						for typ in ivalues(typeList) do
-							if string.find(current,typ,0,true) then
-								return true
-							end
+	local parameter = GetSMParameter(song,changes)
+	if parameter ~= "" then
+		parameter = split(",",parameter)
+		for i=1,#parameter do
+			parameter[i] = split("=",parameter[i])
+			for current in ivalues({2,7}) do
+				if parameter[i][current] then
+					for typ in ivalues(typeList) do
+						if string.find(parameter[i][current],typ,0,true) then
+							return true
 						end
 					end
 				end
