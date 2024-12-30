@@ -1,6 +1,8 @@
 local numPlayers = GAMESTATE:GetNumPlayersEnabled()
 local statObject = "single"
 
+if isTopScreen('ScreenJukebox') then return Def.ActorFrame{} end
+
 if numPlayers == 1 then
 	local style = GAMESTATE:GetCurrentStyle()
 	if style:GetStyleType() == 'StyleType_OnePlayerTwoSides' or
