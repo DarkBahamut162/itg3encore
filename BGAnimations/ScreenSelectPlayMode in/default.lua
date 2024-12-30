@@ -1,7 +1,5 @@
-if GAMESTATE:GetCoinMode()=='CoinMode_Free' then
-    if PREFSMAN:GetPreference("ShowCaution") then
-        return Def.ActorFrame{ loadfile(THEME:GetPathB("_menu","in"))() }
-    end
+if GAMESTATE:GetCoinMode()=='CoinMode_Home' then
+    return Def.ActorFrame{ loadfile(THEME:GetPathB("_fade in","normal"))() }
 end
 
-return Def.ActorFrame{ loadfile(THEME:GetPathB("_fade in","normal"))() }
+return Def.ActorFrame{ loadfile(THEME:GetPathB("_menu","in"))() }
