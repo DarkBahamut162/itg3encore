@@ -20,6 +20,8 @@ local tmpDelta = 0
 local speedMod = 1
 local Si = 1
 
+local songoptions = GAMESTATE:GetSongOptionsObject("ModsLevel_Song")
+
 local function setStops(steps)
 	Si = 1
 	Stops = {}
@@ -48,14 +50,14 @@ local function Update(self, delta)
 				if isOutFox() and playeroptions:AMod() then speedMod = ((bpm1+bpm2)*0.5)/playeroptions:AMod()*Stops[Si]["BPM"] end
 				if isOutFox() and playeroptions:CAMod() then speedMod = ((bpm1+bpm2)*0.5)/playeroptions:CAMod()*Stops[Si]["BPM"] end
 				if isOutFox() and playeroptions:AVMod() then speedMod = ((bpm1+bpm2)*0.5)/playeroptions:AVMod()*Stops[Si]["BPM"] end
-				c.Stop:stoptweening():diffusealpha(1):zoomtoheight(Stops[Si]["Length"]*speedMod*currentMini):linear(Stops[Si]["Length"]):zoomtoheight(0):linear(0.1):diffusealpha(0)
+				c.Stop:stoptweening():diffusealpha(1):zoomtoheight(Stops[Si]["Length"]*speedMod*currentMini):linear(Stops[Si]["Length"]/songoptions:MusicRate()):zoomtoheight(0):linear(0.1):diffusealpha(0)
 				Si = Si + 1
 			end
 		end
 	end
 end
 
-local PY = GAMESTATE:GetPlayerState(player):GetPlayerOptions('ModsLevel_Preferred'):UsingReverse() and THEME:GetMetric("Player","ReceptorArrowsYReverse") or THEME:GetMetric("Player","ReceptorArrowsYStandard")
+local PY = GAMESTATE:GetPlayerState(player):GetPlayerOptions('ModsLevel_Song'):UsingReverse() and THEME:GetMetric("Player","ReceptorArrowsYReverse") or THEME:GetMetric("Player","ReceptorArrowsYStandard")
 local adjust = isOutFox() and 47-(47 * WideScreenDiff()) or 0
 
 if GAMESTATE:GetNumPlayersEnabled() == 1 then
@@ -80,7 +82,7 @@ return Def.ActorFrame{
 	Def.Quad{
 		Name="Stop",
 		OnCommand=function(self)
-			self:y(PY-adjust):valign(0):zoomtowidth(filterWidth-8*widthZoom):zoomtoheight(0):diffusecolor(Color.White):blend(Blend.Add)
+			self:y(PY-adjust):valign(GAMESTATE:GetPlayerState(player):GetPlayerOptions('ModsLevel_Song'):UsingReverse() and 1 or 0):zoomtowidth(filterWidth-8*widthZoom):zoomtoheight(0):diffusecolor(Color.White):blend(Blend.Add)
 		end
 	}
 }
