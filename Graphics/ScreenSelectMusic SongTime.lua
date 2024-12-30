@@ -60,7 +60,7 @@ return Def.ActorFrame{
 				end
 			end
 
-			local MusicRate = math.round(GAMESTATE:GetSongOptionsObject("ModsLevel_Song"):MusicRate(),1)
+			local MusicRate = math.round(GAMESTATE:GetSongOptionsObject("ModsLevel_Preferred"):MusicRate(),1)
 
 			for i=1,#length do
 				if length[i] < 0 then length[i] = 0.001 else length[i] = math.round(length[i],3) end
