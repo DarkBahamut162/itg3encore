@@ -409,7 +409,7 @@ return Def.ActorFrame{
 	},
 	Def.BitmapText {
 		File = "ScreenOptions serial number",
-		Condition=isOutFox(),
+		Condition=ThemePrefs.Get("UseStepCache"),
 		InitCommand=function(self) self:x(SCREEN_LEFT+25*WideScreenDiff()):y(isFinal() and SCREEN_BOTTOM-66*WideScreenDiff() or SCREEN_BOTTOM-58*WideScreenDiff()):shadowlength(2):horizalign(left):maxwidth(SCREEN_WIDTH/5*3/WideScreenDiff()):zoom(0.5*WideScreenDiff()) end,
 		OnCommand=function(self) self:diffusealpha(0):sleep(0.5):linear(0.5):diffusealpha(1):playcommand("Refresh") end,
 		ScreenChangedMessageCommand=function(self) self:playcommand("Refresh") end,
