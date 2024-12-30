@@ -75,23 +75,6 @@ local function MinimizeChart(chartString)
 	return table.concat(finalChartData, '\n')
 end
 
-local function NormalizeFloatDigits(param)
-	local function NormalizeDecimal(decimal)
-		decimal = decimal:gsub("%c", "")
-		local rounded = tonumber(decimal)
-		local mult = 10^3
-		rounded = (rounded * mult + 0.5 - (rounded * mult + 0.5) % 1) / mult
-		return string.format("%.3f", rounded)
-	end
-
-	local paramParts = {}
-	for beat_bpm in param:gmatch('[^,]+') do
-		local beat, bpm = beat_bpm:match('(.+)=(.+)')
-		table.insert(paramParts, NormalizeDecimal(beat) .. '=' .. NormalizeDecimal(bpm))
-	end
-	return table.concat(paramParts, ',')
-end
-
 local function MixedCaseRegex(str)
 	local t = {}
 	for c in str:gmatch(".") do
@@ -179,7 +162,7 @@ local function GetSimfileChartString(SimfileString, StepsType, Difficulty, Steps
 	return NoteDataString
 end
 
-function ParseChartInfo(steps)
+function SMParser(steps)
 	local stepsType = ToEnumShortString( steps:GetStepsType() ):gsub("_", "-"):lower()
 	local difficulty = ToEnumShortString( steps:GetDifficulty() )
 	local description = steps:GetDescription()

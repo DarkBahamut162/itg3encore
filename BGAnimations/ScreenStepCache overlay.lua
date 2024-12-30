@@ -244,8 +244,13 @@ return Def.ActorFrame{
 						local cacheFile = getStepCacheFile(stepsToCache[curStep])
 						local song = SONGMAN:GetSongFromSteps(stepsToCache[curStep])
 						local filePath = song:GetSongFilePath()
-						local quick = filePath:sub(-2) == 'sm' or filePath:sub(-3) == 'ssc'
-						if not isOutFox() or (quick and isOutFoxV()) then cacheStepSM(nil,stepsToCache[curStep]) else cacheStep(nil,stepsToCache[curStep]) end
+						local quickSM = filePath:sub(-2):sub(1,1) == 's'	-- [S]M & S[S]C
+						local quickBMS = filePath:sub(-3):sub(2,2) == 'm'	-- B[M]S & B[M]E & B[M]L & P[M]S
+						local quickPMS = filePath:sub(-3) == 'pms'
+						if not isOutFox() or ((quickSM or quickPMS) and isOutFoxV()) then
+						--if not isOutFox() then
+							if quickSM then cacheStepSM(song,stepsToCache[curStep]) else cacheStepBMS(song,stepsToCache[curStep]) end
+						else cacheStep(song,stepsToCache[curStep]) end
 						cacheFile = nil
 					end
 				end

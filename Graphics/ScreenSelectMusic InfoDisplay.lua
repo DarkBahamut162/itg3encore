@@ -44,13 +44,13 @@ return Def.ActorFrame{
 							self:stopeffect()
 						end
 					end
-					if usesStepCache and (IsGame("po-mu") or IsGame("be-mu")) then
+					if IsGame("po-mu") or IsGame("be-mu") then
 						if not step then step = GAMESTATE:GetCurrentSteps(GAMESTATE:GetMasterPlayerNumber()) end
-						if step and not tobool(LoadFromCache(SongOrCourse,step,"HasKeys")) then
+						if step and not HasKeysounds(step) then
 							output = addToOutput(output,"NO KEYSOUNDS"," & ")
 							self:diffuse(Color("Red"))
 						end
-						if step and tobool(LoadFromCache(SongOrCourse,step,"HasNullMeasure")) then
+						if step and not isOutFoxV043() and CheckNullMeasure(step) then
 							output = addToOutput(output,"NULL MEASURE"," & ")
 							self:diffuse(Color("Red"))
 						end
@@ -59,17 +59,9 @@ return Def.ActorFrame{
 						output = addToOutput(output,"VIDEO"," & ")
 					end
 					if enableLua then
-						if usesStepCache then
-							if not step then step = GAMESTATE:GetCurrentSteps(GAMESTATE:GetMasterPlayerNumber()) end
-							if step and tobool(LoadFromCache(SongOrCourse,step,"HasLua")) then
-								self:rainbow():effectclock(EC ~= "" and "beat" or "timerglobal")
-								output = addToOutput(output,"LUA"," & ")
-							end
-						else
-							if HasLuaCheck() then
-								self:rainbow():effectclock(EC ~= "" and "beat" or "timerglobal")
-								output = addToOutput(output,"LUA"," & ")
-							end
+						if HasLuaCheck() then
+							self:rainbow():effectclock(EC ~= "" and "beat" or "timerglobal")
+							output = addToOutput(output,"LUA"," & ")
 						end
 					end
 					if SongOrCourse:HasLyrics() then
