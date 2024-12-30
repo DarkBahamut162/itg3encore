@@ -4,9 +4,8 @@ local songsPerPlay = PREFSMAN:GetPreference("SongsPerPlay")
 if curStage:gsub("%D+", "") == songsPerPlay then curStage = 'Stage_Final' end
 if GAMESTATE:IsEventMode() then curStage = 'Stage_Event' end
 if IsNetSMOnline() then curStage = 'Stage_Online' end
-if curStage:gsub("%D+", "") ~= "" then curStage = curStage:gsub("%D+", "") else curStage = ToEnumShortString(curStage) end
 
-if isOni() then
+if isOni() or GAMESTATE:IsAnExtraStage() then
 	for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
 		local noteskin = GAMESTATE:GetPlayerState(pn):GetPlayerOptions("ModsLevel_Preferred"):NoteSkin()
 		GAMESTATE:ApplyGameCommand('mod,'..noteskin,pn)
@@ -171,12 +170,12 @@ return Def.ActorFrame{
 			Name="Main",
 			InitCommand=function(self) self:y(SCREEN_CENTER_Y+60*WideScreenDiff()):zoom(WideScreenDiff()) end,
 			Def.Sprite {
-				Texture = THEME:GetPathG("_gameplay","stage "..curStage),
+				Texture = THEME:GetPathG("_gameplay","stage "..ToEnumShortString(curStage)),
 				InitCommand=function(self) self:cropright(1.3) end,
 				OnCommand=function(self) self:sleep(0.22):linear(1):cropright(-0.3) end
 			},
 			Def.Sprite {
-				Texture = THEME:GetPathG("_white","gameplay stage "..curStage),
+				Texture = THEME:GetPathG("_white","gameplay stage "..ToEnumShortString(curStage)),
 				InitCommand=function(self) self:cropleft(-0.3):cropright(1):faderight(0.1):fadeleft(0.1) end,
 				OnCommand=function(self) self:sleep(0.22):linear(1):cropleft(1):cropright(-0.3) end
 			}
@@ -185,7 +184,7 @@ return Def.ActorFrame{
 			Name="Reflect",
 			InitCommand=function(self) self:y(SCREEN_CENTER_Y+86*WideScreenDiff()) end,
 			Def.Sprite {
-				Texture = THEME:GetPathG("_gameplay","stage "..curStage),
+				Texture = THEME:GetPathG("_gameplay","stage "..ToEnumShortString(curStage)),
 				InitCommand=function(self) self:rotationz(180):zoomx(-1*WideScreenDiff()):diffusealpha(0.6):fadetop(2):cropright(1.3) end,
 				OnCommand=function(self) self:linear(1.225):cropright(-0.3) end
 			}

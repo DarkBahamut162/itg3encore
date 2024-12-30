@@ -9,18 +9,11 @@ return Def.ActorFrame{
 				end
 			else
 				local songsPerPlay = PREFSMAN:GetPreference("SongsPerPlay")
-				if curStage:gsub("%D+", "") == songsPerPlay then
-					curStage = 'Stage_Final'
-				end
+				if curStage:gsub("%D+", "") == songsPerPlay then curStage = 'Stage_Final' end
 				if GAMESTATE:IsEventMode() then curStage = 'Stage_Event' end
 				if IsNetSMOnline() then curStage = 'Stage_Online' end
 
-				if curStage:gsub("%D+", "") ~= "" then
-					curStage = curStage:gsub("%D+", "")
-				else
-					curStage = ToEnumShortString(curStage)
-				end
-				self:Load(THEME:GetPathG("_gameplay","stage "..curStage))
+				self:Load(THEME:GetPathG("_gameplay","stage "..ToEnumShortString(curStage)))
 			end
 		end
 	},
