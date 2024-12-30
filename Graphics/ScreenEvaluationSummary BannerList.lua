@@ -33,7 +33,7 @@ for i=1,#statList do
 	local j = #statList - (i-1)
 	as[#as+1] = Def.ActorFrame {
 		Def.Sprite {
-			InitCommand=function(self) self:scaletoclipped(176,70):ztest(true):cropright(1.3):faderight(0.1):sleep(3):linear(0.7):cropright(-0.3) end,
+			InitCommand=function(self) self:scaletoclipped((isFinal() and 170 or 174)*WideScreenDiff(),(isFinal() and 64 or 68)*WideScreenDiff()):ztest(true):cropright(1.3):faderight(0.1):sleep(3):linear(0.7):cropright(-0.3) end,
 			OnCommand=function(self)
 				local path = statList[j]:GetPlayedSongs()[1]:GetBannerPath() or THEME:GetPathG("Common","fallback banner")
 				self:LoadBanner(path)
