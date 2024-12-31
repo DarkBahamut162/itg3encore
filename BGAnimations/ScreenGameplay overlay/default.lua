@@ -107,7 +107,7 @@ local t = Def.ActorFrame{
 			Condition=GAMESTATE:IsPlayerEnabled(PLAYER_1) and modify,
 			Name="MOD1",
 			InitCommand=function(self) self:shadowlength(1):zoom(0.4*WideScreenDiff()):x(THEME:GetMetric("ScreenGameplay","ScoreP1X")):y(THEME:GetMetric("ScreenGameplay","ScoreP1Y")-15*WideScreenDiff()) end,
-			OnCommand=function(self) self:settext(CURRENT[PLAYER_1] and "SPEED: " .. (CURRENT[PLAYER_1] / (MOD[PLAYER_1] == "x" and 100 or 1))..MOD[PLAYER_1] or "") end,
+			OnCommand=function(self) self:settext(CURRENT[PLAYER_1] and "SPEED: " .. (CURRENT[PLAYER_1] / (MOD[PLAYER_1] == "x" and 100 or 1))..MOD[PLAYER_1] or "") if GetSongFrame() == "_piupro" then self:addy(33*WideScreenDiff()) end end,
 			BlockCommand=function(self)
 				self:stoptweening():diffuse(color("1,0,0,1")):diffusealpha(1):settext("This MOD can't be changed while GamePlay"):sleep(1):linear(0.25):diffusealpha(0):queuecommand("TrueChange"):diffuse(color("1,1,1,1"))
 			end,
@@ -126,7 +126,7 @@ local t = Def.ActorFrame{
 			Name="MOD2",
 			Text=CURRENT[PLAYER_2] or "?",
 			InitCommand=function(self) self:shadowlength(1):zoom(0.4*WideScreenDiff()):x(THEME:GetMetric("ScreenGameplay","ScoreP2X")):y(THEME:GetMetric("ScreenGameplay","ScoreP2Y")-15*WideScreenDiff()) end,
-			OnCommand=function(self) self:settext(CURRENT[PLAYER_2] and "SPEED: " .. (CURRENT[PLAYER_2] / (MOD[PLAYER_2] == "x" and 100 or 1))..MOD[PLAYER_2] or "") end,
+			OnCommand=function(self) self:settext(CURRENT[PLAYER_2] and "SPEED: " .. (CURRENT[PLAYER_2] / (MOD[PLAYER_2] == "x" and 100 or 1))..MOD[PLAYER_2] or "") if GetSongFrame() == "_piupro" then self:addy(33*WideScreenDiff()) end end,
 			BlockCommand=function(self)
 				self:stoptweening():diffuse(color("1,0,0,1")):diffusealpha(1):settext("This MOD can't be changed while GamePlay"):sleep(1):linear(0.25):diffusealpha(0):queuecommand("TrueChange"):diffuse(color("1,1,1,1"))
 			end,
@@ -142,6 +142,7 @@ local t = Def.ActorFrame{
 	},
 	loadfile(THEME:GetPathB("ScreenGameplay","overlay/"..GetSongFrame()))(),
 	Def.ActorFrame{
+		Condition=GetSongFrame() ~= "_piupro",
 		Name="RaveNames",
 		InitCommand=function(self) self:CenterX():y(SCREEN_TOP+69*WideScreenDiff()):visible(isVS()) end,
 		OnCommand=function(self) self:addy(-100):sleep(0.5):decelerate(0.8):addy(100) end,

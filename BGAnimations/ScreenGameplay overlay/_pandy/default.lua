@@ -34,7 +34,7 @@ return Def.ActorFrame{
 			InitCommand=function(self) self:SetStreamWidth(292) end,
 			Stream=Def.Sprite {
 				Texture = "meter stream"
-			}
+			},
 			Tip=Def.Sprite {
 				Texture = "tip",
 				OnCommand=function(self) self:zoom(0):sleep(1.8):zoom(1):diffuseshift():effectcolor1(color("1,1,1,1")):effectcolor2(color("1,1,1,0.5")):effectclock("beat"):effectperiod(4) end
@@ -126,13 +126,13 @@ return Def.ActorFrame{
 		Def.ActorFrame{
 			TitleSongFade:Create()..{
 				InitCommand=function(self) self:CenterX():y(SCREEN_TOP+24*WideScreenDiff()):zoom(0.5*WideScreenDiff()) end,
-				OnCommand=function(self) self:zoom(0.5*WideScreenDiff()):shadowlength(2*WideScreenDiff()):zoomy(0):sleep(2):decelerate(0.3):zoomy(0.45*WideScreenDiff()) end,
+				OnCommand=function(self) self:zoom(0.5*WideScreenDiff()):shadowlength(2*WideScreenDiff()):zoomy(0):hibernate(2):decelerate(0.3):zoomy(0.45*WideScreenDiff()) end,
 			}
 		},
 		Def.BitmapText {
 			File = "_r bold 30px",
 			InitCommand=function(self) self:visible(not animate):CenterX():y(SCREEN_TOP+24*WideScreenDiff()):maxwidth(573):diffusebottomedge(color("#dedede")) end,
-			OnCommand=function(self) self:zoom(0.5*WideScreenDiff()):shadowlength(2*WideScreenDiff()):zoomy(0):sleep(2):decelerate(0.3):zoomy(0.45*WideScreenDiff()):animate(0):playcommand("Update") end,
+			OnCommand=function(self) self:zoom(0.5*WideScreenDiff()):shadowlength(2*WideScreenDiff()):zoomy(0):hibernate(2):decelerate(0.3):zoomy(0.45*WideScreenDiff()):animate(0):playcommand("Update") end,
 			CurrentSongChangedMessageCommand=function(self) self:playcommand("Update") end,
 			UpdateCommand=function(self)
 				local text = ""
@@ -160,7 +160,7 @@ return Def.ActorFrame{
 			TweenOffCommand=function(self) self:accelerate(0.8):addx(-SCREEN_WIDTH/2) end,
 			Def.Sprite {
 				Texture = "_difficulty icons",
-				InitCommand=function(self) self:pause():playcommand("Update") end,
+				OnCommand=function(self) self:pause():playcommand("Update") end,
 				UpdateCommand=function(self)
 					local StepsOrTrail = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentTrail(PLAYER_1) or GAMESTATE:GetCurrentSteps(PLAYER_1)
 					if StepsOrTrail then
@@ -185,7 +185,7 @@ return Def.ActorFrame{
 			TweenOffCommand=function(self) self:accelerate(0.8):addx(SCREEN_WIDTH/2) end,
 			Def.Sprite {
 				Texture = "_difficulty icons",
-				InitCommand=function(self) self:pause():zoomx(-1*WideScreenDiff()):playcommand("Update") end,
+				OnCommand=function(self) self:pause():zoomx(-1):playcommand("Update") end,
 				UpdateCommand=function(self)
 					local StepsOrTrail = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentTrail(PLAYER_2) or GAMESTATE:GetCurrentSteps(PLAYER_2)
 					if StepsOrTrail then

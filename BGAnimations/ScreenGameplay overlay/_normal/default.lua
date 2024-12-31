@@ -123,13 +123,13 @@ return Def.ActorFrame{
 			Def.ActorFrame{
 				TitleSongFade:Create()..{
 					InitCommand=function(self) self:CenterX():y(SCREEN_TOP+24*WideScreenDiff()):zoom(0.5*WideScreenDiff()) end,
-					OnCommand=function(self) self:zoom(0.5*WideScreenDiff()):shadowlength(2*WideScreenDiff()):zoomy(0):sleep(2):decelerate(0.3):zoomy(0.45*WideScreenDiff()) end,
+					OnCommand=function(self) self:zoom(0.5*WideScreenDiff()):shadowlength(2*WideScreenDiff()):zoomy(0):hibernate(2):decelerate(0.3):zoomy(0.45*WideScreenDiff()) end,
 				}
 			},
 			Def.BitmapText {
 				File = "_r bold 30px",
 				InitCommand=function(self) self:visible(not animate):CenterX():y(SCREEN_TOP+24*WideScreenDiff()):maxwidth(573):diffusebottomedge(color("#dedede")) end,
-				OnCommand=function(self) self:zoom(0.5*WideScreenDiff()):shadowlength(2*WideScreenDiff()):zoomy(0):sleep(2):decelerate(0.3):zoomy(0.45*WideScreenDiff()):animate(0):playcommand("Update") end,
+				OnCommand=function(self) self:zoom(0.5*WideScreenDiff()):shadowlength(2*WideScreenDiff()):zoomy(0):hibernate(2):decelerate(0.3):zoomy(0.45*WideScreenDiff()):animate(0):playcommand("Update") end,
 				CurrentSongChangedMessageCommand=function(self) self:playcommand("Update") end,
 				UpdateCommand=function(self)
 					local text = ""
@@ -187,25 +187,11 @@ return Def.ActorFrame{
 			TweenOffCommand=function(self) self:accelerate(0.8):addx(-SCREEN_WIDTH/2) end,
 			Def.Sprite {
 				Texture = THEME:GetPathG("_difficulty icons",isFinal() and "final" or "normal"),
-				InitCommand=function(self) self:pause():playcommand("Update") end,
-				CurrentSongChangedMessageCommand=function(self) self:playcommand("Update") end,
+				OnCommand=function(self) self:pause():playcommand("Update") end,
 				UpdateCommand=function(self)
-					local steps = GAMESTATE:GetCurrentSteps(PLAYER_1)
-					if GAMESTATE:IsCourseMode() then
-						local trail = GAMESTATE:GetCurrentTrail(PLAYER_1)
-						if trail then
-							local entries = trail:GetTrailEntries()
-							if entries then
-								local entry = entries[GAMESTATE:GetCourseSongIndex()+1]
-								if entry then
-									steps = entry:GetSteps()
-								end
-							end
-						end
-					end
-					if steps then
-						self:visible(true)
-						self:setstate(DifficultyToState(steps:GetDifficulty()))
+					local StepsOrTrail = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentTrail(PLAYER_1) or GAMESTATE:GetCurrentSteps(PLAYER_1)
+					if StepsOrTrail then
+						self:visible(true):setstate(DifficultyToState(StepsOrTrail:GetDifficulty()))
 					else
 						self:visible(false)
 					end
@@ -226,25 +212,11 @@ return Def.ActorFrame{
 			TweenOffCommand=function(self) self:accelerate(0.8):addx(SCREEN_WIDTH/2) end,
 			Def.Sprite {
 				Texture = THEME:GetPathG("_difficulty icons",isFinal() and "final" or "normal"),
-				InitCommand=function(self) self:pause():zoomx(-1):playcommand("Update") end,
-				CurrentSongChangedMessageCommand=function(self) self:playcommand("Update") end,
+				OnCommand=function(self) self:pause():zoomx(-1):playcommand("Update") end,
 				UpdateCommand=function(self)
-					local steps = GAMESTATE:GetCurrentSteps(PLAYER_2)
-					if GAMESTATE:IsCourseMode() then
-						local trail = GAMESTATE:GetCurrentTrail(PLAYER_2)
-						if trail then
-							local entries = trail:GetTrailEntries()
-							if entries then
-								local entry = entries[GAMESTATE:GetCourseSongIndex()+1]
-								if entry then
-									steps = entry:GetSteps()
-								end
-							end
-						end
-					end
-					if steps then
-						self:visible(true)
-						self:setstate(DifficultyToState(steps:GetDifficulty()))
+					local StepsOrTrail = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentTrail(PLAYER_2) or GAMESTATE:GetCurrentSteps(PLAYER_2)
+					if StepsOrTrail then
+						self:visible(true):setstate(DifficultyToState(StepsOrTrail:GetDifficulty()))
 					else
 						self:visible(false)
 					end

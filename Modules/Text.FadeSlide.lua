@@ -11,7 +11,8 @@ local commands = {
 		this.Text = newStr,
 		this.ActorFrame:playcommand("UpdateText",{Text=newStr})
 	end,
-    Create = function(this)
+    Create = function(this,newWidth)
+        if newWidth then this.Width = newWidth end
         local t = Def.ActorFrame{
             InitCommand=function(self) this.ActorFrame = self end,
             UpdateTextCommand=function(self,params)
@@ -21,7 +22,7 @@ local commands = {
                     ctn.Second:settext(params.Text):visible(true)
 					this.SpeedFactor = (string.len( params.Text )+64) / 2.75
                     local widthCheck = ctn.Main:GetWidth() > this.Width
-					xPosNow = widthCheck and (this.Width)/4 or (this.Width+ctn.Main:GetWidth())/4-32
+					xPosNow = widthCheck and (this.Width)/4 or (this.Width+ctn.Main:GetWidth())/4
 					ctn.Second:x(ctn.Main:GetWidth()+this.Width)
                 end
             end

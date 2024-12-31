@@ -1,7 +1,7 @@
 local showDanger = PREFSMAN:GetPreference("ShowDanger")
 
 local function SingleLifeMeter()
-	return GAMESTATE:GetNumPlayersEnabled() == 1 and isDouble()
+	return GAMESTATE:GetNumPlayersEnabled() == 1 and isDouble() or isVS()
 end
 
 local MaxGauntletLivesToShow = SingleLifeMeter() and 60 or 30
@@ -42,14 +42,14 @@ if IsRoutine() then
 	for pn in ivalues(PlayerNumber) do IsDisplayedPlayer[pn] = false end
 	IsDisplayedPlayer[GAMESTATE:GetMasterPlayerNumber()] = true
 else
-	for pn in ivalues(PlayerNumber) do IsDisplayedPlayer[pn] = GAMESTATE:IsHumanPlayer(pn) end
+	for pn in ivalues(PlayerNumber) do IsDisplayedPlayer[pn] = GAMESTATE:IsPlayerEnabled(pn) end
 end
 
 local LifeMeterX = (SCREEN_WIDTH - LifeMeterTotalWidth())/2
 
 local MeterX = {
-	[PLAYER_1] = SCREEN_LEFT+LifeMeterX+90,
-	[PLAYER_2] = SCREEN_RIGHT-LifeMeterX-90
+	[PLAYER_1] = SCREEN_LEFT+LifeMeterX+89,
+	[PLAYER_2] = SCREEN_RIGHT-LifeMeterX-89
 }
 
 local function LoadLifeMeterFramePart(f)
@@ -155,20 +155,22 @@ local function MakeLifeMeter(side)
 
 	local meter
 	local function Update(self)
-		if not meter then return end
+		local original_life = meter and meter:GetLife() or STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):GetCurrentLife()
+		local life
+		if meter then
+			if meter.GetTotalLives then
+				local max_lives = meter:GetTotalLives()
+				local cur_lives = meter:GetLivesLeft()
 
-		local original_life = meter:GetLife()
-
-		if meter.GetTotalLives then
-			local max_lives = meter:GetTotalLives()
-			local cur_lives = meter:GetLivesLeft()
-
-			max_lives = math.min(max_lives, MaxGauntletLivesToShow)
-			cur_lives = math.min(cur_lives, MaxGauntletLivesToShow)
-			original_life = cur_lives / max_lives
+				max_lives = math.min(max_lives, MaxGauntletLivesToShow)
+				cur_lives = math.min(cur_lives, MaxGauntletLivesToShow)
+				original_life = cur_lives / max_lives
+			end
+		else
+			if original_life == 0 then original_life = 0.5 end 
 		end
 
-		local life = original_life
+		life = original_life
 
 		if c.TweenHelper:GetTweenTimeLeft() ~= 0 then life = c.TweenHelper:getaux() end
 
@@ -205,7 +207,7 @@ local function MakeLifeMeter(side)
 			local fVisible = scale( life, 0.95, 1.00, 1, 0 )
 			c.Tip:basealpha(fVisible)
 
-			if not isMGD(pn) then
+			if not isMGD(pn) and not isVS() then
 				local fPulse = scale( fBeatFract, 0.0, 0.25, 0, fPulseDistance )
 				fPulse = clamp( fPulse, 0, fPulseDistance )
 				if c.TweenHelper:GetTweenTimeLeft() ~= 0 then fPulse = fPulseDistance end
@@ -223,7 +225,7 @@ local function MakeLifeMeter(side)
 			c.Hex:cropright(1-(FadePos+0.65))
 		end
 
-		if showDanger then
+		if showDanger and not isVS() then
 			local DangerAlpha = scale( original_life, 0.1, 0.25, 0.8, 0 )
 			c.Danger:stoptweening()
 			local OldDangerAlpha = c.Danger:GetDiffuseAlpha()
@@ -243,7 +245,7 @@ local function MakeLifeMeter(side)
 	local f = Def.ActorFrame {
 		Def.Quad { Name = "HexMask" },
 		Def.Sprite { Texture = "meter tip", Name = "Tip" },
-		Def.Sprite { Texture = "meter grad", Name = "Grad" },
+		Def.Sprite { Texture = "meter grad", Name = "Grad", OnCommand=function(self) if not meter then self:diffuse(PlayerColor(pn)) end end },
 		Def.Sprite { Texture = "meter danger", Condition = showDanger , Name = "Danger" },
 		Def.Sprite { Texture = "meter honeycomb", Name = "Hex" },
 		loadfile(THEME:GetPathB("ScreenGameplay","overlay/_piupro/life meter ticks"))(TicksWidth) .. { Name = "Tick" },
@@ -277,7 +279,7 @@ local function MakeLifeMeter(side)
 		local f=function(self) self:zoomx(side == PLAYER_1 and 1 or -1):ztest(true):halign(0):x(MeterX[side]) end
 
 		f(c.Grad)
-		if showDanger then f(c.Danger) end
+		if showDanger and not isVS() then f(c.Danger) end
 		f(c.Tick)
 		f(c.Filled)
 		f(c.FilledHex)
@@ -290,7 +292,7 @@ local function MakeLifeMeter(side)
 		if not IsDisplayedPlayer[pn] then return end
 
 		meter = SCREENMAN:GetTopScreen():GetLifeMeter(pn)
-		if meter.GetTotalLives then
+		if meter and meter.GetTotalLives then
 			local lives = meter:GetTotalLives()
 			lives = math.min(lives, MaxGauntletLivesToShow)
 			SetNumberOfSegments(lives)
@@ -344,7 +346,7 @@ local function MakeLifeMeter(side)
 		c.TweenHelper:aux(0.0)
 		c.TweenHelper:sleep(2.0)
 		c.TweenHelper:decelerate(0.3)
-		c.TweenHelper:aux(meter:GetLife())
+		c.TweenHelper:aux(meter and meter:GetLife() or STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):GetCurrentLife())
 		c.HexTweenHelper:effectperiod(4)
 	end
 
@@ -464,7 +466,7 @@ local function MakeStageCreditIcons(pn)
 
 	for i = 1,Total do
 		local function Lit()
-			if not GAMESTATE:IsHumanPlayer(pn) then return false end
+			if not GAMESTATE:IsPlayerEnabled(pn) then return false end
 			local IconsToLight
 			if GAMESTATE:IsCourseMode() then
 				IconsToLight = GAMESTATE:GetLoadingCourseSongIndex() + 1

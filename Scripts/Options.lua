@@ -239,6 +239,8 @@ function SongMods()
 		options = addToOutput(options,"28,S,20,"..add.."P,29,21"..add2,",")
 	end
 
+	if #GAMESTATE:GetHumanPlayers() == 1 and not (IsGame("pump") or GAMESTATE:IsCourseMode()) then options = addToOutput(options,"31",",") end
+
 	options = addToOutput(options,"16",",")
 	return options
 end
@@ -389,6 +391,7 @@ function InitPlayerOptions()
 		setenv("ShowMods"..pname(pn),LoadUserPrefB(pn, "ShowMods", false))
 		setenv("ShowSpeedAssist"..pname(pn),LoadUserPrefB(pn, "ShowSpeedAssist", false))
 		setenv("ShowStopAssist"..pname(pn),LoadUserPrefB(pn, "ShowStopAssist", false))
+		setenv("SongFrame"..pname(pn),LoadUserPref(pn, "SongFrame", "_normal"))
 	end
 
 end
@@ -754,6 +757,41 @@ function OptionOrientationRestricted()
 			for i, choice in ipairs(self.Choices) do
 				if list[i] then
 					setenv("Rotation"..pname(pn),SaveUserPref(pn, "Rotation", (i-1)*4+1))
+				end
+			end
+		end
+	}
+	setmetatable(t, t)
+	return t
+end
+
+function OptionSongFrame()
+	local t = {
+		Name = "SongFrame",
+		LayoutType = "ShowAllInRow",
+		SelectType = "SelectOne",
+		OneChoiceForAllPlayers = false,
+		ExportOnChange = false,
+		Values = { "_bunnies", "_disconnect", "_energy", "_hasse", "_love", "_nightmare", "_normal", "_pandy", "_piupro", "_smiley", "_vertex", "_virtual" },
+		Choices = { "Bunnies", "Disconnect", "Energy", "Hasse", "Love", "Nightmare", "Normal", "Pandy", "PIUPro", "Smiley", "Vertex", "Virtual" },
+		LoadSelections = function(self, list, pn)
+			list[1] = getenv("SongFrame"..pname(pn)) == "_bunnies"
+			list[2] = getenv("SongFrame"..pname(pn)) == "_disconnect"
+			list[3] = getenv("SongFrame"..pname(pn)) == "_energy"
+			list[4] = getenv("SongFrame"..pname(pn)) == "_hasse"
+			list[5] = getenv("SongFrame"..pname(pn)) == "_love"
+			list[6] = getenv("SongFrame"..pname(pn)) == "_nightmare"
+			list[7] = getenv("SongFrame"..pname(pn)) == "_normal"
+			list[8] = getenv("SongFrame"..pname(pn)) == "_pandy"
+			list[9] = getenv("SongFrame"..pname(pn)) == "_piupro"
+			list[10] = getenv("SongFrame"..pname(pn)) == "_smiley"
+			list[11] = getenv("SongFrame"..pname(pn)) == "_vertex"
+			list[12] = getenv("SongFrame"..pname(pn)) == "_virtual"
+		end,
+		SaveSelections = function(self, list, pn)
+			for i, choice in ipairs(self.Choices) do
+				if list[i] then
+					setenv("SongFrame"..pname(pn),SaveUserPref(pn, "SongFrame", self.Values[i]))
 				end
 			end
 		end

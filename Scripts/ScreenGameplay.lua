@@ -48,6 +48,8 @@ function GetSongFrame()
 		frame = "_love"
 	elseif string.find(songTitle,"Disconnected Hardkore") then
 		frame = "_disconnect"
+	elseif #GAMESTATE:GetHumanPlayers() == 1 and getenv("SongFrame"..pname(GAMESTATE:GetMasterPlayerNumber())) then
+		frame = getenv("SongFrame"..pname(GAMESTATE:GetMasterPlayerNumber()))
 	else
 		frame = "_normal"
 	end
