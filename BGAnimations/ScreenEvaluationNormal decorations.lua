@@ -109,9 +109,15 @@ local function GraphDisplay(pn)
 	local lastMarvelousSecond = lastMarvelousSecond * fix
 
 	return Def.ActorFrame {
-		Def.Quad{
-			Condition=not isOutFox() and isVS(),
-			OnCommand=function(self) self:valign(1):zoomto(194,SCREEN_WIDTH):MaskSource(true):y(-34) end
+		Def.ActorFrame {
+			Def.Quad{
+				Condition=not isOutFox() and isVS(),
+				OnCommand=function(self) self:valign(0):zoomto(194,SCREEN_WIDTH):MaskSource(false):y(34) end
+			},
+			Def.Quad{
+				Condition=not isOutFox() and isVS(),
+				OnCommand=function(self) self:valign(1):zoomto(194,SCREEN_WIDTH):MaskSource(false):y(-34) end
+			}
 		},
 		Def.GraphDisplay {
 			InitCommand=function(self) self:Load("GraphDisplay"..pname(pn)) end,
