@@ -75,6 +75,55 @@ local function UpdateGraph()
     return stepsPerSecList
 end
 
+local function UpdateGraphSM()
+    lastSec = 0
+    lastBeat = 0
+    local Step = GAMESTATE:GetCurrentSteps(pn)
+	local timingData = Step:GetTimingData()
+	local stepsPerSecList = {}
+
+	local stops = timingData:GetStops()
+	local delays = timingData:GetDelays()
+	local warps = timingData:GetWarps()
+	local chart = SMParser(Step)
+    
+	local beat = 0
+	if chart then
+		chart = split("\n,\n",chart)
+		local currentMeasure = -1
+		for measure in ivalues(chart) do
+			currentMeasure = currentMeasure + 1
+			local rows = split("\n",measure)
+			local currentRow = -1
+			for row in ivalues(rows) do
+				currentRow = currentRow + 1
+				beat = (currentMeasure*4)+(currentRow/#rows*4)
+				local _, count = string.gsub(row, "[L124]", "")
+				if count > 0 then
+                    if rowLimit then count = 1 end
+					local isStop, isDelay, isWarp = false, false, false
+					if stops and #stops > 0 then isStop,stops = HasStopAtBeat(beat,stops) end
+					if delays and #delays > 0 then isDelay,delays = HasDelayAtBeat(beat,delays) end
+					if warps and #warps > 0 then isWarp,warps = HasWarpAtBeat(beat,warps) end
+					local isJudgableAtBeat = not isWarp or (isWarp and (isStop or isDelay))
+					if isJudgableAtBeat then
+                        local currentSec = math.ceil(timingData:GetElapsedTimeFromBeat(beat))
+                        stepsPerSecList[currentSec] = stepsPerSecList[currentSec] and stepsPerSecList[currentSec] + count or count
+					end
+				end
+				if lastBeat ~= beat and string.find(row,"[L1234]") then
+					lastBeat = beat
+				end
+			end
+		end
+        for i=1,math.ceil(timingData:GetElapsedTimeFromBeat(lastBeat)) do
+            if not stepsPerSecList[i] then stepsPerSecList[i] = 0 end
+        end
+        lastSec = timingData:GetElapsedTimeFromBeat(lastBeat)
+    end
+    return stepsPerSecList
+end
+
 local function UpdateGraphAlt()
     lastSec = 0
     lastBeat = 0
@@ -126,6 +175,58 @@ local function UpdateGraphAlt()
         lastSec = timingData:GetElapsedTimeFromBeat(lastBeat)
     end
 
+    return stepsPerSecList
+end
+
+local function UpdateGraphAltSM()
+    lastSec = 0
+    lastBeat = 0
+    local Step = GAMESTATE:GetCurrentSteps(pn)
+	local timingData = Step:GetTimingData()
+	local stepsPerSecList = {}
+
+	local stops = timingData:GetStops()
+	local delays = timingData:GetDelays()
+	local warps = timingData:GetWarps()
+	local chart = SMParser(Step)
+    local previousSec = nil
+    
+	local beat = 0
+	if chart then
+		chart = split("\n,\n",chart)
+		local currentMeasure = -1
+		for measure in ivalues(chart) do
+			currentMeasure = currentMeasure + 1
+			local rows = split("\n",measure)
+			local currentRow = -1
+			for row in ivalues(rows) do
+				currentRow = currentRow + 1
+				beat = (currentMeasure*4)+(currentRow/#rows*4)
+				local _, count = string.gsub(row, "[L124]", "")
+				if count > 0 then
+					local isStop, isDelay, isWarp = false, false, false
+					if stops and #stops > 0 then isStop,stops = HasStopAtBeat(beat,stops) end
+					if delays and #delays > 0 then isDelay,delays = HasDelayAtBeat(beat,delays) end
+					if warps and #warps > 0 then isWarp,warps = HasWarpAtBeat(beat,warps) end
+					local isJudgableAtBeat = not isWarp or (isWarp and (isStop or isDelay))
+					if isJudgableAtBeat then
+                        local currentSec = math.round(timingData:GetElapsedTimeFromBeat(beat),3)
+                        if previousSec then
+                            stepsPerSecList[currentSec] = 1/(currentSec-previousSec) * count
+                        end
+                        previousSec = currentSec
+					end
+				end
+				if lastBeat ~= beat and string.find(row,"[L1234]") then
+					lastBeat = beat
+				end
+			end
+		end
+        for i=1,math.ceil(timingData:GetElapsedTimeFromBeat(lastBeat)) do
+            if not stepsPerSecList[i] then stepsPerSecList[i] = 0 end
+        end
+        lastSec = timingData:GetElapsedTimeFromBeat(lastBeat)
+    end
     return stepsPerSecList
 end
 
@@ -281,7 +382,7 @@ return Def.ActorFrame{
         Def.ActorMultiVertex{
             DoneLoadingNextSongMessageCommand=function(self) self:playcommand("Init") end,
             InitCommand=function(self)
-                local vertices = showNoteGraph == 4 and GetVerticesAlt(UpdateGraphAlt()) or GetVertices(UpdateGraph())
+                local vertices = showNoteGraph == 4 and GetVerticesAlt(isOutFox() and UpdateGraphAlt() or UpdateGraphAltSM()) or GetVertices(isOutFox() and UpdateGraph() or UpdateGraphSM())
                 self:SetDrawState({Mode = 'DrawMode_Quads'})
                 self:SetVertices(1, vertices)
                 self:SetNumVertices(#vertices)
@@ -294,7 +395,7 @@ return Def.ActorFrame{
         Def.ActorMultiVertex{
             DoneLoadingNextSongMessageCommand=function(self) self:playcommand("Init") end,
             InitCommand=function(self)
-                local update = showNoteGraph == 4 and UpdateGraphAlt() or UpdateGraph()
+                local update = showNoteGraph == 4 and (isOutFox() and UpdateGraphAlt() or UpdateGraphAltSM()) or (isOutFox() and UpdateGraph() or UpdateGraphSM())
                 for i,value in pairs( update ) do update[i] = math.max(0,(update[i]-20)/4) end
                 local vertices = showNoteGraph == 4 and GetVerticesAlt(update) or GetVertices(update)
                 self:SetDrawState({Mode = 'DrawMode_Quads'})

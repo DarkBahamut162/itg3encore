@@ -188,7 +188,7 @@ end
 function SongMods()
 	local add,add2 = "",isOutFoxV() and ",27" or ""
 
-	if isOutFox() and not isOni() then
+	if not isOni() then
 		add = (GAMESTATE:GetNumPlayersEnabled() == 1 and not isDouble()) and "20S,20G," or "20G,"
 	else
 		add = (GAMESTATE:GetNumPlayersEnabled() == 1 and not isDouble()) and "20S," or ""

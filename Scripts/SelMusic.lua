@@ -332,7 +332,6 @@ function HasWarpAtBeat(beat,warps)
 		if beat < warp[1] then
 			return false, warps
 		elseif warp[1] <= beat and beat < warp[1] + warp[2] then
-			table.remove(warps,1)
 			return true, warps
 		elseif beat >= warp[1] + warp[2] then
 			table.remove(warps,1)
