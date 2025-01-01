@@ -113,7 +113,15 @@ return Def.ActorFrame{
 					self:y(SCREEN_TOP+51*WideScreenDiff())
 				end
 			else
-				self:y(SCREEN_TOP+61*WideScreenDiff())
+				if IsGame("pump") then
+					if getenv("Rotation"..pname(player)) == 5 then
+						self:y(SCREEN_TOP+61*WideScreenDiff())
+					else
+						self:y(SCREEN_TOP+51*WideScreenDiff())
+					end
+				else
+					self:y(SCREEN_TOP+61*WideScreenDiff())
+				end
 			end
 			if IsGame("pump") then self:addy(10) if GAMESTATE:GetNumPlayersEnabled() == 1 and getenv("Rotation"..pname(player)) == 5 then self:CenterX() end end
 		end,

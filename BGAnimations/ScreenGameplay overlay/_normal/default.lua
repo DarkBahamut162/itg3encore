@@ -15,16 +15,19 @@ local totalDelta = 0
 local tmpDelta = 0
 local c, ani
 local P1,P2
+local screen
 
 local function Update(self, delta)
 	totalDelta = totalDelta + delta
 	if totalDelta - tmpDelta > 1.0/60 then
 		tmpDelta = totalDelta
 		if P1 and P2 then
-			if SCREENMAN:GetTopScreen():GetTrueBPS(PLAYER_1) ~= SCREENMAN:GetTopScreen():GetTrueBPS(PLAYER_2) and not ani then
+			P1 = string.format("%03.0f",screen:GetTrueBPS(PLAYER_1)*60)
+			P2 = string.format("%03.0f",screen:GetTrueBPS(PLAYER_2)*60)
+			if P1 ~= P2 and not ani then
 				ani = true
 				c.BPMFrame:linear(0.125):zoomx(2):x(-SCREEN_CENTER_X)
-			elseif SCREENMAN:GetTopScreen():GetTrueBPS(PLAYER_1) == SCREENMAN:GetTopScreen():GetTrueBPS(PLAYER_2) and ani then
+			elseif P1 == P2 and ani then
 				ani = false
 				c.BPMFrame:linear(0.125):zoomx(1):x(0)
 			end
@@ -35,6 +38,7 @@ end
 return Def.ActorFrame{
 	OnCommand = function(self)
 		if GAMESTATE:GetNumPlayersEnabled() > 1 then
+			screen = SCREENMAN:GetTopScreen()
 			P1 = GAMESTATE:GetCurrentSteps(PLAYER_1)
 			P2 = GAMESTATE:GetCurrentSteps(PLAYER_2)
 			if P1:GetTimingData() ~= P2:GetTimingData() then

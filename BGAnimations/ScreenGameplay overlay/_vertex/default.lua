@@ -20,9 +20,43 @@ if title == "VerTex" then vertexOn = true vertexColor = color("0,1,0,1") end
 if title == "VerTex²" or title == "VerTex^2" or title == "VerTex2" or title == "VV" then vertexOn = true vertexColor = color("1,0,0,1") end
 if title == "VerTex³" or title == "VerTex^3" or title == "VerTex3" or title == "VVV" then vertexOn = true vertexColor = color("1,0,1,1") end
 
+local totalDelta = 0
+local tmpDelta = 0
+local c, ani
+local P1,P2
+local screen
+
+local function Update(self, delta)
+	totalDelta = totalDelta + delta
+	if totalDelta - tmpDelta > 1.0/60 then
+		tmpDelta = totalDelta
+		if P1 and P2 then
+			P1 = string.format("%03.0f",screen:GetTrueBPS(PLAYER_1)*60)
+			P2 = string.format("%03.0f",screen:GetTrueBPS(PLAYER_2)*60)
+			if P1 ~= P2 and not ani then
+				ani = true
+				c.BPMFrame:linear(0.125):zoomx(2):x(-SCREEN_CENTER_X)
+			elseif P1 == P2 and ani then
+				ani = false
+				c.BPMFrame:linear(0.125):zoomx(1):x(0)
+			end
+		end
+	end
+end
+
 return Def.ActorFrame{
+	OnCommand = function(self)
+		if GAMESTATE:GetNumPlayersEnabled() > 1 then
+			screen = SCREENMAN:GetTopScreen()
+			P1 = GAMESTATE:GetCurrentSteps(PLAYER_1)
+			P2 = GAMESTATE:GetCurrentSteps(PLAYER_2)
+			if P1:GetTimingData() ~= P2:GetTimingData() then
+				self:SetUpdateFunction(Update)
+			end
+		end
+	end,
 	Def.ActorFrame{
-		InitCommand=function(self) self:CenterX():y(SCREEN_TOP+22):zoom(WideScreenDiff()):addy(-100) end,
+		InitCommand=function(self) self:CenterX():y(SCREEN_TOP+22*WideScreenDiff()):zoom(WideScreenDiff()):addy(-100) end,
 		OnCommand=function(self) self:sleep(0.5):queuecommand("TweenOn") end,
 		OffCommand=function(self) self:queuecommand("TweenOff") end,
 		ShowGameplayTopFrameMessageCommand=function(self) self:playcommand("TweenOn") end,
@@ -34,7 +68,7 @@ return Def.ActorFrame{
 		}
 	},
 	Def.ActorFrame{
-		InitCommand=function(self) self:CenterX():y(SCREEN_TOP-2+27):zoom(WideScreenDiff()):addy(-100) end,
+		InitCommand=function(self) self:CenterX():y(SCREEN_TOP+25*WideScreenDiff()):zoom(WideScreenDiff()):addy(-100) end,
 		OnCommand=function(self) self:sleep(0.5):queuecommand("TweenOn") end,
 		OffCommand=function(self) self:queuecommand("TweenOff") end,
 		TweenOnCommand=function(self) self:decelerate(0.8):addy(100) end,
@@ -60,96 +94,103 @@ return Def.ActorFrame{
 		}
 	},
 	Def.ActorFrame{
+		InitCommand=function(self) c = self:GetChildren() end,
 		OnCommand=function(self) self:addy(-100):sleep(0.5):queuecommand("TweenOn") end,
 		OffCommand=function(self) self:queuecommand("TweenOff") end,
 		TweenOnCommand=function(self) self:decelerate(0.8):addy(100) end,
 		TweenOffCommand=function(self) if AnyPlayerFullComboed() then self:sleep(1) end self:accelerate(0.8):addy(-100) end,
-		Def.Sprite {
-			Texture = "_uplight top",
-			InitCommand=function(self) self:CenterX():y(SCREEN_TOP+22*WideScreenDiff()):zoom(WideScreenDiff()):diffusealpha(0) end,
-			OnCommand=function(self) self:effectclock('beat'):diffuseramp():effectcolor1(color("#007892")):effectcolor2(color("#00EAFF")):effectperiod(0.5):effect_hold_at_full(0.5):diffusealpha(0):linear(0.4):diffusealpha(1) end
-		},
-		Def.Sprite {
-			Texture = "_uplight top",
-			InitCommand=function(self) self:CenterX():y(SCREEN_TOP+22*WideScreenDiff()):zoom(WideScreenDiff()):diffusealpha(0):blend(Blend.Add) end,
-			OnCommand=function(self) self:effectclock('beat'):diffuseramp():effectcolor1(color("#FFFFFF00")):effectcolor2(color("#00EAFF")):effectperiod(0.5):effect_hold_at_full(0.5):diffusealpha(0):linear(0.4):diffusealpha(1) end
-		},
-		Def.Sprite {
-			Texture = "_uplight bottom",
-			InitCommand=function(self) self:CenterX():y(SCREEN_TOP+39*WideScreenDiff()):zoom(WideScreenDiff()):diffusealpha(0):visible(not isVS()) end,
-			OnCommand=function(self) self:effectclock('beat'):diffuseramp():effectcolor1(color("#007892")):effectcolor2(color("#00EAFF")):effectperiod(0.5):effect_hold_at_full(0.5):diffusealpha(0):linear(0.4):diffusealpha(1) end
-		},
-		Def.Sprite {
-			Texture = "_uplight bottom",
-			InitCommand=function(self) self:CenterX():y(SCREEN_TOP+39*WideScreenDiff()):zoom(WideScreenDiff()):diffusealpha(0):blend(Blend.Add):visible(not isVS()) end,
-			OnCommand=function(self) self:effectclock('beat'):diffuseramp():effectcolor1(color("#FFFFFF00")):effectcolor2(color("#00EAFF")):effectperiod(0.5):effect_hold_at_full(0.5):diffusealpha(0):linear(0.4):diffusealpha(1) end
-		},
-		Def.Sprite {
-			Texture = "width",
-			InitCommand=function(self) self:x(SCREEN_CENTER_X-190*WideScreenDiff()):y(SCREEN_TOP+22*WideScreenDiff()):halign(1):zoomtowidth(3*WideScreenDiff()) if vertexOn then self:diffusecolor(vertexColor) end end,
-			OnCommand=function(self) self:sleep(1.5):linear(0.1):zoomtowidth(SCREEN_WIDTH/2-200*WideScreenDiff()) end
-		},
-		Def.Sprite {
-			Texture = "width",
-			InitCommand=function(self) self:x(SCREEN_CENTER_X+190*WideScreenDiff()):y(SCREEN_TOP+22*WideScreenDiff()):halign(0):zoomtowidth(3*WideScreenDiff()) if vertexOn then self:diffusecolor(vertexColor) end end,
-			OnCommand=function(self) self:sleep(1.5):linear(0.1):zoomtowidth(SCREEN_WIDTH/2-200*WideScreenDiff()) end
-		},
-		Def.Sprite {
-			Texture = "left",
-			InitCommand=function(self) self:x(SCREEN_CENTER_X-193*WideScreenDiff()):y(SCREEN_TOP+22*WideScreenDiff()):zoom(WideScreenDiff()):halign(1) if vertexOn then self:diffusecolor(vertexColor) end end,
-			OnCommand=function(self) self:sleep(1.5):linear(0.1):x(SCREEN_LEFT+16*WideScreenDiff()) end
-		},
-		Def.Sprite {
-			Texture = "left",
-			InitCommand=function(self) self:x(SCREEN_CENTER_X+193*WideScreenDiff()):y(SCREEN_TOP+22*WideScreenDiff()):zoom(WideScreenDiff()):halign(1):zoomx(-1*WideScreenDiff()) if vertexOn then self:diffusecolor(vertexColor) end end,
-			OnCommand=function(self) self:sleep(1.5):linear(0.1):x(SCREEN_RIGHT-16*WideScreenDiff()) end
-		},
-		Def.Sprite {
-			Texture = "_base normal",
-			InitCommand=function(self) self:CenterX():y(SCREEN_TOP+22*WideScreenDiff()):zoom(WideScreenDiff()) if vertexOn then self:diffusecolor(vertexColor) end end
-		},
-		Def.Sprite {
-			Texture = "_base bpm",
-			InitCommand=function(self) self:CenterX():y(SCREEN_TOP+59*WideScreenDiff()):zoom(WideScreenDiff()):visible(not isVS()) if vertexOn then self:diffusecolor(vertexColor) end end
-		},
-		Def.Sprite {
-			Texture = "_neons top",
-			InitCommand=function(self) self:CenterX():y(SCREEN_TOP+22*WideScreenDiff()):zoom(WideScreenDiff()):blend(Blend.Add) end,
-			OnCommand=function(self) self:effectclock('beat'):diffuseramp():effectcolor1(color("#007892")):effectcolor2(color("#00EAFF")):effectperiod(0.5):effect_hold_at_full(0.5):diffusealpha(0):linear(0.4):diffusealpha(1) end
-		},
-		Def.Sprite {
-			Texture = "_neons top",
-			InitCommand=function(self) self:CenterX():y(SCREEN_TOP+22*WideScreenDiff()):zoom(WideScreenDiff()) end,
-			OnCommand=function(self) self:effectclock('beat'):diffuseramp():effectcolor1(color("#FFFFFF00")):effectcolor2(color("#00EAFF")):effectperiod(0.5):effect_hold_at_full(0.5):diffusealpha(0):linear(0.4):diffusealpha(1) end
-		},
-		Def.Sprite {
-			Texture = "_neons bottom",
-			InitCommand=function(self) self:CenterX():y(SCREEN_TOP+38*WideScreenDiff()):zoom(WideScreenDiff()):blend(Blend.Add):visible(not isVS()) end,
-			OnCommand=function(self) self:effectclock('beat'):diffuseramp():effectcolor1(color("#007892")):effectcolor2(color("#00EAFF")):effectperiod(0.5):effect_hold_at_full(0.5):diffusealpha(0):linear(0.4):diffusealpha(1) end
-		},
-		Def.Sprite {
-			Texture = "_neons bottom",
-			InitCommand=function(self) self:CenterX():y(SCREEN_TOP+38*WideScreenDiff()):zoom(WideScreenDiff()):visible(not isVS()) end,
-			OnCommand=function(self) self:effectclock('beat'):diffuseramp():effectcolor1(color("#FFFFFF00")):effectcolor2(color("#00EAFF")):effectperiod(0.5):effect_hold_at_full(0.5):diffusealpha(0):linear(0.4):diffusealpha(1) end
-		},
 		Def.ActorFrame{
-			TitleSongFade:Create()..{
-				InitCommand=function(self) self:CenterX():y(SCREEN_TOP+24*WideScreenDiff()):zoom(0.5*WideScreenDiff()) end,
-				OnCommand=function(self) self:zoom(0.5*WideScreenDiff()):shadowlength(2*WideScreenDiff()):zoomy(0):hibernate(2):decelerate(0.3):zoomy(0.45*WideScreenDiff()) end,
+			Name="SongFrame",
+			Def.Sprite {
+				Texture = "_uplight top",
+				InitCommand=function(self) self:CenterX():y(SCREEN_TOP+22*WideScreenDiff()):zoom(WideScreenDiff()):diffusealpha(0) end,
+				OnCommand=function(self) self:effectclock('beat'):diffuseramp():effectcolor1(color("#007892")):effectcolor2(color("#00EAFF")):effectperiod(0.5):effect_hold_at_full(0.5):diffusealpha(0):linear(0.4):diffusealpha(1) end
+			},
+			Def.Sprite {
+				Texture = "_uplight top",
+				InitCommand=function(self) self:CenterX():y(SCREEN_TOP+22*WideScreenDiff()):zoom(WideScreenDiff()):diffusealpha(0):blend(Blend.Add) end,
+				OnCommand=function(self) self:effectclock('beat'):diffuseramp():effectcolor1(color("#FFFFFF00")):effectcolor2(color("#00EAFF")):effectperiod(0.5):effect_hold_at_full(0.5):diffusealpha(0):linear(0.4):diffusealpha(1) end
+			},
+			Def.Sprite {
+				Texture = "width",
+				InitCommand=function(self) self:x(SCREEN_CENTER_X-190*WideScreenDiff()):y(SCREEN_TOP+22*WideScreenDiff()):zoom(WideScreenDiff()):halign(1):zoomtowidth(3*WideScreenDiff()) if vertexOn then self:diffusecolor(vertexColor) end end,
+				OnCommand=function(self) self:sleep(1.5):linear(0.1):zoomtowidth(SCREEN_WIDTH/2-200*WideScreenDiff()) end
+			},
+			Def.Sprite {
+				Texture = "width",
+				InitCommand=function(self) self:x(SCREEN_CENTER_X+190*WideScreenDiff()):y(SCREEN_TOP+22*WideScreenDiff()):zoom(WideScreenDiff()):halign(0):zoomtowidth(3*WideScreenDiff()) if vertexOn then self:diffusecolor(vertexColor) end end,
+				OnCommand=function(self) self:sleep(1.5):linear(0.1):zoomtowidth(SCREEN_WIDTH/2-200*WideScreenDiff()) end
+			},
+			Def.Sprite {
+				Texture = "left",
+				InitCommand=function(self) self:x(SCREEN_CENTER_X-193*WideScreenDiff()):y(SCREEN_TOP+22*WideScreenDiff()):zoom(WideScreenDiff()):halign(1) if vertexOn then self:diffusecolor(vertexColor) end end,
+				OnCommand=function(self) self:sleep(1.5):linear(0.1):x(SCREEN_LEFT+16*WideScreenDiff()) end
+			},
+			Def.Sprite {
+				Texture = "left",
+				InitCommand=function(self) self:x(SCREEN_CENTER_X+193*WideScreenDiff()):y(SCREEN_TOP+22*WideScreenDiff()):zoom(WideScreenDiff()):halign(1):zoomx(-1*WideScreenDiff()) if vertexOn then self:diffusecolor(vertexColor) end end,
+				OnCommand=function(self) self:sleep(1.5):linear(0.1):x(SCREEN_RIGHT-16*WideScreenDiff()) end
+			},
+			Def.Sprite {
+				Texture = "_base normal",
+				InitCommand=function(self) self:CenterX():y(SCREEN_TOP+22*WideScreenDiff()):zoom(WideScreenDiff()) if vertexOn then self:diffusecolor(vertexColor) end end
+			},
+			Def.Sprite {
+				Texture = "_neons top",
+				InitCommand=function(self) self:CenterX():y(SCREEN_TOP+22*WideScreenDiff()):zoom(WideScreenDiff()):blend(Blend.Add) end,
+				OnCommand=function(self) self:effectclock('beat'):diffuseramp():effectcolor1(color("#007892")):effectcolor2(color("#00EAFF")):effectperiod(0.5):effect_hold_at_full(0.5):diffusealpha(0):linear(0.4):diffusealpha(1) end
+			},
+			Def.Sprite {
+				Texture = "_neons top",
+				InitCommand=function(self) self:CenterX():y(SCREEN_TOP+22*WideScreenDiff()):zoom(WideScreenDiff()) end,
+				OnCommand=function(self) self:effectclock('beat'):diffuseramp():effectcolor1(color("#FFFFFF00")):effectcolor2(color("#00EAFF")):effectperiod(0.5):effect_hold_at_full(0.5):diffusealpha(0):linear(0.4):diffusealpha(1) end
+			},
+			Def.ActorFrame{
+				TitleSongFade:Create()..{
+					InitCommand=function(self) self:CenterX():y(SCREEN_TOP+24*WideScreenDiff()):zoom(0.5*WideScreenDiff()) end,
+					OnCommand=function(self) self:zoom(0.5*WideScreenDiff()):shadowlength(2*WideScreenDiff()):zoomy(0):hibernate(2):decelerate(0.3):zoomy(0.45*WideScreenDiff()) end,
+				}
+			},
+			Def.BitmapText {
+				File = "_r bold 30px",
+				InitCommand=function(self) self:visible(not animate):CenterX():y(SCREEN_TOP+24*WideScreenDiff()):maxwidth(573):diffusebottomedge(color("#dedede")) end,
+				OnCommand=function(self) self:zoom(0.5*WideScreenDiff()):shadowlength(2*WideScreenDiff()):zoomy(0):hibernate(2):decelerate(0.3):zoomy(0.45*WideScreenDiff()):animate(0):playcommand("Update") end,
+				CurrentSongChangedMessageCommand=function(self) self:playcommand("Update") end,
+				UpdateCommand=function(self)
+					local text = ""
+					local song = GAMESTATE:GetCurrentSong()
+					if song then text = song:GetDisplayFullTitle() end
+					if animate then TitleSongFade:SetText( text ) end
+					self:settext(text)
+				end
 			}
 		},
-		Def.BitmapText {
-			File = "_r bold 30px",
-			InitCommand=function(self) self:visible(not animate):CenterX():y(SCREEN_TOP+24*WideScreenDiff()):maxwidth(573):diffusebottomedge(color("#dedede")) end,
-			OnCommand=function(self) self:zoom(0.5*WideScreenDiff()):shadowlength(2*WideScreenDiff()):zoomy(0):hibernate(2):decelerate(0.3):zoomy(0.45*WideScreenDiff()):animate(0):playcommand("Update") end,
-			CurrentSongChangedMessageCommand=function(self) self:playcommand("Update") end,
-			UpdateCommand=function(self)
-				local text = ""
-				local song = GAMESTATE:GetCurrentSong()
-				if song then text = song:GetDisplayFullTitle() end
-				if animate then TitleSongFade:SetText( text ) end
-				self:settext(text)
-			end
+		Def.ActorFrame{
+			Name="BPMFrame",
+			Def.Sprite {
+				Texture = "_uplight bottom",
+				InitCommand=function(self) self:CenterX():y(SCREEN_TOP+39*WideScreenDiff()):zoom(WideScreenDiff()):diffusealpha(0):visible(not isVS()) end,
+				OnCommand=function(self) self:effectclock('beat'):diffuseramp():effectcolor1(color("#007892")):effectcolor2(color("#00EAFF")):effectperiod(0.5):effect_hold_at_full(0.5):diffusealpha(0):linear(0.4):diffusealpha(1) end
+			},
+			Def.Sprite {
+				Texture = "_uplight bottom",
+				InitCommand=function(self) self:CenterX():y(SCREEN_TOP+39*WideScreenDiff()):zoom(WideScreenDiff()):diffusealpha(0):blend(Blend.Add):visible(not isVS()) end,
+				OnCommand=function(self) self:effectclock('beat'):diffuseramp():effectcolor1(color("#FFFFFF00")):effectcolor2(color("#00EAFF")):effectperiod(0.5):effect_hold_at_full(0.5):diffusealpha(0):linear(0.4):diffusealpha(1) end
+			},
+			Def.Sprite {
+				Texture = "_base bpm",
+				InitCommand=function(self) self:CenterX():y(SCREEN_TOP+59*WideScreenDiff()):zoom(WideScreenDiff()):visible(not isVS()) if vertexOn then self:diffusecolor(vertexColor) end end
+			},
+			Def.Sprite {
+				Texture = "_neons bottom",
+				InitCommand=function(self) self:CenterX():y(SCREEN_TOP+38*WideScreenDiff()):zoom(WideScreenDiff()):blend(Blend.Add):visible(not isVS()) end,
+				OnCommand=function(self) self:effectclock('beat'):diffuseramp():effectcolor1(color("#007892")):effectcolor2(color("#00EAFF")):effectperiod(0.5):effect_hold_at_full(0.5):diffusealpha(0):linear(0.4):diffusealpha(1) end
+			},
+			Def.Sprite {
+				Texture = "_neons bottom",
+				InitCommand=function(self) self:CenterX():y(SCREEN_TOP+38*WideScreenDiff()):zoom(WideScreenDiff()):visible(not isVS()) end,
+				OnCommand=function(self) self:effectclock('beat'):diffuseramp():effectcolor1(color("#FFFFFF00")):effectcolor2(color("#00EAFF")):effectperiod(0.5):effect_hold_at_full(0.5):diffusealpha(0):linear(0.4):diffusealpha(1) end
+			}
 		}
 	},
 	Def.ActorFrame{

@@ -19,7 +19,7 @@ function DifficultyToState(diff)
 	return diffState[diff] or 5
 end
 
-function GetSongFrame()
+function GetSongFrame(pn)
 	if IsGame("pump") then return "_piupro" end
 	if GAMESTATE:IsCourseMode() then return "_normal" end
 	local song = GAMESTATE:GetCurrentSong()
@@ -48,8 +48,8 @@ function GetSongFrame()
 		frame = "_love"
 	elseif string.find(songTitle,"Disconnected Hardkore") then
 		frame = "_disconnect"
-	elseif #GAMESTATE:GetHumanPlayers() == 1 and getenv("SongFrame"..pname(GAMESTATE:GetMasterPlayerNumber())) then
-		frame = getenv("SongFrame"..pname(GAMESTATE:GetMasterPlayerNumber()))
+	elseif getenv("SongFrame"..pname(pn and pn or GAMESTATE:GetMasterPlayerNumber())) then
+		frame = getenv("SongFrame"..pname(pn and pn or GAMESTATE:GetMasterPlayerNumber()))
 	else
 		frame = "_normal"
 	end

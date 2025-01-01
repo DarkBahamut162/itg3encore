@@ -1,3 +1,1 @@
-return Def.ActorFrame{
-    loadfile(THEME:GetPathG("LifeMeterBar","over/"..GetSongFrame()))()
-}
+return Def.ActorFrame{}
