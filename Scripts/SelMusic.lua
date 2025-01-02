@@ -1,4 +1,4 @@
-local cacheVersion = "0.39"
+local cacheVersion = "0.40"
 local stepCache = {}
 local typeList = {"avi","f4v","flv","mkv","mp4","mpeg","mpg","mov","ogv","webm","wmv"}
 
@@ -537,6 +537,7 @@ function cacheStep(Song,Step)
 			if checkBeat then
 				if currentNotes ~= 0 then
 					currentBPM = math.round(timingData:GetBPMAtBeat(v[1]),3)
+					local isStop, isDelay, isWarp = false, false, false
 					if stops and #stops > 0 then isStop, stops = HasStopAtBeat(v[1],stops) end
 					if delays and #delays > 0 then isDelay, delays = HasDelayAtBeat(v[1],delays) end
 					if currentBPM > maxBPM and not checking and not (isStop or isDelay) then
