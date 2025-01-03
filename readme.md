@@ -6,40 +6,52 @@ The following project has been in-officially taken over by me *(DarkBahamut162)*
 It's sources have being displayed down below.
 
 ## Warning:
-This Theme has been optimized for **Project OutFox** and has some additional *(but optional)* features that only work there!<br>
-**ITGmania** might be your second pick since **.mp4** background videos work in there without much issue.<br>
+This Theme has been optimized for **Project OutFox** but also works on **ITGmania** and **StepMania 5**!<br>
+**ITGmania** might be your second pick since **.mp4** background videos work without much issue on it.<br>
 It might work incorrectly when used anywhere else!<br>
-If anything broke or isn't working correctly, please report it **ASAP** so I can take a look at it and fix it.
+Since this theme is being updated periodically: If anything broke or isn't working correctly, please report it **ASAP** so I can take a look and fix it.
 
 You also might need to switch your **VideoRenderer** to **OpenGL** as **GLAD** breaks the graphics after playing just one round *(depending if they have been fixed yet everywhere)*.
 
 ## Information:
 Most additional features have been moved to an additional **Theme Options** menu. They are as follows:
 
-- **AnimateSongTitle:**
-Have the Song Title scroll during GamePlay (not possible on d3d)
+### [Global]
 - **EncoreThemeMode:**
-Switch between **Encore Normal** and **Encore Final** mode
-- **ShowBPMDisplayType:**
-Change the BPMDisplay type from **DisplayBPM** (default), **ActualBPM** (total range) and **CalculatedBPM** (playable range)
-- **ShowCalcDiff:**
-Show the calculated Difficulty of the currently selected stepchart *(currently banner only)*. Shows **DB9** *(average steps per second)*, **Y&A** *(RadarValue Calculation)* and **SPS (OutFox Only)** *(median steps per second per steps)*
-  - **DanceDifficultyType (Dance Mode Only):**
-Switch between **OLD & X-SCALE** difficulty ranges.
+Switch between **Encore Normal *(Light Mode)*** and **Encore Final *(Dark Mode)*** mode.
 - **ShowClock:**
 Shows **current time and date** on most/all menus
-- **ShowHasLua:**
-Shows if song **has anything lua** related (no matter if BG, FG or both)
-- **ShowOffset:**
-Shows **earlies** and **lates** of any timing window **during evaluation** excluding misses but including perfects *(0ms)*
-- **ShowRounds:**
-Shows either **amount of rounds** or **length specification** during song selection
-- **ShowStepCounter (OutFox Only):**
-Shows **total step quantification amounts** (might be useful especially for BEMU/POMU, including scratches and foots)
 - **SLFavorites:**
-Activate ability to favorite songs like in SL.
+Activate ability to favorite songs like in SL
   - Hold **SELECT** and press **UP** to un/favorite *(in StepMania/ITGmania)*
   - Hold **SELECT** and press **DOWN** to un/favorite *(in OutFox because it uses the upper config for OF Favorites)*
+- **UseStepCache:**
+Activate StepCache to use the chart's data for more accurate values or enable other features requiring it
+### [ScreenSelectMusic]
+- **ShowBPMDisplayType:**
+Change the BPMDisplay type from **DisplayBPM** (default), **ActualBPM** (total range) and **CalculatedBPM** (playable range | more accurate when using StepCache)
+- **ShowCalcDiff:**
+Show the calculated Difficulty of the currently selected stepchart *(currently banner only)*. Shows **DB9** *(average steps per second)*, **Y&A** *(RadarValue Calculation)* and **SPS (StepCache Only)** *(median steps per second per steps)*
+  - **DanceDifficultyType (Dance Mode Only):**
+Switch between **OLD & X-SCALE** difficulty ranges
+- **ShowHasLua:**
+Shows if song **has anything lua** related (no matter if BG, FG or both)
+- **ShowRounds:**
+Shows either **amount of rounds** or **length specification** during song selection
+- **ShowStepCounter (StepCache Only):**
+Shows **total step quantification amounts** (might be useful especially for BEMU/POMU, including scratches and foots)
+### [ScreenGameplay]
+- **AnimatePlayerScore:**
+Have the Player Score animate instead of instantly updating
+- **AnimateSongTitle:**
+Have the Song Title scroll during GamePlay (not possible on d3d)
+- **ShowGameplaySpeed:**
+Ability to show current Speed and Mod during GamePlay. Also enables modifying said speed mods during GamePlay
+  - Hold **SELECT** and press **LEFT**/**RIGHT** or press either EffectButtons on their own
+### [ScreenEvaluation]
+- **ShowOffset:**
+Shows **earlies** and **lates** of any timing window **during evaluation** excluding misses but including perfects *(0ms)*
+
 
 ---
 
@@ -106,30 +118,38 @@ I could have actually forked it but I didn't. My reasoning was that it wasn't go
 
 **ScreenTitleMenu:**
 * Shows **ProductFamily** & **ProductVersion**
-* Shows **StepCacheVersion** *(Project OutFox only)*
+* Shows **StepCacheVersion** *(when StepCache enabled)*
 * Shows **Current Game Mode** and **Current Style**
 * Shows total amount of playable **Single/Double Songs/Courses** in current **GameMode/Style** *(if able)*
 
 **ScreenSelectStyle:**
+* Shows **Current Style**
+* Shows **Current Battle Mode**
 * Added ability to switch between:
   * **Game Mode Styles** *(hold select and press left/right)*
   * **Rave and Battle Mode** *(hold select and press up/down)*
 
 **ScreenSelectMusic:**
-* Added **TimingData** and **"GrooveRadar"** Display to **_panes**
-* Added **StepCounter** to **_panes** if enabled *(Project OutFox only)*
-* Added **Player Avatar** to **_panes** if selected in profile *(Project OutFox AND WideScreen only)*
-* Added **CDTitle** next to the banner frame *(VerticalScreen & WideScreen only)*
-* Added and combined both **HasLua** and **Rounds/Length specification** between **Artist** and **BPM** line
-  * Added indication for **HasNoKeysounds** & **ContainsNullMeasure** in **BE-MU / PO-MU Mode** *(Project OutFox only)*
+* Shows **TimingData** and **"GrooveRadar"**
+* Shows **StepCounter** *(when StepCounter & StepCache enabled)*
+* Shows **Player Avatar** *(Project OutFox AND WideScreen only)*
+* Shows **CDTitle** next to the banner frame *(VerticalScreen & WideScreen only)*
+* Shows various indications between **Artist** and **BPM** line:
+  * **HasLua**
+  * **HasLyric**
+  * **HasNoKeysounds** & **ContainsNullMeasure** *(BE-MU / PO-MU Mode only)*
+  * **HasVideo**
+  * **Rounds/Length specification**
+* Updates **BPMs** and **TIMEs** according to **Current Music Rate**
 
 **ScreenPlayerOptions:**
 * Removed **D-Pad** Modifier since it breaks other Modifiers (like the new SpeedMod)
 * Better and sorted **List of Options**
   * Including various other mods added for StepMania/ITGmania/OutFox
-* Added **Player's MOD** & **BPM range** within **Name Badges**
+* Shows **Player's MOD** & **BPM range** within **Name Badges**
 * Added ability to switch between **Normal Score**, **Percentage** and **EX Score** via **Player Options**
   * Added ability to choose between **additive** or **subtractive** style
+* Updates **BPMs** and **TIMEs** according to **Current Music Rate**
 
 **ScreenGameplay:**
 * Better **StatsDisplay** going from a range of 1-6 instead of just 3
@@ -138,8 +158,9 @@ I could have actually forked it but I didn't. My reasoning was that it wasn't go
   * Added **NoteGraph** *(red: 0-20 | black: 20-100)*
 * Fixed **Rounds/Songs Display**
 * Added back **Rotation** to **Judgments** & **Holds**
-* Ability to change SpeedMod by 25/0.25 *(by pressing EffectDown/EffectUp)*
-  * Disabled on OutFox-specific ones *(Amod/CAmon/AVmon)*
+* Ability to change SpeedMod by 25/0.25
+  * Disabled on OutFox-specific ones ***(Amod/CAmon/AVmon)***
+* Shows **Current Speed & Mod**
 
 **ScreenEvaluation:**
 * Re-added **marvelous/perfect/great color bar** on top of the **LifeGraph**
