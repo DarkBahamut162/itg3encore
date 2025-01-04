@@ -7,7 +7,7 @@ if getenv("EvalCombo"..pname(player)) then
 	local total =  GAMESTATE:GetNumPlayersEnabled()
 	if (total == 1 and (getenv("ShowStatsP1") == 7 or getenv("ShowStatsP2") == 7)) or (total == 2 and (getenv("ShowStatsP1") == 7 and getenv("ShowStatsP2") == 7)) then
 		local SongOrCourse,StepsOrTrail,scorelist,topscore
-		local DPCurrent = STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetActualDancePoints()
+		local DPCurrent = math.max(0,STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetActualDancePoints())
 		local target = THEME:GetMetric("PlayerStageStats","GradePercentTier"..string.format("%02d",18-getenv("SetPacemaker"..pname(player))))
 		local HighScore = 0
 		local Max = STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetPossibleDancePoints()
@@ -17,7 +17,7 @@ if getenv("EvalCombo"..pname(player)) then
 		if not scorelist then scorelist = PROFILEMAN:GetMachineProfile():GetHighScoreList(SongOrCourse,StepsOrTrail) end
 		if not scorelist then scorelist = PROFILEMAN:GetProfile(player):GetHighScoreList(SongOrCourse,StepsOrTrail) end
 		if scorelist then topscore = scorelist:GetHighScores() end
-		local first = #topscore <= 1
+		local first = #topscore < 1
 		if topscore and not first then HighScore = topscore[1]:GetPercentDP()*Max end
 
 		if DPCurrent >= HighScore and not first and DPCurrent >= Target then
@@ -41,8 +41,8 @@ if getenv("EvalCombo"..pname(player)) then
 		local index = DPCurrent >= HighScore and 2 or 1
 
 		if topscore and not first and DPCurrent >= HighScore then HighScore = topscore[index]:GetPercentDP()*Max end
-		if HighScore > 0 then HighscoreRecord = HighscoreRecord.."::"..FormatPercentScore(topscore[index]:GetPercentDP()).."\n"..string.format("%+.2f",(DPCurrent-HighScore)/Max*100) end
-		TargetRecord = TargetRecord.."::"..FormatPercentScore(target).."\n"..string.format("%+.2f",(DPCurrent/Max-target)*100)
+		if HighScore > 0 then HighscoreRecord = HighscoreRecord.."::"..FormatPercentScore(topscore[index]:GetPercentDP()).."\n"..string.format("%+.2f%%",(DPCurrent-HighScore)/Max*100) end
+		TargetRecord = TargetRecord.."::"..FormatPercentScore(target).."\n"..string.format("%+.2f%%",(DPCurrent/Max-target)*100)
 
 	end
 end
