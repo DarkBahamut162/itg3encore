@@ -1,3 +1,12 @@
+local extra = STATSMAN:GetCurStageStats():GetStage():lower():find("extra")
+local failedExtra = false
+
+if extra then
+	local played = STATSMAN:GetCurStageStats():GetGameplaySeconds()
+	local supposed = STATSMAN:GetCurStageStats():GetPlayedSongs()[1]:GetLastSecond()
+	failedExtra = played < supposed
+end
+
 return Def.ActorFrame{
 	loadfile(THEME:GetPathB("_fade in","normal"))(),
 	Def.Actor{
@@ -6,7 +15,7 @@ return Def.ActorFrame{
 	},
 	Def.ActorFrame{
 		InitCommand=function(self) self:CenterX() end,
-		BeginCommand=function(self) self:visible( STATSMAN:GetCurStageStats():OnePassed() ) end,
+		BeginCommand=function(self) self:visible( STATSMAN:GetCurStageStats():OnePassed() and not failedExtra ) end,
 		Def.Sprite {
 			Texture = THEME:GetPathB("ScreenGameplay out/_round",isFinal() and "final" or "normal"),
 			InitCommand=function(self) self:y(SCREEN_CENTER_Y-75*WideScreenDiff()):zoom(0.6*WideScreenDiff()):diffusealpha(1) end,
@@ -25,7 +34,7 @@ return Def.ActorFrame{
 	},
 	Def.ActorFrame{
 		Name="Cleared",
-		BeginCommand=function(self) self:visible( STATSMAN:GetCurStageStats():OnePassed() ) end,
+		BeginCommand=function(self) self:visible( STATSMAN:GetCurStageStats():OnePassed() and not failedExtra ) end,
 		Def.Sprite {
 			Texture = "cleared glow "..(isFinal() and "final" or "normal"),
 			InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+100*WideScreenDiff()):zoom(WideScreenDiff()):cropleft(-0.3):cropright(1):faderight(0.1):fadeleft(0.1) end,
@@ -39,7 +48,7 @@ return Def.ActorFrame{
 	},
 	Def.ActorFrame{
 		Name="Failed",
-		BeginCommand=function(self) self:visible( not STATSMAN:GetCurStageStats():OnePassed() ) end,
+		BeginCommand=function(self) self:visible( not STATSMAN:GetCurStageStats():OnePassed() or failedExtra ) end,
 		Def.Sprite {
 			Texture = "failed glow "..(isFinal() and "final" or "normal"),
 			InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+100*WideScreenDiff()):zoom(WideScreenDiff()):cropleft(-0.3):cropright(1):faderight(0.1):fadeleft(0.1) end,

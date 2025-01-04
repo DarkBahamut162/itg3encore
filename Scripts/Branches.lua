@@ -119,6 +119,10 @@ Branch.AfterGameplayWorkout = function()
 	return "ScreenEvaluationWorkout"
 end
 
+Branch.AfterEvaluation = function()
+	return "ScreenProfileSave"
+end
+
 Branch.AfterEvaluationWorkout = function()
 	if isPlayMode("PlayMode_Endless") then return "ScreenWorkoutMenu" end
 	return "ScreenSelectCourse"
