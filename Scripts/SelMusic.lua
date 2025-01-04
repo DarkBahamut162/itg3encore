@@ -291,7 +291,11 @@ function getStepCacheFile(Step)
 		local Song = SONGMAN:GetSongFromSteps(Step)
 		groupName = Song:GetGroupName()
 	end
-	return "Cache/Steps/Steps_"..groupName.."_"..songName.."_"..ToEnumShortString(Step:GetStepsType()).."_"..ToEnumShortString(Step:GetDifficulty()).."_"..Step:GetHash()..".db9"
+
+	local identifier = Step:GetHash()
+	if identifier == 0 then identifier = Step:GetMeter() end
+
+	return "Cache/Steps/Steps_"..groupName.."_"..songName.."_"..ToEnumShortString(Step:GetStepsType()).."_"..ToEnumShortString(Step:GetDifficulty()).."_"..identifier..".db9"
 end
 
 function HasStopAtBeat(beat,stops)
