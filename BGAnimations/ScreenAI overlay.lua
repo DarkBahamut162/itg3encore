@@ -306,8 +306,8 @@ local InputHandler = function(event)
 			end
 		elseif event.GameButton == "Select" and not selectHeld then -- skill change switch
 				SOUND:PlayOnce( THEME:GetPathS( 'OptionsList', "opened" ) )
-				skill.Left:linear(0.125):diffusealpha(1)
-				skill.Right:linear(0.125):diffusealpha(1)
+				skill.Left:stoptweening():linear(0.125):diffusealpha(1)
+				skill.Right:stoptweening():linear(0.125):diffusealpha(1)
 				selectHeld = true
 		elseif event.GameButton == "Back" then
 			if not editing then 
@@ -327,16 +327,16 @@ local InputHandler = function(event)
 				end
 			elseif editing then -- exit value changer
 				prompt.BG:playcommand("BGOff")
-				prompt.Text:linear(0.125):diffusealpha(0)
-				prompt.Value:linear(0.125):diffusealpha(0)
+				prompt.Text:stoptweening():linear(0.125):diffusealpha(0)
+				prompt.Value:stoptweening():linear(0.125):diffusealpha(0)
 				SOUND:PlayOnce(THEME:GetPathS("", "_prompt"), true)
 			end
 		elseif event.GameButton == "Start" then
 			if not editing and not checking then -- setup value changer
 				if currentList <= totalWeights then
 					prompt.BG:playcommand("BGOn")
-					prompt.Text:playcommand("Set"):linear(0.125):diffusealpha(1)
-					prompt.Value:playcommand("Set"):playcommand("Update"):linear(0.125):diffusealpha(1)
+					prompt.Text:playcommand("Set"):stoptweening():linear(0.125):diffusealpha(1)
+					prompt.Value:playcommand("Set"):playcommand("Update"):stoptweening():linear(0.125):diffusealpha(1)
 					SOUND:PlayOnce(THEME:GetPathS("Common", "Start"), true)
 				elseif currentList < totalWeights + 3 then
 					if currentList == totalWeights + 1 then -- reset current skill
@@ -368,8 +368,8 @@ local InputHandler = function(event)
 				if currentList <= totalWeights then
 					AIini[SkillsDefault[currentSkill]][WeightsDefault[currentList]] = tonumber(value)
 					prompt.BG:playcommand("BGOff")
-					prompt.Text:linear(0.125):diffusealpha(0)
-					prompt.Value:linear(0.125):diffusealpha(0)
+					prompt.Text:stoptweening():linear(0.125):diffusealpha(0)
+					prompt.Value:stoptweening():linear(0.125):diffusealpha(0)
 					weight.Percent:playcommand("Update")
 					weight.WeightMiss:playcommand("Update")
 					weight.WeightW5:playcommand("Update")
@@ -433,8 +433,8 @@ local InputHandler = function(event)
 		end
 	elseif event.type == "InputEventType_Release" then
 		if event.GameButton == "Select" and selectHeld then -- skill change switch
-			skill.Left:linear(0.125):diffusealpha(0)
-			skill.Right:linear(0.125):diffusealpha(0)
+			skill.Left:stoptweening():linear(0.125):diffusealpha(0)
+			skill.Right:stoptweening():linear(0.125):diffusealpha(0)
 			SOUND:PlayOnce( THEME:GetPathS( 'OptionsList', "closed" ) )
 			selectHeld = false
 		end
