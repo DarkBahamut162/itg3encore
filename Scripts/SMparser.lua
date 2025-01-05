@@ -83,7 +83,7 @@ local function MixedCaseRegex(str)
 	return table.concat(t, "")
 end
 
-local function GetSimfileChartString(SimfileString, StepsType, Difficulty, StepsDescription, Filetype)
+local function GetSimfileChartString(SimfileString, StepsType, Difficulty, StepsDescription, Meter, Filetype)
 	local NoteDataString = nil
 
 	StepsType = StepsType:lower()
@@ -94,6 +94,9 @@ local function GetSimfileChartString(SimfileString, StepsType, Difficulty, Steps
 	local STEPSTYPE = MixedCaseRegex("STEPSTYPE")
 	local DIFFICULTY = MixedCaseRegex("DIFFICULTY")
 	local DESCRIPTION = MixedCaseRegex("DESCRIPTION")
+	local METER = MixedCaseRegex("METER")
+
+	local dupCheck = {}
 
 	if Filetype == "ssc" then
 		for noteData in SimfileString:gmatch("#"..NOTEDATA..".-#"..NOTES.."2?:[^;]*") do
@@ -117,6 +120,15 @@ local function GetSimfileChartString(SimfileString, StepsType, Difficulty, Steps
 			end
 			difficulty = difficulty:gsub("%s+", ""):lower()
 
+			if not isOutFox() then
+				local found = FindInTable(difficulty, dupCheck)
+				if not found then
+					table.insert(dupCheck,difficulty)
+				else
+					difficulty = Difficulty
+				end
+			end
+
 			local description = ''
 			for desc in normalizedNoteData:gmatch("#"..DESCRIPTION..":(.-);") do
 				if description == '' and desc ~= '' then
@@ -125,10 +137,18 @@ local function GetSimfileChartString(SimfileString, StepsType, Difficulty, Steps
 				end
 			end
 
-			if (stepsType == StepsType and difficulty == Difficulty) then
+			local meter = 0
+			for met in normalizedNoteData:gmatch("#"..METER..":(.-);") do
+				if meter == 0 and met ~= '' then
+					meter = tonumber(met)
+					break
+				end
+			end
+
+			if (stepsType == StepsType and difficulty == Difficulty and meter == Meter) then
 				if (difficulty ~= "edit" or description == StepsDescription) then
 
-                    NoteDataString = normalizedNoteData:match("#"..NOTES.."2?:[\n]*([^;]*)\n?$"):gsub("//[^\n]*", ""):gsub('[\r\t\f\v ]+', '')
+                    NoteDataString = normalizedNoteData:match("#"..NOTES.."2?:[\n]*([^;]*)\n?$"):gsub("//[^\n]*", ""):gsub('[\r\t\f\v ]+', ''):gsub('{(.-)}', ''):gsub('[{}]', '')
 					NoteDataString = MinimizeChart(NoteDataString)
 					break
 				end
@@ -147,8 +167,18 @@ local function GetSimfileChartString(SimfileString, StepsType, Difficulty, Steps
 				local difficulty = parts[4]:gsub("[^%w]", "")
 				difficulty = ToEnumShortString(OldStyleStringToDifficulty(difficulty)):lower()
 				local description = parts[3]:gsub("^%s*(.-)", "")
+				local meter = tonumber(parts[5]:gsub("[^%w]", ""))
 
-				if (stepsType == StepsType and difficulty == Difficulty) then
+				if not isOutFox() then
+					local found = FindInTable(difficulty, dupCheck)
+					if not found then
+						table.insert(dupCheck,difficulty)
+					else
+						difficulty = Difficulty
+					end
+				end
+
+				if (stepsType == StepsType and difficulty == Difficulty and meter == Meter) then
 					if (difficulty ~= "edit" or description == StepsDescription) then
 						NoteDataString = parts[7]:gsub("//[^\n]*", ""):gsub('[\r\t\f\v ]+', '')
 						NoteDataString = MinimizeChart(NoteDataString)
@@ -166,10 +196,11 @@ function SMParser(steps)
 	local stepsType = ToEnumShortString( steps:GetStepsType() ):gsub("_", "-"):lower()
 	local difficulty = ToEnumShortString( steps:GetDifficulty() )
 	local description = steps:GetDescription()
+	local meter = steps:GetMeter()
     local simfileString, fileType = GetSimfileString( steps )
 
     if simfileString then
-        local chartString = GetSimfileChartString(simfileString, stepsType, difficulty, description, fileType)
+        local chartString = GetSimfileChartString(simfileString, stepsType, difficulty, description, meter, fileType)
         if chartString ~= nil then
             return chartString
         end
