@@ -1086,8 +1086,8 @@ function getCalculatedDifficulty(Step)
 	--local totalSeconds = isOutFox() and getTrueSeconds(Song,Step)["TrueSeconds"] or (Song:GetLastSecond() - Song:GetFirstSecond())
 	--local stepCounter = isOutFox() and getStepCounter(Song,Step)["StepCounter"] or {}
 	local usesStepCache = ThemePrefs.Get("UseStepCache")
-	local skip = usesStepCache and LoadFromCache(Song,Step,"Version") == nil or false
-	if skip then
+	local version = usesStepCache and LoadFromCache(Song,Step,"Version") or false
+	if not version or version == "0" then
 		repeatCheck[value] = OG
 		return OG
 	end
@@ -1103,7 +1103,7 @@ function getCalculatedDifficulty(Step)
 	end
 
 	if usesStepCache then
-		for i=1,#stepCounter do if stepCounter[i] then stepSum = stepSum + (stepCounter[i] * i) end end
+		if #stepCounter > 0 then for i=1,#stepCounter do stepSum = stepSum + (stepCounter[i] * i) end end
 		if IsGame("be-mu") or IsGame("beat") then
 			stepSum = stepSum / totalSeconds
 		else
