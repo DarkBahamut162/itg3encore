@@ -167,7 +167,7 @@ local function GetSimfileChartString(SimfileString, StepsType, Difficulty, Steps
 				local difficulty = parts[4]:gsub("[^%w]", "")
 				difficulty = ToEnumShortString(OldStyleStringToDifficulty(difficulty)):lower()
 				local description = parts[3]:gsub("^%s*(.-)", "")
-				local meter = tonumber(parts[5]:gsub("[^%w]", ""))
+				local meter = parts[5]:gsub("[^%w]", "")
 
 				if not isOutFox() then
 					local found = FindInTable(difficulty, dupCheck)
@@ -178,7 +178,7 @@ local function GetSimfileChartString(SimfileString, StepsType, Difficulty, Steps
 					end
 				end
 
-				if (stepsType == StepsType and difficulty == Difficulty and meter == Meter) then
+				if (stepsType == StepsType and difficulty == Difficulty and tonumber(meter) == Meter) then
 					if (difficulty ~= "edit" or description == StepsDescription) then
 						NoteDataString = parts[7]:gsub("//[^\n]*", ""):gsub('[\r\t\f\v ]+', '')
 						NoteDataString = MinimizeChart(NoteDataString)
