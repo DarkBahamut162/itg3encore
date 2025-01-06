@@ -46,8 +46,8 @@ if getenv("EvalCombo"..pname(player)) then
 		local index = (second and DPCurrent >= HighScore) and 2 or 1
 
 		if topscore and hasHighscoreCheck and DPCurrent >= HighScore then HighScore = topscore[index]:GetPercentDP()*Max end
-		if HighScore > 0 then HighscoreRecord = HighscoreRecord.."::"..FormatPercentScore(topscore[index]:GetPercentDP()).."\n"..string.format("%+.2f%%",(DPCurrent-HighScore)/Max*100) end
-		TargetRecord = TargetRecord.."::"..FormatPercentScore(target).."\n"..string.format("%+.2f%%",(DPCurrent/Max-target)*100)
+		if HighScore > 0 then HighscoreRecord = HighscoreRecord.."::"..FormatPercentScore(topscore[index]:GetPercentDP()).."\n"..string.format("%+.2f%%",math.floor((DPCurrent-HighScore)/Max*10000)/100) end
+		TargetRecord = TargetRecord.."::"..FormatPercentScore(target).."\n"..string.format("%+.2f%%",math.floor((DPCurrent/Max-target)*10000)/100)
 
 	end
 end
