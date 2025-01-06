@@ -1,7 +1,7 @@
 local player = ...
 assert(player,"[ScreenEvaluation PersonalRecord] requires player")
 local record = STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetPersonalHighScoreIndex()
-local hasPersonalRecord = (record == 0)
+local hasPersonalRecord = (record == 0) and STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetPercentDancePoints() > 0
 
 if hasPersonalRecord and not STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetFailed() then
 	--setenv("HighScoreable"..pname(player),true)
