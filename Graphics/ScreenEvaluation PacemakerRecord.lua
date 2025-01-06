@@ -17,30 +17,35 @@ if getenv("EvalCombo"..pname(player)) then
 		if not scorelist then scorelist = PROFILEMAN:GetMachineProfile():GetHighScoreList(SongOrCourse,StepsOrTrail) end
 		if not scorelist then scorelist = PROFILEMAN:GetProfile(player):GetHighScoreList(SongOrCourse,StepsOrTrail) end
 		if scorelist then topscore = scorelist:GetHighScores() end
-		local first = #topscore < 1
-		if topscore and not first then HighScore = topscore[1]:GetPercentDP()*Max end
 
-		if DPCurrent >= HighScore and not first and DPCurrent >= Target then
+		local first = #topscore >= 1
+		local second = #topscore > 1
+		local hasHighscore = STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetPercentDancePoints() > 0
+		local hasHighscoreCheck = second or (first and not hasHighscore)
+
+		if topscore and hasHighscoreCheck then HighScore = topscore[1]:GetPercentDP()*Max end
+
+		if DPCurrent >= HighScore and hasHighscoreCheck and DPCurrent >= Target then
 			HighscoreRecord = "HIGHSCORE\nPASSED"
 			TargetRecord = "TARGET\nMET"
-		elseif DPCurrent < HighScore and not first and DPCurrent >= Target then
+		elseif DPCurrent < HighScore and hasHighscoreCheck and DPCurrent >= Target then
 			HighscoreRecord = "HIGHSCORE\nFAILED"
 			TargetRecord = "TARGET\nMET"
-		elseif DPCurrent >= HighScore and not first and DPCurrent < Target then
+		elseif DPCurrent >= HighScore and hasHighscoreCheck and DPCurrent < Target then
 			HighscoreRecord = "HIGHSCORE\nPASSED"
 			TargetRecord = "TARGET\nMISSED"
-		elseif DPCurrent < HighScore and not first and DPCurrent < Target then
+		elseif DPCurrent < HighScore and hasHighscoreCheck and DPCurrent < Target then
 			HighscoreRecord = "HIGHSCORE\nFAILED"
 			TargetRecord = "TARGET\nMISSED"
-		elseif first and DPCurrent >= Target then
+		elseif DPCurrent >= Target then
 			TargetRecord = "TARGET\nMET"
-		elseif first and DPCurrent < Target then
+		elseif DPCurrent < Target then
 			TargetRecord = "TARGET\nMISSED"
 		end
 
-		local index = DPCurrent >= HighScore and 2 or 1
+		local index = (second and DPCurrent >= HighScore) and 2 or 1
 
-		if topscore and not first and DPCurrent >= HighScore then HighScore = topscore[index]:GetPercentDP()*Max end
+		if topscore and hasHighscoreCheck and DPCurrent >= HighScore then HighScore = topscore[index]:GetPercentDP()*Max end
 		if HighScore > 0 then HighscoreRecord = HighscoreRecord.."::"..FormatPercentScore(topscore[index]:GetPercentDP()).."\n"..string.format("%+.2f%%",(DPCurrent-HighScore)/Max*100) end
 		TargetRecord = TargetRecord.."::"..FormatPercentScore(target).."\n"..string.format("%+.2f%%",(DPCurrent/Max-target)*100)
 
