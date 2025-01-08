@@ -5,7 +5,7 @@ local enableOffsets = ThemePrefs.Get("ShowOffset")
 local modify = ThemePrefs.Get("ShowGameplaySpeed")
 local c
 
-local Overlay = (#GAMESTATE:GetHumanPlayers() == 2 and GetSongFrame(PLAYER_1) ~= GetSongFrame(PLAYER_2)) and Def.ActorFrame{
+local Overlay = #GAMESTATE:GetHumanPlayers() == 2 and Def.ActorFrame{
 	loadfile(THEME:GetPathB("ScreenGameplay","overlay/Overlay"))(PLAYER_1),
 	loadfile(THEME:GetPathB("ScreenGameplay","overlay/Overlay"))(PLAYER_2)
 } or loadfile(THEME:GetPathB("ScreenGameplay","overlay/Overlay"))(GAMESTATE:GetMasterPlayerNumber())
