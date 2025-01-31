@@ -50,7 +50,7 @@ local function Update(self, delta)
 				if isOutFox() and playeroptions:AMod() then speedMod = ((bpm1+bpm2)*0.5)/playeroptions:AMod()*Stops[Si]["BPM"] end
 				if isOutFox() and playeroptions:CAMod() then speedMod = ((bpm1+bpm2)*0.5)/playeroptions:CAMod()*Stops[Si]["BPM"] end
 				if isOutFox() and playeroptions:AVMod() then speedMod = ((bpm1+bpm2)*0.5)/playeroptions:AVMod()*Stops[Si]["BPM"] end
-				c.Stop:stoptweening():diffusealpha(1):zoomtoheight(Stops[Si]["Length"]*speedMod*currentMini):linear(Stops[Si]["Length"]/songoptions:MusicRate()):zoomtoheight(0):linear(0.1):diffusealpha(0)
+				c.Stop:stoptweening():diffusealpha(1):zoomtoheight(Stops[Si]["Length"]*speedMod*currentMini):linear(Stops[Si]["Length"]):zoomtoheight(0):linear(0.1):diffusealpha(0)
 				Si = Si + 1
 			end
 		end
