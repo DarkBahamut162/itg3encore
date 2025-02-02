@@ -202,7 +202,6 @@ local function SaveAI()
 	configfile:destroy()
 end
 
-
 local numbers = {
 	["DeviceButton_1"] = true,
 	["DeviceButton_2"] = true,
@@ -252,7 +251,7 @@ local InputHandler = function(event)
 				SOUND:PlayOnce( THEME:GetPathS( 'OptionsList', "left" ) )
 			elseif checking then -- changing prompt options
 				cur = cur - 1
-				if cur%2 == 0 then prompt.Cursor:queuecommand("Yes") else prompt.Cursor:queuecommand("No") end
+				if cur%2 == 1 then prompt.Cursor:queuecommand("Yes") else prompt.Cursor:queuecommand("No") end
 				SOUND:PlayOnce(THEME:GetPathS('ScreenPrompt',"change"))
 			end
 		elseif event.GameButton == "MenuRight" then
@@ -289,7 +288,7 @@ local InputHandler = function(event)
 				SOUND:PlayOnce( THEME:GetPathS( 'OptionsList', "right" ) )
 			elseif checking then -- changing prompt options
 				cur = cur + 1
-				if cur%2 == 0 then prompt.Cursor:queuecommand("Yes") else prompt.Cursor:queuecommand("No") end
+				if cur%2 == 1 then prompt.Cursor:queuecommand("Yes") else prompt.Cursor:queuecommand("No") end
 				SOUND:PlayOnce(THEME:GetPathS('ScreenPrompt',"change"))
 			end
 		elseif event.GameButton == "MenuUp" then
@@ -315,7 +314,7 @@ local InputHandler = function(event)
 					if not checking then
 						SOUND:PlayOnce( THEME:GetPathS( 'MemoryCardManager', "error" ) )
 						prompt.BG:diffusealpha(0.5)
-						if cur%2 == 0 then prompt.Cursor:queuecommand("Yes") else prompt.Cursor:queuecommand("No") end
+						if cur%2 == 1 then prompt.Cursor:queuecommand("Yes") else prompt.Cursor:queuecommand("No") end
 						prompt.Cursor:diffusealpha(1)
 						prompt.Warning:diffusealpha(1)
 						prompt.YES:diffusealpha(1)
@@ -387,16 +386,15 @@ local InputHandler = function(event)
 					SOUND:PlayOnce(THEME:GetPathS("Common", "Start"), true)
 				end
 			elseif checking then
-				if cur%2 == 0 then -- "YES" option selected
+				if cur%2 == 1 then -- "YES" option selected
 					SCREENMAN:GetTopScreen():Cancel()
-				elseif checking and cur%2 == 1 then -- "NO" option selected
+				elseif cur%2 == 0 then -- "NO" option selected
 					SOUND:PlayOnce(THEME:GetPathS("Common", "Start"), true)
 					prompt.BG:diffusealpha(0)
 					prompt.Cursor:diffusealpha(0)
 					prompt.Warning:diffusealpha(0)
 					prompt.YES:diffusealpha(0)
 					prompt.NO:diffusealpha(0)
-					if cur%2 == 0 then prompt.Cursor:queuecommand("Yes") else prompt.Cursor:queuecommand("No") end
 					checking = false
 				end
 			end
