@@ -31,7 +31,7 @@ Activate StepCache to use the chart's data for more accurate values or enable ot
 - **ShowBPMDisplayType:**
 Change the BPMDisplay type from **DisplayBPM** (default), **ActualBPM** (total range) and **CalculatedBPM** (playable range | more accurate when using StepCache)
 - **ShowCalcDiff:**
-Show the calculated Difficulty of the currently selected stepchart *(currently banner only)*. Shows **DB9** *(average steps per second)*, **Y&A** *(RadarValue Calculation)* and **SPS (StepCache Only)** *(median steps per second per steps)*
+Show the calculated Difficulty of the currently selected stepchart *(currently banner only)*. Shows **DB9** *(average steps per second)* and **SPS (StepCache Only)** *(median steps per second per steps)*
   - **DanceDifficultyType (Dance Mode Only):**
 Switch between **OLD & X-SCALE** difficulty ranges
 - **ShowHasLua:**
