@@ -228,7 +228,7 @@ function isPlayMode(mode)
 end
 
 function isDouble()
-	local style = GAMESTATE:GetCurrentStyle():GetStyleType()
+	local styleType = GAMESTATE:GetCurrentStyle():GetStyleType()
 	return styleType == 'StyleType_OnePlayerTwoSides' or styleType == 'StyleType_TwoPlayersSharedSides'
 end
 

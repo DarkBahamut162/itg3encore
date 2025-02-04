@@ -331,8 +331,13 @@ end
 function InitRotationOptions()
 	if not getenv("RotationCheck") then
 		if GAMESTATE:GetNumPlayersEnabled() == 1 and PREFSMAN:GetPreference("Center1Player") then
-			setenv("RotationP1",LoadUserPrefN(PLAYER_1, "Effect", 5))
-			setenv("RotationP2",LoadUserPrefN(PLAYER_2, "Effect", 5))
+			if isDouble() then
+				setenv("RotationP1",5)
+				setenv("RotationP2",5)
+			else
+				setenv("RotationP1",LoadUserPrefN(PLAYER_1, "Effect", 5))
+				setenv("RotationP2",LoadUserPrefN(PLAYER_2, "Effect", 5))
+			end
 		else
 			setenv("RotationP1",1)
 			setenv("RotationP2",1)
@@ -805,8 +810,6 @@ function GetRateMod()
 end
 
 function DisplayCustomModifiersText(pn)
-	local style = GAMESTATE:GetCurrentStyle()
-	local styleType = style:GetStyleType()
 	local output = ""
 
 	if getenv("UnderCombo"..pname(pn)) and getenv("UnderTapJudgments"..pname(pn)) and getenv("UnderHoldJudgments"..pname(pn)) then
