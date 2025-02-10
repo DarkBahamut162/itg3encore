@@ -1,5 +1,6 @@
 local t = Def.ActorFrame{
     OnCommand=function(self) SCREENMAN:GetTopScreen():AddInputCallback( LoadModule("Lua.InputSystem.lua")(self) ) end,
+	OffCommand=function(self) SCREENMAN:GetTopScreen():RemoveInputCallback( LoadModule("Lua.InputSystem.lua")(self) ) end,
     ExitScreenCommand=function(self) SCREENMAN:GetTopScreen():StartTransitioningScreen( "SM_GoToNextScreen", 0 ) end,
     StartCommand=function(self) self:playcommand("ExitScreen") end,
     BackCommand=function(self) self:playcommand("ExitScreen") end

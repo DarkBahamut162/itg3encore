@@ -155,7 +155,8 @@ local Controller = function(event)
     end
 end
 
-t.OnCommand=function(self) SCREENMAN:GetTopScreen():AddInputCallback( Controller ) end
+t.OnCommand=function() SCREENMAN:GetTopScreen():AddInputCallback( Controller ) end
+t.OffCommand=function() SCREENMAN:GetTopScreen():RemoveInputCallback( Controller ) end
 
 t[#t+1] = Def.Sound{
 	File = THEME:GetPathS("ScreenOptions","change"),

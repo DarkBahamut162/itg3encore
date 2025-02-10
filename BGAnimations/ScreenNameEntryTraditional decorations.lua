@@ -164,7 +164,8 @@ t[#t+1] = loadfile(THEME:GetPathG(Var "LoadingScreen", "Banner"))() .. {
 	end
 }
 t[#t+1] = Def.Actor{
-	OnCommand=function(self) SCREENMAN:GetTopScreen():AddInputCallback(InputHandler) end,
+	OnCommand=function() SCREENMAN:GetTopScreen():AddInputCallback(InputHandler) end,
+	OffCommand=function() SCREENMAN:GetTopScreen():RemoveInputCallback(InputHandler) end,
 	EntryFinishedMessageCommand=function(self,param) finished[param.Player] = true end
 }
 

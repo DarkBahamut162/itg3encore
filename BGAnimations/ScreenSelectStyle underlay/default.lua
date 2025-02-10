@@ -69,9 +69,12 @@ return Def.ActorFrame{
 		c.Left:addx((-c.Center:GetWidth()/4-8)*WideScreenDiff())
 		c.Right:addx((c.Center:GetWidth()/4+8)*WideScreenDiff())
 	end,
-	OnCommand=function(self)
+	OnCommand=function()
 		if styles and #styles > 1 or enableUD then SCREENMAN:GetTopScreen():AddInputCallback(InputHandler) end
 		if isOutFox() then GAMESTATE:UpdateDiscordScreenInfo("Selecting Style","",1) end
+	end,
+	OffCommand=function()
+		if styles and #styles > 1 or enableUD then SCREENMAN:GetTopScreen():RemoveInputCallback(InputHandler) end
 	end,
 	loadfile(THEME:GetPathB("ScreenWithMenuElements","underlay/_sides"))(),
 	loadfile(THEME:GetPathB("ScreenWithMenuElements","underlay/_base"))(),

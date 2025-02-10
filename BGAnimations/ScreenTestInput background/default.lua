@@ -12,8 +12,8 @@ local InputHandler = function( event )
 end
 
 return Def.ActorFrame{
-	OnCommand=function(self) SCREENMAN:GetTopScreen():AddInputCallback( InputHandler ) end,
-	OffCommand=function(self) SCREENMAN:GetTopScreen():RemoveInputCallback( InputHandler ) end,
+	OnCommand=function() SCREENMAN:GetTopScreen():AddInputCallback( InputHandler ) end,
+	OffCommand=function() SCREENMAN:GetTopScreen():RemoveInputCallback( InputHandler ) end,
 	Def.Sprite {
 		Texture = THEME:GetPathB("ScreenWithMenuElements background/CJ112",isFinal() and "Final" or "Normal"),
 		InitCommand=function(self) self:FullScreen() end

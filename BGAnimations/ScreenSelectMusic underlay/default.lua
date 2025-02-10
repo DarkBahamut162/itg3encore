@@ -54,8 +54,8 @@ end
 
 return Def.ActorFrame{
     InitCommand=function() if (isOutFox() and not isOutFoxV()) or active then generateFavoritesForMusicWheel() end end,
-	OnCommand=function(self) if (isOutFox() and not isOutFoxV()) or active then SCREENMAN:GetTopScreen():AddInputCallback(InputHandler) end end,
-	OffCommand=function(self) if (isOutFox() and not isOutFoxV()) or active then SCREENMAN:GetTopScreen():RemoveInputCallback(InputHandler) end end,
+	OnCommand=function() if (isOutFox() and not isOutFoxV()) or active then SCREENMAN:GetTopScreen():AddInputCallback(InputHandler) end end,
+	OffCommand=function() if (isOutFox() and not isOutFoxV()) or active then SCREENMAN:GetTopScreen():RemoveInputCallback(InputHandler) end end,
 	SortOrderChangedMessageCommand=function(self)
 		local s = GAMESTATE:GetSortOrder()
 		if s ~= nil then

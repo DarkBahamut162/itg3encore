@@ -153,6 +153,7 @@ return Def.ActorFrame{
 		INPUTFILTER:ResetMapping()
 		SCREENMAN:GetTopScreen():AddInputCallback(LoadModule("Lua.InputSystem.lua")(self))
 	end,
+	OffCommand=function() SCREENMAN:GetTopScreen():RemoveInputCallback(LoadModule("Lua.InputSystem.lua")(self)) end,
 	BackCommand=function(self)
 		if lockmode then
 			self:GetChild("CurBut"):settext(Buttons[CurSel][1])

@@ -73,7 +73,8 @@ end
 
 return Def.ActorFrame{
 	InitCommand=function(self) c = self:GetChildren() end,
-	OnCommand=function(self) SCREENMAN:GetTopScreen():AddInputCallback(InputHandler) end,
+	OnCommand=function() SCREENMAN:GetTopScreen():AddInputCallback(InputHandler) end,
+	OffCommand=function() SCREENMAN:GetTopScreen():RemoveInputCallback(InputHandler) end,
 	Def.BitmapText {
 		File = "_z 36px shadowx",
 		Name="TBC",

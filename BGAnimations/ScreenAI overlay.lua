@@ -451,7 +451,8 @@ end
 
 return Def.ActorFrame{
 	InitCommand=function(self) self:y(SCREEN_CENTER_Y-SCREEN_CENTER_Y*WideScreenDiff()) end,
-	OnCommand=function(self) SCREENMAN:GetTopScreen():AddInputCallback(InputHandler) end,
+	OnCommand=function() SCREENMAN:GetTopScreen():AddInputCallback(InputHandler) end,
+	OffCommand=function() SCREENMAN:GetTopScreen():RemoveInputCallback(InputHandler) end,
 	Def.ActorFrame{
 		Name="Skill",
 		InitCommand=function(self) self:x(SCREEN_LEFT+86*WideScreenDiff_(16/10)):y(SCREEN_TOP+80*WideScreenDiff()) skill = self:GetChildren() end,

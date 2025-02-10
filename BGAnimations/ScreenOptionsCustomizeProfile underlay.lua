@@ -334,10 +334,11 @@ end
 
 local args = {
 	Def.Actor{
-		OnCommand=function(self)
+		OnCommand=function()
 			MESSAGEMAN:Broadcast("UpdateCursor",{ind=1})
 			SCREENMAN:GetTopScreen():AddInputCallback(input)
-		end
+		end,
+		OffCommand=function() SCREENMAN:GetTopScreen():RemoveInputCallback(input) end
 	}
 }
 

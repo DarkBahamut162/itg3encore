@@ -81,7 +81,8 @@ local red = color("#ff0000")
 local blue = color("#0000ff")
 
 local args = {
-	OnCommand= function(self) SCREENMAN:GetTopScreen():AddInputCallback(input) end,
+	OnCommand=function() SCREENMAN:GetTopScreen():AddInputCallback(input) end,
+	OffCommand=function() SCREENMAN:GetTopScreen():RemoveInputCallback(input) end,
 	quaid(0, 0, _screen.w, 1, red, left, top),
 	quaid(0, _screen.h, _screen.w, 1, red, left, bottom),
 	quaid(0, 0, 1, _screen.h, blue, left, top),
