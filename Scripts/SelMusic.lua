@@ -1124,11 +1124,11 @@ function getCalculatedDifficulty(Step)
 	local SPS = 0
 
 	if IsGame("be-mu") or IsGame("beat") then
-		--YA = GetConvertDifficulty(Song,Step,totalSeconds) / 2
+		YA = GetConvertDifficulty(Song,Step,totalSeconds) / 2
 		if usesStepCache then SPS = tonumber(LoadFromCache(Song,Step,"StepsPerSecond")) / 2 end
 		--if usesStepCache then SPS = getSPS(Song,Step) / 2 end
 	else
-		--if not IsGame("pump") then YA = GetConvertDifficulty(Song,Step,totalSeconds) * (getColumnsPerPlayer(stepType[2],stepType[3],true) / 4) * ddrtype end
+		if not IsGame("pump") then YA = GetConvertDifficulty(Song,Step,totalSeconds) * (getColumnsPerPlayer(stepType[2],stepType[3],true) / 4) * ddrtype end
 		if usesStepCache then SPS = tonumber(LoadFromCache(Song,Step,"StepsPerSecond")) * (getColumnsPerPlayer(stepType[2],stepType[3],true) / 4) * ddrtype end
 		--if usesStepCache then SPS = getSPS(Song,Step) * (getColumnsPerPlayer(stepType[2],stepType[3],true) / 4) * ddrtype end
 	end
@@ -1136,8 +1136,8 @@ function getCalculatedDifficulty(Step)
 	local output = {}
 	if DB9 > YA and DB9 > SPS then
 		output = {math.round(DB9),"DB9"}
-	--elseif YA > DB9 and YA > SPS then
-		--output = {math.round(YA),"Y&A"}
+	elseif YA > DB9 and YA > SPS then
+		output = {math.round(YA),"Y&A"}
 	elseif SPS > DB9 and SPS > YA then
 		output = {math.round(SPS),"SPS"}
 	end
