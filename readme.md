@@ -51,7 +51,10 @@ Ability to show current Speed and Mod during GamePlay. Also enables modifying sa
 ### [ScreenEvaluation]
 - **ShowOffset:**
 Shows **earlies** and **lates** of any timing window **during evaluation** excluding misses but including perfects *(0ms)*
-
+### [ScreenSummary]
+- **ShowSummary:**
+Shows **songs played and their stats** after going back to title screen.
+  - Shows more if **ShowOffset** has been enabled
 
 ---
 
