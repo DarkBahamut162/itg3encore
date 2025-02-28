@@ -136,7 +136,6 @@ return Def.ActorFrame{
 	},
 	Def.BitmapText {
 		File = "_angel glow",
-		Condition=not isTopScreen("ScreenEvaluationSummary"),
 		InitCommand=function(self) self:x(isFinal() and SCREEN_CENTER_X or SCREEN_CENTER_X-300*WideScreenDiff()):halign(isFinal() and 0.5 or 0):y(SCREEN_CENTER_Y-166*WideScreenDiff()):maxwidth(isFinal() and 1000 or 700):zoom(0.6*WideScreenDiff()):shadowlength(0):playcommand("Update") end,
 		OnCommand=function(self) self:diffusealpha(0):sleep(3):linear(0.3):diffusealpha(1) end,
 		OffCommand=function(self) self:linear(0.2):diffusealpha(0) end,

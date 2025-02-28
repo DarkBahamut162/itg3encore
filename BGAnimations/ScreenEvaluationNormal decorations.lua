@@ -2,30 +2,28 @@ local t = LoadFallbackB()
 
 if ShowStandardDecoration("StepsDisplay") then
 	for pn in ivalues(GAMESTATE:GetEnabledPlayers()) do
-		if not isTopScreen("ScreenEvaluationSummary") then
-			local t2 = Def.ActorFrame{
-				Def.Sprite {
-					Texture = THEME:GetPathG("_difficulty icons",isFinal() and "final" or "normal"),
-					InitCommand=function(self) self:zoomy(0.8):animate(0):zoomx((pn==PLAYER_2) and -0.8 or 0.8):playcommand("Update") end,
-					UpdateCommand=function(self)
-						local StepsOrTrail = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentTrail(pn) or GAMESTATE:GetCurrentSteps(pn)
-						if StepsOrTrail then self:setstate(DifficultyToState(StepsOrTrail:GetDifficulty())) end
-					end
-				},
-				Def.StepsDisplay {
-					InitCommand=function(self) self:Load("StepsDisplayEvaluation",pn):SetFromGameState(pn) end,
-					UpdateNetEvalStatsMessageCommand=function(self,param)
-						if GAMESTATE:IsPlayerEnabled(pn) or isVS() then self:SetFromSteps(param.Steps) end
-					end
-				}
-			}
-			t[#t+1] = t2 .. {
-				InitCommand=function(self)
-					self:name("StepsDisplay"..pname(pn))
-					ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen")
+		local t2 = Def.ActorFrame{
+			Def.Sprite {
+				Texture = THEME:GetPathG("_difficulty icons",isFinal() and "final" or "normal"),
+				InitCommand=function(self) self:zoomy(0.8):animate(0):zoomx((pn==PLAYER_2) and -0.8 or 0.8):playcommand("Update") end,
+				UpdateCommand=function(self)
+					local StepsOrTrail = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentTrail(pn) or GAMESTATE:GetCurrentSteps(pn)
+					if StepsOrTrail then self:setstate(DifficultyToState(StepsOrTrail:GetDifficulty())) end
+				end
+			},
+			Def.StepsDisplay {
+				InitCommand=function(self) self:Load("StepsDisplayEvaluation",pn):SetFromGameState(pn) end,
+				UpdateNetEvalStatsMessageCommand=function(self,param)
+					if GAMESTATE:IsPlayerEnabled(pn) or isVS() then self:SetFromSteps(param.Steps) end
 				end
 			}
-		end
+		}
+		t[#t+1] = t2 .. {
+			InitCommand=function(self)
+				self:name("StepsDisplay"..pname(pn))
+				ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen")
+			end
+		}
 	end
 end
 

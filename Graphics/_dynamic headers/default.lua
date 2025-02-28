@@ -6,7 +6,6 @@ local NameCase = setmetatable(
 			["ScreenEvaluationRave"] = "ScreenEvaluation",
 			["ScreenEvaluationNonstop"] = "ScreenEvaluation",
 			["ScreenEvaluationOni"] = "ScreenEvaluation",
-			["ScreenEvaluationSummary"] = "ScreenEvaluation",
 			["ScreenEvaluationWorkout"] = "ScreenEvaluation",
 			["ScreenEvaluationCourseWorkout"] = "ScreenEvaluation",
 			["ScreenPlayerOptions"] = "ScreenPlayerOptions",

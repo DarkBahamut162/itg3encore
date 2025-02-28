@@ -130,5 +130,6 @@ end
 
 Branch.ScreenSelectMusicPrevScreen = function()
 	if getenv("Workout") then return "ScreenWorkoutMenu" end
+	if ThemePrefs.Get("ShowSummary") and GAMESTATE:IsEventMode() and GAMESTATE:GetCurrentStageIndex() > 0 then return "ScreenSummary" end
 	return Branch.TitleScreen()
 end

@@ -53,6 +53,11 @@ local Prefs = {
 		Choices = { OptionNameString('Off'), OptionNameString('On') },
 		Values = { false, true }
 	},
+	ShowSummary = {
+		Default = false,
+		Choices = { OptionNameString('Off'), OptionNameString('On') },
+		Values = { false, true }
+	},
 	ShowRounds = {
 		Default = false,
 		Choices = { OptionNameString('Off'), OptionNameString('On') },

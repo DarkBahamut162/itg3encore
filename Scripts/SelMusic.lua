@@ -1,6 +1,7 @@
 local cacheVersion = "0.40"
 local stepCache = {}
 local typeList = {"avi","f4v","flv","mkv","mp4","mpeg","mpg","mov","ogv","webm","wmv"}
+Master,P1,P2={},{},{}
 
 function getCacheVersion()
 	return cacheVersion

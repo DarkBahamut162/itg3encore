@@ -347,6 +347,7 @@ function InitRotationOptions()
 end
 
 function InitOptions()
+	Master,P1,P2={},{},{}
 	GAMESTATE:SetFailTypeExplicitlySet(true)
 	setenv("HighScoreableP1",false)
 	setenv("HighScoreableP2",false)
