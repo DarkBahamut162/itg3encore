@@ -179,12 +179,6 @@ t[#t+1] = Def.ActorFrame{
 			ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen")
 		end
 	},
-	loadfile(THEME:GetPathG(Var "LoadingScreen", "BPMDisplay"))() .. {
-		InitCommand=function(self)
-			self:name("BPMDisplay")
-			ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen")
-		end
-	},
 	loadfile(THEME:GetPathG(Var "LoadingScreen", "InfoDisplay"))() .. {
 		InitCommand=function(self)
 			self:name("InfoDisplay")
@@ -198,6 +192,37 @@ t[#t+1] = Def.ActorFrame{
 		end
 	}
 }
+
+local enableMOD = ThemePrefs.Get("ShowMODDisplay")
+
+t[#t+1] = Def.ActorFrame{
+	loadfile(THEME:GetPathG(Var "LoadingScreen", "BPMDisplay"))() .. {
+		InitCommand=function(self)
+			self:name("BPMDisplay")
+			ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen")
+			if enableMOD then self:queuecommand("Animate") end
+		end,
+		AnimateCommand=function(self) self:diffusealpha(1):sleep(1.75):linear(0.25):diffusealpha(0):sleep(1.75):linear(0.25):diffusealpha(1):queuecommand("Animate") end,
+		RateChangedMessageCommand=function(self) if enableMOD then self:stoptweening():stopeffect():diffusealpha(0):sleep(1.75):linear(0.25):diffusealpha(1):queuecommand("Animate") end end,
+		SpeedChoiceChangedMessageCommand=function(self) if enableMOD then self:stoptweening():stopeffect():diffusealpha(0):sleep(1.75):linear(0.25):diffusealpha(1):queuecommand("Animate") end end,
+		OffCommand=function(self) self:stoptweening():stopeffect():accelerate(0.75):addx(SCREEN_WIDTH) end
+	}
+}
+if enableMOD then
+	t[#t+1] = Def.ActorFrame{
+		loadfile(THEME:GetPathG(Var "LoadingScreen", "MODDisplay"))() .. {
+			InitCommand=function(self)
+				self:name("MODDisplay")
+				ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen")
+				self:queuecommand("Animate")
+			end,
+			AnimateCommand=function(self) self:diffusealpha(0):sleep(1.75):linear(0.25):diffusealpha(1):sleep(1.75):linear(0.25):diffusealpha(0):queuecommand("Animate") end,
+			RateChangedMessageCommand=function(self) if enableMOD then self:stoptweening():stopeffect():diffusealpha(1):sleep(1.75):linear(0.25):diffusealpha(0):queuecommand("Animate") end end,
+			SpeedChoiceChangedMessageCommand=function(self) if enableMOD then self:stoptweening():stopeffect():diffusealpha(1):sleep(1.75):linear(0.25):diffusealpha(0):queuecommand("Animate") end end,
+			OffCommand=function(self) self:stoptweening():stopeffect():accelerate(0.75):addx(SCREEN_WIDTH) end
+		}
+	}
+end
 
 if not courseMode then
 	if ShowStandardDecoration("StepsDisplayList") then
