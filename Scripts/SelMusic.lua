@@ -161,7 +161,7 @@ end
 
 function HasLuaCheck()
 	local song = GAMESTATE:GetCurrentSong()
-	return HasLua(song,"BGCHANGES") or HasLua(song,"FGCHANGES")
+	return HasLua(song,"BGCHANGES") or HasLua(song,"BGCHANGES2") or HasLua(song,"FGCHANGES")
 end
 
 function IsCourseSecret()

@@ -153,16 +153,16 @@ local function GetVertices(flare,level)
 		if string.find(nextY,"-") then nextY = 0 end
         local col = color(flareColor[level] == "rainbow" and "#ffffff" or flareColor[level])
         vertices[#vertices+1] = {
-            {(curX/max)*graphW, (curY/10000)*graphH, 0}, col
+            {math.min(1,curX/max)*graphW, (curY/10000)*graphH, 0}, col
         }
         vertices[#vertices+1] = {
-            {(curX/max)*graphW, 0, 0}, col
+            {math.min(1,curX/max)*graphW, 0, 0}, col
         }
         vertices[#vertices+1] = {
-            {(nextX/max)*graphW, 0, 0}, col
+            {math.min(1,nextX/max)*graphW, 0, 0}, col
         }
         vertices[#vertices+1] = {
-            {(nextX/max)*graphW, (nextY/10000)*graphH, 0}, col
+            {math.min(1,nextX/max)*graphW, (nextY/10000)*graphH, 0}, col
         }
     end
     return vertices

@@ -137,9 +137,11 @@ if not isTopScreen("ScreenJukeboxMenu") and GAMESTATE:IsHumanPlayer(player) then
 				self:settextf("MOD: %s%s  BPM: %s",pXmod == "x" and pX/100 or pX,pXmod,bpmtext)
 			end,
 			SpeedChoiceChangedMessageCommand=function(self,param)
-				pX = param.speed
-				pXmod = param.mode
-				self:playcommand("On")
+				if player == param.pn then
+					pX = param.speed
+					pXmod = param.mode
+					self:playcommand("On")
+				end
 			end,
 			RateChangedMessageCommand=function(self,param)
 				checkInitBPMs()
