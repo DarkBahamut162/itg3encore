@@ -62,11 +62,13 @@ return Def.ActorFrame{
 		SetCommand=function(self)
 			local name = self:GetChild("ScoreName")
 			local score = self:GetChild("ScorePercent")
+			local f = self:GetChild("FlareName")
 			local profile = PROFILEMAN:GetProfile(player)
 			local SongOrCourse = courseMode and GAMESTATE:GetCurrentCourse() or GAMESTATE:GetCurrentSong()
 			local StepOrTrails = courseMode and GAMESTATE:GetCurrentTrail(player) or GAMESTATE:GetCurrentSteps(player)
 			local scoreText = "?"
 			local nameText = "YOU"
+			local flare = 0
 
 			if SongOrCourse and StepOrTrails then
 				local hsl = profile:GetHighScoreList(SongOrCourse,StepOrTrails)
@@ -76,10 +78,43 @@ return Def.ActorFrame{
 				else
 					scoreText = "0.00%"
 				end
+				flare = GetFlare(player,SongOrCourse,StepOrTrails)
 			end
 			name:settext(nameText)
 			score:settext(scoreText)
+			if flare == 10 then
+				name:rainbow()
+				f:settext("FX")
+			elseif flare == 0 then
+				name:stopeffect():diffuse(color("#fff"))
+				f:settext("")
+			else
+				name:stopeffect():diffuse(color(flareColor[flare]))
+				f:settext("F"..flare)
+			end
 		end,
+		Def.BitmapText {
+			File = "_z 36px shadowx",
+			Name="FlareName",
+			Text="FX",
+			InitCommand=function(self) self:x(32):y(85):rotationz(90):diffusealpha(0):zoom(0.25):shadowlength(2):maxwidth(175) end,
+			OnCommand=function(self) self:sleep(0.85):linear(0.2):diffusealpha(1) end,
+			OffCommand=function(self) self:linear(0.4):diffusealpha(0) end,
+			SetCommand=function(self)
+				local SongOrCourse = courseMode and GAMESTATE:GetCurrentCourse() or GAMESTATE:GetCurrentSong()
+				local StepOrTrails = courseMode and GAMESTATE:GetCurrentTrail(player) or GAMESTATE:GetCurrentSteps(player)
+				local flare = 0
+
+				if SongOrCourse and StepOrTrails then flare = GetFlare(player,SongOrCourse,StepOrTrails) end
+				if flare == 10 then
+					self:settext("FX")
+				elseif flare == 0 then
+					self:settext("")
+				else
+					self:settext("F"..flare)
+				end
+			end
+		},
 		Def.BitmapText {
 			File = "_z 36px shadowx",
 			Name="ScoreName",

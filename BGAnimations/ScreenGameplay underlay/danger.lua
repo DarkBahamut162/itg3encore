@@ -2,6 +2,12 @@ local centerCheck = getenv("Rotation"..pname(GAMESTATE:GetMasterPlayerNumber()))
 return Def.ActorFrame{
 	Def.ActorFrame{
 		Name="DangerP1",
+		OnCommand=function(self) if getenv("Flare"..pname(PLAYER_1)) == 11 then self:visible(false) end end,
+		ChangeBorderMessageCommand=function(self,param)
+			if param.Player == PLAYER_1 then
+				if param.Level == 1 then self:visible(true) end
+			end
+		end,
 		Def.ActorFrame{
 			Condition=not isDouble() and not centerCheck,
 			Name="Single",
@@ -42,6 +48,12 @@ return Def.ActorFrame{
 	Def.ActorFrame{
 		Condition=isDouble() or centerCheck,
 		Name="DangerDouble",
+		OnCommand=function(self) if getenv("Flare"..pname(GAMESTATE:GetMasterPlayerNumber())) == 11 then self:visible(false) end end,
+		ChangeBorderMessageCommand=function(self,param)
+			if param.Player == GAMESTATE:GetMasterPlayerNumber() then
+				if param.Level == 1 then self:visible(true) end
+			end
+		end,
 		Def.ActorFrame{
 			Name="Double",
 			HealthStateChangedMessageCommand=function(self, param)
@@ -81,6 +93,12 @@ return Def.ActorFrame{
 	Def.ActorFrame{
 		Condition=not isDouble() and not centerCheck,
 		Name="DangerP2",
+		OnCommand=function(self) if getenv("Flare"..pname(PLAYER_2)) == 11 then self:visible(false) end end,
+		ChangeBorderMessageCommand=function(self,param)
+			if param.Player == PLAYER_2 then
+				if param.Level == 1 then self:visible(true) end
+			end
+		end,
 		Def.ActorFrame{
 			Name="Single",
 			HealthStateChangedMessageCommand=function(self, param)

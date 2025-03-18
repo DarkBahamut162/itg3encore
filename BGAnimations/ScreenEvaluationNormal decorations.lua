@@ -11,6 +11,52 @@ if ShowStandardDecoration("StepsDisplay") then
 					if StepsOrTrail then self:setstate(DifficultyToState(StepsOrTrail:GetDifficulty())) end
 				end
 			},
+			Def.Sprite {
+				Condition=getenv("Flare"..pname(pn)) > 0,
+				Texture = THEME:GetPathB("ScreenGameplay","overlay/_border"),
+				InitCommand=function(self) self:zoomy(0.4):zoomx((pn==PLAYER_2) and -0.4 or 0.4):playcommand("ChangeBorder")  end,
+				ChangeBorderCommand=function(self,param)
+					local level = getenv("Flare"..pname(pn))
+					if level == 0 then
+						self:diffusealpha(0)
+					elseif level == 11 then
+						local float = getenv("FlareDisplay"..pname(pn))
+						if type(float[#float][2]) ~= 'table' then
+							level = #split("|",float[#float][2])
+						else
+							level = #float[#float][2]
+						end
+						if level == 1 and tonumber(float[#float][2][1]) < 0 then
+							self:diffusealpha(0)
+						else
+							if flareColor[level] == "rainbow" then self:rainbow() else self:stopeffect():diffuse(color(flareColor[level])) end
+						end
+					end
+				end
+			},
+			Def.BitmapText {
+				Condition=getenv("Flare"..pname(pn)) > 0,
+				File = "_v 26px bold black",
+				InitCommand=function(self) self:zoom(0.33*WideScreenDiff()):addy(-11*WideScreenDiff()):playcommand("ChangeBorder") end,
+				ChangeBorderMessageCommand=function(self,param)
+					local level = getenv("Flare"..pname(pn))
+					if level == 0 then
+						self:diffusealpha(0)
+					elseif level == 11 then
+						local float = getenv("FlareDisplay"..pname(pn))
+						if type(float[#float][2]) ~= 'table' then
+							level = #split("|",float[#float][2])
+						else
+							level = #float[#float][2]
+						end
+						if level == 1 and tonumber(float[#float][2][1]) < 0 then
+							self:diffusealpha(0)
+						else
+							self:settext("FLARE "..flareName[level])
+						end
+					end
+				end
+			},
 			Def.StepsDisplay {
 				InitCommand=function(self) self:Load("StepsDisplayEvaluation",pn):SetFromGameState(pn) end,
 				UpdateNetEvalStatsMessageCommand=function(self,param)
@@ -91,6 +137,37 @@ local function CalcMinusStepSeconds(pn)
     return fSecs / songoptions:MusicRate()
 end
 
+local function GetVertices(flare,level)
+	local graphH = 68
+	local graphW = 192
+    local addx = graphW / #flare
+    local vertices = {}
+	local max = flare[#flare][1]
+
+    for i=1, #flare - 1 do
+		local curX = flare[i][1]
+		local nextX = flare[i+1][1]
+		local curY = flare[i][2][level] or 0
+		local nextY = flare[i+1][2][level] or 0
+		if string.find(curY,"-") then curY = 0 end
+		if string.find(nextY,"-") then nextY = 0 end
+        local col = color(flareColor[level] == "rainbow" and "#ffffff" or flareColor[level])
+        vertices[#vertices+1] = {
+            {(curX/max)*graphW, (curY/10000)*graphH, 0}, col
+        }
+        vertices[#vertices+1] = {
+            {(curX/max)*graphW, 0, 0}, col
+        }
+        vertices[#vertices+1] = {
+            {(nextX/max)*graphW, 0, 0}, col
+        }
+        vertices[#vertices+1] = {
+            {(nextX/max)*graphW, (nextY/10000)*graphH, 0}, col
+        }
+    end
+    return vertices
+end
+
 local function GraphDisplay(pn)
 	local length = TotalPossibleStepSeconds()
 	local lastMarvelousSecond = getenv("LastFantastic"..pname(pn)) - CalcMinusStepSeconds(pn)
@@ -106,6 +183,62 @@ local function GraphDisplay(pn)
 	local lastPerfectSecond = lastPerfectSecond * fix
 	local lastMarvelousSecond = lastMarvelousSecond * fix
 
+	local display = Def.ActorFrame{}
+	local float = getenv("FlareDisplay"..pname(pn))
+	local last = 1
+	local flareLevel = getenv("Flare"..pname(pn))
+
+	if flareLevel == 11 then
+		if type(float[#float][2]) ~= 'table' then
+			last = #split("|",float[#float][2])
+		else
+			last = #float[#float][2]
+		end
+		float[#float][1] = length
+		for flare=last,10 do
+			for i=1,#float do
+				if type(float[i][2]) ~= 'table' then
+					float[i][2] = split("|",float[i][2])
+				end
+			end
+			display[#display+1] = Def.ActorMultiVertex{
+				InitCommand=function(self)
+					local vertices = GetVertices(float,flare)
+					self:SetDrawState({Mode = 'DrawMode_Quads'})
+					self:SetVertices(1, vertices)
+					self:SetNumVertices(#vertices)
+					self:rotationx(180)
+					self:x(-96):y(34)
+					if flare == 10 then self:rainbow() end
+				end
+			}
+		end
+	else
+		display = Def.GraphDisplay {
+			InitCommand=function(self) self:Load("GraphDisplay"..pname(pn)) end,
+			BeginCommand=function(self)
+				local ss = SCREENMAN:GetTopScreen():GetStageStats()
+				self:Set( ss, ss:GetPlayerStageStats(pn) ):player( pn )
+				if not isOutFox() and isVS() then self:MaskDest() end
+			end
+		}
+	end
+
+	if flareLevel > 0 then
+		if PSS:GetFailed() then last = 0 end
+		if last == 1 and tonumber(float[#float][2][1]) < 0 then last = 0 end
+
+		if flareLevel > 0 and last > 0 then
+			if not PSS:GetFailed() and PSS:GetAliveSeconds() > length and not
+			((GAMESTATE:GetPlayerState(pn):GetPlayerController() == 'PlayerController_Autoplay') or
+			(GAMESTATE:GetPlayerState(pn):GetPlayerController() == 'PlayerController_Cpu')) then
+				local Song = GAMESTATE:GetCurrentSong()
+				local Steps = GAMESTATE:GetCurrentSteps(pn)
+				if UpdateFlare(Song,Steps,last,pn) then SaveFlare(pn) end
+			end
+		end
+	end
+
 	return Def.ActorFrame {
 		Def.ActorFrame {
 			Def.Quad{
@@ -117,16 +250,9 @@ local function GraphDisplay(pn)
 				OnCommand=function(self) self:valign(1):zoomto(194,SCREEN_WIDTH):MaskSource(false):y(-34) end
 			}
 		},
-		Def.GraphDisplay {
-			InitCommand=function(self) self:Load("GraphDisplay"..pname(pn)) end,
-			BeginCommand=function(self)
-				local ss = SCREENMAN:GetTopScreen():GetStageStats()
-				self:Set( ss, ss:GetPlayerStageStats(pn) ):player( pn )
-				if not isOutFox() and isVS() then self:MaskDest() end
-			end
-		},
+		display,
 		Def.ActorFrame {
-			Condition=not isSurvival(pn),
+			Condition=not isSurvival(pn) and flareLevel == 0,
 			Def.Sprite {
 				Texture = THEME:GetPathB("ScreenEvaluation","underlay/FGC "..pname(pn)),
 				Condition=not isVS() and getenv("EvalCombo"..pname(pn)) and not (isOni() and not isLifeline(pn)),

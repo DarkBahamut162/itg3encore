@@ -195,7 +195,7 @@ function SongMods()
 	end
 
 	local fail = isOutFoxV() and "FV" or "F"
-	local options = "1,2,4,"..fail..",0,3,5,RE,RE2,AE,AE2,AE3"..(isOutFox() and ",AE4" or "")..",17,9,"
+	local options = "1,2,4,"..fail..",0,Flare,3,5,RE,RE2,AE,AE2,AE3"..(isOutFox() and ",AE4" or "")..",17,9,"
 
 	if isRegular() then
 		if isDouble() then
@@ -363,6 +363,9 @@ end
 
 function InitPlayerOptions()
 	for pn in ivalues(GAMESTATE:GetEnabledPlayers()) do
+		setenv("Flare"..pname(pn),LoadUserPrefN(pn, "Flare", 0))
+		setenv("FlareType"..pname(pn),SaveUserPref(pn, "FlareType", 1))
+
 		if not isVS() then
 			setenv("Effect"..pname(pn),LoadUserPrefN(pn, "Effect", 0))
 		else
@@ -400,6 +403,34 @@ function InitPlayerOptions()
 		setenv("SongFrame"..pname(pn),LoadUserPref(pn, "SongFrame", "_normal"))
 	end
 
+end
+
+function OptionFlare()
+	local t = {
+		Name="Flare",
+		LayoutType = "ShowAllInRow",
+		SelectType = "SelectMultiple",
+		OneChoiceForAllPlayers = false,
+		ExportOnChange = false,
+		Choices = { "Off","F1","F2","F3","F4","F5","F6","F7","F8","F9","FX","FF","Old","New" },
+		LoadSelections = function(self, list, pn)
+			local flare = getenv("Flare"..pname(pn))
+			local flareType = getenv("FlareType"..pname(pn))
+			list[flare+1] = true
+			list[flareType+12] = true
+		end,
+		SaveSelections = function() end,
+		NotifyOfSelection= function(self, pn, choice)
+			if choice <= 12 then
+				setenv("Flare"..pname(pn),SaveUserPref(pn, "Flare", choice-1))
+			else
+				setenv("FlareType"..pname(pn),SaveUserPref(pn, "FlareType", choice-12))
+			end
+			return true
+		end
+	}
+	setmetatable(t, t)
+	return t
 end
 
 local function AvailableArrowDirections()

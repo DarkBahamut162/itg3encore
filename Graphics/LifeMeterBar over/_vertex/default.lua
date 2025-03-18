@@ -1,3 +1,5 @@
+local pn = ...
+
 local color1 = color("#00EAFF")
 local color2 = color("FFFFFF00")
 local vertexOn = false
@@ -45,9 +47,53 @@ return Def.ActorFrame{
 		OnCommand=function(self) self:sleep(1):decelerate(0.6):addx(100) end
 	},
 	Def.Sprite {
+		Texture = "glow1",
+		InitCommand=function(self) self:blend(Blend.Add):addx(-5):visible(false) end,
+		ChangeBorderMessageCommand=function(self,param)
+			if param.Player == pn then
+				self:visible(true)
+				if param.Color == "rainbow" then
+					self:rainbow()
+				else
+					self:stopeffect():diffuse(color(param.Color))
+				end
+			end
+		end,
+	},
+	Def.Sprite {
 		Texture = "glow2",
 		InitCommand=function(self) self:blend(Blend.Add):addx(-5):diffusealpha(0) end,
 		OnCommand=function(self) self:sleep(1.8):decelerate(0.3):diffusealpha(1):sleep(0.2):accelerate(0.6):diffusealpha(0):queuecommand("Destroy") end,
 		DestroyCommand=function(self) self:visible(false) end
+	},
+	Def.Sprite {
+		Texture = "light",
+		InitCommand=function(self) self:blend(Blend.Add):addx(-155):addx(-100):visible(false) end,
+		OnCommand=function(self) self:sleep(0.8):decelerate(0.6):addx(100) end,
+		ChangeBorderMessageCommand=function(self,param)
+			if param.Player == pn then
+				self:visible(true)
+				if param.Color == "rainbow" then
+					self:rainbow()
+				else
+					self:stopeffect():diffuse(color(param.Color))
+				end
+			end
+		end
+	},
+	Def.Sprite {
+		Texture = "light",
+		InitCommand=function(self) self:blend(Blend.Add):addx(-174):addx(-100):visible(false) end,
+		OnCommand=function(self) self:sleep(1):decelerate(0.6):addx(100) end,
+		ChangeBorderMessageCommand=function(self,param)
+			if param.Player == pn then
+				self:visible(true)
+				if param.Color == "rainbow" then
+					self:rainbow()
+				else
+					self:stopeffect():diffuse(color(param.Color))
+				end
+			end
+		end
 	}
 }

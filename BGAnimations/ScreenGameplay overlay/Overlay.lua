@@ -12,7 +12,7 @@ return Def.ActorFrame{
     },
     Def.ActorFrame{
         Condition=not isVS(),
-        loadfile(THEME:GetPathG("LifeMeterBar","over/"..GetSongFrame(pn)))()..{
+        loadfile(THEME:GetPathG("LifeMeterBar","over/"..GetSongFrame(pn)))(pn)..{
             InitCommand=function(self)
                 self:name("Life"..pname(pn))
                 ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen")

@@ -360,10 +360,11 @@ local t = Def.ActorFrame{
 }
 
 for pn in ivalues(GAMESTATE:GetEnabledPlayers()) do
-	t[#t+1] = loadfile(THEME:GetPathB("ScreenGameplay","overlay/DeltaSeconds"))(pn)..{ Condition=isOni() and not isLifeline(pn) or isSurvival(pn) }
+	if isOni() and not isLifeline(pn) or isSurvival(pn) then t[#t+1] = loadfile(THEME:GetPathB("ScreenGameplay","overlay/DeltaSeconds"))(pn) end
 	t[#t+1] = loadfile(THEME:GetPathB("ScreenGameplay","overlay/FCSplash"))(pn)
-	t[#t+1] = loadfile(THEME:GetPathB("ScreenGameplay","overlay/Score"))(pn)..{ Condition=isRegular() or isNonstop() or isLifeline(pn) }
+	if isRegular() or isNonstop() or isLifeline(pn) then t[#t+1] = loadfile(THEME:GetPathB("ScreenGameplay","overlay/Score"))(pn) end
 	t[#t+1] = loadfile(THEME:GetPathB("ScreenGameplay","overlay/Dynamic"))(pn)
+	if getenv("Flare"..pname(pn)) > 0 then t[#t+1] = loadfile(THEME:GetPathB("ScreenGameplay","overlay/Flare"))(pn) end
 end
 
 return t

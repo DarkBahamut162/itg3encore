@@ -21,6 +21,13 @@ for pn in ivalues(GAMESTATE:GetEnabledPlayers()) do
 		end
 	end
 
+	if getenv("Flare"..pname(pn)) > 0 then
+		GAMESTATE:GetPlayerState(pn):GetPlayerOptions('ModsLevel_Preferred'):FailSetting('FailType_Immediate')
+		GAMESTATE:GetPlayerState(pn):GetPlayerOptions('ModsLevel_Stage'):FailSetting('FailType_Immediate')
+		GAMESTATE:GetPlayerState(pn):GetPlayerOptions('ModsLevel_Song'):FailSetting('FailType_Immediate')
+		GAMESTATE:GetPlayerState(pn):GetPlayerOptions('ModsLevel_Current'):FailSetting('FailType_Immediate')
+	end
+
 	if getenv("ShowMods"..pname(pn)) then
 		if not GAMESTATE:IsCourseMode() and not isVS() then
 			if not HasLuaCheck() then
@@ -33,6 +40,7 @@ for pn in ivalues(GAMESTATE:GetEnabledPlayers()) do
 	setenv("LastFantastic"..pname(pn),0)
 	setenv("LastPerfect"..pname(pn),0)
 	setenv("LastGreat"..pname(pn),0)
+	setenv("FlareDisplay"..pname(pn),nil)
 end
 
 local showBar = {

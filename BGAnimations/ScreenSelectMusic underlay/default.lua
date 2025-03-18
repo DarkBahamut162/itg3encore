@@ -23,6 +23,48 @@ local function updateFavorites()
 	end
 end
 
+local MOD = {}
+local CURRENT = {}
+local PREVIOUS = {}
+local enableMOD = ThemePrefs.Get("ShowMODDisplay")
+
+local function setX(value,player)
+	GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Preferred"):XMod(value/100)
+	GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Stage"):XMod(value/100)
+	GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Song"):XMod(value/100)
+	GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Current"):XMod(value/100)
+end
+local function setC(value,player)
+	GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Preferred"):CMod(value)
+	GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Stage"):CMod(value)
+	GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Song"):CMod(value)
+	GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Current"):CMod(value)
+end
+local function setM(value,player)
+	GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Preferred"):MMod(value)
+	GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Stage"):MMod(value)
+	GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Song"):MMod(value)
+	GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Current"):MMod(value)
+end
+local function setA(value,player)
+	GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Preferred"):AMod(value)
+	GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Stage"):AMod(value)
+	GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Song"):AMod(value)
+	GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Current"):AMod(value)
+end
+local function setAV(value,player)
+	GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Preferred"):AVMod(value)
+	GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Stage"):AVMod(value)
+	GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Song"):AVMod(value)
+	GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Current"):AVMod(value)
+end
+local function setCA(value,player)
+	GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Preferred"):CAMod(value)
+	GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Stage"):CAMod(value)
+	GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Song"):CAMod(value)
+	GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Current"):CAMod(value)
+end
+
 local InputHandler = function(event)
 	if not event.PlayerNumber or not event.button then return false end
 	if event.type == "InputEventType_FirstPress" then
@@ -44,6 +86,77 @@ local InputHandler = function(event)
 				addOrRemoveFavorite(event.PlayerNumber)
 				updateFavorites()
 			end
+		elseif (event.GameButton == "EffectDown" or event.GameButton == "EffectUp") and not selectHeld[event.PlayerNumber] then
+			if enableMOD then
+				PREVIOUS[event.PlayerNumber] = CURRENT[event.PlayerNumber]
+				if event.GameButton == 'EffectUp' then
+					CURRENT[event.PlayerNumber] = CURRENT[event.PlayerNumber] + 25
+				elseif event.GameButton == 'EffectDown' then
+					if CURRENT[event.PlayerNumber] > 25 then CURRENT[event.PlayerNumber] = CURRENT[event.PlayerNumber] - 25 end
+				end
+
+				if MOD[event.PlayerNumber] == "x" then
+					setX(CURRENT[event.PlayerNumber],event.PlayerNumber)
+				elseif MOD[event.PlayerNumber] == "c" then
+					setC(CURRENT[event.PlayerNumber],event.PlayerNumber)
+				elseif MOD[event.PlayerNumber] == "m" then
+					setM(CURRENT[event.PlayerNumber],event.PlayerNumber)
+				elseif MOD[event.PlayerNumber] == "a" then
+					setA(CURRENT[event.PlayerNumber],event.PlayerNumber)
+				elseif MOD[event.PlayerNumber] == "ca" then
+					setCA(CURRENT[event.PlayerNumber],event.PlayerNumber)
+				elseif MOD[event.PlayerNumber] == "av" then
+					setAV(CURRENT[event.PlayerNumber],event.PlayerNumber)
+				end
+				if PREVIOUS[event.PlayerNumber] ~= CURRENT[event.PlayerNumber] then MESSAGEMAN:Broadcast("RateChanged") end
+			end
+		elseif (event.GameButton == "EffectDown" or event.GameButton == "EffectUp") and selectHeld[event.PlayerNumber] then
+			if enableMOD then
+				if event.GameButton == 'EffectDown' then
+					if MOD[event.PlayerNumber] == "x" then
+						MOD[event.PlayerNumber] = "av"
+					elseif MOD[event.PlayerNumber] == "c" then
+						MOD[event.PlayerNumber] = "x"
+					elseif MOD[event.PlayerNumber] == "m" then
+						MOD[event.PlayerNumber] = "c"
+					elseif MOD[event.PlayerNumber] == "a" then
+						MOD[event.PlayerNumber] = "m"
+					elseif MOD[event.PlayerNumber] == "ca" then
+						MOD[event.PlayerNumber] = "a"
+					elseif MOD[event.PlayerNumber] == "av" then
+						MOD[event.PlayerNumber] = "ca"
+					end
+				elseif event.GameButton == 'EffectUp' then
+					if MOD[event.PlayerNumber] == "x" then
+						MOD[event.PlayerNumber] = "c"
+					elseif MOD[event.PlayerNumber] == "c" then
+						MOD[event.PlayerNumber] = "m"
+					elseif MOD[event.PlayerNumber] == "m" then
+						MOD[event.PlayerNumber] = "a"
+					elseif MOD[event.PlayerNumber] == "a" then
+						MOD[event.PlayerNumber] = "ca"
+					elseif MOD[event.PlayerNumber] == "ca" then
+						MOD[event.PlayerNumber] = "av"
+					elseif MOD[event.PlayerNumber] == "av" then
+						MOD[event.PlayerNumber] = "x"
+					end
+				end
+
+				if MOD[event.PlayerNumber] == "x" then
+					setX(CURRENT[event.PlayerNumber],event.PlayerNumber)
+				elseif MOD[event.PlayerNumber] == "c" then
+					setC(CURRENT[event.PlayerNumber],event.PlayerNumber)
+				elseif MOD[event.PlayerNumber] == "m" then
+					setM(CURRENT[event.PlayerNumber],event.PlayerNumber)
+				elseif MOD[event.PlayerNumber] == "a" then
+					setA(CURRENT[event.PlayerNumber],event.PlayerNumber)
+				elseif MOD[event.PlayerNumber] == "ca" then
+					setCA(CURRENT[event.PlayerNumber],event.PlayerNumber)
+				elseif MOD[event.PlayerNumber] == "av" then
+					setAV(CURRENT[event.PlayerNumber],event.PlayerNumber)
+				end
+				if PREVIOUS[event.PlayerNumber] ~= CURRENT[event.PlayerNumber] then MESSAGEMAN:Broadcast("RateChanged") end
+			end
 		elseif event.GameButton == "Select" and not selectHeld[event.PlayerNumber] then
 			selectHeld[event.PlayerNumber] = true
 		end
@@ -54,7 +167,18 @@ end
 
 return Def.ActorFrame{
     InitCommand=function() if (isOutFox() and not isOutFoxV()) or active then generateFavoritesForMusicWheel() end end,
-	OnCommand=function() if (isOutFox() and not isOutFoxV()) or active then SCREENMAN:GetTopScreen():AddInputCallback(InputHandler) end end,
+	OnCommand=function()
+		for pn in ivalues(GAMESTATE:GetEnabledPlayers()) do
+			local playeroptions = GAMESTATE:GetPlayerState(pn):GetPlayerOptions("ModsLevel_Song")
+			if playeroptions:MMod() then MOD[pn] = "m" CURRENT[pn] = playeroptions:MMod() break end
+			if isOutFox() then if playeroptions:AMod() then MOD[pn] = "a" CURRENT[pn] = playeroptions:AMod() break end end
+			if isOutFox() then if playeroptions:CAMod() then MOD[pn] = "ca" CURRENT[pn] = playeroptions:CAMod() break end end
+			if isOutFox() then if playeroptions:AVMod() then MOD[pn] = "av" CURRENT[pn] = playeroptions:AVMod() break end end
+			if playeroptions:XMod() then MOD[pn] = "x" CURRENT[pn] = playeroptions:XMod()*100 end
+			if playeroptions:CMod() then MOD[pn] = "c" CURRENT[pn] = playeroptions:CMod() end
+		end
+		if (isOutFox() and not isOutFoxV()) or active then SCREENMAN:GetTopScreen():AddInputCallback(InputHandler) end
+	end,
 	OffCommand=function() if (isOutFox() and not isOutFoxV()) or active then SCREENMAN:GetTopScreen():RemoveInputCallback(InputHandler) end end,
 	SortOrderChangedMessageCommand=function(self)
 		local s = GAMESTATE:GetSortOrder()
