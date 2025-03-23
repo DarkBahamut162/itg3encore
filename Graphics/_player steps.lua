@@ -14,7 +14,7 @@ return Def.ActorFrame{
 				local StepsOrTrail = courseMode and GAMESTATE:GetCurrentTrail(player) or GAMESTATE:GetCurrentSteps(player)
 				local output = ""
 
-				if SongOrCourse and StepsOrTrail and not StepsOrTrail:IsAutogen() then
+				if SongOrCourse and StepsOrTrail then
 					local loadStepCounter = LoadFromCache(SongOrCourse,StepsOrTrail,"StepCounter")
 					if loadStepCounter and loadStepCounter ~= "" then
 						loadStepCounter = split("_",loadStepCounter)

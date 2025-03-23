@@ -286,8 +286,9 @@ end
 
 function getStepCacheFile(Step)
 	local filename = split("/",Step:GetFilename())
-	local groupName = filename[#filename-2]
-	local songName = filename[#filename-1]
+	local Song = Step:IsAutogen() and SONGMAN:GetSongFromSteps(Step) or nil
+	local groupName = filename[#filename-2] or Song and Song:GetGroupName() or ""
+	local songName = filename[#filename-1] or Song and Song:GetSongFolder() or ""
 	if string.find(groupName,"@") then
 		local Song = SONGMAN:GetSongFromSteps(Step)
 		groupName = Song:GetGroupName()
@@ -1033,7 +1034,6 @@ end
 
 function getAllTheBPMs(song,step,BPMtype)
 	local bpms = {0,0,0}
-	if step:IsAutogen() and BPMtype == 2 then BPMtype = 1 end
 	if BPMtype == 0 then
 		if song:IsDisplayBpmSecret() or song:IsDisplayBpmRandom() then
 			bpms = {"???","???","???"}
@@ -1081,7 +1081,6 @@ end
 function getCalculatedDifficulty(Step)
 	if not Step then return "" end
 	local OG = Step:GetMeter()
-	if Step:IsAutogen() then return OG end
 	local value = split("/",getStepCacheFile(Step))[3]
 	if repeatCheck[value] then return repeatCheck[value] end
 
@@ -1162,7 +1161,7 @@ function grooveRadar(song,step,RadarValues)
 	freeze = RadarValues:GetValue('RadarCategory_Freeze')
 	chaos = RadarValues:GetValue('RadarCategory_Chaos')
 
-	if not IsGame("pump") and not step:IsAutogen() then
+	if not IsGame("pump") then
 		--local trueValues = isOutFox() and getTrueSeconds(song,step) or {}
 		--local totalSeconds = isOutFox() and trueValues["TrueSeconds"] or (song:GetLastSecond() - song:GetFirstSecond())
 		--local totalBeats = isOutFox() and trueValues["TrueBeats"] or (song:GetLastBeat() - song:GetFirstBeat())

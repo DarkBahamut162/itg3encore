@@ -170,11 +170,11 @@ return Def.ActorFrame{
 				for curSong=1,#songs do
 					local steps = songs[curSong]:GetAllSteps()
 					for curStep=1,#steps do
-						if steps[curStep] then
+						if steps[curStep] and not steps[curStep]:IsAutogen() then
 							local filename = split("/",steps[curStep]:GetFilename())
 							local stepType = split("_",steps[curStep]:GetStepsType())[2]
 							if cacheStepTypes[stepType] then
-								if #filename >= 4 and not steps[curStep]:IsAutogen() then
+								if #filename >= 4 then
 									local cacheFile = getStepCacheFile(steps[curStep])
 									if not FILEMAN:DoesFileExist(cacheFile) then
 										stepsToCache[#stepsToCache+1] = steps[curStep]
