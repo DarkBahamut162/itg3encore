@@ -15,7 +15,7 @@ if ShowStandardDecoration("StepsDisplay") then
 				Condition=getenv("Flare"..pname(pn)) > 0,
 				Texture = THEME:GetPathB("ScreenGameplay","overlay/_border"),
 				InitCommand=function(self) self:zoomy(0.4):zoomx((pn==PLAYER_2) and -0.4 or 0.4):playcommand("ChangeBorder")  end,
-				ChangeBorderCommand=function(self,param)
+				ChangeBorderCommand=function(self)
 					local level = getenv("Flare"..pname(pn))
 					if level == 0 then
 						self:diffusealpha(0)
@@ -38,7 +38,7 @@ if ShowStandardDecoration("StepsDisplay") then
 				Condition=getenv("Flare"..pname(pn)) > 0,
 				File = "_v 26px bold black",
 				InitCommand=function(self) self:zoom(0.33*WideScreenDiff()):addy(-11*WideScreenDiff()):playcommand("ChangeBorder") end,
-				ChangeBorderMessageCommand=function(self,param)
+				ChangeBorderMessageCommand=function(self)
 					local level = getenv("Flare"..pname(pn))
 					if level == 0 then
 						self:diffusealpha(0)
