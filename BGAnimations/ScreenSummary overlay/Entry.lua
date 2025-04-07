@@ -491,12 +491,12 @@ return Def.ActorFrame{
         Name="BannerArea",
         Def.Sprite {
             InitCommand=function(self) self:x(bannerX):scaletoclipped(128*WideScreenDiff(),40*WideScreenDiff()):diffusealpha(0.5):fadeleft(0.25):faderight(0.25) end,
-            OnCommand=function(self) if Master[index]["Banner"] then self:LoadBanner(Master[index]["Banner"]) end end,
+            OnCommand=function(self) if Master[index] and Master[index]["Banner"] then self:LoadBanner(Master[index]["Banner"]) end end,
         },
         Def.BitmapText {
             File = "_v 26px bold white",
-            Text = Master[index]["Subtitle"] == "" and Master[index]["Title"].."\n"..Master[index]["Artist"] or Master[index]["Title"].."\n"..Master[index]["Subtitle"].."\n"..Master[index]["Artist"],
-            InitCommand=function(self) self:x(bannerX):zoom(0.6*WideScreenDiff()):shadowlength(1):maxwidth(264):maxheight(58) end
+            InitCommand=function(self) self:x(bannerX):zoom(0.6*WideScreenDiff()):shadowlength(1):maxwidth(264):maxheight(58) end,
+            OnCommand=function(self) if Master[index] then self:settext(Master[index]["Subtitle"] == "" and Master[index]["Title"].."\n"..Master[index]["Artist"] or Master[index]["Title"].."\n"..Master[index]["Subtitle"].."\n"..Master[index]["Artist"]) else self:settext("Overall\nPerformance") end end
         }
     },
     playerScore

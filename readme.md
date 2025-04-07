@@ -55,6 +55,9 @@ Shows **earlies** and **lates** of any timing window **during evaluation** exclu
 - **ShowSummary:**
 Shows **songs played and their stats** after going back to title screen.
   - Shows more if **ShowOffset** has been enabled
+- **ShowSummarySummary:**
+Shows the **session's overall performance**
+  - **At least two rounds** need to be played for this to show
 
 ---
 
