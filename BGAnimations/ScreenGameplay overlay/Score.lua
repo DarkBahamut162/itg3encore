@@ -39,7 +39,7 @@ local function animateScore(currentScore,fakeScore)
 		stop = true
 		return currentScore
 	else
-		if scoreDirection == 1 then
+		if currentScore >= fakeScore then
 			if currentScore > fakeScore + math.ceil((currentScore - fakeScore) / dif) then
 				displayScore = fakeScore + math.ceil((currentScore - fakeScore) / dif)
 			elseif currentScore <= fakeScore + math.ceil((currentScore - fakeScore) / dif) then
