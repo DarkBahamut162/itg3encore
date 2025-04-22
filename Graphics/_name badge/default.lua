@@ -143,7 +143,7 @@ if not isTopScreen("ScreenJukeboxMenu") and GAMESTATE:IsHumanPlayer(player) then
 					self:playcommand("On")
 				end
 			end,
-			RateChangedMessageCommand=function(self,param)
+			RateChangedMessageCommand=function(self)
 				checkInitBPMs()
 				self:playcommand("On")
 			end

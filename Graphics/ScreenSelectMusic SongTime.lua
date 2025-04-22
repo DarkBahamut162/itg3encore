@@ -70,7 +70,7 @@ return Def.ActorFrame{
 			if length[1] >= 6000 then c.Time:x(-103-(math.floor(math.log10(length[1]/6000)+1)*28)) else c.Time:x(-103) end
 			self:settext( SecondsToMMSSMsMs(length[1]) )
 		end,
-		RateChangedMessageCommand=function(self, params) self:playcommand("Set") end,
+		RateChangedMessageCommand=function(self) self:playcommand("Set") end,
 		CurrentSongChangedMessageCommand=function(self) if not course then self:queuecommand("Set") end end,
 		CurrentStepsP1ChangedMessageCommand=function(self) if not course then self:queuecommand("Set") end end,
 		CurrentStepsP2ChangedMessageCommand=function(self) if not course then self:queuecommand("Set") end end,

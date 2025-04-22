@@ -123,7 +123,7 @@ return Def.ActorFrame{
 			end
 			self:settext(output)
 		end,
-		RateChangedMessageCommand=function(self,param) self:playcommand("Set") end,
+		RateChangedMessageCommand=function(self) self:playcommand("Set") end,
 		SpeedChoiceChangedMessageCommand=function(self,param)
 			pXmod[param.pn] = param.mode
 			pX[param.pn] = param.speed
