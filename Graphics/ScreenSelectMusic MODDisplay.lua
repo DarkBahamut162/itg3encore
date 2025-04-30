@@ -116,7 +116,7 @@ return Def.ActorFrame{
 		InitCommand=function(self) self:halign(1):zoom(0.66*WideScreenDiff()):maxwidth(120):maxheight(32):vertspacing(-10):playcommand("Set") end,
 		SetCommand=function(self)
 			local output = ""
-			for pn in ivalues(GAMESTATE:GetEnabledPlayers()) do
+			for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
 				checkInitBPMs(pn)
 				checkInitSpeedMods(pn)
 				output = addToOutput(output,pXmod[pn]..(pXmod[pn] == "x" and pX[pn]/100 or pXmod[pn] == "C" and "" or pX[pn]).."|"..modifiedBPM(pn,pX[pn],pXmod[pn]),"\n")
