@@ -327,7 +327,7 @@ for pn in ivalues(GAMESTATE:GetEnabledPlayers()) do
 	t[#t+1] = loadfile(THEME:GetPathB("ScreenGameplay","overlay/FCSplash"))(pn)
 	if isRegular() or isNonstop() or isLifeline(pn) then t[#t+1] = loadfile(THEME:GetPathB("ScreenGameplay","overlay/Score"))(pn) end
 	t[#t+1] = loadfile(THEME:GetPathB("ScreenGameplay","overlay/Dynamic"))(pn)
-	if getenv("Flare"..pname(pn)) and getenv("Flare"..pname(pn)) > 0 then t[#t+1] = loadfile(THEME:GetPathB("ScreenGameplay","overlay/Flare"))(pn) end
+	if getenv("Flare"..pname(pn)) and getenv("Flare"..pname(pn)) > 0 and isRegular() then t[#t+1] = loadfile(THEME:GetPathB("ScreenGameplay","overlay/Flare"))(pn) end
 end
 
 return t
