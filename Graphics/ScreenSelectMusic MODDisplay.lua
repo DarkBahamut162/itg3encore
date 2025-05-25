@@ -119,7 +119,9 @@ return Def.ActorFrame{
 			for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
 				checkInitBPMs(pn)
 				checkInitSpeedMods(pn)
-				output = addToOutput(output,pXmod[pn]..(pXmod[pn] == "x" and pX[pn]/100 or pXmod[pn] == "C" and "" or pX[pn]).."|"..modifiedBPM(pn,pX[pn],pXmod[pn]),"\n")
+
+				local temp = pXmod[pn]..(pXmod[pn] == "x" and pX[pn]/100 or pXmod[pn] == "C" and "" or pX[pn]).."|"..modifiedBPM(pn,pX[pn],pXmod[pn])
+				if output ~= temp then output = addToOutput(output,temp,"\n") end
 			end
 			self:settext(output)
 		end,
@@ -142,7 +144,8 @@ return Def.ActorFrame{
 			end
 			local output = ""
 			for pn in ivalues(GAMESTATE:GetEnabledPlayers()) do
-				output = addToOutput(output,pXmod[pn]..(pXmod[pn] == "x" and pX[pn]/100 or pXmod[pn] == "C" and "" or pX[pn]).."|"..modifiedBPM(pn,pX[pn],pXmod[pn]),"\n")
+				local temp = pXmod[pn]..(pXmod[pn] == "x" and pX[pn]/100 or pXmod[pn] == "C" and "" or pX[pn]).."|"..modifiedBPM(pn,pX[pn],pXmod[pn])
+				if output ~= temp then output = addToOutput(output,temp,"\n") end
 			end
 			self:settext(output)
 		end,
