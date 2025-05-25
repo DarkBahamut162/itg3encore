@@ -20,8 +20,6 @@ local tmpDelta = 0
 local speedMod = 1
 local Si = 1
 
-local songoptions = GAMESTATE:GetSongOptionsObject("ModsLevel_Song")
-
 local function setStops(steps)
 	Si = 1
 	Stops = {}
@@ -57,7 +55,10 @@ local function Update(self, delta)
 	end
 end
 
-local PY = GAMESTATE:GetPlayerState(player):GetPlayerOptions('ModsLevel_Song'):UsingReverse() and THEME:GetMetric("Player","ReceptorArrowsYReverse") or THEME:GetMetric("Player","ReceptorArrowsYStandard")
+local mods = string.find(GAMESTATE:GetPlayerState(player):GetPlayerOptionsString("ModsLevel_Song"),"FlipUpsideDown")
+local reverse = GAMESTATE:GetPlayerState(player):GetPlayerOptions('ModsLevel_Song'):UsingReverse()
+if mods then reverse = not reverse end
+local PY = reverse and THEME:GetMetric("Player","ReceptorArrowsYReverse") or THEME:GetMetric("Player","ReceptorArrowsYStandard")
 local adjust = isOutFox() and 47-(47 * WideScreenDiff()) or 0
 
 if GAMESTATE:GetNumPlayersEnabled() == 1 then
@@ -82,7 +83,7 @@ return Def.ActorFrame{
 	Def.Quad{
 		Name="Stop",
 		OnCommand=function(self)
-			self:y(PY-adjust):valign(GAMESTATE:GetPlayerState(player):GetPlayerOptions('ModsLevel_Song'):UsingReverse() and 1 or 0):zoomtowidth(filterWidth-8*widthZoom):zoomtoheight(0):diffusecolor(Color.White):blend(Blend.Add)
+			self:y(PY-adjust):valign(reverse and 1 or 0):zoomtowidth(filterWidth-8*widthZoom):zoomtoheight(0):diffusecolor(Color.White):blend(Blend.Add)
 		end
 	}
 }
