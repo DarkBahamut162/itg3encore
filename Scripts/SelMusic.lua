@@ -895,7 +895,7 @@ function GetMinSecondsToStep()
 	local song = GAMESTATE:GetCurrentSong()
 	local firstSec, firstBeat = 1, 0
 	local firstBpm, smOffset = 60, 0
-
+	if not song then return 1 end
 	local BPMS = GetSMParameter(song,"BPMS")
 	if BPMS ~= "" then firstBpm = split('=', split(',', BPMS)[1])[2] end
 

@@ -23,8 +23,8 @@ function GetSongFrame(pn)
 	if IsGame("pump") then return "_piupro" end
 	if GAMESTATE:IsCourseMode() then return "_normal" end
 	local song = GAMESTATE:GetCurrentSong()
-	local songTitle = song:GetDisplayFullTitle()
-	local songDir = song:GetSongDir()
+	local songTitle = song and song:GetDisplayFullTitle() or ""
+	local songDir = song and song:GetSongDir() or ""
 	local frame
 	if string.find(songDir,"Dance Dance Revolution 8th Mix") or string.find(songDir,"Dance Dance Revolution Extreme") then
 		frame = "_disconnect"
