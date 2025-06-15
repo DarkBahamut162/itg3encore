@@ -1,4 +1,5 @@
 local offsetInfo = getenv("OffsetTable")
+local showOffset = ThemePrefs.Get("ShowOffset")
 local early = {
 	["TapNoteScore_W1"] = 0,
 	["TapNoteScore_W2"] = 0,
@@ -15,7 +16,17 @@ local late = {
 }
 local perfect = 0
 
-if offsetInfo then
+local counter = 0
+local average = 0
+local median = 0
+local offset = {}
+local errors = {}
+
+local peak = -1
+local peak_counter = 0
+local maxRange = -1
+
+if offsetInfo and showOffset then
 	for t in ivalues(offsetInfo[PLAYER_1]) do
 		if t[2] and type(t[2]) == "number" then
 			if t[2] < 0 then
@@ -25,13 +36,50 @@ if offsetInfo then
 			else
 				perfect = perfect + 1
 			end
+			average = average + t[2]
+			counter = counter + 1
+			table.insert(offset,t[2])
+			t[2] = math.round(t[2],3)
+			if math.abs(t[2]) > maxRange then maxRange = math.abs(t[2]) end
+			errors[t[2]] = errors[t[2]] and errors[t[2]] + 1 or 1
 		end
 	end
+
+	for i = -maxRange,maxRange*2,0.001 do
+		i = math.round(i,3)
+		if errors[i] and errors[i] > peak_counter then
+			peak = i
+			peak_counter = errors[i]
+		end
+	end
+
+    table.sort(offset)
+	if #offset > 0 then
+		if #offset % 2 == 1 then
+			median = offset[math.ceil(#offset/2)]
+		else
+			median = (offset[#offset/2] + offset[#offset/2+1])/2
+		end
+	end
+
+	average = math.round(average/counter,3)
 end
 
 return Def.ActorFrame{
 	Def.ActorFrame{
-		InitCommand=function(self) if WideScreenDiff_(1.4) < 1 and ThemePrefs.Get("ShowOffset") and getenv("EvalComboP1") then self:zoomx(5/6) end end,
+		Condition=offsetInfo and getenv("EvalComboP1"),
+		InitCommand=function(self) self:y(-230*WideScreenDiff()) end,
+		Def.BitmapText {
+			File = "_v 26px bold shadow",
+			Condition=not isnan(average),
+			Text="average "..average.." | median "..math.round(median,3).." | peak "..peak,
+			InitCommand=function(self) self:x(-64*WideScreenDiff()):maxwidth(SCREEN_WIDTH/3) end,
+			OnCommand=function(self) self:zoomx(0.6*WideScreenDiff()):zoomy(0.4*WideScreenDiff()):diffusealpha(0):sleep(3.60):linear(0.7):diffusealpha(1) end,
+			OffCommand=function(self) self:linear(0.2):diffusealpha(0) end
+		}
+	},
+	Def.ActorFrame{
+		InitCommand=function(self) if WideScreenDiff_(1.4) < 1 and showOffset and getenv("EvalComboP1") then self:zoomx(5/6) end end,
 		Name="JudgeFrames",
 		Def.ActorFrame{
 			Name="W1",
@@ -112,13 +160,14 @@ return Def.ActorFrame{
 			},
 			Def.BitmapText {
 				File = "_v 26px bold shadow",
-				Text=GAMESTATE:GetCurrentSteps(PLAYER_1):GetDifficulty() == 'Difficulty_Beginner' and "WAY EARLY" or "WAY OFF",
+				Text=isOpenDDR() and "MISS" or GAMESTATE:GetCurrentSteps(PLAYER_1):GetDifficulty() == 'Difficulty_Beginner' and "WAY EARLY" or "WAY OFF",
 				InitCommand=function(self) self:x(-150*WideScreenDiff()):horizalign(left):maxwidth(115) end,
 				OnCommand=function(self) self:zoomx(0.8*WideScreenDiff()):zoomy(0.6*WideScreenDiff()):diffusebottomedge(color("#BBB9FB")):cropright(1.3):faderight(0.1):sleep(3.60):linear(0.7):cropright(-0.3) end,
 				OffCommand=function(self) self:linear(0.2):diffusealpha(0) end
 			}
 		},
 		Def.ActorFrame{
+			Condition=not isOpenDDR(),
 			Name="Miss",
 			InitCommand=function(self) self:y(-70*WideScreenDiff()) end,
 			Def.Sprite {
@@ -137,7 +186,7 @@ return Def.ActorFrame{
 		}
 	},
 	Def.ActorFrame{
-		Condition=ThemePrefs.Get("ShowOffset") and getenv("EvalComboP1"),
+		Condition=showOffset and getenv("EvalComboP1"),
 		InitCommand=function(self) if WideScreenDiff_(1.4) < 1 then self:zoomx(5/6) end end,
 		Name="OffsetFrames",
 		Def.ActorFrame{
@@ -238,6 +287,7 @@ return Def.ActorFrame{
 			}
 		},
 		Def.ActorFrame{
+			Condition=not isOpenDDR(),
 			Name="W5",
 			InitCommand=function(self) self:y(-95*WideScreenDiff()) end,
 			Def.BitmapText {

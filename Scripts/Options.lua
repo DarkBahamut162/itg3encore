@@ -195,7 +195,7 @@ function SongMods()
 	end
 
 	local fail = isOutFoxV() and "FV" or "F"
-	local options = "1,2,4,"..fail..","..(isRegular() and "0,Flare" or "0")..",3,5,RE,RE2,AE,AE2,AE3"..(isOutFox() and ",AE4" or "")..",17,9,"
+	local options = "1,2,4,"..fail..","..(isRegular() and (isOpenDDR() and "0DDR" or "0,Flare") or "0")..",3,5,RE,RE2,AE,AE2,AE3"..(isOutFox() and ",AE4" or "")..",17,9,"
 
 	if isRegular() then
 		if isDouble() then
@@ -633,7 +633,7 @@ function OptionShowStats()
 		SelectType = "SelectOne",
 		OneChoiceForAllPlayers = false,
 		ExportOnChange = false,
-		Choices = { "Off","W1","W2","W3","W4","W5","Miss","IIDX" },
+		Choices = isOpenDDR() and { "Off","W1","W2","W3","W4","Miss","IIDX" } or { "Off","W1","W2","W3","W4","W5","Miss","IIDX" },
 		LoadSelections = function(self, list, pn)
 			local selected = (getenv("ShowStats"..pname(pn)) or 0) + 1
 			list[selected] = true

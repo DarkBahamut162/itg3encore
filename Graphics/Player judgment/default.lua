@@ -11,6 +11,15 @@ local JudgeCmds = {
 	TapNoteScore_W5 = THEME:GetMetric( "Judgment", "JudgmentW5Command" ),
 	TapNoteScore_Miss = THEME:GetMetric( "Judgment", "JudgmentMissCommand" )
 }
+if isOpenDDR() then
+	JudgeCmds = {
+		TapNoteScore_W1 = THEME:GetMetric( "Judgment", "JudgmentW1Command" ),
+		TapNoteScore_W2 = THEME:GetMetric( "Judgment", "JudgmentW2Command" ),
+		TapNoteScore_W3 = THEME:GetMetric( "Judgment", "JudgmentW3Command" ),
+		TapNoteScore_W4 = THEME:GetMetric( "Judgment", "JudgmentW4Command" ),
+		TapNoteScore_Miss = THEME:GetMetric( "Judgment", "JudgmentMissCommand" )
+	}
+end
 
 local TNSFrames = {
 	TapNoteScore_W1 = 0,
@@ -25,7 +34,7 @@ local timing = GetTimingDifficulty()
 local timingChange = { 1.50,1.33,1.16,1.00,0.84,0.66,0.50,0.33,0.20 }
 local judgment = not GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentSteps(player):GetDifficulty() == 'Difficulty_Beginner' and "_beginner" or "_judgments"
 local JudgeScale = isOutFoxV() and GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Preferred"):JudgeScale() or 1
-local W5 = PREFSMAN:GetPreference("TimingWindowSecondsW5")*timingChange[timing]*JudgeScale
+local W5 = (isOpenDDR() and 0.142 or PREFSMAN:GetPreference("TimingWindowSecondsW5"))*timingChange[timing]*JudgeScale
 
 setenv("checkFantastics"..pname(player),true)
 setenv("checkPerfects"..pname(player),true)

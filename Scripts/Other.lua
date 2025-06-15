@@ -260,6 +260,10 @@ function isStepMania()
 	return ProductFamily() == "StepMania"
 end
 
+function isOpenDDR()
+	return ProductFamily() == "OpenDDR"
+end
+
 function isTopScreen(screen)
 	if SCREENMAN:GetTopScreen() then
 		return SCREENMAN:GetTopScreen():GetName() == screen
@@ -502,3 +506,5 @@ function setCA(value,player)
 	GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Song"):CAMod(value)
 	GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Current"):CAMod(value)
 end
+
+function isnan(x) return x ~= x end

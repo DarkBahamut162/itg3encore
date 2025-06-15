@@ -2,7 +2,7 @@ return Def.ActorFrame{
 	loadfile(THEME:GetPathB("ScreenOITG","overlay/inthegroove"))()..{
 		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y-80):zoom(0.7*WideScreenDiff()) end
 	},
-	loadfile(THEME:GetPathB("ScreenOITG","overlay/"..(isOutFox() and "outfox" or isITGmania() and "itgmania" or "stepmania")))()..{
+	loadfile(THEME:GetPathB("ScreenOITG","overlay/"..(isOutFox() and "outfox" or isITGmania() and "itgmania" or isOpenDDR() and "openddr" or "stepmania")))()..{
 		InitCommand=function(self) self:x(SCREEN_LEFT+SCREEN_WIDTH/4):y(SCREEN_CENTER_Y+80):zoom(0.65*WideScreenDiff_(16/10)) end
 	},
 	loadfile(THEME:GetPathB("ScreenOITG","overlay/bxrx"))()..{

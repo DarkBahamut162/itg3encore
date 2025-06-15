@@ -5,7 +5,7 @@ local HighscoreRecord = ""
 local TargetRecord = ""
 if getenv("EvalCombo"..pname(player)) then
 	local total =  GAMESTATE:GetNumPlayersEnabled()
-	if (total == 1 and (getenv("ShowStatsP1") == 7 or getenv("ShowStatsP2") == 7)) or (total == 2 and (getenv("ShowStatsP1") == 7 and getenv("ShowStatsP2") == 7)) then
+	if (total == 1 and (getenv("ShowStatsP1") == (isOpenDDR() and 6 or 7) or getenv("ShowStatsP2") == (isOpenDDR() and 6 or 7))) or (total == 2 and (getenv("ShowStatsP1") == (isOpenDDR() and 6 or 7) and getenv("ShowStatsP2") == (isOpenDDR() and 6 or 7))) then
 		local SongOrCourse,StepsOrTrail,scorelist,topscore
 		local DPCurrent = math.max(0,STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetActualDancePoints())
 		local target = THEME:GetMetric("PlayerStageStats","GradePercentTier"..string.format("%02d",18-getenv("SetPacemaker"..pname(player))))

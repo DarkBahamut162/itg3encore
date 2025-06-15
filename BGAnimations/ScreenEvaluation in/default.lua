@@ -9,7 +9,13 @@ end
 
 local currentStage = GAMESTATE:GetCurrentStageIndex()
 local offsetInfo = getenv("OffsetTable")
-local scores = {
+local scores = isOpenDDR() and {
+	"TapNoteScore_W1",
+	"TapNoteScore_W2",
+	"TapNoteScore_W3",
+	"TapNoteScore_W4",
+	"TapNoteScore_Miss"
+} or {
 	"TapNoteScore_W1",
 	"TapNoteScore_W2",
 	"TapNoteScore_W3",

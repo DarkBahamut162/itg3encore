@@ -340,7 +340,7 @@ return Def.ActorFrame{
 		OnCommand=function(self) self:sleep(0.5):linear(0.5):diffusealpha(1) end,
 		OffCommand=function(self) self:accelerate(0.5):addy(-100) end
 	},
-	loadfile(THEME:GetPathB("","_thanks/_"..(isOutFox() and "outfox" or (isITGmania() and "itgmania" or "stepmania"))))()..{
+	loadfile(THEME:GetPathB("","_thanks/_"..(isOutFox() and "outfox" or isITGmania() and "itgmania" or isOpenDDR() and "openddr" or "stepmania")))()..{
 		InitCommand=function(self) self:x(isFinal() and SCREEN_LEFT+105*WideScreenDiff() or SCREEN_LEFT+360*WideScreenDiff()):y(isFinal() and SCREEN_TOP+10*WideScreenDiff() or SCREEN_TOP+16*WideScreenDiff()):valign(1):zoom(WideScreenDiff()):diffusealpha(0) end,
 		OnCommand=function(self) self:sleep(0.5):linear(0.5):diffusealpha(1) end,
 		OffCommand=function(self) self:accelerate(0.5):addy(-100) end,

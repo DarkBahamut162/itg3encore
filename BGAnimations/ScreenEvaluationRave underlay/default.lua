@@ -275,6 +275,7 @@ return Def.ActorFrame{
 				}
 			},
 			Def.ActorFrame{
+				Condition=not isOpenDDR(),
 				Name="W5",
 				InitCommand=function(self) self:y(THEME:GetMetric("ScreenEvaluationRave","W5NumberP1Y")) end,
 				Def.BitmapText {
@@ -490,6 +491,7 @@ return Def.ActorFrame{
 				}
 			},
 			Def.ActorFrame{
+				Condition=not isOpenDDR(),
 				Name="W5",
 				InitCommand=function(self) self:y(THEME:GetMetric("ScreenEvaluationRave","W5NumberP2Y")) end,
 				Def.BitmapText {

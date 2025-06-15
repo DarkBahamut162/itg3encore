@@ -41,6 +41,21 @@ for pn in ivalues(GAMESTATE:GetEnabledPlayers()) do
 	setenv("LastPerfect"..pname(pn),0)
 	setenv("LastGreat"..pname(pn),0)
 	setenv("FlareDisplay"..pname(pn),nil)
+
+	if isOpenDDR() then
+		setenv("FlareType"..pname(pn),1)
+		local po = GAMESTATE:GetPlayerState(pn):GetPlayerOptions('ModsLevel_Song')
+		local drain = po:DrainSetting()
+		if string.find(drain, "Flare") then
+			if string.find(drain, "Float") then
+				setenv("Flare"..pname(pn),11)
+			elseif string.find(drain, "EX") then
+				setenv("Flare"..pname(pn),10)
+			else
+				setenv("Flare"..pname(pn),tonumber(drain:sub(-1)))
+			end
+		end
+	end
 end
 
 local showBar = {

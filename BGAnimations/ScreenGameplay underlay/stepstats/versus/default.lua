@@ -9,7 +9,7 @@ if getenv("ShowStatsP1") == nil or getenv("ShowStatsP2") == nil then return Def.
 		if not scorelist[pn] and GAMESTATE:IsHumanPlayer(pn) then scorelist[pn] = PROFILEMAN:GetMachineProfile():GetHighScoreList(SongOrCourse[pn],StepsOrTrail[pn]) end
 		if not scorelist[pn] and GAMESTATE:IsHumanPlayer(pn) then scorelist[pn] = PROFILEMAN:GetProfile(pn):GetHighScoreList(SongOrCourse[pn],StepsOrTrail[pn]) end
 		if scorelist[pn] and GAMESTATE:IsHumanPlayer(pn) then topscore[pn] = scorelist[pn]:GetHighScores()[1] end
-		if getenv("ShowStatsP1") == 7 and getenv("ShowStatsP2") == 7 then
+		if getenv("ShowStatsP1") == (isOpenDDR() and 6 or 7) and getenv("ShowStatsP2") == (isOpenDDR() and 6 or 7) then
 			if topscore[pn] == nil then bgNum[pn] = 4 else bgNum[pn] = 6 end
 			IIDX = true
 		else

@@ -23,16 +23,16 @@ if StepsOrTrail then
 end
 
 local bgNum = stats
-if bgNum == 7 then if topscore == nil then bgNum = 2 else bgNum = 3 end end
+if bgNum == (isOpenDDR() and 6 or 7) then if topscore == nil then bgNum = 2 else bgNum = 3 end end
 if bgNum > 0 then barCenter	= -totalWidth/2+barWidth[bgNum]/2 end
 
 local Bars = Def.ActorFrame{}
 
-if stats < 7 then
-	for i = 1,math.min(6,stats) do
-		local score = i < 6 and "W"..i or "Miss"
+if stats < (isOpenDDR() and 6 or 7) then
+	for i = 1,math.min((isOpenDDR() and 5 or 6),stats) do
+		local score = i < (isOpenDDR() and 5 or 6) and "W"..i or "Miss"
 		Bars[#Bars+1] = Def.Sprite {
-			Texture = "../w"..i,
+			Texture = "../w"..((isOpenDDR() and score == "Miss") and i+1 or i),
 			InitCommand=function(self) self:vertalign(bottom):diffusealpha(0.25):x(barCenter+barWidth[bgNum]*(i-1)):y(164):zoomx(0.01*barWidth[bgNum]):zoomy(0) end,
 			Condition=stats >= i,
 			JudgmentMessageCommand=function(self,param) if param.Player == pn then self:queuecommand("Update") end end,
@@ -42,7 +42,7 @@ if stats < 7 then
 			end
 		}
 		Bars[#Bars+1] = Def.Sprite {
-			Texture = "../w"..i,
+			Texture = "../w"..((isOpenDDR() and score == "Miss") and i+1 or i),
 			InitCommand=function(self) self:vertalign(bottom):x(barCenter+barWidth[bgNum]*(i-1)):y(164):zoomx(0.01*barWidth[bgNum]):zoomy(0) end,
 			Condition=stats >= i,
 			JudgmentMessageCommand=function(self,param) if param.Player == pn then self:queuecommand("Update") end end,
@@ -83,11 +83,11 @@ return Def.ActorFrame{
 		},
 		loadfile(THEME:GetPathB("ScreenGameplay","underlay/stepstats/double/d_bg"))(pn),
 		Def.ActorFrame{
-			Condition=stats < 7,
+			Condition=stats < (isOpenDDR() and 6 or 7),
 			Bars
 		},
 		Def.ActorFrame{
-			Condition=stats == 7,
+			Condition=stats == (isOpenDDR() and 6 or 7),
 			Def.Sprite {
 				Texture = "../w1",
 				OnCommand=function(self)
@@ -174,18 +174,18 @@ return Def.ActorFrame{
 			Def.ActorFrame{
 				Def.BitmapText {
 					File = "_z bold gray 36px",
-					Condition=stats < 7,
+					Condition=stats < (isOpenDDR() and 6 or 7),
 					Text="STATS",
 					OnCommand=function(self) self:zoom(0.5):halign(0):shadowlength(1):addy(-174) end
 				},
 				Def.BitmapText {
 					File = "_z bold gray 36px",
-					Condition=stats == 7,
+					Condition=stats == (isOpenDDR() and 6 or 7),
 					Text="PACE",
 					OnCommand=function(self) self:zoom(0.5):halign(0):shadowlength(1):addy(-174) end
 				},
 				Def.ActorFrame{
-					Condition=stats < 7,
+					Condition=stats < (isOpenDDR() and 6 or 7),
 					InitCommand=function(self) self:y(-150) end,
 					Def.BitmapText {
 						File = "ScreenGameplay judgment",
@@ -212,6 +212,7 @@ return Def.ActorFrame{
 						InitCommand=function(self) self:maxwidth(125):halign(1):addy(85-2):shadowlength(1):diffuse(TapNoteScoreToColor("TapNoteScore_W4")) end
 					},
 					Def.BitmapText {
+						Condition=not isOpenDDR(),
 						File = "ScreenGameplay judgment",
 						Name="LabelW5",
 						Text="W",
@@ -221,7 +222,7 @@ return Def.ActorFrame{
 						File = "ScreenGameplay judgment",
 						Name="LabelMiss",
 						Text="M",
-						InitCommand=function(self) self:maxwidth(125):halign(1):addy(135):shadowlength(1):diffuse(TapNoteScoreToColor("TapNoteScore_Miss")) end
+						InitCommand=function(self) self:maxwidth(125):halign(1):addy(isOpenDDR() and 110-1 or 135):shadowlength(1):diffuse(TapNoteScoreToColor("TapNoteScore_Miss")) end
 					},
 					Def.BitmapText {
 						File = "_z numbers",
@@ -255,6 +256,7 @@ return Def.ActorFrame{
 						UpdateCommand=function(self) if stats >= 4 then self:settext(STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):GetTapNoteScores('TapNoteScore_W4')) end end
 					},
 					Def.BitmapText {
+						Condition=not isOpenDDR(),
 						File = "_z numbers",
 						Name="NumbersW5",
 						Text="?",
@@ -266,13 +268,13 @@ return Def.ActorFrame{
 						File = "_z numbers",
 						Name="NumbersMiss",
 						Text="?",
-						InitCommand=function(self) self:maxwidth(125):halign(1):addy(135):addx(125):shadowlength(1):diffuse(TapNoteScoreToColor('TapNoteScore_Miss')):queuecommand("Update") end,
+						InitCommand=function(self) self:maxwidth(125):halign(1):addy(isOpenDDR() and 110-1 or 135):addx(125):shadowlength(1):diffuse(TapNoteScoreToColor('TapNoteScore_Miss')):queuecommand("Update") end,
 						JudgmentMessageCommand=function(self,param) if param.Player == pn then self:queuecommand("Update") end end,
-						UpdateCommand=function(self) if stats >= 6 then self:settext(STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):GetTapNoteScores('TapNoteScore_Miss')) end end
+						UpdateCommand=function(self) if stats >= (isOpenDDR() and 5 or 6) then self:settext(STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):GetTapNoteScores('TapNoteScore_Miss')) end end
 					}
 				},
 				Def.ActorFrame{
-					Condition=stats == 7,
+					Condition=stats == (isOpenDDR() and 6 or 7),
 					InitCommand=function(self) self:y(-140) end,
 					Def.BitmapText {
 						File = "ScreenGameplay judgment",

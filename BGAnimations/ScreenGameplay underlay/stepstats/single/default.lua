@@ -32,15 +32,15 @@ if StepsOrTrail then
 end
 
 local bgNum = getenv("ShowStats"..pname(pn))
-if bgNum == 7 then if topscore == nil then bgNum = 2 else bgNum = 3 end end
+if bgNum == (isOpenDDR() and 6 or 7) then if topscore == nil then bgNum = 2 else bgNum = 3 end end
 if bgNum > 0 then barCenter	= -totalWidth/2+barWidth[bgNum]/2 end
 
 local BarLabelTexts = {"Fantastics","Excellents","Greats","Decents","Way-Offs","Misses"}
 local Numbers,BarLabels,Bars = Def.ActorFrame{},Def.ActorFrame{},Def.ActorFrame{}
 
-if getenv("ShowStats"..pname(pn)) < 7 then
-	for i = 1,math.min(6,getenv("ShowStats"..pname(pn))) do
-		local score = i < 6 and "W"..i or "Miss"
+if getenv("ShowStats"..pname(pn)) < (isOpenDDR() and 6 or 7) then
+	for i = 1,math.min((isOpenDDR() and 5 or 6),getenv("ShowStats"..pname(pn))) do
+		local score = i < (isOpenDDR() and 5 or 6) and "W"..i or "Miss"
 		Numbers[#Numbers+1] = Def.BitmapText {
 			File = "ScreenGameplay judgment",
 			Name="Numbers"..score,
@@ -50,12 +50,12 @@ if getenv("ShowStats"..pname(pn)) < 7 then
 		}
 		BarLabels[#BarLabels+1] = Def.BitmapText {
 			File = "_v 26px bold black",
-			Text=BarLabelTexts[i],
+			Text=BarLabelTexts[(isOpenDDR() and score == "Miss") and i+1 or i],
 			InitCommand=function(self) self:rotationz(-90):addy(-20):addx(barCenter+barOffset[bgNum][i]+(barWidth[bgNum]+barSpace[bgNum])*(i-1)):shadowlength(0):queuecommand("FadeOn") end,
 			FadeOnCommand=function(self) self:sleep(2+(0.25*(i-1))):linear(1):diffusealpha(0) end
 		}
 		Bars[#Bars+1] = Def.Sprite {
-			Texture = "../w"..i,
+			Texture = "../w"..((isOpenDDR() and score == "Miss") and i+1 or i),
 			InitCommand=function(self) self:vertalign(bottom):diffusealpha(0.25):addx(barCenter+barOffset[bgNum][i]+(barWidth[bgNum]+barSpace[bgNum])*(i-1)):addy(86):zoomx(0.01*barWidth[bgNum]):zoomy(0) end,
 			Condition=getenv("ShowStats"..pname(pn)) >= i,
 			JudgmentMessageCommand=function(self,param) if param.Player == pn then self:queuecommand("Update") end end,
@@ -65,7 +65,7 @@ if getenv("ShowStats"..pname(pn)) < 7 then
 			end
 		}
 		Bars[#Bars+1] = Def.Sprite {
-			Texture = "../w"..i,
+			Texture = "../w"..((isOpenDDR() and score == "Miss") and i+1 or i),
 			InitCommand=function(self) self:vertalign(bottom):addx(barCenter+barOffset[bgNum][i]+(barWidth[bgNum]+barSpace[bgNum])*(i-1)):addy(86):zoomx(0.01*barWidth[bgNum]):zoomy(0) end,
 			Condition=getenv("ShowStats"..pname(pn)) >= i,
 			JudgmentMessageCommand=function(self,param) if param.Player == pn then self:queuecommand("Update") end end,
@@ -124,7 +124,7 @@ return Def.ActorFrame{
 				Texture = "s_"..(isFinal() and "final" or "normal")
 			},
 			Def.Sprite {
-				Texture = "s_bg"..getenv("ShowStats"..pname(pn))
+				Texture = (isOpenDDR() and "ddr_bg" or "s_bg")..getenv("ShowStats"..pname(pn))
 			},
 			Def.Sprite {
 				Texture = "s_glow final",
@@ -133,7 +133,7 @@ return Def.ActorFrame{
 			}
 		},
 		Def.ActorFrame{
-			Condition=getenv("ShowStats"..pname(pn)) > 0 and getenv("ShowStats"..pname(pn)) < 7,
+			Condition=getenv("ShowStats"..pname(pn)) > 0 and getenv("ShowStats"..pname(pn)) < (isOpenDDR() and 6 or 7),
 			Def.BitmapText {
 				File = "_z bold gray 36px",
 				Condition=isFinal(),
@@ -199,7 +199,7 @@ return Def.ActorFrame{
 			Bars
 		},
 		Def.ActorFrame{
-			Condition=getenv("ShowStats"..pname(pn)) == 7,
+			Condition=getenv("ShowStats"..pname(pn)) == (isOpenDDR() and 6 or 7),
 			InitCommand=function(self) self:y(isFinal() and -19 or 0) end,
 			Def.Sprite {
 				Texture = THEME:GetPathG("horiz-line","short"),
