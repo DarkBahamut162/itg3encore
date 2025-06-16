@@ -25,7 +25,7 @@ local tierToGrade = {
     ["Grade_Tier16"] = 16,
     ["Grade_Tier17"] = 17,
     ["Grade_Tier18"] = 18,
-    ["Grade_Failed"] = 0 
+    ["Grade_Failed"] = 19
 }
 local gradeToTier = {
     [1]  = "Grade_Tier01",
@@ -45,7 +45,8 @@ local gradeToTier = {
     [15] = "Grade_Tier15",
     [16] = "Grade_Tier16",
     [17] = "Grade_Tier17",
-    [18] = "Grade_Tier18"
+    [18] = "Grade_Tier18",
+    [19] = "Grade_Failed"
 }
 for i=1,rounds do
 	if ThemePrefs.Get("ShowSummarySummary") then
