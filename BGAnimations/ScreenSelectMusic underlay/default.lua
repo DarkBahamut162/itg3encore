@@ -3,6 +3,8 @@ local insideFavorites = false
 local changed = false
 local outfoxed = false
 local active = ThemePrefs.Get("SLFavorites")
+local courseMode = GAMESTATE:IsCourseMode()
+local showGraph = ThemePrefs.Get("ShowGraph")
 
 local function reloadPreferredSortSM()
 	SCREENMAN:SystemMessage("Force-Reload Favorites/Preferred SortOrder")
@@ -128,6 +130,31 @@ local InputHandler = function(event)
 	end
 end
 
+local graphs = showGraph and (GAMESTATE:GetNumPlayersEnabled() == 1 and loadfile(THEME:GetPathB("ScreenGameplay","underlay/stepstats/graph"))(GAMESTATE:GetMasterPlayerNumber())..{
+		InitCommand=function(self) self:zoom(-1/3):addy(SCREEN_CENTER_Y*1.15):addx(SCREEN_WIDTH*0.804) end,
+		CurrentSongChangedMessageCommand=function(self) if not courseMode then if GAMESTATE:GetCurrentSong() then self:diffusealpha(1) else self:diffusealpha(0) end end end,
+		CurrentCourseChangedMessageCommand=function(self) if courseMode then if GAMESTATE:GetCurrentCourse() then self:diffusealpha(1) else self:diffusealpha(0) end end end,
+		OnCommand=function(self) self:addx(SCREEN_WIDTH):decelerate(0.75):addx(-SCREEN_WIDTH) end,
+		OffCommand=function(self) self:accelerate(0.75):addx(SCREEN_WIDTH) end
+} or Def.ActorFrame{
+	loadfile(THEME:GetPathB("ScreenGameplay","underlay/stepstats/graph"))(PLAYER_2)..{
+			InitCommand=function(self) self:zoom(1/3):zoomy(-1/3):addy(SCREEN_CENTER_Y*1.15):addx(SCREEN_WIDTH*0.840) end,
+			CurrentSongChangedMessageCommand=function(self) if not courseMode then if GAMESTATE:GetCurrentSong() then self:diffusealpha(1) else self:diffusealpha(0) end end end,
+			CurrentCourseChangedMessageCommand=function(self) if courseMode then if GAMESTATE:GetCurrentCourse() then self:diffusealpha(1) else self:diffusealpha(0) end end end,
+			OnCommand=function(self) self:addx(SCREEN_WIDTH):decelerate(0.75):addx(-SCREEN_WIDTH) end,
+			OffCommand=function(self) self:accelerate(0.75):addx(SCREEN_WIDTH) end
+	},
+	loadfile(THEME:GetPathB("ScreenGameplay","underlay/stepstats/graph"))(PLAYER_1)..{
+		InitCommand=function(self) self:zoom(-1/3):addy(SCREEN_CENTER_Y*1.15):addx(SCREEN_WIDTH*0.804) end,
+		CurrentSongChangedMessageCommand=function(self) if not courseMode then if GAMESTATE:GetCurrentSong() then self:diffusealpha(1) else self:diffusealpha(0) end end end,
+		CurrentCourseChangedMessageCommand=function(self) if courseMode then if GAMESTATE:GetCurrentCourse() then self:diffusealpha(1) else self:diffusealpha(0) end end end,
+		OnCommand=function(self) self:addx(SCREEN_WIDTH):decelerate(0.75):addx(-SCREEN_WIDTH) end,
+		OffCommand=function(self) self:accelerate(0.75):addx(SCREEN_WIDTH) end
+	}
+}) or Def.ActorFrame{}
+
+
+
 return Def.ActorFrame{
     InitCommand=function() if (isOutFox() and not isOutFoxV()) or active then generateFavoritesForMusicWheel() end end,
 	OnCommand=function()
@@ -159,5 +186,6 @@ return Def.ActorFrame{
 		InitCommand=function(self) self:x(SCREEN_CENTER_X+139.5*WideScreenDiff()):y(SCREEN_CENTER_Y-16*WideScreenDiff()):zoom(WideScreenDiff()):z(2):zwrite(true):blend(Blend.NoEffect) end,
 		OnCommand=function(self) self:addx(SCREEN_WIDTH):decelerate(0.75):addx(-SCREEN_WIDTH) end,
 		OffCommand=function(self) self:accelerate(0.75):addx(SCREEN_WIDTH) end
-	}
+	},
+	graphs
 }

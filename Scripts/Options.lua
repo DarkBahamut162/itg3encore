@@ -250,24 +250,20 @@ function ModeMenu()
 
 	if isITGmania() then
 		options = addToOutput(options,"Meter",",")
-	else
-		if not isDouble() then
-			options = addToOutput(options,"EasyMeter,MediumMeter,HardMeter,ChallengeMeter",",")
-		else
-			options = addToOutput(options,"DoubleEasyMeter,DoubleMediumMeter,DoubleHardMeter,DoubleChallengeMeter",",")
-		end
-	end
-
-	options = addToOutput(options,"Popularity,Recent",",")
-
-	if isITGmania() then
 		for player in ivalues(GAMESTATE:GetHumanPlayers()) do
 			if PROFILEMAN:IsPersistentProfile(player) then
+				options = addToOutput(options,"Popularity".. ToEnumShortString(player),",")
+				options = addToOutput(options,"Recent".. ToEnumShortString(player),",")
 				options = addToOutput(options,"Top".. ToEnumShortString(player).."Grades",",")
 			end
 		end
 	else
-		options = addToOutput(options,"TopGrades",",")
+		if not isDouble() then
+			options = addToOutput(options,"BeginnerMeter,EasyMeter,MediumMeter,HardMeter,ChallengeMeter",",")
+		else
+			options = addToOutput(options,"DoubleEasyMeter,DoubleMediumMeter,DoubleHardMeter,DoubleChallengeMeter",",")
+		end
+		options = addToOutput(options,"Popularity,Recent,TopGrades",",")
 	end
 
 	options = addToOutput(options,"Preferred,Dance,Battle,Rave",",")

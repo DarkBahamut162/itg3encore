@@ -3,21 +3,28 @@ local function OptionNameString(str)
 end
 
 local Prefs = {
-	AnimatePlayerScore = {
-		Default = false,
-		Choices = { OptionNameString('Off'), OptionNameString('On') },
-		Values = { false, true }
-	},
-	AnimateSongTitle = {
-		Default = false,
-		Choices = { OptionNameString('Off'), OptionNameString('On') },
-		Values = { false, true }
-	},
+	--[Global]
 	EncoreThemeMode = {
 		Default = false,
 		Choices = { OptionNameString('Normal'), OptionNameString('Final') },
 		Values = { false, true }
 	},
+	ShowClock = {
+		Default = false,
+		Choices = { OptionNameString('Off'), OptionNameString('On') },
+		Values = { false, true }
+	},
+	SLFavorites = {
+		Default = false,
+		Choices = { OptionNameString('Off'), OptionNameString('On') },
+		Values = { false, true }
+	},
+	UseStepCache = {
+		Default = false,
+		Choices = { OptionNameString('Off'), OptionNameString('On') },
+		Values = { false, true }
+	},
+	--[ScreenSelectMusic]
 	ShowBPMDisplayType = {
 		Default = 0,
 		Choices = { "DisplayBPM", "ActualBPM", "CalculatedBPM" },
@@ -33,12 +40,7 @@ local Prefs = {
 		Choices = { "Old", "New" },
 		Values = { false, true }
 	},
-	ShowClock = {
-		Default = false,
-		Choices = { OptionNameString('Off'), OptionNameString('On') },
-		Values = { false, true }
-	},
-	ShowGameplaySpeed = {
+	ShowGraph = {
 		Default = false,
 		Choices = { OptionNameString('Off'), OptionNameString('On') },
 		Values = { false, true }
@@ -53,21 +55,6 @@ local Prefs = {
 		Choices = { OptionNameString('Off'), OptionNameString('On') },
 		Values = { false, true }
 	},
-	ShowOffset = {
-		Default = false,
-		Choices = { OptionNameString('Off'), OptionNameString('On') },
-		Values = { false, true }
-	},
-	ShowSummary = {
-		Default = false,
-		Choices = { OptionNameString('Off'), OptionNameString('On') },
-		Values = { false, true }
-	},
-	ShowSummarySummary = {
-		Default = false,
-		Choices = { OptionNameString('Off'), OptionNameString('On') },
-		Values = { false, true }
-	},
 	ShowRounds = {
 		Default = false,
 		Choices = { OptionNameString('Off'), OptionNameString('On') },
@@ -78,12 +65,35 @@ local Prefs = {
 		Choices = { OptionNameString('Off'), OptionNameString('On') },
 		Values = { false, true }
 	},
-	SLFavorites = {
+	--{ScreenGameplay}
+	AnimatePlayerScore = {
 		Default = false,
 		Choices = { OptionNameString('Off'), OptionNameString('On') },
 		Values = { false, true }
 	},
-	UseStepCache = {
+	AnimateSongTitle = {
+		Default = false,
+		Choices = { OptionNameString('Off'), OptionNameString('On') },
+		Values = { false, true }
+	},
+	ShowGameplaySpeed = {
+		Default = false,
+		Choices = { OptionNameString('Off'), OptionNameString('On') },
+		Values = { false, true }
+	},
+	--[ScreenEvaluation]
+	ShowOffset = {
+		Default = false,
+		Choices = { OptionNameString('Off'), OptionNameString('On') },
+		Values = { false, true }
+	},
+	ShowSummary = {
+		Default = false,
+		Choices = { OptionNameString('Off'), OptionNameString('On') },
+		Values = { false, true }
+	},
+	--[ScreenSummary]
+	ShowSummarySummary = {
 		Default = false,
 		Choices = { OptionNameString('Off'), OptionNameString('On') },
 		Values = { false, true }

@@ -508,3 +508,40 @@ function setCA(value,player)
 end
 
 function isnan(x) return x ~= x end
+
+function GlobalOffsetSeconds()
+	local val = PREFSMAN:GetPreference("GlobalOffsetSeconds")
+	local ms = round(val * 1000)
+
+	low = math.min(-1000, ms)
+	high = math.max(1000, ms)
+
+	local function AllChoices()
+		local ret = { }
+		for i = 1,high-low do
+			ret[i] = string.format('%d ms',i+low-1)
+		end
+		return ret
+	end
+
+	return {
+		Name="GlobalOffsetSeconds",
+		Choices=AllChoices(),
+		LayoutType = "ShowOneInRow",
+		SelectType = "SelectOne",
+		OneChoiceForAllPlayers = true,
+		ExportOnChange = false,
+		LoadSelections = function(self, list, pn)
+			local i = ms - low + 1
+			list[i] = true
+		end,
+		SaveSelections = function(self, list, pn)
+			for i=1, #AllChoices() do
+				if list[i] then
+					PREFSMAN:SetPreference("GlobalOffsetSeconds", (low + i - 1) / 1000)
+					break
+				end
+			end
+		end
+	}
+end

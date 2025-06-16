@@ -9,6 +9,9 @@ local showNoteGraph = getenv("ShowNoteGraph"..pname(pn))
 local rowLimit = showNoteGraph == 2
 local lastSec = nil
 local lastBeat = nil
+local courseMode = GAMESTATE:IsCourseMode()
+local screenCheck = isTopScreen("ScreenSelectMusic") or isTopScreen("ScreenSelectMusicFinal")
+local cropValue = screenCheck and 0.6 or 0.5
 
 local allowednotes = {
 	["TapNoteType_Tap"] = true,
@@ -79,47 +82,49 @@ local function UpdateGraphSM()
     lastSec = 0
     lastBeat = 0
     local Step = GAMESTATE:GetCurrentSteps(pn)
-	local timingData = Step:GetTimingData()
 	local stepsPerSecList = {}
+    if Step then
+        local timingData = Step:GetTimingData()
 
-	local stops = timingData:GetStops()
-	local delays = timingData:GetDelays()
-	local warps = timingData:GetWarps()
-	local chart = SMParser(Step)
-    
-	local beat = 0
-	if chart then
-		chart = split("\n,\n",chart)
-		local currentMeasure = -1
-		for measure in ivalues(chart) do
-			currentMeasure = currentMeasure + 1
-			local rows = split("\n",measure)
-			local currentRow = -1
-			for row in ivalues(rows) do
-				currentRow = currentRow + 1
-				beat = (currentMeasure*4)+(currentRow/#rows*4)
-				local _, count = string.gsub(row, "[L124]", "")
-				if count > 0 then
-                    if rowLimit then count = 1 end
-					local isStop, isDelay, isWarp = false, false, false
-					if stops and #stops > 0 then isStop,stops = HasStopAtBeat(beat,stops) end
-					if delays and #delays > 0 then isDelay,delays = HasDelayAtBeat(beat,delays) end
-					if warps and #warps > 0 then isWarp,warps = HasWarpAtBeat(beat,warps) end
-					local isJudgableAtBeat = not isWarp or (isWarp and (isStop or isDelay))
-					if isJudgableAtBeat then
-                        local currentSec = math.ceil(timingData:GetElapsedTimeFromBeat(beat))
-                        stepsPerSecList[currentSec] = stepsPerSecList[currentSec] and stepsPerSecList[currentSec] + count or count
-					end
-				end
-				if lastBeat ~= beat and string.find(row,"[L1234]") then
-					lastBeat = beat
-				end
-			end
-		end
-        for i=1,math.ceil(timingData:GetElapsedTimeFromBeat(lastBeat)) do
-            if not stepsPerSecList[i] then stepsPerSecList[i] = 0 end
+        local stops = timingData:GetStops()
+        local delays = timingData:GetDelays()
+        local warps = timingData:GetWarps()
+        local chart = SMParser(Step)
+        
+        local beat = 0
+        if chart then
+            chart = split("\n,\n",chart)
+            local currentMeasure = -1
+            for measure in ivalues(chart) do
+                currentMeasure = currentMeasure + 1
+                local rows = split("\n",measure)
+                local currentRow = -1
+                for row in ivalues(rows) do
+                    currentRow = currentRow + 1
+                    beat = (currentMeasure*4)+(currentRow/#rows*4)
+                    local _, count = string.gsub(row, "[L124]", "")
+                    if count > 0 then
+                        if rowLimit then count = 1 end
+                        local isStop, isDelay, isWarp = false, false, false
+                        if stops and #stops > 0 then isStop,stops = HasStopAtBeat(beat,stops) end
+                        if delays and #delays > 0 then isDelay,delays = HasDelayAtBeat(beat,delays) end
+                        if warps and #warps > 0 then isWarp,warps = HasWarpAtBeat(beat,warps) end
+                        local isJudgableAtBeat = not isWarp or (isWarp and (isStop or isDelay))
+                        if isJudgableAtBeat then
+                            local currentSec = math.ceil(timingData:GetElapsedTimeFromBeat(beat))
+                            stepsPerSecList[currentSec] = stepsPerSecList[currentSec] and stepsPerSecList[currentSec] + count or count
+                        end
+                    end
+                    if lastBeat ~= beat and string.find(row,"[L1234]") then
+                        lastBeat = beat
+                    end
+                end
+            end
+            for i=1,math.ceil(timingData:GetElapsedTimeFromBeat(lastBeat)) do
+                if not stepsPerSecList[i] then stepsPerSecList[i] = 0 end
+            end
+            lastSec = timingData:GetElapsedTimeFromBeat(lastBeat)
         end
-        lastSec = timingData:GetElapsedTimeFromBeat(lastBeat)
     end
     return stepsPerSecList
 end
@@ -182,50 +187,52 @@ local function UpdateGraphAltSM()
     lastSec = 0
     lastBeat = 0
     local Step = GAMESTATE:GetCurrentSteps(pn)
-	local timingData = Step:GetTimingData()
 	local stepsPerSecList = {}
+    if Step then
+        local timingData = Step:GetTimingData()
 
-	local stops = timingData:GetStops()
-	local delays = timingData:GetDelays()
-	local warps = timingData:GetWarps()
-	local chart = SMParser(Step)
-    local previousSec = nil
-    
-	local beat = 0
-	if chart then
-		chart = split("\n,\n",chart)
-		local currentMeasure = -1
-		for measure in ivalues(chart) do
-			currentMeasure = currentMeasure + 1
-			local rows = split("\n",measure)
-			local currentRow = -1
-			for row in ivalues(rows) do
-				currentRow = currentRow + 1
-				beat = (currentMeasure*4)+(currentRow/#rows*4)
-				local _, count = string.gsub(row, "[L124]", "")
-				if count > 0 then
-					local isStop, isDelay, isWarp = false, false, false
-					if stops and #stops > 0 then isStop,stops = HasStopAtBeat(beat,stops) end
-					if delays and #delays > 0 then isDelay,delays = HasDelayAtBeat(beat,delays) end
-					if warps and #warps > 0 then isWarp,warps = HasWarpAtBeat(beat,warps) end
-					local isJudgableAtBeat = not isWarp or (isWarp and (isStop or isDelay))
-					if isJudgableAtBeat then
-                        local currentSec = math.round(timingData:GetElapsedTimeFromBeat(beat),3)
-                        if previousSec then
-                            stepsPerSecList[currentSec] = 1/(currentSec-previousSec) * count
+        local stops = timingData:GetStops()
+        local delays = timingData:GetDelays()
+        local warps = timingData:GetWarps()
+        local chart = SMParser(Step)
+        local previousSec = nil
+        
+        local beat = 0
+        if chart then
+            chart = split("\n,\n",chart)
+            local currentMeasure = -1
+            for measure in ivalues(chart) do
+                currentMeasure = currentMeasure + 1
+                local rows = split("\n",measure)
+                local currentRow = -1
+                for row in ivalues(rows) do
+                    currentRow = currentRow + 1
+                    beat = (currentMeasure*4)+(currentRow/#rows*4)
+                    local _, count = string.gsub(row, "[L124]", "")
+                    if count > 0 then
+                        local isStop, isDelay, isWarp = false, false, false
+                        if stops and #stops > 0 then isStop,stops = HasStopAtBeat(beat,stops) end
+                        if delays and #delays > 0 then isDelay,delays = HasDelayAtBeat(beat,delays) end
+                        if warps and #warps > 0 then isWarp,warps = HasWarpAtBeat(beat,warps) end
+                        local isJudgableAtBeat = not isWarp or (isWarp and (isStop or isDelay))
+                        if isJudgableAtBeat then
+                            local currentSec = math.round(timingData:GetElapsedTimeFromBeat(beat),3)
+                            if previousSec then
+                                stepsPerSecList[currentSec] = 1/(currentSec-previousSec) * count
+                            end
+                            previousSec = currentSec
                         end
-                        previousSec = currentSec
-					end
-				end
-				if lastBeat ~= beat and string.find(row,"[L1234]") then
-					lastBeat = beat
-				end
-			end
-		end
-        for i=1,math.ceil(timingData:GetElapsedTimeFromBeat(lastBeat)) do
-            if not stepsPerSecList[i] then stepsPerSecList[i] = 0 end
+                    end
+                    if lastBeat ~= beat and string.find(row,"[L1234]") then
+                        lastBeat = beat
+                    end
+                end
+            end
+            for i=1,math.ceil(timingData:GetElapsedTimeFromBeat(lastBeat)) do
+                if not stepsPerSecList[i] then stepsPerSecList[i] = 0 end
+            end
+            lastSec = timingData:GetElapsedTimeFromBeat(lastBeat)
         end
-        lastSec = timingData:GetElapsedTimeFromBeat(lastBeat)
     end
     return stepsPerSecList
 end
@@ -274,7 +281,7 @@ local function GetVertices(stepsPerSecList)
         local curX = (i > 1) and ((i-1) * graphW / #stepsList+1 - addx) or 0
         local nextX = (i <= #stepsList) and ((i * graphW / #stepsList+1) - addx) or graphW
         local curY = stepsList[(i > 1) and (i-1) or i] or 0
-        local nextY = (i <= #stepsList) and (stepsList[i] or 0) or (stepsList[#stepsList]/2)
+        local nextY = (i <= #stepsList) and (stepsList[i] or 0) or (#stepsList > 0 and stepsList[#stepsList]/2 or 0)
         local alpha = 0.65 + 0.3 * normalizeAlpha
         local col = color('1, 0, 0, '..alpha)
         vertices[#vertices+1] = {
@@ -370,17 +377,27 @@ end
 return Def.ActorFrame{
     Def.Sprite {
         Texture = "notegraph",
-        InitCommand=function(self) self:cropleft(pn == PLAYER_1 and 0 or 1):cropright(pn == PLAYER_1 and 1 or 0):zoomy(2/3):sleep(0.5):linear(0.5):x(pn == PLAYER_1 and -100 or 100):cropleft(pn == PLAYER_1 and 0 or 0.5):cropright(pn == PLAYER_1 and 0.5 or 0) end
+        InitCommand=function(self)
+            if screenCheck then self:diffuse(PlayerColor(pn)) end
+            self:cropleft(pn == PLAYER_1 and 0 or 1):cropright(pn == PLAYER_1 and 1 or 0):zoomy(2/3):sleep(0.5):linear(0.5):x(pn == PLAYER_1 and -100 or 100):cropleft(pn == PLAYER_1 and 0 or cropValue):cropright(pn == PLAYER_1 and cropValue or 0)
+        end
     },
     Def.Sprite {
         Texture = "notegraph",
-        InitCommand=function(self) self:cropleft(pn == PLAYER_1 and 0 or 1):cropright(pn == PLAYER_1 and 1 or 0):zoomy(2/3):sleep(0.5):linear(0.5):x(pn == PLAYER_1 and -100 or 100):cropleft(pn == PLAYER_1 and 0 or 0.5):cropright(pn == PLAYER_1 and 0.5 or 0) end,
+        InitCommand=function(self)
+            if screenCheck then self:diffuse(PlayerColor(pn)) end
+            self:cropleft(pn == PLAYER_1 and 0 or 1):cropright(pn == PLAYER_1 and 1 or 0):zoomy(2/3):sleep(0.5):linear(0.5):x(pn == PLAYER_1 and -100 or 100):cropleft(pn == PLAYER_1 and 0 or cropValue):cropright(pn == PLAYER_1 and cropValue or 0)
+        end,
         OnCommand=function(self) self:blend(Blend.Add):diffuseramp():effectcolor1(color("#FFFFFF00")):effectcolor2(color("#FFFFFF")):effectperiod(0.5):effect_hold_at_full(0.5):effectclock('beat') end
     },
     Def.ActorFrame{
         DoneLoadingNextSongMessageCommand=function(self) self:diffusealpha(0):sleep(1):linear(0.5):diffusealpha(1) end,
         Def.ActorMultiVertex{
             DoneLoadingNextSongMessageCommand=function(self) self:playcommand("Init") end,
+            CurrentStepsP1ChangedMessageCommand=function(self) if not courseMode and pn == PLAYER_1 then self:playcommand("Init") end end,
+            CurrentStepsP2ChangedMessageCommand=function(self) if not courseMode and pn == PLAYER_2 then self:playcommand("Init") end end,
+            CurrentTrailP1ChangedMessageCommand=function(self) if courseMode and pn == PLAYER_1 then self:playcommand("Init") end end,
+            CurrentTrailP2ChangedMessageCommand=function(self) if courseMode and pn == PLAYER_2 then self:playcommand("Init") end end,
             InitCommand=function(self)
                 local vertices = showNoteGraph == 4 and GetVerticesAlt(isOutFox() and UpdateGraphAlt() or UpdateGraphAltSM()) or GetVertices(isOutFox() and UpdateGraph() or UpdateGraphSM())
                 self:SetDrawState({Mode = 'DrawMode_Quads'})
@@ -394,6 +411,10 @@ return Def.ActorFrame{
         },
         Def.ActorMultiVertex{
             DoneLoadingNextSongMessageCommand=function(self) self:playcommand("Init") end,
+            CurrentStepsP1ChangedMessageCommand=function(self) if not courseMode and pn == PLAYER_1 then self:playcommand("Init") end end,
+            CurrentStepsP2ChangedMessageCommand=function(self) if not courseMode and pn == PLAYER_2 then self:playcommand("Init") end end,
+            CurrentTrailP1ChangedMessageCommand=function(self) if courseMode and pn == PLAYER_1 then self:playcommand("Init") end end,
+            CurrentTrailP2ChangedMessageCommand=function(self) if courseMode and pn == PLAYER_2 then self:playcommand("Init") end end,
             InitCommand=function(self)
                 local update = showNoteGraph == 4 and (isOutFox() and UpdateGraphAlt() or UpdateGraphAltSM()) or (isOutFox() and UpdateGraph() or UpdateGraphSM())
                 for i,value in pairs( update ) do update[i] = math.max(0,(update[i]-20)/4) end
@@ -410,6 +431,10 @@ return Def.ActorFrame{
         Def.ActorMultiVertex{
             Condition=getenv("ShowSpeedAssist"..pname(pn)) or getenv("ShowStopAssist"..pname(pn)),
             DoneLoadingNextSongMessageCommand=function(self) self:sleep(1/60):playcommand("Draw") end,
+            CurrentStepsP1ChangedMessageCommand=function(self) if not courseMode and pn == PLAYER_1 then self:playcommand("Init") end end,
+            CurrentStepsP2ChangedMessageCommand=function(self) if not courseMode and pn == PLAYER_2 then self:playcommand("Init") end end,
+            CurrentTrailP1ChangedMessageCommand=function(self) if courseMode and pn == PLAYER_1 then self:playcommand("Init") end end,
+            CurrentTrailP2ChangedMessageCommand=function(self) if courseMode and pn == PLAYER_2 then self:playcommand("Init") end end,
             DrawCommand=function(self)
                 local vertices = GetVerticesAssist(UpdateGraphAssist())
                 self:SetDrawState({Mode = 'DrawMode_Quads'})
@@ -422,6 +447,7 @@ return Def.ActorFrame{
         },
     },
     Def.Sprite {
+        Condition=not screenCheck,
         Texture = THEME:GetPathG("horiz-line","short"),
         DoneLoadingNextSongMessageCommand=function(self) self:queuecommand("RePos") end,
         InitCommand=function(self) self:x(pn == PLAYER_1 and -140 or 140):blend(Blend.Add):fadeleft(0.25):faderight(0.25):zoomy(0.5):cropleft(pn == PLAYER_1 and 0 or 0.25):cropright(pn == PLAYER_1 and 0.25 or 0):queuecommand("RePos") end,

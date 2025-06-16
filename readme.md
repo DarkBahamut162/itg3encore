@@ -109,7 +109,7 @@ I could have actually forked it but I didn't. My reasoning was that it wasn't go
 * All **cmd()** transformed to **function(self)**
 * All **LoadActor()** transformed to **Def.\***
 * Added most **Final Encore Theme** stuff while adding/adjusting a few other things.
-* Fixed **Online Mode** *(I think?)*
+* Fixed **Legacy Online Mode** *(I think?)*
 * Actually fixed **Course Mode** (Battle, Marathon & Survival Mode)
   * Fixed/Better **Song List**
   * Displays **_panes** & **StepArtists** and correctly calculate their difficulty color
@@ -147,6 +147,7 @@ I could have actually forked it but I didn't. My reasoning was that it wasn't go
   * **HasVideo**
   * **Rounds/Length specification**
 * Updates **BPMs** and **TIMEs** according to **Current Music Rate**
+* Ability to change current **Speed Mod** and **Speed Type** (if enabled)
 
 **ScreenPlayerOptions:**
 * Removed **D-Pad** Modifier since it breaks other Modifiers (like the new SpeedMod)
