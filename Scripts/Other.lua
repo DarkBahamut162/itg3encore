@@ -509,8 +509,8 @@ end
 
 function isnan(x) return x ~= x end
 
-function GlobalOffsetSeconds()
-	local val = PREFSMAN:GetPreference("GlobalOffsetSeconds")
+function offsetMS(value)
+	local val = PREFSMAN:GetPreference(value)
 	local ms = round(val * 1000)
 
 	low = math.min(-1000, ms)
@@ -525,7 +525,7 @@ function GlobalOffsetSeconds()
 	end
 
 	return {
-		Name="GlobalOffsetSeconds",
+		Name=value,
 		Choices=AllChoices(),
 		LayoutType = "ShowOneInRow",
 		SelectType = "SelectOne",
@@ -538,7 +538,7 @@ function GlobalOffsetSeconds()
 		SaveSelections = function(self, list, pn)
 			for i=1, #AllChoices() do
 				if list[i] then
-					PREFSMAN:SetPreference("GlobalOffsetSeconds", (low + i - 1) / 1000)
+					PREFSMAN:SetPreference(value, (low + i - 1) / 1000)
 					break
 				end
 			end
