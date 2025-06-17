@@ -131,21 +131,39 @@ local InputHandler = function(event)
 end
 
 local graphs = showGraph and (GAMESTATE:GetNumPlayersEnabled() == 1 and loadfile(THEME:GetPathB("ScreenGameplay","underlay/stepstats/graph"))(GAMESTATE:GetMasterPlayerNumber())..{
-		InitCommand=function(self) self:zoom(-1/3):addy(SCREEN_CENTER_Y*1.15):addx(SCREEN_WIDTH*0.804) end,
+		InitCommand=function(self) self:zoom(-1/3*WideScreenDiff())
+			if IsUsingWideScreen() then
+				self:x(SCREEN_CENTER_X+256):addy(SCREEN_CENTER_Y*1.15)
+			elseif GetScreenAspectRatio() <= 1 then
+				self:x(SCREEN_CENTER_X+152*WideScreenDiff()):addy(SCREEN_CENTER_Y*1.22):rotationz(90):zoomy(1/3*WideScreenDiff())
+			end
+		end,
 		CurrentSongChangedMessageCommand=function(self) if not courseMode then if GAMESTATE:GetCurrentSong() then self:diffusealpha(1) else self:diffusealpha(0) end end end,
 		CurrentCourseChangedMessageCommand=function(self) if courseMode then if GAMESTATE:GetCurrentCourse() then self:diffusealpha(1) else self:diffusealpha(0) end end end,
 		OnCommand=function(self) self:addx(SCREEN_WIDTH):decelerate(0.75):addx(-SCREEN_WIDTH) end,
 		OffCommand=function(self) self:accelerate(0.75):addx(SCREEN_WIDTH) end
 } or Def.ActorFrame{
 	loadfile(THEME:GetPathB("ScreenGameplay","underlay/stepstats/graph"))(PLAYER_2)..{
-			InitCommand=function(self) self:zoom(1/3):zoomy(-1/3):addy(SCREEN_CENTER_Y*1.15):addx(SCREEN_WIDTH*0.840) end,
+			InitCommand=function(self) self:zoom(1/3*WideScreenDiff()):zoomy(-1/3*WideScreenDiff())
+				if IsUsingWideScreen() then
+					self:x(SCREEN_CENTER_X+288):addy(SCREEN_CENTER_Y*1.15)
+				elseif GetScreenAspectRatio() <= 1 then
+					self:x(SCREEN_CENTER_X+224*WideScreenDiff()):addy(SCREEN_CENTER_Y*1.22):rotationz(90):zoomy(1/3*WideScreenDiff())
+				end
+			end,
 			CurrentSongChangedMessageCommand=function(self) if not courseMode then if GAMESTATE:GetCurrentSong() then self:diffusealpha(1) else self:diffusealpha(0) end end end,
 			CurrentCourseChangedMessageCommand=function(self) if courseMode then if GAMESTATE:GetCurrentCourse() then self:diffusealpha(1) else self:diffusealpha(0) end end end,
 			OnCommand=function(self) self:addx(SCREEN_WIDTH):decelerate(0.75):addx(-SCREEN_WIDTH) end,
 			OffCommand=function(self) self:accelerate(0.75):addx(SCREEN_WIDTH) end
 	},
 	loadfile(THEME:GetPathB("ScreenGameplay","underlay/stepstats/graph"))(PLAYER_1)..{
-		InitCommand=function(self) self:zoom(-1/3):addy(SCREEN_CENTER_Y*1.15):addx(SCREEN_WIDTH*0.804) end,
+		InitCommand=function(self) self:zoom(-1/3*WideScreenDiff())
+			if IsUsingWideScreen() then
+				self:x(SCREEN_CENTER_X+256):addy(SCREEN_CENTER_Y*1.15)
+			elseif GetScreenAspectRatio() <= 1 then
+				self:x(SCREEN_CENTER_X+80*WideScreenDiff()):addy(SCREEN_CENTER_Y*1.22):rotationz(90):zoomy(1/3*WideScreenDiff())
+			end
+		end,
 		CurrentSongChangedMessageCommand=function(self) if not courseMode then if GAMESTATE:GetCurrentSong() then self:diffusealpha(1) else self:diffusealpha(0) end end end,
 		CurrentCourseChangedMessageCommand=function(self) if courseMode then if GAMESTATE:GetCurrentCourse() then self:diffusealpha(1) else self:diffusealpha(0) end end end,
 		OnCommand=function(self) self:addx(SCREEN_WIDTH):decelerate(0.75):addx(-SCREEN_WIDTH) end,
@@ -187,5 +205,7 @@ return Def.ActorFrame{
 		OnCommand=function(self) self:addx(SCREEN_WIDTH):decelerate(0.75):addx(-SCREEN_WIDTH) end,
 		OffCommand=function(self) self:accelerate(0.75):addx(SCREEN_WIDTH) end
 	},
-	graphs
+	graphs..{
+		Condition=not courseMode and (IsUsingWideScreen() or GetScreenAspectRatio() <= 1),
+	}
 }
