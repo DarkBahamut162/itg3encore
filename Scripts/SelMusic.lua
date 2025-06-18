@@ -445,7 +445,7 @@ function CheckNullMeasure(Step)
 end
 
 function cacheStep(Song,Step)
-	if Song == nil then Song = SONGMAN:GetSongFromSteps(Step) end
+	if Song == nil and not isOutFoxV043() then Song = SONGMAN:GetSongFromSteps(Step) end
 
     local chartint = 1
 	local currentBeat = 0
@@ -622,15 +622,12 @@ function cacheStep(Song,Step)
 		end
 		return list
 	else
-		local file = getStepCacheFile(Step)
 		LoadModule("Config.Save.lua")("Version","0",file)
 		return {["Version"]="0"}
 	end
 end
 
 function cacheStepSM(Song,Step)
-	if Song == nil then Song = SONGMAN:GetSongFromSteps(Step) end
-
 	local stepType = split("_",Step:GetStepsType())
 	local timingData = Step:GetTimingData()
 	local stepsPerSec = {}
@@ -1080,9 +1077,9 @@ end
 ]]--
 function getCalculatedDifficulty(Step)
 	if not Step then return "" end
-	local OG = Step:GetMeter()
 	local value = split("/",getStepCacheFile(Step))[3]
 	if repeatCheck[value] then return repeatCheck[value] end
+	local OG = Step:GetMeter()
 
 	local Song = SONGMAN:GetSongFromSteps(Step)
 	--local totalSeconds = isOutFox() and getTrueSeconds(Song,Step)["TrueSeconds"] or (Song:GetLastSecond() - Song:GetFirstSecond())
