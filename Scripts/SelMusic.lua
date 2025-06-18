@@ -52,7 +52,7 @@ end
 function GetScreenSelectMusicHelpText()
 	local ret = IsNetSMOnline() and THEME:GetString("ScreenNetSelectMusic", "HelpText") or THEME:GetString("ScreenSelectMusic", "HelpText")
 
-	if not IsNetSMOnline() and SelectButtonAvailable() then
+	if not IsNetSMOnline() then
 		ret = ret .. "::" .. THEME:GetString( "ScreenSelectMusic", "SelectButtonAvailableHelpTextAppend" )
 	end
 	if not IsNetSMOnline() and DifficultyChangingAvailable() then
