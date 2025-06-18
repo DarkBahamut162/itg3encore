@@ -171,8 +171,6 @@ local graphs = showGraph and (GAMESTATE:GetNumPlayersEnabled() == 1 and loadfile
 	}
 }) or Def.ActorFrame{}
 
-
-
 return Def.ActorFrame{
     InitCommand=function() if (isOutFox() and not isOutFoxV()) or active then generateFavoritesForMusicWheel() end end,
 	OnCommand=function()

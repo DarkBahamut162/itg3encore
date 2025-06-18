@@ -10,8 +10,10 @@ local rowLimit = showNoteGraph == 2
 local lastSec = nil
 local lastBeat = nil
 local courseMode = GAMESTATE:IsCourseMode()
-local screenCheck = isTopScreen("ScreenSelectMusic") or isTopScreen("ScreenSelectMusicFinal")
-local cropValue = screenCheck and 0.6 or 0.5
+local screenMusicCheck = isTopScreen("ScreenSelectMusic") or isTopScreen("ScreenSelectMusicFinal")
+local screenNetMusicCheck = isTopScreen("ScreenNetSelectMusic") or isTopScreen("ScreenNetSelectMusicFinal")
+local screenCheck = screenMusicCheck or screenNetMusicCheck
+local cropValue = screenNetMusicCheck and 0.64 or screenMusicCheck and 0.6 or 0.5
 
 local allowednotes = {
 	["TapNoteType_Tap"] = true,

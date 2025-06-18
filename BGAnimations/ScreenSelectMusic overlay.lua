@@ -25,6 +25,15 @@ if IsNetSMOnline() and ShowStandardDecoration("UserList") then
 		end
 	}
 end
+if IsNetSMOnline() and ThemePrefs.Get("ShowGraph") then
+	tOnline[#tOnline+1] = loadfile(THEME:GetPathB("ScreenGameplay","underlay/stepstats/graph"))(GAMESTATE:GetMasterPlayerNumber())..{
+		InitCommand=function(self) self:zoom(1/2*WideScreenDiff()):x(SCREEN_CENTER_X+55*WideScreenDiff()):y(SCREEN_CENTER_Y-54*WideScreenDiff()) end,
+		CurrentSongChangedMessageCommand=function(self) if not courseMode then if GAMESTATE:GetCurrentSong() then self:diffusealpha(1) else self:diffusealpha(0) end end end,
+		CurrentCourseChangedMessageCommand=function(self) if courseMode then if GAMESTATE:GetCurrentCourse() then self:diffusealpha(1) else self:diffusealpha(0) end end end,
+		OnCommand=function(self) self:addx(SCREEN_WIDTH):decelerate(0.75):addx(-SCREEN_WIDTH) end,
+		OffCommand=function(self) self:accelerate(0.75):addx(SCREEN_WIDTH) end
+}
+end
 
 local Online = IsNetSMOnline() and Def.ActorFrame{
 	loadfile(THEME:GetPathG(Var "LoadingScreen", "ArtistDisplay"..pname(GAMESTATE:GetMasterPlayerNumber())))() .. {
