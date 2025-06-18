@@ -73,7 +73,7 @@ return Def.ActorFrame{
 			File = "_v 26px bold shadow",
 			Condition=not isnan(average),
 			Text="average "..average.." | median "..math.round(median,3).." | peak "..peak,
-			InitCommand=function(self) self:x(64*WideScreenDiff()):maxwidth(SCREEN_WIDTH/3) end,
+			InitCommand=function(self) self:x(64*WideScreenDiff()):maxwidth(320) end,
 			OnCommand=function(self) self:zoomx(0.6*WideScreenDiff()):zoomy(0.4*WideScreenDiff()):diffusealpha(0):sleep(3.60):linear(0.7):diffusealpha(1) end,
 			OffCommand=function(self) self:linear(0.2):diffusealpha(0) end
 		}
