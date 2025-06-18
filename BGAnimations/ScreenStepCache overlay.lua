@@ -62,7 +62,7 @@ local InputHandler = function(event)
 						c.Cursor:diffusealpha(0)
 						c.YES:diffusealpha(0)
 						c.NO:diffusealpha(0)
-						c.UpdateImminent:diffusealpha(1):sleep(s):diffusealpha(0)
+						c.UpdateImminent:diffusealpha(1):sleep(ss/10):diffusealpha(0)
 						c.Cache:sleep(ss/10):queuecommand("Updating")
 					end
 				end
@@ -167,13 +167,14 @@ return Def.ActorFrame{
 			local songs = SONGMAN:GetAllSongs()
 			local currentCacheVersion = getCacheVersion()
 			if not cancel then
+				--local start = GetTimeSinceStart()
 				for curSong=1,#songs do
 					local steps = songs[curSong]:GetAllSteps()
 					for curStep=1,#steps do
 						if steps[curStep] and not steps[curStep]:IsAutogen() then
-							local filename = split("/",steps[curStep]:GetFilename())
 							local stepType = split("_",steps[curStep]:GetStepsType())[2]
 							if cacheStepTypes[stepType] then
+								local filename = split("/",steps[curStep]:GetFilename())
 								if #filename >= 4 then
 									local cacheFile = getStepCacheFile(steps[curStep])
 									if not FILEMAN:DoesFileExist(cacheFile) then
@@ -200,6 +201,7 @@ return Def.ActorFrame{
 					end
 					steps = nil
 				end
+				--lua.ReportScriptError( "CHECK DURATION = "..(GetTimeSinceStart()-start) )
 				checked = true
 				songs = nil
 				if toBeCachedTotal == 0 and cachedWrongVersionTotal == 0 then
@@ -242,21 +244,18 @@ return Def.ActorFrame{
 				setenv("cacheing",true)
 				for curStep=1,#stepsToCache do
 					if stepsToCache[curStep] then
-						local cacheFile = getStepCacheFile(stepsToCache[curStep])
-						local song = SONGMAN:GetSongFromSteps(stepsToCache[curStep])
-						local filePath = song:GetSongFilePath()
+						local filePath = stepsToCache[curStep]:GetFilename()
 						local quickSM = filePath:sub(-2):sub(1,1) == 's'	-- [S]M & S[S]C
-						local quickBMS = filePath:sub(-3):sub(2,2) == 'm'	-- B[M]S & B[M]E & B[M]L & P[M]S
-						local quickPMS = filePath:sub(-3) == 'pms'
-						if not isOutFox() or ((quickSM or quickPMS) and isOutFoxV()) then
+						--local quickBMS = filePath:sub(-3):sub(2,2) == 'm'	-- B[M]S & B[M]E & B[M]L & P[M]S
+						--local quickPMS = filePath:sub(-3) == 'pms'
+						if not isOutFox() or (quickSM and isOutFoxV()) then
 						--if not isOutFox() then
-							if quickSM then cacheStepSM(song,stepsToCache[curStep]) else cacheStepBMS(song,stepsToCache[curStep]) end
-						else cacheStep(song,stepsToCache[curStep]) end
-						cacheFile = nil
+							if quickSM then cacheStepSM(nil,stepsToCache[curStep]) else cacheStepBMS(nil,stepsToCache[curStep]) end
+						else cacheStep(nil,stepsToCache[curStep]) end
 					end
 				end
 				setenv("cacheing",false)
-				--lua.ReportScriptError( "DURATION = "..(GetTimeSinceStart()-start) )
+				--lua.ReportScriptError( "CACHE DURATION = "..(GetTimeSinceStart()-start) )
 				stepsToCache = nil
 				checked = true
 				updated = true
