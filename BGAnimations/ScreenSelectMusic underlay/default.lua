@@ -38,7 +38,7 @@ local InputHandler = function(event)
 				if isOutFox() then
 					if not isOutFoxV() then setOFFavorites(event.PlayerNumber) end
 					outfoxed = true
-				else
+				elseif active then
 					if PROFILEMAN:IsPersistentProfile(event.PlayerNumber) then
 						changed = true
 						addOrRemoveFavorite(event.PlayerNumber) updateFavorites() 
@@ -183,9 +183,9 @@ return Def.ActorFrame{
 			if playeroptions:XMod() then MOD[pn] = "x" CURRENT[pn] = playeroptions:XMod()*100 end
 			if playeroptions:CMod() then MOD[pn] = "c" CURRENT[pn] = playeroptions:CMod() end
 		end
-		if (isOutFox() and not isOutFoxV()) or active then SCREENMAN:GetTopScreen():AddInputCallback(InputHandler) end
+		if (isOutFox() and not isOutFoxV()) or active or enableMOD then SCREENMAN:GetTopScreen():AddInputCallback(InputHandler) end
 	end,
-	OffCommand=function() if (isOutFox() and not isOutFoxV()) or active then SCREENMAN:GetTopScreen():RemoveInputCallback(InputHandler) end end,
+	OffCommand=function() if (isOutFox() and not isOutFoxV()) or active or enableMOD then SCREENMAN:GetTopScreen():RemoveInputCallback(InputHandler) end end,
 	SortOrderChangedMessageCommand=function(self)
 		local s = GAMESTATE:GetSortOrder()
 		if s ~= nil then
