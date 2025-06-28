@@ -67,8 +67,8 @@ end
 
 return Def.ActorFrame{
 	Def.ActorFrame{
-		Condition=offsetInfo and getenv("EvalComboP2"),
-		InitCommand=function(self) self:y(-230*WideScreenDiff()) end,
+		Condition=offsetInfo ~= nil and showOffset and getenv("EvalComboP2"),
+		InitCommand=function(self) self:y(isFinal() and -230*WideScreenDiff() or -210*WideScreenDiff()) end,
 		Def.BitmapText {
 			File = "_v 26px bold shadow",
 			Condition=not isnan(average),
