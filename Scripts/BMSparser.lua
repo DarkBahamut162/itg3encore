@@ -33,16 +33,34 @@ function BMSParser(steps)
 		local lastHold = 0
 		local scratch = 0
 		local foot = 0
-		for measure,rows in simfileString:gmatch("#(%w+):(%w+)\n") do
+		local timing = {}
+		local allRows = simfileString:gmatch("#(%w+):([%w]+)\n")
+		local _allRows = simfileString:gmatch("#(%w+):([%w.]+)\n")
+		for measure,rows in _allRows do
 			if tonumber(measure) then
 				currentMeasure = math.floor(measure/100)
+				if timing[currentMeasure] then else timing[currentMeasure] = 1 end
+				if tonumber(measure) % 100 == 2 then
+					timing[currentMeasure] = tonumber(rows)
+				end
+			end
+		end
+		local actualBeat = 0
+		local previousMeasure = 0
+		for measure,rows in allRows do
+			if tonumber(measure) then
+				currentMeasure = math.floor(measure/100)
+				if previousMeasure < currentMeasure then
+					actualBeat = actualBeat + 4*(timing[currentMeasure-1] or 1)
+					previousMeasure = currentMeasure
+				end
 				if tonumber(measure) % 100 > 10 and tonumber(measure) % 100 < 30 then
 					local currentRow = -1
 					rows = splitByChunk(rows,2)
 					for row in ivalues(rows) do
 						currentRow = currentRow + 1
 						if row ~= "00" then
-							beat = (currentMeasure*4)+(currentRow/#rows*4)
+							beat = actualBeat+(currentRow/#rows*4)*(timing[currentMeasure-1] or 1)
 							beatData[beat] = beatData[beat] and beatData[beat] + 1 or 1
 							if filetype ~= "pms" then
 								if tonumber(measure) % 10 == 6 then
@@ -60,7 +78,7 @@ function BMSParser(steps)
 					for row in ivalues(rows) do
 						currentRow = currentRow + 1
 						if row ~= "00" then
-							beat = (currentMeasure*4)+(currentRow/#rows*4)
+							beat = actualBeat+(currentRow/#rows*4)*timing[currentMeasure]
 							local index = FindInTable(row, holds)
 							if index then
 								table.remove(holds, index)

@@ -80,10 +80,9 @@ local function UpdateGraph()
     return stepsPerSecList
 end
 
-local function UpdateGraphSM()
+local function UpdateGraphSM(Step)
     lastSec = 0
     lastBeat = 0
-    local Step = GAMESTATE:GetCurrentSteps(pn)
 	local stepsPerSecList = {}
     if Step then
         local timingData = Step:GetTimingData()
@@ -129,6 +128,59 @@ local function UpdateGraphSM()
         end
     end
     return stepsPerSecList
+end
+
+local function UpdateGraphBMS(Step)
+    lastSec = 0
+    lastBeat = 0
+	local stepsPerSecList = {}
+    if Step then
+        local timingData = Step:GetTimingData()
+
+        local stops = timingData:GetStops()
+        local delays = timingData:GetDelays()
+        local warps = timingData:GetWarps()
+
+        local chart,lastHold = BMSParser(Step)
+
+        local actualBeat = 0
+        if chart then
+            for beat,count in pairs( chart ) do
+                if rowLimit then count = 1 end
+                local isStop, isDelay, isWarp = false, false, false
+                if stops and #stops > 0 then isStop,stops = HasStopAtBeat(beat,stops) end
+                if delays and #delays > 0 then isDelay,delays = HasDelayAtBeat(beat,delays) end
+                if warps and #warps > 0 then isWarp,warps = HasWarpAtBeat(beat,warps) end
+                if not isWarp or (isWarp and (isStop or isDelay)) then
+                    local currentSec = math.ceil(timingData:GetElapsedTimeFromBeat(beat))
+                    stepsPerSecList[currentSec] = stepsPerSecList[currentSec] and stepsPerSecList[currentSec] + count or count
+                end
+                lastBeat = math.max(lastBeat,beat)
+            end
+            lastBeat = math.max(lastBeat,lastHold)
+            for i=1,math.ceil(timingData:GetElapsedTimeFromBeat(lastBeat)) do
+                if not stepsPerSecList[i] then stepsPerSecList[i] = 0 end
+            end
+            lastSec = timingData:GetElapsedTimeFromBeat(lastBeat)
+        end
+    end
+    return stepsPerSecList
+end
+
+local function UpdateGraphOld()
+    if GAMESTATE:GetCurrentSong() then
+        local Step = GAMESTATE:GetCurrentSteps(pn)
+        if Step then
+            local filePath = Step:GetFilename()
+            local checkSM = filePath:sub(-2):sub(1,1) == 's'	-- [S]M & S[S]C
+            if checkSM then
+                return UpdateGraphSM(Step)
+            else
+                return UpdateGraphBMS(Step)
+            end
+        end
+    end
+    return {}
 end
 
 local function UpdateGraphAlt()
@@ -185,10 +237,9 @@ local function UpdateGraphAlt()
     return stepsPerSecList
 end
 
-local function UpdateGraphAltSM()
+local function UpdateGraphAltSM(Step)
     lastSec = 0
     lastBeat = 0
-    local Step = GAMESTATE:GetCurrentSteps(pn)
 	local stepsPerSecList = {}
     if Step then
         local timingData = Step:GetTimingData()
@@ -237,6 +288,66 @@ local function UpdateGraphAltSM()
         end
     end
     return stepsPerSecList
+end
+
+local function UpdateGraphAltBMS(Step)
+    lastSec = 0
+    lastBeat = 0
+	local stepsPerSecList = {}
+    if Step then
+        local timingData = Step:GetTimingData()
+
+        local stops = timingData:GetStops()
+        local delays = timingData:GetDelays()
+        local warps = timingData:GetWarps()
+        local chart,lastHold = BMSParser(Step)
+        local previousSec = nil
+
+        local beats = {}
+        for beat in pairs(chart) do beats[#beats+1] = beat end
+        table.sort(beats)
+
+        local beat = 0
+        if chart then
+            for beat in ivalues( beats ) do
+                if rowLimit then chart[beat] = 1 end
+                local isStop, isDelay, isWarp = false, false, false
+                if stops and #stops > 0 then isStop,stops = HasStopAtBeat(beat,stops) end
+                if delays and #delays > 0 then isDelay,delays = HasDelayAtBeat(beat,delays) end
+                if warps and #warps > 0 then isWarp,warps = HasWarpAtBeat(beat,warps) end
+                if not isWarp or (isWarp and (isStop or isDelay)) then
+                    local currentSec = math.round(timingData:GetElapsedTimeFromBeat(beat),3)
+                    if previousSec then
+                        stepsPerSecList[currentSec] = (1/(currentSec-previousSec)) * chart[beat]
+                    end
+                    previousSec = currentSec
+                end
+                lastBeat = math.max(lastBeat,beat)
+            end
+            lastBeat = math.max(lastBeat,lastHold)
+            for i=1,math.ceil(timingData:GetElapsedTimeFromBeat(lastBeat)) do
+                if not stepsPerSecList[i] then stepsPerSecList[i] = 0 end
+            end
+            lastSec = timingData:GetElapsedTimeFromBeat(lastBeat)
+        end
+    end
+    return stepsPerSecList
+end
+
+local function UpdateGraphAltOld()
+    if GAMESTATE:GetCurrentSong() then
+        local Step = GAMESTATE:GetCurrentSteps(pn)
+        if Step then
+            local filePath = Step:GetFilename()
+            local checkSM = filePath:sub(-2):sub(1,1) == 's'	-- [S]M & S[S]C
+            if checkSM then
+                return UpdateGraphAltSM(Step)
+            else
+                return UpdateGraphAltBMS(Step)
+            end
+        end
+    end
+    return {}
 end
 
 local function UpdateGraphAssist()
@@ -402,7 +513,7 @@ return Def.ActorFrame{
             CurrentTrailP1ChangedMessageCommand=function(self) if courseMode and pn == PLAYER_1 then self:playcommand("Init") end end,
             CurrentTrailP2ChangedMessageCommand=function(self) if courseMode and pn == PLAYER_2 then self:playcommand("Init") end end,
             InitCommand=function(self)
-                local vertices = showNoteGraph == 4 and GetVerticesAlt(isOutFox() and UpdateGraphAlt() or UpdateGraphAltSM()) or GetVertices(isOutFox() and UpdateGraph() or UpdateGraphSM())
+                local vertices = showNoteGraph == 4 and GetVerticesAlt(isOutFox() and UpdateGraphAlt() or UpdateGraphAltOld()) or GetVertices(isOutFox() and UpdateGraph() or UpdateGraphOld())
                 self:SetDrawState({Mode = 'DrawMode_Quads'})
                 self:SetVertices(1, vertices)
                 self:SetNumVertices(#vertices)
