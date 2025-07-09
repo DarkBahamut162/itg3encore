@@ -12,9 +12,11 @@ return Def.ActorFrame{
 		InitCommand=function(self) self:y(scale(5,1,7,SCREEN_CENTER_Y-130*WideScreenDiff(),SCREEN_CENTER_Y+130*WideScreenDiff())) end
 	},
 	loadfile(THEME:GetPathG("ScreenRanking","CourseDifficulty Medium"))()..{
+		Condition=not isEtterna(),
 		InitCommand=function(self) self:y(scale(6,1,7,SCREEN_CENTER_Y-130*WideScreenDiff(),SCREEN_CENTER_Y+130*WideScreenDiff())) end
 	},
 	loadfile(THEME:GetPathG("ScreenRanking","CourseDifficulty Hard"))()..{
+		Condition=not isEtterna(),
 		InitCommand=function(self) self:y(scale(7,1,7,SCREEN_CENTER_Y-130*WideScreenDiff(),SCREEN_CENTER_Y+130*WideScreenDiff())) end
 	}
 }

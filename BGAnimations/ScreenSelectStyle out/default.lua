@@ -1,3 +1,7 @@
+function MemoryCheck()
+	if isEtterna() then return false else return GAMESTATE:IsAnyHumanPlayerUsingMemoryCard() end
+end
+
 return Def.ActorFrame{
 	Def.Quad{
 		InitCommand=function(self) self:Center():diffuse(color("0,0,0,1")):valign(0):zoomto(SCREEN_WIDTH,SCREEN_HEIGHT):diffusealpha(0) end,
@@ -8,7 +12,7 @@ return Def.ActorFrame{
 		OnCommand=function(self) self:sleep(0):linear(0.5):diffusealpha(1):y(SCREEN_CENTER_Y-60*0.68*WideScreenDiff()) end
 	},
 	Def.ActorFrame{
-		Condition=GAMESTATE:IsAnyHumanPlayerUsingMemoryCard(),
+		Condition=MemoryCheck(),
 		Def.Sprite {
 			Texture = THEME:GetPathG("","profile "..(isFinal() and "final" or "normal")),
 			InitCommand=function(self) self:Center():zoomx(SCREEN_WIDTH):zoomy(0) end,
@@ -37,7 +41,7 @@ return Def.ActorFrame{
 		}
 	},
 	Def.ActorFrame{
-		Condition=not GAMESTATE:IsAnyHumanPlayerUsingMemoryCard(),
+		Condition=not MemoryCheck(),
 		Def.Sprite {
 			Texture = THEME:GetPathG("","lolhi "..(isFinal() and "final" or "normal")),
 			InitCommand=function(self) self:Center():zoomx(SCREEN_WIDTH):zoomy(0) end,

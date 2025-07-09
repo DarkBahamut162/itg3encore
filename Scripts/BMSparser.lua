@@ -25,6 +25,7 @@ function BMSParser(steps)
 		return s
 	end
 	if simfileString then
+		simfileString = simfileString:gsub('[\r\t\f\v ]+', '')
 		local currentMeasure = -1
 		local currentRow = -1
 		local beatData = {}
@@ -33,44 +34,46 @@ function BMSParser(steps)
 		local scratch = 0
 		local foot = 0
 		for measure,rows in simfileString:gmatch("#(%w+):(%w+)\n") do
-			currentMeasure = math.floor(measure/100)
-			if tonumber(measure) % 100 > 10 and tonumber(measure) % 100 < 30 then
-				local currentRow = -1
-				rows = splitByChunk(rows,2)
-				for row in ivalues(rows) do
-					currentRow = currentRow + 1
-					if row ~= "00" then
-						beat = (currentMeasure*4)+(currentRow/#rows*4)
-						beatData[beat] = beatData[beat] and beatData[beat] + 1 or 1
-						if filetype ~= "pms" then
-							if tonumber(measure) % 10 == 6 then
-								scratch = scratch + 1
-							elseif tonumber(measure) % 10 == 7 then
-								foot = foot + 1
-							end
-						end
-					end
-				end
-			end
-			if tonumber(measure) % 100 > 50 and tonumber(measure) % 100 < 70 then
-				local currentRow = -1
-				rows = splitByChunk(rows,2)
-				for row in ivalues(rows) do
-					currentRow = currentRow + 1
-					if row ~= "00" then
-						beat = (currentMeasure*4)+(currentRow/#rows*4)
-						local index = FindInTable(row, holds)
-						if index then
-							table.remove(holds, index)
-							lastHold = beat
-						else
-							table.insert(holds, row)
+			if tonumber(measure) then
+				currentMeasure = math.floor(measure/100)
+				if tonumber(measure) % 100 > 10 and tonumber(measure) % 100 < 30 then
+					local currentRow = -1
+					rows = splitByChunk(rows,2)
+					for row in ivalues(rows) do
+						currentRow = currentRow + 1
+						if row ~= "00" then
+							beat = (currentMeasure*4)+(currentRow/#rows*4)
 							beatData[beat] = beatData[beat] and beatData[beat] + 1 or 1
 							if filetype ~= "pms" then
 								if tonumber(measure) % 10 == 6 then
 									scratch = scratch + 1
 								elseif tonumber(measure) % 10 == 7 then
 									foot = foot + 1
+								end
+							end
+						end
+					end
+				end
+				if tonumber(measure) % 100 > 50 and tonumber(measure) % 100 < 70 then
+					local currentRow = -1
+					rows = splitByChunk(rows,2)
+					for row in ivalues(rows) do
+						currentRow = currentRow + 1
+						if row ~= "00" then
+							beat = (currentMeasure*4)+(currentRow/#rows*4)
+							local index = FindInTable(row, holds)
+							if index then
+								table.remove(holds, index)
+								lastHold = beat
+							else
+								table.insert(holds, row)
+								beatData[beat] = beatData[beat] and beatData[beat] + 1 or 1
+								if filetype ~= "pms" then
+									if tonumber(measure) % 10 == 6 then
+										scratch = scratch + 1
+									elseif tonumber(measure) % 10 == 7 then
+										foot = foot + 1
+									end
 								end
 							end
 						end

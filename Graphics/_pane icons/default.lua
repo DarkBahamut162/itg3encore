@@ -10,6 +10,7 @@ return Def.ActorFrame{
 	CurrentSongChangedMessageCommand=function(self) if not courseMode then self:playcommand("MasterSet") end end,
 	CurrentCourseChangedMessageCommand=function(self) if courseMode then self:playcommand("MasterSet") end end,
 	["CurrentSteps".. pname(player) .."ChangedMessageCommand"]=function(self) if not courseMode then self:playcommand("MasterSet") end end,
+	CurrentStepsChangedMessageCommand=function(self) if not courseMode then self:playcommand("MasterSet") end end,
 	["CurrentTrail".. pname(player) .."ChangedMessageCommand"]=function(self) if courseMode then self:playcommand("MasterSet") end end,
 	MasterSetCommand=function(self)
 		local SongOrCourse = courseMode and GAMESTATE:GetCurrentCourse() or GAMESTATE:GetCurrentSong()
@@ -27,7 +28,7 @@ return Def.ActorFrame{
 				if timingData:HasScrollChanges() then scroll = true end
 				if timingData:HasSpeedChanges() then speed = true end
 				if timingData:HasFakes() or rv:GetValue('RadarCategory_Fakes') > 0 then fake = true end
-				if step:HasAttacks() then attack = true end
+				if not isEtterna() and step:HasAttacks() then attack = true end
 
 				jump = rv:GetValue('RadarCategory_Jumps') > 0
 				hold = rv:GetValue('RadarCategory_Holds') > 0
@@ -49,7 +50,7 @@ return Def.ActorFrame{
 					if timingData:HasScrollChanges() then scroll = true end
 					if timingData:HasSpeedChanges() then speed = true end
 					if timingData:HasFakes() then fake = true end
-					if step:HasAttacks() then attack = true end
+					if not isEtterna() and step:HasAttacks() then attack = true end
 				end
 
 				local rv = trail:GetRadarValues(player)

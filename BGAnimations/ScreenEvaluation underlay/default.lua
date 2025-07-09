@@ -1,8 +1,11 @@
+local percent = isEtterna() and STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_1):GetWifeScore() or 0
+local grade = GetGradeFromPercent(percent)
+
 return Def.ActorFrame{
 	OnCommand = function(self)
 		if isOutFox() then
 			local player = GAMESTATE:GetMasterPlayerNumber()
-			local StepOrTrails = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentTrail(player) or GAMESTATE:GetCurrentSteps(player)
+			local StepsOrTrails = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentTrail(player) or GAMESTATE:GetCurrentSteps(player)
 			local song = GAMESTATE:GetCurrentSong()
 			if song then
 				local lengthFull = string.len(song:GetDisplayFullTitle()) + 3 + string.len(song:GetGroupName())
@@ -11,7 +14,7 @@ return Def.ActorFrame{
 							--string.sub(song:GetDisplayFullTitle(),1,122-string.len(song:GetGroupName())) .. "..."
 							lengthMain < 128 and song:GetDisplayMainTitle() or string.sub(song:GetDisplayMainTitle(),1,122-string.len(song:GetGroupName())) .. "..."
 				local songname = title .. " - " .. song:GetGroupName()
-				local Difficulty = ToEnumShortString( StepOrTrails:GetDifficulty() ) .. " " .. StepOrTrails:GetMeter()
+				local Difficulty = ToEnumShortString( StepsOrTrails:GetDifficulty() ) .. " " .. StepsOrTrails:GetMeter()
 				local Percentage = STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetPercentDancePoints()
 				local autoPlayer = getenv("EvalCombo"..pname(player)) and "" or " | AUTOPLAYER"
 				local states = Difficulty .. " (".. string.format( "%.2f%%", Percentage*100) .. ")"..autoPlayer
@@ -69,6 +72,7 @@ return Def.ActorFrame{
 		OffCommand=function(self) self:linear(0.2):diffusealpha(0) end
 	},
 	Def.BitmapText {
+		Condition=not isEtterna(),
 		File = "_v 26px bold shadow",
 		InitCommand=function(self) if GAMESTATE:IsPlayerEnabled(PLAYER_2) then self:settext(DisplayCustomModifiersText(PLAYER_2)) end self:maxwidth(350):zoom(0.5*WideScreenDiff()):x(SCREEN_CENTER_X+8*WideScreenDiff()):y(SCREEN_CENTER_Y+9*WideScreenDiff()):horizalign(left):shadowlength(0):diffusebottomedge(color("#BBB9FB")) end,
 		OnCommand=function(self) self:diffusealpha(0):sleep(3):linear(0.8):diffusealpha(1) end,
@@ -128,6 +132,7 @@ return Def.ActorFrame{
 			OffCommand=function(self) self:accelerate(0.3):addx(-EvalTweenDistance()) end
 		},
 		Def.Sprite {
+			Condition=not isEtterna(),
 			Texture = THEME:GetPathG("ScreenEvaluation","GraphFrame p1/_base"),
 			InitCommand=function(self) self:player(PLAYER_2):x(THEME:GetMetric("ScreenEvaluation","GradeFrameP2X")+55*WideScreenDiff()):y(THEME:GetMetric("ScreenEvaluation","GradeFrameP2Y")+101*WideScreenDiff()):zoomx(-1*WideScreenDiff()):zoomy(WideScreenDiff()):addx(EvalTweenDistance()) end,
 			OnCommand=function(self) self:sleep(3):decelerate(0.3):addx(-EvalTweenDistance()) end,
@@ -143,6 +148,166 @@ return Def.ActorFrame{
 			local SongOrCourse = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentCourse() or GAMESTATE:GetCurrentSong()
 			if SongOrCourse then self:settext( SongOrCourse:GetDisplayFullTitle() ) end
 		end
+	},
+	Def.ActorFrame{
+		Condition=isEtterna(),
+		loadfile(THEME:GetPathG("GradeDisplayEval",grade))()..{
+			InitCommand=function(self)
+				self:player(PLAYER_1):name("GradeP1")
+				ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen")
+			end
+		},
+		Def.Sprite{
+			InitCommand=function(self)
+				self:player(PLAYER_1):name("LargeBanner"):playcommand("Set")
+				ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen")
+			end,
+			SetCommand=function(self)
+				local song = GAMESTATE:GetCurrentSong()
+				local bnpath
+				if song then
+					bnpath = song:GetBannerPath()
+				else
+					bnpath = SONGMAN:GetSongGroupBannerPath(SCREENMAN:GetTopScreen():GetMusicWheel():GetSelectedSection())
+				end
+				if not bnpath or bnpath == "" then bnpath = THEME:GetPathG("Common", "fallback banner") end
+				self:scaletoclipped(292,114):LoadBackground(bnpath)
+			end,
+		},
+		loadfile(THEME:GetPathG("ScreenEvaluation","BannerFrame"))()..{
+			InitCommand=function(self)
+				self:player(PLAYER_1):name("LargeBannerFrame")
+				ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen")
+			end
+		},
+		loadfile(THEME:GetPathG("ScreenEvaluation","GradeFrame p1"))()..{
+			InitCommand=function(self)
+				self:player(PLAYER_1):name("GradeFrame" .. PlayerNumberToString(PLAYER_1))
+				ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen")
+			end
+		},
+		loadfile(THEME:GetPathG("ScreenEvaluation","GraphFrame p1"))()..{
+			InitCommand=function(self)
+				self:player(PLAYER_1):name("GraphFrame" .. PlayerNumberToString(PLAYER_1))
+				ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen")
+			end
+		},
+		Def.RollingNumbers{
+			Font=THEME:GetPathF("ScreenEvaluation","JudgmentLineNumber"),
+			InitCommand=function(self)
+				self:player(PLAYER_1):name("W1Number" .. PlayerNumberToString(PLAYER_1))
+				ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen")
+				self:Load("RollingNumbersJudgment"):targetnumber(STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_1):GetTapNoteScores('TapNoteScore_W1'))
+			end
+		},
+		Def.RollingNumbers{
+			Font=THEME:GetPathF("ScreenEvaluation","JudgmentLineNumber"),
+			InitCommand=function(self)
+				self:player(PLAYER_1):name("W2Number" .. PlayerNumberToString(PLAYER_1))
+				ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen")
+				self:Load("RollingNumbersJudgment"):targetnumber(STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_1):GetTapNoteScores('TapNoteScore_W2'))
+			end
+		},
+		Def.RollingNumbers{
+			Font=THEME:GetPathF("ScreenEvaluation","JudgmentLineNumber"),
+			InitCommand=function(self)
+				self:player(PLAYER_1):name("W3Number" .. PlayerNumberToString(PLAYER_1))
+				ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen")
+				self:Load("RollingNumbersJudgment"):targetnumber(STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_1):GetTapNoteScores('TapNoteScore_W3'))
+			end
+		},
+		Def.RollingNumbers{
+			Font=THEME:GetPathF("ScreenEvaluation","JudgmentLineNumber"),
+			InitCommand=function(self)
+				self:player(PLAYER_1):name("W4Number" .. PlayerNumberToString(PLAYER_1))
+				ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen")
+				self:Load("RollingNumbersJudgment"):targetnumber(STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_1):GetTapNoteScores('TapNoteScore_W4'))
+			end
+		},
+		Def.RollingNumbers{
+			Font=THEME:GetPathF("ScreenEvaluation","JudgmentLineNumber"),
+			InitCommand=function(self)
+				self:player(PLAYER_1):name("W5Number" .. PlayerNumberToString(PLAYER_1))
+				ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen")
+				self:Load("RollingNumbersJudgment"):targetnumber(STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_1):GetTapNoteScores('TapNoteScore_W5'))
+			end
+		},
+		Def.RollingNumbers{
+			Font=THEME:GetPathF("ScreenEvaluation","JudgmentLineNumber"),
+			InitCommand=function(self)
+				self:player(PLAYER_1):name("MissNumber" .. PlayerNumberToString(PLAYER_1))
+				ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen")
+				self:Load("RollingNumbersJudgment"):targetnumber(STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_1):GetTapNoteScores('TapNoteScore_Miss'))
+			end
+		},
+
+		Def.BitmapText{
+			Font=THEME:GetPathF("ScreenEvaluation","DetailLineNumber"),
+			InitCommand=function(self)
+				self:player(PLAYER_1):name("JumpsNumber" .. PlayerNumberToString(PLAYER_1))
+				ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen")
+				local actual = STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_1):GetRadarActual():GetValue( "RadarCategory_Jumps" )
+				local possible = STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_1):GetRadarPossible():GetValue( "RadarCategory_Jumps" )
+				self:settextf("%3d/%3d",actual,possible)
+			end
+		},
+		Def.BitmapText{
+			Font=THEME:GetPathF("ScreenEvaluation","DetailLineNumber"),
+			InitCommand=function(self)
+				self:player(PLAYER_1):name("HoldsNumber" .. PlayerNumberToString(PLAYER_1))
+				ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen")
+				local actual = STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_1):GetRadarActual():GetValue( "RadarCategory_Holds" )
+				local possible = STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_1):GetRadarPossible():GetValue( "RadarCategory_Holds" )
+				self:settextf("%3d/%3d",actual,possible)
+			end
+		},
+		Def.BitmapText{
+			Font=THEME:GetPathF("ScreenEvaluation","DetailLineNumber"),
+			InitCommand=function(self)
+				self:player(PLAYER_1):name("MinesNumber" .. PlayerNumberToString(PLAYER_1))
+				ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen")
+				local actual = STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_1):GetRadarActual():GetValue( "RadarCategory_Mines" )
+				local possible = STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_1):GetRadarPossible():GetValue( "RadarCategory_Mines" )
+				self:settextf("%3d/%3d",actual,possible)
+			end
+		},
+		Def.BitmapText{
+			Font=THEME:GetPathF("ScreenEvaluation","DetailLineNumber"),
+			InitCommand=function(self)
+				self:player(PLAYER_1):name("HandsNumber" .. PlayerNumberToString(PLAYER_1))
+				ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen")
+				local actual = STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_1):GetRadarActual():GetValue( "RadarCategory_Hands" )
+				local possible = STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_1):GetRadarPossible():GetValue( "RadarCategory_Hands" )
+				self:settextf("%3d/%3d",actual,possible)
+			end
+		},
+		Def.BitmapText{
+			Font=THEME:GetPathF("ScreenEvaluation","DetailLineNumber"),
+			InitCommand=function(self)
+				self:player(PLAYER_1):name("RollsNumber" .. PlayerNumberToString(PLAYER_1))
+				ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen")
+				local actual = STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_1):GetRadarActual():GetValue( "RadarCategory_Rolls" )
+				local possible = STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_1):GetRadarPossible():GetValue( "RadarCategory_Rolls" )
+				self:settextf("%3d/%3d",actual,possible)
+			end
+		},
+		Def.RollingNumbers{
+			Font=THEME:GetPathF("ScreenEvaluation","JudgmentLineNumber"),
+			InitCommand=function(self)
+				self:player(PLAYER_1):name("MaxComboNumber" .. PlayerNumberToString(PLAYER_1))
+				ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen")
+				self:Load("RollingNumbersMaxCombo"):targetnumber(STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_1):MaxCombo())
+			end
+		},
+
+		Def.BitmapText {
+			File = "Common normal",
+			Text=GAMESTATE:GetPlayerState(PLAYER_1):GetPlayerOptionsString("ModsLevel_Song"),
+			InitCommand=function(self)
+				self:player(PLAYER_1):name("PlayerOptions" .. PlayerNumberToString(PLAYER_1))
+				ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen")
+			end
+		}
 	},
 	loadfile(THEME:GetPathB("ScreenEvaluation","underlay/Score"))(PLAYER_1)..{Condition=GAMESTATE:IsPlayerEnabled(PLAYER_1)},
 	loadfile(THEME:GetPathB("ScreenEvaluation","underlay/Score"))(PLAYER_2)..{Condition=GAMESTATE:IsPlayerEnabled(PLAYER_2)}

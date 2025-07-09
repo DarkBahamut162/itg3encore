@@ -25,6 +25,7 @@ return Def.ActorFrame{
 	CurrentSongChangedMessageCommand=function(self) if not courseMode then self:RunCommandsRecursively( function(self) self:stoptweening():playcommand("Set") end ) end end,
 	CurrentCourseChangedMessageCommand=function(self) if courseMode then self:RunCommandsRecursively( function(self) self:stoptweening():playcommand("Set") end )  end end,
 	["CurrentSteps".. pname(player) .."ChangedMessageCommand"]=function(self) if not courseMode then self:RunCommandsRecursively( function(self) self:stoptweening():playcommand("Set") end )  end end,
+	CurrentStepsChangedMessageCommand=function(self) if not courseMode then self:RunCommandsRecursively( function(self) self:stoptweening():playcommand("Set") end )  end end,
 	["CurrentTrail".. pname(player) .."ChangedMessageCommand"]=function(self) if courseMode then self:RunCommandsRecursively( function(self) self:stoptweening():playcommand("Set") end )  end end,
 	Def.BitmapText {
 		File = "smallnumbers",

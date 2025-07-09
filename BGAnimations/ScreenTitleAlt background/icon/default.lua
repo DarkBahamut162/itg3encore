@@ -5,7 +5,7 @@ return Def.ActorFrame{
 			Name="Stages",
 			Def.BitmapText {
 				File = "stencil",
-				Text=PREFSMAN:GetPreference('SongsPerPlay'),
+				Text=isEtterna() and 0 or PREFSMAN:GetPreference('SongsPerPlay'),
 				InitCommand=function(self) self:x(-199):y(23) end,
 				OnCommand=function(self) if GAMESTATE:IsEventMode() then self:settext("0::0"):rotationz(90) end end
 			},
@@ -200,6 +200,7 @@ return Def.ActorFrame{
 			}
 		},
 		Def.ActorFrame{
+			Condition=not isEtterna(),
 			Name="Premiums",
 			InitCommand=function(self)
 				local line1 = self:GetChild("Line1")

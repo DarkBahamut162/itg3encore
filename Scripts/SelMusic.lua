@@ -262,6 +262,12 @@ function getColumnsPerPlayer(typ,style,calc)
 		elseif style == "Nine" then
 			return 9
 		end
+	elseif typ == "popn" then
+		if style == "Five" then
+			return 5
+		elseif style == "Nine" then
+			return 9
+		end
 	elseif typ == "Techno" then
 		if style == "Single4" then
 			return 4
@@ -286,7 +292,10 @@ end
 
 function getStepCacheFile(Step)
 	local filename = split("/",Step:GetFilename())
-	local Song = Step:IsAutogen() and SONGMAN:GetSongFromSteps(Step) or nil
+	local Song = nil
+	if not isEtterna() then 
+		if Step:IsAutogen() then Song = SONGMAN:GetSongFromSteps(Step) end
+	end
 	local groupName = filename[#filename-2] or Song and Song:GetGroupName() or ""
 	local songName = filename[#filename-1] or Song and Song:GetSongFolder() or ""
 	if string.find(groupName,"@") then
@@ -413,7 +422,7 @@ function CheckNullMeasure(Step)
 	local minMeasure = nil
 	while file and not file:AtEOF() do
 		line = file:GetLine()
-		if string.find(line,":") then
+		if line and string.find(line,":") then
 			local currentMeasure = tonumber(line:sub(2,4))
 			if currentMeasure then
 				if not checkMeasure[currentMeasure] and string.find(line,"02:") then
@@ -450,12 +459,9 @@ function cacheStep(Song,Step)
     local chartint = 1
 	local currentBeat = 0
 	local currentNotes = 0
-	--local currentMines = 0
 	local noteCounter = {}
 	local firstBeat = nil
 	local lastBeat = 0
-	--local shockArrows = ""
-	--local NoteDensity = 0
 
 	if not isOutFoxV043() then
 		for i,current in pairs( Song:GetAllSteps() ) do
@@ -478,9 +484,6 @@ function cacheStep(Song,Step)
 	local scratches,foots = 0,0
 	local currentBPM,checkBPM,checkCount,maxBPM = 0,0,0,0
 	local checking = false
-	--local ChaosValue = 0
-	--local previousBeat = 0
-	--local FreezeLength = 0
 	local stops = timingData:GetStops()
 	local delays = timingData:GetDelays()
 
@@ -489,18 +492,12 @@ function cacheStep(Song,Step)
 		if currentBeat < v[1] then
 			currentBeat = v[1]
 			currentNotes = 0
-			--currentMines = 0
 			lastSec = currentSec
 		end
-
-		--local fourBeatCounter = tablelength(Song:GetNoteData(chartint,v[1],v[1]+4))
-		--if NoteDensity < fourBeatCounter then NoteDensity = fourBeatCounter end
-
 		if timingData:IsJudgableAtBeat(v[1]) then
 			if allowednotes[v[3]] then
 				currentNotes = currentNotes + 1
 				if v["length"] then
-					--FreezeLength = FreezeLength + v["length"]
 					if currentBeat + v["length"] > lastBeat then lastBeat = currentBeat + v["length"] end
 				else
 					if currentBeat > lastBeat then lastBeat = currentBeat end
@@ -523,11 +520,6 @@ function cacheStep(Song,Step)
 						end
 					end
 				end
-				--elseif v[3] == "TapNoteType_Mine" then
-				--	currentMines = currentMines + 1
-				--	if currentMines == getColumnsPerPlayer(stepType[2],stepType[3]) then
-				--		shockArrows = addToOutput(shockArrows,Step:GetTimingData():GetElapsedTimeFromBeat(v[1]),"_")
-				--	end
 			end
 
 			local checkBeat = false
@@ -568,10 +560,6 @@ function cacheStep(Song,Step)
 						if stepsPerSec[currentSPS] then stepsPerSec[currentSPS] = stepsPerSec[currentSPS] + 1 else stepsPerSec[currentSPS] = 1 end
 					end
 				end
-				--[[
-				ChaosValue = ChaosValue + ChaosCalc(currentBeat,previousBeat,currentNotes)
-				previousBeat = currentBeat
-				]]--
 			end
 		end
 	end
@@ -592,7 +580,6 @@ function cacheStep(Song,Step)
 			["TrueSeconds"] = Step:GetTimingData():GetElapsedTimeFromBeat(lastBeat)-Step:GetTimingData():GetElapsedTimeFromBeat(firstBeat)
 		}
 
-		--if shockArrows ~= "" then list["ShockArrows"] = shockArrows end
 		if stepType[2] == "Bm" then
 			if #noteCounter == 7 or #noteCounter == 14 then
 				list["Foots"] = foots
@@ -604,7 +591,6 @@ function cacheStep(Song,Step)
 			LoadModule("Config.SaveAll.lua")(list,file)
 		else
 			LoadModule("Config.Save.lua")("Version",cacheVersion,file)
-			--if shockArrows ~= "" then LoadModule("Config.Save.lua")("ShockArrows",shockArrows,file) end
 			LoadModule("Config.Save.lua")("StepCounter",table.concat(noteCounter,"_"),file)
 			LoadModule("Config.Save.lua")("StepsPerSecond",total2,file)
 			LoadModule("Config.Save.lua")("TrueBeats",lastBeat-firstBeat,file)
@@ -616,9 +602,6 @@ function cacheStep(Song,Step)
 				end
 				LoadModule("Config.Save.lua")("Scratches",scratches,file)
 			end
-			--LoadModule("Config.Save.lua")("ChaosValue",ChaosValue,file)
-			--LoadModule("Config.Save.lua")("FreezeLength",FreezeLength,file)
-			--LoadModule("Config.Save.lua")("NoteDensity",NoteDensity,file)
 		end
 		return list
 	else
@@ -647,6 +630,11 @@ function cacheStepSM(Song,Step)
 
 	local chart = SMParser(Step)
 	local beat = 0
+
+	local beats = {}
+	local chaosCount = 0
+	local maxVoltage = 0
+
 	if chart then
 		chart = split("\n,\n",chart)
 		local currentMeasure = -1
@@ -691,6 +679,20 @@ function cacheStepSM(Song,Step)
 							if stepsPerSec[currentSPS] then stepsPerSec[currentSPS] = stepsPerSec[currentSPS] + 1 else stepsPerSec[currentSPS] = 1 end
 						end
 						lastSec = currentSec
+
+						if isEtterna() then
+							if getNoteType(beat) >= 12 then chaosCount = chaosCount + 1 end
+							for _=1,count do table.insert(beats,beat) end
+							for i=1,#beats do
+								if beats[i] and beats[i] < beat - 8 then
+									table.remove(beats,i)
+									i=i-1
+								else
+									break
+								end
+							end
+							maxVoltage = math.max(maxVoltage,#beats)
+						end
 					end
 				end
 				if string.find(row,"[L1234]") then
@@ -713,7 +715,12 @@ function cacheStepSM(Song,Step)
 				["TrueMaxBPM"] = maxBPM,
 				["TrueSeconds"] = lastSecond-firstSecond
 			}
-	
+
+			if isEtterna() then
+				list["chaosCount"] = chaosCount
+				list["maxVoltage"] = maxVoltage
+			end
+
 			if getenv("cacheing") then
 				LoadModuleSM("Config.SaveAll.lua")(list,file)
 			else
@@ -723,6 +730,10 @@ function cacheStepSM(Song,Step)
 				LoadModuleSM("Config.Save.lua")("TrueBeats",lastBeat-firstBeat,file)
 				LoadModuleSM("Config.Save.lua")("TrueMaxBPM",maxBPM,file)
 				LoadModuleSM("Config.Save.lua")("TrueSeconds",lastSecond-firstSecond,file)
+				if isEtterna() then
+					LoadModuleSM("Config.Save.lua")("chaosCount",chaosCount,file)
+					LoadModuleSM("Config.Save.lua")("maxVoltage",maxVoltage,file)
+				end
 			end
 
 			return list
@@ -770,6 +781,10 @@ function cacheStepBMS(Song,Step)
 		noteCounter[i] = 0
 	end
 
+	local beats = {}
+	local chaosCount = 0
+	local maxVoltage = 0
+
 	if rows and #rows>0 then
 		local orderedBeats = orderedIndex(rows)
 		for beat in ivalues(orderedBeats) do
@@ -806,6 +821,20 @@ function cacheStepBMS(Song,Step)
 					if stepsPerSec[currentSPS] then stepsPerSec[currentSPS] = stepsPerSec[currentSPS] + 1 else stepsPerSec[currentSPS] = 1 end
 				end
 				lastSec = currentSec
+
+				if isEtterna() then
+					if getNoteType(beat) >= 12 then chaosCount = chaosCount + 1 end
+					for _=1,row do table.insert(beats,beat) end
+					for i=1,#beats do
+						if beats[i] and beats[i] < beat - 8 then
+							table.remove(beats,i)
+							i=i-1
+						else
+							break
+						end
+					end
+					maxVoltage = math.max(maxVoltage,#beats)
+				end
 			end
 		end
 
@@ -825,6 +854,11 @@ function cacheStepBMS(Song,Step)
 			["Foots"] = foot
 		}
 
+		if isEtterna() then
+			list["chaosCount"] = chaosCount
+			list["maxVoltage"] = maxVoltage
+		end
+
 		if getenv("cacheing") then
 			LoadModuleSM("Config.SaveAll.lua")(list,file)
 		else
@@ -836,6 +870,10 @@ function cacheStepBMS(Song,Step)
 			LoadModuleSM("Config.Save.lua")("TrueSeconds",lastSecond-firstSecond,file)
 			LoadModuleSM("Config.Save.lua")("Scratches",scratch,file)
 			LoadModuleSM("Config.Save.lua")("Foots",foot,file)
+			if isEtterna() then
+				LoadModuleSM("Config.Save.lua")("chaosCount",chaosCount,file)
+				LoadModuleSM("Config.Save.lua")("maxVoltage",maxVoltage,file)
+			end
 		end
 
 		return list
@@ -917,7 +955,7 @@ function GetMinSecondsToStep()
 	if firstBeat < 0 then firstSec = firstBeat * 60 / firstBpm end
 	firstSec = song:GetFirstSecond() - firstSec + smOffset
 
-	return math.max(firstSec, 1)
+	return math.max(firstSec, isEtterna() and 2 or 1)
 end
 
 function LV100(input)
@@ -1044,7 +1082,6 @@ function getAllTheBPMs(song,step,BPMtype)
 	elseif BPMtype == 2 then
 		local usesStepCache = ThemePrefs.Get("UseStepCache")
 		local trueBPM = usesStepCache and tonumber(LoadFromCache(song,step,"TrueMaxBPM")) or -1
-		--local trueBPM = isOutFox() and getTrueMaxBPM(song,step) or 0
 		if usesStepCache and trueBPM >= 0 then
 			bpms = step:GetTimingData():GetActualBPM()
 			bpms[3]=trueBPM
@@ -1082,8 +1119,6 @@ function getCalculatedDifficulty(Step)
 	local OG = Step:GetMeter()
 
 	local Song = SONGMAN:GetSongFromSteps(Step)
-	--local totalSeconds = isOutFox() and getTrueSeconds(Song,Step)["TrueSeconds"] or (Song:GetLastSecond() - Song:GetFirstSecond())
-	--local stepCounter = isOutFox() and getStepCounter(Song,Step)["StepCounter"] or {}
 	local usesStepCache = ThemePrefs.Get("UseStepCache")
 	local version = usesStepCache and LoadFromCache(Song,Step,"Version") or false
 	if not version or version == "0" then
@@ -1123,13 +1158,11 @@ function getCalculatedDifficulty(Step)
 	local SPS = 0
 
 	if IsGame("be-mu") or IsGame("beat") then
-		YA = GetConvertDifficulty(Song,Step,totalSeconds) / 2
+		if not isEtterna() then YA = GetConvertDifficulty(Song,Step,totalSeconds) / 2 end
 		if usesStepCache then SPS = tonumber(LoadFromCache(Song,Step,"StepsPerSecond")) / 2 end
-		--if usesStepCache then SPS = getSPS(Song,Step) / 2 end
 	else
-		if not IsGame("pump") then YA = GetConvertDifficulty(Song,Step,totalSeconds) * (getColumnsPerPlayer(stepType[2],stepType[3],true) / 4) * ddrtype end
+		if not IsGame("pump") and not isEtterna() then YA = GetConvertDifficulty(Song,Step,totalSeconds) * (getColumnsPerPlayer(stepType[2],stepType[3],true) / 4) * ddrtype end
 		if usesStepCache then SPS = tonumber(LoadFromCache(Song,Step,"StepsPerSecond")) * (getColumnsPerPlayer(stepType[2],stepType[3],true) / 4) * ddrtype end
-		--if usesStepCache then SPS = getSPS(Song,Step) * (getColumnsPerPlayer(stepType[2],stepType[3],true) / 4) * ddrtype end
 	end
 
 	local output = {}
@@ -1152,16 +1185,24 @@ end
 function grooveRadar(song,step,RadarValues)
 	local stream,voltage,air,freeze,chaos = 0,0,0,0,0
 
-	stream = RadarValues:GetValue('RadarCategory_Stream')
-	voltage = RadarValues:GetValue('RadarCategory_Voltage')
-	air = RadarValues:GetValue('RadarCategory_Air')
-	freeze = RadarValues:GetValue('RadarCategory_Freeze')
-	chaos = RadarValues:GetValue('RadarCategory_Chaos')
+	if not isEtterna() then
+		stream = RadarValues:GetValue('RadarCategory_Stream')
+		voltage = RadarValues:GetValue('RadarCategory_Voltage')
+		air = RadarValues:GetValue('RadarCategory_Air')
+		freeze = RadarValues:GetValue('RadarCategory_Freeze')
+		chaos = RadarValues:GetValue('RadarCategory_Chaos')
+	else
+		local maxVoltage = tonumber(LoadFromCache(song,step,"maxVoltage"))
+		local chaosCount = tonumber(LoadFromCache(song,step,"chaosCount"))
+
+		stream = (RadarValues:GetValue('RadarCategory_Notes')/song:MusicLengthSeconds())/7
+		voltage = ((maxVoltage/8)*(song:GetLastBeat()/song:MusicLengthSeconds()))/10
+		air = RadarValues:GetValue('RadarCategory_Jumps')/song:MusicLengthSeconds()
+		freeze = RadarValues:GetValue('RadarCategory_Holds')/song:MusicLengthSeconds()
+		chaos = chaosCount/song:MusicLengthSeconds()*0.5
+	end
 
 	if not IsGame("pump") then
-		--local trueValues = isOutFox() and getTrueSeconds(song,step) or {}
-		--local totalSeconds = isOutFox() and trueValues["TrueSeconds"] or (song:GetLastSecond() - song:GetFirstSecond())
-		--local totalBeats = isOutFox() and trueValues["TrueBeats"] or (song:GetLastBeat() - song:GetFirstBeat())
 		local usesStepCache = ThemePrefs.Get("UseStepCache")
 		local totalSeconds = usesStepCache and tonumber(LoadFromCache(song,step,"TrueSeconds")) or song:GetLastSecond() - song:GetFirstSecond()
 		local totalBeats = usesStepCache and tonumber(LoadFromCache(song,step,"TrueBeats")) or song:GetLastBeat() - song:GetFirstBeat()

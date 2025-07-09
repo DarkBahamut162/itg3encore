@@ -1,6 +1,23 @@
 local courseMode = GAMESTATE:IsCourseMode()
 
-return Def.FadingBanner{
+return isEtterna() and Def.Sprite{
+		InitCommand=function(self) self:x(SCREEN_CENTER_X+140*WideScreenDiff()):y(SCREEN_CENTER_Y+26*WideScreenDiff()):zoomy(-1):ztest(true) end,
+		SetCommand=function(self)
+			local song = GAMESTATE:GetCurrentSong()
+			local sortOrder = GAMESTATE:GetSortOrder()
+			local bnpath
+			if song then
+				bnpath = song:GetBannerPath()
+			elseif sortOrder == 'SortOrder_ModeMenu' then
+				bnpath = THEME:GetPathG("Banner", "ModeMenu")
+			else
+				bnpath = SONGMAN:GetSongGroupBannerPath(SCREENMAN:GetTopScreen():GetMusicWheel():GetSelectedSection())
+			end
+			if not bnpath or bnpath == "" then bnpath = THEME:GetPathG("Common", "fallback banner") end
+			self:scaletoclipped(320*WideScreenDiff(),120*WideScreenDiff()):LoadBackground(bnpath):zoomy(-1):x(SCREEN_CENTER_X+140*WideScreenDiff())
+		end,
+		CurrentSongChangedMessageCommand=function(self) self:queuecommand("Set") end
+    } or Def.FadingBanner{
 	InitCommand=function(self) self:playcommand("Set"):ztest(true):vertalign(bottom):zoomy(-1) end,
 	SetCommand=function(self)
 		local SongOrCourse = courseMode and GAMESTATE:GetCurrentCourse() or GAMESTATE:GetCurrentSong()

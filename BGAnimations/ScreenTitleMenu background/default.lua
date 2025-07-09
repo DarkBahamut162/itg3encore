@@ -1,3 +1,16 @@
+if isEtterna() and PREFSMAN:GetPreference("AutoConnectMultiplayer") == 1 then
+	PREFSMAN:SetPreference("AutoConnectMultiplayer", 0)
+	GAMEMAN:SetGame(GAMESTATE:GetCurrentGame():GetName(),THEME:GetCurThemeName())
+end
+
+local versions = {
+	["Etterna"]		= "etterna",
+	["ITGmania"]	= "itgmania",
+	["OpenDDR"]		= "openddr",
+	["OutFox"]		= "outfox",
+	["StepMania"]	= "stepmania"
+}
+
 local groups = SONGMAN:GetSongGroupNames()
 local ITG3ADDONS, ITG3UNLOCKS, REBIRTH, REBIRTHPLUS, REBIRTHTWO = false, false, false, false, false
 setenv("RotationCheck",false)
@@ -340,7 +353,7 @@ return Def.ActorFrame{
 		OnCommand=function(self) self:sleep(0.5):linear(0.5):diffusealpha(1) end,
 		OffCommand=function(self) self:accelerate(0.5):addy(-100) end
 	},
-	loadfile(THEME:GetPathB("","_thanks/_"..(isOutFox() and "outfox" or isITGmania() and "itgmania" or isOpenDDR() and "openddr" or "stepmania")))()..{
+	loadfile(THEME:GetPathB("","_thanks/_"..versions[ProductFamily()]))()..{
 		InitCommand=function(self) self:x(isFinal() and SCREEN_LEFT+105*WideScreenDiff() or SCREEN_LEFT+360*WideScreenDiff()):y(isFinal() and SCREEN_TOP+10*WideScreenDiff() or SCREEN_TOP+16*WideScreenDiff()):valign(1):zoom(WideScreenDiff()):diffusealpha(0) end,
 		OnCommand=function(self) self:sleep(0.5):linear(0.5):diffusealpha(1) end,
 		OffCommand=function(self) self:accelerate(0.5):addy(-100) end,
@@ -403,7 +416,7 @@ return Def.ActorFrame{
 		ScreenChangedMessageCommand=function(self) self:playcommand("Refresh") end,
 		RefreshCommand=function(self)
 			if not isTopScreen("ScreenLogo") then 
-				self:settext(ProductFamily() .. " " .. ProductVersion() .. " (" .. VersionDate() .. ")")
+				self:settext(ProductFamily() .. " " .. ProductVersion() .. (not isEtterna()and " (" .. VersionDate() .. ")" or ""))
 			end
 		end
 	},
@@ -436,7 +449,10 @@ return Def.ActorFrame{
 				local groupsSingleCount = 0
 				local groupsDoubleCount = 0
 
-				local courses = SONGMAN:GetAllCourses(PREFSMAN:GetPreference("AutogenGroupCourses"))
+				local courses = {}
+				if not isEtterna() then
+					courses = SONGMAN:GetAllCourses(PREFSMAN:GetPreference("AutogenGroupCourses"))
+				end
 				local coursesMarathonSingle = 0
 				local coursesMarathonDouble = 0
 				local coursesSurvivalSingle = 0
@@ -463,7 +479,7 @@ return Def.ActorFrame{
 							end
 						end
 					end
-					if isOutFox() and ((not isOutFoxV() and IsGame("be-mu")) or (not isOutFoxV043() and IsGame("po-mu"))) then else
+					if isOutFox() and ((not isOutFoxV() and IsGame("be-mu")) or (not isOutFoxV043() and IsGame("po-mu"))) and not isEtterna() then else
 						if #courses > 0 then
 							for i=1,#courses do
 								if courses[i]:GetCourseType() == "CourseType_Nonstop" then
@@ -494,21 +510,23 @@ return Def.ActorFrame{
 						output = addToOutput(output,"Songs: "..songsSingle.." singles ("..groupsSingleCount.." groups) & "..songsDouble.." doubles ("..groupsDoubleCount.." groups)","\n")
 					end
 
-					if isOutFox() and ((not isOutFoxV() and IsGame("be-mu")) or (not isOutFoxV043() and IsGame("po-mu"))) then
-						output = addToOutput(output,"Courses: ? marathons & ? survivals","\n")
-					else
-						local temp = "Courses:"
-						if coursesMarathonSingle == coursesMarathonDouble then
-							temp = addToOutput(temp,coursesMarathonSingle.." marathons"," ")
+					if not isEtterna() then
+						if isOutFox() and ((not isOutFoxV() and IsGame("be-mu")) or (not isOutFoxV043() and IsGame("po-mu"))) then
+							output = addToOutput(output,"Courses: ? marathons & ? survivals","\n")
 						else
-							temp = addToOutput(temp,coursesMarathonSingle.."s/"..coursesMarathonDouble.."d marathons"," ")
+							local temp = "Courses:"
+							if coursesMarathonSingle == coursesMarathonDouble then
+								temp = addToOutput(temp,coursesMarathonSingle.." marathons"," ")
+							else
+								temp = addToOutput(temp,coursesMarathonSingle.."s/"..coursesMarathonDouble.."d marathons"," ")
+							end
+							if coursesSurvivalSingle == coursesSurvivalDouble then
+								temp = addToOutput(temp,coursesSurvivalSingle.." survivals"," & ")
+							else
+								temp = addToOutput(temp,coursesSurvivalSingle.."s/"..coursesSurvivalDouble.."d survivals"," & ")
+							end
+							output = addToOutput(output,temp,"\n")
 						end
-						if coursesSurvivalSingle == coursesSurvivalDouble then
-							temp = addToOutput(temp,coursesSurvivalSingle.." survivals"," & ")
-						else
-							temp = addToOutput(temp,coursesSurvivalSingle.."s/"..coursesSurvivalDouble.."d survivals"," & ")
-						end
-						output = addToOutput(output,temp,"\n")
 					end
 					output = addToOutput(output,"Current Game Mode: "..GAMESTATE:GetCurrentGame():GetName(),"\n")
 					output = addToOutput(output,"Current Style: "..StyleName()[GetUserPrefN("StylePosition")],"\n")

@@ -90,8 +90,7 @@ return Def.ActorFrame{
 			elseif scoreType == 2 then
 				displayScore = 10000
 			elseif scoreType == 3 then
-				local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(player)
-				displayScore = pss:GetPossibleDancePoints()
+				displayScore = DPMax(player)
 			end
 		end
 		self:queuecommand("RedrawScore"):addy(-100):sleep(0.5):decelerate(0.8):addy(100)
@@ -150,22 +149,16 @@ return Def.ActorFrame{
 				})
 			elseif scoreType == 2 then
 				if scoreDirection == 1 then
-					output = animateScore(pss:GetPercentDancePoints()*10000,displayScore)/100
+					output = animateScore(DP(player)*10000,displayScore)/100
 				else
-					local DPCurMax = pss:GetCurrentPossibleDancePoints()
-					local DPMax = pss:GetPossibleDancePoints()
-					local DP = pss:GetActualDancePoints()
-					output = animateScore((DPMax-(DPCurMax-DP))/DPMax*10000,displayScore)/100
+					output = animateScore((DPMax(player)-(DPCurMax(player)-DPCur(player)))/DPMax*10000,displayScore)/100
 				end
 				self:settextf("%1.2f%%",output) -- PERCENT
 			elseif scoreType == 3 then
 				if scoreDirection == 1 then
-					output = animateScore(pss:GetActualDancePoints(),displayScore)
+					output = animateScore(DPCur(player),displayScore)
 				else
-					local DPCurMax = pss:GetCurrentPossibleDancePoints()
-					local DPMax = pss:GetPossibleDancePoints()
-					local DP = pss:GetActualDancePoints()
-					output = animateScore((DPMax-(DPCurMax-DP)),displayScore)
+					output = animateScore((DPMax(player)-(DPCurMax(player)-DPCur(player))),displayScore)
 				end
 				self:settextf("%04d",output) -- EX
 				self:ClearAttributes()

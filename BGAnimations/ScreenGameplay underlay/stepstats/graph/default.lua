@@ -34,7 +34,7 @@ local function UpdateGraph()
     lastSec = 0
     lastBeat = 0
     local SongOrCourse = GAMESTATE:GetCurrentSong()
-    local StepOrTrails = GAMESTATE:GetCurrentSteps(pn)
+    local StepsOrTrails = GAMESTATE:GetCurrentSteps(pn)
 	local stepsPerSecList = {0}
     local chartint = 1
     local absoluteSec = 0
@@ -43,16 +43,16 @@ local function UpdateGraph()
     if SongOrCourse then
         if not isOutFoxV043() then
             for k,v in pairs( SongOrCourse:GetAllSteps() ) do
-                if v == StepOrTrails then
+                if v == StepsOrTrails then
                     chartint = k
                     break
                 end
             end
         end
 
-        local timingData = StepOrTrails:GetTimingData()
+        local timingData = StepsOrTrails:GetTimingData()
 
-        for v in ivalues(isOutFoxV043() and StepOrTrails:GetNoteData() or SongOrCourse:GetNoteData(chartint)) do
+        for v in ivalues(isOutFoxV043() and StepsOrTrails:GetNoteData() or SongOrCourse:GetNoteData(chartint)) do
             if timingData:IsJudgableAtBeat(v[1]) then
                 if allowednotes[v[3]] then
                     if rowLimit then absoluteSec = timingData:GetElapsedTimeFromBeat(v[1]) end
@@ -135,7 +135,7 @@ local function UpdateGraphAlt()
     lastSec = 0
     lastBeat = 0
     local SongOrCourse = GAMESTATE:GetCurrentSong()
-    local StepOrTrails = GAMESTATE:GetCurrentSteps(pn)
+    local StepsOrTrails = GAMESTATE:GetCurrentSteps(pn)
 	local stepsPerSecList = {}
     local chartint = 1
     local previousSec = -999
@@ -145,16 +145,16 @@ local function UpdateGraphAlt()
     if SongOrCourse then
         if not isOutFoxV043() then
             for k,v in pairs( SongOrCourse:GetAllSteps() ) do
-                if v == StepOrTrails then
+                if v == StepsOrTrails then
                     chartint = k
                     break
                 end
             end
         end
 
-        local timingData = StepOrTrails:GetTimingData()
+        local timingData = StepsOrTrails:GetTimingData()
 
-        for v in ivalues(isOutFoxV043() and StepOrTrails:GetNoteData() or SongOrCourse:GetNoteData(chartint)) do
+        for v in ivalues(isOutFoxV043() and StepsOrTrails:GetNoteData() or SongOrCourse:GetNoteData(chartint)) do
             if timingData:IsJudgableAtBeat(v[1]) then
                 if allowednotes[v[3]] then
                     local currentSec = math.round(timingData:GetElapsedTimeFromBeat(v[1]),3)
@@ -241,12 +241,12 @@ end
 
 local function UpdateGraphAssist()
     local SongOrCourse = GAMESTATE:GetCurrentSong()
-    local StepOrTrails = GAMESTATE:GetCurrentSteps(pn)
+    local StepsOrTrails = GAMESTATE:GetCurrentSteps(pn)
 	local assist = {}
     local temp = nil
 
     if SongOrCourse then
-        local timingData = StepOrTrails:GetTimingData()
+        local timingData = StepsOrTrails:GetTimingData()
         if getenv("ShowSpeedAssist"..pname(pn)) then
             for v in ivalues(timingData:GetBPMsAndTimes()) do
                 local data = split('=', v)
@@ -397,6 +397,7 @@ return Def.ActorFrame{
         Def.ActorMultiVertex{
             DoneLoadingNextSongMessageCommand=function(self) self:playcommand("Init") end,
             CurrentStepsP1ChangedMessageCommand=function(self) if not courseMode and pn == PLAYER_1 then self:playcommand("Init") end end,
+            CurrentStepsChangedMessageCommand=function(self) if not courseMode and pn == PLAYER_1 then self:playcommand("Init") end end,
             CurrentStepsP2ChangedMessageCommand=function(self) if not courseMode and pn == PLAYER_2 then self:playcommand("Init") end end,
             CurrentTrailP1ChangedMessageCommand=function(self) if courseMode and pn == PLAYER_1 then self:playcommand("Init") end end,
             CurrentTrailP2ChangedMessageCommand=function(self) if courseMode and pn == PLAYER_2 then self:playcommand("Init") end end,
@@ -414,6 +415,7 @@ return Def.ActorFrame{
         Def.ActorMultiVertex{
             DoneLoadingNextSongMessageCommand=function(self) self:playcommand("Init") end,
             CurrentStepsP1ChangedMessageCommand=function(self) if not courseMode and pn == PLAYER_1 then self:playcommand("Init") end end,
+            CurrentStepsChangedMessageCommand=function(self) if not courseMode and pn == PLAYER_1 then self:playcommand("Init") end end,
             CurrentStepsP2ChangedMessageCommand=function(self) if not courseMode and pn == PLAYER_2 then self:playcommand("Init") end end,
             CurrentTrailP1ChangedMessageCommand=function(self) if courseMode and pn == PLAYER_1 then self:playcommand("Init") end end,
             CurrentTrailP2ChangedMessageCommand=function(self) if courseMode and pn == PLAYER_2 then self:playcommand("Init") end end,
@@ -434,6 +436,7 @@ return Def.ActorFrame{
             Condition=getenv("ShowSpeedAssist"..pname(pn)) or getenv("ShowStopAssist"..pname(pn)),
             DoneLoadingNextSongMessageCommand=function(self) self:sleep(1/60):playcommand("Draw") end,
             CurrentStepsP1ChangedMessageCommand=function(self) if not courseMode and pn == PLAYER_1 then self:playcommand("Init") end end,
+            CurrentStepsChangedMessageCommand=function(self) if not courseMode and pn == PLAYER_1 then self:playcommand("Init") end end,
             CurrentStepsP2ChangedMessageCommand=function(self) if not courseMode and pn == PLAYER_2 then self:playcommand("Init") end end,
             CurrentTrailP1ChangedMessageCommand=function(self) if courseMode and pn == PLAYER_1 then self:playcommand("Init") end end,
             CurrentTrailP2ChangedMessageCommand=function(self) if courseMode and pn == PLAYER_2 then self:playcommand("Init") end end,

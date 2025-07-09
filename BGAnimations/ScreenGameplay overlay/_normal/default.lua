@@ -127,18 +127,18 @@ return Def.ActorFrame{
 			Def.ActorFrame{
 				TitleSongFade:Create()..{
 					InitCommand=function(self) self:CenterX():y(SCREEN_TOP+24*WideScreenDiff()):zoom(0.5*WideScreenDiff()) end,
-					OnCommand=function(self) self:zoom(0.5*WideScreenDiff()):shadowlength(2*WideScreenDiff()):zoomy(0):hibernate(2):decelerate(0.3):zoomy(0.45*WideScreenDiff()) end,
+					OnCommand=function(self) self:zoom(0.5*WideScreenDiff()):shadowlength(2*WideScreenDiff()):zoomy(0) if isEtterna() then self:sleep(2) else self:hibernate(2) end self:decelerate(0.3):zoomy(0.45*WideScreenDiff()) end,
 				}
 			},
 			Def.BitmapText {
 				File = "_r bold 30px",
 				InitCommand=function(self) self:visible(not animate):CenterX():y(SCREEN_TOP+24*WideScreenDiff()):maxwidth(573):diffusebottomedge(color("#dedede")) end,
-				OnCommand=function(self) self:zoom(0.5*WideScreenDiff()):shadowlength(2*WideScreenDiff()):zoomy(0):hibernate(2):decelerate(0.3):zoomy(0.45*WideScreenDiff()):animate(0):playcommand("Update") end,
+				OnCommand=function(self) self:zoom(0.5*WideScreenDiff()):shadowlength(2*WideScreenDiff()):zoomy(0) if isEtterna() then self:sleep(2) else self:hibernate(2) end self:decelerate(0.3):zoomy(0.45*WideScreenDiff()):animate(0):playcommand("Update") end,
 				CurrentSongChangedMessageCommand=function(self) self:playcommand("Update") end,
 				UpdateCommand=function(self)
 					local text = ""
 					local song = GAMESTATE:GetCurrentSong()
-					local course = GAMESTATE:GetCurrentCourse()
+					local course = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentCourse() or nil
 					if song then text = song:GetDisplayFullTitle() end
 					if course then text = course:GetDisplayFullTitle() .. " - " .. text end
 					if animate then TitleSongFade:SetText( text ) end
@@ -206,10 +206,14 @@ return Def.ActorFrame{
 				InitCommand=function(self) self:blend(Blend.Add):diffusealpha(0):draworder(110) end,
 				OnCommand=function(self) self:sleep(2.4):decelerate(0.5):diffusealpha(1):sleep(0.2):decelerate(0.8):diffusealpha(0):sleep(0) end,
 				OffCommand=function(self) self:stoptweening():decelerate(0.3):diffusealpha(0) end
+			},
+			Def.StepsDisplay{
+				Condition=isEtterna(),
+				InitCommand=function(self) self:Load("StepsDisplayGameplay P1",PLAYER_1):SetFromGameState(PLAYER_1) end
 			}
 		},
 		Def.ActorFrame{
-			Condition=GAMESTATE:IsPlayerEnabled(PLAYER_2) or isVS(),
+			Condition=not isEtterna() and (GAMESTATE:IsPlayerEnabled(PLAYER_2) or isVS()),
 			Name="Player2",
 			OnCommand=function(self) self:x(SCREEN_CENTER_X+240*WideScreenDiff()):y(SCREEN_TOP+27*WideScreenDiff()):zoom(WideScreenDiff()):addx(SCREEN_WIDTH/2) end,
 			TweenOnCommand=function(self) self:sleep(1.5):decelerate(0.5):addx(-SCREEN_WIDTH/2) end,

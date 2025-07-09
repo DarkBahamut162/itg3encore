@@ -1,5 +1,5 @@
 function Get2PlayerJoinMessage()
-	if not GAMESTATE:PlayersCanJoin() then return "" end
+	if not GAMESTATE:PlayersCanJoin() or isEtterna() then return "" end
 	if GAMESTATE:GetCoinMode()=='CoinMode_Free' or GAMESTATE:GetCoinMode()=='CoinMode_Home' then
 		return "2 Player mode available"
 	end
@@ -126,19 +126,19 @@ function GetScreenNameEntryTraditionalHelpText()
 end
 
 function HumanAndProfile(pn)
-	return GAMESTATE:IsHumanPlayer(pn) and MEMCARDMAN:GetCardState(pn) ~= 'MemoryCardState_none'
+	return GAMESTATE:IsHumanPlayer(pn) and (isEtterna() and true or MEMCARDMAN:GetCardState(pn) ~= 'MemoryCardState_none')
 end
 
 function EnabledAndProfile(pn)
-	return GAMESTATE:IsPlayerEnabled(pn) and MEMCARDMAN:GetCardState(pn) ~= 'MemoryCardState_none'
-end
-
-function EnabledAndProfile(pn)
-	return GAMESTATE:IsPlayerEnabled(pn) and MEMCARDMAN:GetCardState(pn) ~= 'MemoryCardState_none'
+	return GAMESTATE:IsPlayerEnabled(pn) and (isEtterna() and true or MEMCARDMAN:GetCardState(pn) ~= 'MemoryCardState_none')
 end
 
 function EnabledAndUSBReady(pn)
-	return GAMESTATE:IsPlayerEnabled(pn) and MEMCARDMAN:GetCardState(pn) == 'MemoryCardState_ready'
+	if isEtterna() then
+		return false
+	else
+		return GAMESTATE:IsPlayerEnabled(pn) and MEMCARDMAN:GetCardState(pn) == 'MemoryCardState_ready'
+	end
 end
 
 function GetDisplayNameFromProfileOrMemoryCard(pn)
@@ -224,7 +224,11 @@ function isGamePlay()
 end
 
 function isPlayMode(mode)
-	return GAMESTATE:GetPlayMode() == mode
+	if isEtterna() then
+		return "PlayMode_Regular" == mode
+	else
+		return GAMESTATE:GetPlayMode() == mode
+	end
 end
 
 function isDouble()
@@ -238,6 +242,10 @@ end
 
 function isOutFox()
 	return ProductFamily() == "OutFox"
+end
+
+function isEtterna()
+	return ProductFamily() == "Etterna"
 end
 
 function isOutFoxV()
@@ -525,8 +533,8 @@ function offsetMS(value)
 	end
 
 	return {
-		Name=value,
-		Choices=AllChoices(),
+		Name = value,
+		Choices = AllChoices(),
 		LayoutType = "ShowOneInRow",
 		SelectType = "SelectOne",
 		OneChoiceForAllPlayers = true,
@@ -543,5 +551,54 @@ function offsetMS(value)
 				end
 			end
 		end
+	}
+end
+
+function PreferenceBoolean(value)
+	return {
+		Name = value,
+		Choices = {THEME:GetString("OptionNames","Off"), THEME:GetString("OptionNames","On")},
+		LayoutType = "ShowAllInRow",
+		SelectType = "SelectOne",
+		OneChoiceForAllPlayers = true,
+		ExportOnChange = false,
+		LoadSelections = function(self, list, pn)
+			local pref = PREFSMAN:GetPreference(value) and 2 or 1
+			list[pref] = true
+		end,
+		SaveSelections = function(self, list, pn)
+			local pref = (list[2]==true)
+			PREFSMAN:SetPreference(value, pref)
+		end,
+	}
+end
+
+function EditorNoteskin()
+	local skins = NOTESKIN:GetNoteSkinNames()
+	return {
+		Name = "EditorNoteSkin",
+		LayoutType = "ShowOneInRow",
+		SelectType = "SelectOne",
+		OneChoiceForAllPlayers = true,
+		ExportOnChange = false,
+		Choices = skins,
+		LoadSelections = function(self, list, pn)
+			local skin = PREFSMAN:GetPreference("EditorNoteSkinP1") or
+				PREFSMAN:GetPreference("EditorNoteSkinP2") or
+				THEME:GetMetric("Common", "DefaultNoteSkinName")
+			if not skin then return end
+
+			local i = FindInTable(skin, skins) or 1
+			list[i] = true
+		end,
+		SaveSelections = function(self, list, pn)
+			for i = 1, #skins do
+				if list[i] then
+					PREFSMAN:SetPreference("EditorNoteSkinP1", skins[i])
+					PREFSMAN:SetPreference("EditorNoteSkinP2", skins[i])
+					break
+				end
+			end
+		end,
 	}
 end

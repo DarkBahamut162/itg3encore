@@ -1,3 +1,28 @@
+local Banner = isEtterna() and Def.Sprite{
+	InitCommand=function(self) self:diffusealpha(0):ztest(true) end,
+	OnCommand=function(self) self:playcommand("Set"):linear(1):diffusealpha(1) end,
+	SetCommand=function(self)
+		local song = GAMESTATE:GetCurrentSong()
+		local bnpath
+		if song then
+			bnpath = song:GetBannerPath()
+		else
+			bnpath = SONGMAN:GetSongGroupBannerPath(SCREENMAN:GetTopScreen():GetMusicWheel():GetSelectedSection())
+		end
+		if not bnpath or bnpath == "" then bnpath = THEME:GetPathG("Common", "fallback banner") end
+		self:scaletoclipped(292,114):LoadBackground(bnpath)
+	end,
+} or Def.Banner{
+	Condition=not isEtterna(),
+	InitCommand=function(self) self:diffusealpha(0):ztest(true) end,
+	OnCommand=function(self) self:playcommand("Set"):linear(1):diffusealpha(1) end,
+	SetCommand=function(self)
+		local sel = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentCourse() or GAMESTATE:GetCurrentSong()
+		if sel then if GAMESTATE:IsCourseMode() then self:LoadFromCourse(sel) else self:LoadFromSong(sel) end end
+		self:scaletoclipped(292,114)
+	end
+}
+
 return Def.ActorFrame{
 	Def.Sprite {
 		Texture = "_top",
@@ -17,15 +42,7 @@ return Def.ActorFrame{
 			Texture = "_banner mask",
 			InitCommand=function(self) self:zbuffer(true):blend(Blend.NoEffect) end
 		},
-		Def.Banner{
-			InitCommand=function(self) self:diffusealpha(0):ztest(true) end,
-			OnCommand=function(self) self:playcommand("Set"):linear(1):diffusealpha(1) end,
-			SetCommand=function(self)
-				local sel = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentCourse() or GAMESTATE:GetCurrentSong()
-				if sel then if GAMESTATE:IsCourseMode() then self:LoadFromCourse(sel) else self:LoadFromSong(sel) end end
-				self:scaletoclipped(292,114)
-			end
-		},
+		Banner,
 		Def.Sprite {
 			Texture = "_banner glass"
 		}

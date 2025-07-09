@@ -14,7 +14,28 @@ t[#t+1] = loadfile(THEME:GetPathG(Var "LoadingScreen", "Triangle"))() .. {
 	end
 }
 
-if not isOutFoxV() then
+if isEtterna() then
+	t[#t+1] = Def.Sprite {
+		InitCommand=function(self) self:x(SCREEN_CENTER_X+140*WideScreenDiff()):y(SCREEN_CENTER_Y-91*WideScreenDiff()):ztest(true) end,
+		OnCommand=function(self) self:addx(SCREEN_WIDTH):decelerate(0.75):addx(-SCREEN_WIDTH) end,
+		OffCommand=function(self) self:accelerate(0.75):addx(SCREEN_WIDTH) end,
+		SetCommand=function(self)
+			local song = GAMESTATE:GetCurrentSong()
+			local sortOrder = GAMESTATE:GetSortOrder()
+			local bnpath
+			if song then
+				bnpath = song:GetBannerPath()
+			elseif sortOrder == 'SortOrder_ModeMenu' then
+				bnpath = THEME:GetPathG("Banner", "ModeMenu")
+			else
+				bnpath = SONGMAN:GetSongGroupBannerPath(SCREENMAN:GetTopScreen():GetMusicWheel():GetSelectedSection())
+			end
+			if not bnpath or bnpath == "" then bnpath = THEME:GetPathG("Common", "fallback banner") end
+			self:scaletoclipped(320*WideScreenDiff(),120*WideScreenDiff()):LoadBackground(bnpath):x(SCREEN_CENTER_X+140*WideScreenDiff())
+		end,
+		CurrentSongChangedMessageCommand=function(self) self:queuecommand("Set") end
+    }
+elseif not isOutFoxV()then
 	t[#t+1] = Def.FadingBanner{
 		InitCommand=function(self) self:x(SCREEN_CENTER_X+140*WideScreenDiff()):y(SCREEN_CENTER_Y-91*WideScreenDiff()):addx(SCREEN_WIDTH):decelerate(0.75):addx(-SCREEN_WIDTH):ztest(true):vertalign(bottom):playcommand("Set") end,
 		OffCommand=function(self) self:accelerate(0.75):addx(SCREEN_WIDTH) end,
@@ -65,6 +86,7 @@ local function StepsDisplay(pn)
 		InitCommand=function(self) self:player(pn):Load("StepsDisplay",GAMESTATE:GetPlayerState(pn)) end,
 		CurrentSongChangedMessageCommand=function(self) if not courseMode then self:visible(GAMESTATE:GetCurrentSong() ~= nil) end end,
 		["CurrentSteps".. pname(pn) .."ChangedMessageCommand"]=function(self) if not courseMode then set(self, pn) end end,
+		CurrentStepsChangedMessageCommand=function(self) if not courseMode then set(self, pn) end end,
 		["CurrentTrail".. pname(pn) .."ChangedMessageCommand"]=function(self) if courseMode then set(self, pn) end end
 	}
 end
@@ -200,8 +222,8 @@ t[#t+1] = Def.ActorFrame{
 		InitCommand=function(self)
 			self:name("BPMDisplay")
 			ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen")
-			if enableMOD then self:queuecommand("Animate") end
 		end,
+		OnCommand=function(self) self:stoptweening():stopeffect():diffusealpha(1):addx(SCREEN_WIDTH):decelerate(0.75):addx(-SCREEN_WIDTH) if enableMOD then self:queuecommand("Animate") end end,
 		AnimateCommand=function(self) self:diffusealpha(1):sleep(1.75):linear(0.25):diffusealpha(0):sleep(1.75):linear(0.25):diffusealpha(1):queuecommand("Animate") end,
 		RateChangedMessageCommand=function(self) if enableMOD then self:stoptweening():stopeffect():diffusealpha(0):sleep(1.75):linear(0.25):diffusealpha(1):queuecommand("Animate") end end,
 		SpeedChoiceChangedMessageCommand=function(self) if enableMOD then self:stoptweening():stopeffect():diffusealpha(0):sleep(1.75):linear(0.25):diffusealpha(1):queuecommand("Animate") end end,
@@ -214,8 +236,8 @@ if enableMOD then
 			InitCommand=function(self)
 				self:name("MODDisplay")
 				ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen")
-				self:queuecommand("Animate")
 			end,
+			OnCommand=function(self) self:stoptweening():stopeffect():diffusealpha(0):addx(SCREEN_WIDTH):decelerate(0.75):addx(-SCREEN_WIDTH):queuecommand("Animate") end,
 			AnimateCommand=function(self) self:diffusealpha(0):sleep(1.75):linear(0.25):diffusealpha(1):sleep(1.75):linear(0.25):diffusealpha(0):queuecommand("Animate") end,
 			RateChangedMessageCommand=function(self) if enableMOD then self:stoptweening():stopeffect():diffusealpha(1):sleep(1.75):linear(0.25):diffusealpha(0):queuecommand("Animate") end end,
 			SpeedChoiceChangedMessageCommand=function(self) if enableMOD then self:stoptweening():stopeffect():diffusealpha(1):sleep(1.75):linear(0.25):diffusealpha(0):queuecommand("Animate") end end,

@@ -416,7 +416,7 @@ for side in ivalues(PlayerNumber) do
 				child:x((BubbleCenter + Bubble.Outer) * fFlip)
 			end
 
-			local Selection = GAMESTATE:GetCurrentTrail(pn) or GAMESTATE:GetCurrentSteps(pn)
+			local Selection = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentTrail(pn) or GAMESTATE:GetCurrentSteps(pn)
 			local DifficultyColor = CustomDifficultyToColor(ToEnumShortString(Selection:GetDifficulty()))
 			c.BubbleColor:RunCommandsRecursively( function(self) self:diffuse(DifficultyColor) end )
 
@@ -438,7 +438,7 @@ TopFrame[#TopFrame+1] = Def.BitmapText {
 	CurrentSongChangedMessageCommand=function(self) self:playcommand("Title") end,
 	TitleCommand=function(self)
 		local song = GAMESTATE:GetCurrentSong()
-		local course = GAMESTATE:GetCurrentCourse()
+		local course = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentCourse() or nil
 		local text = ""
 
 		if song then text = song:GetDisplayFullTitle() end
@@ -455,7 +455,7 @@ local function MakeStageCreditIcons(pn)
 	if GAMESTATE:IsCourseMode() then
 		Total = GAMESTATE:GetCurrentCourse():GetEstimatedNumStages()
 	else
-		Total = PREFSMAN:GetPreference("SongsPerPlay")
+		Total = isEtterna() and 0 or PREFSMAN:GetPreference("SongsPerPlay")
 	end
 
 	local Width = scale(Total, 3, 5, 20, 28)
@@ -513,7 +513,7 @@ for side in ivalues(PlayerNumber) do
 		InitCommand=function(self) self:x(SCREEN_CENTER_X-LifeMeterTotalWidth()*fFlip/2):y(SCREEN_TOP) end,
 		BeginCommand=function(self)
 			local c = self:GetChildren()
-			local Selection = GAMESTATE:GetCurrentTrail(pn) or GAMESTATE:GetCurrentSteps(pn)
+			local Selection = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentTrail(pn) or GAMESTATE:GetCurrentSteps(pn)
 			local DifficultyColor
 
 			if IsDisplayedPlayer[pn] then
@@ -533,7 +533,7 @@ end
 
 local Overlay = Def.ActorFrame { TopFrame }
 
-if Var "LoadingScreen" ~= "ScreenDemonstration" then
+if not isEtterna() and Var "LoadingScreen" ~= "ScreenDemonstration" then
 	local LastCoins = 0
 	local CreditsString = THEME:GetString("ScreenSystemLayer", "CreditsCredits")
 	CreditsText = Def.BitmapText {

@@ -7,8 +7,8 @@ return Def.ActorFrame{
 		BeginCommand=function(self) self:playcommand("Set") end,
 		CurrentSongChangedMessageCommand=function(self) self:finishtweening():playcommand("Set") end,
 		SetCommand=function(self)
-			local curStage = screen:find("Evaluation") and STATSMAN:GetCurStageStats():GetStage() or GAMESTATE:GetCurrentStage()
-			local songsPerPlay = PREFSMAN:GetPreference("SongsPerPlay")
+			local curStage = isEtterna() and 'Stage_Event' or screen:find("Evaluation") and STATSMAN:GetCurStageStats():GetStage() or GAMESTATE:GetCurrentStage()
+			local songsPerPlay = isEtterna() and 0 or PREFSMAN:GetPreference("SongsPerPlay")
 			if curStage:gsub("%D+", "") == songsPerPlay then curStage = 'Stage_Final' end
 			if GAMESTATE:IsEventMode() then curStage = 'Stage_Event' end
 			if IsNetSMOnline() then curStage = 'Stage_Online' end

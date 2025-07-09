@@ -6,12 +6,12 @@ The following project has been in-officially taken over by me *(DarkBahamut162)*
 It's sources have being displayed down below.
 
 ## Warning:
-This Theme has been optimized for **Project OutFox** but also works on **ITGmania** and **StepMania 5**!<br>
+This Theme has been optimized for **Project OutFox** but also works on **ITGmania**, **StepMania 5** and **Etterna**!<br>
 **ITGmania** might be your second pick since **.mp4** background videos work without much issue on it.<br>
 It might work incorrectly when used anywhere else!<br>
 Since this theme is being updated periodically: If anything broke or isn't working correctly, please report it **ASAP** so I can take a look and fix it.
 
-You also might need to switch your **VideoRenderer** to **OpenGL** as **GLAD** breaks the graphics after playing just one round *(depending if they have been fixed yet everywhere)*.
+You also might need to switch your **VideoRenderer** to **OpenGL** as **GLAD** breaks the graphics after playing just one round *(depending if they have been fixed yet everywhere)*. Something similar might happen when the **VideoRenderer** is set to **d3d**.
 
 ## Information:
 Most additional features have been moved to an additional **Theme Options** menu. They are as follows:
@@ -34,8 +34,12 @@ Change the BPMDisplay type from **DisplayBPM** (default), **ActualBPM** (total r
 Show the calculated Difficulty of the currently selected stepchart *(currently banner only)*. Shows **DB9** *(average steps per second)*, **Y&A** *(RadarValue Calculation)* and **SPS (StepCache Only)** *(median steps per second per steps)*
   - **DanceDifficultyType (Dance Mode Only):**
 Switch between **OLD & X-SCALE** difficulty ranges
+- **ShowGraph:**
+Shows the **graph** of the **currently selected stepchart** *(VerticalScreen & WideScreen only)*
 - **ShowHasLua:**
 Shows if song **has anything lua** related (no matter if BG, FG or both)
+- **ShowMODDisplay:**
+Switches back and forth between the stepchart's BPMs and the player's current mod speed 
 - **ShowRounds:**
 Shows either **amount of rounds** or **length specification** during song selection
 - **ShowStepCounter (StepCache Only):**

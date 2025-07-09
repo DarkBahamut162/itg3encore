@@ -144,7 +144,7 @@ local t = Def.ActorFrame{
 	},
 	Def.ActorFrame{
 		Name="ScreenStageHoldovers",
-		InitCommand=function(self) self:visible(not GAMESTATE:IsDemonstration() and not GAMESTATE:IsCourseMode()) end,
+		InitCommand=function(self) self:visible(isEtterna() or not GAMESTATE:IsDemonstration() and not GAMESTATE:IsCourseMode()) end,
 		Def.Sprite {
 			Texture = THEME:GetPathB("ScreenStageInformation","in/bottom/bar"),
 			InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+136*WideScreenDiff()):zoomy(WideScreenDiff()):zoomtowidth(SCREEN_WIDTH):faderight(0.8):fadeleft(0.8) end,
@@ -203,6 +203,7 @@ local t = Def.ActorFrame{
 			}
 		},
 		Def.ActorFrame{
+			Condition=not isEtterna(),
 			Name="InfoP2",
 			InitCommand=function(self) self:visible(GAMESTATE:IsPlayerEnabled(PLAYER_2)) end,
 			Def.Sprite {
@@ -279,7 +280,7 @@ local t = Def.ActorFrame{
 	},
 	Def.ActorFrame{
 		Name="DemonstrationFrame",
-		BeginCommand=function(self) self:visible(GAMESTATE:IsDemonstration() and not isTopScreen('ScreenJukebox')) end,
+		BeginCommand=function(self) self:visible(not isEtterna() and GAMESTATE:IsDemonstration() and not isTopScreen('ScreenJukebox')) end,
 		Def.Sprite {
 			Texture = "_metallic streak",
 			InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+43*WideScreenDiff()):zoomtowidth(SCREEN_WIDTH) end,
@@ -296,7 +297,7 @@ local t = Def.ActorFrame{
 			InitCommand=function(self) self:FullScreen():diffusealpha(0.8) end
 		}
 	},
-	loadfile(THEME:GetPathB("","_coins"))()..{ InitCommand=function(self) self:visible(not GAMESTATE:IsDemonstration()) end },
+	loadfile(THEME:GetPathB("","_coins"))()..{ InitCommand=function(self) self:visible(not isEtterna() and not GAMESTATE:IsDemonstration()) end },
 	JudgmentMessageCommand=function(self, params)
 		if params.Player == params.Player and not string.find(params.TapNoteScore,"Checkpoint") and not string.find(params.TapNoteScore,"None") and params.TapNoteScore ~= "TapNoteScore_" and enableOffsets then
 			local player = params.Player

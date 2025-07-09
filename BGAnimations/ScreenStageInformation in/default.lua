@@ -1,11 +1,11 @@
-local curStage = GAMESTATE:GetCurrentStage()
-local songsPerPlay = PREFSMAN:GetPreference("SongsPerPlay")
+local curStage = isEtterna() and "Stage_Event" or GAMESTATE:GetCurrentStage()
+local songsPerPlay = isEtterna() and 0 or PREFSMAN:GetPreference("SongsPerPlay")
 
 if curStage:gsub("%D+", "") == songsPerPlay then curStage = 'Stage_Final' end
 if GAMESTATE:IsEventMode() then curStage = 'Stage_Event' end
 if IsNetSMOnline() then curStage = 'Stage_Online' end
 
-if isOni() or GAMESTATE:IsAnExtraStage() then
+if not isEtterna() and (isOni() or GAMESTATE:IsAnExtraStage()) then
 	for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
 		local noteskin = GAMESTATE:GetPlayerState(pn):GetPlayerOptions("ModsLevel_Preferred"):NoteSkin()
 		GAMESTATE:ApplyGameCommand('mod,'..noteskin,pn)
@@ -139,6 +139,7 @@ return Def.ActorFrame{
 		}
 	},
 	Def.ActorFrame{
+		Condition=not isEtterna(),
 		Name="P2Frame",
 		InitCommand=function(self) self:visible(GAMESTATE:IsPlayerEnabled(PLAYER_2)) end,
 		Def.Sprite {
@@ -187,7 +188,7 @@ return Def.ActorFrame{
 	},
 	Def.ActorFrame{
 		Name="StageText",
-		Condition=not GAMESTATE:IsCourseMode() and not (GAMESTATE:GetCurrentSong() == SONGMAN:FindSong('In The Groove/Training1/')),
+		Condition=isEtterna() or not GAMESTATE:IsCourseMode() and not (GAMESTATE:GetCurrentSong() == SONGMAN:FindSong('In The Groove/Training1/')),
 		InitCommand=function(self) self:CenterX() end,
 		Def.ActorFrame{
 			Name="Main",
@@ -216,7 +217,7 @@ return Def.ActorFrame{
 	Def.ActorFrame{
 		Name="Tutorial",
 		InitCommand=function(self) self:CenterX() end,
-		Condition=not GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentSong() == SONGMAN:FindSong('In The Groove/Training1/'),
+		Condition=not isEtterna() and not GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentSong() == SONGMAN:FindSong('In The Groove/Training1/'),
 		Def.BitmapText {
 			File = "_big blue glow",
 			Text="Welcome to the::tutorial program",

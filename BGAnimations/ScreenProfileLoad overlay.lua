@@ -1,3 +1,7 @@
+function MemoryCheck()
+	if isEtterna() then return false else return GAMESTATE:IsAnyHumanPlayerUsingMemoryCard() end
+end
+
 return Def.ActorFrame{
 	OffCommand=function()
 		for pn in ivalues(GAMESTATE:GetHumanPlayers()) do LoadFlare(pn) end
@@ -12,7 +16,7 @@ return Def.ActorFrame{
 	},
 	loadfile(THEME:GetPathB("_statsout","style"))(),
 	Def.ActorFrame{
-		Condition=GAMESTATE:IsAnyHumanPlayerUsingMemoryCard(),
+		Condition=MemoryCheck(),
 		Def.Sprite {
 			Texture = THEME:GetPathG("","profile "..(isFinal() and "final" or "normal")),
 			InitCommand=function(self) self:Center():zoomx(SCREEN_WIDTH):zoomy(0.68*WideScreenDiff()) end
@@ -24,7 +28,7 @@ return Def.ActorFrame{
 		}
 	},
 	Def.ActorFrame{
-		Condition=not GAMESTATE:IsAnyHumanPlayerUsingMemoryCard(),
+		Condition=not MemoryCheck(),
 		Def.Sprite {
 			Texture = THEME:GetPathG("","lolhi "..(isFinal() and "final" or "normal")),
 			InitCommand=function(self) self:Center():zoomx(SCREEN_WIDTH):zoomy(0.68*WideScreenDiff()) end

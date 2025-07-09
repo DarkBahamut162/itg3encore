@@ -1,3 +1,7 @@
+function MemoryCheck()
+	if isEtterna() then return false else return GAMESTATE:IsAnyHumanPlayerUsingMemoryCard() end
+end
+
 return Def.ActorFrame{
 	loadfile(THEME:GetPathB("_selectmusic","menu in add"))(),
 	Def.Actor{
@@ -8,6 +12,6 @@ return Def.ActorFrame{
 		OnCommand=function(self) self:play() end
 	},
 	loadfile(THEME:GetPathB("_statsout","musicwheel"))()..{
-		Condition=GAMESTATE:IsAnyHumanPlayerUsingMemoryCard()
+		Condition=MemoryCheck()
 	}
 }

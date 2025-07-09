@@ -87,12 +87,12 @@ local Prefs = {
 		Choices = { OptionNameString('Off'), OptionNameString('On') },
 		Values = { false, true }
 	},
+	--[ScreenSummary]
 	ShowSummary = {
 		Default = false,
 		Choices = { OptionNameString('Off'), OptionNameString('On') },
 		Values = { false, true }
 	},
-	--[ScreenSummary]
 	ShowSummarySummary = {
 		Default = false,
 		Choices = { OptionNameString('Off'), OptionNameString('On') },

@@ -29,6 +29,7 @@ return Def.ActorFrame{
 	CurrentSongChangedMessageCommand=function(self) if not courseMode then self:RunCommandsRecursively( function(self) self:stoptweening():playcommand("Set") end ) end end,
 	CurrentCourseChangedMessageCommand=function(self) if courseMode then self:RunCommandsRecursively( function(self) self:stoptweening():playcommand("Set") end )  end end,
 	["CurrentSteps".. pname(player) .."ChangedMessageCommand"]=function(self) if not courseMode then self:RunCommandsRecursively( function(self) self:stoptweening():playcommand("Set") end )  end end,
+	CurrentStepsChangedMessageCommand=function(self) if not courseMode then self:RunCommandsRecursively( function(self) self:stoptweening():playcommand("Set") end )  end end,
 	["CurrentTrail".. pname(player) .."ChangedMessageCommand"]=function(self) if courseMode then self:RunCommandsRecursively( function(self) self:stoptweening():playcommand("Set") end )  end end,
 	Def.Quad{
 		Name="Jumps",
@@ -60,8 +61,8 @@ return Def.ActorFrame{
 				yZoom = 0
 			end
 
-			self:decelerate(0.1)
-			self:zoomy(yZoom)
+			if isEtterna() then if self:GetDiffuseAlpha() < 0.5 then self:sleep(0.3):decelerate(0.1):diffusealpha(0.5) end end
+			self:decelerate(0.1):zoomy(yZoom)
 		end,
 		OffCommand=function(self) self:accelerate(0.2):diffusealpha(0) end
 	},
@@ -95,8 +96,8 @@ return Def.ActorFrame{
 				yZoom = 0
 			end
 
-			self:decelerate(0.1)
-			self:zoomy(yZoom)
+			if isEtterna() then if self:GetDiffuseAlpha() < 0.5 then self:sleep(0.4):decelerate(0.1):diffusealpha(0.5) end end
+			self:decelerate(0.1):zoomy(yZoom)
 		end,
 		OffCommand=function(self) self:accelerate(0.2):diffusealpha(0) end
 	},
@@ -130,8 +131,8 @@ return Def.ActorFrame{
 				yZoom = 0
 			end
 
-			self:decelerate(0.1)
-			self:zoomy(yZoom)
+			if isEtterna() then if self:GetDiffuseAlpha() < 0.5 then self:sleep(0.5):decelerate(0.1):diffusealpha(0.5) end end
+			self:decelerate(0.1):zoomy(yZoom)
 		end,
 		OffCommand=function(self) self:accelerate(0.2):diffusealpha(0) end
 	},
@@ -165,8 +166,8 @@ return Def.ActorFrame{
 				yZoom = 0
 			end
 
-			self:decelerate(0.1)
-			self:zoomy(yZoom)
+			if isEtterna() then if self:GetDiffuseAlpha() < 0.5 then self:sleep(0.6):decelerate(0.1):diffusealpha(0.5) end end
+			self:decelerate(0.1):zoomy(yZoom)
 		end,
 		OffCommand=function(self) self:accelerate(0.2):diffusealpha(0) end
 	},
@@ -200,8 +201,8 @@ return Def.ActorFrame{
 				yZoom = 0
 			end
 
-			self:decelerate(0.1)
-			self:zoomy(yZoom)
+			if isEtterna() then if self:GetDiffuseAlpha() < 0.5 then self:sleep(0.7):decelerate(0.1):diffusealpha(0.5) end end
+			self:decelerate(0.1):zoomy(yZoom)
 		end,
 		OffCommand=function(self) self:accelerate(0.2):diffusealpha(0) end
 	}

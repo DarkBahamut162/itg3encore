@@ -67,6 +67,8 @@ return Def.ActorFrame {
 			end
 			return
 		end
+		if isEtterna() then JudgmentTransformCommand( self, {["Player"] = PLAYER_1, ["bReverse"] = GAMESTATE:GetPlayerState():GetCurrentPlayerOptions():UsingReverse()} ) end
+
 		local tns = param.TapNoteScore
 		local iNumStates = c.Judgment:GetNumStates()
 		local iFrame = TNSFrames[tns]
@@ -86,15 +88,15 @@ return Def.ActorFrame {
 		if getenv("check"..pname(player)) then
 			if getenv("checkFantastics"..pname(player)) and iFrame > 0 then
 				setenv("checkFantastics"..pname(player),false)
-				setenv("LastFantastic"..pname(player),STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetAliveSeconds())
+				setenv("LastFantastic"..pname(player),isEtterna() and GAMESTATE:GetSongPosition():GetMusicSecondsVisible() or STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetAliveSeconds())
 			end
 			if getenv("checkPerfects"..pname(player)) and iFrame > 1 then
 				setenv("checkPerfects"..pname(player),false)
-				setenv("LastPerfect"..pname(player),STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetAliveSeconds())
+				setenv("LastPerfect"..pname(player),isEtterna() and GAMESTATE:GetSongPosition():GetMusicSecondsVisible() or STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetAliveSeconds())
 			end
 			if getenv("checkGreats"..pname(player)) and iFrame > 2 then
 				setenv("checkGreats"..pname(player),false)
-				setenv("LastGreat"..pname(player),STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetAliveSeconds())
+				setenv("LastGreat"..pname(player),isEtterna() and GAMESTATE:GetSongPosition():GetMusicSecondsVisible() or STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetAliveSeconds())
 				setenv("check"..pname(player),false)
 			end
 		end
@@ -115,8 +117,8 @@ return Def.ActorFrame {
 		c.Judgment:visible( true )
 	end,
 	OffCommand=function(self)
-		if getenv("checkFantastics"..pname(player)) then setenv("LastFantastic"..pname(player),STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetAliveSeconds()) end
-		if getenv("checkPerfects"..pname(player)) then setenv("LastPerfect"..pname(player),STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetAliveSeconds()) end
-		if getenv("checkGreats"..pname(player)) then setenv("LastGreat"..pname(player),STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetAliveSeconds()) end
+		if getenv("checkFantastics"..pname(player)) then setenv("LastFantastic"..pname(player),isEtterna() and GAMESTATE:GetSongPosition():GetMusicSecondsVisible() or STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetAliveSeconds()) end
+		if getenv("checkPerfects"..pname(player)) then setenv("LastPerfect"..pname(player),isEtterna() and GAMESTATE:GetSongPosition():GetMusicSecondsVisible() or STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetAliveSeconds()) end
+		if getenv("checkGreats"..pname(player)) then setenv("LastGreat"..pname(player),isEtterna() and GAMESTATE:GetSongPosition():GetMusicSecondsVisible() or STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetAliveSeconds()) end
 	end
 }

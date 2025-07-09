@@ -229,7 +229,7 @@ local function GraphDisplay(pn)
 		if last == 1 and tonumber(float[#float][2][1]) < 0 then last = 0 end
 
 		if flareLevel > 0 and last > 0 then
-			if not PSS:GetFailed() and PSS:GetAliveSeconds() > length and not
+			if (isEtterna() and not STATSMAN:GetCurStageStats():Failed() or (not PSS:GetFailed() and PSS:GetAliveSeconds() > length)) and not
 			((GAMESTATE:GetPlayerState(pn):GetPlayerController() == 'PlayerController_Autoplay') or
 			(GAMESTATE:GetPlayerState(pn):GetPlayerController() == 'PlayerController_Cpu')) then
 				local Song = GAMESTATE:GetCurrentSong()

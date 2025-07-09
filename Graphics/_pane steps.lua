@@ -103,6 +103,7 @@ return Def.ActorFrame{
 		CurrentSongChangedMessageCommand=function(self) if not courseMode then self:playcommand("Set") end end,
 		CurrentCourseChangedMessageCommand=function(self) if courseMode then self:playcommand("Set") end end,
 		["CurrentSteps".. pname(player) .."ChangedMessageCommand"]=function(self) if not courseMode then self:playcommand("Set") end end,
+		CurrentStepsChangedMessageCommand=function(self) if not courseMode then self:playcommand("Set") end end,
 		["CurrentTrail".. pname(player) .."ChangedMessageCommand"]=function(self) if courseMode then self:playcommand("Set") end end
 	},
 	Def.BitmapText {

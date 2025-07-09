@@ -51,6 +51,7 @@ return Def.ActorFrame {
 			if (LastSeenCombo % 100) > (param.Combo % 100) then c.OneHundredMilestone:playcommand("Milestone") end
 			LastSeenCombo = param.Combo
 		end
+		if isEtterna() then ComboTransformCommand( self, {["Player"] = PLAYER_1, ["bReverse"] = GAMESTATE:GetPlayerState():GetCurrentPlayerOptions():UsingReverse()} ) end
 
 		local Label
 

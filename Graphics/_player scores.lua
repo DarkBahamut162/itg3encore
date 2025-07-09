@@ -4,10 +4,11 @@ local courseMode = GAMESTATE:IsCourseMode()
 
 return Def.ActorFrame{
 	InitCommand=function(self) if IsUsingWideScreen() and hasAvatar(player) then self:x(player == PLAYER_1 and 48 or -48) end end,
-	CurrentSongChangedMessageCommand=function(self) if not courseMode then self:RunCommandsRecursively( function(self) self:playcommand("Set") end ) end end,
-	CurrentCourseChangedMessageCommand=function(self) if courseMode then self:RunCommandsRecursively( function(self) self:playcommand("Set") end )  end end,
-	["CurrentSteps".. pname(player) .."ChangedMessageCommand"]=function(self) if not courseMode then self:RunCommandsRecursively( function(self) self:playcommand("Set") end )  end end,
-	["CurrentTrail".. pname(player) .."ChangedMessageCommand"]=function(self) if courseMode then self:RunCommandsRecursively( function(self) self:playcommand("Set") end )  end end,
+	CurrentSongChangedMessageCommand=function(self) if not courseMode then self:RunCommandsRecursively( function(self) self:queuecommand("Set") end ) end end,
+	CurrentCourseChangedMessageCommand=function(self) if courseMode then self:RunCommandsRecursively( function(self) self:queuecommand("Set") end )  end end,
+	["CurrentSteps".. pname(player) .."ChangedMessageCommand"]=function(self) if not courseMode then self:RunCommandsRecursively( function(self) self:queuecommand("Set") end )  end end,
+	CurrentStepsChangedMessageCommand=function(self) if not courseMode then self:RunCommandsRecursively( function(self) self:queuecommand("Set") end )  end end,
+	["CurrentTrail".. pname(player) .."ChangedMessageCommand"]=function(self) if courseMode then self:RunCommandsRecursively( function(self) self:queuecommand("Set") end )  end end,
 	Def.ActorFrame{
 		Name="MachineScore",
 		InitCommand=function(self) self:x(-55) end,
@@ -16,19 +17,32 @@ return Def.ActorFrame{
 			local score = self:GetChild("ScorePercent")
 			local profile = PROFILEMAN:GetMachineProfile()
 			local SongOrCourse = courseMode and GAMESTATE:GetCurrentCourse() or GAMESTATE:GetCurrentSong()
-			local StepOrTrails = courseMode and GAMESTATE:GetCurrentTrail(player) or GAMESTATE:GetCurrentSteps(player)
+			local StepsOrTrails = courseMode and GAMESTATE:GetCurrentTrail(player) or GAMESTATE:GetCurrentSteps(player)
 			local scoreText = "?"
 			local nameText = "?"
 
-			if SongOrCourse and StepOrTrails then
-				local hsl = profile:GetHighScoreList(SongOrCourse,StepOrTrails)
-				local scores = hsl and hsl:GetHighScores()
-				if scores[1] then
-					nameText = scores[1]:GetName()
-					scoreText = string.format("%0.2f%%",scores[1]:GetPercentDP()*100)
+			if SongOrCourse and StepsOrTrails then
+				if isEtterna() then
+					local scores = GetDisplayScore()
+					if scores then
+						nameText = "NEXT"
+						local grade = scores:GetWifeGrade()
+						if grade == "Grade_Failed" then grade = "Grade_Tier16" end
+						scoreText = FormatPercentScore(GetPercentFromGradeWife(string.format("Grade_Tier%02d",(tonumber(grade:sub(-2))-1))))
+					else
+						nameText = "NEXT"
+						scoreText = FormatPercentScore(GetPercentFromGradeWife("Grade_Tier15"))
+					end
 				else
-					nameText = "N/A"
-					scoreText = "0.00%"
+					local hsl = profile:GetHighScoreList(SongOrCourse,StepsOrTrails)
+					local scores = hsl and hsl:GetHighScores()
+					if scores[1] then
+						nameText = scores[1]:GetName()
+						scoreText = string.format("%0.2f%%",scores[1]:GetPercentDP()*100)
+					else
+						nameText = "N/A"
+						scoreText = "0.00%"
+					end
 				end
 			else
 				nameText = "?"
@@ -65,20 +79,29 @@ return Def.ActorFrame{
 			local f = self:GetChild("FlareName")
 			local profile = PROFILEMAN:GetProfile(player)
 			local SongOrCourse = courseMode and GAMESTATE:GetCurrentCourse() or GAMESTATE:GetCurrentSong()
-			local StepOrTrails = courseMode and GAMESTATE:GetCurrentTrail(player) or GAMESTATE:GetCurrentSteps(player)
+			local StepsOrTrails = courseMode and GAMESTATE:GetCurrentTrail(player) or GAMESTATE:GetCurrentSteps(player)
 			local scoreText = "?"
 			local nameText = "YOU"
 			local flare = 0
 
-			if SongOrCourse and StepOrTrails then
-				local hsl = profile:GetHighScoreList(SongOrCourse,StepOrTrails)
-				local scores = hsl and hsl:GetHighScores()
-				if scores[1] then
-					scoreText = string.format("%0.2f%%",scores[1]:GetPercentDP()*100)
+			if SongOrCourse and StepsOrTrails then
+				if isEtterna() then
+					local scores = GetDisplayScore()
+					if scores then
+						scoreText = string.format("%0.2f%%",scores:GetWifeScore()*100)
+					else
+						scoreText = "0.00%"
+					end
 				else
-					scoreText = "0.00%"
+					local hsl = profile:GetHighScoreList(SongOrCourse,StepsOrTrails)
+					local scores = hsl and hsl:GetHighScores()
+					if scores[1] then
+						scoreText = string.format("%0.2f%%",scores[1]:GetPercentDP()*100)
+					else
+						scoreText = "0.00%"
+					end
 				end
-				flare = GetFlare(player,SongOrCourse,StepOrTrails)
+				flare = GetFlare(player,SongOrCourse,StepsOrTrails)
 			end
 			name:settext(nameText)
 			score:settext(scoreText)
@@ -102,10 +125,10 @@ return Def.ActorFrame{
 			OffCommand=function(self) self:linear(0.4):diffusealpha(0) end,
 			SetCommand=function(self)
 				local SongOrCourse = courseMode and GAMESTATE:GetCurrentCourse() or GAMESTATE:GetCurrentSong()
-				local StepOrTrails = courseMode and GAMESTATE:GetCurrentTrail(player) or GAMESTATE:GetCurrentSteps(player)
+				local StepsOrTrails = courseMode and GAMESTATE:GetCurrentTrail(player) or GAMESTATE:GetCurrentSteps(player)
 				local flare = 0
 
-				if SongOrCourse and StepOrTrails then flare = GetFlare(player,SongOrCourse,StepOrTrails) end
+				if SongOrCourse and StepsOrTrails then flare = GetFlare(player,SongOrCourse,StepsOrTrails) end
 				if flare == 10 then
 					self:settext("FX")
 				elseif flare == 0 then

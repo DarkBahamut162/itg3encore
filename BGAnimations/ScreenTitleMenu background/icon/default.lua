@@ -9,7 +9,7 @@ return Def.ActorFrame{
 		},
 		Def.BitmapText {
 			File = "_v 26px bold black",
-			Text=PREFSMAN:GetPreference('SongsPerPlay'),
+			Text=isEtterna() and 0 or PREFSMAN:GetPreference('SongsPerPlay'),
 			InitCommand=function(self) self:x(SCREEN_RIGHT-199*WideScreenDiff()):y(isFinal() and SCREEN_TOP+19*WideScreenDiff() or SCREEN_TOP+27*WideScreenDiff()):zoom(0.8*WideScreenDiff()) end,
 			OnCommand=function(self)
 				self:diffusealpha(0):sleep(0.7):linear(0.4):diffusealpha(1)
@@ -234,6 +234,7 @@ return Def.ActorFrame{
 		}
 	},
 	Def.ActorFrame{
+		Condition=not isEtterna(),
 		Name="Premiums",
 		InitCommand=function(self)
 			local line1 = self:GetChild("Line1")

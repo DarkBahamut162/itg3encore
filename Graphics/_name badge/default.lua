@@ -5,8 +5,7 @@ local iconName = "_icon "..pname(player)
 local pX = 0.0
 local pXmod = ""
 
-local step = GAMESTATE:GetCurrentSteps(player)
-local trail = GAMESTATE:GetCurrentTrail(player)
+local StepsOrTrain = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentTrail(player) or GAMESTATE:GetCurrentSteps(player)
 local timingdata
 local bpm = {}
 local currentBPM = {}
@@ -15,13 +14,13 @@ local BPMtype = IsGame("pump") and 0 or ThemePrefs.Get("ShowBPMDisplayType")
 
 local function checkInitBPMs()
 	if GAMESTATE:IsCourseMode() then
-		if trail then
-			local entries = trail:GetTrailEntries()
+		if StepsOrTrain then
+			local entries = StepsOrTrain:GetTrailEntries()
 			for i=1, #entries do
 				local song = entries[i]:GetSong()
-				step = entries[i]:GetSteps()
-				timingdata = step:GetTimingData()
-				bpm = getAllTheBPMs(song,step,BPMtype)
+				StepsOrTrain = entries[i]:GetSteps()
+				timingdata = StepsOrTrain:GetTimingData()
+				bpm = getAllTheBPMs(song,StepsOrTrain,BPMtype)
 				absoluteBPM = timingdata:GetActualBPM()
 				if i == 1 then
 					currentBPM[1] = bpm[1]
@@ -35,11 +34,11 @@ local function checkInitBPMs()
 			end
 		end
 	else
-		if step then
+		if StepsOrTrain then
 			local song = GAMESTATE:GetCurrentSong()
-			timingdata = step:GetTimingData()
-			bpm = getAllTheBPMs(song,step,BPMtype)
-			absoluteBPM = step:GetTimingData():GetActualBPM()
+			timingdata = StepsOrTrain:GetTimingData()
+			bpm = getAllTheBPMs(song,StepsOrTrain,BPMtype)
+			absoluteBPM = StepsOrTrain:GetTimingData():GetActualBPM()
 			currentBPM[1] = bpm[1]
 			currentBPM[2] = bpm[2]
 			currentBPM[3] = bpm[3]

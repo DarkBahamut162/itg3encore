@@ -17,7 +17,7 @@ local function checkInitBPMs(pn)
 				local step = entries[i]:GetSteps()
 				timingdata[pn] = step:GetTimingData()
 				bpm[pn] = getAllTheBPMs(song,step,BPMtype)
-				absoluteBPM[pn] = timingdata:GetActualBPM()
+				absoluteBPM[pn] = step:GetTimingData():GetActualBPM()
 				if i == 1 then
 					currentBPM[pn] = {bpm[pn][1],bpm[pn][2],bpm[pn][3]}
 				else
@@ -153,6 +153,9 @@ return Def.ActorFrame{
 		CurrentSongChangedMessageCommand=function(self) if not courseMode then if not GAMESTATE:GetCurrentSong() then self:playcommand("Empty") end end end,
 		CurrentCourseChangedMessageCommand=function(self) if courseMode then if not GAMESTATE:GetCurrentCourse() then self:playcommand("Empty") end end end,
 		CurrentStepsP1ChangedMessageCommand=function(self) if not courseMode then self:playcommand("Set") end end,
+		CurrentStepsChangedMessageCommand=function(self) if not courseMode then
+			if GAMESTATE:GetCurrentSong() then self:playcommand("Set") else self:playcommand("Empty") end
+		end end,
 		CurrentStepsP2ChangedMessageCommand=function(self) if not courseMode then self:playcommand("Set") end end,
 		CurrentTrailP1ChangedMessageCommand=function(self) if courseMode then self:playcommand("Set") end end,
 		CurrentTrailP2ChangedMessageCommand=function(self) if courseMode then self:playcommand("Set") end end

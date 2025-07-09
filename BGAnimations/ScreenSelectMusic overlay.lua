@@ -57,6 +57,49 @@ local Online = IsNetSMOnline() and Def.ActorFrame{
 	tOnline
 } or Def.ActorFrame{}
 local courseMode = GAMESTATE:IsCourseMode()
+local _text = {}
+local index = 1
+local _switch = THEME:GetMetric("HelpDisplay","TipSwitchTime")
+local _start = GetTimeSinceStart()
+
+local HelpDisplay = isEtterna() and Def.BitmapText {
+	File=THEME:GetPathF("HelpDisplay","text"),
+	InitCommand=function(self)
+		local s = isOutFox() and THEME:GetString("ScreenSelectMusic", "HelpSelectTextOutFox"..(ThemePrefs.Get("SLFavorites") and "WithSL" or "")) or THEME:GetString("ScreenSelectMusic", "HelpSelectText"..(ThemePrefs.Get("SLFavorites") and "WithSL" or ""))
+		_text = split("::",s)
+		self:shadowlength(0):diffuseshift():effectcolor1(color("#FFFFFF")):effectcolor2(color("#9A9999")):effectperiod(1.5):maxwidth(269):queuecommand("Update")
+		self:CenterX():zoomx(0.3*WideScreenDiff()):zoomy(0.6*WideScreenDiff()):diffusealpha(0):shadowlength(2)
+	end,
+	UpdateCommand=function(self)
+		if #_text == 1 then
+			self:settext(_text[1])
+		else
+			local _current = GetTimeSinceStart()
+			if _current-_start >= _switch then
+				_start = _current
+				if #_text == index then index = 1 else index = index + 1 end
+			end
+
+			self:settext(_text[index]):sleep(1/60):queuecommand("Update")
+		end
+	end,
+	SelectMenuOpenedMessageCommand=function(self) self:bounceend(0.2):diffusealpha(1):zoomx(0.6*WideScreenDiff())end,
+	SelectMenuClosedMessageCommand=function(self) self:linear(0.2):diffusealpha(0):zoomx(0.3*WideScreenDiff()) end
+	} or Def.HelpDisplay {
+	Condition=not isEtterna(),
+	File=THEME:GetPathF("HelpDisplay", "text"),
+	InitCommand=function(self)
+		local s = isOutFox() and THEME:GetString("ScreenSelectMusic", "HelpSelectTextOutFox"..(ThemePrefs.Get("SLFavorites") and "WithSL" or "")) or THEME:GetString("ScreenSelectMusic", "HelpSelectText"..(ThemePrefs.Get("SLFavorites") and "WithSL" or ""))
+		self:SetSecsBetweenSwitches(THEME:GetMetric("HelpDisplay","TipSwitchTime"))
+		self:SetTipsColonSeparated(s)
+		self:maxwidth(269)
+		self:CenterX():zoomx(0.3*WideScreenDiff()):zoomy(0.6*WideScreenDiff()):diffusealpha(0):shadowlength(2)
+	end,
+	OnCommand=function(self) self:shadowlength(0):diffuseshift():effectcolor1(color("#FFFFFF")):effectcolor2(color("#9A9999")):effectperiod(1.5) end,
+	OffCommand=function(self) self:linear(0.3):diffusealpha(0) end,
+	SelectMenuOpenedMessageCommand=function(self) self:stoptweening():bounceend(0.2):diffusealpha(1):zoomx(0.6*WideScreenDiff()) end,
+	SelectMenuClosedMessageCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(0):zoomx(0.3*WideScreenDiff()) end
+}
 
 return Def.ActorFrame{
 	OnCommand=function(self)
@@ -100,7 +143,7 @@ return Def.ActorFrame{
 		ShowCommand=function(self) self:stoptweening():decelerate(0.3):y(SCREEN_BOTTOM-127*WideScreenDiff()) end,
 		HideCommand=function(self) self:stoptweening():decelerate(0.3):y(SCREEN_BOTTOM-109*WideScreenDiff()) end,
 		SelectMenuOpenedMessageCommand=function(self)
-			self:playcommand((GAMESTATE:GetCurrentSong() or GAMESTATE:GetCurrentCourse()) and "Show" or "Hide")
+			self:playcommand((courseMode and GAMESTATE:GetCurrentCourse() or GAMESTATE:GetCurrentSong()) and "Show" or "Hide")
 		end,
 		SelectMenuClosedMessageCommand=function(self) self:playcommand("Hide") end,
 		Def.Sprite {
@@ -113,15 +156,15 @@ return Def.ActorFrame{
 			CurrentSongChangedMessageCommand=function(self) if not courseMode then if not GAMESTATE:GetCurrentSong() then self:playcommand("SelectMenuClosedMessageCommand") end end end,
 			CurrentCourseChangedMessageCommand=function(self) if courseMode then if not GAMESTATE:GetCurrentCourse() then self:playcommand("SelectMenuClosedMessageCommand") end end end,
 			CurrentStepsP1ChangedMessageCommand=function(self) if not courseMode then self:playcommand("Update") end end,
+			CurrentStepsChangedMessageCommand=function(self) if not courseMode then self:playcommand("Update") end end,
 			CurrentTrailP1ChangedMessageCommand=function(self) if courseMode then self:playcommand("Update") end end,
 			UpdateCommand=function(self)
 				local song = GAMESTATE:GetCurrentSong()
-				local course = GAMESTATE:GetCurrentCourse()
 				local output = ""
 				if song then
 					local steps = GAMESTATE:GetCurrentSteps(PLAYER_1)
 					if steps ~= nil then output = steps:GetAuthorCredit() end
-				elseif course then
+				elseif courseMode then
 					local trail = GAMESTATE:GetCurrentTrail(PLAYER_1)
 					if trail then
 						local entries = trail:GetTrailEntries()
@@ -149,6 +192,7 @@ return Def.ActorFrame{
 		}
 	},
 	Def.ActorFrame{
+		Condition=not isEtterna(),
 		Name="StepArtistP2",
 		InitCommand=function(self) self:x(SCREEN_RIGHT):y(SCREEN_BOTTOM-109*WideScreenDiff()):addx(SCREEN_WIDTH):player(PLAYER_2):draworder(-2) end,
 		OnCommand=function(self) self:decelerate(0.75):addx(-SCREEN_WIDTH) end,
@@ -156,7 +200,7 @@ return Def.ActorFrame{
 		ShowCommand=function(self) self:stoptweening():decelerate(0.3):y(SCREEN_BOTTOM-127*WideScreenDiff()) end,
 		HideCommand=function(self) self:stoptweening():decelerate(0.3):y(SCREEN_BOTTOM-109*WideScreenDiff()) end,
 		SelectMenuOpenedMessageCommand=function(self)
-			self:playcommand((GAMESTATE:GetCurrentSong() or GAMESTATE:GetCurrentCourse()) and "Show" or "Hide")
+			self:playcommand((courseMode and GAMESTATE:GetCurrentCourse() or GAMESTATE:GetCurrentSong()) and "Show" or "Hide")
 		end,
 		SelectMenuClosedMessageCommand=function(self) self:playcommand("Hide") end,
 		Def.Sprite {
@@ -172,12 +216,11 @@ return Def.ActorFrame{
 			CurrentTrailP2ChangedMessageCommand=function(self) if courseMode then self:playcommand("Update") end end,
 			UpdateCommand=function(self)
 				local song = GAMESTATE:GetCurrentSong()
-				local course = GAMESTATE:GetCurrentCourse()
 				local output = ""
 				if song then
 					local steps = GAMESTATE:GetCurrentSteps(PLAYER_2)
 					if steps ~= nil then output = steps:GetAuthorCredit() end
-				elseif course then
+				elseif courseMode then
 					local trail = GAMESTATE:GetCurrentTrail(PLAYER_2)
 					if trail then
 						local entries = trail:GetTrailEntries()
@@ -251,6 +294,7 @@ return Def.ActorFrame{
 			Texture = THEME:GetPathG("_pane","elements/_lbase "..(isFinal() and "final" or "normal")),
 			InitCommand=function(self) self:x(SCREEN_CENTER_X+174*WideScreenDiff()):y(SCREEN_BOTTOM):zoomx(-1*WideScreenDiff()):zoomy(WideScreenDiff()):horizalign(left):vertalign(bottom) end,
 			CurrentStepsP1ChangedMessageCommand=function(self) if IsNetSMOnline() then self:queuecommand("Recolor") end end,
+			CurrentStepsChangedMessageCommand=function(self) if IsNetSMOnline() then self:queuecommand("Recolor") end end,
 			CurrentSongChangedMessageCommand=function(self) if IsNetSMOnline() then self:queuecommand("Recolor") end end,
 			RecolorCommand=function(self)
 				if GAMESTATE:GetMasterPlayerNumber() == PLAYER_1 then
@@ -270,6 +314,7 @@ return Def.ActorFrame{
 			Texture = THEME:GetPathG("_pane","elements/_basewidth "..(isFinal() and "final" or "normal")),
 			InitCommand=function(self) self:x(SCREEN_CENTER_X+174*WideScreenDiff()):y(SCREEN_BOTTOM):zoom(WideScreenDiff()):horizalign(left):vertalign(bottom):zoomtowidth(SCREEN_WIDTH/2) end,
 			CurrentStepsP1ChangedMessageCommand=function(self) if IsNetSMOnline() then self:queuecommand("Recolor") end end,
+			CurrentStepsChangedMessageCommand=function(self) if IsNetSMOnline() then self:queuecommand("Recolor") end end,
 			CurrentSongChangedMessageCommand=function(self) if IsNetSMOnline() then self:queuecommand("Recolor") end end,
 			RecolorCommand=function(self)
 				if GAMESTATE:GetMasterPlayerNumber() == PLAYER_1 then
@@ -315,7 +360,7 @@ return Def.ActorFrame{
 			}
 		},
 		Def.ActorFrame{
-			Condition=GAMESTATE:IsPlayerEnabled(PLAYER_2) and not isDouble(),
+			Condition=not isEtterna() and GAMESTATE:IsPlayerEnabled(PLAYER_2) and not isDouble(),
 			Name="LightP2",
 			Def.Sprite {
 				Texture = THEME:GetPathG("_pane elements/_lneon",isFinal() and "final" or "normal"),
@@ -382,7 +427,7 @@ return Def.ActorFrame{
 		},
 		Def.ActorFrame{
 			Name="PaneDisplayP2",
-			Condition=GAMESTATE:IsHumanPlayer(PLAYER_2),
+			Condition=not isEtterna() and GAMESTATE:IsHumanPlayer(PLAYER_2),
 			InitCommand=function(self) self:x(SCREEN_RIGHT/WideScreenDiff()-SCREEN_WIDTH/5.415/WideScreenDiff()):player(PLAYER_2) end,
 			loadfile(THEME:GetPathG("_pane","icons"))(PLAYER_2),
 			loadfile(THEME:GetPathG("_pane","fill"))(PLAYER_2),
@@ -401,20 +446,7 @@ return Def.ActorFrame{
 	Def.ActorFrame{
 		Name="SelButtonMenu",
 		InitCommand=function(self) self:y(SCREEN_BOTTOM-54*WideScreenDiff()):visible(DifficultyChangingAvailable()) end,
-		Def.HelpDisplay {
-			File=THEME:GetPathF("HelpDisplay", "text"),
-			InitCommand=function(self)
-				local s = isOutFox() and THEME:GetString("ScreenSelectMusic", "HelpSelectTextOutFox"..(ThemePrefs.Get("SLFavorites") and "WithSL" or "")) or THEME:GetString("ScreenSelectMusic", "HelpSelectText"..(ThemePrefs.Get("SLFavorites") and "WithSL" or ""))
-				self:SetSecsBetweenSwitches(THEME:GetMetric("HelpDisplay","TipSwitchTime"))
-				self:SetTipsColonSeparated(s)
-				self:maxwidth(269)
-				self:CenterX():zoomx(0.3*WideScreenDiff()):zoomy(0.6*WideScreenDiff()):diffusealpha(0):shadowlength(2)
-			end,
-			OnCommand=function(self) self:shadowlength(0):diffuseshift():effectcolor1(color("#FFFFFF")):effectcolor2(color("#9A9999")):effectperiod(1.5) end,
-			OffCommand=function(self) self:linear(0.3):diffusealpha(0) end,
-			SelectMenuOpenedMessageCommand=function(self) self:stoptweening():bounceend(0.2):diffusealpha(1):zoomx(0.6*WideScreenDiff()) end,
-			SelectMenuClosedMessageCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(0):zoomx(0.3*WideScreenDiff()) end
-		},
+		HelpDisplay,
 		Def.ActorFrame{
 			InitCommand=function(self) self:x(SCREEN_CENTER_X-100*WideScreenDiff()) end,
 			Def.BitmapText {
@@ -490,6 +522,7 @@ return Def.ActorFrame{
 	},
 	Def.ActorFrame{
 		Name="OptionsListBaseP2",
+		Condition=not isEtterna(),
 		InitCommand=function(self) self:x(SCREEN_CENTER_X+220*WideScreenDiff()):y(SCREEN_CENTER_Y+22*WideScreenDiff()):zoomy(WideScreenDiff()):zoomx(isFinal() and 1.1*WideScreenDiff() or 1*WideScreenDiff()) end,
 		Def.Sprite {
 			Texture = THEME:GetPathG("options pane",isFinal() and "final" or "normal"),

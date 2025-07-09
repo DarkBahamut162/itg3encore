@@ -17,6 +17,8 @@ function ChoiceSingle()
 		end
 	elseif IsGame("po-mu") then
 		return {"po-mu-three","po-mu-four","po-mu-five","po-mu-seven","po-mu-nine"}
+	elseif IsGame("popn") then
+		return {"popn-five","popn-nine"}
 	elseif IsGame("techno") then
 		return {"single4","single5","single8","single9"}
 	end
@@ -65,13 +67,15 @@ function ChoiceDouble()
 		end
 	elseif IsGame("po-mu") then
 		return {nil,nil,nil,nil,"po-mu-nine-double"}
+	elseif IsGame("popn") then
+		return {nil,nil}
 	elseif IsGame("techno") then
 		return {"double4","double5","double8","double9"}
 	end
 end
 
 function GameModeEnabled()
-	if IsGame("dance") or IsGame("groove") or IsGame("pump") or IsGame("smx") or IsGame("be-mu") or IsGame("beat") or IsGame("po-mu") or IsGame("techno") then
+	if IsGame("dance") or IsGame("groove") or IsGame("pump") or IsGame("smx") or IsGame("be-mu") or IsGame("beat") or IsGame("po-mu") or IsGame("popn") or IsGame("techno") then
 		return true
 	else
 		return false
@@ -88,9 +92,9 @@ function GetStyles()
 			end
 		else
 			if ChoiceDouble()[GetUserPrefN("StylePosition")] then
-				return "1,2,3"
+				return isEtterna() and "1,3" or "1,2,3"
 			else
-				return "1,2"
+				return isEtterna() and "1" or "1,2"
 			end
 		end
 	else
@@ -129,6 +133,8 @@ function StyleName()
 		end
 	elseif IsGame("po-mu") then
 		return {"3 Buttons","4 Buttons","5 Buttons","7 Buttons","9 Buttons"}
+	elseif IsGame("popn") then
+		return {"5 Buttons","9 Buttons"}
 	elseif IsGame("techno") then
 		return {"4 Arrows","5 Arrows","8 Arrows","9 Arrows"}
 	end
@@ -154,6 +160,8 @@ function StepsTypeSingle()
 		end
 	elseif IsGame("po-mu") then
 		return {"StepsType_Pnm_Three","StepsType_Pnm_Four","StepsType_Pnm_Five","StepsType_Pnm_Seven","StepsType_Pnm_Nine"}
+	elseif IsGame("popn") then
+		return {"StepsType_Pnm_Five","StepsType_Pnm_Nine"}
 	elseif IsGame("techno") then
 		return {"StepsType_Techno_Single4","StepsType_Techno_Single5","StepsType_Techno_Single8","StepsType_Techno_Single9"}
 	end
@@ -179,6 +187,8 @@ function StepsTypeDouble()
 		end
 	elseif IsGame("po-mu") then
 		return {nil,nil,nil,nil,"StepsType_Pnm_Nine_Double"}
+	elseif IsGame("popn") then
+		return {nil,nil}
 	elseif IsGame("techno") then
 		return {"StepsType_Techno_Double4","StepsType_Techno_Double5","StepsType_Techno_Double8","StepsType_Techno_Double9"}
 	end
@@ -195,7 +205,7 @@ function SongMods()
 	end
 
 	local fail = isOutFoxV() and "FV" or "F"
-	local options = "1,2,4,"..fail..","..(isRegular() and (isOpenDDR() and "0DDR" or "0,Flare") or "0")..",3,5,RE,RE2,AE,AE2,AE3"..(isOutFox() and ",AE4" or "")..",17,9,"
+	local options = (isEtterna() and "Speed," or "1,") .."2,4,"..fail..","..(isRegular() and (isOpenDDR() and "0DDR" or "0,Flare") or "0")..",3,5,RE,RE2,AE,AE2,AE3"..(isOutFox() and ",AE4" or "")..",17,9,"
 
 	if isRegular() then
 		if isDouble() then
@@ -246,6 +256,7 @@ function SongMods()
 end
 
 function ModeMenu()
+	if isEtterna() then return "Group,Title,Bpm,TopGrades,Artist,Genre,Favorites,Overall,Stream,Jumpstream,Handstream,Stamina,JackSpeed,Chordjack,Technical,Length,DateAdded,Author,Ungrouped" end
 	local options = "Group,Title,Artist,Genre,Bpm,Length,"
 
 	if isITGmania() then
@@ -873,7 +884,7 @@ function DisplayCustomModifiersText(pn)
 	elseif getenv("Effect"..pname(pn)) == 1 then output = addToOutput(output,"Vibrate",", ") end
 
 	if getenv("ShowMods"..pname(pn)) then output = addToOutput(output,"Show Mods",", ") end
-	if getenv("ShowStats"..pname(pn)) > 0 then
+	if getenv("ShowStats"..pname(pn)) and getenv("ShowStats"..pname(pn)) > 0 then
 		if GAMESTATE:GetNumPlayersEnabled() == 2 and not isDouble() then
 			if getenv("ShowNoteGraph"..pname(pn)) > 1 then
 				output = addToOutput(output,"Show Stats",", ")
@@ -893,11 +904,11 @@ function DisplayCustomModifiersText(pn)
 				output = addToOutput(output,"Show MiniStats & NoteGraph",", ")
 			end
 		end
-	elseif getenv("ShowNoteGraph"..pname(pn)) > 1 then
+	elseif getenv("ShowNoteGraph"..pname(pn)) and getenv("ShowNoteGraph"..pname(pn)) > 1 then
 		output = addToOutput(output,"Show NoteGraph",", ")
 	end
 
-	if getenv("ScreenFilter"..pname(pn)) > 0 then output = addToOutput(output,"Screen Filter ("..(getenv("ScreenFilter"..pname(pn))*100).."%)",", ") end
+	if getenv("ScreenFilter"..pname(pn)) and getenv("ScreenFilter"..pname(pn)) > 0 then output = addToOutput(output,"Screen Filter ("..(getenv("ScreenFilter"..pname(pn))*100).."%)",", ") end
 
 	if GetRateMod() ~= '' then output = addToOutput(output,GetRateMod(),", ") end
 

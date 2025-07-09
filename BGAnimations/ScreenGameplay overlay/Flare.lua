@@ -167,7 +167,7 @@ return Def.ActorFrame{
 
 					if lastFloat ~= output then
 						lastFloat = output
-						floatDisplay[#floatDisplay+1]={STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):GetAliveSeconds(),output}
+						floatDisplay[#floatDisplay+1]={isEtterna() and GAMESTATE:GetSongPosition():GetMusicSecondsVisible() or STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):GetAliveSeconds(),output}
 					end
 				end
 			end

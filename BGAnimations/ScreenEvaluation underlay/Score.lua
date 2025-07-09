@@ -27,9 +27,9 @@ return Def.ActorFrame{
 				})
 				if isTopScreen("ScreenEvaluationWorkout") or isTopScreen("ScreenEvaluationCourseWorkout") then self:zoomx(1/2*WideScreenDiff()) else self:zoomx(8/9*WideScreenDiff()) end
 			elseif scoreType == 2 then
-				self:settext(FormatPercentScore(pss:GetPercentDancePoints())) -- PERCENT
+				self:settext(FormatPercentScore(DP(player))) -- PERCENT
 			elseif scoreType == 3 then
-				output = pss:GetActualDancePoints()
+				output = DPCur(player)
 				self:settextf("%04d",output) -- EX
 				self:ClearAttributes()
 				self:AddAttribute(0, {

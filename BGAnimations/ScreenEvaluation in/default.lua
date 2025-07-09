@@ -1,4 +1,4 @@
-local extra = STATSMAN:GetCurStageStats():GetStage():lower():find("extra")
+local extra = isEtterna() and false and STATSMAN:GetCurStageStats():GetStage():lower():find("extra")
 local failedExtra = false
 
 if extra then
@@ -6,6 +6,9 @@ if extra then
 	local supposed = STATSMAN:GetCurStageStats():GetPlayedSongs()[1]:GetLastSecond()
 	failedExtra = played < supposed
 end
+
+local passed = false
+if isEtterna() then passed = not STATSMAN:GetCurStageStats():Failed() else passed = STATSMAN:GetCurStageStats():OnePassed() end
 
 local currentStage = GAMESTATE:GetCurrentStageIndex()
 local offsetInfo = getenv("OffsetTable")
@@ -55,7 +58,7 @@ function playerData(player)
 	for score in ivalues(scores) do Step[score] = STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetTapNoteScores(score) end
 	for score,amount in pairs(early) do Step[score.."_Early"] = amount end
 	for score,amount in pairs(late) do Step[score.."_Late"] = amount end
-	Step["Score"] = STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetPercentDancePoints()
+	Step["Score"] = DP(player)
 	Step["Grade"] = STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetGrade()
 	Step["Difficulty"] = GAMESTATE:GetCurrentSteps(player):GetDifficulty()
 	Step["Meter"] = GAMESTATE:GetCurrentSteps(player):GetMeter()
@@ -86,7 +89,7 @@ return Def.ActorFrame{
 	},
 	Def.ActorFrame{
 		InitCommand=function(self) self:CenterX() end,
-		BeginCommand=function(self) self:visible( STATSMAN:GetCurStageStats():OnePassed() and not failedExtra ) end,
+		BeginCommand=function(self) self:visible( passed and not failedExtra ) end,
 		Def.Sprite {
 			Texture = THEME:GetPathB("ScreenGameplay out/_round",isFinal() and "final" or "normal"),
 			InitCommand=function(self) self:y(SCREEN_CENTER_Y-75*WideScreenDiff()):zoom(0.6*WideScreenDiff()):diffusealpha(1) end,
@@ -105,7 +108,7 @@ return Def.ActorFrame{
 	},
 	Def.ActorFrame{
 		Name="Cleared",
-		BeginCommand=function(self) self:visible( STATSMAN:GetCurStageStats():OnePassed() and not failedExtra ) end,
+		BeginCommand=function(self) self:visible( passed and not failedExtra ) end,
 		Def.Sprite {
 			Texture = "cleared glow "..(isFinal() and "final" or "normal"),
 			InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+100*WideScreenDiff()):zoom(WideScreenDiff()):cropleft(-0.3):cropright(1):faderight(0.1):fadeleft(0.1) end,
@@ -119,7 +122,7 @@ return Def.ActorFrame{
 	},
 	Def.ActorFrame{
 		Name="Failed",
-		BeginCommand=function(self) self:visible( not STATSMAN:GetCurStageStats():OnePassed() or failedExtra ) end,
+		BeginCommand=function(self) self:visible( not passed or failedExtra ) end,
 		Def.Sprite {
 			Texture = "failed glow "..(isFinal() and "final" or "normal"),
 			InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+100*WideScreenDiff()):zoom(WideScreenDiff()):cropleft(-0.3):cropright(1):faderight(0.1):fadeleft(0.1) end,

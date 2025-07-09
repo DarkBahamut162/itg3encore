@@ -67,12 +67,15 @@ return Def.ActorFrame{
 				length[i] = length[i] / MusicRate
 			end
 			MESSAGEMAN:Broadcast('SetTime')
-			if length[1] >= 6000 then c.Time:x(-103-(math.floor(math.log10(length[1]/6000)+1)*28)) else c.Time:x(-103) end
+			if c then
+				if length[1] >= 6000 then c.Time:x(-103-(math.floor(math.log10(length[1]/6000)+1)*28)) else c.Time:x(-103) end
+			end
 			self:settext( SecondsToMMSSMsMs(length[1]) )
 		end,
 		RateChangedMessageCommand=function(self) self:playcommand("Set") end,
 		CurrentSongChangedMessageCommand=function(self) if not course then self:queuecommand("Set") end end,
 		CurrentStepsP1ChangedMessageCommand=function(self) if not course then self:queuecommand("Set") end end,
+		CurrentStepsChangedMessageCommand=function(self) if not course then self:queuecommand("Set") end end,
 		CurrentStepsP2ChangedMessageCommand=function(self) if not course then self:queuecommand("Set") end end,
 		CurrentCourseChangedMessageCommand=function(self) if course then self:queuecommand("Set") end end,
 		CurrentTrailP1ChangedMessageCommand=function(self) if course then self:queuecommand("Set") end end,

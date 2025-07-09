@@ -4,7 +4,11 @@ assert(player,"[ScreenEvaluation PeakComboAward] requires player")
 local t = Def.ActorFrame{}
 
 if getenv("EvalCombo"..pname(player)) then
-	local award = STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetPeakComboAward()
+	local award = not isEtterna() and STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetPeakComboAward() or nil
+	if isEtterna() then
+		local MaxCombo = math.min(math.floor(STATSMAN:GetCurStageStats():GetPlayerStageStats(player):MaxCombo()/1000)*1000,10000)
+		if MaxCombo > 0 then award = "PeakComboAward_"..MaxCombo end
+	end
 	local awardRef = {
 		["PeakComboAward_1000"]		= { File = THEME:GetPathG("_award","models/ribbon"), Color = "purple" },
 		["PeakComboAward_2000"]		= { File = THEME:GetPathG("_award","models/ribbon"), Color = "red" },

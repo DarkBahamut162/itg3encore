@@ -3,27 +3,37 @@ assert(player,"[ScreenEvaluation MachineRecord] requires player")
 local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(player)
 local record = pss:GetMachineHighScoreIndex()
 
-if not isOutFoxV() and GAMESTATE:IsEventMode() and record == -1 then
-	local SongOrCourse = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentCourse() or GAMESTATE:GetCurrentSong()
-	local StepsOrTrail = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentTrail(player) or GAMESTATE:GetCurrentSteps(player)
-	local HighScoreList = PROFILEMAN:GetMachineProfile():GetHighScoreList(SongOrCourse,StepsOrTrail)
-	local HighScores = HighScoreList:GetHighScores()
-	for i, highscore in ipairs(HighScores) do
-		local name
-		if  pss:GetHighScore():GetScore() == highscore:GetScore()
-		and pss:GetHighScore():GetDate()  == highscore:GetDate()
-		and
-		(
-			name == PROFILEMAN:GetProfile(player):GetLastUsedHighScoreName()
-			or
+if getenv("EvalCombo"..pname(player)) and not isOutFoxV() and GAMESTATE:IsEventMode() and record == -1 then
+	if isEtterna() then
+		local score = SCOREMAN:GetMostRecentScore()
+		local origTable = getScoresByKey(player)
+		local rtTable = getRateTable(origTable) or {}
+		local hsTable = rtTable[getRate(score)] or {score}
+		local scoreIndex = getHighScoreIndex(hsTable, score)
+
+		record = (scoreIndex-1) or -1
+	else
+		local SongOrCourse = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentCourse() or GAMESTATE:GetCurrentSong()
+		local StepsOrTrail = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentTrail(player) or GAMESTATE:GetCurrentSteps(player)
+		local HighScoreList = PROFILEMAN:GetMachineProfile():GetHighScoreList(SongOrCourse,StepsOrTrail)
+		local HighScores = HighScoreList:GetHighScores()
+		for i, highscore in ipairs(HighScores) do
+			local name
+			if  pss:GetHighScore():GetScore() == highscore:GetScore()
+			and pss:GetHighScore():GetDate()  == highscore:GetDate()
+			and
 			(
-				(#GAMESTATE:GetHumanPlayers()==1 and name=="EVNT")
-				or (highscore:GetScore() ~= STATSMAN:GetCurStageStats():GetPlayerStageStats(OtherPlayer[player]):GetHighScore():GetScore())
+				name == PROFILEMAN:GetProfile(player):GetLastUsedHighScoreName()
+				or
+				(
+					(#GAMESTATE:GetHumanPlayers()==1 and name=="EVNT")
+					or (highscore:GetScore() ~= STATSMAN:GetCurStageStats():GetPlayerStageStats(OtherPlayer[player]):GetHighScore():GetScore())
+				)
 			)
-		)
-		then
-			record = i-1
-			break
+			then
+				record = i-1
+				break
+			end
 		end
 	end
 end

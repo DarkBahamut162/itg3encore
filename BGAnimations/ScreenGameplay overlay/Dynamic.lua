@@ -1,9 +1,9 @@
 local player = ...
 local SongOrCourse = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentTrail(player):GetTrailEntry(GAMESTATE:GetLoadingCourseSongIndex()):GetSong() or GAMESTATE:GetCurrentSong()
-local StepOrTrails = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentTrail(player):GetTrailEntry(GAMESTATE:GetLoadingCourseSongIndex()):GetSteps() or GAMESTATE:GetCurrentSteps(player)
+local StepsOrTrails = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentTrail(player):GetTrailEntry(GAMESTATE:GetLoadingCourseSongIndex()):GetSteps() or GAMESTATE:GetCurrentSteps(player)
 local timingData
 
-if SongOrCourse and StepOrTrails then timingData = StepOrTrails:GetTimingData() end
+if SongOrCourse and StepsOrTrails then timingData = StepsOrTrails:GetTimingData() end
 
 local sudden = GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Preferred"):SuddenOffset() ~= 0
 local hidden = GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Preferred"):HiddenOffset() ~= 0

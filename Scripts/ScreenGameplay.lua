@@ -70,7 +70,9 @@ function songfail(bVertex)
 end
 
 function AllowOptionsMenu()
-	if GAMESTATE:IsAnExtraStage() then
+	if isEtterna() then
+		return true
+	elseif GAMESTATE:IsAnExtraStage() then
 		return false
 	else
 		return true
@@ -271,4 +273,24 @@ function NotefieldZoomOutFox()
 	local field_space = SCREEN_CENTER_X - 40 * WideScreenDiff_(16/10) - 40 * WideScreenDiff_(16/10)
 
 	return field_space / style_width
+end
+
+function DP(player)
+	local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(player)
+	return math.max(0,isEtterna() and pss:GetWifeScore() or pss:GetPercentDancePoints())
+end
+function DPCur(player)
+	local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(player)
+	return math.max(0,isEtterna() and pss:GetCurWifeScore() or pss:GetActualDancePoints())
+end
+function DPMax(player)
+	local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(player)
+	return isEtterna() and math.round(pss:GetCurWifeScore()/pss:GetWifeScore()) or pss:GetPossibleDancePoints()
+end
+function DPCurMax(player)
+	local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(player)
+	return isEtterna() and pss:GetMaxWifeScore() or pss:GetCurrentPossibleDancePoints()
+end
+function PercentDP(topscore)
+	return isEtterna() and topscore:GetWifeScore() or topscore:GetPercentDP()
 end
