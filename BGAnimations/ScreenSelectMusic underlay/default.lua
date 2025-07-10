@@ -16,7 +16,7 @@ end
 local function updateFavorites()
 	if insideFavorites then
 		if not isITGmania() and changed then reloadPreferredSortSM() end
-		SCREENMAN:GetTopScreen():GetMusicWheel():ChangeSort("SortOrder_Preferred")
+		SCREENMAN:GetTopScreen():GetMusicWheel():ChangeSort(isEtterna() and "SortOrder_Favorites" or "SortOrder_Preferred")
 	else
 		local screen = SCREENMAN:GetTopScreen()
 		screen:GetMusicWheel():Move(1)
@@ -38,10 +38,14 @@ local InputHandler = function(event)
 				if isOutFox() then
 					if not isOutFoxV() then setOFFavorites(event.PlayerNumber) end
 					outfoxed = true
+				elseif isEtterna() then
+					SCREENMAN:GetTopScreen():ToggleCurrentFavorite()
+					changed = true
+					if insideFavorites then updateFavorites() end
 				elseif active then
 					if PROFILEMAN:IsPersistentProfile(event.PlayerNumber) then
 						changed = true
-						addOrRemoveFavorite(event.PlayerNumber) updateFavorites() 
+						addOrRemoveFavorite(event.PlayerNumber) updateFavorites()
 					end
 				end
 			end
@@ -172,7 +176,7 @@ local graphs = showGraph and (GAMESTATE:GetNumPlayersEnabled() == 1 and loadfile
 }) or Def.ActorFrame{}
 
 return Def.ActorFrame{
-    InitCommand=function() if (isOutFox() and not isOutFoxV()) or active then generateFavoritesForMusicWheel() end end,
+    InitCommand=function() if ((isOutFox() and not isOutFoxV()) or active) and not isEtterna() then generateFavoritesForMusicWheel() end end,
 	OnCommand=function()
 		for pn in ivalues(GAMESTATE:GetEnabledPlayers()) do
 			local playeroptions = GAMESTATE:GetPlayerState(pn):GetPlayerOptions("ModsLevel_Song")
@@ -189,7 +193,7 @@ return Def.ActorFrame{
 	SortOrderChangedMessageCommand=function(self)
 		local s = GAMESTATE:GetSortOrder()
 		if s ~= nil then
-			if SortOrderToLocalizedString(s) == "Preferred" then
+			if SortOrderToLocalizedString(s) == "Preferred" or SortOrderToLocalizedString(s) == "Favorites" then
 				if not isITGmania() and changed and not outfoxed then reloadPreferredSortSM() end
 				insideFavorites = true
 				outfoxed = false

@@ -32,7 +32,7 @@ return Def.ActorFrame{
 			OnCommand=function(self) self:diffuseshift():effectcolor1(color("#FFDE00FF")):effectcolor2(color("#FFDE0080")) end,
 			SetCommand=function(self,params)
 				if params.Song then
-					local isFav = FindInTable(params.Song, getSLFavorites(ToEnumShortString(PLAYER_1)))
+					local isFav = isEtterna() and params.Song:IsFavorited() or FindInTable(params.Song, getSLFavorites(ToEnumShortString(PLAYER_1)))
 
 					if isFav then
 						self:effectclock(params.Song:GetPreviewMusicPath() ~= "" and "beat" or "timerglobal"):visible(true)
