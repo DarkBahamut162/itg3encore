@@ -21,10 +21,10 @@ local colors = {
 
 local courseMode = GAMESTATE:IsCourseMode()
 
-local function RadarPaneNumber(self,stat,StepsOrTrails,RadarCategory)
+local function RadarPaneNumber(self,stat,StepsOrTrail,RadarCategory)
 	if StepsOrTrail then
-		local val = StepsOrTrail:GetRadarValues(player):GetValue('RadarCategory_Jumps')
-		local numSongs = courseMode and TrailUtil.GetNumSongs(StepsOrTrails) or 1
+		local val = StepsOrTrail:GetRadarValues(player):GetValue(RadarCategory)
+		local numSongs = courseMode and TrailUtil.GetNumSongs(StepsOrTrail) or 1
 		local itemColor = color(colors[1][1]..","..colors[1][2]..","..colors[1][3]..",1")
 		if val <= stats[stat][1] then itemColor = color(colors[1][1]..","..colors[1][2]..","..colors[1][3]..",1")
 		elseif val <= stats[stat][2] * numSongs then itemColor = color(colors[2][1]..","..colors[2][2]..","..colors[2][3]..",1")
@@ -52,16 +52,16 @@ return Def.ActorFrame{
 	["CurrentTrail".. pname(player) .."ChangedMessageCommand"]=function(self) if courseMode then self:RunCommandsRecursively( function(self) self:stoptweening() end ):playcommand("Set")  end end,
 	SetCommand=function(self)
 		local SongOrCourse = courseMode and GAMESTATE:GetCurrentCourse() or GAMESTATE:GetCurrentSong()
-		local StepsOrTrails
+		local StepsOrTrail
 		if SongOrCourse then
-			StepsOrTrails = courseMode and GAMESTATE:GetCurrentTrail(player) or GAMESTATE:GetCurrentSteps(player)
+			StepsOrTrail = courseMode and GAMESTATE:GetCurrentTrail(player) or GAMESTATE:GetCurrentSteps(player)
 		end
 
-		RadarPaneNumber(c.Jumps,1,StepsOrTrails,"RadarCategory_Jumps")
-		RadarPaneNumber(c.Holds,2,StepsOrTrails,"RadarCategory_Holds")
-		RadarPaneNumber(c.Mines,3,StepsOrTrails,"RadarCategory_Mines")
-		RadarPaneNumber(c.Hands,4,StepsOrTrails,"RadarCategory_Hands")
-		RadarPaneNumber(c.Rolls,5,StepsOrTrails,"RadarCategory_Rolls")
+		RadarPaneNumber(c.Jumps,1,StepsOrTrail,"RadarCategory_Jumps")
+		RadarPaneNumber(c.Holds,2,StepsOrTrail,"RadarCategory_Holds")
+		RadarPaneNumber(c.Mines,3,StepsOrTrail,"RadarCategory_Mines")
+		RadarPaneNumber(c.Hands,4,StepsOrTrail,"RadarCategory_Hands")
+		RadarPaneNumber(c.Rolls,5,StepsOrTrail,"RadarCategory_Rolls")
 	end,
 	Def.BitmapText {
 		File = "smallnumbers",
