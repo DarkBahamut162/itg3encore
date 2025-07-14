@@ -568,6 +568,9 @@ return Def.ActorFrame{
         DoneLoadingNextSongMessageCommand=function(self) self:queuecommand("RePos") end,
         InitCommand=function(self) self:x(pn == PLAYER_1 and -140 or 140):blend(Blend.Add):fadeleft(0.25):faderight(0.25):zoomy(0.5):cropleft(pn == PLAYER_1 and 0 or 0.25):cropright(pn == PLAYER_1 and 0.25 or 0):queuecommand("RePos") end,
         OnCommand=function(self) self:diffusealpha(0):linear(0.5):diffusealpha(1) end,
-        RePosCommand=function(self) self:y(176-352*(math.min(1,GAMESTATE:GetSongPosition():GetMusicSecondsVisible()/lastSec))):sleep(1/60):queuecommand("RePos") end
+        RePosCommand=function(self)
+            if lastSec == 0 then lastSec = GAMESTATE:GetCurrentSong():GetLastSecond() end
+            self:y(176-352*(math.min(1,GAMESTATE:GetSongPosition():GetMusicSecondsVisible()/lastSec))):sleep(1/60):queuecommand("RePos")
+        end
     }
 }
