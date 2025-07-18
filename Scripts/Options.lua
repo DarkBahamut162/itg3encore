@@ -205,7 +205,7 @@ function SongMods()
 	end
 
 	local fail = isOutFoxV() and "FV" or "F"
-	local options = (isEtterna() and "Speed," or "1,") .."2,4,"..fail..","..(isRegular() and (isOpenDDR() and "0DDR" or "0,Flare") or "0")..",3,5"..(not isEtterna() and ",RE,RE2,AE,AE2,AE3" or ",REE,AEE")..(isOutFox() and ",AE4" or "")..",17,9,"
+	local options = (isEtterna() and "Speed," or "1,") .."2,4,"..fail..","..(isRegular() and (isOpenDDR() and "0DDR" or "0,Flare") or "0")..",3,5"..((isEtterna() or isOldStepMania()) and ",REE,AEE" or ",RE,RE2,AE,AE2,AE3")..(isOutFox() and ",AE4" or "")..",17,9,"
 
 	if isRegular() then
 		if isDouble() then

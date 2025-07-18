@@ -215,9 +215,8 @@ function GetTotalActual( profile, stepsType )
 		profile:GetSongsActual(stepsType,'Difficulty_Medium')+
 		profile:GetSongsActual(stepsType,'Difficulty_Hard')+
 		profile:GetSongsActual(stepsType,'Difficulty_Challenge')+
-		(isEtterna() and 0 or
 		profile:GetCoursesActual(stepsType,'Difficulty_Medium')+
-		profile:GetCoursesActual(stepsType,'Difficulty_Hard'))
+		profile:GetCoursesActual(stepsType,'Difficulty_Hard')
 end
 
 function GetTotalPossible( profile, stepsType )
@@ -226,9 +225,8 @@ function GetTotalPossible( profile, stepsType )
 		profile:GetSongsPossible(stepsType,'Difficulty_Medium')+
 		profile:GetSongsPossible(stepsType,'Difficulty_Hard')+
 		profile:GetSongsPossible(stepsType,'Difficulty_Challenge')+
-		(isEtterna() and 0 or
 		profile:GetCoursesPossible(stepsType,'Difficulty_Medium')+
-		profile:GetCoursesPossible(stepsType,'Difficulty_Hard'))
+		profile:GetCoursesPossible(stepsType,'Difficulty_Hard')
 end
 
 function GetTotalPercentComplete( profile, stepsType )

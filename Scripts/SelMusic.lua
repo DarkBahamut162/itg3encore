@@ -610,6 +610,20 @@ function cacheStep(Song,Step)
 	end
 end
 
+function getNoteType(beat)
+    if beat % (4/4) == 0 then return 4
+    elseif beat % (4/8) == 0 then return 8
+    elseif beat % (4/12) <= 0.001 then return 12
+    elseif beat % (4/16) == 0 then return 16
+    elseif beat % (4/24) <= 0.001 then return 24
+    elseif beat % (4/32) == 0 then return 32
+    elseif beat % (4/48) <= 0.001 then return 48
+    elseif beat % (4/64) == 0 then return 64
+    elseif beat % (4/96) <= 0.001 then return 96
+    elseif beat % (4/128) == 0 then return 128 end
+    return 192
+end
+
 function cacheStepSM(Song,Step)
 	local stepType = split("_",Step:GetStepsType())
 	local timingData = Step:GetTimingData()

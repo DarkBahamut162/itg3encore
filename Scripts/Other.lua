@@ -220,7 +220,7 @@ function isScreenTitle()
 end
 
 function isGamePlay()
-	return isTopScreen('ScreenGameplay') or isTopScreen('ScreenNetGameplay') or isTopScreen('ScreenCreditsGameplay') or isTopScreen('ScreenGameplayWorkout') or isTopScreen('ScreenDemonstration') or isTopScreen('ScreenJukebox')
+	return isTopScreen('ScreenGameplay') or isTopScreen('ScreenGameplaySyncMachine') or isTopScreen('ScreenNetGameplay') or isTopScreen('ScreenCreditsGameplay') or isTopScreen('ScreenGameplayWorkout') or isTopScreen('ScreenDemonstration') or isTopScreen('ScreenJukebox')
 end
 
 function isPlayMode(mode)
@@ -266,6 +266,10 @@ end
 
 function isStepMania()
 	return ProductFamily() == "StepMania"
+end
+
+function isOldStepMania()
+	return ProductFamily() == "StepMania" and tonumber(VersionDate()) < 20180000
 end
 
 function isOpenDDR()
