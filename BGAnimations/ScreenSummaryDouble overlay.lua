@@ -22,6 +22,8 @@ local t = Def.ActorFrame{
 	}
 }
 
+if isEtterna() then XML() end
+
 local types = { "Actual","Possible","PercentComplete" }
 local prof = PROFILEMAN:GetMachineProfile()
 local diffs = { nil, 'Difficulty_Easy', 'Difficulty_Medium', 'Difficulty_Hard', 'Difficulty_Challenge', 'Difficulty_Medium', 'Difficulty_Hard' }
@@ -39,21 +41,33 @@ for i=1,3 do
 					if n > 5 then
 						val = prof:GetCoursesActual(StepsTypeDouble()[GetUserPrefN("StylePosition")],diffs[n])
 					else
-						val = prof:GetSongsActual(StepsTypeDouble()[GetUserPrefN("StylePosition")],diffs[n])
+						if isEtterna() then
+							val = GetSongsActualEtterna(StepsTypeDouble()[GetUserPrefN("StylePosition")],diffs[n])
+						else
+							val = prof:GetSongsActual(StepsTypeDouble()[GetUserPrefN("StylePosition")],diffs[n])
+						end
 					end
 					text = string.format("%5.2f",val)
 				elseif types[i] == "Possible" then
 					if n > 5 then
 						val = prof:GetCoursesPossible(StepsTypeDouble()[GetUserPrefN("StylePosition")],diffs[n])
 					else
-						val = prof:GetSongsPossible(StepsTypeDouble()[GetUserPrefN("StylePosition")],diffs[n])
+						if isEtterna() then
+							val = GetSongsPossibleEtterna(StepsTypeDouble()[GetUserPrefN("StylePosition")],diffs[n])
+						else
+							val = prof:GetSongsPossible(StepsTypeDouble()[GetUserPrefN("StylePosition")],diffs[n])
+						end
 					end
 					text = string.format("%5.2f",val)
 				elseif types[i] == "PercentComplete" then
 					if n > 5 then
 						val = prof:GetCoursesPercentComplete(StepsTypeDouble()[GetUserPrefN("StylePosition")],diffs[n])
 					else
-						val = prof:GetSongsPercentComplete(StepsTypeDouble()[GetUserPrefN("StylePosition")],diffs[n])
+						if isEtterna() then
+							val = GetSongsPercentCompleteEtterna(StepsTypeDouble()[GetUserPrefN("StylePosition")],diffs[n])
+						else
+							val = prof:GetSongsPercentComplete(StepsTypeDouble()[GetUserPrefN("StylePosition")],diffs[n])
+						end
 					end
 					if val ~= val then val = 0 end
 					text = FormatPercentScore(val)
@@ -66,7 +80,10 @@ for i=1,3 do
 	t[#t+1] = thing
 end
 
-local shortGrade = GetGradeFromPercent(GetTotalPercentComplete(prof,StepsTypeDouble()[GetUserPrefN("StylePosition")]))
+local shortGrade = GetGradeFromPercent(
+	isEtterna() and GetTotalPercentCompleteEtterna(StepsTypeDouble()[GetUserPrefN("StylePosition")]) or
+	GetTotalPercentComplete(prof,StepsTypeDouble()[GetUserPrefN("StylePosition")])
+)
 
 local totals = Def.ActorFrame{
 	Def.ActorFrame{
@@ -85,7 +102,11 @@ local totals = Def.ActorFrame{
 					if i > 5 then
 						val = val + prof:GetCoursesActual(StepsTypeDouble()[GetUserPrefN("StylePosition")],diffs[i])
 					else
-						val = val + prof:GetSongsActual(StepsTypeDouble()[GetUserPrefN("StylePosition")],diffs[i])
+						if isEtterna() then
+							val = val + GetSongsActualEtterna(StepsTypeDouble()[GetUserPrefN("StylePosition")],diffs[i])
+						else
+							val = val + prof:GetSongsActual(StepsTypeDouble()[GetUserPrefN("StylePosition")],diffs[i])
+						end
 					end
 				end
 				self:settext(string.format("%5.2f",val))
@@ -105,7 +126,11 @@ local totals = Def.ActorFrame{
 					if i > 5 then
 						val = val + prof:GetCoursesPossible(StepsTypeDouble()[GetUserPrefN("StylePosition")],diffs[i])
 					else
-						val = val + prof:GetSongsPossible(StepsTypeDouble()[GetUserPrefN("StylePosition")],diffs[i])
+						if isEtterna() then
+							val = val + GetSongsPossibleEtterna(StepsTypeDouble()[GetUserPrefN("StylePosition")],diffs[i])
+						else
+							val = val + prof:GetSongsPossible(StepsTypeDouble()[GetUserPrefN("StylePosition")],diffs[i])
+						end
 					end
 				end
 				self:settext(string.format("%5.2f",val))
@@ -120,7 +145,7 @@ local totals = Def.ActorFrame{
 			File = "_r bold numbers",
 			InitCommand=function(self) self:x(SCREEN_CENTER_X+136*WideScreenDiff()):y(20*WideScreenDiff()):horizalign(right):zoom(WideScreenDiff()) end,
 			BeginCommand=function(self)
-				local val = GetTotalPercentComplete(prof,StepsTypeDouble()[GetUserPrefN("StylePosition")])
+				local val = isEtterna() and GetTotalPercentCompleteEtterna(StepsTypeDouble()[GetUserPrefN("StylePosition")]) or GetTotalPercentComplete(prof,StepsTypeDouble()[GetUserPrefN("StylePosition")])
 				if val ~= val then val = 0 end
 				self:settext(FormatPercentScore(val))
 

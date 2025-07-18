@@ -84,6 +84,131 @@ function GetPercentFromGradeWife(grade)
 	return percent[grade] and percent[grade] or 0
 end
 
+XMLdata = {}
+
+function LoadXML(file)
+	if not FILEMAN:DoesFileExist(file) then return {} end
+
+	local configfile = RageFileUtil.CreateRageFile()
+	configfile:Open(file, 1)
+
+	local configcontent = configfile:Read()
+
+	configfile:Close()
+	configfile:destroy()
+
+	return configcontent:gsub('[\r\t\f\v]+', '')
+end
+
+function XML()
+	local files = FILEMAN:GetDirListing("/Save/LocalProfiles/")
+	for dir in ivalues(files) do
+		local file = "/Save/LocalProfiles/"..dir.."/Etterna.xml"
+		local read = false
+		local deepRead = false
+		local key
+		local PBkey
+		local PBgrade
+		if FILEMAN:DoesFileExist(file) then
+			local xml = LoadXML(file)
+			xml = split("\n",xml)
+			for i=1,#xml do
+				if string.find(xml[i],"PlayerScores") then read = not read end
+				if read then
+					if string.find(xml[i],"<Chart") then
+						key = nil
+						PBkey = nil
+						PBgrade = nil
+						local string = xml[i]:gsub("[<'>]+", '')
+						string = split(" ",string)
+						key = split("=",string[2])[2]
+						XMLdata[key] = {["WIFE"]=0}
+					end
+					if string.find(xml[i],"<ScoresAt") then
+						local string = xml[i]:gsub("[<'>]+", '')
+						string = split(" ",string)
+						PBkey = split("=",string[3])[2]
+						PBgrade = split("=",string[2])[2]
+						XMLdata[key]["GRADE"] = PBgrade
+					end
+					if string.find(xml[i],"<Score ") and PBkey and string.find(xml[i],PBkey) then deepRead = true end
+					if deepRead then
+						if string.find(xml[i],"WifeScore") then
+							local score = xml[i]:gsub("<WifeScore>", ''):gsub("</WifeScore>", '')
+							score = tonumber(score)
+							if XMLdata[key]["WIFE"] and XMLdata[key]["WIFE"] < score or true then XMLdata[key]["WIFE"] = score end
+							deepRead = false
+						end
+					end
+				end
+			end
+		end
+	end
+end
+
+function GetSongsActualEtterna(StepsType,Difficulty)
+	local total = 0
+	local songs = SONGMAN:GetAllSongs()
+	local total = 0
+	for curSong=1,#songs do
+		local step = songs[curSong]:GetOneSteps(StepsType,Difficulty)
+		if step then
+			local key = step:GetChartKey()
+			local score = XMLdata[key] and XMLdata[key]["WIFE"] or 0
+			if step then total = total+score end
+		end
+	end
+	return total
+end
+
+function GetSongsPossibleEtterna(StepsType,Difficulty)
+	local songs = SONGMAN:GetAllSongs()
+	local total = 0
+	for curSong=1,#songs do
+		local step = songs[curSong]:GetOneSteps(StepsType,Difficulty)
+		if step then total = total+1 end
+	end
+	return total
+end
+
+function GetSongsPercentCompleteEtterna(StepsType,Difficulty)
+	return GetSongsActualEtterna(StepsType,Difficulty) / GetSongsPossibleEtterna(StepsType,Difficulty)
+end
+
+function GetTotalActualEtterna(stepsType)
+	return
+		GetSongsActualEtterna(stepsType,'Difficulty_Easy')+
+		GetSongsActualEtterna(stepsType,'Difficulty_Medium')+
+		GetSongsActualEtterna(stepsType,'Difficulty_Hard')+
+		GetSongsActualEtterna(stepsType,'Difficulty_Challenge')
+end
+
+function GetTotalPossibleEtterna(stepsType)
+	return
+		GetSongsPossibleEtterna(stepsType,'Difficulty_Easy')+
+		GetSongsPossibleEtterna(stepsType,'Difficulty_Medium')+
+		GetSongsPossibleEtterna(stepsType,'Difficulty_Hard')+
+		GetSongsPossibleEtterna(stepsType,'Difficulty_Challenge')
+end
+
+function GetTotalPercentCompleteEtterna(stepsType)
+	return GetTotalActualEtterna(stepsType) / GetTotalPossibleEtterna(stepsType)
+end
+
+function GetTotalStepsWithTopGradeEtterna(StepsType,Difficulty,Tier)
+	local songs = SONGMAN:GetAllSongs()
+	local total = 0
+	for curSong=1,#songs do
+		local step = songs[curSong]:GetOneSteps(StepsType,Difficulty)
+		if step then
+			local key = step:GetChartKey()
+			local grade = XMLdata[key] and XMLdata[key]["GRADE"] or "Failed"
+			if grade == ToEnumShortString(Tier) then total = total+1 end
+		end
+	end
+	return total
+end
+
 function GetTotalActual( profile, stepsType )
 	return
 		profile:GetSongsActual(stepsType,'Difficulty_Easy')+

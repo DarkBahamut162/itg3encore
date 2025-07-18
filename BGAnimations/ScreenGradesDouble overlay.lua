@@ -5,6 +5,8 @@ local t = Def.ActorFrame{
 	}
 }
 
+if isEtterna() then XML() end
+
 local prof = PROFILEMAN:GetMachineProfile()
 local diffs = { nil, 'Difficulty_Easy', 'Difficulty_Medium', 'Difficulty_Hard', 'Difficulty_Challenge', 'Difficulty_Medium', 'Difficulty_Hard' }
 
@@ -22,7 +24,11 @@ for i=2,isEtterna() and 5 or 7 do
 				if i > 5 then
 					self:settext(prof:GetTotalTrailsWithTopGrade(StepsTypeDouble()[GetUserPrefN("StylePosition")],diffs[i],tier))
 				else
-					self:settext(prof:GetTotalStepsWithTopGrade(StepsTypeDouble()[GetUserPrefN("StylePosition")],diffs[i],tier))
+					if isEtterna() then
+						self:settext(GetTotalStepsWithTopGradeEtterna(StepsTypeDouble()[GetUserPrefN("StylePosition")],diffs[i],tier))
+					else
+						self:settext(prof:GetTotalStepsWithTopGrade(StepsTypeDouble()[GetUserPrefN("StylePosition")],diffs[i],tier))
+					end
 				end
 			end
 		}
