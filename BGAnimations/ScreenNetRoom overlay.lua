@@ -9,7 +9,7 @@ if ShowStandardDecoration("UserList") then
 	}
 end
 
-GAMESTATE:SetCurrentPlayMode("PlayMode_Regular")
+if not isEtterna() then GAMESTATE:SetCurrentPlayMode("PlayMode_Regular") end
 
 return Def.ActorFrame{
 	loadfile(THEME:GetPathG(Var "LoadingScreen", "Triangle"))() .. {
