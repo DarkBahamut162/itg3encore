@@ -151,7 +151,7 @@ return Def.ActorFrame{
 				if scoreDirection == 1 then
 					output = animateScore(DP(player)*10000,displayScore)/100
 				else
-					output = animateScore((DPMax(player)-(DPCurMax(player)-DPCur(player)))/DPMax*10000,displayScore)/100
+					output = animateScore((DPMax(player)-(DPCurMax(player)-DPCur(player)))/DPMax(player)*10000,displayScore)/100
 				end
 				self:settextf("%1.2f%%",output) -- PERCENT
 			elseif scoreType == 3 then
