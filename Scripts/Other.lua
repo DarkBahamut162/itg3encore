@@ -52,25 +52,31 @@ function GetStepChartFacts()
 		Difficulty_Edit = 6
 	}
 
-	for i=1,#songs do
-		if currentGroup ~= songs[i]:GetGroupName() then
-			output = addToOutput(output,currentGroup..":","\n")
-			for i2=1,#diffCount do
-				if diffCount[i2] > 0 then
-					output = addToOutput(output,"  "..diffCount[i2].." "..diffNames[i2],"\n")
-				end
+	function updateOutput()
+		output = addToOutput(output,currentGroup..":","\n")
+		for diff=1,#diffCount do
+			if diffCount[diff] > 0 then
+				output = addToOutput(output,"  "..diffCount[diff].." "..diffNames[diff],"\n")
 			end
-			currentGroup = songs[i]:GetGroupName()
+		end
+	end
+
+	for song=1,#songs do
+		if currentGroup ~= songs[song]:GetGroupName() then
+			if currentGroup ~= "" then updateOutput() end
+			currentGroup = songs[song]:GetGroupName()
 			diffCount = {0,0,0,0,0,0}
 		end
-		local steps = songs[i]:GetAllSteps()
-		for i3=1,#steps do
-			currentDifficulty = steps[i3]:GetDifficulty()
+		local steps = songs[song]:GetAllSteps()
+		for step=1,#steps do
+			currentDifficulty = steps[step]:GetDifficulty()
 			if diffTranslate[currentDifficulty] then
 				diffCount[diffTranslate[currentDifficulty]] = diffCount[diffTranslate[currentDifficulty]] + 1
 			end
 		end
 	end
+
+	updateOutput()
 
 	return output
 end
