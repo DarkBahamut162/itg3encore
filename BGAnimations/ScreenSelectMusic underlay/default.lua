@@ -134,7 +134,7 @@ local InputHandler = function(event)
 	end
 end
 
-local graphs = showGraph and (GAMESTATE:GetNumPlayersEnabled() == 1 and loadfile(THEME:GetPathB("ScreenGameplay","underlay/stepstats/graph"))(GAMESTATE:GetMasterPlayerNumber())..{
+local graphs = showGraph and (#GAMESTATE:GetHumanPlayers() == 1 and loadfile(THEME:GetPathB("ScreenGameplay","underlay/stepstats/graph"))(GAMESTATE:GetMasterPlayerNumber())..{
 		InitCommand=function(self) self:zoom(-1/3*WideScreenDiff())
 			if IsUsingWideScreen() then
 				self:x(SCREEN_CENTER_X+256):addy(SCREEN_CENTER_Y*1.15)
