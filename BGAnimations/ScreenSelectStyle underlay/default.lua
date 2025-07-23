@@ -8,7 +8,7 @@ local enableUD = screenName == "ScreenSelectNumPlayers"
 local output = enableUD and "Current Style: "..StyleName()[currentStylePosition].." | Battle Mode: "..string.gsub(" "..currentBattleMode, "%W%l", string.upper):sub(2) or "Current Style: "..StyleName()[currentStylePosition]
 
 for player in ivalues(PlayerNumber) do
-	SCREENMAN:set_input_redirected(player, false)
+	if tonumber(VersionDate()) > 20160000 then SCREENMAN:set_input_redirected(player, false) end
 end
 
 local InputHandler = function(event)
@@ -45,7 +45,7 @@ local InputHandler = function(event)
 			SCREENMAN:GetTopScreen():StartTransitioningScreen("SM_GoToNextScreen")
 		elseif event.GameButton == "Select" and not selectState then
 			for player in ivalues(PlayerNumber) do
-				SCREENMAN:set_input_redirected(player, true)
+				if tonumber(VersionDate()) > 20160000 then SCREENMAN:set_input_redirected(player, true) end
 			end
 			SOUND:PlayOnce( THEME:GetPathS( 'OptionsList', "opened" ) )
 			selectState = true
@@ -54,7 +54,7 @@ local InputHandler = function(event)
 		end
 	elseif event.type == "InputEventType_Release" and event.GameButton == "Select" and selectState then
 		for player in ivalues(PlayerNumber) do
-			SCREENMAN:set_input_redirected(player, false)
+			if tonumber(VersionDate()) > 20160000 then SCREENMAN:set_input_redirected(player, false) end
 		end
 		SOUND:PlayOnce( THEME:GetPathS( 'OptionsList', "closed" ) )
 		selectState = false

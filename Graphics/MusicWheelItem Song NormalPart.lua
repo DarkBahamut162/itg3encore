@@ -19,7 +19,8 @@ return Def.ActorFrame{
 					end
 
 					if isFav then
-						self:effectclock(params.Song:GetPreviewMusicPath() ~= "" and "beat" or "timerglobal"):visible(true)
+						local spmp = tonumber(VersionDate()) > 20150300 and params.Song:GetPreviewMusicPath() or " "
+						self:effectclock(spmp ~= "" and "beat" or "timerglobal"):visible(true)
 					else
 						self:visible(false)
 					end
@@ -35,7 +36,8 @@ return Def.ActorFrame{
 					local isFav = isEtterna() and params.Song:IsFavorited() or FindInTable(params.Song, getSLFavorites(ToEnumShortString(PLAYER_1)))
 
 					if isFav then
-						self:effectclock(params.Song:GetPreviewMusicPath() ~= "" and "beat" or "timerglobal"):visible(true)
+						local spmp = tonumber(VersionDate()) > 20150300 and params.Song:GetPreviewMusicPath() or " "
+						self:effectclock(spmp ~= "" and "beat" or "timerglobal"):visible(true)
 					else
 						self:visible(false)
 					end
@@ -60,7 +62,8 @@ return Def.ActorFrame{
 					end
 
 					if isFav then
-						self:effectclock(params.Song:GetPreviewMusicPath() ~= "" and "beat" or "timerglobal"):visible(true)
+						local spmp = tonumber(VersionDate()) > 20150300 and params.Song:GetPreviewMusicPath() or " "
+						self:effectclock(spmp ~= "" and "beat" or "timerglobal"):visible(true)
 					else
 						self:visible(false)
 					end
@@ -76,7 +79,8 @@ return Def.ActorFrame{
 					local isFav = FindInTable(params.Song, getSLFavorites(ToEnumShortString(PLAYER_2)))
 
 					if isFav then
-						self:effectclock(params.Song:GetPreviewMusicPath() ~= "" and "beat" or "timerglobal"):visible(true)
+						local spmp = tonumber(VersionDate()) > 20150300 and params.Song:GetPreviewMusicPath() or " "
+						self:effectclock(spmp ~= "" and "beat" or "timerglobal"):visible(true)
 					else
 						self:visible(false)
 					end

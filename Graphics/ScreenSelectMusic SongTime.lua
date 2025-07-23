@@ -41,7 +41,7 @@ return Def.ActorFrame{
 			else
 				curSelection = GAMESTATE:GetCurrentSong()
 				if curSelection then
-					EC = curSelection:GetPreviewMusicPath()
+					if tonumber(VersionDate()) > 20150300 then EC = curSelection:GetPreviewMusicPath() end
 					length[1] = curSelection:MusicLengthSeconds()
 					for pos,player in pairs( players ) do
 						local steps = GAMESTATE:GetCurrentSteps(player)

@@ -205,7 +205,7 @@ function SongMods()
 	end
 
 	local fail = isOutFoxV() and "FV" or "F"
-	local options = (isEtterna() and "Speed," or "1,") .."2,4,"..fail..","..(isRegular() and (isOpenDDR() and "0DDR" or "0,Flare") or "0")..",3,5"..((isEtterna() or isOldStepMania()) and ",REE,AEE" or ",RE,RE2,AE,AE2,AE3")..(isOutFox() and ",AE4" or "")..",17,9,"
+	local options = (isEtterna() and "Speed," or "1,") .."2,4,"..fail..","..((isRegular() and tonumber(VersionDate()) > 20160000) and (isOpenDDR() and "0DDR" or "0,Flare") or "0")..",3,5"..((isEtterna() or isOldStepMania()) and ",REE,AEE" or ",RE,RE2,AE,AE2,AE3")..(isOutFox() and ",AE4" or "")..",17,9,"
 
 	if isRegular() then
 		if isDouble() then
@@ -370,14 +370,10 @@ end
 
 function InitPlayerOptions()
 	for pn in ivalues(GAMESTATE:GetEnabledPlayers()) do
-		setenv("Flare"..pname(pn),LoadUserPrefN(pn, "Flare", 0))
-		setenv("FlareType"..pname(pn),SaveUserPref(pn, "FlareType", 1))
+		setenv("Flare"..pname(pn),tonumber(VersionDate()) > 20160000 and LoadUserPrefN(pn, "Flare", 0) or 0)
+		setenv("FlareType"..pname(pn),tonumber(VersionDate()) > 20160000 and LoadUserPrefN(pn, "FlareType", 1) or 1)
 
-		if not isVS() then
-			setenv("Effect"..pname(pn),LoadUserPrefN(pn, "Effect", 0))
-		else
-			setenv("Effect"..pname(pn),0)
-		end
+		setenv("Effect"..pname(pn),not isVS() and LoadUserPrefN(pn, "Effect", 0) or 0)
 
 		setenv("HideScore"..pname(pn),LoadUserPrefB(pn, "HideScore", false))
 		setenv("HideCombo"..pname(pn),LoadUserPrefB(pn, "HideCombo", false))
@@ -392,17 +388,10 @@ function InitPlayerOptions()
 		setenv("SetScoreDirection"..pname(pn),LoadUserPrefN(pn, "SetScoreDirection", 1))
 		setenv("ScreenFilter"..pname(pn),LoadUserPrefN(pn, "ScreenFilter", 0))
 
-		if not isVS() then
-			setenv("ShowStats"..pname(pn),LoadUserPrefN(pn, "ShowStats", 0))
-			setenv("ShowStatsSize"..pname(pn),LoadUserPrefN(pn, "ShowStatsSize", 1))
-			setenv("ShowNoteGraph"..pname(pn),LoadUserPrefN(pn, "ShowNoteGraph", 1))
-			setenv("SetPacemaker"..pname(pn),LoadUserPrefN(pn, "SetPacemaker", 0))
-		else
-			setenv("ShowStats"..pname(pn),0)
-			setenv("ShowStatsSize"..pname(pn),1)
-			setenv("ShowNoteGraph"..pname(pn),1)
-			setenv("SetPacemaker"..pname(pn),0)
-		end
+		setenv("ShowStats"..pname(pn),not isVS() and LoadUserPrefN(pn, "ShowStats", 0) or 0)
+		setenv("ShowStatsSize"..pname(pn),not isVS() and LoadUserPrefN(pn, "ShowStatsSize", 1) or 1)
+		setenv("ShowNoteGraph"..pname(pn),not isVS() and LoadUserPrefN(pn, "ShowNoteGraph", 1) or 1)
+		setenv("SetPacemaker"..pname(pn),not isVS() and LoadUserPrefN(pn, "SetPacemaker", 0) or 0)
 
 		setenv("ShowMods"..pname(pn),LoadUserPrefB(pn, "ShowMods", false))
 		setenv("ShowSpeedAssist"..pname(pn),LoadUserPrefB(pn, "ShowSpeedAssist", false))

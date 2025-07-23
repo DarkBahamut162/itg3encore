@@ -36,7 +36,7 @@ return Def.ActorFrame{
 					end
 
 					if output == "" then
-						local EC = not courseMode and SongOrCourse:GetPreviewMusicPath() or " "
+						local EC = not courseMode and (tonumber(VersionDate()) > 20150300 and SongOrCourse:GetPreviewMusicPath() or " ") or " "
 						self:diffuseshift():effectcolor1(color("#FF0000")):effectcolor2(color("#FFFFFF")):effectclock(EC ~= "" and "beat" or "timerglobal")
 						if StepsOrTrail:GetRadarValues(player):GetValue('RadarCategory_TapsAndHolds') == 0 then
 							output = "NOTHING TO LOAD"
