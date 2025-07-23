@@ -7,7 +7,7 @@ return Def.ActorFrame{
 		Def.Sprite{
 			Condition=isOutFox(),
 			InitCommand=function(self) self:Load( THEME:GetPathB("","_thanks/_outfox/logo") ):xy(120,-12):setsize(16,16):visible(false) end,
-			OnCommand=function(self) self:diffuseshift():effectcolor1(color("#FFDE00FF")):effectcolor2(color("#FFDE0080")) end,
+			OnCommand=function(self) self:diffuseshift():effectcolor1(PlayerColor(PLAYER_1)):effectcolor2(PlayerColorSemi(PLAYER_1)) end,
 			SetCommand=function(self,params)
 				if params.Song then
 					local isFav = false
@@ -30,7 +30,7 @@ return Def.ActorFrame{
 		Def.Sprite{
 			Condition=ThemePrefs.Get("SLFavorites"),
 			InitCommand=function(self) self:Load( THEME:GetPathB("ScreenEndingOkay","overlay/intro/arrow") ):xy(104,-12):setsize(16,16):visible(false) end,
-			OnCommand=function(self) self:diffuseshift():effectcolor1(color("#FFDE00FF")):effectcolor2(color("#FFDE0080")) end,
+			OnCommand=function(self) self:diffuseshift():effectcolor1(PlayerColor(PLAYER_1)):effectcolor2(PlayerColorSemi(PLAYER_1)) end,
 			SetCommand=function(self,params)
 				if params.Song then
 					local isFav = isEtterna() and params.Song:IsFavorited() or FindInTable(params.Song, getSLFavorites(ToEnumShortString(PLAYER_1)))
@@ -50,7 +50,7 @@ return Def.ActorFrame{
 		Def.Sprite{
 			Condition=isOutFox(),
 			InitCommand=function(self) self:Load( THEME:GetPathB("","_thanks/_outfox/logo") ):xy(120,12):setsize(16,16):visible(false) end,
-			OnCommand=function(self) self:diffuseshift():effectcolor1(color("#14FF00FF")):effectcolor2(color("#14FF0080")) end,
+			OnCommand=function(self) self:diffuseshift():effectcolor1(PlayerColor(PLAYER_2)):effectcolor2(PlayerColorSemi(PLAYER_2)) end,
 			SetCommand=function(self,params)
 				if params.Song then
 					local isFav = false
@@ -73,7 +73,7 @@ return Def.ActorFrame{
 		Def.Sprite{
 			Condition=ThemePrefs.Get("SLFavorites"),
 			InitCommand=function(self) self:Load( THEME:GetPathB("ScreenEndingOkay","overlay/intro/arrow") ):xy(104,12):setsize(16,16):visible(false) end,
-			OnCommand=function(self) self:diffuseshift():effectcolor1(color("#14FF00FF")):effectcolor2(color("#14FF0080")) end,
+			OnCommand=function(self) self:diffuseshift():effectcolor1(PlayerColor(PLAYER_2)):effectcolor2(PlayerColorSemi(PLAYER_2)) end,
 			SetCommand=function(self,params)
 				if params.Song then
 					local isFav = FindInTable(params.Song, getSLFavorites(ToEnumShortString(PLAYER_2)))

@@ -563,7 +563,6 @@ return Def.ActorFrame{
         },
     },
     Def.Sprite {
-        Condition=not screenCheck,
         Texture = THEME:GetPathG("horiz-line","short"),
         DoneLoadingNextSongMessageCommand=function(self) self:queuecommand("RePos") end,
         InitCommand=function(self) self:x(pn == PLAYER_1 and -140 or 140):blend(Blend.Add):fadeleft(0.25):faderight(0.25):zoomy(0.5):cropleft(pn == PLAYER_1 and 0 or 0.25):cropright(pn == PLAYER_1 and 0.25 or 0):queuecommand("RePos") end,

@@ -1,6 +1,5 @@
 function EvalTweenDistance()
-	local Distance = SCREEN_WIDTH/2
-	return Distance
+	return SCREEN_WIDTH/2
 end
 
 function isRegular()

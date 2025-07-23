@@ -579,7 +579,7 @@ function PreferenceBoolean(value)
 		SaveSelections = function(self, list, pn)
 			local pref = (list[2]==true)
 			PREFSMAN:SetPreference(value, pref)
-		end,
+		end
 	}
 end
 
@@ -609,6 +609,6 @@ function EditorNoteskin()
 					break
 				end
 			end
-		end,
+		end
 	}
 end
