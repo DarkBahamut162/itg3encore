@@ -2,11 +2,7 @@ local animate = canRender() and ThemePrefs.Get("AnimateSongTitle")
 local TitleSongFade
 
 if animate then
-	if isOutFox() then
-		TitleSongFade = LoadModule("Text.FadeSlide.lua")
-	else
-		TitleSongFade = LoadModuleSM("Text.FadeSlide.lua")
-	end
+	TitleSongFade = LoadModule("Text.FadeSlide.lua")
 else
 	TitleSongFade = Def.ActorFrame{ Create = function(this) return Def.ActorFrame{} end }
 end

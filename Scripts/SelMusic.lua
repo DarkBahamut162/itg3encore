@@ -736,24 +736,24 @@ function cacheStepSM(Song,Step)
 			end
 
 			if getenv("cacheing") then
-				LoadModuleSM("Config.SaveAll.lua")(list,file)
+				LoadModule("Config.SaveAll.lua")(list,file)
 			else
-				LoadModuleSM("Config.Save.lua")("Version",cacheVersion,file)
-				LoadModuleSM("Config.Save.lua")("StepCounter",table.concat(noteCounter,"_"),file)
-				LoadModuleSM("Config.Save.lua")("StepsPerSecond",total2,file)
-				LoadModuleSM("Config.Save.lua")("TrueBeats",lastBeat-firstBeat,file)
-				LoadModuleSM("Config.Save.lua")("TrueMaxBPM",maxBPM,file)
-				LoadModuleSM("Config.Save.lua")("TrueSeconds",lastSecond-firstSecond,file)
+				LoadModule("Config.Save.lua")("Version",cacheVersion,file)
+				LoadModule("Config.Save.lua")("StepCounter",table.concat(noteCounter,"_"),file)
+				LoadModule("Config.Save.lua")("StepsPerSecond",total2,file)
+				LoadModule("Config.Save.lua")("TrueBeats",lastBeat-firstBeat,file)
+				LoadModule("Config.Save.lua")("TrueMaxBPM",maxBPM,file)
+				LoadModule("Config.Save.lua")("TrueSeconds",lastSecond-firstSecond,file)
 				if isEtterna() then
-					LoadModuleSM("Config.Save.lua")("chaosCount",chaosCount,file)
-					LoadModuleSM("Config.Save.lua")("maxVoltage",maxVoltage,file)
+					LoadModule("Config.Save.lua")("chaosCount",chaosCount,file)
+					LoadModule("Config.Save.lua")("maxVoltage",maxVoltage,file)
 				end
 			end
 
 			return list
 		else
 			local file = getStepCacheFile(Step)
-			LoadModuleSM("Config.Save.lua")("Version","0",file)
+			LoadModule("Config.Save.lua")("Version","0",file)
 			return {["Version"]="0"}
 		end
 	else
@@ -761,7 +761,7 @@ function cacheStepSM(Song,Step)
 			return cacheStep(Song,Step)
 		else
 			local file = getStepCacheFile(Step)
-			LoadModuleSM("Config.Save.lua")("Version","0",file)
+			LoadModule("Config.Save.lua")("Version","0",file)
 			return {["Version"]="0"}
 		end
 	end
@@ -874,19 +874,19 @@ function cacheStepBMS(Song,Step)
 		end
 
 		if getenv("cacheing") then
-			LoadModuleSM("Config.SaveAll.lua")(list,file)
+			LoadModule("Config.SaveAll.lua")(list,file)
 		else
-			LoadModuleSM("Config.Save.lua")("Version",cacheVersion,file)
-			LoadModuleSM("Config.Save.lua")("StepCounter",table.concat(noteCounter,"_"),file)
-			LoadModuleSM("Config.Save.lua")("StepsPerSecond",total2,file)
-			LoadModuleSM("Config.Save.lua")("TrueBeats",lastBeat-firstBeat,file)
-			LoadModuleSM("Config.Save.lua")("TrueMaxBPM",maxBPM,file)
-			LoadModuleSM("Config.Save.lua")("TrueSeconds",lastSecond-firstSecond,file)
-			LoadModuleSM("Config.Save.lua")("Scratches",scratch,file)
-			LoadModuleSM("Config.Save.lua")("Foots",foot,file)
+			LoadModule("Config.Save.lua")("Version",cacheVersion,file)
+			LoadModule("Config.Save.lua")("StepCounter",table.concat(noteCounter,"_"),file)
+			LoadModule("Config.Save.lua")("StepsPerSecond",total2,file)
+			LoadModule("Config.Save.lua")("TrueBeats",lastBeat-firstBeat,file)
+			LoadModule("Config.Save.lua")("TrueMaxBPM",maxBPM,file)
+			LoadModule("Config.Save.lua")("TrueSeconds",lastSecond-firstSecond,file)
+			LoadModule("Config.Save.lua")("Scratches",scratch,file)
+			LoadModule("Config.Save.lua")("Foots",foot,file)
 			if isEtterna() then
-				LoadModuleSM("Config.Save.lua")("chaosCount",chaosCount,file)
-				LoadModuleSM("Config.Save.lua")("maxVoltage",maxVoltage,file)
+				LoadModule("Config.Save.lua")("chaosCount",chaosCount,file)
+				LoadModule("Config.Save.lua")("maxVoltage",maxVoltage,file)
 			end
 		end
 
@@ -896,7 +896,7 @@ function cacheStepBMS(Song,Step)
 			return cacheStep(Song,Step)
 		else
 			local file = getStepCacheFile(Step)
-			LoadModuleSM("Config.Save.lua")("Version","0",file)
+			LoadModule("Config.Save.lua")("Version","0",file)
 			return {["Version"]="0"}
 		end
 	end
@@ -925,9 +925,9 @@ function LoadFromCache(Song,Step,key)
 		elseif stepCache[file] and stepCache[file][key] then
 			return stepCache[file][key]
 		else
-			if not stepCache[file] then stepCache[file] = isOutFox() and LoadModule("Config.LoadAll.lua")(file) or LoadModuleSM("Config.LoadAll.lua")(file) end
+			if not stepCache[file] then stepCache[file] = LoadModule("Config.LoadAll.lua")(file) end
 		end
-		local version = isOutFox() and LoadModule("Config.Load.lua")("Version",file) or LoadModuleSM("Config.Load.lua")("Version",file)
+		local version = LoadModule("Config.Load.lua")("Version",file)
 
 		if version == "0" then
 			stepCache[file] = {{"Version"} == "0"}
@@ -937,7 +937,7 @@ function LoadFromCache(Song,Step,key)
 		end
 	end
 
-	return stepCache[file][key] or (isOutFox() and LoadModule("Config.Load.lua")("Version",file) or LoadModuleSM("Config.Load.lua")("Version",file))
+	return stepCache[file][key] or LoadModule("Config.Load.lua")("Version",file)
 end
 
 function GetMinSecondsToStep()

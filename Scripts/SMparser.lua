@@ -1,10 +1,12 @@
-function LoadModuleSM(ModuleName,...)
-	local Path = THEME:GetCurrentThemeDirectory().."Modules/"..ModuleName
+if not isOutFox() then
+	function LoadModule(ModuleName,...)
+		local Path = THEME:GetCurrentThemeDirectory().."Modules/"..ModuleName
 
-	if ... then
-		return loadfile(Path)(...)
+		if ... then
+			return loadfile(Path)(...)
+		end
+		return loadfile(Path)()
 	end
-	return loadfile(Path)()
 end
 
 local function GetSimfileString(steps)
