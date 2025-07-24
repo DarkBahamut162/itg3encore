@@ -139,7 +139,7 @@ local graphs = showGraph and (#GAMESTATE:GetHumanPlayers() == 1 and loadfile(THE
 			if IsUsingWideScreen() then
 				self:x(SCREEN_CENTER_X+256):addy(SCREEN_CENTER_Y*1.15)
 			elseif GetScreenAspectRatio() <= 1 then
-				self:x(SCREEN_CENTER_X+152*WideScreenDiff()):addy(SCREEN_CENTER_Y*1.22):rotationz(90)
+				self:x(SCREEN_CENTER_X+152*WideScreenDiff()):addy(SCREEN_CENTER_Y+70*WideScreenDiff()):rotationz(90)
 			end
 		end,
 		CurrentSongChangedMessageCommand=function(self) if not courseMode then if GAMESTATE:GetCurrentSong() then self:diffusealpha(1) else self:diffusealpha(0) end end end,
@@ -152,7 +152,7 @@ local graphs = showGraph and (#GAMESTATE:GetHumanPlayers() == 1 and loadfile(THE
 				if IsUsingWideScreen() then
 					self:x(SCREEN_CENTER_X+288):addy(SCREEN_CENTER_Y*1.15)
 				elseif GetScreenAspectRatio() <= 1 then
-					self:x(SCREEN_CENTER_X+224*WideScreenDiff()):addy(SCREEN_CENTER_Y*1.22):rotationz(90)
+					self:x(SCREEN_CENTER_X+224*WideScreenDiff()):addy(SCREEN_CENTER_Y+70*WideScreenDiff()):rotationz(90)
 				end
 			end,
 			CurrentSongChangedMessageCommand=function(self) if not courseMode then if GAMESTATE:GetCurrentSong() then self:diffusealpha(1) else self:diffusealpha(0) end end end,
@@ -165,7 +165,7 @@ local graphs = showGraph and (#GAMESTATE:GetHumanPlayers() == 1 and loadfile(THE
 			if IsUsingWideScreen() then
 				self:x(SCREEN_CENTER_X+256):addy(SCREEN_CENTER_Y*1.15)
 			elseif GetScreenAspectRatio() <= 1 then
-				self:x(SCREEN_CENTER_X+80*WideScreenDiff()):addy(SCREEN_CENTER_Y*1.22):rotationz(90)
+				self:x(SCREEN_CENTER_X+80*WideScreenDiff()):addy(SCREEN_CENTER_Y+70*WideScreenDiff()):rotationz(90)
 			end
 		end,
 		CurrentSongChangedMessageCommand=function(self) if not courseMode then if GAMESTATE:GetCurrentSong() then self:diffusealpha(1) else self:diffusealpha(0) end end end,
