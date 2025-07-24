@@ -11,7 +11,7 @@ local borderLeftCenter = -110.5*WideScreenDiff()
 local borderRightCenter = 110.5*WideScreenDiff()
 local borderRight = 296*WideScreenDiff()
 
-if version == 1 then borderLeft = -98.5 elseif version == 3 then borderRight = 98.5 end
+if version == 1 then borderLeft = -98.5*WideScreenDiff() elseif version == 3 then borderRight = 98.5*WideScreenDiff() end
 
 local grade = {
     ["Grade_Tier01"] = "XXXX",
@@ -53,7 +53,7 @@ if version < 3 then
             File = "_z bold 36px",
             Text = grade[P1[index]["Grade"]],
             InitCommand=function(self)
-                self:y(-8):shadowlength(1)
+                self:y(-8*WideScreenDiff()):shadowlength(1)
                 if version == 2 then
                     self:x(scale(1/5,0,1,borderLeft,version==1 and borderRight or borderLeftCenter)):zoom(1/2*WideScreenDiff())
                 else
@@ -65,7 +65,7 @@ if version < 3 then
             File = "_z bold 36px",
             Text = FormatPercentScore(P1[index]["Score"]),
             InitCommand=function(self)
-                self:y(12):diffuse(PlayerColor(PLAYER_1)):shadowlength(1)
+                self:y(12*WideScreenDiff()):diffuse(PlayerColor(PLAYER_1)):shadowlength(1)
                 if version == 2 then
                     self:x(scale(1/5,0,1,borderLeft,version==1 and borderRight or borderLeftCenter)):zoom(1/4*WideScreenDiff())
                 else
@@ -79,7 +79,7 @@ if version < 3 then
             InitCommand=function(self)
                 self:diffuse(TapNoteScoreToColor("TapNoteScore_W1")):shadowlength(1)
                 if version == 2 then
-                    self:y(-12):x(scale(2.25/5,0,1,borderLeft,version==1 and borderRight or borderLeftCenter)):zoom(1/4*WideScreenDiff())
+                    self:y(-12*WideScreenDiff()):x(scale(2.25/5,0,1,borderLeft,version==1 and borderRight or borderLeftCenter)):zoom(1/4*WideScreenDiff())
                 else
                     self:x(scale(3.25/9,0,1,borderLeft,version==1 and borderRight or borderLeftCenter)):zoom(1/3*WideScreenDiff()):maxwidth(110)
                 end
@@ -92,7 +92,7 @@ if version < 3 then
                 Text = P1[index]["TapNoteScore_W1_Early"],
                 InitCommand=function(self)
                     self:diffuse(color("#8080FF")):shadowlength(1)
-                    self:y(-12):x(scale(3.25/9,0,1,borderLeft,version==1 and borderRight or borderLeftCenter)):zoom(1/3*WideScreenDiff()):maxwidth(110)
+                    self:y(-12*WideScreenDiff()):x(scale(3.25/9,0,1,borderLeft,version==1 and borderRight or borderLeftCenter)):zoom(1/3*WideScreenDiff()):maxwidth(110)
                 end
             },
             Def.BitmapText {
@@ -100,7 +100,7 @@ if version < 3 then
                 Text = P1[index]["TapNoteScore_W1_Late"],
                 InitCommand=function(self)
                     self:diffuse(color("#FF8080")):shadowlength(1)
-                    self:y(12):x(scale(3.25/9,0,1,borderLeft,version==1 and borderRight or borderLeftCenter)):zoom(1/3*WideScreenDiff()):maxwidth(110)
+                    self:y(12*WideScreenDiff()):x(scale(3.25/9,0,1,borderLeft,version==1 and borderRight or borderLeftCenter)):zoom(1/3*WideScreenDiff()):maxwidth(110)
                 end
             }
         },
@@ -110,7 +110,7 @@ if version < 3 then
             InitCommand=function(self)
                 self:diffuse(TapNoteScoreToColor("TapNoteScore_W2")):shadowlength(1)
                 if version == 2 then
-                    self:y(-12):x(scale(3.25/5,0,1,borderLeft,version==1 and borderRight or borderLeftCenter)):zoom(1/4*WideScreenDiff())
+                    self:y(-12*WideScreenDiff()):x(scale(3.25/5,0,1,borderLeft,version==1 and borderRight or borderLeftCenter)):zoom(1/4*WideScreenDiff())
                 else
                     self:x(scale(4.25/9,0,1,borderLeft,version==1 and borderRight or borderLeftCenter)):zoom(1/3*WideScreenDiff()):maxwidth(110)
                 end
@@ -123,7 +123,7 @@ if version < 3 then
                 Text = P1[index]["TapNoteScore_W2_Early"],
                 InitCommand=function(self)
                     self:diffuse(color("#8080FF")):shadowlength(1)
-                    self:y(-12):x(scale(4.25/9,0,1,borderLeft,version==1 and borderRight or borderLeftCenter)):zoom(1/3*WideScreenDiff()):maxwidth(110)
+                    self:y(-12*WideScreenDiff()):x(scale(4.25/9,0,1,borderLeft,version==1 and borderRight or borderLeftCenter)):zoom(1/3*WideScreenDiff()):maxwidth(110)
                 end
             },
             Def.BitmapText {
@@ -131,7 +131,7 @@ if version < 3 then
                 Text = P1[index]["TapNoteScore_W2_Late"],
                 InitCommand=function(self)
                     self:diffuse(color("#FF8080")):shadowlength(1)
-                    self:y(12):x(scale(4.25/9,0,1,borderLeft,version==1 and borderRight or borderLeftCenter)):zoom(1/3*WideScreenDiff()):maxwidth(110)
+                    self:y(12*WideScreenDiff()):x(scale(4.25/9,0,1,borderLeft,version==1 and borderRight or borderLeftCenter)):zoom(1/3*WideScreenDiff()):maxwidth(110)
                 end
             }
         },
@@ -141,7 +141,7 @@ if version < 3 then
             InitCommand=function(self)
                 self:diffuse(TapNoteScoreToColor("TapNoteScore_W3")):shadowlength(1)
                 if version == 2 then
-                    self:y(-12):x(scale(4.25/5,0,1,borderLeft,version==1 and borderRight or borderLeftCenter)):zoom(1/4*WideScreenDiff())
+                    self:y(-12*WideScreenDiff()):x(scale(4.25/5,0,1,borderLeft,version==1 and borderRight or borderLeftCenter)):zoom(1/4*WideScreenDiff())
                 else
                     self:x(scale(5.25/9,0,1,borderLeft,version==1 and borderRight or borderLeftCenter)):zoom(1/3*WideScreenDiff()):maxwidth(110)
                 end
@@ -154,7 +154,7 @@ if version < 3 then
                 Text = P1[index]["TapNoteScore_W3_Early"],
                 InitCommand=function(self)
                     self:diffuse(color("#8080FF")):shadowlength(1)
-                    self:y(-12):x(scale(5.25/9,0,1,borderLeft,version==1 and borderRight or borderLeftCenter)):zoom(1/3*WideScreenDiff()):maxwidth(110)
+                    self:y(-12*WideScreenDiff()):x(scale(5.25/9,0,1,borderLeft,version==1 and borderRight or borderLeftCenter)):zoom(1/3*WideScreenDiff()):maxwidth(110)
                 end
             },
             Def.BitmapText {
@@ -162,7 +162,7 @@ if version < 3 then
                 Text = P1[index]["TapNoteScore_W3_Late"],
                 InitCommand=function(self)
                     self:diffuse(color("#FF8080")):shadowlength(1)
-                    self:y(12):x(scale(5.25/9,0,1,borderLeft,version==1 and borderRight or borderLeftCenter)):zoom(1/3*WideScreenDiff()):maxwidth(110)
+                    self:y(12*WideScreenDiff()):x(scale(5.25/9,0,1,borderLeft,version==1 and borderRight or borderLeftCenter)):zoom(1/3*WideScreenDiff()):maxwidth(110)
                 end
             }
         },
@@ -172,7 +172,7 @@ if version < 3 then
             InitCommand=function(self)
                 self:diffuse(TapNoteScoreToColor("TapNoteScore_W4")):shadowlength(1)
                 if version == 2 then
-                    self:y(12):x(scale(2.25/5,0,1,borderLeft,version==1 and borderRight or borderLeftCenter)):zoom(1/4*WideScreenDiff())
+                    self:y(12*WideScreenDiff()):x(scale(2.25/5,0,1,borderLeft,version==1 and borderRight or borderLeftCenter)):zoom(1/4*WideScreenDiff())
                 else
                     self:x(scale(6.25/9,0,1,borderLeft,version==1 and borderRight or borderLeftCenter)):zoom(1/3*WideScreenDiff()):maxwidth(110)
                 end
@@ -185,7 +185,7 @@ if version < 3 then
                 Text = P1[index]["TapNoteScore_W4_Early"],
                 InitCommand=function(self)
                     self:diffuse(color("#8080FF")):shadowlength(1)
-                    self:y(-12):x(scale(6.25/9,0,1,borderLeft,version==1 and borderRight or borderLeftCenter)):zoom(1/3*WideScreenDiff()):maxwidth(110)
+                    self:y(-12*WideScreenDiff()):x(scale(6.25/9,0,1,borderLeft,version==1 and borderRight or borderLeftCenter)):zoom(1/3*WideScreenDiff()):maxwidth(110)
                 end
             },
             Def.BitmapText {
@@ -193,7 +193,7 @@ if version < 3 then
                 Text = P1[index]["TapNoteScore_W4_Late"],
                 InitCommand=function(self)
                     self:diffuse(color("#FF8080")):shadowlength(1)
-                    self:y(12):x(scale(6.25/9,0,1,borderLeft,version==1 and borderRight or borderLeftCenter)):zoom(1/3*WideScreenDiff()):maxwidth(110)
+                    self:y(12*WideScreenDiff()):x(scale(6.25/9,0,1,borderLeft,version==1 and borderRight or borderLeftCenter)):zoom(1/3*WideScreenDiff()):maxwidth(110)
                 end
             }
         },
@@ -203,7 +203,7 @@ if version < 3 then
             InitCommand=function(self)
                 self:diffuse(TapNoteScoreToColor("TapNoteScore_W5")):shadowlength(1)
                 if version == 2 then
-                    self:y(12):x(scale(3.25/5,0,1,borderLeft,version==1 and borderRight or borderLeftCenter)):zoom(1/4*WideScreenDiff())
+                    self:y(12*WideScreenDiff()):x(scale(3.25/5,0,1,borderLeft,version==1 and borderRight or borderLeftCenter)):zoom(1/4*WideScreenDiff())
                 else
                     self:x(scale(7.25/9,0,1,borderLeft,version==1 and borderRight or borderLeftCenter)):zoom(1/3*WideScreenDiff()):maxwidth(110)
                 end
@@ -216,7 +216,7 @@ if version < 3 then
                 Text = P1[index]["TapNoteScore_W5_Early"],
                 InitCommand=function(self)
                     self:diffuse(color("#8080FF")):shadowlength(1)
-                    self:y(-12):x(scale(7.25/9,0,1,borderLeft,version==1 and borderRight or borderLeftCenter)):zoom(1/3*WideScreenDiff()):maxwidth(110)
+                    self:y(-12*WideScreenDiff()):x(scale(7.25/9,0,1,borderLeft,version==1 and borderRight or borderLeftCenter)):zoom(1/3*WideScreenDiff()):maxwidth(110)
                 end
             },
             Def.BitmapText {
@@ -224,7 +224,7 @@ if version < 3 then
                 Text = P1[index]["TapNoteScore_W5_Late"],
                 InitCommand=function(self)
                     self:diffuse(color("#FF8080")):shadowlength(1)
-                    self:y(12):x(scale(7.25/9,0,1,borderLeft,version==1 and borderRight or borderLeftCenter)):zoom(1/3*WideScreenDiff()):maxwidth(110)
+                    self:y(12*WideScreenDiff()):x(scale(7.25/9,0,1,borderLeft,version==1 and borderRight or borderLeftCenter)):zoom(1/3*WideScreenDiff()):maxwidth(110)
                 end
             }
         },
@@ -235,7 +235,7 @@ if version < 3 then
                 self:diffuse(TapNoteScoreToColor("TapNoteScore_Miss")):shadowlength(1)
                 
                 if version == 2 then
-                    self:y(12):x(scale(4.25/5,0,1,borderLeft,version==1 and borderRight or borderLeftCenter)):zoom(1/4*WideScreenDiff())
+                    self:y(12*WideScreenDiff()):x(scale(4.25/5,0,1,borderLeft,version==1 and borderRight or borderLeftCenter)):zoom(1/4*WideScreenDiff())
                 else
                     self:x(scale(8.25/9,0,1,borderLeft,version==1 and borderRight or borderLeftCenter)):zoom(1/3*WideScreenDiff()):maxwidth(110)
                 end
@@ -248,7 +248,7 @@ if version < 3 then
                 Text = "Early",
                 InitCommand=function(self)
                     self:diffuse(color("#8080FF")):shadowlength(1)
-                    self:y(-12):x(scale(8.25/9,0,1,borderLeft,version==1 and borderRight or borderLeftCenter)):zoom(1/3*WideScreenDiff()):maxwidth(110)
+                    self:y(-12*WideScreenDiff()):x(scale(8.25/9,0,1,borderLeft,version==1 and borderRight or borderLeftCenter)):zoom(1/3*WideScreenDiff()):maxwidth(110)
                 end
             },
             Def.BitmapText {
@@ -256,7 +256,7 @@ if version < 3 then
                 Text = "Late",
                 InitCommand=function(self)
                     self:diffuse(color("#FF8080")):shadowlength(1)
-                    self:y(12):x(scale(8.25/9,0,1,borderLeft,version==1 and borderRight or borderLeftCenter)):zoom(1/3*WideScreenDiff()):maxwidth(110)
+                    self:y(12*WideScreenDiff()):x(scale(8.25/9,0,1,borderLeft,version==1 and borderRight or borderLeftCenter)):zoom(1/3*WideScreenDiff()):maxwidth(110)
                 end
             }
         }
@@ -269,7 +269,7 @@ if version > 1 then
             File = "_z bold 36px",
             Text = grade[P2[index]["Grade"]],
             InitCommand=function(self)
-                self:y(-8):shadowlength(1):diffuse(DifficultyToColor( P2[index]["Difficulty"] ))
+                self:y(-8*WideScreenDiff()):shadowlength(1):diffuse(DifficultyToColor( P2[index]["Difficulty"] ))
                 if version == 2 then
                     self:x(scale(1-1/5,0,1,version==3 and borderLeft or borderRightCenter,borderRight )):zoom(1/2*WideScreenDiff())
                 else
@@ -281,7 +281,7 @@ if version > 1 then
             File = "_z bold 36px",
             Text = FormatPercentScore(P2[index]["Score"]),
             InitCommand=function(self)
-                self:y(12):diffuse(PlayerColor(PLAYER_2)):shadowlength(1)
+                self:y(12*WideScreenDiff()):diffuse(PlayerColor(PLAYER_2)):shadowlength(1)
                 if version == 2 then
                     self:x(scale(1-1/5,0,1,version==3 and borderLeft or borderRightCenter,borderRight )):zoom(1/4*WideScreenDiff())
                 else
@@ -295,7 +295,7 @@ if version > 1 then
             InitCommand=function(self)
                 self:diffuse(TapNoteScoreToColor("TapNoteScore_W1")):shadowlength(1)
                 if version == 2 then
-                    self:y(-12):x(scale(1-2.25/5,0,1,version==3 and borderLeft or borderRightCenter,borderRight )):zoom(1/4*WideScreenDiff())
+                    self:y(-12*WideScreenDiff()):x(scale(1-2.25/5,0,1,version==3 and borderLeft or borderRightCenter,borderRight )):zoom(1/4*WideScreenDiff())
                 else
                     self:x(scale(1-3.25/9,0,1,version==3 and borderLeft or borderRightCenter,borderRight )):zoom(1/3*WideScreenDiff()):maxwidth(110)
                 end
@@ -308,7 +308,7 @@ if version > 1 then
                 Text = P2[index]["TapNoteScore_W1_Early"],
                 InitCommand=function(self)
                     self:diffuse(color("#8080FF")):shadowlength(1)
-                    self:y(-12):x(scale(3.25/9,0,1,borderLeft,version==1 and borderRight or borderLeftCenter)):zoom(1/3*WideScreenDiff()):maxwidth(110)
+                    self:y(-12*WideScreenDiff()):x(scale(3.25/9,0,1,borderLeft,version==1 and borderRight or borderLeftCenter)):zoom(1/3*WideScreenDiff()):maxwidth(110)
                 end
             },
             Def.BitmapText {
@@ -316,7 +316,7 @@ if version > 1 then
                 Text = P2[index]["TapNoteScore_W1_Late"],
                 InitCommand=function(self)
                     self:diffuse(color("#FF8080")):shadowlength(1)
-                    self:y(12):x(scale(3.25/9,0,1,borderLeft,version==1 and borderRight or borderLeftCenter)):zoom(1/3*WideScreenDiff()):maxwidth(110)
+                    self:y(12*WideScreenDiff()):x(scale(3.25/9,0,1,borderLeft,version==1 and borderRight or borderLeftCenter)):zoom(1/3*WideScreenDiff()):maxwidth(110)
                 end
             }
         },
@@ -326,7 +326,7 @@ if version > 1 then
             InitCommand=function(self)
                 self:diffuse(TapNoteScoreToColor("TapNoteScore_W2")):shadowlength(1)
                 if version == 2 then
-                    self:y(-12):x(scale(1-3.25/5,0,1,version==3 and borderLeft or borderRightCenter,borderRight )):zoom(1/4*WideScreenDiff())
+                    self:y(-12*WideScreenDiff()):x(scale(1-3.25/5,0,1,version==3 and borderLeft or borderRightCenter,borderRight )):zoom(1/4*WideScreenDiff())
                 else
                     self:x(scale(1-4.25/9,0,1,version==3 and borderLeft or borderRightCenter,borderRight )):zoom(1/3*WideScreenDiff()):maxwidth(110)
                 end
@@ -339,7 +339,7 @@ if version > 1 then
                 Text = P2[index]["TapNoteScore_W2_Early"],
                 InitCommand=function(self)
                     self:diffuse(color("#8080FF")):shadowlength(1)
-                    self:y(-12):x(scale(4.25/9,0,1,borderLeft,version==1 and borderRight or borderLeftCenter)):zoom(1/3*WideScreenDiff()):maxwidth(110)
+                    self:y(-12*WideScreenDiff()):x(scale(4.25/9,0,1,borderLeft,version==1 and borderRight or borderLeftCenter)):zoom(1/3*WideScreenDiff()):maxwidth(110)
                 end
             },
             Def.BitmapText {
@@ -347,7 +347,7 @@ if version > 1 then
                 Text = P2[index]["TapNoteScore_W2_Late"],
                 InitCommand=function(self)
                     self:diffuse(color("#FF8080")):shadowlength(1)
-                    self:y(12):x(scale(4.25/9,0,1,borderLeft,version==1 and borderRight or borderLeftCenter)):zoom(1/3*WideScreenDiff()):maxwidth(110)
+                    self:y(12*WideScreenDiff()):x(scale(4.25/9,0,1,borderLeft,version==1 and borderRight or borderLeftCenter)):zoom(1/3*WideScreenDiff()):maxwidth(110)
                 end
             }
         },
@@ -357,7 +357,7 @@ if version > 1 then
             InitCommand=function(self)
                 self:diffuse(TapNoteScoreToColor("TapNoteScore_W3")):shadowlength(1)
                 if version == 2 then
-                    self:y(-12):x(scale(1-4.25/5,0,1,version==3 and borderLeft or borderRightCenter,borderRight )):zoom(1/4*WideScreenDiff())
+                    self:y(-12*WideScreenDiff()):x(scale(1-4.25/5,0,1,version==3 and borderLeft or borderRightCenter,borderRight )):zoom(1/4*WideScreenDiff())
                 else
                     self:x(scale(1-5.25/9,0,1,version==3 and borderLeft or borderRightCenter,borderRight )):zoom(1/3*WideScreenDiff()):maxwidth(110)
                 end
@@ -370,7 +370,7 @@ if version > 1 then
                 Text = P2[index]["TapNoteScore_W3_Early"],
                 InitCommand=function(self)
                     self:diffuse(color("#8080FF")):shadowlength(1)
-                    self:y(-12):x(scale(5.25/9,0,1,borderLeft,version==1 and borderRight or borderLeftCenter)):zoom(1/3*WideScreenDiff()):maxwidth(110)
+                    self:y(-12*WideScreenDiff()):x(scale(5.25/9,0,1,borderLeft,version==1 and borderRight or borderLeftCenter)):zoom(1/3*WideScreenDiff()):maxwidth(110)
                 end
             },
             Def.BitmapText {
@@ -378,7 +378,7 @@ if version > 1 then
                 Text = P2[index]["TapNoteScore_W3_Late"],
                 InitCommand=function(self)
                     self:diffuse(color("#FF8080")):shadowlength(1)
-                    self:y(12):x(scale(5.25/9,0,1,borderLeft,version==1 and borderRight or borderLeftCenter)):zoom(1/3*WideScreenDiff()):maxwidth(110)
+                    self:y(12*WideScreenDiff()):x(scale(5.25/9,0,1,borderLeft,version==1 and borderRight or borderLeftCenter)):zoom(1/3*WideScreenDiff()):maxwidth(110)
                 end
             }
         },
@@ -388,7 +388,7 @@ if version > 1 then
             InitCommand=function(self)
                 self:diffuse(TapNoteScoreToColor("TapNoteScore_W4")):shadowlength(1)
                 if version == 2 then
-                    self:y(12):x(scale(1-2.25/5,0,1,version==3 and borderLeft or borderRightCenter,borderRight )):zoom(1/4*WideScreenDiff())
+                    self:y(12*WideScreenDiff()):x(scale(1-2.25/5,0,1,version==3 and borderLeft or borderRightCenter,borderRight )):zoom(1/4*WideScreenDiff())
                 else
                     self:x(scale(1-6.25/9,0,1,version==3 and borderLeft or borderRightCenter,borderRight )):zoom(1/3*WideScreenDiff()):maxwidth(110)
                 end
@@ -401,7 +401,7 @@ if version > 1 then
                 Text = P2[index]["TapNoteScore_W4_Early"],
                 InitCommand=function(self)
                     self:diffuse(color("#8080FF")):shadowlength(1)
-                    self:y(-12):x(scale(6.25/9,0,1,borderLeft,version==1 and borderRight or borderLeftCenter)):zoom(1/3*WideScreenDiff()):maxwidth(110)
+                    self:y(-12*WideScreenDiff()):x(scale(6.25/9,0,1,borderLeft,version==1 and borderRight or borderLeftCenter)):zoom(1/3*WideScreenDiff()):maxwidth(110)
                 end
             },
             Def.BitmapText {
@@ -409,7 +409,7 @@ if version > 1 then
                 Text = P2[index]["TapNoteScore_W4_Late"],
                 InitCommand=function(self)
                     self:diffuse(color("#FF8080")):shadowlength(1)
-                    self:y(12):x(scale(6.25/9,0,1,borderLeft,version==1 and borderRight or borderLeftCenter)):zoom(1/3*WideScreenDiff()):maxwidth(110)
+                    self:y(12*WideScreenDiff()):x(scale(6.25/9,0,1,borderLeft,version==1 and borderRight or borderLeftCenter)):zoom(1/3*WideScreenDiff()):maxwidth(110)
                 end
             }
         },
@@ -419,7 +419,7 @@ if version > 1 then
             InitCommand=function(self)
                 self:diffuse(TapNoteScoreToColor("TapNoteScore_W5")):shadowlength(1)
                 if version == 2 then
-                    self:y(12):x(scale(1-3.25/5,0,1,version==3 and borderLeft or borderRightCenter,borderRight )):zoom(1/4*WideScreenDiff())
+                    self:y(12*WideScreenDiff()):x(scale(1-3.25/5,0,1,version==3 and borderLeft or borderRightCenter,borderRight )):zoom(1/4*WideScreenDiff())
                 else
                     self:x(scale(1-7.25/9,0,1,version==3 and borderLeft or borderRightCenter,borderRight )):zoom(1/3*WideScreenDiff()):maxwidth(110)
                 end
@@ -432,7 +432,7 @@ if version > 1 then
                 Text = P2[index]["TapNoteScore_W5_Early"],
                 InitCommand=function(self)
                     self:diffuse(color("#8080FF")):shadowlength(1)
-                    self:y(-12):x(scale(7.25/9,0,1,borderLeft,version==1 and borderRight or borderLeftCenter)):zoom(1/3*WideScreenDiff()):maxwidth(110)
+                    self:y(-12*WideScreenDiff()):x(scale(7.25/9,0,1,borderLeft,version==1 and borderRight or borderLeftCenter)):zoom(1/3*WideScreenDiff()):maxwidth(110)
                 end
             },
             Def.BitmapText {
@@ -440,7 +440,7 @@ if version > 1 then
                 Text = P2[index]["TapNoteScore_W5_Late"],
                 InitCommand=function(self)
                     self:diffuse(color("#FF8080")):shadowlength(1)
-                    self:y(12):x(scale(7.25/9,0,1,borderLeft,version==1 and borderRight or borderLeftCenter)):zoom(1/3*WideScreenDiff()):maxwidth(110)
+                    self:y(12*WideScreenDiff()):x(scale(7.25/9,0,1,borderLeft,version==1 and borderRight or borderLeftCenter)):zoom(1/3*WideScreenDiff()):maxwidth(110)
                 end
             }
         },
@@ -451,7 +451,7 @@ if version > 1 then
                 self:diffuse(TapNoteScoreToColor("TapNoteScore_Miss")):shadowlength(1)
                 
                 if version == 2 then
-                    self:y(12):x(scale(1-4.25/5,0,1,version==3 and borderLeft or borderRightCenter,borderRight )):zoom(1/4*WideScreenDiff())
+                    self:y(12*WideScreenDiff()):x(scale(1-4.25/5,0,1,version==3 and borderLeft or borderRightCenter,borderRight )):zoom(1/4*WideScreenDiff())
                 else
                     self:x(scale(1-8.25/9,0,1,version==3 and borderLeft or borderRightCenter,borderRight )):zoom(1/3*WideScreenDiff()):maxwidth(110)
                 end
@@ -464,7 +464,7 @@ if version > 1 then
                 Text = "Early",
                 InitCommand=function(self)
                     self:diffuse(color("#8080FF")):shadowlength(1)
-                    self:y(-12):x(scale(8.25/9,0,1,borderLeft,version==1 and borderRight or borderLeftCenter)):zoom(1/3*WideScreenDiff()):maxwidth(110)
+                    self:y(-12*WideScreenDiff()):x(scale(8.25/9,0,1,borderLeft,version==1 and borderRight or borderLeftCenter)):zoom(1/3*WideScreenDiff()):maxwidth(110)
                 end
             },
             Def.BitmapText {
@@ -472,7 +472,7 @@ if version > 1 then
                 Text = "Late",
                 InitCommand=function(self)
                     self:diffuse(color("#FF8080")):shadowlength(1)
-                    self:y(12):x(scale(8.25/9,0,1,borderLeft,version==1 and borderRight or borderLeftCenter)):zoom(1/3*WideScreenDiff()):maxwidth(110)
+                    self:y(12*WideScreenDiff()):x(scale(8.25/9,0,1,borderLeft,version==1 and borderRight or borderLeftCenter)):zoom(1/3*WideScreenDiff()):maxwidth(110)
                 end
             }
         }
