@@ -1,12 +1,10 @@
 return Def.ActorFrame{
 	Def.BitmapText {
 		File = "_v 26px bold black",
-		InitCommand=function(self) self:CenterX():y(SCREEN_BOTTOM-14):shadowlength(0):zoom(0.6*WideScreenDiff()):diffusealpha(0):sleep(0.5):linear(0.2):diffusealpha(1):draworder(9999) end,
+		InitCommand=function(self) self:CenterX():y(SCREEN_BOTTOM-72*WideScreenDiff()):shadowlength(0):zoom(0.6*WideScreenDiff()):diffusealpha(0):sleep(0.5):linear(0.2):diffusealpha(1):draworder(9999) end,
 		OnCommand=function(self) self:diffuseshift():effectcolor1(color("#FFFFFF")):effectcolor2(color("#FFFFFF")):playcommand("Refresh") end,
 		OffCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(0) end,
-		RefreshCommand=function(self)
-			self:settext(Get2PlayerJoinMessage())
-		end,
+		RefreshCommand=function(self) self:settext(Get2PlayerJoinMessage()) end,
 		JoinedCommand=function(self) self:linear(0.2):diffusealpha(0) end,
 		PlayerJoinedMessageCommand=function(self) self:playcommand("Joined") end,
 		CurrentStyleChangedMessageCommand=function(self) self:playcommand("Refresh") end,
