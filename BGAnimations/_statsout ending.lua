@@ -104,25 +104,25 @@ return Def.ActorFrame{
 			Texture = THEME:GetPathB("","_overlay/awards"),
 			InitCommand=function(self) self:x(SCREEN_RIGHT-238*WideScreenDiff()):y(SCREEN_CENTER_Y+(103+34*0)*WideScreenDiff()):zoom(0.55*WideScreenDiff()) end,
 			OnCommand=function(self) self:animate(0):playcommand("Update") end,
-			UpdateCommand=function(self) StarIcon(self, PLAYER_1) self:sleep(0.9):bouncebegin(0.4):zoom(0) end
+			UpdateCommand=function(self) StarIcon(self, PLAYER_2) self:sleep(0.9):bouncebegin(0.4):zoom(0) end
 		},
 		Def.Sprite {
 			Texture = THEME:GetPathB("","_overlay/awards"),
 			InitCommand=function(self) self:x(SCREEN_RIGHT-235*WideScreenDiff()):y(SCREEN_CENTER_Y+(103+34*1)*WideScreenDiff()):zoom(0.55*WideScreenDiff()) end,
 			OnCommand=function(self) self:animate(0):playcommand("Update") end,
-			UpdateCommand=function(self) QuadIcon(self, PLAYER_1) self:sleep(0.95):bouncebegin(0.4):zoom(0) end
+			UpdateCommand=function(self) QuadIcon(self, PLAYER_2) self:sleep(0.95):bouncebegin(0.4):zoom(0) end
 		},
 		Def.Sprite {
 			Texture = THEME:GetPathB("","_overlay/awards"),
 			InitCommand=function(self) self:x(SCREEN_RIGHT-238*WideScreenDiff()):y(SCREEN_CENTER_Y+(103+34*2)*WideScreenDiff()):zoom(0.55*WideScreenDiff()) end,
 			OnCommand=function(self) self:animate(0):playcommand("Update") end,
-			UpdateCommand=function(self) PercentIcon(self, PLAYER_1) self:sleep(1):bouncebegin(0.4):zoom(0) end
+			UpdateCommand=function(self) PercentIcon(self, PLAYER_2) self:sleep(1):bouncebegin(0.4):zoom(0) end
 		},
 		Def.Sprite {
 			Texture = THEME:GetPathB("","_overlay/awards"),
 			InitCommand=function(self) self:x(SCREEN_RIGHT-238*WideScreenDiff()):y(SCREEN_CENTER_Y+(103+34*3)*WideScreenDiff()):zoom(0.55*WideScreenDiff()) end,
 			OnCommand=function(self) self:animate(0):playcommand("Update") end,
-			UpdateCommand=function(self) CalorieIcon(self, PLAYER_1) self:sleep(1.05):bouncebegin(0.4):zoom(0) end
+			UpdateCommand=function(self) CalorieIcon(self, PLAYER_2) self:sleep(1.05):bouncebegin(0.4):zoom(0) end
 		}
     }
 }
