@@ -93,12 +93,14 @@ for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
 				ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen")
 			end
 		}
-		t[#t+1] = loadfile(THEME:GetPathG(Var "LoadingScreen", "PacemakerRecord"))(pn)..{
-			InitCommand=function(self)
-				self:player(pn):name("PacemakerRecord" .. PlayerNumberToString(pn))
-				ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen")
-			end
-		}
+		if PROFILEMAN:IsPersistentProfile(pn) then
+			t[#t+1] = loadfile(THEME:GetPathG(Var "LoadingScreen", "PacemakerRecord"))(pn)..{
+				InitCommand=function(self)
+					self:player(pn):name("PacemakerRecord" .. PlayerNumberToString(pn))
+					ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen")
+				end
+			}
+		end
 	end
 end
 
