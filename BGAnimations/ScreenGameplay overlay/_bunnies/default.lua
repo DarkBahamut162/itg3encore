@@ -154,28 +154,29 @@ return Def.ActorFrame{
 		},
 		Def.ActorFrame{
 			Name="BPMFrame",
+			InitCommand=function(self) self:CenterX():zoom(WideScreenDiff()):visible(not isVS()) end,
 			Def.Sprite {
 				Texture = "_uplight bottom",
-				InitCommand=function(self) self:x(SCREEN_CENTER_X-3*WideScreenDiff()):y(SCREEN_TOP+41*WideScreenDiff()):zoom(WideScreenDiff()):blend(Blend.Add):visible(not isVS()) end,
+				InitCommand=function(self) self:y(SCREEN_TOP+41):blend(Blend.Add) end,
 				OnCommand=function(self) self:effectclock('beat'):diffuseramp():effectcolor1(color("#927f00")):effectcolor2(color("#fcff00")):effectperiod(0.5):effect_hold_at_full(0.5):diffusealpha(0):linear(0.4):diffusealpha(1) end
 			},
 			Def.Sprite {
 				Texture = "_uplight bottom",
-				InitCommand=function(self) self:x(SCREEN_CENTER_X-3*WideScreenDiff()):y(SCREEN_TOP+41*WideScreenDiff()):zoom(WideScreenDiff()):visible(not isVS()) end,
+				InitCommand=function(self) self:y(SCREEN_TOP+41) end,
 				OnCommand=function(self) self:effectclock('beat'):diffuseramp():effectcolor1(color("#FFFFFF00")):effectcolor2(color("#fcff00")):effectperiod(0.5):effect_hold_at_full(0.5):diffusealpha(0):linear(0.4):diffusealpha(1) end
 			},
 			Def.Sprite {
 				Texture = "_base bpm",
-				InitCommand=function(self) self:x(SCREEN_CENTER_X-3*WideScreenDiff()):y(SCREEN_TOP+58*WideScreenDiff()):zoom(WideScreenDiff()):visible(not isVS()) end
+				InitCommand=function(self) self:y(SCREEN_TOP+58) end
 			},
 			Def.Sprite {
 				Texture = "_neons bottom",
-				InitCommand=function(self) self:x(SCREEN_CENTER_X-3*WideScreenDiff()):y(SCREEN_TOP+60*WideScreenDiff()):zoom(WideScreenDiff()):blend(Blend.Add):visible(not isVS()) end,
+				InitCommand=function(self) self:y(SCREEN_TOP+60):blend(Blend.Add) end,
 				OnCommand=function(self) self:effectclock('beat'):diffuseramp():effectcolor1(color("#927f00")):effectcolor2(color("#fcff00")):effectperiod(0.5):effect_hold_at_full(0.5):diffusealpha(0):linear(0.4):diffusealpha(1) end
 			},
 			Def.Sprite {
 				Texture = "_neons bottom",
-				InitCommand=function(self) self:x(SCREEN_CENTER_X-3*WideScreenDiff()):y(SCREEN_TOP+60*WideScreenDiff()):zoom(WideScreenDiff()):visible(not isVS()) end,
+				InitCommand=function(self) self:y(SCREEN_TOP+60) end,
 				OnCommand=function(self) self:effectclock('beat'):diffuseramp():effectcolor1(color("#FFFFFF00")):effectcolor2(color("#fcff00")):effectperiod(0.5):effect_hold_at_full(0.5):diffusealpha(0):linear(0.4):diffusealpha(1) end
 			}
 		}

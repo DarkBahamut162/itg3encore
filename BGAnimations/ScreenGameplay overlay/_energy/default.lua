@@ -142,28 +142,29 @@ return Def.ActorFrame{
 		},
 		Def.ActorFrame{
 			Name="BPMFrame",
+			InitCommand=function(self) self:x(SCREEN_CENTER_X+1*WideScreenDiff()):zoom(WideScreenDiff()):visible(not isVS()) end,
 			Def.Sprite {
 				Texture = "_uplight bottom",
-				InitCommand=function(self) self:CenterX():y(SCREEN_TOP+61*WideScreenDiff()):zoom(WideScreenDiff()):blend(Blend.Add):visible(not isVS()) end,
+				InitCommand=function(self) self:y(SCREEN_TOP+61):blend(Blend.Add) end,
 				OnCommand=function(self) self:effectclock('beat'):diffuseramp():effectcolor1(color("#680303")):effectcolor2(color("#f11e1e")):effectperiod(0.5):effect_hold_at_full(0.5):diffusealpha(0):linear(0.4):diffusealpha(1) end
 			},
 			Def.Sprite {
 				Texture = "_uplight bottom",
-				InitCommand=function(self) self:CenterX():y(SCREEN_TOP+61*WideScreenDiff()):zoom(WideScreenDiff()):visible(not isVS()) end,
+				InitCommand=function(self) self:y(SCREEN_TOP+61) end,
 				OnCommand=function(self) self:effectclock('beat'):diffuseramp():effectcolor1(color("#973636")):effectcolor2(color("#f11e1e")):effectperiod(0.5):effect_hold_at_full(0.5):diffusealpha(0):linear(0.4):diffusealpha(1) end
 			},
 			Def.Sprite {
 				Texture = "_base bpm",
-				InitCommand=function(self) self:CenterX():y(SCREEN_TOP+61*WideScreenDiff()):zoom(WideScreenDiff()):visible(not isVS()) end
+				InitCommand=function(self) self:y(SCREEN_TOP+61) end
 			},
 			Def.Sprite {
 				Texture = "_neons bottom",
-				InitCommand=function(self) self:CenterX():y(SCREEN_TOP+61*WideScreenDiff()):zoom(WideScreenDiff()):blend(Blend.Add):visible(not isVS()) end,
+				InitCommand=function(self) self:y(SCREEN_TOP+61):blend(Blend.Add) end,
 				OnCommand=function(self) self:effectclock('beat'):diffuseramp():effectcolor1(color("#680303")):effectcolor2(color("#f11e1e")):effectperiod(0.5):effect_hold_at_full(0.5):diffusealpha(0):linear(0.4):diffusealpha(1) end
 			},
 			Def.Sprite {
 				Texture = "_neons bottom",
-				InitCommand=function(self) self:CenterX():y(SCREEN_TOP+61*WideScreenDiff()):zoom(WideScreenDiff()):visible(not isVS()) end,
+				InitCommand=function(self) self:y(SCREEN_TOP+61) end,
 				OnCommand=function(self) self:effectclock('beat'):diffuseramp():effectcolor1(color("#973636")):effectcolor2(color("#f11e1e")):effectperiod(0.5):effect_hold_at_full(0.5):diffusealpha(0):linear(0.4):diffusealpha(1) end
 			}
 		}

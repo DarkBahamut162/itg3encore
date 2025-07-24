@@ -153,20 +153,20 @@ return Def.ActorFrame{
 			}
 		},
 		Def.ActorFrame{
-			InitCommand=function(self) self:x(-5) end,
+			InitCommand=function(self) self:x(SCREEN_CENTER_X-4*WideScreenDiff()):zoom(WideScreenDiff()):visible(not isVS()) end,
 			Name="BPMFrame",
 			Def.Sprite {
 				Texture = "_base bpm",
-				InitCommand=function(self) self:CenterX():y(SCREEN_TOP+57*WideScreenDiff()):zoom(WideScreenDiff()):visible(not isVS()) end
+				InitCommand=function(self) self:y(SCREEN_TOP+57) end
 			},
 			Def.Sprite {
 				Texture = "_neons bottom",
-				InitCommand=function(self) self:CenterX():y(SCREEN_TOP+47*WideScreenDiff()):zoom(WideScreenDiff()):blend(Blend.Add):visible(not isVS()) end,
+				InitCommand=function(self) self:y(SCREEN_TOP+47):blend(Blend.Add) end,
 				OnCommand=function(self) self:effectclock('beat'):diffuseramp():effectcolor1(color("#4c0a0a")):effectcolor2(color("#ff5454")):effectperiod(0.5):effect_hold_at_full(0.5):diffusealpha(0):linear(0.4):diffusealpha(1) end
 			},
 			Def.Sprite {
 				Texture = "_neons bottom",
-				InitCommand=function(self) self:CenterX():y(SCREEN_TOP+47*WideScreenDiff()):zoom(WideScreenDiff()):visible(not isVS()) end,
+				InitCommand=function(self) self:y(SCREEN_TOP+47) end,
 				OnCommand=function(self) self:effectclock('beat'):diffuseramp():effectcolor1(color("#FFFFFF00")):effectcolor2(color("#ff4c4c")):effectperiod(0.5):effect_hold_at_full(0.5):diffusealpha(0):linear(0.4):diffusealpha(1) end
 			}
 		}
