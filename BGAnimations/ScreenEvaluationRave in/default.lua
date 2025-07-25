@@ -1,3 +1,5 @@
+prepSummary()
+
 return Def.ActorFrame{
 	loadfile(THEME:GetPathB("_fade in","normal"))(),
 	Def.Actor{
