@@ -370,8 +370,8 @@ end
 
 function InitPlayerOptions()
 	for pn in ivalues(GAMESTATE:GetEnabledPlayers()) do
-		setenv("Flare"..pname(pn),tonumber(VersionDate()) > 20160000 and LoadUserPrefN(pn, "Flare", 0) or 0)
-		setenv("FlareType"..pname(pn),tonumber(VersionDate()) > 20160000 and LoadUserPrefN(pn, "FlareType", 1) or 1)
+		setenv("Flare"..pname(pn),(not isVS() and tonumber(VersionDate()) > 20160000) and LoadUserPrefN(pn, "Flare", 0) or 0)
+		setenv("FlareType"..pname(pn),(not isVS() and tonumber(VersionDate()) > 20160000) and LoadUserPrefN(pn, "FlareType", 1) or 1)
 
 		setenv("Effect"..pname(pn),not isVS() and LoadUserPrefN(pn, "Effect", 0) or 0)
 
