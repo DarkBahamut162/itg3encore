@@ -280,8 +280,8 @@ return Def.ActorFrame{
 					if stepsToCache[curStep] then
 						local cacheTime = GetTimeSinceStart()
 						local filePath = stepsToCache[curStep]:GetFilename()
-						local quickSM = filePath:sub(-2,1) == 's'		-- [S]M & S[S]C
-						--local quickBMS = filePath:sub(-2,1) == 'm'	-- B[M]S & B[M]E & B[M]L & P[M]S
+						local quickSM = filePath:sub(-2):sub(1,1) == 's'	-- [S]M & S[S]C
+						--local quickBMS = filePath:sub(-3):sub(2,2) == 'm'	-- B[M]S & B[M]E & B[M]L & P[M]S
 						--local quickPMS = filePath:sub(-3) == 'pms'
 						--if not isOutFox() or (quickSM and isOutFoxV()) then
 						if not isOutFox() then
