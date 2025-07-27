@@ -6,7 +6,6 @@ local alreadyCachedTotal = 0
 local unableToBeCachedTotal = 0
 local cachedWrongVersionTotal = 0
 local errorTotal = 0
-local total = 0
 
 local s = 10
 local ss = 100
@@ -25,6 +24,10 @@ local cacheStepTypes = {
 }
 
 local stepsToCache = {}
+local types = ""
+local totalTypes = {}
+local cachedTypes = {}
+local cachedTimes = {}
 
 local InputHandler = function(event)
 	if not event.PlayerNumber or not event.button then return false end
@@ -77,6 +80,26 @@ return Def.ActorFrame{
 	OffCommand=function() SCREENMAN:GetTopScreen():RemoveInputCallback(InputHandler) end,
 	Def.BitmapText {
 		File = "_z 36px shadowx",
+		Name="Loaded",
+		Text="",
+		InitCommand=function(self) self:x(SCREEN_LEFT+25*WideScreenDiff()*WideScreenDiff()):y(isFinal() and SCREEN_BOTTOM-74*WideScreenDiff() or SCREEN_BOTTOM-66*WideScreenDiff()):shadowlength(2):horizalign(left):vertalign(bottom):vertspacing(-9):maxwidth(SCREEN_WIDTH/3*2/WideScreenDiff()):zoom(0.333*WideScreenDiff()) end,
+		OnCommand=function(self) self:diffusealpha(0):sleep(0.5):linear(0.5):diffusealpha(0.75) end,
+	},
+	Def.BitmapText {
+		File = "_z 36px shadowx",
+		Name="Cached",
+		Text="",
+		InitCommand=function(self) self:x(SCREEN_LEFT+25*WideScreenDiff()*WideScreenDiff()+SCREEN_WIDTH/3*1/WideScreenDiff()):y(isFinal() and SCREEN_BOTTOM-74*WideScreenDiff() or SCREEN_BOTTOM-66*WideScreenDiff()):shadowlength(2):horizalign(right):vertalign(bottom):vertspacing(-9):maxwidth(SCREEN_WIDTH/3*2/WideScreenDiff()):zoom(0.333*WideScreenDiff()) end,
+		OnCommand=function(self) self:diffusealpha(0):sleep(0.5):linear(0.5):diffusealpha(0.75) end,
+	},
+	Def.BitmapText {
+		File = "_z 36px shadowx",
+		Name="Checked",
+		Text="",
+		InitCommand=function(self) self:x(SCREEN_LEFT+25*WideScreenDiff()*WideScreenDiff()+SCREEN_WIDTH/6*1/WideScreenDiff()):y(isFinal() and SCREEN_BOTTOM-74*WideScreenDiff() or SCREEN_BOTTOM-66*WideScreenDiff()):shadowlength(2):vertalign(bottom):vertspacing(-9):maxwidth(SCREEN_WIDTH/3*2/WideScreenDiff()):zoom(0.333*WideScreenDiff()):diffusealpha(0) end,
+	},
+	Def.BitmapText {
+		File = "_z 36px shadowx",
 		Name="TBC",
 		InitCommand=function(self) self:x(SCREEN_LEFT+25*WideScreenDiff()*WideScreenDiff()):y(isFinal() and SCREEN_BOTTOM-66*WideScreenDiff() or SCREEN_BOTTOM-58*WideScreenDiff()):shadowlength(2):horizalign(left):maxwidth(SCREEN_WIDTH/3*2/WideScreenDiff()):zoom(0.5*WideScreenDiff()) end,
 		OnCommand=function(self) self:diffusealpha(0):sleep(0.5):linear(0.5):diffusealpha(1):playcommand("Check") end,
@@ -87,11 +110,24 @@ return Def.ActorFrame{
 				for curStep=1,#steps do
 					if steps[curStep] then
 						local stepType = split("_",steps[curStep]:GetStepsType())[2]
-						if cacheStepTypes[stepType] then total = total + 1 end
+						if cacheStepTypes[stepType] then
+							if not totalTypes[stepType] then types = addToOutput(types,stepType,",") end
+							totalTypes[stepType] = totalTypes[stepType] and totalTypes[stepType] + 1 or 1
+						end
 					end
 				end
 				steps = nil
 			end
+			local output = ""
+			local total = 0
+			types = split(",",types)
+			table.sort(types)
+			for i=1,#types do
+				total = total + totalTypes[types[i]]
+				output = addToOutput(output,types[i].." "..totalTypes[types[i]],"\n")
+			end
+			totalTypes["TOTAL"] = total
+			c.Loaded:settext(output.."\n\n".."TOTAL "..total)
 			songs = nil
 			self:decelerate(0.5):cropleft(0):cropright(0):settext("To be cached: "..total.." Steps")
 		end
@@ -167,11 +203,11 @@ return Def.ActorFrame{
 			local songs = SONGMAN:GetAllSongs()
 			local currentCacheVersion = getCacheVersion()
 			if not cancel then
-				--local start = GetTimeSinceStart()
+				local start = GetTimeSinceStart()
 				for curSong=1,#songs do
 					local steps = songs[curSong]:GetAllSteps()
 					for curStep=1,#steps do
-						if steps[curStep] and not steps[curStep]:IsAutogen() then
+						if steps[curStep] and not (not isEtterna() and steps[curStep]:IsAutogen()) then
 							local stepType = split("_",steps[curStep]:GetStepsType())[2]
 							if cacheStepTypes[stepType] then
 								local filename = split("/",steps[curStep]:GetFilename())
@@ -181,7 +217,7 @@ return Def.ActorFrame{
 										stepsToCache[#stepsToCache+1] = steps[curStep]
 										toBeCachedTotal = toBeCachedTotal + 1
 									else
-										local version = isOutFox() and LoadModule("Config.Load.lua")("Version",cacheFile) or LoadModuleSM("Config.Load.lua")("Version",cacheFile)
+										local version = LoadModule("Config.Load.lua")("Version",cacheFile)
 										if version == "0" then
 											unableToBeCachedTotal = unableToBeCachedTotal + 1
 										elseif not version or version ~= currentCacheVersion then
@@ -201,12 +237,11 @@ return Def.ActorFrame{
 					end
 					steps = nil
 				end
-				--lua.ReportScriptError( "CHECK DURATION = "..(GetTimeSinceStart()-start) )
+				local checkDuration = GetTimeSinceStart()-start
+				c.Checked:settext("CHECK TIME "..string.format("%0.3f",checkDuration).." s ("..string.format("%0.3f",checkDuration/totalTypes["TOTAL"]*1000 or 0).." ms)"):addy(-(#types+2)*10):diffusealpha(0.75)
 				checked = true
 				songs = nil
-				if toBeCachedTotal == 0 and cachedWrongVersionTotal == 0 then
-					updated = true
-				end
+				if toBeCachedTotal == 0 and cachedWrongVersionTotal == 0 then updated = true end
 				self:queuecommand("Checked")
 			end
 		end,
@@ -240,22 +275,32 @@ return Def.ActorFrame{
 		end,
 		UpdateCommand=function(self)
 			if not cancel then
-				--local start = GetTimeSinceStart()
 				setenv("cacheing",true)
 				for curStep=1,#stepsToCache do
 					if stepsToCache[curStep] then
+						local cacheTime = GetTimeSinceStart()
 						local filePath = stepsToCache[curStep]:GetFilename()
-						local quickSM = filePath:sub(-2):sub(1,1) == 's'	-- [S]M & S[S]C
-						--local quickBMS = filePath:sub(-3):sub(2,2) == 'm'	-- B[M]S & B[M]E & B[M]L & P[M]S
+						local quickSM = filePath:sub(-2,1) == 's'		-- [S]M & S[S]C
+						--local quickBMS = filePath:sub(-2,1) == 'm'	-- B[M]S & B[M]E & B[M]L & P[M]S
 						--local quickPMS = filePath:sub(-3) == 'pms'
-						if not isOutFox() or (quickSM and isOutFoxV()) then
-						--if not isOutFox() then
+						--if not isOutFox() or (quickSM and isOutFoxV()) then
+						if not isOutFox() then
 							if quickSM then cacheStepSM(nil,stepsToCache[curStep]) else cacheStepBMS(nil,stepsToCache[curStep]) end
 						else cacheStep(nil,stepsToCache[curStep]) end
+						local stepType = split("_",stepsToCache[curStep]:GetStepsType())[2]
+						cachedTimes[stepType] = cachedTimes[stepType] and cachedTimes[stepType] + (GetTimeSinceStart()-cacheTime) or (GetTimeSinceStart()-cacheTime)
+						cachedTypes[stepType] = cachedTypes[stepType] and cachedTypes[stepType] + 1 or 1
+						cachedTypes["TOTAL"] = cachedTypes["TOTAL"] and cachedTypes["TOTAL"] + 1 or 1
 					end
 				end
 				setenv("cacheing",false)
-				--lua.ReportScriptError( "CACHE DURATION = "..(GetTimeSinceStart()-start) )
+				local output = ""
+				local total = 0
+				for i=1,#types do
+					total = cachedTimes[types[i]] and total + cachedTimes[types[i]] or total
+					output = addToOutput(output,(cachedTypes[types[i]] or 0).." ("..string.format("%0.3f",cachedTimes[types[i]] or 0).." s)","\n")
+				end
+				c.Cached:settext(output.."\n\n"..cachedTypes["TOTAL"].." ("..string.format("%0.3f",total).." s)")
 				stepsToCache = nil
 				checked = true
 				updated = true
