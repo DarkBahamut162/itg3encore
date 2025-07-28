@@ -142,7 +142,6 @@ end
 local function GetVertices(flare,level)
 	local graphH = 68
 	local graphW = 192
-    local addx = graphW / #flare
     local vertices = {}
 	local max = flare[#flare][1]
 
@@ -165,6 +164,33 @@ local function GetVertices(flare,level)
         }
         vertices[#vertices+1] = {
             {math.min(1,nextX/max)*graphW, (nextY/10000)*graphH, 0}, col
+        }
+    end
+    return vertices
+end
+
+local function GetVerticesOutFox(lives,pn)
+	local graphH = 68
+	local graphW = 192
+    local vertices = {}
+	local max = #lives
+
+    for i=1, #lives - 1 do
+		local curX = i
+		local nextX = i+1
+		local curY = lives[i] or 0
+		local nextY = lives[i+1] or 0
+        vertices[#vertices+1] = {
+            {math.min(1,curX/max)*graphW, curY*graphH, 0}, PlayerColor(pn)
+        }
+        vertices[#vertices+1] = {
+            {math.min(1,curX/max)*graphW, 0, 0}, PlayerColorSemi(pn)
+        }
+        vertices[#vertices+1] = {
+            {math.min(1,nextX/max)*graphW, 0, 0}, PlayerColorSemi(pn)
+        }
+        vertices[#vertices+1] = {
+            {math.min(1,nextX/max)*graphW, nextY*graphH, 0}, PlayerColor(pn)
         }
     end
     return vertices
@@ -216,14 +242,34 @@ local function GraphDisplay(pn)
 			}
 		end
 	else
-		display = Def.GraphDisplay {
-			InitCommand=function(self) self:Load("GraphDisplay"..pname(pn)) end,
-			BeginCommand=function(self)
-				local ss = SCREENMAN:GetTopScreen():GetStageStats()
-				self:Set( ss, ss:GetPlayerStageStats(pn) ):player( pn )
-				if not isOutFox() and isVS() then self:MaskDest() end
-			end
-		}
+		if isOutFox() and isMGD(pn) then
+			local lives = PSS:GetLifeRecord(length, 192)
+			local mod = GetLives(pn)/100
+			for i=1,#lives do lives[i]=lives[i]*mod end
+			display[#display+1] = Def.ActorMultiVertex{
+				InitCommand=function(self)
+					local vertices = GetVerticesOutFox(lives,pn)
+					self:SetDrawState({Mode = 'DrawMode_Quads'})
+					self:SetVertices(1, vertices)
+					self:SetNumVertices(#vertices)
+					self:rotationx(180)
+					self:x(-96):y(34)
+				end
+			}
+		else
+			display = Def.GraphDisplay {
+				InitCommand=function(self) self:Load("GraphDisplay"..pname(pn)) end,
+				BeginCommand=function(self)
+					local ss = SCREENMAN:GetTopScreen():GetStageStats()
+					self:Set( ss, ss:GetPlayerStageStats(pn) ):player( pn )
+					if not isOutFox() and isMGD(pn) then
+						local lives = GetLives(pn)/100
+						self:zoomy(lives):addy(66*(1-lives)/2)
+					end
+					if not isOutFox() and isVS() then self:MaskDest() end
+				end
+			}
+		end
 	end
 
 	if flareLevel > 0 then
