@@ -3,6 +3,15 @@ if isOutFoxV() and not PREFSMAN:GetPreference("GimmickMode") then
 	GAMEMAN:SetGame(GAMESTATE:GetCurrentGame():GetName(),THEME:GetCurThemeName())
 end
 
+if isOldStepMania() then
+	local IgnoredDialogs = PREFSMAN:GetPreference("IgnoredDialogs")
+	if not string.find(IgnoredDialogs,"FRAME_DIMENSIONS_WARNING") then
+		IgnoredDialogs = addToOutput(IgnoredDialogs,"FRAME_DIMENSIONS_WARNING",",")
+		PREFSMAN:SetPreference("IgnoredDialogs", IgnoredDialogs)
+		GAMEMAN:SetGame(GAMESTATE:GetCurrentGame():GetName(),THEME:GetCurThemeName())
+	end
+end
+
 return Def.ActorFrame{
 	Def.Sprite {
 		Texture="roxor video",
