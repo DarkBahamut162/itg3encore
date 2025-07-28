@@ -73,10 +73,18 @@ return Def.ActorFrame{
 				local lives = GetLives(pn)
 				if GAMESTATE:IsCourseMode() then
 					if not isOni() then
-						GAMESTATE:GetPlayerState(pn):GetPlayerOptions('ModsLevel_Preferred'):BatteryLives(lives)
+						if isOutFoxV() then
+							GAMESTATE:ApplyGameCommand('mod,'..lives.." lives",pn)
+						else
+							GAMESTATE:GetPlayerState(pn):GetPlayerOptions('ModsLevel_Preferred'):BatteryLives(lives)
+						end
 					end
 				else
-					GAMESTATE:GetPlayerState(pn):GetPlayerOptions('ModsLevel_Preferred'):BatteryLives(lives)
+					if isOutFoxV() then
+						GAMESTATE:ApplyGameCommand('mod,'..lives.." lives",pn)
+					else
+						GAMESTATE:GetPlayerState(pn):GetPlayerOptions('ModsLevel_Preferred'):BatteryLives(lives)
+					end
 				end
 			end
 		end
