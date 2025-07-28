@@ -6,13 +6,13 @@ return Def.ActorFrame{
 		self:zoom(0.5):x( _screen.cx - _screen.w/8 + 60 ):y(80 - 7.5)
 		if player == PLAYER_2 then self:x( _screen.cx + _screen.w/3.4 + 60 ) end
 	end,
+	OffCommand=function(self)
+		if AnyPlayerFullComboed() then self:sleep(1) end
+		self:accelerate(0.8):addy(player == PLAYER_1 and -150 or 150)
+	end,
 	Def.ActorFrame{
 		InitCommand=function(self) self:rotationz(-90):zoom(2):addx(player == PLAYER_1 and -150 or 150) end,
 		OnCommand=function(self) self:decelerate(0.8):addx(player == PLAYER_1 and 150 or -150) end,
-		OffCommand=function(self)
-			if AnyPlayerFullComboed() then self:sleep(1) end
-			self:accelerate(0.8):addx(player == PLAYER_1 and -150 or 150)
-		end,
 		HealthStateChangedMessageCommand=function(self, param)
 			if param.HealthState == Health.Dead and param.PlayerNumber == player then
 				self:accelerate(0.8):addx(player == PLAYER_1 and -150 or 150)
@@ -24,7 +24,11 @@ return Def.ActorFrame{
 		},
 		Def.Sprite {
 			Texture = "meter grad",
-			InitCommand=function(self) self:zoomx(1.05):cropright(1):sleep(1):decelerate(0.6):cropright(0) end,
+			OnCommand=function(self)
+				local screen = SCREENMAN:GetTopScreen()
+				local glifemeter = screen:GetLifeMeter(player)
+				self:zoomx(1.05):cropright(1):sleep(1):decelerate(0.6):cropright(1-(glifemeter:GetTotalLives()/pnMaxLives[player]))
+			end,
 			LifeChangedMessageCommand=function(self,params)
 				if params.Player == player then
 					if params.LivesLeft > pnMaxLives[player] then pnMaxLives[player] = params.LivesLeft end 
@@ -71,7 +75,6 @@ return Def.ActorFrame{
 	Def.ActorFrame{
 		InitCommand=function(self) self:addx(player == PLAYER_1 and -150 or 150) end,
 		OnCommand=function(self) self:decelerate(0.8):addx(player == PLAYER_1 and 150 or -150) end,
-		OffCommand=function(self) self:accelerate(0.8):addx(player == PLAYER_1 and -150 or 150) end,
 		HealthStateChangedMessageCommand=function(self, param)
 			if param.HealthState == Health.Dead and param.PlayerNumber == player then
 				self:accelerate(0.8):addx(player == PLAYER_1 and -150 or 150)
