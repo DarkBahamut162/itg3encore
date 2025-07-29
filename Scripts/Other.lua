@@ -132,11 +132,11 @@ function GetScreenNameEntryTraditionalHelpText()
 end
 
 function HumanAndProfile(pn)
-	return GAMESTATE:IsHumanPlayer(pn) and (isEtterna() and true or MEMCARDMAN:GetCardState(pn) ~= 'MemoryCardState_none')
+	return GAMESTATE:IsHumanPlayer(pn) and (not isEtterna() and MEMCARDMAN:GetCardState(pn) ~= 'MemoryCardState_none' or false)
 end
 
 function EnabledAndProfile(pn)
-	return GAMESTATE:IsPlayerEnabled(pn) and (isEtterna() and true or MEMCARDMAN:GetCardState(pn) ~= 'MemoryCardState_none')
+	return GAMESTATE:IsPlayerEnabled(pn) and (not isEtterna() and MEMCARDMAN:GetCardState(pn) ~= 'MemoryCardState_none' or false)
 end
 
 function EnabledAndUSBReady(pn)

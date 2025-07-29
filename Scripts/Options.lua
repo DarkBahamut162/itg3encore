@@ -282,16 +282,6 @@ function ModeMenu()
 	return options
 end
 
-function getPercentValues()
-	local temp = ""
-	for i=0,10 do
-		temp = temp .. (i*10) .. "%"
-		if i < 10 then temp = temp .. "," end
-	end
-
-	return split(",",temp)
-end
-
 local function LoadUserPref(pn, option, default)
 	if not PROFILEMAN:IsPersistentProfile(pn) then return default end
     local f = RageFileUtil.CreateRageFile()
@@ -429,13 +419,13 @@ function OptionFlare()
 	return t
 end
 
-local function AvailableArrowDirections()
-	local dirs = { "Normal", "Left", "Right", "Upside-Down" }
-	if GAMESTATE:GetNumPlayersEnabled() == 1 then dirs[#dirs+1] = "Solo-Centered" end
-	return dirs
-end
-
 function OptionOrientation()
+	function AvailableArrowDirections()
+		local dirs = { "Normal", "Left", "Right", "Upside-Down" }
+		if GAMESTATE:GetNumPlayersEnabled() == 1 then dirs[#dirs+1] = "Solo-Centered" end
+		return dirs
+	end
+
 	local t = {
 		Name = "Orientation",
 		LayoutType = "ShowAllInRow",
@@ -598,6 +588,16 @@ function OptionSetScoreType()
 end
 
 function OptionRowScreenFilter()
+	function getPercentValues()
+		local temp = ""
+		for i=0,10 do
+			temp = temp .. (i*10) .. "%"
+			if i < 10 then temp = temp .. "," end
+		end
+
+		return split(",",temp)
+	end
+
 	local t = {
 		Name="ScreenFilter",
 		LayoutType = "ShowAllInRow",
@@ -832,11 +832,6 @@ function OptionSongFrame()
 	return t
 end
 
-function GetRateMod()
-	local msrate = math.round(GAMESTATE:GetSongOptionsObject("ModsLevel_Song"):MusicRate(),1)
-	if msrate == 1 then return '' else return msrate..'x Rate' end
-end
-
 function DisplayCustomModifiersText(pn)
 	local output = ""
 
@@ -898,6 +893,11 @@ function DisplayCustomModifiersText(pn)
 	end
 
 	if getenv("ScreenFilter"..pname(pn)) and getenv("ScreenFilter"..pname(pn)) > 0 then output = addToOutput(output,"Screen Filter ("..(getenv("ScreenFilter"..pname(pn))*100).."%)",", ") end
+
+	function GetRateMod()
+		local msrate = math.round(GAMESTATE:GetSongOptionsObject("ModsLevel_Song"):MusicRate(),1)
+		if msrate == 1 then return '' else return msrate..'x Rate' end
+	end
 
 	if GetRateMod() ~= '' then output = addToOutput(output,GetRateMod(),", ") end
 

@@ -416,7 +416,7 @@ return Def.ActorFrame{
 		ScreenChangedMessageCommand=function(self) self:playcommand("Refresh") end,
 		RefreshCommand=function(self)
 			if not isTopScreen("ScreenLogo") then 
-				self:settext(ProductFamily() .. " " .. ProductVersion() .. (not isEtterna()and " (" .. VersionDate() .. ")" or ""))
+				self:settext(ProductFamily() .. " " .. ProductVersion() .. (not isEtterna() and " (" .. VersionDate() .. ")" or ""))
 			end
 		end
 	},

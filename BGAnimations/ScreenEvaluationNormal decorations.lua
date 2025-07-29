@@ -119,6 +119,7 @@ local function TotalPossibleStepSeconds()
 end
 
 local function CalcMinusStepSeconds(pn)
+	if isEtterna() then return 0 end
 	local fSecs = 0
 
 	if GAMESTATE:IsCourseMode() then

@@ -21,7 +21,9 @@ for pn in ivalues(GAMESTATE:GetEnabledPlayers()) do
 		end
 	end
 
-	if getenv("Flare"..pname(pn)) > 0 then
+	if getenv("Flare"..pname(pn)) and getenv("Flare"..pname(pn)) > 0 then
+		if isSurvival(pn) then GAMESTATE:ApplyGameCommand('mod,no lifetime,bar,normal-drain',pn) end
+		if isMGD(pn) then GAMESTATE:ApplyGameCommand('mod,no battery,bar,normal-drain',pn) end
 		GAMESTATE:GetPlayerState(pn):GetPlayerOptions('ModsLevel_Preferred'):FailSetting('FailType_Immediate')
 		GAMESTATE:GetPlayerState(pn):GetPlayerOptions('ModsLevel_Stage'):FailSetting('FailType_Immediate')
 		GAMESTATE:GetPlayerState(pn):GetPlayerOptions('ModsLevel_Song'):FailSetting('FailType_Immediate')
