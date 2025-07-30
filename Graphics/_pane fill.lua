@@ -25,11 +25,11 @@ local function getValue(val0, val1, val2)
 	return ((val0 - val1) / (val2 - val1))
 end
 
-local function RadarFillColor(self,stat,StepsOrTrails,RadarCategory)
+local function RadarFillColor(self,stat,StepsOrTrail,RadarCategory)
 	local yZoom = 0
-	if StepsOrTrails then
-		local numSongs = courseMode and TrailUtil.GetNumSongs(StepsOrTrails) or 1
-		local val = math.max(0,StepsOrTrails:GetRadarValues(player):GetValue(RadarCategory))
+	if StepsOrTrail then
+		local numSongs = courseMode and TrailUtil.GetNumSongs(StepsOrTrail) or 1
+		local val = math.max(0,StepsOrTrail:GetRadarValues(player):GetValue(RadarCategory))
 		if val == stats[stat][1] then self:diffusecolor( color(colors[1][1]..","..colors[1][2]..","..colors[1][3]..",1") )
 		elseif val <= stats[stat][2] * numSongs then self:diffusecolor( color(colors[2][1]..","..colors[2][2]..","..colors[2][3]..",1") ) yZoom = getValue(val, stats[1][1], stats[1][2])*24/5/(numSongs*2)
 		elseif val <= stats[stat][3] * numSongs then self:diffusecolor( color(colors[3][1]..","..colors[3][2]..","..colors[3][3]..",1") ) yZoom = getValue(val, stats[1][2], stats[1][3])*24/5/(numSongs*2)+(0.2*24)
@@ -53,16 +53,16 @@ return Def.ActorFrame{
 	["CurrentTrail".. pname(player) .."ChangedMessageCommand"]=function(self) if courseMode then self:RunCommandsRecursively( function(self) self:stoptweening() end ):playcommand("Set") end end,
 	SetCommand=function(self)
 		local SongOrCourse = courseMode and GAMESTATE:GetCurrentCourse() or GAMESTATE:GetCurrentSong()
-		local StepsOrTrails
+		local StepsOrTrail
 		if SongOrCourse then
-			StepsOrTrails = courseMode and GAMESTATE:GetCurrentTrail(player) or GAMESTATE:GetCurrentSteps(player)
+			StepsOrTrail = courseMode and GAMESTATE:GetCurrentTrail(player) or GAMESTATE:GetCurrentSteps(player)
 		end
 
-		RadarFillColor(c.Jumps,1,StepsOrTrails,"RadarCategory_Jumps")
-		RadarFillColor(c.Holds,2,StepsOrTrails,"RadarCategory_Holds")
-		RadarFillColor(c.Mines,3,StepsOrTrails,"RadarCategory_Mines")
-		RadarFillColor(c.Hands,4,StepsOrTrails,"RadarCategory_Hands")
-		RadarFillColor(c.Rolls,5,StepsOrTrails,"RadarCategory_Rolls")
+		RadarFillColor(c.Jumps,1,StepsOrTrail,"RadarCategory_Jumps")
+		RadarFillColor(c.Holds,2,StepsOrTrail,"RadarCategory_Holds")
+		RadarFillColor(c.Mines,3,StepsOrTrail,"RadarCategory_Mines")
+		RadarFillColor(c.Hands,4,StepsOrTrail,"RadarCategory_Hands")
+		RadarFillColor(c.Rolls,5,StepsOrTrail,"RadarCategory_Rolls")
 	end,
 	Def.Quad{
 		Name="Jumps",

@@ -17,11 +17,11 @@ return Def.ActorFrame{
 			local score = self:GetChild("ScorePercent")
 			local profile = PROFILEMAN:GetMachineProfile()
 			local SongOrCourse = courseMode and GAMESTATE:GetCurrentCourse() or GAMESTATE:GetCurrentSong()
-			local StepsOrTrails = courseMode and GAMESTATE:GetCurrentTrail(player) or GAMESTATE:GetCurrentSteps(player)
+			local StepsOrTrail = courseMode and GAMESTATE:GetCurrentTrail(player) or GAMESTATE:GetCurrentSteps(player)
 			local scoreText = "?"
 			local nameText = "?"
 
-			if SongOrCourse and StepsOrTrails then
+			if SongOrCourse and StepsOrTrail then
 				if isEtterna() then
 					local scores = GetDisplayScore()
 					if scores then
@@ -34,7 +34,7 @@ return Def.ActorFrame{
 						scoreText = FormatPercentScore(GetPercentFromGradeWife("Grade_Tier15"))
 					end
 				else
-					local hsl = profile:GetHighScoreList(SongOrCourse,StepsOrTrails)
+					local hsl = profile:GetHighScoreList(SongOrCourse,StepsOrTrail)
 					local scores = hsl and hsl:GetHighScores()
 					if scores[1] then
 						nameText = scores[1]:GetName()
@@ -79,12 +79,12 @@ return Def.ActorFrame{
 			local f = self:GetChild("FlareName")
 			local profile = PROFILEMAN:GetProfile(player)
 			local SongOrCourse = courseMode and GAMESTATE:GetCurrentCourse() or GAMESTATE:GetCurrentSong()
-			local StepsOrTrails = courseMode and GAMESTATE:GetCurrentTrail(player) or GAMESTATE:GetCurrentSteps(player)
+			local StepsOrTrail = courseMode and GAMESTATE:GetCurrentTrail(player) or GAMESTATE:GetCurrentSteps(player)
 			local scoreText = "?"
 			local nameText = "YOU"
 			local flare = 0
 
-			if SongOrCourse and StepsOrTrails then
+			if SongOrCourse and StepsOrTrail then
 				if isEtterna() then
 					local scores = GetDisplayScore()
 					if scores then
@@ -93,7 +93,7 @@ return Def.ActorFrame{
 						scoreText = "0.00%"
 					end
 				else
-					local hsl = profile:GetHighScoreList(SongOrCourse,StepsOrTrails)
+					local hsl = profile:GetHighScoreList(SongOrCourse,StepsOrTrail)
 					local scores = hsl and hsl:GetHighScores()
 					if scores[1] then
 						scoreText = string.format("%0.2f%%",scores[1]:GetPercentDP()*100)
@@ -101,7 +101,7 @@ return Def.ActorFrame{
 						scoreText = "0.00%"
 					end
 				end
-				flare = GetFlare(player,SongOrCourse,StepsOrTrails)
+				flare = GetFlare(player,SongOrCourse,StepsOrTrail)
 			end
 			name:settext(nameText)
 			score:settext(scoreText)
@@ -125,10 +125,10 @@ return Def.ActorFrame{
 			OffCommand=function(self) self:linear(0.4):diffusealpha(0) end,
 			SetCommand=function(self)
 				local SongOrCourse = courseMode and GAMESTATE:GetCurrentCourse() or GAMESTATE:GetCurrentSong()
-				local StepsOrTrails = courseMode and GAMESTATE:GetCurrentTrail(player) or GAMESTATE:GetCurrentSteps(player)
+				local StepsOrTrail = courseMode and GAMESTATE:GetCurrentTrail(player) or GAMESTATE:GetCurrentSteps(player)
 				local flare = 0
 
-				if SongOrCourse and StepsOrTrails then flare = GetFlare(player,SongOrCourse,StepsOrTrails) end
+				if SongOrCourse and StepsOrTrail then flare = GetFlare(player,SongOrCourse,StepsOrTrail) end
 				if flare == 10 then
 					self:settext("FX")
 				elseif flare == 0 then

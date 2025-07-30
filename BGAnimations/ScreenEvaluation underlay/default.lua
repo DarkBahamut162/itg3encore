@@ -5,7 +5,7 @@ local grade = GetGradeFromPercent(percent)
 return Def.ActorFrame{
 	OnCommand = function(self)
 		if isOutFox() then
-			local StepsOrTrails = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentTrail(master) or GAMESTATE:GetCurrentSteps(master)
+			local StepsOrTrail = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentTrail(master) or GAMESTATE:GetCurrentSteps(master)
 			local song = GAMESTATE:GetCurrentSong()
 			if song then
 				local lengthFull = string.len(song:GetDisplayFullTitle()) + 3 + string.len(song:GetGroupName())
@@ -14,7 +14,7 @@ return Def.ActorFrame{
 							--string.sub(song:GetDisplayFullTitle(),1,122-string.len(song:GetGroupName())) .. "..."
 							lengthMain < 128 and song:GetDisplayMainTitle() or string.sub(song:GetDisplayMainTitle(),1,122-string.len(song:GetGroupName())) .. "..."
 				local songname = title .. " - " .. song:GetGroupName()
-				local Difficulty = ToEnumShortString( StepsOrTrails:GetDifficulty() ) .. " " .. StepsOrTrails:GetMeter()
+				local Difficulty = ToEnumShortString( StepsOrTrail:GetDifficulty() ) .. " " .. StepsOrTrail:GetMeter()
 				local Percentage = STATSMAN:GetCurStageStats():GetPlayerStageStats(master):GetPercentDancePoints()
 				local autoPlayer = getenv("EvalCombo"..pname(master)) and "" or " | AUTOPLAYER"
 				local states = Difficulty .. " (".. string.format( "%.2f%%", Percentage*100) .. ")"..autoPlayer

@@ -176,12 +176,12 @@ function IsCourseSecret()
 	return false
 end
 
-function RadarCategory_Notes(SongOrCourse,StepsOrTrails)
+function RadarCategory_Notes(SongOrCourse,StepsOrTrail)
 	local total = 0
-	if SongOrCourse and StepsOrTrails then
+	if SongOrCourse and StepsOrTrail then
 		if courseMode then
-			if SongOrCourse and StepsOrTrails then
-				local entries = StepsOrTrails:GetTrailEntries()
+			if SongOrCourse and StepsOrTrail then
+				local entries = StepsOrTrail:GetTrailEntries()
 				for i=1, #entries do
 					local song = entries[i]:GetSong()
 					local step = entries[i]:GetSteps()
@@ -193,7 +193,7 @@ function RadarCategory_Notes(SongOrCourse,StepsOrTrails)
 				end
 			end
 		else
-			local StepCounter = LoadFromCache(SongOrCourse,StepsOrTrails,"StepCounter")
+			local StepCounter = LoadFromCache(SongOrCourse,StepsOrTrail,"StepCounter")
 			if StepCounter and StepCounter ~= "" then
 				StepCounter = split("_",StepCounter)
 				for i=1,#StepCounter do total = total + (tonumber(StepCounter[i])*i) end
