@@ -45,7 +45,7 @@ if offsetInfo and showOffset then
 		end
 	end
 
-	for i = -maxRange,maxRange*2,0.001 do
+	for i = -maxRange,maxRange*2+0.001,0.001 do
 		i = math.round(i,3)
 		if errors[i] and errors[i] > peak_counter then
 			peak = i

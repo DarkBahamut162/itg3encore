@@ -53,16 +53,16 @@ function GetScreenSelectMusicHelpText()
 	local ret = IsNetSMOnline() and THEME:GetString("ScreenNetSelectMusic", "HelpText") or THEME:GetString("ScreenSelectMusic", "HelpText")
 
 	if not IsNetSMOnline() then
-		ret = ret .. "::" .. THEME:GetString( "ScreenSelectMusic", "SelectButtonAvailableHelpTextAppend" )
+		ret = addToOutput(ret,THEME:GetString("ScreenSelectMusic","SelectButtonAvailableHelpTextAppend"),"::")
 	end
 	if not IsNetSMOnline() and DifficultyChangingAvailable() then
-		ret = ret .. "::" .. THEME:GetString( "ScreenSelectMusic", "DifficultyChangingAvailableHelpTextAppend" )
+		ret = addToOutput(ret,THEME:GetString("ScreenSelectMusic","DifficultyChangingAvailableHelpTextAppend"),"::")
 	end
 	if ModeMenuAvailable() then
-		ret = ret .. "::" .. THEME:GetString( "ScreenSelectMusic", "SortMenuAvailableHelpTextAppend" )
+		ret = addToOutput(ret,THEME:GetString("ScreenSelectMusic","SortMenuAvailableHelpTextAppend"),"::")
 	end
 	if getenv("Workout") and IsHome() then
-		ret = ret .. "::" .. THEME:GetString( "ScreenSelectMusic", "WorkoutHelpTextAppend" )
+		ret = addToOutput(ret,THEME:GetString("ScreenSelectMusic","WorkoutHelpTextAppend"),"::")
 	end
 
 	return ret
@@ -174,6 +174,33 @@ function IsCourseSecret()
 	end
 
 	return false
+end
+
+function RadarCategory_Notes(SongOrCourse,StepsOrTrails)
+	local total = 0
+	if SongOrCourse and StepsOrTrails then
+		if courseMode then
+			if SongOrCourse and StepsOrTrails then
+				local entries = StepsOrTrails:GetTrailEntries()
+				for i=1, #entries do
+					local song = entries[i]:GetSong()
+					local step = entries[i]:GetSteps()
+					local StepCounter = LoadFromCache(song,step,"StepCounter")
+					if StepCounter and StepCounter ~= "" then
+						StepCounter = split("_",StepCounter)
+						for i=1,#StepCounter do total = total + (tonumber(StepCounter[i])*i) end
+					end
+				end
+			end
+		else
+			local StepCounter = LoadFromCache(SongOrCourse,StepsOrTrails,"StepCounter")
+			if StepCounter and StepCounter ~= "" then
+				StepCounter = split("_",StepCounter)
+				for i=1,#StepCounter do total = total + (tonumber(StepCounter[i])*i) end
+			end
+		end
+	end
+	return total
 end
 
 local allowednotes = {
@@ -1209,7 +1236,13 @@ function grooveRadar(song,step,RadarValues)
 		local maxVoltage = tonumber(LoadFromCache(song,step,"maxVoltage"))
 		local chaosCount = tonumber(LoadFromCache(song,step,"chaosCount"))
 
-		stream = (RadarValues:GetValue('RadarCategory_Notes')/song:MusicLengthSeconds())/7
+		local total = 0
+		if tonumber(VersionDate()) < 20150500 then
+			total = RadarCategory_Notes(song,step)
+		else
+			total = RadarValues:GetValue('RadarCategory_Notes') or 0
+		end
+		stream = (total/song:MusicLengthSeconds())/7
 		voltage = ((maxVoltage/8)*(song:GetLastBeat()/song:MusicLengthSeconds()))/10
 		air = RadarValues:GetValue('RadarCategory_Jumps')/song:MusicLengthSeconds()
 		freeze = RadarValues:GetValue('RadarCategory_Holds')/song:MusicLengthSeconds()

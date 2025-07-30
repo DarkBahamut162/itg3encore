@@ -9,6 +9,14 @@ if not isOutFox() then
 	end
 end
 
+if isEtterna() and type(VersionDate) ~= "function" then
+	function VersionDate() return "20191216" end
+end
+
+if tonumber(VersionDate()) < 20150500 then
+	function Actor:effect_hold_at_full(fEffectPeriod) return self:effectperiod(1) end
+end
+
 local function GetSimfileString(steps)
 	local filename = steps:GetFilename()
 	if not filename or filename == "" then return end

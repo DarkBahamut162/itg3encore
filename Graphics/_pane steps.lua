@@ -42,10 +42,15 @@ for key,value in pairs(bottomedge) do
     bottomedge[key][3] = string.format("%x", bottomedge[key][3] * 255)
 end
 
-local function StepsDifficultyColor(self,SongOrCourse,StepsOrTrails,RadarCategory)
-	if SongOrCourse and StepsOrTrails and (not courseMode or (courseMode and not IsCourseSecret())) then
-		local numSongs = courseMode and TrailUtil.GetNumSongs(StepsOrTrails) or 1
-		val = StepsOrTrails:GetRadarValues(player):GetValue(RadarCategory)
+local function StepsDifficultyColor(self,SongOrCourse,StepsOrTrail,RadarCategory)
+	if SongOrCourse and StepsOrTrail and (not courseMode or (courseMode and not IsCourseSecret())) then
+		local numSongs = courseMode and TrailUtil.GetNumSongs(StepsOrTrail) or 1
+		val = 0
+		if RadarCategory == "RadarCategory_Notes" and tonumber(VersionDate()) < 20150500 then
+			val = RadarCategory_Notes(SongOrCourse,StepsOrTrail)
+		else
+			val = StepsOrTrail:GetRadarValues(player):GetValue(RadarCategory)
+		end
 		if not courseMode or (courseMode and not IsCourseSecret()) then
 			if val == 0 then
 				self:diffusetopedge(color("#"..topedge[1][1]..topedge[1][2]..topedge[1][3]))
@@ -100,10 +105,10 @@ return Def.ActorFrame{
 	SetCommand=function(self)
 		local val = 0
 		local SongOrCourse = courseMode and GAMESTATE:GetCurrentCourse() or GAMESTATE:GetCurrentSong()
-		local StepsOrTrails = courseMode and GAMESTATE:GetCurrentTrail(player) or GAMESTATE:GetCurrentSteps(player)
+		local StepsOrTrail = courseMode and GAMESTATE:GetCurrentTrail(player) or GAMESTATE:GetCurrentSteps(player)
 
-		StepsDifficultyColor(c.StepCount,SongOrCourse,StepsOrTrails,"RadarCategory_TapsAndHolds")
-		StepsDifficultyColor(c.TotalCount,SongOrCourse,StepsOrTrails,"RadarCategory_Notes")
+		StepsDifficultyColor(c.StepCount,SongOrCourse,StepsOrTrail,"RadarCategory_TapsAndHolds")
+		StepsDifficultyColor(c.TotalCount,SongOrCourse,StepsOrTrail,"RadarCategory_Notes")
 	end,
 	Def.BitmapText {
 		File = "_z 36px shadowx",
