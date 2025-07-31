@@ -17,6 +17,14 @@ if tonumber(VersionDate()) < 20150500 then
 	function Actor:effect_hold_at_full(fEffectPeriod) return self:effectperiod(1) end
 end
 
+function GetPreviewMusicPath(song)
+	local output = GetSMParameter(song,"PREVIEW")
+	if output == "" then
+		output = GetSMParameter(song,"MUSIC")
+	end
+	return output
+end
+
 local function GetSimfileString(steps)
 	local filename = steps:GetFilename()
 	if not filename or filename == "" then return end

@@ -18,7 +18,7 @@ return Def.ActorFrame{
 					self:diffuseshift():effectcolor1(color("#00000000")):effectcolor2(color("#00000000"))
 					local song = GAMESTATE:GetCurrentSong()
 					if song then
-						local spmp = tonumber(VersionDate()) > 20150300 and song:GetPreviewMusicPath() or " "
+						local spmp = tonumber(VersionDate()) > 20150300 and song:GetPreviewMusicPath() or GetPreviewMusicPath(song)
 						local effectclock = spmp ~= "" and "beat" or "timerglobal"
 						if song:GetFirstSecond() <= 1 then
 							self:effectcolor1(color("#FFFFFFFF")):effectclock(effectclock):effectcolor2(color("#FFFFFFFF"))

@@ -31,7 +31,7 @@ return Def.ActorFrame{
 				--[[ Automate my video timestamping this way... Work smarter not harder... ]]--
 				--lua.ReportScriptError( SongOrCourse:GetGroupName().." | "..SongOrCourse:GetDisplayFullTitle().." / "..SongOrCourse:GetDisplayArtist() )
 				if SongOrCourse then
-					local EC = tonumber(VersionDate()) > 20150300 and SongOrCourse:GetPreviewMusicPath() or " "
+					local EC = tonumber(VersionDate()) > 20150300 and SongOrCourse:GetPreviewMusicPath() or GetPreviewMusicPath(SongOrCourse)
 					local step = nil
 					if enableRounds then
 						if SongOrCourse:IsLong() then
