@@ -1,5 +1,5 @@
 return Def.ActorFrame{
-	InitCommand=function(self) self:y(-77*WideScreenDiff())end,
+	InitCommand=function(self) self:y(-77*WideScreenDiff()) end,
 	Def.Sprite {
 		Texture = THEME:GetPathG("ScreenOptions","more/moreexit"),
 		Text="Exit",

@@ -53,7 +53,7 @@ if #img_cache > 0 then
             end,
             Def.Sprite{
                 Texture = v[2],
-                OnCommand=function(self)self:setsize(64,64):diffusealpha(0):addy(20):sleep(0.004*i):decelerate(0.1):addy(-20):diffusealpha(1) end,
+                OnCommand=function(self) self:setsize(64,64):diffusealpha(0):addy(20):sleep(0.004*i):decelerate(0.1):addy(-20):diffusealpha(1) end,
                 OffCommand=function(self) self:stoptweening():sleep( 0.004*i):accelerate(0.1):addy(20):diffusealpha(0) end,
             },
         }

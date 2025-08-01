@@ -83,7 +83,7 @@ local HelpDisplay = isEtterna() and Def.BitmapText {
 			self:settext(_text[index]):sleep(1/60):queuecommand("Update")
 		end
 	end,
-	SelectMenuOpenedMessageCommand=function(self) self:bounceend(0.2):diffusealpha(1):zoomx(0.6*WideScreenDiff())end,
+	SelectMenuOpenedMessageCommand=function(self) self:bounceend(0.2):diffusealpha(1):zoomx(0.6*WideScreenDiff()) end,
 	SelectMenuClosedMessageCommand=function(self) self:linear(0.2):diffusealpha(0):zoomx(0.3*WideScreenDiff()) end
 	} or Def.HelpDisplay {
 	Condition=not isEtterna(),

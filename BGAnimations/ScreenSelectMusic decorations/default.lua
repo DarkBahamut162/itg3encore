@@ -115,7 +115,7 @@ t[#t+1] = Def.Sound {
 	OptionsListRightMessageCommand=function(self) self:queuecommand("Refresh") end,
 	OptionsListLeftMessageCommand=function(self) self:queuecommand("Refresh") end,
 	OptionsListQuickChangeMessageCommand=function(self) self:queuecommand("Refresh") end,
-	RefreshCommand=function(self)self:play() end
+	RefreshCommand=function(self) self:play() end
 }
 
 t[#t+1] = Def.Sound {
@@ -188,7 +188,7 @@ t[#t+1] = Def.ActorFrame {
 	OffCommand=function(self) self:accelerate(0.75):addx(SCREEN_WIDTH) end,
 	Def.Sprite {
 		Name="CDTitle",
-		InitCommand=function(self)self:vertalign(bottom) if GetScreenAspectRatio() <= 1 then self:horizalign(right) end end,
+		InitCommand=function(self) self:vertalign(bottom) if GetScreenAspectRatio() <= 1 then self:horizalign(right) end end,
 		OnCommand=function(self) self:effectclock('beat'):diffuseramp():effectoffset(0.2):effectcolor1(color("#808080FF")):effectcolor2(color("#FFFFFFFF")):effectperiod(1):diffusealpha(0):linear(0.4):diffusealpha(1) end
 	}
 }
