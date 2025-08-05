@@ -45,8 +45,8 @@ local function checkInitSpeedMods(pn)
 	if playeroptions:CMod()						then pX[pn] = playeroptions:CMod() pXmod[pn] = "C" end
 	if playeroptions:MMod()						then pX[pn] = playeroptions:MMod() pXmod[pn] = "m" end
 	if isOutFox() and playeroptions:AMod()		then pX[pn] = playeroptions:AMod() pXmod[pn] = "a" end
-	if isOutFox() and playeroptions:CAMod()		then pX[pn] = playeroptions:CAMod() pXmod[pn] = "ca" end
-	if isOutFox() and playeroptions:AVMod()		then pX[pn] = playeroptions:AVMod() pXmod[pn] = "av" end
+	if isOutFox() and VersionDateCheck(20220300) and playeroptions:CAMod()		then pX[pn] = playeroptions:CAMod() pXmod[pn] = "ca" end
+	if isOutFox() and VersionDateCheck(20220900) and playeroptions:AVMod()		then pX[pn] = playeroptions:AVMod() pXmod[pn] = "av" end
 end
 
 local function modifiedBPM(pn,speed,mode)

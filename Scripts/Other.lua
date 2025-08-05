@@ -247,7 +247,7 @@ function isITGmania()
 end
 
 function isOutFox()
-	return ProductFamily() == "OutFox"
+	return ProductFamily() == "OutFox" or (isStepMania() and tonumber(split("-",ProductVersion())[1]) == 5.3)
 end
 
 function isEtterna()
@@ -255,11 +255,16 @@ function isEtterna()
 end
 
 function isOutFoxV()
-	return isOutFox() and tonumber(split("-",ProductVersion())[1]) >= 0.5
+	local version = tonumber(split("-",ProductVersion())[1])
+	return isOutFox() and version >= 0.5 and version < 5
+end
+
+function VersionDateCheck(version)
+	return tonumber(VersionDate()) > version
 end
 
 function isOutFoxV043()
-	return isOutFoxV() and tonumber(VersionDate()) > 20240000
+	return isOutFoxV() and VersionDateCheck(20240000)
 end
 
 function hasAvatar(pn)
@@ -275,7 +280,7 @@ function isStepMania()
 end
 
 function isOldStepMania()
-	return ProductFamily() == "StepMania" and tonumber(VersionDate()) < 20180000
+	return ProductFamily() == "StepMania" and not VersionDateCheck(20180000)
 end
 
 function isOpenDDR()

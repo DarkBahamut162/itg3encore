@@ -127,8 +127,8 @@ return Def.ActorFrame{
 				local playeroptions = GAMESTATE:GetPlayerState(pn):GetPlayerOptions("ModsLevel_Preferred")
 				if playeroptions:MMod() then GAMESTATE:ApplyGameCommand('mod,'..playeroptions:MMod().."m",pn) break end
 				if isOutFox() then if playeroptions:AMod() then GAMESTATE:ApplyGameCommand('mod,'..playeroptions:AMod().."a",pn) break end end
-				if isOutFox() then if playeroptions:CAMod() then GAMESTATE:ApplyGameCommand('mod,'..playeroptions:CAMod().."ca",pn) break end end
-				if isOutFox() then if playeroptions:AVMod() then GAMESTATE:ApplyGameCommand('mod,'..playeroptions:AVMod().."av",pn) break end end
+				if isOutFox() and VersionDateCheck(20220300) then if playeroptions:CAMod() then GAMESTATE:ApplyGameCommand('mod,'..playeroptions:CAMod().."ca",pn) break end end
+				if isOutFox() and VersionDateCheck(20220900) then if playeroptions:AVMod() then GAMESTATE:ApplyGameCommand('mod,'..playeroptions:AVMod().."av",pn) break end end
 				if playeroptions:XMod() then GAMESTATE:ApplyGameCommand('mod,'..playeroptions:XMod().."x",pn) end
 				if playeroptions:CMod() then GAMESTATE:ApplyGameCommand('mod,'..playeroptions:CMod().."c",pn) end
 			end
@@ -336,7 +336,7 @@ return Def.ActorFrame{
 		CurrentSongChangedMessageCommand=function(self)
 			local song = GAMESTATE:GetCurrentSong()
 			if song then
-				local spmp = tonumber(VersionDate()) > 20150300 and song:GetPreviewMusicPath() or GetPreviewMusicPath(song)
+				local spmp = VersionDateCheck(20150300) and song:GetPreviewMusicPath() or GetPreviewMusicPath(song)
 				local effectclock = spmp ~= "" and "beat" or "timerglobal"
 				self:RunCommandsRecursively( function(self) self:effectclock(effectclock) end )
 			else

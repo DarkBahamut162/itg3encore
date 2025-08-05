@@ -126,7 +126,7 @@ function HasLua(song,changes)
 						return true
 					elseif string.find(parameter[i][current],".",0,true) then else
 						local groupName = song:GetGroupName()
-						local songFolder = isOutFox() and song:GetSongFolder() or GetSongFolderName(song)
+						local songFolder = (isOutFox() and VersionDateCheck(20221200)) and song:GetSongFolder() or GetSongFolderName(song)
 						local checkFolder = FILEMAN:GetDirListing("/Songs/"..groupName.."/"..songFolder.."/"..parameter[i][current].."/")
 						for insideFiles in ivalues( checkFolder ) do
 							if string.find(insideFiles,".lua",0,true) then return true end
@@ -1237,7 +1237,7 @@ function grooveRadar(song,step,RadarValues)
 		local chaosCount = tonumber(LoadFromCache(song,step,"chaosCount"))
 
 		local total = 0
-		if tonumber(VersionDate()) < 20150500 then
+		if not VersionDateCheck(20150500) then
 			total = RadarCategory_Notes(song,step)
 		else
 			total = RadarValues:GetValue('RadarCategory_Notes') or 0

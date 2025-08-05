@@ -62,7 +62,7 @@ return Def.ActorFrame{
 		CurrentSongChangedMessageCommand=function(self)
 			local song = GAMESTATE:GetCurrentSong()
 			if song then
-				local spmp = tonumber(VersionDate()) > 20150300 and song:GetPreviewMusicPath() or GetPreviewMusicPath(song)
+				local spmp = VersionDateCheck(20150300) and song:GetPreviewMusicPath() or GetPreviewMusicPath(song)
 				local effectclock = spmp ~= "" and "beat" or "timerglobal"
 				self:RunCommandsRecursively( function(self) self:effectclock(effectclock) end )
 			else

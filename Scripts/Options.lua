@@ -205,7 +205,7 @@ function SongMods()
 	end
 
 	local fail = isOutFoxV() and "FV" or "F"
-	local options = (isEtterna() and "Speed," or "1,") .."2,4,"..fail..","..((isRegular() and tonumber(VersionDate()) > 20160000) and (isOpenDDR() and "0DDR" or "0,Flare") or "0")..",3,5"..((isEtterna() or isOldStepMania()) and ",REE,AEE" or ",RE,RE2,AE,AE2,AE3")..(isOutFox() and ",AE4" or "")..",17,9,"
+	local options = (isEtterna() and "Speed," or "1,") .."2,4,"..fail..","..((isRegular() and VersionDateCheck(20160000)) and (isOpenDDR() and "0DDR" or "0,Flare") or "0")..",3,5"..((isEtterna() or isOldStepMania()) and ",REE,AEE" or ",RE,RE2,AE,AE2,AE3")..(isOutFox() and ",AE4" or "")..",17,9,"
 
 	if isRegular() then
 		if isDouble() then
@@ -360,8 +360,8 @@ end
 
 function InitPlayerOptions()
 	for pn in ivalues(GAMESTATE:GetEnabledPlayers()) do
-		setenv("Flare"..pname(pn),(not isVS() and tonumber(VersionDate()) > 20160000) and LoadUserPrefN(pn, "Flare", 0) or 0)
-		setenv("FlareType"..pname(pn),(not isVS() and tonumber(VersionDate()) > 20160000) and LoadUserPrefN(pn, "FlareType", 1) or 1)
+		setenv("Flare"..pname(pn),(not isVS() and VersionDateCheck(20160000)) and LoadUserPrefN(pn, "Flare", 0) or 0)
+		setenv("FlareType"..pname(pn),(not isVS() and VersionDateCheck(20160000)) and LoadUserPrefN(pn, "FlareType", 1) or 1)
 
 		setenv("Effect"..pname(pn),not isVS() and LoadUserPrefN(pn, "Effect", 0) or 0)
 

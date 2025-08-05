@@ -46,7 +46,7 @@ local function StepsDifficultyColor(self,SongOrCourse,StepsOrTrail,RadarCategory
 	if SongOrCourse and StepsOrTrail and (not courseMode or (courseMode and not IsCourseSecret())) then
 		local numSongs = courseMode and TrailUtil.GetNumSongs(StepsOrTrail) or 1
 		val = 0
-		if RadarCategory == "RadarCategory_Notes" and tonumber(VersionDate()) < 20150500 then
+		if RadarCategory == "RadarCategory_Notes" and not VersionDateCheck(20150500) then
 			val = RadarCategory_Notes(SongOrCourse,StepsOrTrail)
 		else
 			val = StepsOrTrail:GetRadarValues(player):GetValue(RadarCategory)
