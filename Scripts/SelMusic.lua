@@ -511,17 +511,29 @@ function cacheStep(Song,Step)
 	local scratches,foots = 0,0
 	local currentBPM,checkBPM,checkCount,maxBPM = 0,0,0,0
 	local checking = false
+	local check = VersionDateCheck(20210666)
 	local stops = timingData:GetStops()
 	local delays = timingData:GetDelays()
+	local warps = timingData:GetWarps()
+	local IsJudgableAtBeat = false
 
 	local noteData = isOutFoxV043() and Step:GetNoteData() or Song:GetNoteData(chartint)
 	for _,v in pairs( noteData ) do
+		local isStop, isDelay, isWarp = false, false, false
 		if currentBeat < v[1] then
 			currentBeat = v[1]
 			currentNotes = 0
 			lastSec = currentSec
 		end
-		if timingData:IsJudgableAtBeat(v[1]) then
+		if stops and #stops > 0 then isStop,stops = HasStopAtBeat(v[1],stops) end
+		if delays and #delays > 0 then isDelay,delays = HasDelayAtBeat(v[1],delays) end
+		if check then
+			isJudgableAtBeat = timingData:IsJudgableAtBeat(v[1])
+		else
+			if warps and #warps > 0 then isWarp,warps = HasWarpAtBeat(v[1],warps) end
+			isJudgableAtBeat = not isWarp or (isWarp and (isStop or isDelay))
+		end
+		if isJudgableAtBeat then
 			if allowednotes[v[3]] then
 				currentNotes = currentNotes + 1
 				if v["length"] then
@@ -562,9 +574,6 @@ function cacheStep(Song,Step)
 			if checkBeat then
 				if currentNotes ~= 0 then
 					currentBPM = math.round(timingData:GetBPMAtBeat(v[1]),3)
-					local isStop, isDelay, isWarp = false, false, false
-					if stops and #stops > 0 then isStop, stops = HasStopAtBeat(v[1],stops) end
-					if delays and #delays > 0 then isDelay, delays = HasDelayAtBeat(v[1],delays) end
 					if currentBPM > maxBPM and not checking and not (isStop or isDelay) then
 						checking = true
 						if currentBPM > checkBPM then checkBPM = currentBPM end

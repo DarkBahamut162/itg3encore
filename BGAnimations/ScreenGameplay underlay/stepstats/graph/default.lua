@@ -40,7 +40,7 @@ local function UpdateGraph()
     local absoluteSec = 0
     local previousSec = -999
 
-    if SongOrCourse then
+    if SongOrCourse and StepsOrTrail then
         if not isOutFoxV043() then
             for k,v in pairs( SongOrCourse:GetAllSteps() ) do
                 if v == StepsOrTrail then
@@ -51,9 +51,23 @@ local function UpdateGraph()
         end
 
         local timingData = StepsOrTrail:GetTimingData()
+        local check = VersionDateCheck(20210666)
+        local stops = check and {} or timingData:GetStops()
+        local delays = check and {} or timingData:GetDelays()
+        local warps = check and {} or timingData:GetWarps()
+        local IsJudgableAtBeat = false
 
         for v in ivalues(isOutFoxV043() and StepsOrTrail:GetNoteData() or SongOrCourse:GetNoteData(chartint)) do
-            if timingData:IsJudgableAtBeat(v[1]) then
+            if check then
+                isJudgableAtBeat = timingData:IsJudgableAtBeat(v[1])
+            else
+                local isStop, isDelay, isWarp = false, false, false
+                if stops and #stops > 0 then isStop,stops = HasStopAtBeat(v[1],stops) end
+                if delays and #delays > 0 then isDelay,delays = HasDelayAtBeat(v[1],delays) end
+                if warps and #warps > 0 then isWarp,warps = HasWarpAtBeat(v[1],warps) end
+                isJudgableAtBeat = not isWarp or (isWarp and (isStop or isDelay))
+            end
+            if isJudgableAtBeat then
                 if allowednotes[v[3]] then
                     if rowLimit then absoluteSec = timingData:GetElapsedTimeFromBeat(v[1]) end
                     if previousSec ~= absoluteSec then
@@ -194,7 +208,7 @@ local function UpdateGraphAlt()
     local combo = 1
     local lastBeat = 0
 
-    if SongOrCourse then
+    if SongOrCourse and StepsOrTrail then
         if not isOutFoxV043() then
             for k,v in pairs( SongOrCourse:GetAllSteps() ) do
                 if v == StepsOrTrail then
@@ -205,9 +219,23 @@ local function UpdateGraphAlt()
         end
 
         local timingData = StepsOrTrail:GetTimingData()
+        local check = VersionDateCheck(20210666)
+        local stops = check and {} or timingData:GetStops()
+        local delays = check and {} or timingData:GetDelays()
+        local warps = check and {} or timingData:GetWarps()
+        local IsJudgableAtBeat = false
 
         for v in ivalues(isOutFoxV043() and StepsOrTrail:GetNoteData() or SongOrCourse:GetNoteData(chartint)) do
-            if timingData:IsJudgableAtBeat(v[1]) then
+            if check then
+                isJudgableAtBeat = timingData:IsJudgableAtBeat(v[1])
+            else
+                local isStop, isDelay, isWarp = false, false, false
+                if stops and #stops > 0 then isStop,stops = HasStopAtBeat(v[1],stops) end
+                if delays and #delays > 0 then isDelay,delays = HasDelayAtBeat(v[1],delays) end
+                if warps and #warps > 0 then isWarp,warps = HasWarpAtBeat(v[1],warps) end
+                isJudgableAtBeat = not isWarp or (isWarp and (isStop or isDelay))
+            end
+            if isJudgableAtBeat then
                 if allowednotes[v[3]] then
                     local currentSec = math.round(timingData:GetElapsedTimeFromBeat(v[1]),3)
                     if previousSec ~= currentSec then
@@ -356,7 +384,7 @@ local function UpdateGraphAssist()
 	local assist = {}
     local temp = nil
 
-    if SongOrCourse then
+    if SongOrCourse and StepsOrTrail then
         local timingData = StepsOrTrail:GetTimingData()
         if getenv("ShowSpeedAssist"..pname(pn)) then
             for v in ivalues(timingData:GetBPMsAndTimes()) do
