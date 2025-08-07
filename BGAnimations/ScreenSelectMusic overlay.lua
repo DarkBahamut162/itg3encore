@@ -103,7 +103,7 @@ local HelpDisplay = isEtterna() and Def.BitmapText {
 
 return Def.ActorFrame{
 	OnCommand=function(self)
-		if isOutFox() then
+		if isOutFox() and VersionDateCheck(20205000) then
 			GAMESTATE:UpdateDiscordProfile(GAMESTATE:GetPlayerDisplayName(GAMESTATE:GetMasterPlayerNumber()))
 			local text = ""
 			if course then

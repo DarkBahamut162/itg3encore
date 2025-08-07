@@ -28,26 +28,28 @@ local function zoomM() return (SCREEN_WIDTH-xM())/SCREEN_WIDTH end
 return Def.ActorFrame {
 	Name="YOU_WISH_YOU_WERE_PLAYING_BEATMANIA_RIGHT_NOW",
 	UpdateDiscordInfoCommand=function()
-		local player = GAMESTATE:GetMasterPlayerNumber()
-		local song = GAMESTATE:GetCurrentSong()
-		if song and isOutFox() then
-			local lengthFull = string.len(song:GetDisplayFullTitle()) + 3 + string.len(song:GetGroupName())
-			local lengthMain = string.len(song:GetDisplayMainTitle()) + 3 + string.len(song:GetGroupName())
-			local title = lengthFull < 128 and song:GetDisplayFullTitle() or
-						--string.sub(song:GetDisplayFullTitle(),1,122-string.len(song:GetGroupName())) .. "..."
-						lengthMain < 128 and song:GetDisplayMainTitle() or string.sub(song:GetDisplayMainTitle(),1,122-string.len(song:GetGroupName())) .. "..."
-			local songname = title .. " - " .. song:GetGroupName()
-			local state = GAMESTATE:IsDemonstration() and "Watching Song" or "Playing Song"
-			GAMESTATE:UpdateDiscordProfile(GAMESTATE:GetPlayerDisplayName(player))
-			local stats = STATSMAN:GetCurStageStats()
-			if not stats then return end
-			local courselength = function()
-				if not isPlayMode("PlayMode_Endless") then
-					return GAMESTATE:GetCurrentCourse():GetDisplayFullTitle().. " (Song ".. stats:GetPlayerStageStats( player ):GetSongsPassed()+1 .. " of ".. GAMESTATE:GetCurrentCourse():GetEstimatedNumStages() ..")" or ""
+		if isOutFox() and VersionDateCheck(20205000) then
+			local song = GAMESTATE:GetCurrentSong()
+			if song then
+				local player = GAMESTATE:GetMasterPlayerNumber()
+				local lengthFull = string.len(song:GetDisplayFullTitle()) + 3 + string.len(song:GetGroupName())
+				local lengthMain = string.len(song:GetDisplayMainTitle()) + 3 + string.len(song:GetGroupName())
+				local title = lengthFull < 128 and song:GetDisplayFullTitle() or
+							--string.sub(song:GetDisplayFullTitle(),1,122-string.len(song:GetGroupName())) .. "..."
+							lengthMain < 128 and song:GetDisplayMainTitle() or string.sub(song:GetDisplayMainTitle(),1,122-string.len(song:GetGroupName())) .. "..."
+				local songname = title .. " - " .. song:GetGroupName()
+				local state = GAMESTATE:IsDemonstration() and "Watching Song" or "Playing Song"
+				GAMESTATE:UpdateDiscordProfile(GAMESTATE:GetPlayerDisplayName(player))
+				local stats = STATSMAN:GetCurStageStats()
+				if not stats then return end
+				local courselength = function()
+					if not isPlayMode("PlayMode_Endless") then
+						return GAMESTATE:GetCurrentCourse():GetDisplayFullTitle().. " (Song ".. stats:GetPlayerStageStats( player ):GetSongsPassed()+1 .. " of ".. GAMESTATE:GetCurrentCourse():GetEstimatedNumStages() ..")" or ""
+					end
+					return GAMESTATE:GetCurrentCourse():GetDisplayFullTitle().. " (Song ".. stats:GetPlayerStageStats( player ):GetSongsPassed()+1 .. ")" or ""
 				end
-				return GAMESTATE:GetCurrentCourse():GetDisplayFullTitle().. " (Song ".. stats:GetPlayerStageStats( player ):GetSongsPassed()+1 .. ")" or ""
+				GAMESTATE:UpdateDiscordSongPlaying(GAMESTATE:IsCourseMode() and courselength() or state,songname,(song:GetLastSecond() - GAMESTATE:GetCurMusicSeconds())/math.round(GAMESTATE:GetSongOptionsObject("ModsLevel_Song"):MusicRate(),1))
 			end
-			GAMESTATE:UpdateDiscordSongPlaying(GAMESTATE:IsCourseMode() and courselength() or state,songname,(song:GetLastSecond() - GAMESTATE:GetCurMusicSeconds())/math.round(GAMESTATE:GetSongOptionsObject("ModsLevel_Song"):MusicRate(),1))
 		end
 	end,
 	InitCommand = function(self) c = self:GetChildren() end,

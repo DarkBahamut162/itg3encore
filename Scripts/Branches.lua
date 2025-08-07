@@ -76,7 +76,7 @@ Branch.SongOptions = function()
 end
 
 Branch.BeforeGameplay = function()
-	if isOutFox() then
+	if isOutFox() and VersionDateCheck(20210815) then
 		return "ScreenLoadGameplayElements"
 	else
 		return "ScreenStageInformation"

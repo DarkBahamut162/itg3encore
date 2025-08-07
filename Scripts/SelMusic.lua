@@ -793,7 +793,7 @@ function cacheStepSM(Song,Step)
 			return {["Version"]="0"}
 		end
 	else
-		if isOutFox() then
+		if isOutFox() and VersionDateCheck(20200400) then
 			return cacheStep(Song,Step)
 		else
 			local file = getStepCacheFile(Step)
@@ -928,7 +928,7 @@ function cacheStepBMS(Song,Step)
 
 		return list
 	else
-		if isOutFox() then
+		if isOutFox() and VersionDateCheck(20200400) then
 			return cacheStep(Song,Step)
 		else
 			local file = getStepCacheFile(Step)
@@ -944,7 +944,7 @@ function cacheStepX(Song,Step)
 	--local checkBMS = filePath:sub(-3):sub(2,2) == 'm'	-- B[M]S & B[M]E & B[M]L & P[M]S
 	local checkPMS = filePath:sub(-3) == 'pms'
 
-	if not isOutFox() or ((checkSM or checkPMS) and isOutFoxV()) then
+	if not (isOutFox() and VersionDateCheck(20200400)) or ((checkSM or checkPMS) and isOutFoxV()) then
 		return checkSM and cacheStepSM(Song,Step) or cacheStepBMS(Song,Step)
 	else
 		return cacheStep(Song,Step)

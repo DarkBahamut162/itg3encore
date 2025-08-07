@@ -13,6 +13,10 @@ if isEtterna() and type(VersionDate) ~= "function" then
 	function VersionDate() return "20191216" end
 end
 
+if isOutFox() and not VersionDateCheck(20200400) then
+	function math.log10(x) return math.log(x,10) end
+end
+
 if isStepMania() and not VersionDateCheck(20150500) then
 	function Actor:effect_hold_at_full(fEffectPeriod) return self:effectperiod(1) end
 end

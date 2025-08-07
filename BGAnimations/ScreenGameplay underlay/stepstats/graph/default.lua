@@ -541,7 +541,7 @@ return Def.ActorFrame{
             CurrentTrailP1ChangedMessageCommand=function(self) if courseMode and pn == PLAYER_1 then self:playcommand("Init") end end,
             CurrentTrailP2ChangedMessageCommand=function(self) if courseMode and pn == PLAYER_2 then self:playcommand("Init") end end,
             InitCommand=function(self)
-                local vertices = showNoteGraph == 4 and GetVerticesAlt(isOutFox() and UpdateGraphAlt() or UpdateGraphAltOld()) or GetVertices(isOutFox() and UpdateGraph() or UpdateGraphOld())
+                local vertices = showNoteGraph == 4 and GetVerticesAlt((isOutFox() and VersionDateCheck(20200400)) and UpdateGraphAlt() or UpdateGraphAltOld()) or GetVertices((isOutFox() and VersionDateCheck(20200400)) and UpdateGraph() or UpdateGraphOld())
                 self:SetDrawState({Mode = 'DrawMode_Quads'})
                 self:SetVertices(1, vertices)
                 self:SetNumVertices(#vertices)
@@ -559,7 +559,7 @@ return Def.ActorFrame{
             CurrentTrailP1ChangedMessageCommand=function(self) if courseMode and pn == PLAYER_1 then self:playcommand("Init") end end,
             CurrentTrailP2ChangedMessageCommand=function(self) if courseMode and pn == PLAYER_2 then self:playcommand("Init") end end,
             InitCommand=function(self)
-                local update = showNoteGraph == 4 and (isOutFox() and UpdateGraphAlt() or UpdateGraphAltSM()) or (isOutFox() and UpdateGraph() or UpdateGraphSM())
+                local update = showNoteGraph == 4 and ((isOutFox() and VersionDateCheck(20200400)) and UpdateGraphAlt() or UpdateGraphAltSM()) or ((isOutFox() and VersionDateCheck(20200400)) and UpdateGraph() or UpdateGraphSM())
                 for i,value in pairs( update ) do update[i] = math.max(0,(update[i]-20)/4) end
                 local vertices = showNoteGraph == 4 and GetVerticesAlt(update) or GetVertices(update)
                 self:SetDrawState({Mode = 'DrawMode_Quads'})
