@@ -46,7 +46,7 @@ end
 
 return Def.ActorFrame{
 	OnCommand=function(self)
-		if isOutFox() and VersionDateCheck(20205000) then
+		if isOutFox() and VersionDateCheck(20200500) then
 			GAMESTATE:UpdateDiscordGameMode(GAMESTATE:GetCurrentGame():GetName())
 			GAMESTATE:UpdateDiscordScreenInfo("Title Menu","",1)
 		end

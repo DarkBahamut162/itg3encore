@@ -4,7 +4,7 @@ local grade = GetGradeFromPercent(percent)
 
 return Def.ActorFrame{
 	OnCommand = function(self)
-		if isOutFox() and VersionDateCheck(20205000) then
+		if isOutFox() and VersionDateCheck(20200500) then
 			local StepsOrTrail = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentTrail(master) or GAMESTATE:GetCurrentSteps(master)
 			local song = GAMESTATE:GetCurrentSong()
 			if song then

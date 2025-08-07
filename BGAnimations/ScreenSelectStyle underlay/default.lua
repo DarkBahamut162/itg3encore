@@ -71,7 +71,7 @@ return Def.ActorFrame{
 	end,
 	OnCommand=function()
 		if styles and #styles > 1 or enableUD then SCREENMAN:GetTopScreen():AddInputCallback(InputHandler) end
-		if isOutFox() and VersionDateCheck(20205000) then GAMESTATE:UpdateDiscordScreenInfo("Selecting Style","",1) end
+		if isOutFox() and VersionDateCheck(20200500) then GAMESTATE:UpdateDiscordScreenInfo("Selecting Style","",1) end
 	end,
 	OffCommand=function()
 		if styles and #styles > 1 or enableUD then SCREENMAN:GetTopScreen():RemoveInputCallback(InputHandler) end
