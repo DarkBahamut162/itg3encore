@@ -1,4 +1,20 @@
-local t = LoadFallbackB()
+local c = { [PLAYER_1] = nil, [PLAYER_2] = nil }
+local tChild
+local t = Def.ActorFrame{
+	InitCommand = function(self) tChild = self:GetChildren() end,
+	LoadFallbackB()
+}
+local view = { [PLAYER_1] = 0, [PLAYER_2] = 0 }
+local enableOffsets = ThemePrefs.Get("ShowOffset")
+local offsetInfo = getenv("OffsetTable")
+
+local timing = GetTimingDifficulty()
+local timingChange = { 1.50,1.33,1.16,1.00,0.84,0.66,0.50,0.33,0.20 }
+local W1 = (isOpenDDR() and 0.0167 or PREFSMAN:GetPreference("TimingWindowSecondsW1"))*timingChange[timing]
+local W2 = (isOpenDDR() and 0.0333 or PREFSMAN:GetPreference("TimingWindowSecondsW2"))*timingChange[timing]
+local W3 = (isOpenDDR() and 0.0920 or PREFSMAN:GetPreference("TimingWindowSecondsW3"))*timingChange[timing]
+local W4 = (isOpenDDR() and 0.1420 or PREFSMAN:GetPreference("TimingWindowSecondsW4"))*timingChange[timing]
+local W5 = (isOpenDDR() and 0.0000 or PREFSMAN:GetPreference("TimingWindowSecondsW5"))*timingChange[timing]
 
 if ShowStandardDecoration("StepsDisplay") then
 	for pn in ivalues(GAMESTATE:GetEnabledPlayers()) do
@@ -154,18 +170,10 @@ local function GetVertices(flare,level)
 		if string.find(curY,"-") then curY = 0 end
 		if string.find(nextY,"-") then nextY = 0 end
         local col = color(flareColor[level] == "rainbow" and "#ffffff" or flareColor[level])
-        vertices[#vertices+1] = {
-            {math.min(1,curX/max)*graphW, (curY/10000)*graphH, 0}, col
-        }
-        vertices[#vertices+1] = {
-            {math.min(1,curX/max)*graphW, 0, 0}, col
-        }
-        vertices[#vertices+1] = {
-            {math.min(1,nextX/max)*graphW, 0, 0}, col
-        }
-        vertices[#vertices+1] = {
-            {math.min(1,nextX/max)*graphW, (nextY/10000)*graphH, 0}, col
-        }
+        vertices[#vertices+1] = { {math.min(1,curX/max)*graphW, (curY/10000)*graphH, 0}, col }
+        vertices[#vertices+1] = { {math.min(1,curX/max)*graphW, 0, 0}, col }
+        vertices[#vertices+1] = { {math.min(1,nextX/max)*graphW, 0, 0}, col }
+        vertices[#vertices+1] = { {math.min(1,nextX/max)*graphW, (nextY/10000)*graphH, 0}, col }
     end
     return vertices
 end
@@ -181,20 +189,142 @@ local function GetVerticesOutFox(lives,pn)
 		local nextX = i+1
 		local curY = lives[i] or 0
 		local nextY = lives[i+1] or 0
-        vertices[#vertices+1] = {
-            {math.min(1,curX/max)*graphW, curY*graphH, 0}, PlayerColor(pn)
-        }
-        vertices[#vertices+1] = {
-            {math.min(1,curX/max)*graphW, 0, 0}, PlayerColorSemi(pn)
-        }
-        vertices[#vertices+1] = {
-            {math.min(1,nextX/max)*graphW, 0, 0}, PlayerColorSemi(pn)
-        }
-        vertices[#vertices+1] = {
-            {math.min(1,nextX/max)*graphW, nextY*graphH, 0}, PlayerColor(pn)
-        }
+        vertices[#vertices+1] = { {math.min(1,curX/max)*graphW, curY*graphH, 0}, PlayerColor(pn) }
+        vertices[#vertices+1] = { {math.min(1,curX/max)*graphW, 0, 0}, PlayerColorSemi(pn) }
+        vertices[#vertices+1] = { {math.min(1,nextX/max)*graphW, 0, 0}, PlayerColorSemi(pn) }
+        vertices[#vertices+1] = { {math.min(1,nextX/max)*graphW, nextY*graphH, 0}, PlayerColor(pn) }
     end
     return vertices
+end
+
+local function GetVerticesOffsetDot(offset,pn)
+	local graphH = 68/2
+	local graphW = 192
+    local vertices = {}
+	local max = TotalPossibleStepSeconds()
+	local JudgeScale = isOutFoxV() and GAMESTATE:GetPlayerState(pn):GetPlayerOptions("ModsLevel_Preferred"):JudgeScale() or 1
+	local jugd = isOpenDDR() and {
+		{W1*JudgeScale,color("#7BE8FF")},
+		{W2*JudgeScale,color("#FFA959")},
+		{W3*JudgeScale,color("#67FF19")},
+		{W4*JudgeScale,color("#D366FF")}
+	} or {
+		{W1*JudgeScale,color("#7BE8FF")},
+		{W2*JudgeScale,color("#FFA959")},
+		{W3*JudgeScale,color("#67FF19")},
+		{W4*JudgeScale,color("#D366FF")},
+		{W5*JudgeScale,color("#FF7149")}
+	}
+	local maxjudg = math.round(isOpenDDR() and W4 or W5,3)
+
+	vertices[#vertices+1] = { {math.min(1,0)*graphW, (-1-0.01)*graphH, 0}, color("#000080") }
+	vertices[#vertices+1] = { {math.min(1,0)*graphW, (-1+0.01)*graphH, 0}, color("#800000") }
+	vertices[#vertices+1] = { {math.min(1,max)*graphW, (-1+0.01)*graphH, 0}, color("#800000") }
+	vertices[#vertices+1] = { {math.min(1,max)*graphW, (-1-0.01)*graphH, 0}, color("#000080") }
+
+    for off=1, #offset do
+		local curX = offset[off][1]-CalcMinusStepSeconds(pn)
+		local nextX = offset[off][1]-CalcMinusStepSeconds(pn)
+		local curY = offset[off][2]
+		local nextY = offset[off][2]
+		for j=1, #jugd do
+			if offset[off][2] == "Miss" then
+				vertices[#vertices+1] = { {math.min(1,(curX/max-0.0015))*graphW, -2*graphH, 0}, color("#FF080880") }
+				vertices[#vertices+1] = { {math.min(1,(curX/max-0.0015))*graphW, 0, 0}, color("#FF080880") }
+				vertices[#vertices+1] = { {math.min(1,(curX/max+0.0015))*graphW, 0, 0}, color("#FF080880") }
+				vertices[#vertices+1] = { {math.min(1,(curX/max+0.0015))*graphW, -2*graphH, 0}, color("#FF080880") }
+				break
+			else
+				if math.abs(offset[off][2]) < jugd[j][1] then
+					curY = curY / maxjudg - 1
+					nextY = nextY / maxjudg - 1
+
+					vertices[#vertices+1] = { {math.min(1,curX/max-0.0015)*graphW, (curY-0.01)*graphH, 0}, jugd[j][2] }
+					vertices[#vertices+1] = { {math.min(1,curX/max-0.0015)*graphW, (curY+0.01)*graphH, 0}, jugd[j][2] }
+					vertices[#vertices+1] = { {math.min(1,nextX/max+0.0015)*graphW, (nextY+0.01)*graphH, 0}, jugd[j][2] }
+					vertices[#vertices+1] = { {math.min(1,nextX/max+0.0015)*graphW, (nextY-0.01)*graphH, 0}, jugd[j][2] }
+					break
+				end
+			end
+		end
+    end
+    return vertices
+end
+
+local function GetVerticesOffsetLine(data,pn)
+	local graphH = 68
+	local graphW = 192/2
+    local vertices = {}
+	local max = 0
+	local JudgeScale = isOutFoxV() and GAMESTATE:GetPlayerState(pn):GetPlayerOptions("ModsLevel_Preferred"):JudgeScale() or 1
+	local jugd = isOpenDDR() and {
+		{W1*JudgeScale,color("#7BE8FF")},
+		{W2*JudgeScale,color("#FFA959")},
+		{W3*JudgeScale,color("#67FF19")},
+		{W4*JudgeScale,color("#D366FF")}
+	} or {
+		{W1*JudgeScale,color("#7BE8FF")},
+		{W2*JudgeScale,color("#FFA959")},
+		{W3*JudgeScale,color("#67FF19")},
+		{W4*JudgeScale,color("#D366FF")},
+		{W5*JudgeScale,color("#FF7149")}
+	}
+	local maxjudg = math.round(isOpenDDR() and W4 or W5,3)
+
+	vertices[#vertices+1] = { {math.min(1,0-0.01)*graphW+graphW, -(1)*graphH, 0}, color("#000080") }
+	vertices[#vertices+1] = { {math.min(1,0-0.01)*graphW+graphW, (0)*graphH, 0}, color("#000080") }
+	vertices[#vertices+1] = { {math.min(1,0+0.01)*graphW+graphW, (0)*graphH, 0}, color("#800000") }
+	vertices[#vertices+1] = { {math.min(1,0+0.01)*graphW+graphW, -(1)*graphH, 0}, color("#800000") }
+
+	local offset = {}
+	for t in ivalues(data) do
+		if t[2] and type(t[2]) == "number" then
+			t[2]=math.round(t[2],3)
+			offset[t[2]] = offset[t[2]] and offset[t[2]] + 1 or 1
+		end
+	end
+	for check = -maxjudg,maxjudg+0.001,0.001 do
+		check=math.round(check,3)
+		if offset[check] then max=math.max(max,offset[check]) end
+	end
+	for i = -maxjudg,maxjudg+0.001,0.001 do
+		i=math.round(i,3)
+		if offset[i] then
+			for j=1, #jugd do
+				if math.abs(i) < jugd[j][1] then
+					vertices[#vertices+1] = { {math.min(1,i/maxjudg)*graphW+graphW, -(offset[i]/max)*graphH, 0}, jugd[j][2] }
+					vertices[#vertices+1] = { {math.min(1,i/maxjudg-0.01)*graphW+graphW, (0)*graphH, 0}, jugd[j][2] }
+					vertices[#vertices+1] = { {math.min(1,i/maxjudg+0.01)*graphW+graphW, (0)*graphH, 0}, jugd[j][2] }
+					vertices[#vertices+1] = { {math.min(1,i/maxjudg)*graphW+graphW, -(offset[i]/max)*graphH, 0}, jugd[j][2] }
+					break
+				end
+			end
+		end
+    end
+    return vertices
+end
+
+local function SwitchView(pn)
+	local check = view[pn] % 3
+	c[pn]["Graph"..pname(pn)]:diffusealpha(check == 0 and 1 or 0)
+	c[pn]["Dot"..pname(pn)]:diffusealpha(check == 1 and 1 or 0)
+	c[pn]["Line"..pname(pn)]:diffusealpha(check == 2 and 1 or 0)
+	tChild["StageAward"..pname(pn)]:diffusealpha(check == 0 and 1 or 0)
+	tChild["PeakComboAward"..pname(pn)]:diffusealpha(check == 0 and 1 or 0)
+end
+
+local InputHandler = function(event)
+	if not event.PlayerNumber or not event.button then return false end
+	if not GAMESTATE:IsHumanPlayer(event.PlayerNumber) then return false end
+	if event.type == "InputEventType_FirstPress" then
+		if event.GameButton == "MenuLeft" then
+			view[event.PlayerNumber] = view[event.PlayerNumber] - 1
+			SwitchView(event.PlayerNumber)
+		elseif event.GameButton == "MenuRight" then
+			view[event.PlayerNumber] = view[event.PlayerNumber] + 1
+			SwitchView(event.PlayerNumber)
+		end
+	end
 end
 
 local function GraphDisplay(pn)
@@ -212,7 +342,11 @@ local function GraphDisplay(pn)
 	local lastPerfectSecond = lastPerfectSecond * fix
 	local lastMarvelousSecond = lastMarvelousSecond * fix
 
-	local display = Def.ActorFrame{}
+	local display = Def.ActorFrame{
+		InitCommand=function(self) c[pn] = self:GetChildren() end,
+		OnCommand=function() if enableOffsets and not isVS() then SCREENMAN:GetTopScreen():AddInputCallback(InputHandler) end end,
+		OffCommand=function() if enableOffsets and not isVS() then SCREENMAN:GetTopScreen():RemoveInputCallback(InputHandler) end end,
+	}
 	local float = getenv("FlareDisplay"..pname(pn))
 	local last = 1
 	local flareLevel = getenv("Flare"..pname(pn))
@@ -224,13 +358,14 @@ local function GraphDisplay(pn)
 			last = #float[#float][2]
 		end
 		float[#float][1] = length
+		local flareDisplay = Def.ActorFrame{ Name="Graph"..pname(pn) }
 		for flare=last,10 do
 			for i=1,#float do
 				if type(float[i][2]) ~= 'table' then
 					float[i][2] = split("|",float[i][2])
 				end
 			end
-			display[#display+1] = Def.ActorMultiVertex{
+			flareDisplay[#flareDisplay+1] = Def.ActorMultiVertex{
 				InitCommand=function(self)
 					local vertices = GetVertices(float,flare)
 					self:SetDrawState({Mode = 'DrawMode_Quads'})
@@ -242,12 +377,14 @@ local function GraphDisplay(pn)
 				end
 			}
 		end
+		display[#display+1] = flareDisplay
 	else
 		if isOutFox() and isMGD(pn) then
 			local lives = PSS:GetLifeRecord(length, 192)
 			local mod = GetLives(pn)/100
 			for i=1,#lives do lives[i]=lives[i]*mod end
 			display[#display+1] = Def.ActorMultiVertex{
+				Name="Graph"..pname(pn),
 				InitCommand=function(self)
 					local vertices = GetVerticesOutFox(lives,pn)
 					self:SetDrawState({Mode = 'DrawMode_Quads'})
@@ -258,19 +395,68 @@ local function GraphDisplay(pn)
 				end
 			}
 		else
-			display = Def.GraphDisplay {
-				InitCommand=function(self) self:Load("GraphDisplay"..pname(pn)) end,
-				BeginCommand=function(self)
-					local ss = SCREENMAN:GetTopScreen():GetStageStats()
-					self:Set( ss, ss:GetPlayerStageStats(pn) ):player( pn )
-					if not isOutFox() and isMGD(pn) then
-						local lives = GetLives(pn)/100
-						self:zoomy(lives):addy(66*(1-lives)/2)
+			display[#display+1] = Def.ActorFrame{
+				Name="Graph"..pname(pn),
+				Def.GraphDisplay {
+					InitCommand=function(self) self:Load("GraphDisplay"..pname(pn)) end,
+					BeginCommand=function(self)
+						local ss = SCREENMAN:GetTopScreen():GetStageStats()
+						self:Set( ss, ss:GetPlayerStageStats(pn) ):player( pn )
+						if not isOutFox() and isMGD(pn) then
+							local lives = GetLives(pn)/100
+							self:zoomy(lives):addy(66*(1-lives)/2)
+						end
+						if not isOutFox() and isVS() then self:MaskDest() end
 					end
-					if not isOutFox() and isVS() then self:MaskDest() end
-				end
+				},
+				Def.ActorFrame {
+					Condition=not isSurvival(pn) and flareLevel == 0,
+					Def.Sprite {
+						Texture = THEME:GetPathB("ScreenEvaluation","underlay/FGC "..pname(pn)),
+						Condition=not isVS() and getenv("EvalCombo"..pname(pn)) and not (isOni() and not isLifeline(pn)),
+						InitCommand=function(self)
+							self:croptop(0.78) if not (PSS:FullComboOfScore('TapNoteScore_W3') and PlayerFullComboed(pn)) then self:cropright(1-(lastGreatSecond/length)) end
+						end
+					},
+					Def.Sprite {
+						Texture = THEME:GetPathB("ScreenEvaluation","underlay/FEC "..pname(pn)),
+						Condition=not isVS() and getenv("EvalCombo"..pname(pn)) and not (isOni() and not isLifeline(pn)),
+						InitCommand=function(self)
+							self:croptop(0.78) if not (PSS:FullComboOfScore('TapNoteScore_W2') and PlayerFullComboed(pn)) then self:cropright(1-(lastPerfectSecond/length)) end
+						end
+					},
+					Def.Sprite {
+						Texture = THEME:GetPathB("ScreenEvaluation","underlay/FFC "..pname(pn)),
+						Condition=not isVS() and getenv("EvalCombo"..pname(pn)) and not (isOni() and not isLifeline(pn)),
+						InitCommand=function(self)
+							self:croptop(0.78) if not (PSS:FullComboOfScore('TapNoteScore_W1') and PlayerFullComboed(pn)) then self:cropright(1-(lastMarvelousSecond/length)) end
+						end
+					}
+				}
 			}
 		end
+	end
+	if enableOffsets and offsetInfo and offsetInfo[pn] then
+		display[#display+1] = Def.ActorMultiVertex{
+			Name="Dot"..pname(pn),
+			InitCommand=function(self)
+				local vertices = GetVerticesOffsetDot(offsetInfo[pn],pn)
+				self:SetDrawState({Mode = 'DrawMode_Quads'})
+				self:SetVertices(1, vertices)
+				self:SetNumVertices(#vertices)
+				self:x(-96):y(34):diffusealpha(0)
+			end
+		}
+		display[#display+1] = Def.ActorMultiVertex{
+			Name="Line"..pname(pn),
+			InitCommand=function(self)
+				local vertices = GetVerticesOffsetLine(offsetInfo[pn],pn)
+				self:SetDrawState({Mode = 'DrawMode_Quads'})
+				self:SetVertices(1, vertices)
+				self:SetNumVertices(#vertices)
+				self:x(-96):y(34):diffusealpha(0)
+			end
+		}
 	end
 
 	if flareLevel > 0 then
@@ -290,40 +476,15 @@ local function GraphDisplay(pn)
 
 	return Def.ActorFrame {
 		Def.ActorFrame {
+			Condition=not isOutFox() and isVS(),
 			Def.Quad{
-				Condition=not isOutFox() and isVS(),
 				OnCommand=function(self) self:valign(0):zoomto(194,SCREEN_WIDTH):MaskSource(false):y(34) end
 			},
 			Def.Quad{
-				Condition=not isOutFox() and isVS(),
 				OnCommand=function(self) self:valign(1):zoomto(194,SCREEN_WIDTH):MaskSource(false):y(-34) end
 			}
 		},
-		display,
-		Def.ActorFrame {
-			Condition=not isSurvival(pn) and flareLevel == 0,
-			Def.Sprite {
-				Texture = THEME:GetPathB("ScreenEvaluation","underlay/FGC "..pname(pn)),
-				Condition=not isVS() and getenv("EvalCombo"..pname(pn)) and not (isOni() and not isLifeline(pn)),
-				InitCommand=function(self)
-					self:croptop(0.78) if not (PSS:FullComboOfScore('TapNoteScore_W3') and PlayerFullComboed(pn)) then self:cropright(1-(lastGreatSecond/length)) end
-				end
-			},
-			Def.Sprite {
-				Texture = THEME:GetPathB("ScreenEvaluation","underlay/FEC "..pname(pn)),
-				Condition=not isVS() and getenv("EvalCombo"..pname(pn)) and not (isOni() and not isLifeline(pn)),
-				InitCommand=function(self)
-					self:croptop(0.78) if not (PSS:FullComboOfScore('TapNoteScore_W2') and PlayerFullComboed(pn)) then self:cropright(1-(lastPerfectSecond/length)) end
-				end
-			},
-			Def.Sprite {
-				Texture = THEME:GetPathB("ScreenEvaluation","underlay/FFC "..pname(pn)),
-				Condition=not isVS() and getenv("EvalCombo"..pname(pn)) and not (isOni() and not isLifeline(pn)),
-				InitCommand=function(self)
-					self:croptop(0.78) if not (PSS:FullComboOfScore('TapNoteScore_W1') and PlayerFullComboed(pn)) then self:cropright(1-(lastMarvelousSecond/length)) end
-				end
-			}
-		}
+		display
 	}
 end
 

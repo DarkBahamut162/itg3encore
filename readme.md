@@ -55,6 +55,10 @@ Ability to show current Speed and Mod during GamePlay. Also enables modifying sa
 ### [ScreenEvaluation]
 - **ShowOffset:**
 Shows **earlies** and **lates** of any timing window **during evaluation** excluding misses but including perfects *(0ms)*
+  - Ability to **switch** between **multiple Graph Views**
+    - Life/Flare Graph
+    - Judgment Dotted *(Added)*
+    - Judgment Lined *(Added)*
 ### [ScreenSummary]
 - **ShowSummary:**
 Shows **songs played and their stats** after going back to title screen.

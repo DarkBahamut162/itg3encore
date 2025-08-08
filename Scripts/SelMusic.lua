@@ -68,6 +68,14 @@ function GetScreenSelectMusicHelpText()
 	return ret
 end
 
+function GetScreenEvaluationHelpText()
+	local ret = THEME:GetString("ScreenEvaluation", "HelpText")
+	if ThemePrefs.Get("ShowOffset") then
+		ret = addToOutput(ret,THEME:GetString("ScreenEvaluation","HelpTextView"),"::")
+	end
+	return ret
+end
+
 function GetSMParameter(song,parameter)
 	local filePath = song:GetSongFilePath()
 	if filePath:sub(-2) ~= 'sm' and filePath:sub(-3) ~= 'ssc' then return "" end
