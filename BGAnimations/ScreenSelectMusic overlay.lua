@@ -67,8 +67,8 @@ local HelpDisplay = isEtterna() and Def.BitmapText {
 	InitCommand=function(self)
 		local s = isOutFox() and THEME:GetString("ScreenSelectMusic", "HelpSelectTextOutFox"..(ThemePrefs.Get("SLFavorites") and "WithSL" or "")) or THEME:GetString("ScreenSelectMusic", "HelpSelectText"..(ThemePrefs.Get("SLFavorites") and "WithSL" or ""))
 		_text = split("::",s)
-		self:shadowlength(0):diffuseshift():effectcolor1(color("#FFFFFF")):effectcolor2(color("#9A9999")):effectperiod(1.5):maxwidth(269):queuecommand("Update")
-		self:CenterX():zoomx(0.3*WideScreenDiff()):zoomy(0.6*WideScreenDiff()):diffusealpha(0):shadowlength(2)
+		self:diffuseshift():effectcolor1(color("#FFFFFF")):effectcolor2(color("#9A9999")):effectperiod(1.5):maxwidth(269):shadowlength(2):queuecommand("Update")
+		self:CenterX():zoomx(0.3*WideScreenDiff()):zoomy(0.6*WideScreenDiff()):diffusealpha(0)
 	end,
 	UpdateCommand=function(self)
 		if #_text == 1 then
@@ -92,10 +92,10 @@ local HelpDisplay = isEtterna() and Def.BitmapText {
 		local s = isOutFox() and THEME:GetString("ScreenSelectMusic", "HelpSelectTextOutFox"..(ThemePrefs.Get("SLFavorites") and "WithSL" or "")) or THEME:GetString("ScreenSelectMusic", "HelpSelectText"..(ThemePrefs.Get("SLFavorites") and "WithSL" or ""))
 		self:SetSecsBetweenSwitches(THEME:GetMetric("HelpDisplay","TipSwitchTime"))
 		self:SetTipsColonSeparated(s)
-		self:maxwidth(269)
-		self:CenterX():zoomx(0.3*WideScreenDiff()):zoomy(0.6*WideScreenDiff()):diffusealpha(0):shadowlength(2)
+		self:maxwidth(269):shadowlength(2)
+		self:CenterX():zoomx(0.3*WideScreenDiff()):zoomy(0.6*WideScreenDiff()):diffusealpha(0)
 	end,
-	OnCommand=function(self) self:shadowlength(0):diffuseshift():effectcolor1(color("#FFFFFF")):effectcolor2(color("#9A9999")):effectperiod(1.5) end,
+	OnCommand=function(self) self:diffuseshift():effectcolor1(color("#FFFFFF")):effectcolor2(color("#9A9999")):effectperiod(1.5) end,
 	OffCommand=function(self) self:linear(0.3):diffusealpha(0) end,
 	SelectMenuOpenedMessageCommand=function(self) self:stoptweening():bounceend(0.2):diffusealpha(1):zoomx(0.6*WideScreenDiff()) end,
 	SelectMenuClosedMessageCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(0):zoomx(0.3*WideScreenDiff()) end
@@ -445,7 +445,7 @@ return Def.ActorFrame{
 
 	Def.ActorFrame{
 		Name="SelButtonMenu",
-		InitCommand=function(self) self:y(SCREEN_BOTTOM-54*WideScreenDiff()):visible(DifficultyChangingAvailable()) end,
+		InitCommand=function(self) self:y(isFinal() and SCREEN_BOTTOM-54*WideScreenDiff() or SCREEN_BOTTOM-51*WideScreenDiff()):visible(DifficultyChangingAvailable()) end,
 		HelpDisplay,
 		Def.ActorFrame{
 			InitCommand=function(self) self:x(SCREEN_CENTER_X-100*WideScreenDiff()) end,

@@ -8,7 +8,7 @@ return isEtterna() and Def.BitmapText {
 	InitCommand=function(self)
 		local s = THEME:GetString(Var "LoadingScreen","HelpText")
 		text = split("::",s)
-		self:shadowlength(0):diffuseshift():effectcolor1(color("#FFFFFF")):effectcolor2(color("#9A9999")):effectperiod(1.5):maxwidth(269):queuecommand("Update")
+		self:diffuseshift():effectcolor1(color("#FFFFFF")):effectcolor2(color("#9A9999")):effectperiod(1.5):maxwidth(269):queuecommand("Update")
 	end,
 	UpdateCommand=function(self)
 		if #text == 1 then
