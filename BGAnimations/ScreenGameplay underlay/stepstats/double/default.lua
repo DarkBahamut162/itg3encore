@@ -11,6 +11,7 @@ local barHeight		= 268
 local totalWidth	= 14
 local barCenter		= 0
 local target = THEME:GetMetric("PlayerStageStats", "GradePercentTier" .. string.format("%02d", 18-getenv("SetPacemaker"..pname(pn))))
+local TotalSteps = 0
 
 if GAMESTATE:IsCourseMode() then SongOrCourse,StepsOrTrail = GAMESTATE:GetCurrentCourse(),GAMESTATE:GetCurrentTrail(pn) else SongOrCourse,StepsOrTrail = GAMESTATE:GetCurrentSong(),GAMESTATE:GetCurrentSteps(pn) end
 if not isEtterna() and not scorelist then scorelist = PROFILEMAN:GetMachineProfile():GetHighScoreList(SongOrCourse,StepsOrTrail) end
@@ -23,18 +24,26 @@ if isEtterna() then
 	local stuff = rtTable[getRate(score)] or {}
 	if #stuff > 0 then topscore = stuff[1] end
 end
+
 local function StepCounter()
-	local loadStepCounter = LoadFromCache(SongOrCourse,StepsOrTrail,"StepCounter")
-	local output = 0
-	if loadStepCounter and loadStepCounter ~= "" then
-		loadStepCounter = split("_",loadStepCounter)
-		for i=1,#loadStepCounter do output = output + (tonumber(loadStepCounter[i])*i) end
-		return output*2
+	if isEtterna() then
+		return StepsOrTrail:GetRadarValues(player):GetValue("RadarCategory_Notes")*2
+	else
+		return DPMax(pn)
 	end
 end
+
 if StepsOrTrail then
-	local rv = StepsOrTrail:GetRadarValues(pn)
-	mines,holds,rolls = rv:GetValue('RadarCategory_Mines'),rv:GetValue('RadarCategory_Holds'),rv:GetValue('RadarCategory_Rolls')
+	if IsCourseSecret() or not IsCourseFixed() then
+		mines = RadarCategory_Trail(StepsOrTrail,pn,"RadarCategory_Mines")
+		holds = RadarCategory_Trail(StepsOrTrail,pn,"RadarCategory_Holds")
+		rolls = RadarCategory_Trail(StepsOrTrail,pn,"RadarCategory_Rolls")
+		TotalSteps = RadarCategory_Trail(StepsOrTrail,pn,"RadarCategory_TapsAndHolds")
+	else
+		local rv = StepsOrTrail:GetRadarValues(pn)
+		mines,holds,rolls = rv:GetValue('RadarCategory_Mines'),rv:GetValue('RadarCategory_Holds'),rv:GetValue('RadarCategory_Rolls')
+		TotalSteps =  rv:GetValue("RadarCategory_TapsAndHolds")
+	end
 	holdsAndRolls = holds + rolls
 end
 
@@ -63,7 +72,6 @@ if stats < (isOpenDDR() and 6 or 7) then
 			Condition=stats >= i,
 			JudgmentMessageCommand=function(self,param) if param.Player == pn then self:queuecommand("Update") end end,
 			UpdateCommand=function(self)
-				local TotalSteps = StepsOrTrail:GetRadarValues(pn):GetValue('RadarCategory_TapsAndHolds')
 				local Notes = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):GetTapNoteScores('TapNoteScore_'..score)
 				self:zoomy(Notes/TotalSteps*barHeight)
 			end
@@ -296,7 +304,7 @@ return Def.ActorFrame{
 							self:maxwidth(125):halign(1):shadowlength(1):addy(0):addx(125):diffuse(PlayerColor(pn)):settext(DPCur(pn))
 						end,
 						JudgmentMessageCommand=function(self,param) if param.Player == pn then self:queuecommand("Update") end end,
-						UpdateCommand=function(self) self:settext(DPCur(pn)) end
+						UpdateCommand=function(self) self:settext(math.round(DPCur(pn))) end
 					},
 					Def.BitmapText {
 						File = "_z numbers",

@@ -504,7 +504,16 @@ return Def.ActorFrame{
         Def.BitmapText {
             File = "_v 26px bold white",
             InitCommand=function(self) self:x(bannerX):zoom(0.6*WideScreenDiff()):shadowlength(1):maxwidth(264):maxheight(58) end,
-            OnCommand=function(self) if Master[index] then self:settext(Master[index]["Subtitle"] == "" and Master[index]["Title"].."\n"..Master[index]["Artist"] or Master[index]["Title"].."\n"..Master[index]["Subtitle"].."\n"..Master[index]["Artist"]) else self:settext("Overall\nPerformance") end end
+            OnCommand=function(self)
+                if Master[index] then
+                    local output = Master[index]["Title"]
+                    if Master[index]["Subtitle"] ~= "" then output = addToOutput(output,Master[index]["Subtitle"],"\n") end
+                    if Master[index]["Artist"] ~= "" then output = addToOutput(output,Master[index]["Artist"],"\n") end
+                    self:settext(output)
+                else
+                    self:settext("Overall\nPerformance")
+                end
+            end
         }
     },
     playerScore

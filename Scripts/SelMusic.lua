@@ -184,10 +184,22 @@ function IsCourseSecret()
 	return false
 end
 
+function IsCourseFixed()
+	if GAMESTATE:IsCourseMode() then
+		for i=1,#GAMESTATE:GetCurrentCourse():GetCourseEntries() do
+			if not GAMESTATE:GetCurrentCourse():GetCourseEntry(i-1):IsFixedSong() then
+				return false
+			end
+		end
+	end
+
+	return true
+end
+
 function RadarCategory_Notes(SongOrCourse,StepsOrTrail)
 	local total = 0
 	if SongOrCourse and StepsOrTrail then
-		if courseMode then
+		if GAMESTATE:IsCourseMode() then
 			if SongOrCourse and StepsOrTrail then
 				local entries = StepsOrTrail:GetTrailEntries()
 				for i=1, #entries do
@@ -206,6 +218,16 @@ function RadarCategory_Notes(SongOrCourse,StepsOrTrail)
 				StepCounter = split("_",StepCounter)
 				for i=1,#StepCounter do total = total + (tonumber(StepCounter[i])*i) end
 			end
+		end
+	end
+	return total
+end
+
+function RadarCategory_Trail(StepsOrTrail,player,RadarCategory)
+	local total = 0
+	if StepsOrTrail and player and RadarCategory then
+		for entry in ivalues(StepsOrTrail:GetTrailEntries()) do
+			total = total + entry:GetSteps():GetRadarValues(player):GetValue(RadarCategory)
 		end
 	end
 	return total

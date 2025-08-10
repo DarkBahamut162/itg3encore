@@ -28,7 +28,7 @@ if ShowStandardDecoration("StepsDisplay") then
 				end
 			},
 			Def.Sprite {
-				Condition=getenv("Flare"..pname(pn)) > 0,
+				Condition=getenv("Flare"..pname(pn)) > 0 and not GAMESTATE:IsCourseMode(),
 				Texture = THEME:GetPathB("ScreenGameplay","overlay/_border"),
 				InitCommand=function(self) self:zoomy(0.4):zoomx((pn==PLAYER_2) and -0.4 or 0.4):playcommand("ChangeBorder")  end,
 				ChangeBorderCommand=function(self)
@@ -51,7 +51,7 @@ if ShowStandardDecoration("StepsDisplay") then
 				end
 			},
 			Def.BitmapText {
-				Condition=getenv("Flare"..pname(pn)) > 0,
+				Condition=getenv("Flare"..pname(pn)) > 0 and not GAMESTATE:IsCourseMode(),
 				File = "_v 26px bold black",
 				InitCommand=function(self) self:zoom(0.33*WideScreenDiff()):addy(-11*WideScreenDiff()):playcommand("ChangeBorder") end,
 				ChangeBorderMessageCommand=function(self)
@@ -139,11 +139,11 @@ local function CalcMinusStepSeconds(pn)
 	local fSecs = 0
 
 	if GAMESTATE:IsCourseMode() then
-		local played = #STATSMAN:GetPlayedStageStats(1):GetPlayedSongs()
-		for i = 1, played do
-			local trail = GAMESTATE:GetCurrentTrail(pn):GetTrailEntry(i)
-			if trail then
-				fSecs = fSecs + trail:GetSong():GetFirstSecond()
+		local trail = GAMESTATE:GetCurrentTrail(pn):GetTrailEntry(1)
+		if trail then
+			local song = trail:GetSong()
+			if song then
+				fSecs = fSecs + song:GetFirstSecond()
 			end
 		end
 	else
@@ -351,7 +351,7 @@ local function GraphDisplay(pn)
 	local last = 1
 	local flareLevel = getenv("Flare"..pname(pn))
 
-	if flareLevel == 11 then
+	if flareLevel == 11 and not GAMESTATE:IsCourseMode() then
 		if type(float[#float][2]) ~= 'table' then
 			last = #split("|",float[#float][2])
 		else
@@ -459,7 +459,7 @@ local function GraphDisplay(pn)
 		}
 	end
 
-	if flareLevel > 0 then
+	if flareLevel > 0 and not GAMESTATE:IsCourseMode() then
 		if PSS:GetFailed() then last = 0 end
 		if last == 1 and tonumber(float[#float][2][1]) < 0 then last = 0 end
 
