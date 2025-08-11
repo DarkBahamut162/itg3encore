@@ -103,7 +103,7 @@ return Def.ActorFrame{
 			},
 			Def.Sprite {
 				Texture = "left "..(isFinal() and "final" or "normal"),
-				InitCommand=function(self) self:x(SCREEN_CENTER_X+193*WideScreenDiff()):y(SCREEN_TOP+22*WideScreenDiff()):zoom(WideScreenDiff()):halign(1):zoomx(-1) end,
+				InitCommand=function(self) self:x(SCREEN_CENTER_X+193*WideScreenDiff()):y(SCREEN_TOP+22*WideScreenDiff()):zoom(WideScreenDiff()):halign(1):zoomx(-1*WideScreenDiff()) end,
 				OnCommand=function(self) self:sleep(1.5):linear(0.1):x(SCREEN_RIGHT-16*WideScreenDiff()) end
 			},
 			Def.Sprite {
