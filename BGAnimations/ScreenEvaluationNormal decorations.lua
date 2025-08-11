@@ -5,6 +5,7 @@ local t = Def.ActorFrame{
 	LoadFallbackB()
 }
 local view = { [PLAYER_1] = 0, [PLAYER_2] = 0 }
+local judges = { [PLAYER_1] = isOpenDDR() and 4 or 5, [PLAYER_2] = isOpenDDR() and 4 or 5 }
 local enableOffsets = ThemePrefs.Get("ShowOffset")
 local offsetInfo = getenv("OffsetTable")
 
@@ -215,7 +216,7 @@ local function GetVerticesOffsetDot(offset,pn)
 		{W4*JudgeScale,color("#D366FF")},
 		{W5*JudgeScale,color("#FF7149")}
 	}
-	local maxjudg = math.round(isOpenDDR() and W4 or W5,3)
+	local maxjudg = math.round(jugd[judges[pn]][1],3)
 
 	vertices[#vertices+1] = { {math.min(1,0)*graphW, (-1-0.01)*graphH, 0}, color("#000080") }
 	vertices[#vertices+1] = { {math.min(1,0)*graphW, (-1+0.01)*graphH, 0}, color("#800000") }
@@ -227,7 +228,7 @@ local function GetVerticesOffsetDot(offset,pn)
 		local nextX = offset[off][1]-CalcMinusStepSeconds(pn)
 		local curY = offset[off][2]
 		local nextY = offset[off][2]
-		for j=1, #jugd do
+		for j=1, judges[pn] do
 			if offset[off][2] == "Miss" then
 				vertices[#vertices+1] = { {math.min(1,(curX/max-0.0015))*graphW, -2*graphH, 0}, color("#FF080880") }
 				vertices[#vertices+1] = { {math.min(1,(curX/max-0.0015))*graphW, 0, 0}, color("#FF080880") }
@@ -269,7 +270,7 @@ local function GetVerticesOffsetLine(data,pn)
 		{W4*JudgeScale,color("#D366FF")},
 		{W5*JudgeScale,color("#FF7149")}
 	}
-	local maxjudg = math.round(isOpenDDR() and W4 or W5,3)
+	local maxjudg = math.round(jugd[judges[pn]][1],3)
 
 	vertices[#vertices+1] = { {math.min(1,0-0.01)*graphW+graphW, -(1)*graphH, 0}, color("#000080") }
 	vertices[#vertices+1] = { {math.min(1,0-0.01)*graphW+graphW, (0)*graphH, 0}, color("#000080") }
@@ -290,7 +291,7 @@ local function GetVerticesOffsetLine(data,pn)
 	for i = -maxjudg,maxjudg+0.001,0.001 do
 		i=math.round(i,3)
 		if offset[i] then
-			for j=1, #jugd do
+			for j=1, judges[pn] do
 				if math.abs(i) < jugd[j][1] then
 					vertices[#vertices+1] = { {math.min(1,i/maxjudg)*graphW+graphW, -(offset[i]/max)*graphH, 0}, jugd[j][2] }
 					vertices[#vertices+1] = { {math.min(1,i/maxjudg-0.01)*graphW+graphW, (0)*graphH, 0}, jugd[j][2] }
@@ -317,12 +318,21 @@ local InputHandler = function(event)
 	if not event.PlayerNumber or not event.button then return false end
 	if not GAMESTATE:IsHumanPlayer(event.PlayerNumber) then return false end
 	if event.type == "InputEventType_FirstPress" then
-		if event.GameButton == "MenuLeft" then
-			view[event.PlayerNumber] = view[event.PlayerNumber] - 1
+		if event.GameButton == "MenuLeft" or event.GameButton == "MenuRight" then
+			if event.GameButton == "MenuLeft" then
+				view[event.PlayerNumber] = view[event.PlayerNumber] - 1
+			elseif event.GameButton == "MenuRight" then
+				view[event.PlayerNumber] = view[event.PlayerNumber] + 1
+			end
 			SwitchView(event.PlayerNumber)
-		elseif event.GameButton == "MenuRight" then
-			view[event.PlayerNumber] = view[event.PlayerNumber] + 1
-			SwitchView(event.PlayerNumber)
+		elseif event.GameButton == "MenuUp" or event.GameButton == "MenuDown" then
+			if event.GameButton == "MenuUp" then
+				judges[event.PlayerNumber] = math.min(isOpenDDR() and 4 or 5,judges[event.PlayerNumber] + 1)
+			elseif event.GameButton == "MenuDown" then
+				judges[event.PlayerNumber] = math.max(1,judges[event.PlayerNumber] - 1)
+			end
+			c[event.PlayerNumber]["Dot"..pname(event.PlayerNumber)]:playcommand("Draw")
+			c[event.PlayerNumber]["Line"..pname(event.PlayerNumber)]:playcommand("Draw")
 		end
 	end
 end
@@ -439,22 +449,24 @@ local function GraphDisplay(pn)
 	if enableOffsets and offsetInfo and offsetInfo[pn] then
 		display[#display+1] = Def.ActorMultiVertex{
 			Name="Dot"..pname(pn),
-			InitCommand=function(self)
+			InitCommand=function(self) self:diffusealpha(0):playcommand("Draw") end,
+			DrawCommand=function(self)
 				local vertices = GetVerticesOffsetDot(offsetInfo[pn],pn)
 				self:SetDrawState({Mode = 'DrawMode_Quads'})
 				self:SetVertices(1, vertices)
 				self:SetNumVertices(#vertices)
-				self:x(-96):y(34):diffusealpha(0)
+				self:x(-96):y(34)
 			end
 		}
 		display[#display+1] = Def.ActorMultiVertex{
 			Name="Line"..pname(pn),
-			InitCommand=function(self)
+			InitCommand=function(self) self:diffusealpha(0):playcommand("Draw") end,
+			DrawCommand=function(self)
 				local vertices = GetVerticesOffsetLine(offsetInfo[pn],pn)
 				self:SetDrawState({Mode = 'DrawMode_Quads'})
 				self:SetVertices(1, vertices)
 				self:SetNumVertices(#vertices)
-				self:x(-96):y(34):diffusealpha(0)
+				self:x(-96):y(34)
 			end
 		}
 	end
