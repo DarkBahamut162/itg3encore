@@ -1,10 +1,9 @@
 local pn = ...
 local graphW  = SCREEN_HEIGHT-126.5
-local max     = 92
-local height  = SCREEN_HEIGHT / max
+local graphH  = 92
+local height  = (SCREEN_HEIGHT / graphH)
 local bgColor = color('0, 0, 0, 0.66')
 local normalizeAlpha = (1.0 - bgColor[4]) * 0.8
-local graphH = -max
 local showNoteGraph = getenv("ShowNoteGraph"..pname(pn))
 local rowLimit = showNoteGraph == 2
 local lastSec = nil
@@ -426,24 +425,24 @@ local function GetVertices(stepsPerSecList)
         local alpha = 0.65 + 0.3 * normalizeAlpha
         local col = color('1, 0, 0, '..alpha)
         vertices[#vertices+1] = {
-            {curX, graphH, 0},
+            {curX, 0, 0},
             {col[1], col[2], col[3], col[4]*0.5}
         }
         local colGB = math.min((math.max(curY, 0) -12) * 0.0833, 1.0)
         col = color(string.format('%.2f, %.2f, %.2f, %.2f', (1-colGB), colGB, colGB, alpha))
         vertices[#vertices+1] = {
-            {curX, graphH - math.min(curY * height, max), 0},
+            {curX, math.min(curY * height, graphH), 0},
             col
         }
         local colGB = math.min((math.max(nextY, 0) -12) * 0.0833, 1.0)
         col = color(string.format('%.2f, %.2f, %.2f, %.2f', (1-colGB), colGB, colGB, alpha))
         vertices[#vertices+1] = {
-            {nextX, graphH - math.min(nextY * height, max), 0},
+            {nextX,math.min(nextY * height, graphH), 0},
             col
         }
         col = color('1, 0, 0, '..alpha)
         vertices[#vertices+1] = {
-            {nextX, graphH, 0},
+            {nextX, 0, 0},
             {col[1], col[2], col[3], col[4]*0.5}
         }
     end
@@ -467,24 +466,24 @@ local function GetVerticesAlt(stepsPerSecList)
         local alpha = 0.65 + 0.3 * normalizeAlpha
         local col = color('1, 0, 0, '..alpha)
         vertices[#vertices+1] = {
-            {curX, graphH, 0},
+            {curX, 0, 0},
             {col[1], col[2], col[3], col[4]*0.5}
         }
         local colGB = math.min((math.max(curY, 0) -12) * 0.0833, 1.0)
         col = color(string.format('%.2f, %.2f, %.2f, %.2f', (1-colGB), colGB, colGB, alpha))
         vertices[#vertices+1] = {
-            {curX, graphH - math.min(curY * height, max), 0},
+            {curX, math.min(curY * height, graphH), 0},
             col
         }
         local colGB = math.min((math.max(nextY, 0) -12) * 0.0833, 1.0)
         col = color(string.format('%.2f, %.2f, %.2f, %.2f', (1-colGB), colGB, colGB, alpha))
         vertices[#vertices+1] = {
-            {nextX, graphH - math.min(nextY * height, max), 0},
+            {nextX,math.min(nextY * height, graphH), 0},
             col
         }
         col = color('1, 0, 0, '..alpha)
         vertices[#vertices+1] = {
-            {nextX, graphH, 0},
+            {nextX, 0, 0},
             {col[1], col[2], col[3], col[4]*0.5}
         }
     end
@@ -497,6 +496,7 @@ local function GetVerticesAssist(insert)
     local vertices = {}
     local col = color('1, 1, 1, 1')
     local length = lastSec/352/2
+    local lines = isOutFox() and VersionDateCheck(20201100)
 
     for sec,typ in pairs(assistList) do
         if typ < 0 then
@@ -507,10 +507,15 @@ local function GetVerticesAssist(insert)
             col = color('1, 1, 1, 0.25')
         end
 
-        vertices[#vertices+1] = { {(sec-length)*graphW/lastSec, graphH*2, 0},col }
-        vertices[#vertices+1] = { {(sec-length)*graphW/lastSec, graphH, 0},col }
-        vertices[#vertices+1] = { {(sec+length)*graphW/lastSec, graphH, 0},col }
-        vertices[#vertices+1] = { {(sec+length)*graphW/lastSec, graphH*2, 0},col }
+        if lines then
+            vertices[#vertices+1] = { {sec*graphW/lastSec, 0, 0},col }
+            vertices[#vertices+1] = { {sec*graphW/lastSec, graphH, 0},col }
+        else
+            vertices[#vertices+1] = { {(sec-length)*graphW/lastSec, 0, 0},col }
+            vertices[#vertices+1] = { {(sec-length)*graphW/lastSec, graphH, 0},col }
+            vertices[#vertices+1] = { {(sec+length)*graphW/lastSec, graphH, 0},col }
+            vertices[#vertices+1] = { {(sec+length)*graphW/lastSec, 0, 0},col }
+        end
     end
     return vertices
 end
@@ -545,9 +550,9 @@ return Def.ActorFrame{
                 self:SetDrawState({Mode = 'DrawMode_Quads'})
                 self:SetVertices(1, vertices)
                 self:SetNumVertices(#vertices)
-                self:rotationz(pn == PLAYER_1 and -90 or 90)
-                self:rotationx(pn == PLAYER_1 and 0 or 180)
-                self:x(pn == PLAYER_1 and -46 or 46):y(175)
+                self:rotationz(pn == PLAYER_1 and 90 or -90)
+                self:rotationx(pn == PLAYER_1 and 180 or 0)
+                self:x(pn == PLAYER_1 and -graphH*1.5 or graphH*1.5):y(175)
                 self:diffusealpha(showNoteGraph == 4 and 0.5 or 1)
             end
         },
@@ -565,28 +570,29 @@ return Def.ActorFrame{
                 self:SetDrawState({Mode = 'DrawMode_Quads'})
                 self:SetVertices(1, vertices)
                 self:SetNumVertices(#vertices)
-                self:rotationz(pn == PLAYER_1 and -90 or 90)
-                self:rotationx(pn == PLAYER_1 and 0 or 180)
-                self:x(pn == PLAYER_1 and -46 or 46):y(175)
+                self:rotationz(pn == PLAYER_1 and 90 or -90)
+                self:rotationx(pn == PLAYER_1 and 180 or 0)
+                self:x(pn == PLAYER_1 and -graphH*1.5 or graphH*1.5):y(175)
                 self:blend(Blend.Subtract)
             end
         },
         Def.ActorMultiVertex{
-            Condition=getenv("ShowSpeedAssist"..pname(pn)) or getenv("ShowStopAssist"..pname(pn)),
-            DoneLoadingNextSongMessageCommand=function(self) self:sleep(1/60):playcommand("Draw") end,
-            CurrentStepsP1ChangedMessageCommand=function(self) if not courseMode and pn == PLAYER_1 then self:playcommand("Init") end end,
-            CurrentStepsChangedMessageCommand=function(self) if not courseMode and pn == PLAYER_1 then self:playcommand("Init") end end,
-            CurrentStepsP2ChangedMessageCommand=function(self) if not courseMode and pn == PLAYER_2 then self:playcommand("Init") end end,
-            CurrentTrailP1ChangedMessageCommand=function(self) if courseMode and pn == PLAYER_1 then self:playcommand("Init") end end,
-            CurrentTrailP2ChangedMessageCommand=function(self) if courseMode and pn == PLAYER_2 then self:playcommand("Init") end end,
+            Condition=(getenv("ShowSpeedAssist"..pname(pn)) or getenv("ShowStopAssist"..pname(pn))) and not screenCheck,
+            DoneLoadingNextSongMessageCommand=function(self) self:sleep(1/30):queuecommand("Draw") end,
+            CurrentStepsP1ChangedMessageCommand=function(self) if not courseMode and pn == PLAYER_1 then self:sleep(1/30):queuecommand("Draw") end end,
+            CurrentStepsChangedMessageCommand=function(self) if not courseMode and pn == PLAYER_1 then self:sleep(1/30):queuecommand("Draw") end end,
+            CurrentStepsP2ChangedMessageCommand=function(self) if not courseMode and pn == PLAYER_2 then self:sleep(1/30):queuecommand("Draw") end end,
+            CurrentTrailP1ChangedMessageCommand=function(self) if courseMode and pn == PLAYER_1 then self:sleep(1/30):queuecommand("Draw") end end,
+            CurrentTrailP2ChangedMessageCommand=function(self) if courseMode and pn == PLAYER_2 then self:sleep(1/30):queuecommand("Draw") end end,
+            InitCommand=function(self) self:sleep(1/30):queuecommand("Draw") end,
             DrawCommand=function(self)
                 local vertices = GetVerticesAssist(UpdateGraphAssist())
-                self:SetDrawState({Mode = 'DrawMode_Quads'})
+                self:SetDrawState((isOutFox() and VersionDateCheck(20201100)) and {Mode = 'DrawMode_Lines'} or {Mode = 'DrawMode_Quads'})
                 self:SetVertices(1, vertices)
                 self:SetNumVertices(#vertices)
-                self:rotationz(pn == PLAYER_1 and -90 or 90)
-                self:rotationx(pn == PLAYER_1 and 0 or 180)
-                self:x(pn == PLAYER_1 and -46 or 46):y(175)
+                self:rotationz(pn == PLAYER_1 and 90 or -90)
+                self:rotationx(pn == PLAYER_1 and 180 or 0)
+                self:x(pn == PLAYER_1 and -graphH*1.5 or graphH*1.5):y(175)
             end
         },
     },
