@@ -1,4 +1,4 @@
-if isOutFoxV() and not PREFSMAN:GetPreference("GimmickMode") then
+if isOutFoxV() and VersionDateCheck(20231017) and not PREFSMAN:GetPreference("GimmickMode") then
 	PREFSMAN:SetPreference("GimmickMode", 1)
 	GAMEMAN:SetGame(GAMESTATE:GetCurrentGame():GetName(),THEME:GetCurThemeName())
 end

@@ -12,7 +12,7 @@ return Def.ActorFrame{
 				if params.Song then
 					local isFav = false
 
-					if isOutFoxV() then
+					if isOutFoxV() and VersionDateCheck(20230628) then
 						isFav = GetPlayerOrMachineProfile(PLAYER_1):SongIsFavorite(params.Song)
 					elseif isOutFox() then
 						isFav = FindInTable(params.Song, getOFFavorites(PLAYER_1))

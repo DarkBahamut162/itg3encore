@@ -36,7 +36,7 @@ local InputHandler = function(event)
 		if (event.GameButton == "MenuUp" or event.GameButton == "Up") and selectHeld[event.PlayerNumber] then
 			if GAMESTATE:GetCurrentSong() then
 				if isOutFox() then
-					if not isOutFoxV() then setOFFavorites(event.PlayerNumber) end
+					if not VersionDateCheck(20230628) then setOFFavorites(event.PlayerNumber) end
 					outfoxed = true
 				elseif isEtterna() then
 					SCREENMAN:GetTopScreen():ToggleCurrentFavorite()
