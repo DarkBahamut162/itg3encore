@@ -17,13 +17,13 @@ return Def.ActorFrame{
 		},
 		Def.Sprite {
 			Texture = THEME:GetPathG("","_disk "..(isFinal() and "final" or "normal")),
-			InitCommand=function(self) self:x(SCREEN_CENTER_X-120*WideScreenDiff()):CenterY() end,
+			InitCommand=function(self) self:x(SCREEN_CENTER_X-120*WideScreenDiff()):CenterY():zoom(WideScreenDiff()) end,
 			OnCommand=function(self) self:spin():decelerate(0.2):zoom(0):rotationz(360) end
 		}
 	},
 	Def.Actor{
 		BeginCommand=function(self)
-			if SCREENMAN:GetTopScreen():HaveProfileToSave() then self:sleep(1.5) end
+			if SCREENMAN:GetTopScreen():HaveProfileToSave() then self:sleep(1.5) else self:sleep(0.2) end
 			self:queuecommand("Load")
 		end,
 		LoadCommand=function() SCREENMAN:GetTopScreen():Continue() end
