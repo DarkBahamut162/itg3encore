@@ -617,3 +617,64 @@ function EditorNoteskin()
 		end
 	}
 end
+
+function CachePref()
+	local name = isOldStepMania() and "BannerCache" or "ImageCache"
+	local var = isOldStepMania() and "BannerCacheMode" or "ImageCacheMode"
+	local IMGCache = PREFSMAN:GetPreference(name)
+
+	local t = {
+		Name = name,
+		LayoutType = "ShowAllInRow",
+		SelectType = "SelectOne",
+		OneChoiceForAllPlayers = true,
+		ExportOnChange = false,
+		Values = { var.."_Off", var.."_LowResPreload", var.."_LowResLoadOnDemand", var.."_Full" },
+		Choices = { "Off", "LowResPreload", "LowResLoadOnDemand", "Full" },
+		LoadSelections = function(self, list, pn)
+			IMGCache = PREFSMAN:GetPreference(name)
+			for i, value in ipairs(self.Values) do
+				list[i] = IMGCache == value
+			end
+		end,
+		SaveSelections = function(self, list, pn)
+			for i, choice in ipairs(self.Choices) do
+				if list[i] then
+					if IMGCache ~= self.Values[i] then
+						local output = ""
+						if isOutFox() and not isOutFoxV() and VersionDateCheck(20201000) then
+							if i == 4 then
+								output = var.." successfully changed to "..self.Choices[i]
+								if bannerForced then output = addToOutput(output,"Replacement BannerDisplay deactivated!"," | ") end
+								bannerForced = false
+							else
+								output = var.." is currently bugged within this version of Project OutFox"
+								if not bannerForced then output = addToOutput(output,"Replacement BannerDisplay activated!"," | ") end
+								bannerForced = true
+							end
+						else
+							if i == 2 then
+								output = "This option only takes effect on Preload!"
+								if not bannerForced then output = addToOutput(output,"Replacement BannerDisplay activated!"," | ") end
+								bannerForced = true
+							else
+								output = var.." successfully changed to "..self.Choices[i]
+								if i == 1 then
+									if not bannerForced then output = addToOutput(output,"Replacement BannerDisplay activated!"," | ") end
+									bannerForced = true
+								else
+									if bannerForced then output = addToOutput(output,"Replacement BannerDisplay deactivated!"," | ") end
+									bannerForced = false
+								end
+							end
+						end
+						SCREENMAN:SystemMessage(output)
+					end
+					PREFSMAN:SetPreference(name, self.Values[i])
+				end
+			end
+		end
+	}
+	setmetatable(t, t)
+	return t
+end

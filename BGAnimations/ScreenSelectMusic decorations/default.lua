@@ -35,7 +35,7 @@ if isEtterna() then
 		end,
 		CurrentSongChangedMessageCommand=function(self) self:queuecommand("Set") end
     }
-elseif not (isOutFoxV() or isOldStepMania() or isITGmania()) then
+elseif bannerForced and not isOutFoxV() then
 	t[#t+1] = Def.FadingBanner{
 		InitCommand=function(self) self:x(SCREEN_CENTER_X+140*WideScreenDiff()):y(SCREEN_CENTER_Y-91*WideScreenDiff()):addx(SCREEN_WIDTH):decelerate(0.75):addx(-SCREEN_WIDTH):ztest(true):vertalign(bottom):playcommand("Set") end,
 		OffCommand=function(self) self:accelerate(0.75):addx(SCREEN_WIDTH) end,
