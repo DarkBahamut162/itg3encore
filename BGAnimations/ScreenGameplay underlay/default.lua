@@ -8,11 +8,8 @@ for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
 end
 
 t[#t+1] = Def.ActorFrame{
-	loadfile(THEME:GetPathB("ScreenGameplay","underlay/ScreenFilter"))(),
 	loadfile(THEME:GetPathB("ScreenGameplay","underlay/beginner"))()..{ Condition=isRegular() and GAMESTATE:GetEasiestStepsDifficulty() == 'Difficulty_Beginner' },
-	loadfile(THEME:GetPathB("ScreenGameplay","underlay/stepstats"))()..{ Condition=stats },
-	loadfile(THEME:GetPathB("ScreenGameplay","underlay/danger"))()..{ Condition=not isOni() and PREFSMAN:GetPreference("ShowDanger") },
-	loadfile(THEME:GetPathB("ScreenGameplay","underlay/dead"))()
+	loadfile(THEME:GetPathB("ScreenGameplay","underlay/stepstats"))()..{ Condition=stats }
 }
 
 return t
