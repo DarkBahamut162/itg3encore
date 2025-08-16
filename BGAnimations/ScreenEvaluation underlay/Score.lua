@@ -36,6 +36,8 @@ return Def.ActorFrame{
 					Length = math.max(4-string.len(''..output), 0),
 					Diffuse = PlayerColorSemi(player),
 				})
+			elseif scoreType == 4 then
+				self:settext(FormatPercentScore(math.max(0,getenv("WIFE3"..pname(player))))) -- WIFE3
 			end
 		end,
 		OnCommand=function(self) self:addx(player == PLAYER_1 and -EvalTweenDistance() or EvalTweenDistance()):sleep(3):decelerate(0.3):addx(player == PLAYER_1 and EvalTweenDistance() or -EvalTweenDistance()) end,

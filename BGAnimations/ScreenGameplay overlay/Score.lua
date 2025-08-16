@@ -28,7 +28,7 @@ local time = GetTimeSinceStart()
 local update = true
 local dif = 1
 
-if scoreType == 1 then dif = 4 elseif scoreType == 2 then dif = 10 elseif scoreType == 3 then dif = 5 end
+if scoreType == 1 then dif = 4 elseif scoreType == 2 or scoreType == 4 then dif = 10 elseif scoreType == 3 then dif = 5 end
 
 for w,v in pairs(weight) do
 	if not isOutFox() and string.find(w,"Pro") then else weight[w] = tonumber(THEME:GetMetric('ScoreKeeperNormal', 'PercentScoreWeight'..w)) end
@@ -59,6 +59,69 @@ local function animateScore(currentScore,fakeScore)
 	end
 end
 
+local wife3_mine_hit_weight = -7
+local wife3_hold_drop_weight = -4.5
+local wife3_miss_weight = -5.5
+
+function getMaxNotes(player)
+	local SongOrCourse = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentCourse() or GAMESTATE:GetCurrentSong()
+	local StepsOrTrail = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentTrail(player) or GAMESTATE:GetCurrentSteps(player)
+	if StepsOrTrail then
+		if GAMESTATE:GetCurrentGame():CountNotesSeparately() then
+			if not VersionDateCheck(20150500) then
+				return RadarCategory_Notes(SongOrCourse,StepsOrTrail)
+			else
+				return StepsOrTrail:GetRadarValues(player):GetValue("RadarCategory_Notes")
+			end
+		else
+			return StepsOrTrail:GetRadarValues(player):GetValue("RadarCategory_TapsAndHolds") or 0
+		end
+	end
+	return 0
+end
+
+local curwifescore = 0
+local maxwifescore = 0
+local totalwifescore = getMaxNotes(player)*2
+
+function wifeF(x)
+	local a1 = 0.254829592
+	local a2 = -0.284496736
+	local a3 = 1.421413741
+	local a4 = -1.453152027
+	local a5 = 1.061405429
+	local p = 0.3275911
+
+	local sign = x < 0 and -1 or 1
+	x = math.abs(x)
+
+	local t = 1 / (1 + p * x)
+	local y = 1 - (((((a5 * t + a4) * t) + a3) * t + a2) * t + a1) * t * math.exp(-x * x)
+	return sign * y
+end
+
+function wife3(maxms,ts)
+	local j_pow = 0.75
+	local max_points = 2
+	local ridic = 5 * ts
+	local max_boo_weight = 180 * ts
+
+	maxms = math.abs(maxms * 1000)
+
+	if maxms <= ridic then return max_points end
+
+	local zero = 65 * math.pow(ts, j_pow)
+	local dev = 22.7 * math.pow(ts, j_pow)
+
+	if maxms <= zero then
+		return max_points * wifeF((zero - maxms) / dev)
+	elseif maxms <= max_boo_weight then
+		return (maxms - zero) * wife3_miss_weight / (max_boo_weight - zero)
+	end
+
+	return wife3_miss_weight
+end
+
 local function UpdateScore(self)
 	if animate then
 		if (GetTimeSinceStart() - time) >= 1/60 then
@@ -87,7 +150,7 @@ return Def.ActorFrame{
 					displayScore = 100000000
 					maxScore = 100000000
 				end
-			elseif scoreType == 2 then
+			elseif scoreType == 2 or scoreType == 4 then
 				displayScore = 10000
 			elseif scoreType == 3 then
 				displayScore = DPMax(player)
@@ -126,6 +189,25 @@ return Def.ActorFrame{
 		end,
 		JudgmentMessageCommand=function(self,param)
 			if stop then stop = false end
+			if scoreType == 4 then
+				if param.Player == player then
+					if param.HoldNoteScore then
+						if param.HoldNoteScore == "HoldNoteScore_LetGo" or param.HoldNoteScore == "HoldNoteScore_MissedHold" then
+							curwifescore = curwifescore + wife3_hold_drop_weight
+						end
+					elseif param.TapNoteScore and not param.HoldNoteScore then
+						if param.TapNoteScore == "TapNoteScore_HitMine" then
+							curwifescore = curwifescore + wife3_mine_hit_weight
+						elseif param.TapNoteScore == "TapNoteScore_Miss" then
+							curwifescore = curwifescore + wife3_miss_weight
+							maxwifescore = maxwifescore + 2
+						elseif param.TapNoteScore == "TapNoteScore_W1" or param.TapNoteScore == "TapNoteScore_W2" or param.TapNoteScore == "TapNoteScore_W3" or param.TapNoteScore == "TapNoteScore_W4" or param.TapNoteScore == "TapNoteScore_W5" then
+							curwifescore = curwifescore + wife3(param.TapNoteOffset, 1)
+							maxwifescore = maxwifescore + 2
+						end
+					end
+				end
+			end
 			local short = ToEnumShortString(param.HoldNoteScore and param.HoldNoteScore or param.TapNoteScore)
 			local update = weight[short] and weight[short] ~= 0
 			if param.Player == player and update then self:stoptweening():queuecommand("RedrawScore") end
@@ -166,7 +248,15 @@ return Def.ActorFrame{
 					Length = math.max(output >= 0 and 4-string.len(''..output) or 0, 0),
 					Diffuse = PlayerColorSemi(player),
 				})
+			elseif scoreType == 4 then
+				if scoreDirection == 1 then
+					output = animateScore(math.max(0,(curwifescore/totalwifescore)*10000),displayScore)/100
+				else
+					output = animateScore((totalwifescore-(maxwifescore-curwifescore))/totalwifescore*10000,displayScore)/100
+				end
+				self:settextf("%1.2f%%",output) -- WIFE3
 			end
-		end
+		end,
+		OffCommand=function(self) if scoreType == 4 then setenv("WIFE3"..pname(player),curwifescore/totalwifescore) end end
 	}
 }

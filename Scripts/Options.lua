@@ -375,6 +375,12 @@ function InitPlayerOptions()
 
 		setenv("ShowMovePlayerStats"..pname(pn),LoadUserPrefN(pn, "ShowMovePlayerStats", 3))
 		setenv("SetScoreType"..pname(pn),LoadUserPrefN(pn, "SetScoreType", 2))
+		if (isOutFox() and GAMESTATE:GetCurrentGame():CountNotesSeparately() and VersionDateCheck(20210300)) then
+			if getenv("SetScoreType"..pname(pn)) == 4 then
+				SCREENMAN:SystemMessage("WIFE3 is bugged if notes are counted separately! "..pname(pn).."'s ScoreType has been reset to Percent!")
+				setenv("SetScoreType"..pname(pn),SaveUserPref(pn, "SetScoreType", 2))
+			end
+		end
 		setenv("SetScoreDirection"..pname(pn),LoadUserPrefN(pn, "SetScoreDirection", 1))
 		setenv("ScreenFilter"..pname(pn),LoadUserPrefN(pn, "ScreenFilter", 0))
 
@@ -552,13 +558,21 @@ function OptionMovePlayerStats()
 end
 
 function OptionSetScoreType()
+	function GetScoreTypes(etterna)
+		if etterna or (not etterna and (isOutFox() and GAMESTATE:GetCurrentGame():CountNotesSeparately() and VersionDateCheck(20210300))) then
+			return { "Score","Percent","EX","Additive","Subtractive" }
+		else
+			return { "Score","Percent","EX","WIFE3","Additive","Subtractive" }
+		end
+	end
+
 	local t = {
 		Name="SetScoreType",
 		LayoutType = "ShowAllInRow",
 		SelectType = "SelectMultiple",
 		OneChoiceForAllPlayers = false,
 		ExportOnChange = false,
-		Choices = { "Score","Percent","EX","Additive","Subtractive" },
+		Choices = GetScoreTypes(isEtterna()),
 		LoadSelections = function(self, list, pn)
 			local scoreType = getenv("SetScoreType"..pname(pn))
 			local scoreDirection = getenv("SetScoreDirection"..pname(pn))
@@ -568,17 +582,17 @@ function OptionSetScoreType()
 				list[2] = true
 			end
 			if scoreDirection and scoreDirection ~= 0 then
-				list[scoreDirection+3] = true
+				list[scoreDirection+#self.Choices-2] = true
 			else
-				list[4] = true
+				list[#self.Choices-1] = true
 			end
 		end,
 		SaveSelections = function() end,
 		NotifyOfSelection= function(self, pn, choice)
-			if choice <= 3 then
+			if choice <= #self.Choices-2 then
 				setenv("SetScoreType"..pname(pn),SaveUserPref(pn, "SetScoreType", choice))
 			else
-				setenv("SetScoreDirection"..pname(pn),SaveUserPref(pn, "SetScoreDirection", choice-3))
+				setenv("SetScoreDirection"..pname(pn),SaveUserPref(pn, "SetScoreDirection", choice-#self.Choices+2))
 			end
 			return true
 		end
