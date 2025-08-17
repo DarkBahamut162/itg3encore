@@ -198,11 +198,7 @@ end
 function SongMods()
 	local add,add2 = "",isOutFoxV() and ",27" or ""
 
-	if not isOni() then
-		add = (GAMESTATE:GetNumPlayersEnabled() == 1 and not isDouble()) and "20S,20G," or "20G,"
-	else
-		add = (GAMESTATE:GetNumPlayersEnabled() == 1 and not isDouble()) and "20S," or ""
-	end
+	if not isOni() then add = "20G," end
 
 	local fail = isOutFoxV() and "FV" or "F"
 	local options = (isEtterna() and "Speed," or "1,") .."2,4,"..fail..","..((isRegular() and VersionDateCheck(20160000)) and (isOpenDDR() and "0DDR" or "0,Flare") or "0")..",3,5"..((isEtterna() or isOldStepMania()) and ",REE,AEE" or ",RE,RE2,AE,AE2,AE3")..(isOutFox() and ",AE4" or "")..",17,9,"
@@ -386,6 +382,7 @@ function InitPlayerOptions()
 
 		setenv("ShowStats"..pname(pn),not isVS() and LoadUserPrefN(pn, "ShowStats", 0) or 0)
 		setenv("ShowStatsSize"..pname(pn),not isVS() and LoadUserPrefN(pn, "ShowStatsSize", 1) or 1)
+		setenv("ShowStatsPos"..pname(pn),not isVS() and LoadUserPrefN(pn, "ShowStatsPos", 0) or 0)
 		setenv("ShowNoteGraph"..pname(pn),not isVS() and LoadUserPrefN(pn, "ShowNoteGraph", 1) or 1)
 		setenv("SetPacemaker"..pname(pn),not isVS() and LoadUserPrefN(pn, "SetPacemaker", 0) or 0)
 
@@ -637,53 +634,37 @@ function OptionRowScreenFilter()
 end
 
 function OptionShowStats()
+	local options = isOpenDDR() and { "Off","W1","W2","W3","W4","Miss","IIDX" } or { "Off","W1","W2","W3","W4","W5","Miss","IIDX" }
+	options[#options+1] = "Full"
+	options[#options+1] = "Mini (Bottom)"
+	options[#options+1] = "Mini (Top)"
+
 	local t = {
 		Name="ShowStats",
 		LayoutType = "ShowAllInRow",
-		SelectType = "SelectOne",
+		SelectType = "SelectMultiple",
 		OneChoiceForAllPlayers = false,
 		ExportOnChange = false,
-		Choices = isOpenDDR() and { "Off","W1","W2","W3","W4","Miss","IIDX" } or { "Off","W1","W2","W3","W4","W5","Miss","IIDX" },
+		Choices = options,
 		LoadSelections = function(self, list, pn)
-			local selected = (getenv("ShowStats"..pname(pn)) or 0) + 1
-			list[selected] = true
-		end,
-		SaveSelections = function(self, list, pn)
-			for i, choice in ipairs(self.Choices) do
-				if list[i] then
-					setenv("ShowStats"..pname(pn),SaveUserPref(pn, "ShowStats", i-1))
-					break
-				end
-			end
-		end
-	}
-	setmetatable(t, t)
-	return t
-end
-
-function OptionShowStatsSize()
-	local t = {
-		Name="ShowStatsSize",
-		LayoutType = "ShowAllInRow",
-		SelectType = "SelectOne",
-		OneChoiceForAllPlayers = false,
-		ExportOnChange = false,
-		Choices = { "Full","Mini" },
-		LoadSelections = function(self, list, pn)
-			local selected = getenv("ShowStatsSize"..pname(pn))
-			if selected and selected ~= 0 then
-				list[selected] = true
+			local showStats = (getenv("ShowStats"..pname(pn)) or 0) + 1
+			local showStatsSize = (getenv("ShowStatsSize"..pname(pn)) or 0) + (getenv("ShowStatsPos"..pname(pn)) or 0)
+			list[showStats] = true
+			if showStatsSize and showStatsSize ~= 0 then
+				list[showStatsSize+#self.Choices-3] = true
 			else
-				list[1] = true
+				list[#self.Choices-2] = true
 			end
 		end,
-		SaveSelections = function(self, list, pn)
-			for i, choice in ipairs(self.Choices) do
-				if list[i] then
-					setenv("ShowStatsSize"..pname(pn),SaveUserPref(pn, "ShowStatsSize", i))
-					break
-				end
+		SaveSelections = function() end,
+		NotifyOfSelection= function(self, pn, choice)
+			if choice <= #self.Choices-3 then
+				setenv("ShowStats"..pname(pn),SaveUserPref(pn, "ShowStats", choice-1))
+			else
+				setenv("ShowStatsSize"..pname(pn),SaveUserPref(pn, "ShowStatsSize", math.min(2,choice-#self.Choices+3)))
+				setenv("ShowStatsPos"..pname(pn),SaveUserPref(pn, "ShowStatsPos", math.max(0,choice-#self.Choices+1)))
 			end
+			return true
 		end
 	}
 	setmetatable(t, t)

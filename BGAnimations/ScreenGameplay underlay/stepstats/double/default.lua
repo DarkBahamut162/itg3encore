@@ -3,8 +3,8 @@ local pn = player or GAMESTATE:GetMasterPlayerNumber()
 local xPos = pn == PLAYER_1 and (SCREEN_RIGHT-20*WideScreenDiff()-SCREEN_WIDTH/2) or (SCREEN_LEFT+20*WideScreenDiff()-SCREEN_WIDTH/2)
 if player then xPos = player == PLAYER_1 and -20*WideScreenDiff() or 20*WideScreenDiff() end
 local SongOrCourse, StepsOrTrail, scorelist, topscore
-local mines, holds, rolls, holdsAndRolls = 0, 0, 0, 0
 local stats = getenv("ShowStats"..pname(pn))
+local graphPos = getenv("ShowStatsPos"..pname(pn)) == 0
 
 local barWidth		= {14,7,4+2/3,3+2/3,2.8,2+1/3}
 local barHeight		= 268
@@ -35,16 +35,11 @@ end
 
 if StepsOrTrail then
 	if IsCourseSecret() or not IsCourseFixed() then
-		mines = RadarCategory_Trail(StepsOrTrail,pn,"RadarCategory_Mines")
-		holds = RadarCategory_Trail(StepsOrTrail,pn,"RadarCategory_Holds")
-		rolls = RadarCategory_Trail(StepsOrTrail,pn,"RadarCategory_Rolls")
 		TotalSteps = RadarCategory_Trail(StepsOrTrail,pn,"RadarCategory_TapsAndHolds")
 	else
 		local rv = StepsOrTrail:GetRadarValues(pn)
-		mines,holds,rolls = rv:GetValue('RadarCategory_Mines'),rv:GetValue('RadarCategory_Holds'),rv:GetValue('RadarCategory_Rolls')
 		TotalSteps =  rv:GetValue("RadarCategory_TapsAndHolds")
 	end
-	holdsAndRolls = holds + rolls
 end
 
 local bgNum = stats
@@ -103,7 +98,7 @@ return Def.ActorFrame{
 		end,
 		loadfile(THEME:GetPathB("ScreenGameplay","underlay/stepstats/graph"))(pn)..{
 			Condition=getenv("ShowNoteGraph"..pname(pn)) > 1,
-			InitCommand=function(self) self:x(pn == PLAYER_1 and 53 or -53):y(-15):zoom(0.5) end
+			InitCommand=function(self) self:x(pn == PLAYER_1 and 53 or -53):y(graphPos and -15 or 70):zoom(0.5) end
 		},
 		loadfile(THEME:GetPathB("ScreenGameplay","underlay/stepstats/double/d_bg"))(pn),
 		Def.ActorFrame{
@@ -166,60 +161,11 @@ return Def.ActorFrame{
 			}
 		},
 		Def.ActorFrame{
-			InitCommand=function(self) self:x(pn == PLAYER_1 and -62 or 62):y(144):zoom(0.33) end,
+			InitCommand=function(self) self:x(pn == PLAYER_1 and -80 or 80):y(graphPos and 163 or -30):zoom(0.5) end,
 			Def.ActorFrame{
-				Def.BitmapText {
-					File = "_z bold gray 36px",
-					Condition=stats < (isOpenDDR() and 6 or 7),
-					Text="STATS",
-					OnCommand=function(self) self:zoom(0.5):halign(0):shadowlength(1):addy(-174) end
-				},
-				Def.BitmapText {
-					File = "_z bold gray 36px",
-					Condition=stats == (isOpenDDR() and 6 or 7),
-					Text="PACE",
-					OnCommand=function(self) self:zoom(0.5):halign(0):shadowlength(1):addy(-174) end
-				},
 				Def.ActorFrame{
 					Condition=stats < (isOpenDDR() and 6 or 7),
 					InitCommand=function(self) self:y(-150) end,
-					Def.BitmapText {
-						File = "ScreenGameplay judgment",
-						Name="LabelW1",
-						Text="F",
-						InitCommand=function(self) self:maxwidth(125):halign(1):addy(10-5):shadowlength(1):diffuse(TapNoteScoreToColor("TapNoteScore_W1")) end
-					},
-					Def.BitmapText {
-						File = "ScreenGameplay judgment",
-						Name="LabelW2",
-						Text="E",
-						InitCommand=function(self) self:maxwidth(125):halign(1):addy(35-4):shadowlength(1):diffuse(TapNoteScoreToColor("TapNoteScore_W2")) end
-					},
-					Def.BitmapText {
-						File = "ScreenGameplay judgment",
-						Name="LabelW3",
-						Text="G",
-						InitCommand=function(self) self:maxwidth(125):halign(1):addy(60-3):shadowlength(1):diffuse(TapNoteScoreToColor("TapNoteScore_W3")) end
-					},
-					Def.BitmapText {
-						File = "ScreenGameplay judgment",
-						Name="LabelW4",
-						Text="D",
-						InitCommand=function(self) self:maxwidth(125):halign(1):addy(85-2):shadowlength(1):diffuse(TapNoteScoreToColor("TapNoteScore_W4")) end
-					},
-					Def.BitmapText {
-						Condition=not isOpenDDR(),
-						File = "ScreenGameplay judgment",
-						Name="LabelW5",
-						Text="W",
-						InitCommand=function(self) self:maxwidth(125):halign(1):addy(110-1):shadowlength(1):diffuse(TapNoteScoreToColor("TapNoteScore_W5")) end
-					},
-					Def.BitmapText {
-						File = "ScreenGameplay judgment",
-						Name="LabelMiss",
-						Text="M",
-						InitCommand=function(self) self:maxwidth(125):halign(1):addy(isOpenDDR() and 110-1 or 135):shadowlength(1):diffuse(TapNoteScoreToColor("TapNoteScore_Miss")) end
-					},
 					Def.BitmapText {
 						File = "_z numbers",
 						Name="NumbersW1",
@@ -344,51 +290,9 @@ return Def.ActorFrame{
 							local curTargetDP = math.ceil(DPCurMax(pn)*target)
 							self:settextf("%+04d",(DPCur(pn)-curTargetDP))
 						end
-					},
-				},
-				Def.ActorFrame{
-					OnCommand=function(self)
-						if mines == 0 then
-							self:GetChild("MineName"):visible(false)
-							self:GetChild("MineCounter"):visible(false)
-						end
-						if holdsAndRolls == 0 then
-							self:GetChild("HoldName"):visible(false)
-							self:GetChild("HoldCounter"):visible(false)
-						end
-						self:queuecommand("Update")
-					end,
-					JudgmentMessageCommand=function(self,param) if param.Player == pn then self:queuecommand("Update") end end,
-					UpdateCommand=function(self)
-						local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn)
-						self:GetChild("MineCounter"):settext(pss:GetTapNoteScores('TapNoteScore_HitMine').."/"..mines)
-						self:GetChild("HoldCounter"):settext(pss:GetHoldNoteScores('HoldNoteScore_LetGo').."/"..holdsAndRolls)
-					end,
-
-					Def.BitmapText {
-						File = "ScreenGameplay judgment",
-						Name="HoldName",
-						Text="DROP'D",
-						OnCommand=function(self) self:maxwidth(125):halign(1):shadowlength(1):addy(50):fadeleft(pn == PLAYER_1 and 1 or 0):faderight(pn == PLAYER_2 and 1 or 0):linear(1):fadeleft(0):faderight(0) end
-					},
-					Def.BitmapText {
-						File = "ScreenGameplay judgment",
-						Name="MineName",
-						Text="MINED",
-						OnCommand=function(self) self:maxwidth(125):halign(1):shadowlength(1):addy(15):fadeleft(pn == PLAYER_1 and 1 or 0):faderight(pn == PLAYER_2 and 1 or 0):linear(1):fadeleft(0):faderight(0) end
-					},
-					Def.BitmapText {
-						File = "ScreenGameplay judgment",
-						Name="HoldCounter",
-						OnCommand=function(self) self:maxwidth(125):halign(1):shadowlength(1):addy(50):addx(125) end
-					},
-					Def.BitmapText {
-						File = "ScreenGameplay judgment",
-						Name="MineCounter",
-						OnCommand=function(self) self:maxwidth(125):halign(1):shadowlength(1):addy(15):addx(125) end
 					}
-				},
-			},
+				}
+			}
 		}
 	}
 }
