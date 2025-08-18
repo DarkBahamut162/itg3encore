@@ -43,23 +43,13 @@ function OptionsRowWeight()
 end
 
 function GetPlayersWithGoalType( gt )
-	local P1,P2 = false,false
-
-	for player in ivalues(GAMESTATE:GetEnabledPlayers()) do
-		if GAMESTATE:IsHumanPlayer(player) and WorkoutGetProfileGoalType(player) == gt then
-			if player == PLAYER_1 then P1 = true else P2 = true end
+	local t = {}
+	for pn in ivalues(GAMESTATE:GetEnabledPlayers()) do
+		if GAMESTATE:IsHumanPlayer(pn) and WorkoutGetProfileGoalType(pn) == gt then
+			t[pn] = pn
 		end
 	end
-
-	if P1 and P2 then
-		return {PLAYER_1,PLAYER_2}
-	elseif P1 then
-		return {PLAYER_1}
-	elseif P2 then
-		return {PLAYER_2}
-	else
-		return {}
-	end
+	return t
 end
 
 function OptionsRowGoalCalories()
@@ -67,15 +57,9 @@ function OptionsRowGoalCalories()
 		return i*10+20
 	end
 
-	local function AllChoices(bool)
+	local function AllChoices()
 		local ret = { }
-		for i = 1,98 do
-			if bool then
-				ret[i] = IndexToCalories(i).." cals"
-			else
-				ret[i] = "               "
-			end
-		end
+		for i = 1,98 do ret[i] = IndexToCalories(i).." cals" end
 		return ret
 	end
 
@@ -85,17 +69,9 @@ function OptionsRowGoalCalories()
 		SelectType = "SelectOne",
 		OneChoiceForAllPlayers = false,
 		ExportOnChange = true,
-		Choices = AllChoices(#GetPlayersWithGoalType(0)>0),
-		Values = AllChoices(true),
+		Choices = AllChoices(),
 		EnabledForPlayers = function() return GetPlayersWithGoalType( 0 ) end,
 		ReloadRowMessages = { "GoalTypeChanged" },
-		Reload= function(self)
-			self:GenChoices()
-			return "ReloadChanged_All"
-		end,
-		GenChoices= function(self)
-			self.Choices=AllChoices(#GetPlayersWithGoalType(0)>0)
-		end,
 		LoadSelections = function(self, list, pn)
 			local val = PROFILEMAN:GetProfile(pn):GetGoalCalories()
 			for i = 1,table.getn(self.Choices) do
@@ -124,15 +100,9 @@ function OptionsRowGoalSeconds()
 		return i*60+4*60
 	end
 
-	local function AllChoices(bool)
+	local function AllChoices()
 		local ret = { }
-		for i = 1,56 do
-			if bool then
-				ret[i] = (IndexToSeconds(i)/60).." mins"
-			else
-				ret[i] = "               "
-			end
-		end
+		for i = 1,56 do ret[i] = (IndexToSeconds(i)/60).." mins" end
 		return ret
 	end
 
@@ -142,17 +112,9 @@ function OptionsRowGoalSeconds()
 		SelectType = "SelectOne",
 		OneChoiceForAllPlayers = false,
 		ExportOnChange = true,
-		Choices = AllChoices(#GetPlayersWithGoalType(1)>0),
-		Values = AllChoices(true),
+		Choices = AllChoices(),
 		EnabledForPlayers = function() return GetPlayersWithGoalType( 1 ) end,
 		ReloadRowMessages = { "GoalTypeChanged" },
-		Reload= function(self)
-			self:GenChoices()
-			return "ReloadChanged_All"
-		end,
-		GenChoices= function(self)
-			self.Choices=AllChoices(#GetPlayersWithGoalType(1)>0)
-		end,
 		LoadSelections = function(self, list, pn)
 			local val = PROFILEMAN:GetProfile(pn):GetGoalSeconds()
 			for i = 1,table.getn(self.Choices) do

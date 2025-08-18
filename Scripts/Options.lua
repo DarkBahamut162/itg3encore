@@ -105,9 +105,9 @@ end
 function GetStylesWorkout()
 	if GameModeEnabled() then
 		if ChoiceDouble()[GetUserPrefN("StylePosition")] then
-			return "1,2"
+			return "1,2,3"
 		else
-			return "1"
+			return "1,2"
 		end
 	else
 		return "0"
