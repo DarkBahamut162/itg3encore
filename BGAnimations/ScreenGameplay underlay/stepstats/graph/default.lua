@@ -424,27 +424,23 @@ local function GetVertices(stepsPerSecList)
         local nextY = (i <= #stepsList) and (stepsList[i] or 0) or (#stepsList > 0 and stepsList[#stepsList]/2 or 0)
         local alpha = 0.65 + 0.3 * normalizeAlpha
         local col = color('1, 0, 0, '..alpha)
-        vertices[#vertices+1] = {
-            {curX, 0, 0},
-            {col[1], col[2], col[3], col[4]*0.5}
-        }
+        vertices[#vertices+1] = { {curX, 0, 0}, {col[1], col[2], col[3], col[4]*0.5} }
         local colGB = math.min((math.max(curY, 0) -12) * 0.0833, 1.0)
         col = color(string.format('%.2f, %.2f, %.2f, %.2f', (1-colGB), colGB, colGB, alpha))
-        vertices[#vertices+1] = {
-            {curX, math.min(curY * height, graphH), 0},
-            col
-        }
+        vertices[#vertices+1] = { {curX, math.min(curY * height, graphH), 0}, col }
         local colGB = math.min((math.max(nextY, 0) -12) * 0.0833, 1.0)
         col = color(string.format('%.2f, %.2f, %.2f, %.2f', (1-colGB), colGB, colGB, alpha))
-        vertices[#vertices+1] = {
-            {nextX,math.min(nextY * height, graphH), 0},
-            col
-        }
+        vertices[#vertices+1] = { {nextX,math.min(nextY * height, graphH), 0}, col }
         col = color('1, 0, 0, '..alpha)
-        vertices[#vertices+1] = {
-            {nextX, 0, 0},
-            {col[1], col[2], col[3], col[4]*0.5}
-        }
+        vertices[#vertices+1] = { {nextX, 0, 0}, {col[1], col[2], col[3], col[4]*0.5} }
+
+        if curY > 20 or nextY > 20 then
+            col = color('0, 0, 0, 1')
+            vertices[#vertices+1] = { {curX, 0, 0}, col }
+            vertices[#vertices+1] = { {curX, math.min(math.max(0,(curY-20)/4) * height, graphH), 0}, col }
+            vertices[#vertices+1] = { {nextX,math.min(math.max(0,(nextY-20)/4) * height, graphH), 0}, col }
+            vertices[#vertices+1] = { {nextX, 0, 0}, col }
+        end
     end
     return vertices
 end
@@ -465,27 +461,36 @@ local function GetVerticesAlt(stepsPerSecList)
         local nextY = value
         local alpha = 0.65 + 0.3 * normalizeAlpha
         local col = color('1, 0, 0, '..alpha)
-        vertices[#vertices+1] = {
-            {curX, 0, 0},
-            {col[1], col[2], col[3], col[4]*0.5}
-        }
-        local colGB = math.min((math.max(curY, 0) -12) * 0.0833, 1.0)
-        col = color(string.format('%.2f, %.2f, %.2f, %.2f', (1-colGB), colGB, colGB, alpha))
-        vertices[#vertices+1] = {
-            {curX, math.min(curY * height, graphH), 0},
-            col
-        }
-        local colGB = math.min((math.max(nextY, 0) -12) * 0.0833, 1.0)
-        col = color(string.format('%.2f, %.2f, %.2f, %.2f', (1-colGB), colGB, colGB, alpha))
-        vertices[#vertices+1] = {
-            {nextX,math.min(nextY * height, graphH), 0},
-            col
-        }
+        vertices[#vertices+1] = { {curX, 0, 0}, {col[1], col[2], col[3], col[4]*0.5} }
+
+        if showNoteGraph == 4 then
+            local colGB = math.min((math.max(nextY, 0) -12) * 0.0833, 1.0)
+            col = color(string.format('%.2f, %.2f, %.2f, %.2f', (1-colGB), colGB, colGB, alpha))
+            vertices[#vertices+1] = { {(curX+nextX)/2,math.min(nextY * height, graphH), 0}, col }
+        else
+            local colGB = math.min((math.max(curY, 0) -12) * 0.0833, 1.0)
+            col = color(string.format('%.2f, %.2f, %.2f, %.2f', (1-colGB), colGB, colGB, alpha))
+            vertices[#vertices+1] = { {curX, math.min(curY * height, graphH), 0}, col }
+            local colGB = math.min((math.max(nextY, 0) -12) * 0.0833, 1.0)
+            col = color(string.format('%.2f, %.2f, %.2f, %.2f', (1-colGB), colGB, colGB, alpha))
+            vertices[#vertices+1] = { {nextX,math.min(nextY * height, graphH), 0}, col }
+        end
+
         col = color('1, 0, 0, '..alpha)
-        vertices[#vertices+1] = {
-            {nextX, 0, 0},
-            {col[1], col[2], col[3], col[4]*0.5}
-        }
+        vertices[#vertices+1] = { {nextX, 0, 0}, {col[1], col[2], col[3], col[4]*0.5} }
+
+        if curY > 20 or nextY > 20 then
+            col = color('0, 0, 0, 1')
+            vertices[#vertices+1] = { {curX, 0, 0}, col }
+            
+            if showNoteGraph == 4 then
+                vertices[#vertices+1] = { {(curX+nextX)/2,math.min(math.max(0,(nextY-20)/4) * height, graphH), 0}, col }
+            else
+                vertices[#vertices+1] = { {curX, math.min(math.max(0,(curY-20)/4) * height, graphH), 0}, col }
+                vertices[#vertices+1] = { {nextX,math.min(math.max(0,(nextY-20)/4) * height, graphH), 0}, col }
+            end
+            vertices[#vertices+1] = { {nextX, 0, 0}, col }
+        end
     end
     return vertices
 end
@@ -547,33 +552,12 @@ return Def.ActorFrame{
             CurrentTrailP2ChangedMessageCommand=function(self) if courseMode and pn == PLAYER_2 then self:playcommand("Init") end end,
             InitCommand=function(self)
                 local vertices = showNoteGraph == 4 and GetVerticesAlt((isOutFox() and VersionDateCheck(20200400)) and UpdateGraphAlt() or UpdateGraphAltOld()) or GetVertices((isOutFox() and VersionDateCheck(20200400)) and UpdateGraph() or UpdateGraphOld())
-                self:SetDrawState({Mode = 'DrawMode_Quads'})
+                self:SetDrawState(showNoteGraph == 4 and {Mode = 'DrawMode_Triangles'} or {Mode = 'DrawMode_Quads'})
                 self:SetVertices(1, vertices)
                 self:SetNumVertices(#vertices)
                 self:rotationz(pn == PLAYER_1 and 90 or -90)
                 self:rotationx(pn == PLAYER_1 and 180 or 0)
                 self:x(pn == PLAYER_1 and -graphH*1.5 or graphH*1.5):y(175)
-                self:diffusealpha(showNoteGraph == 4 and 0.5 or 1)
-            end
-        },
-        Def.ActorMultiVertex{
-            DoneLoadingNextSongMessageCommand=function(self) self:playcommand("Init") end,
-            CurrentStepsP1ChangedMessageCommand=function(self) if not courseMode and pn == PLAYER_1 then self:playcommand("Init") end end,
-            CurrentStepsChangedMessageCommand=function(self) if not courseMode and pn == PLAYER_1 then self:playcommand("Init") end end,
-            CurrentStepsP2ChangedMessageCommand=function(self) if not courseMode and pn == PLAYER_2 then self:playcommand("Init") end end,
-            CurrentTrailP1ChangedMessageCommand=function(self) if courseMode and pn == PLAYER_1 then self:playcommand("Init") end end,
-            CurrentTrailP2ChangedMessageCommand=function(self) if courseMode and pn == PLAYER_2 then self:playcommand("Init") end end,
-            InitCommand=function(self)
-                local update = showNoteGraph == 4 and ((isOutFox() and VersionDateCheck(20200400)) and UpdateGraphAlt() or UpdateGraphAltSM()) or ((isOutFox() and VersionDateCheck(20200400)) and UpdateGraph() or UpdateGraphSM())
-                for i,value in pairs( update ) do update[i] = math.max(0,(update[i]-20)/4) end
-                local vertices = showNoteGraph == 4 and GetVerticesAlt(update) or GetVertices(update)
-                self:SetDrawState({Mode = 'DrawMode_Quads'})
-                self:SetVertices(1, vertices)
-                self:SetNumVertices(#vertices)
-                self:rotationz(pn == PLAYER_1 and 90 or -90)
-                self:rotationx(pn == PLAYER_1 and 180 or 0)
-                self:x(pn == PLAYER_1 and -graphH*1.5 or graphH*1.5):y(175)
-                self:blend(Blend.Subtract)
             end
         },
         Def.ActorMultiVertex{

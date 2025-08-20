@@ -4,7 +4,7 @@ local typeList = {"avi","f4v","flv","mkv","mp4","mpeg","mpg","mov","ogv","webm",
 Master,P1,P2={},{},{}
 bannerForced = false
 
-if isOldStepMania() then
+if isEtterna() then elseif isOldStepMania() then
 	bannerForced = PREFSMAN:GetPreference("BannerCache") == "BannerCacheMode_Off"
 elseif isOutFox() and VersionDateCheck(20201000) then
 	bannerForced = PREFSMAN:GetPreference("ImageCache") ~= "ImageCacheMode_Full"

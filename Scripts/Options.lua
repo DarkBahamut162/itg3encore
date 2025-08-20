@@ -1,10 +1,12 @@
 function ChoiceSingle()
 	if IsGame("dance") or IsGame("groove") then
-		if isOutFox() then
-			return {"single","solo","threepanel"}
+		if isEtterna() then
+			return {"single","threepanel"}
 		else
-			return {"single"}
+			return {"single","solo","threepanel"}
 		end
+	elseif IsGame("solo") then
+		return {"single"}
 	elseif IsGame("pump") then
 		return {"single"}
 	elseif IsGame("smx") then
@@ -29,8 +31,10 @@ function ChoiceVersus()
 		if isOutFox() then
 			return {"versus","solo-versus","threepanel-versus"}
 		else
-			return {"versus"}
+			return {"versus",nil,nil}
 		end
+	elseif IsGame("solo") then
+		return {nil}
 	elseif IsGame("pump") then
 		return {"versus"}
 	elseif IsGame("smx") then
@@ -53,8 +57,10 @@ function ChoiceDouble()
 		if isOutFox() then
 			return {"double","solo-double","threepanel-double"}
 		else
-			return {"double"}
+			return {"double",nil,nil}
 		end
+	elseif IsGame("solo") then
+		return {nil}
 	elseif IsGame("pump") then
 		return {"double"}
 	elseif IsGame("smx") then
@@ -75,7 +81,7 @@ function ChoiceDouble()
 end
 
 function GameModeEnabled()
-	if IsGame("dance") or IsGame("groove") or IsGame("pump") or IsGame("smx") or IsGame("be-mu") or IsGame("beat") or IsGame("po-mu") or IsGame("popn") or IsGame("techno") then
+	if IsGame("dance") or IsGame("groove") or IsGame("solo") or IsGame("pump") or IsGame("smx") or IsGame("be-mu") or IsGame("beat") or IsGame("po-mu") or IsGame("popn") or IsGame("techno") then
 		return true
 	else
 		return false
@@ -94,7 +100,13 @@ function GetStyles()
 			if ChoiceDouble()[GetUserPrefN("StylePosition")] then
 				return isEtterna() and "1,3" or "1,2,3"
 			else
-				return isEtterna() and "1" or "1,2"
+				if isEtterna() then
+					return "1"
+				elseif ChoiceVersus()[GetUserPrefN("StylePosition")] then
+					return "1,2"
+				else
+					return "1"
+				end
 			end
 		end
 	else
@@ -116,11 +128,13 @@ end
 
 function StyleName()
 	if IsGame("dance") or IsGame("groove") then
-		if isOutFox() then
-			return {"4 Arrows","6 Arrows","3 Arrows"}
+		if isEtterna() then
+			return {"4 Arrows","3 Arrows"}
 		else
-			return {"4 Arrows"}
+			return {"4 Arrows","6 Arrows","3 Arrows"}
 		end
+	elseif IsGame("solo") then
+		return {"6 Arrows"}
 	elseif IsGame("pump") then
 		return {"5 Arrows"}
 	elseif IsGame("smx") then
@@ -143,11 +157,13 @@ end
 
 function StepsTypeSingle()
 	if IsGame("dance") or IsGame("groove") then
-		if isOutFox() then
-			return {"StepsType_Dance_Single","StepsType_Dance_Solo","StepsType_Dance_Threepanel"}
+		if isEtterna() then
+			return {"StepsType_Dance_Single","StepsType_Dance_Threepanel"}
 		else
-			return {"StepsType_Dance_Single"}
+			return {"StepsType_Dance_Single","StepsType_Dance_Solo","StepsType_Dance_Threepanel"}
 		end
+	elseif IsGame("solo") then
+		return {"StepsType_Dance_Solo"}
 	elseif IsGame("pump") then
 		return {"StepsType_Pump_Single"}
 	elseif IsGame("smx") then
@@ -173,8 +189,10 @@ function StepsTypeDouble()
 		if isOutFox() then
 			return {"StepsType_Dance_Double","StepsType_Dance_Solodouble","StepsType_Dance_Threedouble"}
 		else
-			return {"StepsType_Dance_Double"}
+			return {"StepsType_Dance_Double",nil,nil}
 		end
+	elseif IsGame("solo") then
+		return {nil}
 	elseif IsGame("pump") then
 		return {"StepsType_Pump_Double"}
 	elseif IsGame("smx") then
@@ -196,11 +214,11 @@ function StepsTypeDouble()
 end
 
 function SongMods()
-	local add,add2 = "",isOutFoxV() and ",27" or ""
+	local add,add2 = "",(isOutFoxV() and VersionDateCheck(20230624)) and ",27" or ""
 
 	if not isOni() then add = "20G," end
 
-	local fail = isOutFoxV() and "FV" or "F"
+	local fail = (isOutFoxV() and VersionDateCheck(20221111)) and "FV" or "F"
 	local options = (isEtterna() and "Speed," or "1,") .."2,4,"..fail..","..((isRegular() and VersionDateCheck(20160000)) and (isOpenDDR() and "0DDR" or "0,Flare") or "0")..",3,5"..((isEtterna() or isOldStepMania()) and ",REE,AEE" or ",RE,RE2,AE,AE2,AE3")..(isOutFox() and ",AE4" or "")..",17,9,"
 
 	if isRegular() then

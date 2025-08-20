@@ -203,7 +203,7 @@ local function GetVerticesOffsetDot(offset,pn)
 	local graphW = 192
     local vertices = {}
 	local max = TotalPossibleStepSeconds()
-	local JudgeScale = isOutFoxV() and GAMESTATE:GetPlayerState(pn):GetPlayerOptions("ModsLevel_Preferred"):JudgeScale() or 1
+	local JudgeScale = (isOutFoxV() and VersionDateCheck(20230624)) and GAMESTATE:GetPlayerState(pn):GetPlayerOptions("ModsLevel_Preferred"):JudgeScale() or 1
 	local jugd = isOpenDDR() and {
 		{W1*JudgeScale,color("#7BE8FF")},
 		{W2*JudgeScale,color("#FFA959")},
@@ -223,6 +223,8 @@ local function GetVerticesOffsetDot(offset,pn)
 	vertices[#vertices+1] = { {math.min(1,max)*graphW, (-1+0.01)*graphH, 0}, color("#800000") }
 	vertices[#vertices+1] = { {math.min(1,max)*graphW, (-1-0.01)*graphH, 0}, color("#000080") }
 
+    local lines = isOutFox() and VersionDateCheck(20201100)
+
     for off=1, #offset do
 		local curX = offset[off][1]-CalcMinusStepSeconds(pn)
 		local nextX = offset[off][1]-CalcMinusStepSeconds(pn)
@@ -230,21 +232,33 @@ local function GetVerticesOffsetDot(offset,pn)
 		local nextY = offset[off][2]
 		for j=1, judges[pn] do
 			if offset[off][2] == "Miss" then
-				vertices[#vertices+1] = { {math.min(1,(curX/max-0.0015))*graphW, -2*graphH, 0}, color("#FF080880") }
-				vertices[#vertices+1] = { {math.min(1,(curX/max-0.0015))*graphW, 0, 0}, color("#FF080880") }
-				vertices[#vertices+1] = { {math.min(1,(curX/max+0.0015))*graphW, 0, 0}, color("#FF080880") }
-				vertices[#vertices+1] = { {math.min(1,(curX/max+0.0015))*graphW, -2*graphH, 0}, color("#FF080880") }
-				break
+				if lines then
+					vertices[#vertices+1] = { {math.min(1,curX/max)*graphW, -2*graphH, 0}, color("#FF080880") }
+					vertices[#vertices+1] = { {math.min(1,curX/max)*graphW, 0, 0}, color("#FF080880") }
+					break
+				else
+					vertices[#vertices+1] = { {math.min(1,(curX/max-0.0015))*graphW, -2*graphH, 0}, color("#FF080880") }
+					vertices[#vertices+1] = { {math.min(1,(curX/max-0.0015))*graphW, 0, 0}, color("#FF080880") }
+					vertices[#vertices+1] = { {math.min(1,(curX/max+0.0015))*graphW, 0, 0}, color("#FF080880") }
+					vertices[#vertices+1] = { {math.min(1,(curX/max+0.0015))*graphW, -2*graphH, 0}, color("#FF080880") }
+					break
+				end
 			else
 				if math.abs(offset[off][2]) < jugd[j][1] then
 					curY = curY / maxjudg - 1
 					nextY = nextY / maxjudg - 1
 
-					vertices[#vertices+1] = { {math.min(1,curX/max-0.0015)*graphW, (curY-0.01)*graphH, 0}, jugd[j][2] }
-					vertices[#vertices+1] = { {math.min(1,curX/max-0.0015)*graphW, (curY+0.01)*graphH, 0}, jugd[j][2] }
-					vertices[#vertices+1] = { {math.min(1,nextX/max+0.0015)*graphW, (nextY+0.01)*graphH, 0}, jugd[j][2] }
-					vertices[#vertices+1] = { {math.min(1,nextX/max+0.0015)*graphW, (nextY-0.01)*graphH, 0}, jugd[j][2] }
-					break
+					if lines then
+						vertices[#vertices+1] = { {math.min(1,curX/max)*graphW, (curY-0.01)*graphH, 0}, jugd[j][2] }
+						vertices[#vertices+1] = { {math.min(1,nextX/max)*graphW, (nextY+0.01)*graphH, 0}, jugd[j][2] }
+						break
+					else
+						vertices[#vertices+1] = { {math.min(1,curX/max-0.0015)*graphW, (curY-0.01)*graphH, 0}, jugd[j][2] }
+						vertices[#vertices+1] = { {math.min(1,curX/max-0.0015)*graphW, (curY+0.01)*graphH, 0}, jugd[j][2] }
+						vertices[#vertices+1] = { {math.min(1,nextX/max+0.0015)*graphW, (nextY+0.01)*graphH, 0}, jugd[j][2] }
+						vertices[#vertices+1] = { {math.min(1,nextX/max+0.0015)*graphW, (nextY-0.01)*graphH, 0}, jugd[j][2] }
+						break
+					end
 				end
 			end
 		end
@@ -257,7 +271,7 @@ local function GetVerticesOffsetLine(data,pn)
 	local graphW = 192/2
     local vertices = {}
 	local max = 0
-	local JudgeScale = isOutFoxV() and GAMESTATE:GetPlayerState(pn):GetPlayerOptions("ModsLevel_Preferred"):JudgeScale() or 1
+	local JudgeScale = (isOutFoxV() and VersionDateCheck(20230624)) and GAMESTATE:GetPlayerState(pn):GetPlayerOptions("ModsLevel_Preferred"):JudgeScale() or 1
 	local jugd = isOpenDDR() and {
 		{W1*JudgeScale,color("#7BE8FF")},
 		{W2*JudgeScale,color("#FFA959")},
@@ -271,6 +285,7 @@ local function GetVerticesOffsetLine(data,pn)
 		{W5*JudgeScale,color("#FF7149")}
 	}
 	local maxjudg = math.round(jugd[judges[pn]][1],3)
+    local lines = isOutFox() and VersionDateCheck(20201100)
 
 	vertices[#vertices+1] = { {math.min(1,0-0.01)*graphW+graphW, -(1)*graphH, 0}, color("#000080") }
 	vertices[#vertices+1] = { {math.min(1,0-0.01)*graphW+graphW, (0)*graphH, 0}, color("#000080") }
@@ -293,11 +308,17 @@ local function GetVerticesOffsetLine(data,pn)
 		if offset[i] then
 			for j=1, judges[pn] do
 				if math.abs(i) < jugd[j][1] then
-					vertices[#vertices+1] = { {math.min(1,i/maxjudg)*graphW+graphW, -(offset[i]/max)*graphH, 0}, jugd[j][2] }
-					vertices[#vertices+1] = { {math.min(1,i/maxjudg-0.01)*graphW+graphW, (0)*graphH, 0}, jugd[j][2] }
-					vertices[#vertices+1] = { {math.min(1,i/maxjudg+0.01)*graphW+graphW, (0)*graphH, 0}, jugd[j][2] }
-					vertices[#vertices+1] = { {math.min(1,i/maxjudg)*graphW+graphW, -(offset[i]/max)*graphH, 0}, jugd[j][2] }
-					break
+					if lines then
+						vertices[#vertices+1] = { {math.min(1,i/maxjudg)*graphW+graphW, -(offset[i]/max)*graphH, 0}, jugd[j][2] }
+						vertices[#vertices+1] = { {math.min(1,i/maxjudg)*graphW+graphW, (0)*graphH, 0}, jugd[j][2] }
+						break
+					else
+						vertices[#vertices+1] = { {math.min(1,i/maxjudg)*graphW+graphW, -(offset[i]/max)*graphH, 0}, jugd[j][2] }
+						vertices[#vertices+1] = { {math.min(1,i/maxjudg-0.01)*graphW+graphW, (0)*graphH, 0}, jugd[j][2] }
+						vertices[#vertices+1] = { {math.min(1,i/maxjudg+0.01)*graphW+graphW, (0)*graphH, 0}, jugd[j][2] }
+						vertices[#vertices+1] = { {math.min(1,i/maxjudg)*graphW+graphW, -(offset[i]/max)*graphH, 0}, jugd[j][2] }
+						break
+					end
 				end
 			end
 		end
@@ -314,6 +335,8 @@ local function SwitchView(pn)
 	tChild["PeakComboAward"..pname(pn)]:diffusealpha(check == 0 and 1 or 0)
 end
 
+local checkUpdate = false
+
 local InputHandler = function(event)
 	if not event.PlayerNumber or not event.button then return false end
 	if not GAMESTATE:IsHumanPlayer(event.PlayerNumber) then return false end
@@ -326,13 +349,18 @@ local InputHandler = function(event)
 			end
 			SwitchView(event.PlayerNumber)
 		elseif event.GameButton == "MenuUp" or event.GameButton == "MenuDown" then
-			if event.GameButton == "MenuUp" then
-				judges[event.PlayerNumber] = math.min(isOpenDDR() and 4 or 5,judges[event.PlayerNumber] + 1)
-			elseif event.GameButton == "MenuDown" then
-				judges[event.PlayerNumber] = math.max(1,judges[event.PlayerNumber] - 1)
+			if event.GameButton == "MenuUp" and judges[event.PlayerNumber] < (isOpenDDR() and 4 or 5) then
+				judges[event.PlayerNumber] = judges[event.PlayerNumber] + 1
+				checkUpdate = true
+			elseif event.GameButton == "MenuDown" and judges[event.PlayerNumber] > 1 then
+				judges[event.PlayerNumber] = judges[event.PlayerNumber] - 1
+				checkUpdate = true
 			end
-			c[event.PlayerNumber]["Dot"..pname(event.PlayerNumber)]:playcommand("Draw")
-			c[event.PlayerNumber]["Line"..pname(event.PlayerNumber)]:playcommand("Draw")
+			if checkUpdate then
+				c[event.PlayerNumber]["Dot"..pname(event.PlayerNumber)]:playcommand("Draw")
+				c[event.PlayerNumber]["Line"..pname(event.PlayerNumber)]:playcommand("Draw")
+				checkUpdate = false
+			end
 		end
 	end
 end
@@ -452,7 +480,7 @@ local function GraphDisplay(pn)
 			InitCommand=function(self) self:diffusealpha(0):playcommand("Draw") end,
 			DrawCommand=function(self)
 				local vertices = GetVerticesOffsetDot(offsetInfo[pn],pn)
-				self:SetDrawState({Mode = 'DrawMode_Quads'})
+                self:SetDrawState((isOutFox() and VersionDateCheck(20201100)) and {Mode = 'DrawMode_Lines'} or {Mode = 'DrawMode_Quads'})
 				self:SetVertices(1, vertices)
 				self:SetNumVertices(#vertices)
 				self:x(-96):y(34)
@@ -463,7 +491,7 @@ local function GraphDisplay(pn)
 			InitCommand=function(self) self:diffusealpha(0):playcommand("Draw") end,
 			DrawCommand=function(self)
 				local vertices = GetVerticesOffsetLine(offsetInfo[pn],pn)
-				self:SetDrawState({Mode = 'DrawMode_Quads'})
+                self:SetDrawState((isOutFox() and VersionDateCheck(20201100)) and {Mode = 'DrawMode_Lines'} or {Mode = 'DrawMode_Quads'})
 				self:SetVertices(1, vertices)
 				self:SetNumVertices(#vertices)
 				self:x(-96):y(34)
