@@ -437,11 +437,10 @@ TopFrame[#TopFrame+1] = Def.BitmapText {
 	InitCommand=function(self) self:zoom(0.4):maxwidth(832):settext("TITLE"):CenterX():y(6):shadowlength(0):playcommand("Title") end,
 	CurrentSongChangedMessageCommand=function(self) self:playcommand("Title") end,
 	TitleCommand=function(self)
-		local song = GAMESTATE:GetCurrentSong()
 		local course = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentCourse() or nil
+		local SongOrSteps = checkBMS() and GAMESTATE:GetCurrentSteps(GAMESTATE:GetMasterPlayerNumber()) or GAMESTATE:GetCurrentSong()
 		local text = ""
-
-		if song then text = song:GetDisplayFullTitle() end
+		if SongOrSteps then text = checkBMS() and GetBMSTitle(SongOrSteps) or SongOrSteps:GetDisplayFullTitle() end
 		if course then text = course:GetDisplayFullTitle() .. " - " .. text end
 
 		self:settext( text )

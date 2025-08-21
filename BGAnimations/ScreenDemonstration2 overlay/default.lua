@@ -105,8 +105,12 @@ return Def.ActorFrame{
 		File = "_v profile",
 		InitCommand=function(self) self:x(posX_now):y(SCREEN_HEIGHT/8*7):zoom(0.7*WideScreenDiff()):maxwidth(300) end,
 		BeginCommand=function(self)
-			local song = GAMESTATE:GetCurrentSong()
-			if song then self:settext("Now playing:\n" ..song:GetDisplayFullTitle().."\nby "..song:GetDisplayArtist()) end
+			local SongOrSteps = checkBMS() and GAMESTATE:GetCurrentSteps(GAMESTATE:GetMasterPlayerNumber()) or GAMESTATE:GetCurrentSong()
+			local text = "Now playing:\n"
+			if SongOrSteps then text = text .. (checkBMS() and GetBMSTitle(SongOrSteps) or SongOrSteps:GetDisplayFullTitle()) end
+			text = text .. "\nby "
+			if SongOrSteps then text = text .. (checkBMS() and GetBMSArtist(SongOrSteps) or SongOrSteps:GetDisplayArtist()) end
+			self:settext(text)
 		end
 	},
 	Def.Quad{

@@ -154,8 +154,8 @@ return Def.ActorFrame{
 				CurrentSongChangedMessageCommand=function(self) self:playcommand("Update") end,
 				UpdateCommand=function(self)
 					local text = ""
-					local song = GAMESTATE:GetCurrentSong()
-					if song then text = song:GetDisplayFullTitle() end
+					local SongOrSteps = checkBMS() and GAMESTATE:GetCurrentSteps(GAMESTATE:GetMasterPlayerNumber()) or GAMESTATE:GetCurrentSong()
+					if SongOrSteps then text = checkBMS() and GetBMSTitle(SongOrSteps) or SongOrSteps:GetDisplayFullTitle() end
 					if animate then TitleSongFade:SetText( text ) end
 					self:settext(text)
 				end

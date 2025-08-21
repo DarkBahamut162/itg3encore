@@ -126,6 +126,60 @@ function GetSMParameter(song,parameter)
 	return tmp[1]
 end
 
+function GetBMSParameter(step,parameter)
+	local filePath = step:GetFilename()
+	if filePath:sub(-3):sub(2,2) ~= 'm' then return "" end
+	local file = RageFileUtil.CreateRageFile()
+	file:Open(filePath,1)
+	file:Seek(0)
+	local gLine = ""
+	local line
+	while true do
+		if file then
+			line = file:GetLine()
+			if file:AtEOF() then break
+			elseif string.find(line,"#"..parameter.." ") then
+				gLine = line:sub(string.len("#"..parameter.." "))
+				break
+			end
+		end
+	end
+	file:Close()
+	file:destroy()
+	return gLine
+end
+
+function checkBMS()
+	if IsGame("beat") or IsGame("be-mu") or IsGame("popn") or IsGame("po-mu") then
+		if GAMESTATE:GetNumPlayersEnabled() == 1 then
+			return true
+		else
+			return GAMESTATE:GetCurrentSteps(PLAYER_1) == GAMESTATE:GetCurrentSteps(PLAYER_2)
+		end
+	end
+	return false
+end
+
+function GetBMSTitle(step)
+	local title = GetBMSParameter(step,"TITLE")
+	local subtitle = GetBMSParameter(step,"SUBTITLE")
+	if subtitle ~= "" then
+		return title + " " + subtitle
+	else
+		return title
+	end
+end
+
+function GetBMSArtist(step)
+	local artist = GetBMSParameter(step,"ARTIST")
+	local subartist = GetBMSParameter(step,"SUBARTIST")
+	if subartist ~= "" then
+		return artist + " " + subartist
+	else
+		return artist
+	end
+end
+
 function GetSongFolderName(song)
     local folderPath = split('/', song:GetSongDir())
     return folderPath[#folderPath-1]

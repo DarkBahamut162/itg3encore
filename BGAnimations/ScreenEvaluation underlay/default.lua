@@ -145,8 +145,14 @@ return Def.ActorFrame{
 		OnCommand=function(self) self:diffusealpha(0):sleep(3):linear(0.3):diffusealpha(1) end,
 		OffCommand=function(self) self:linear(0.2):diffusealpha(0) end,
 		UpdateCommand=function(self)
-			local SongOrCourse = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentCourse() or GAMESTATE:GetCurrentSong()
-			if SongOrCourse then self:settext( SongOrCourse:GetDisplayFullTitle().."\n"..SongOrCourse:GetGroupName() ) end
+			if GAMESTATE:IsCourseMode() then
+				self:settext( GAMESTATE:GetCurrentCourse():GetDisplayFullTitle().."\n"..GAMESTATE:GetCurrentCourse():GetGroupName() )
+			else
+				local SongOrSteps = checkBMS() and GAMESTATE:GetCurrentSteps(GAMESTATE:GetMasterPlayerNumber()) or GAMESTATE:GetCurrentSong()
+				local text = ""
+				if SongOrSteps then text = checkBMS() and GetBMSTitle(SongOrSteps) or SongOrSteps:GetDisplayFullTitle() end
+				self:settext(text.."\n"..GAMESTATE:GetCurrentSong():GetGroupName())
+			end
 		end
 	},
 	Def.ActorFrame{

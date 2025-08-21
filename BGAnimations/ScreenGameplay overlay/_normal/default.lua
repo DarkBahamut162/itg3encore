@@ -133,9 +133,9 @@ return Def.ActorFrame{
 				CurrentSongChangedMessageCommand=function(self) self:playcommand("Update") end,
 				UpdateCommand=function(self)
 					local text = ""
-					local song = GAMESTATE:GetCurrentSong()
+					local SongOrSteps = checkBMS() and GAMESTATE:GetCurrentSteps(GAMESTATE:GetMasterPlayerNumber()) or GAMESTATE:GetCurrentSong()
+					if SongOrSteps then text = checkBMS() and GetBMSTitle(SongOrSteps) or SongOrSteps:GetDisplayFullTitle() end
 					local course = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentCourse() or nil
-					if song then text = song:GetDisplayFullTitle() end
 					if course then text = course:GetDisplayFullTitle() .. " - " .. text end
 					if animate then TitleSongFade:SetText( text ) end
 					self:settext(text)
