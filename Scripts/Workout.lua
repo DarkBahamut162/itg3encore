@@ -158,8 +158,12 @@ function WorkoutGetTotalCaloriesGameplay( pn )
 	return WorkoutGetTotalCaloriesEvaluation( pn ) + WorkoutGetStageCalories( pn )
 end
 
-function WorkoutGetTotalSeconds( pn )
+function WorkoutGetTotalSecondsEvaluation( pn )
 	return STATSMAN:GetAccumPlayedStageStats():GetGameplaySeconds()
+end
+
+function WorkoutGetTotalSecondsGameplay( pn )
+	return WorkoutGetTotalSecondsEvaluation( pn ) + STATSMAN:GetCurStageStats():GetGameplaySeconds()
 end
 
 function WorkoutGetGoalCalories( pn )
@@ -178,6 +182,10 @@ function WorkoutGetPercentCompleteCaloriesGameplay( pn )
 	return WorkoutGetTotalCaloriesGameplay(pn) / WorkoutGetGoalCalories(pn)
 end
 
-function WorkoutGetPercentCompleteSeconds( pn )
-	return WorkoutGetTotalSeconds(pn) / WorkoutGetGoalSeconds(pn)
+function WorkoutGetPercentCompleteSecondsEvaluation( pn )
+	return WorkoutGetTotalSecondsEvaluation(pn) / WorkoutGetGoalSeconds(pn)
+end
+
+function WorkoutGetPercentCompleteSecondsGameplay( pn )
+	return WorkoutGetTotalSecondsGameplay(pn) / WorkoutGetGoalSeconds(pn)
 end

@@ -40,7 +40,7 @@ return Def.ActorFrame{
     },
 	Def.RollingNumbers{
 		Font="_eurostile normal",
-		InitCommand=function(self) self:Load("RollingNumbersWorkoutEvaluation"):targetnumber(WorkoutGetTotalSeconds(PLAYER_1)/60):x(90):y(-7):zoom(0.5):shadowlength(0):horizalign(right):diffuse(PlayerColor(PLAYER_1)) end
+		InitCommand=function(self) self:Load("RollingNumbersWorkoutEvaluation"):targetnumber(WorkoutGetTotalSecondsEvaluation(PLAYER_1)/60):x(90):y(-7):zoom(0.5):shadowlength(0):horizalign(right):diffuse(PlayerColor(PLAYER_1)) end
 	},
 	Def.BitmapText {
 		File = "_eurostile normal",
@@ -113,19 +113,19 @@ return Def.ActorFrame{
 		Def.ActorFrame{
 			Def.BitmapText {
 				File = "_eurostile normal",
-				Condition=WorkoutGetPercentCompleteSeconds(PLAYER_1)<1,
+				Condition=WorkoutGetPercentCompleteSecondsEvaluation(PLAYER_1)<1,
 				Text="Keep Going!",
 				InitCommand=function(self) self:x(-70):y(44):zoom(0.6):shadowlength(0):diffuseshift() end
 			},
 			Def.BitmapText {
 				File = "_eurostile normal",
-				Condition=WorkoutGetPercentCompleteSeconds(PLAYER_1)>=1,
+				Condition=WorkoutGetPercentCompleteSecondsEvaluation(PLAYER_1)>=1,
 				Text="Goal Complete!",
 				InitCommand=function(self) self:x(-70):y(44):zoom(0.6):shadowlength(0):diffuseshift() end
 			},
 			Def.BitmapText {
 				File = "_eurostile normal",
-				Text=string.format('%01.0f%% Complete',WorkoutGetPercentCompleteSeconds(PLAYER_1)*100),
+				Text=string.format('%01.0f%% Complete',WorkoutGetPercentCompleteSecondsEvaluation(PLAYER_1)*100),
 				InitCommand=function(self) self:x(64):y(44):zoom(0.6):maxwidth(220):shadowlength(0):diffuse(PlayerColor(PLAYER_1)) end
 			}
 		},

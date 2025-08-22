@@ -33,13 +33,23 @@ return Def.ActorFrame{
 			Text="Goal Complete!",
 			InitCommand=function(self) self:x(THEME:GetMetric("ScreenGameplay","ScoreP1X")):y(SCREEN_BOTTOM-62*WideScreenDiff())
 				:zoom(0.6*WideScreenDiff()):diffuseshift():effectcolor1(0.5,0.5,0.5,1):diffusealpha(0):addy(100)
-				if WorkoutGetPercentCompleteCaloriesGameplay(PLAYER_1)>=1 then self:queuecommand("GoalCompleteP1") end
+				local goalType = WorkoutGetProfileGoalType(PLAYER_1)
+				if goalType == 0 then
+					if WorkoutGetPercentCompleteCaloriesGameplay(PLAYER_1)>=1 then self:queuecommand("GoalCompleteP1") end
+				elseif goalType == 1 then
+					if WorkoutGetPercentCompleteSecondsGameplay(PLAYER_1)>=1 then self:queuecommand("GoalCompleteP1") end
+				end
 			end,
 			OnCommand=function(self) self:sleep(0.5):decelerate(0.8):addy(-100) end,
 			OffCommand=function(self) self:accelerate(0.8):addy(100) end,
 			StepMessageCommand=function(self,params)
 				if params.PlayerNumber == PLAYER_1 then
-					if WorkoutGetPercentCompleteCaloriesGameplay(PLAYER_1)>=1 then self:queuecommand("GoalCompleteP1") end
+					local goalType = WorkoutGetProfileGoalType(PLAYER_1)
+					if goalType == 0 then
+						if WorkoutGetPercentCompleteCaloriesGameplay(PLAYER_1)>=1 then self:queuecommand("GoalCompleteP1") end
+					elseif goalType == 1 then
+						if WorkoutGetPercentCompleteSecondsGameplay(PLAYER_1)>=1 then self:queuecommand("GoalCompleteP1") end
+					end
 				end
 			end,
 			GoalCompleteP1Command=function(self)
@@ -77,13 +87,23 @@ return Def.ActorFrame{
 			Text="Goal Complete!",
 			InitCommand=function(self) self:x(THEME:GetMetric("ScreenGameplay","ScoreP2X")):y(SCREEN_BOTTOM-38-24)
 				:zoom(0.6*WideScreenDiff()):diffuseshift():effectcolor1(0.5,0.5,0.5,1):diffusealpha(0):addy(100)
-				if WorkoutGetPercentCompleteCaloriesGameplay(PLAYER_2)>=1 then self:queuecommand("GoalCompleteP2") end
+				local goalType = WorkoutGetProfileGoalType(PLAYER_2)
+				if goalType == 0 then
+					if WorkoutGetPercentCompleteCaloriesGameplay(PLAYER_2)>=1 then self:queuecommand("GoalCompleteP2") end
+				elseif goalType == 1 then
+					if WorkoutGetPercentCompleteSecondsGameplay(PLAYER_2)>=1 then self:queuecommand("GoalCompleteP2") end
+				end
 			end,
 			OnCommand=function(self) self:sleep(0.5):decelerate(0.8):addy(-100) end,
 			OffCommand=function(self) self:accelerate(0.8):addy(100) end,
 			StepMessageCommand=function(self,params)
 				if params.PlayerNumber == PLAYER_2 then
-					if WorkoutGetPercentCompleteCaloriesGameplay(PLAYER_2)>=1 then self:queuecommand("GoalCompleteP2") end
+					local goalType = WorkoutGetProfileGoalType(PLAYER_2)
+					if goalType == 0 then
+						if WorkoutGetPercentCompleteCaloriesGameplay(PLAYER_2)>=1 then self:queuecommand("GoalCompleteP2") end
+					elseif goalType == 1 then
+						if WorkoutGetPercentCompleteSecondsGameplay(PLAYER_2)>=1 then self:queuecommand("GoalCompleteP2") end
+					end
 				end
 			end,
 			GoalCompleteP2Command=function(self) if not completeGoal[PLAYER_2] then self:zoom(2*WideScreenDiff()):linear(0.5):zoom(0.7*WideScreenDiff()):diffusealpha(1) completeGoal[PLAYER_2] = true end end
