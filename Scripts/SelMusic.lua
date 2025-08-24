@@ -164,7 +164,7 @@ function GetBMSTitle(step)
 	local title = GetBMSParameter(step,"TITLE")
 	local subtitle = GetBMSParameter(step,"SUBTITLE")
 	if subtitle ~= "" then
-		return title + " " + subtitle
+		return title .. " " .. subtitle
 	else
 		return title
 	end
@@ -174,7 +174,7 @@ function GetBMSArtist(step)
 	local artist = GetBMSParameter(step,"ARTIST")
 	local subartist = GetBMSParameter(step,"SUBARTIST")
 	if subartist ~= "" then
-		return artist + " " + subartist
+		return artist .. " " .. subartist
 	else
 		return artist
 	end
