@@ -21,6 +21,9 @@ if enableOffsets then
 	end
 end
 
+local timing = GetTimingDifficulty()
+local timingChange = { 1.50,1.33,1.16,1.00,0.84,0.66,0.50,0.33,0.20 }
+
 local t = Def.ActorFrame{
 	OnCommand=function(self)
 		for pn in ivalues(GAMESTATE:GetEnabledPlayers()) do
@@ -310,7 +313,14 @@ local t = Def.ActorFrame{
 					local vStats = STATSMAN:GetCurStageStats():GetPlayerStageStats( player )
 					local time = GAMESTATE:IsCourseMode() and vStats:GetAliveSeconds() or GAMESTATE:GetCurMusicSeconds()
 					local noff = params.TapNoteScore == "TapNoteScore_Miss" and "Miss" or params.TapNoteOffset
-					offsetdata[player][#offsetdata[player]+1] = { time, noff, params.TapNoteScore }
+
+					local JudgeScale = (isOutFoxV() and VersionDateCheck(20230624)) and GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Preferred"):JudgeScale() or 1
+					local W0 = 0.0135*timingChange[timing]*JudgeScale
+					local WX = params.TapNoteScore == "TapNoteScore_W1" and (math.abs(params.TapNoteOffset) <= W0 and "TapNoteScore_W0" or "TapNoteScore_W1" ) or params.TapNoteScore
+
+					local faplus = getenv("SetScoreFA"..pname(player))
+
+					offsetdata[player][#offsetdata[player]+1] = { time, noff, faplus and WX or params.TapNoteScore }
 				end
 			end
 		end
@@ -327,6 +337,7 @@ for pn in ivalues(GAMESTATE:GetEnabledPlayers()) do
 	if isOni() and not isLifeline(pn) or isSurvival(pn) then t[#t+1] = loadfile(THEME:GetPathB("ScreenGameplay","overlay/DeltaSeconds"))(pn) end
 	t[#t+1] = loadfile(THEME:GetPathB("ScreenGameplay","overlay/FCSplash"))(pn)
 	if isRegular() or isNonstop() or isLifeline(pn) then t[#t+1] = loadfile(THEME:GetPathB("ScreenGameplay","overlay/Score"))(pn) end
+	if (isRegular() or isNonstop() or isLifeline(pn)) and getenv("SetScoreFA"..pname(pn)) then t[#t+1] = loadfile(THEME:GetPathB("ScreenGameplay","overlay/FA"))(pn) end
 	t[#t+1] = loadfile(THEME:GetPathB("ScreenGameplay","overlay/Dynamic"))(pn)
 	if getenv("Flare"..pname(pn)) and getenv("Flare"..pname(pn)) > 0 and isRegular() then t[#t+1] = loadfile(THEME:GetPathB("ScreenGameplay","overlay/Flare"))(pn) end
 end

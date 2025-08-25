@@ -6,11 +6,14 @@ local t = Def.ActorFrame{
 }
 local view = { [PLAYER_1] = 0, [PLAYER_2] = 0 }
 local judges = { [PLAYER_1] = isOpenDDR() and 4 or 5, [PLAYER_2] = isOpenDDR() and 4 or 5 }
+if getenv("SetScoreFA"..pname(PLAYER_1)) then judges[PLAYER_1]=judges[PLAYER_1]+1 end
+if getenv("SetScoreFA"..pname(PLAYER_2)) then judges[PLAYER_2]=judges[PLAYER_2]+1 end
 local enableOffsets = ThemePrefs.Get("ShowOffset")
 local offsetInfo = getenv("OffsetTable")
 
 local timing = GetTimingDifficulty()
 local timingChange = { 1.50,1.33,1.16,1.00,0.84,0.66,0.50,0.33,0.20 }
+local W0 = 0.0135*timingChange[timing]
 local W1 = (isOpenDDR() and 0.0167 or PREFSMAN:GetPreference("TimingWindowSecondsW1"))*timingChange[timing]
 local W2 = (isOpenDDR() and 0.0333 or PREFSMAN:GetPreference("TimingWindowSecondsW2"))*timingChange[timing]
 local W3 = (isOpenDDR() and 0.0920 or PREFSMAN:GetPreference("TimingWindowSecondsW3"))*timingChange[timing]
@@ -204,18 +207,11 @@ local function GetVerticesOffsetDot(offset,pn)
     local vertices = {}
 	local max = TotalPossibleStepSeconds()
 	local JudgeScale = (isOutFoxV() and VersionDateCheck(20230624)) and GAMESTATE:GetPlayerState(pn):GetPlayerOptions("ModsLevel_Preferred"):JudgeScale() or 1
-	local jugd = isOpenDDR() and {
-		{W1*JudgeScale,color("#7BE8FF")},
-		{W2*JudgeScale,color("#FFA959")},
-		{W3*JudgeScale,color("#67FF19")},
-		{W4*JudgeScale,color("#D366FF")}
-	} or {
-		{W1*JudgeScale,color("#7BE8FF")},
-		{W2*JudgeScale,color("#FFA959")},
-		{W3*JudgeScale,color("#67FF19")},
-		{W4*JudgeScale,color("#D366FF")},
-		{W5*JudgeScale,color("#FF7149")}
-	}
+	local jugd = getenv("SetScoreFA"..pname(pn)) and {{W0*JudgeScale,color("#7BE8FF")},{W1*JudgeScale,color("#FFFFFF")}} or {{W1*JudgeScale,color("#7BE8FF")}}
+	jugd[#jugd+1]={W2*JudgeScale,color("#FFA959")}
+	jugd[#jugd+1]={W3*JudgeScale,color("#67FF19")}
+	jugd[#jugd+1]={W4*JudgeScale,color("#D366FF")}
+	if not isOpenDDR() then jugd[#jugd+1]={W5*JudgeScale,color("#FF7149")} end
 	local maxjudg = math.round(jugd[judges[pn]][1],3)
 
 	vertices[#vertices+1] = { {math.min(1,0)*graphW, (-1-0.01)*graphH, 0}, color("#000080") }
@@ -272,18 +268,11 @@ local function GetVerticesOffsetLine(data,pn)
     local vertices = {}
 	local max = 0
 	local JudgeScale = (isOutFoxV() and VersionDateCheck(20230624)) and GAMESTATE:GetPlayerState(pn):GetPlayerOptions("ModsLevel_Preferred"):JudgeScale() or 1
-	local jugd = isOpenDDR() and {
-		{W1*JudgeScale,color("#7BE8FF")},
-		{W2*JudgeScale,color("#FFA959")},
-		{W3*JudgeScale,color("#67FF19")},
-		{W4*JudgeScale,color("#D366FF")}
-	} or {
-		{W1*JudgeScale,color("#7BE8FF")},
-		{W2*JudgeScale,color("#FFA959")},
-		{W3*JudgeScale,color("#67FF19")},
-		{W4*JudgeScale,color("#D366FF")},
-		{W5*JudgeScale,color("#FF7149")}
-	}
+	local jugd = getenv("SetScoreFA"..pname(pn)) and {{W0*JudgeScale,color("#7BE8FF")},{W1*JudgeScale,color("#FFFFFF")}} or {{W1*JudgeScale,color("#7BE8FF")}}
+	jugd[#jugd+1]={W2*JudgeScale,color("#FFA959")}
+	jugd[#jugd+1]={W3*JudgeScale,color("#67FF19")}
+	jugd[#jugd+1]={W4*JudgeScale,color("#D366FF")}
+	if not isOpenDDR() then jugd[#jugd+1]={W5*JudgeScale,color("#FF7149")} end
 	local maxjudg = math.round(jugd[judges[pn]][1],3)
     local lines = isOutFox() and VersionDateCheck(20201100)
 

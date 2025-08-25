@@ -21,20 +21,25 @@ if isOpenDDR() then
 	}
 end
 
+local faplus = getenv("SetScoreFA"..pname(player))
 local TNSFrames = {
-	TapNoteScore_W1 = 0,
-	TapNoteScore_W2 = 1,
-	TapNoteScore_W3 = 2,
-	TapNoteScore_W4 = 3,
-	TapNoteScore_W5 = 4,
-	TapNoteScore_Miss = 5
+	["TapNoteScore_W0"] = 0,
+	["TapNoteScore_W1"] = faplus and 1 or 0,
+	["TapNoteScore_W2"] = faplus and 2 or 1,
+	["TapNoteScore_W3"] = faplus and 3 or 2,
+	["TapNoteScore_W4"] = faplus and 4 or 3,
+	["TapNoteScore_W5"] = faplus and 5 or 4,
+	["TapNoteScore_Miss"] = faplus and 6 or 5
 }
 
 local timing = GetTimingDifficulty()
 local timingChange = { 1.50,1.33,1.16,1.00,0.84,0.66,0.50,0.33,0.20 }
-local judgment = not GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentSteps(player):GetDifficulty() == 'Difficulty_Beginner' and "_beginner" or "_judgments"
-local JudgeScale = isOutFoxV() and GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Preferred"):JudgeScale() or 1
+local JudgeScale = (isOutFoxV() and VersionDateCheck(20230624)) and GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Preferred"):JudgeScale() or 1
 local W5 = (isOpenDDR() and 0.142 or PREFSMAN:GetPreference("TimingWindowSecondsW5"))*timingChange[timing]*JudgeScale
+local W0 = 0.0135*timingChange[timing]*JudgeScale
+local W0Counter = getenv("W0"..pname(player)) or 0
+local WXCounter = 0
+local judgment
 
 setenv("checkFantastics"..pname(player),true)
 setenv("checkPerfects"..pname(player),true)
@@ -43,10 +48,18 @@ setenv("check"..pname(player),true)
 setenv("checkAuto"..pname(player),true)
 
 if not isOutFox() then GAMESTATE:ApplyGameCommand('mod,savescore',player) end
+local debug = false
+if (IsGame("be-mu") or IsGame("beat")) and debug then
+	judgment = "iidx 1x"
+elseif (IsGame("po-mu") or IsGame("popn")) and debug then
+	judgment = "pop 1x"
+else
+	judgment = not GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentSteps(player):GetDifficulty() == 'Difficulty_Beginner' and "_beginner 2x" or "_judgments 2x"
+end
 
 return Def.ActorFrame {
 	Def.Sprite {
-		Texture = judgment,
+		Texture = judgment..(faplus and "7" or "6"),
 		Name="Judgment",
 		InitCommand=function(self) self:pause():visible(false) end,
 		ResetCommand=function(self) self:finishtweening():x(0):y(IsGame("po-mu") and -45 or 0):stopeffect():visible(false) end
@@ -72,6 +85,23 @@ return Def.ActorFrame {
 		local tns = param.TapNoteScore
 		local iNumStates = c.Judgment:GetNumStates()
 		local iFrame = TNSFrames[tns]
+		if faplus then
+			if tns ~= 'TapNoteScore_Miss' and iFrame then
+				WXCounter = WXCounter + 1
+				setenv("WX"..pname(player),WXCounter)
+				if math.abs(param.TapNoteOffset) <= W0 then
+					tns = "TapNoteScore_W0"
+					iFrame = TNSFrames[tns]
+					W0Counter = W0Counter + 1
+					setenv("W0"..pname(player),W0Counter)
+				end
+				MESSAGEMAN:Broadcast("W0",{Player=player,W0=W0Counter,WX=WXCounter})
+			elseif tns == 'TapNoteScore_Miss' then
+				WXCounter = WXCounter + 1
+				setenv("WX"..pname(player),WXCounter)
+				MESSAGEMAN:Broadcast("W0",{Player=player,W0=W0Counter,WX=WXCounter})
+			end
+		end
 
 		if ((GAMESTATE:GetPlayerState(player):GetPlayerController() == 'PlayerController_Autoplay') or
 		(GAMESTATE:GetPlayerState(player):GetPlayerController() == 'PlayerController_Cpu')) and
@@ -101,7 +131,7 @@ return Def.ActorFrame {
 			end
 		end
 		if self:GetName() ~= "Judgment" then if param.FirstTrack ~= tonumber(ToEnumShortString(self:GetName())) then return end end
-		if iNumStates == 12 then
+		if iNumStates == (faplus and 14 or 12) then
 			iFrame = iFrame * 2
 			if not param.Early then iFrame = iFrame + 1 end
 		end

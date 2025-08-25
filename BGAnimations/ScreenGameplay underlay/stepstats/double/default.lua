@@ -6,12 +6,13 @@ local SongOrCourse, StepsOrTrail, scorelist, topscore
 local stats = getenv("ShowStats"..pname(pn))
 local graphPos = getenv("ShowStatsPos"..pname(pn)) == 0
 
-local barWidth		= {14,7,4+2/3,3+2/3,2.8,2+1/3}
+local barWidth		= {14,7,4+2/3,3+2/3,2.8,2+1/3,2}
 local barHeight		= 268
 local totalWidth	= 14
 local barCenter		= 0
 local target = THEME:GetMetric("PlayerStageStats", "GradePercentTier" .. string.format("%02d", 18-getenv("SetPacemaker"..pname(pn))))
 local TotalSteps = 0
+local faplus = getenv("SetScoreFA"..pname(pn))
 
 if GAMESTATE:IsCourseMode() then SongOrCourse,StepsOrTrail = GAMESTATE:GetCurrentCourse(),GAMESTATE:GetCurrentTrail(pn) else SongOrCourse,StepsOrTrail = GAMESTATE:GetCurrentSong(),GAMESTATE:GetCurrentSteps(pn) end
 if not isEtterna() and not scorelist then scorelist = PROFILEMAN:GetMachineProfile():GetHighScoreList(SongOrCourse,StepsOrTrail) end
@@ -43,29 +44,63 @@ if StepsOrTrail then
 end
 
 local bgNum = stats
-if bgNum == (isOpenDDR() and 6 or 7) then if topscore == nil then bgNum = 2 else bgNum = 3 end end
+if bgNum == (isOpenDDR() and 6 or 7) then
+	if topscore == nil then bgNum = 2 else bgNum = 3 end
+else
+	if faplus then bgNum = bgNum + 1 end
+end
 if bgNum > 0 then barCenter	= -totalWidth/2+barWidth[bgNum]/2 end
 
 local Bars = Def.ActorFrame{}
+local judgments = {
+	"TapNoteScore_Miss",
+	"TapNoteScore_W5",
+	"TapNoteScore_W4",
+	"TapNoteScore_W3",
+	"TapNoteScore_W2",
+	"TapNoteScore_W1"
+}
+
+function GetTotalTaps()
+	local total = 0
+	for judg in ivalues(judgments) do
+		total = total + STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):GetTapNoteScores(judg)
+	end
+	return total
+end
 
 if stats < (isOpenDDR() and 6 or 7) then
-	for i = 1,math.min((isOpenDDR() and 5 or 6),stats) do
+	for i = faplus and 0 or 1,math.min((isOpenDDR() and 5 or 6),stats) do
 		local score = i < (isOpenDDR() and 5 or 6) and "W"..i or "Miss"
 		Bars[#Bars+1] = Def.Sprite {
-			Texture = "../w"..((isOpenDDR() and score == "Miss") and i+1 or i),
-			InitCommand=function(self) self:vertalign(bottom):diffusealpha(0.25):x(barCenter+barWidth[bgNum]*(i-1)):y(164):zoomx(0.01*barWidth[bgNum]):zoomy(0) end,
+			Name="PercentW"..i,
+			Texture = "../"..(faplus and "fa" or "w")..((isOpenDDR() and score == "Miss") and i+1 or i),
+			InitCommand=function(self) self:vertalign(bottom):diffusealpha(0.25):x(barCenter+barWidth[bgNum]*(faplus and i or i-1)):y(164):zoomx(0.01*barWidth[bgNum]):zoomy(0) end,
 			Condition=stats >= i,
-			JudgmentMessageCommand=function(self,param) if param.Player == pn then self:queuecommand("Update") end end,
+			JudgmentMessageCommand=function(self,param) if param.Player == pn and not (faplus and i < 2) then self:queuecommand("Update") end end,
+			W0MessageCommand=function(self,param)
+				if param.Player == pn then
+					if self:GetName() == "PercentW0" then self:zoomy((param.W0/GetTotalTaps())*barHeight) end
+					if self:GetName() == "PercentW1" then self:zoomy(((STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):GetTapNoteScores('TapNoteScore_W1')-param.W0)/GetTotalTaps())*barHeight) end
+				end
+			end,
 			UpdateCommand=function(self)
 				local Percent = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):GetPercentageOfTaps('TapNoteScore_'..score)
 				self:zoomy(Percent*barHeight)
 			end
 		}
 		Bars[#Bars+1] = Def.Sprite {
-			Texture = "../w"..((isOpenDDR() and score == "Miss") and i+1 or i),
-			InitCommand=function(self) self:vertalign(bottom):x(barCenter+barWidth[bgNum]*(i-1)):y(164):zoomx(0.01*barWidth[bgNum]):zoomy(0) end,
+			Name="NotesW"..i,
+			Texture = "../"..(faplus and "fa" or "w")..((isOpenDDR() and score == "Miss") and i+1 or i),
+			InitCommand=function(self) self:vertalign(bottom):x(barCenter+barWidth[bgNum]*(faplus and i or i-1)):y(164):zoomx(0.01*barWidth[bgNum]):zoomy(0) end,
 			Condition=stats >= i,
-			JudgmentMessageCommand=function(self,param) if param.Player == pn then self:queuecommand("Update") end end,
+			JudgmentMessageCommand=function(self,param) if param.Player == pn and not (faplus and i < 2) then self:queuecommand("Update") end end,
+			W0MessageCommand=function(self,param)
+				if param.Player == pn then
+					if self:GetName() == "NotesW0" then self:zoomy((param.W0/TotalSteps)*barHeight) end
+					if self:GetName() == "NotesW1" then self:zoomy(((STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):GetTapNoteScores('TapNoteScore_W1')-param.W0)/TotalSteps)*barHeight) end
+				end
+			end,
 			UpdateCommand=function(self)
 				local Notes = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):GetTapNoteScores('TapNoteScore_'..score)
 				self:zoomy(Notes/TotalSteps*barHeight)
@@ -165,35 +200,58 @@ return Def.ActorFrame{
 			Def.ActorFrame{
 				Def.ActorFrame{
 					Condition=stats < (isOpenDDR() and 6 or 7),
-					InitCommand=function(self) self:y(-150) end,
+					InitCommand=function(self)
+						self:y(-150)
+						if faplus then
+							local c = self:GetChildren()
+							c.NumbersW1:addy(18):addy(4)
+							c.NumbersW2:addy(15):addy(4)
+							c.NumbersW3:addy(12):addy(4)
+							c.NumbersW4:addy(09):addy(4)
+							c.NumbersW5:addy(06):addy(4)
+							c.NumbersMiss:addy(03):addy(4)
+						end
+					end,
+					Def.BitmapText {
+						Condition=faplus,
+						File = "_z numbers",
+						Name="NumbersW0",
+						Text="0",
+						InitCommand=function(self) self:maxwidth(125):halign(1):addy(10-5):addx(125):shadowlength(1):diffuse(TapNoteScoreToColor('TapNoteScore_W1')) end,
+						JudgmentMessageCommand=function(self,param) if param.Player == pn and not faplus then self:queuecommand("Update") end end,
+						UpdateCommand=function(self) self:settext(STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):GetTapNoteScores('TapNoteScore_W1')) end,
+						W0MessageCommand=function(self,param) if param.Player == pn then self:settext(param.W0) end end
+					},
 					Def.BitmapText {
 						File = "_z numbers",
 						Name="NumbersW1",
-						InitCommand=function(self) self:maxwidth(125):halign(1):addy(10-5):addx(125):shadowlength(1):diffuse(TapNoteScoreToColor('TapNoteScore_W1')):queuecommand("Update") end,
-						JudgmentMessageCommand=function(self,param) if param.Player == pn then self:queuecommand("Update") end end,
-						UpdateCommand=function(self) self:settext(STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):GetTapNoteScores('TapNoteScore_W1')) end
+						Text="0",
+						InitCommand=function(self) self:maxwidth(125):halign(1):addy(10-5):addx(125):shadowlength(1):diffuse(TapNoteScoreToColor(faplus and 'TapNoteScore_W0' or 'TapNoteScore_W1')) end,
+						JudgmentMessageCommand=function(self,param) if param.Player == pn and not faplus then self:queuecommand("Update") end end,
+						UpdateCommand=function(self) self:settext(STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):GetTapNoteScores('TapNoteScore_W1')) end,
+						W0MessageCommand=function(self,param) if param.Player == pn then self:settext(STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):GetTapNoteScores('TapNoteScore_W1')-param.W0) end end
 					},
 					Def.BitmapText {
 						File = "_z numbers",
 						Name="NumbersW2",
-						Text="?",
-						InitCommand=function(self) self:maxwidth(125):halign(1):addy(35-4):addx(125):shadowlength(1):diffuse(TapNoteScoreToColor('TapNoteScore_W2')):queuecommand("Update") end,
+						Text="0",
+						InitCommand=function(self) self:maxwidth(125):halign(1):addy(35-4):addx(125):shadowlength(1):diffuse(TapNoteScoreToColor('TapNoteScore_W2')) end,
 						JudgmentMessageCommand=function(self,param) if param.Player == pn then self:queuecommand("Update") end end,
 						UpdateCommand=function(self) if stats >= 2 then self:settext(STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):GetTapNoteScores('TapNoteScore_W2')) end end
 					},
 					Def.BitmapText {
 						File = "_z numbers",
 						Name="NumbersW3",
-						Text="?",
-						InitCommand=function(self) self:maxwidth(125):halign(1):addy(60-3):addx(125):shadowlength(1):diffuse(TapNoteScoreToColor('TapNoteScore_W3')):queuecommand("Update") end,
+						Text="0",
+						InitCommand=function(self) self:maxwidth(125):halign(1):addy(60-3):addx(125):shadowlength(1):diffuse(TapNoteScoreToColor('TapNoteScore_W3')) end,
 						JudgmentMessageCommand=function(self,param) if param.Player == pn then self:queuecommand("Update") end end,
 						UpdateCommand=function(self) if stats >= 3 then self:settext(STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):GetTapNoteScores('TapNoteScore_W3')) end end
 					},
 					Def.BitmapText {
 						File = "_z numbers",
 						Name="NumbersW4",
-						Text="?",
-						InitCommand=function(self) self:maxwidth(125):halign(1):addy(85-2):addx(125):shadowlength(1):diffuse(TapNoteScoreToColor('TapNoteScore_W4')):queuecommand("Update") end,
+						Text="0",
+						InitCommand=function(self) self:maxwidth(125):halign(1):addy(85-2):addx(125):shadowlength(1):diffuse(TapNoteScoreToColor('TapNoteScore_W4')) end,
 						JudgmentMessageCommand=function(self,param) if param.Player == pn then self:queuecommand("Update") end end,
 						UpdateCommand=function(self) if stats >= 4 then self:settext(STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):GetTapNoteScores('TapNoteScore_W4')) end end
 					},
@@ -201,16 +259,16 @@ return Def.ActorFrame{
 						Condition=not isOpenDDR(),
 						File = "_z numbers",
 						Name="NumbersW5",
-						Text="?",
-						InitCommand=function(self) self:maxwidth(125):halign(1):addy(110-1):addx(125):shadowlength(1):diffuse(TapNoteScoreToColor('TapNoteScore_W5')):queuecommand("Update") end,
+						Text="0",
+						InitCommand=function(self) self:maxwidth(125):halign(1):addy(110-1):addx(125):shadowlength(1):diffuse(TapNoteScoreToColor('TapNoteScore_W5')) end,
 						JudgmentMessageCommand=function(self,param) if param.Player == pn then self:queuecommand("Update") end end,
 						UpdateCommand=function(self) if stats >= 5 then self:settext(STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):GetTapNoteScores('TapNoteScore_W5')) end end
 					},
 					Def.BitmapText {
 						File = "_z numbers",
 						Name="NumbersMiss",
-						Text="?",
-						InitCommand=function(self) self:maxwidth(125):halign(1):addy(isOpenDDR() and 110-1 or 135):addx(125):shadowlength(1):diffuse(TapNoteScoreToColor('TapNoteScore_Miss')):queuecommand("Update") end,
+						Text="0",
+						InitCommand=function(self) self:maxwidth(125):halign(1):addy(isOpenDDR() and 110-1 or 135):addx(125):shadowlength(1):diffuse(TapNoteScoreToColor('TapNoteScore_Miss')) end,
 						JudgmentMessageCommand=function(self,param) if param.Player == pn then self:queuecommand("Update") end end,
 						UpdateCommand=function(self) if stats >= (isOpenDDR() and 5 or 6) then self:settext(STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):GetTapNoteScores('TapNoteScore_Miss')) end end
 					}

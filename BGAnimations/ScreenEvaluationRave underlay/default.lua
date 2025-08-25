@@ -2,6 +2,7 @@ local enableOffsets = ThemePrefs.Get("ShowOffset")
 local offsetInfo = getenv("OffsetTable")
 local early = {
 	[PLAYER_1] = {
+		["TapNoteScore_W0"] = 0,
 		["TapNoteScore_W1"] = 0,
 		["TapNoteScore_W2"] = 0,
 		["TapNoteScore_W3"] = 0,
@@ -9,6 +10,7 @@ local early = {
 		["TapNoteScore_W5"] = 0
 	},
 	[PLAYER_2] = {
+		["TapNoteScore_W0"] = 0,
 		["TapNoteScore_W1"] = 0,
 		["TapNoteScore_W2"] = 0,
 		["TapNoteScore_W3"] = 0,
@@ -18,6 +20,7 @@ local early = {
 }
 local late = {
 	[PLAYER_1] = {
+		["TapNoteScore_W0"] = 0,
 		["TapNoteScore_W1"] = 0,
 		["TapNoteScore_W2"] = 0,
 		["TapNoteScore_W3"] = 0,
@@ -25,6 +28,7 @@ local late = {
 		["TapNoteScore_W5"] = 0
 	},
 	[PLAYER_2] = {
+		["TapNoteScore_W0"] = 0,
 		["TapNoteScore_W1"] = 0,
 		["TapNoteScore_W2"] = 0,
 		["TapNoteScore_W3"] = 0,
@@ -36,6 +40,8 @@ local perfect = {
 	[PLAYER_1] = 0,
 	[PLAYER_2] = 0
 }
+local faplus = getenv("SetScoreFA"..pname(PLAYER_1)) or getenv("SetScoreFA"..pname(PLAYER_2)) or false
+local c
 
 if offsetInfo then
 	for pn in ivalues(GAMESTATE:GetEnabledPlayers()) do
@@ -54,6 +60,42 @@ if offsetInfo then
 end
 
 return Def.ActorFrame{
+	InitCommand=function(self) c = self:GetChildren() end,
+	BeginCommand=function(self)
+		local screen = SCREENMAN:GetTopScreen()
+		if screen and getenv("SetScoreFA"..pname(PLAYER_1)) then
+			c.P1:GetChild("Judgments"):addy(7)
+			c.P1:GetChild("Offsets"):addy(7)
+			screen:GetChild("W1NumberP1"):addy(7)
+			screen:GetChild("W2NumberP1"):addy(7)
+			screen:GetChild("W3NumberP1"):addy(7)
+			screen:GetChild("W4NumberP1"):addy(7)
+			screen:GetChild("W5NumberP1"):addy(7)
+			screen:GetChild("MissNumberP1"):addy(7)
+			screen:GetChild("JumpsNumberP1"):addy(7)
+			screen:GetChild("HoldsNumberP1"):addy(7)
+			screen:GetChild("MinesNumberP1"):addy(7)
+			screen:GetChild("HandsNumberP1"):addy(7)
+			screen:GetChild("RollsNumberP1"):addy(7)
+			screen:GetChild("MaxComboNumberP1"):addy(7)
+		end
+		if screen and getenv("SetScoreFA"..pname(PLAYER_2)) then
+			c.P2:GetChild("Judgments"):addy(7)
+			c.P2:GetChild("Offsets"):addy(7)
+			screen:GetChild("W1NumberP2"):addy(7)
+			screen:GetChild("W2NumberP2"):addy(7)
+			screen:GetChild("W3NumberP2"):addy(7)
+			screen:GetChild("W4NumberP2"):addy(7)
+			screen:GetChild("W5NumberP2"):addy(7)
+			screen:GetChild("MissNumberP2"):addy(7)
+			screen:GetChild("JumpsNumberP2"):addy(7)
+			screen:GetChild("HoldsNumberP2"):addy(7)
+			screen:GetChild("MinesNumberP2"):addy(7)
+			screen:GetChild("HandsNumberP2"):addy(7)
+			screen:GetChild("RollsNumberP2"):addy(7)
+			screen:GetChild("MaxComboNumberP2"):addy(7)
+		end
+	end,
 	loadfile(THEME:GetPathB("ScreenWithMenuElements","underlay/_sides"))(),
 	loadfile(THEME:GetPathB("ScreenWithMenuElements","underlay/_base"))(),
 	loadfile(THEME:GetPathB("ScreenWithMenuElements","underlay/_expandtop"))(),
@@ -88,6 +130,14 @@ return Def.ActorFrame{
 		Def.ActorFrame{
 			Name="Judgments",
 			InitCommand=function(self) self:x(SCREEN_CENTER_X-269*WideScreenDiff()) end,
+			Def.BitmapText {
+				Condition=getenv("SetScoreFA"..pname(PLAYER_1)),
+				File = "_v 26px bold shadow",
+				Text="FANTASTIC+",
+				InitCommand=function(self) self:y(SCREEN_CENTER_Y-108*WideScreenDiff()+(16.5*-1)*WideScreenDiff()):horizalign(left):addx(-EvalTweenDistance()) end,
+				OnCommand=function(self) self:zoomx(0.65*WideScreenDiff()):zoomy(0.51*WideScreenDiff()):diffusebottomedge(color("#BBB9FB")):sleep(3):decelerate(0.3):addx(EvalTweenDistance()) end,
+				OffCommand=function(self) self:accelerate(0.3):addx(-EvalTweenDistance()) end
+			},
 			Def.BitmapText {
 				File = "_v 26px bold shadow",
 				Text="FANTASTIC",
@@ -178,9 +228,51 @@ return Def.ActorFrame{
 			Name="Offsets",
 			InitCommand=function(self) self:x(THEME:GetMetric("ScreenEvaluationRave","W1NumberP1X")-42*WideScreenDiff()) end,
 			Def.ActorFrame{
+				Condition=getenv("SetScoreFA"..pname(PLAYER_1)),
+				Name="W0",
+				InitCommand=function(self) self:y(THEME:GetMetric("ScreenEvaluationRave","W0NumberP1Y")) end,
+				Def.BitmapText {
+					File = "_ScreenEvaluation numbers",
+					InitCommand=function(self) self:y(-9*WideScreenDiff()):horizalign(right):shadowlength(1):diffuse(color("#FFFFFF")) end,
+					OnCommand=function(self)
+						self:settextf("%04d",perfect[PLAYER_1]):AddAttribute(0, {Length = math.max(4-string.len(''..perfect[PLAYER_1]), 0),Diffuse = color("#808080")})
+						self:zoom(0.25*WideScreenDiff()):cropleft(1.3):fadeleft(0.1):sleep(3.60):linear(0.7):cropleft(-0.3)
+					end,
+					OffCommand=function(self) self:linear(0.2):diffusealpha(0) end
+				},
+				Def.BitmapText {
+					File = "_ScreenEvaluation numbers",
+					InitCommand=function(self) self:y(-3*WideScreenDiff()):horizalign(right):shadowlength(1):diffuse(color("#0000FF")) end,
+					OnCommand=function(self)
+						self:settextf("%04d",early[PLAYER_1]["TapNoteScore_W0"]):AddAttribute(0, {Length = math.max(4-string.len(''..early[PLAYER_1]["TapNoteScore_W0"]), 0),Diffuse = color("#000080")})
+						self:zoom(0.25*WideScreenDiff()):cropleft(1.3):fadeleft(0.1):sleep(3.60):linear(0.7):cropleft(-0.3)
+					end,
+					OffCommand=function(self) self:linear(0.2):diffusealpha(0) end
+				},
+				Def.BitmapText {
+					File = "_ScreenEvaluation numbers",
+					InitCommand=function(self) self:y(3*WideScreenDiff()):horizalign(right):shadowlength(1):diffuse(color("#FF0000")) end,
+					OnCommand=function(self)
+						self:settextf("%04d",late[PLAYER_1]["TapNoteScore_W0"]):AddAttribute(0, {Length = math.max(4-string.len(''..late[PLAYER_1]["TapNoteScore_W0"]), 0),Diffuse = color("#800000")})
+						self:zoom(0.25*WideScreenDiff()):cropleft(1.3):fadeleft(0.1):sleep(3.60):linear(0.7):cropleft(-0.3)
+					end,
+					OffCommand=function(self) self:linear(0.2):diffusealpha(0) end
+				},
+				Def.RollingNumbers{
+					Font=THEME:GetPathF("ScreenEvaluation","JudgmentLineNumber"),
+					InitCommand=function(self)
+						self:player(PLAYER_1):name("W0Number" .. PlayerNumberToString(PLAYER_1))
+						ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen")
+						self:Load("RollingNumbersJudgment"):targetnumber(getenv("W0"..pname(PLAYER_1)) or 0):x(0):y(0):queuecommand("Reset")
+					end,
+					ResetCommand=function(self) self:horizalign(left) end
+				}
+			},
+			Def.ActorFrame{
 				Name="W1",
 				InitCommand=function(self) self:y(THEME:GetMetric("ScreenEvaluationRave","W1NumberP1Y")) end,
 				Def.BitmapText {
+					Condition=not getenv("SetScoreFA"..pname(PLAYER_1)),
 					File = "_ScreenEvaluation numbers",
 					InitCommand=function(self) self:y(-9*WideScreenDiff()):horizalign(right):shadowlength(1):diffuse(color("#FFFFFF")) end,
 					OnCommand=function(self)
@@ -206,6 +298,16 @@ return Def.ActorFrame{
 						self:zoom(0.25*WideScreenDiff()):cropleft(1.3):fadeleft(0.1):sleep(3.60):linear(0.7):cropleft(-0.3)
 					end,
 					OffCommand=function(self) self:linear(0.2):diffusealpha(0) end
+				},
+				Def.RollingNumbers{
+					Condition=getenv("SetScoreFA"..pname(PLAYER_1)),
+					Font=THEME:GetPathF("ScreenEvaluation","JudgmentLineNumber"),
+					InitCommand=function(self)
+						self:player(PLAYER_1):name("W0Number" .. PlayerNumberToString(PLAYER_1))
+						ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen")
+						self:Load("RollingNumbersJudgment"):targetnumber(STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_1):GetTapNoteScores('TapNoteScore_W1')-(getenv("W0"..pname(PLAYER_1)) or 0)):x(0):y(0):queuecommand("Reset")
+					end,
+					ResetCommand=function(self) self:horizalign(left):diffusealpha(1) end
 				}
 			},
 			Def.ActorFrame{
@@ -305,6 +407,14 @@ return Def.ActorFrame{
 			Name="Judgments",
 			InitCommand=function(self) self:x(SCREEN_CENTER_X+75*WideScreenDiff()) end,
 			Def.BitmapText {
+				Condition=getenv("SetScoreFA"..pname(PLAYER_2)),
+				File = "_v 26px bold shadow",
+				Text="FANTASTIC+",
+				InitCommand=function(self) self:y(SCREEN_CENTER_Y-108*WideScreenDiff()+(16.5*-1)*WideScreenDiff()):horizalign(left):addx(EvalTweenDistance()) end,
+				OnCommand=function(self) self:zoomx(0.65*WideScreenDiff()):zoomy(0.51*WideScreenDiff()):diffusebottomedge(color("#BBB9FB")):sleep(3):decelerate(0.3):addx(-EvalTweenDistance()) end,
+				OffCommand=function(self) self:accelerate(0.3):addx(EvalTweenDistance()) end
+			},
+			Def.BitmapText {
 				File = "_v 26px bold shadow",
 				Text="FANTASTIC",
 				InitCommand=function(self) self:y(SCREEN_CENTER_Y-108*WideScreenDiff()+(16.5*0)*WideScreenDiff()):horizalign(left):addx(EvalTweenDistance()) end,
@@ -394,11 +504,53 @@ return Def.ActorFrame{
 			Name="Offsets",
 			InitCommand=function(self) self:x(THEME:GetMetric("ScreenEvaluationRave","W1NumberP2X")-42*WideScreenDiff()) end,
 			Def.ActorFrame{
+				Condition=getenv("SetScoreFA"..pname(PLAYER_1)),
+				Name="W0",
+				InitCommand=function(self) self:y(THEME:GetMetric("ScreenEvaluationRave","W0NumberP2Y")) end,
+				Def.BitmapText {
+					File = "_ScreenEvaluation numbers",
+					InitCommand=function(self) self:y(-9*WideScreenDiff()):horizalign(right):shadowlength(1):diffuse(color("#FFFFFF")) end,
+					OnCommand=function(self)
+						self:settextf("%04d",perfect[PLAYER_2]):AddAttribute(0, {Length = math.max(4-string.len(''..perfect[PLAYER_2]), 0),Diffuse = color("#808080")})
+						self:zoom(0.25*WideScreenDiff()):cropleft(1.3):fadeleft(0.1):sleep(3.60):linear(0.7):cropleft(-0.3)
+					end,
+					OffCommand=function(self) self:linear(0.2):diffusealpha(0) end
+				},
+				Def.BitmapText {
+					File = "_ScreenEvaluation numbers",
+					InitCommand=function(self) self:y(-3*WideScreenDiff()):horizalign(right):shadowlength(1):diffuse(color("#0000FF")) end,
+					OnCommand=function(self)
+						self:settextf("%04d",early[PLAYER_2]["TapNoteScore_W0"]):AddAttribute(0, {Length = math.max(4-string.len(''..early[PLAYER_2]["TapNoteScore_W0"]), 0),Diffuse = color("#000080")})
+						self:zoom(0.25*WideScreenDiff()):cropleft(1.3):fadeleft(0.1):sleep(3.60):linear(0.7):cropleft(-0.3)
+					end,
+					OffCommand=function(self) self:linear(0.2):diffusealpha(0) end
+				},
+				Def.BitmapText {
+					File = "_ScreenEvaluation numbers",
+					InitCommand=function(self) self:y(3*WideScreenDiff()):horizalign(right):shadowlength(1):diffuse(color("#FF0000")) end,
+					OnCommand=function(self)
+						self:settextf("%04d",late[PLAYER_2]["TapNoteScore_W0"]):AddAttribute(0, {Length = math.max(4-string.len(''..late[PLAYER_2]["TapNoteScore_W0"]), 0),Diffuse = color("#800000")})
+						self:zoom(0.25*WideScreenDiff()):cropleft(1.3):fadeleft(0.1):sleep(3.60):linear(0.7):cropleft(-0.3)
+					end,
+					OffCommand=function(self) self:linear(0.2):diffusealpha(0) end
+				},
+				Def.RollingNumbers{
+					Font=THEME:GetPathF("ScreenEvaluation","JudgmentLineNumber"),
+					InitCommand=function(self)
+						self:player(PLAYER_2):name("W0Number" .. PlayerNumberToString(PLAYER_2))
+						ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen")
+						self:Load("RollingNumbersJudgment"):targetnumber(getenv("W0"..pname(PLAYER_2)) or 0):x(0):y(0):queuecommand("Reset")
+					end,
+					ResetCommand=function(self) self:horizalign(left) end
+				}
+			},
+			Def.ActorFrame{
 				Name="W1",
 				InitCommand=function(self) self:y(THEME:GetMetric("ScreenEvaluationRave","W1NumberP2Y")) end,
 				Def.BitmapText {
+					Condition=not getenv("SetScoreFA"..pname(PLAYER_1)),
 					File = "_ScreenEvaluation numbers",
-					InitCommand=function(self) self:y(-3*WideScreenDiff()):horizalign(right):shadowlength(1):diffuse(color("#FFFFFF")) end,
+					InitCommand=function(self) self:y(-9*WideScreenDiff()):horizalign(right):shadowlength(1):diffuse(color("#FFFFFF")) end,
 					OnCommand=function(self)
 						self:settextf("%04d",perfect[PLAYER_2]):AddAttribute(0, {Length = math.max(4-string.len(''..perfect[PLAYER_2]), 0),Diffuse = color("#808080")})
 						self:zoom(0.25*WideScreenDiff()):cropleft(1.3):fadeleft(0.1):sleep(3.60):linear(0.7):cropleft(-0.3)
@@ -422,6 +574,16 @@ return Def.ActorFrame{
 						self:zoom(0.25*WideScreenDiff()):cropleft(1.3):fadeleft(0.1):sleep(3.60):linear(0.7):cropleft(-0.3)
 					end,
 					OffCommand=function(self) self:linear(0.2):diffusealpha(0) end
+				},
+				Def.RollingNumbers{
+					Condition=getenv("SetScoreFA"..pname(PLAYER_2)),
+					Font=THEME:GetPathF("ScreenEvaluation","JudgmentLineNumber"),
+					InitCommand=function(self)
+						self:player(PLAYER_2):name("W0Number" .. PlayerNumberToString(PLAYER_2))
+						ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen")
+						self:Load("RollingNumbersJudgment"):targetnumber(STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_2):GetTapNoteScores('TapNoteScore_W1')-(getenv("W0"..pname(PLAYER_2)) or 0)):x(0):y(0):queuecommand("Reset")
+					end,
+					ResetCommand=function(self) self:horizalign(left):diffusealpha(1) end
 				}
 			},
 			Def.ActorFrame{

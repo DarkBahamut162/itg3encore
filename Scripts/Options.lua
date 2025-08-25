@@ -396,6 +396,7 @@ function InitPlayerOptions()
 			end
 		end
 		setenv("SetScoreDirection"..pname(pn),LoadUserPrefN(pn, "SetScoreDirection", 1))
+		setenv("SetScoreFA"..pname(pn),LoadUserPrefB(pn, "SetScoreFA", false))
 		setenv("ScreenFilter"..pname(pn),LoadUserPrefN(pn, "ScreenFilter", 0))
 
 		setenv("ShowStats"..pname(pn),not isVS() and LoadUserPrefN(pn, "ShowStats", 0) or 0)
@@ -581,33 +582,41 @@ function OptionSetScoreType()
 		end
 	end
 
+	local options = GetScoreTypes(isEtterna())
+	options[#options+1] = "FA+"
+
 	local t = {
 		Name="SetScoreType",
 		LayoutType = "ShowAllInRow",
 		SelectType = "SelectMultiple",
 		OneChoiceForAllPlayers = false,
 		ExportOnChange = false,
-		Choices = GetScoreTypes(isEtterna()),
+		Choices = options,
 		LoadSelections = function(self, list, pn)
 			local scoreType = getenv("SetScoreType"..pname(pn))
 			local scoreDirection = getenv("SetScoreDirection"..pname(pn))
+			local scoreFA = getenv("SetScoreFA"..pname(pn))
 			if scoreType and scoreType ~= 0 then
 				list[scoreType] = true
 			else
 				list[2] = true
 			end
 			if scoreDirection and scoreDirection ~= 0 then
-				list[scoreDirection+#self.Choices-2] = true
+				list[scoreDirection+#self.Choices-3] = true
 			else
-				list[#self.Choices-1] = true
+				list[#self.Choices-2] = true
 			end
+			if scoreFA then list[#self.Choices] = true end
 		end,
 		SaveSelections = function() end,
 		NotifyOfSelection= function(self, pn, choice)
-			if choice <= #self.Choices-2 then
+			if choice <= #self.Choices-3 then
 				setenv("SetScoreType"..pname(pn),SaveUserPref(pn, "SetScoreType", choice))
+			elseif choice <= #self.Choices-1 then
+				setenv("SetScoreDirection"..pname(pn),SaveUserPref(pn, "SetScoreDirection", choice-#self.Choices+3))
 			else
-				setenv("SetScoreDirection"..pname(pn),SaveUserPref(pn, "SetScoreDirection", choice-#self.Choices+2))
+				local scoreFA = getenv("SetScoreFA"..pname(pn))
+				setenv("SetScoreFA"..pname(pn),SaveUserPref(pn, "SetScoreFA", not scoreFA))
 			end
 			return true
 		end

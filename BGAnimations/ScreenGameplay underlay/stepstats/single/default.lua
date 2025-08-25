@@ -8,19 +8,21 @@ if graph and getenv("ShowStats"..pname(pn)) == 0 then startX = startX * 2 end
 local SongOrCourse,StepsOrTrail,scorelist,topscore
 local mines,holds,rolls,holdsAndRolls = 0,0,0,0
 
-local barWidth		= {202,	92,	57,	36,	26,	20}
-local barSpace		= {0,	18,	16,	20,	18,	16+1/3}
+local barWidth		= {202,	92,	57,	36,	26,	20,     16}
+local barSpace		= {0,	18,	16,	20,	18,	16+1/3, 15}
 local barOffset		= {
 	[1] = {0},
 	[2] = {0,0},
 	[3] = {0,-0.5,0},
 	[4] = {0,-1,-2/3,-4/3},
 	[5] = {0,0,0,0,0},
-	[6] = {0,0,1,0,0,0}
+	[6] = {0,0,1,0,0,0},
+	[7] = {0,0,0,0,0,0,0}
 }
 local barHeight,totalWidth,barCenter = 228,202,0
 local target = THEME:GetMetric("PlayerStageStats", "GradePercentTier" .. string.format("%02d", 18-getenv("SetPacemaker"..pname(pn))))
 local TotalSteps = 0
+local faplus = getenv("SetScoreFA"..pname(pn))
 
 if GAMESTATE:IsCourseMode() then SongOrCourse,StepsOrTrail = GAMESTATE:GetCurrentCourse(),GAMESTATE:GetCurrentTrail(pn) else SongOrCourse,StepsOrTrail = GAMESTATE:GetCurrentSong(),GAMESTATE:GetCurrentSteps(pn) end
 if not isEtterna() and not scorelist then scorelist = PROFILEMAN:GetMachineProfile():GetHighScoreList(SongOrCourse,StepsOrTrail) end
@@ -57,43 +59,89 @@ if StepsOrTrail then
 end
 
 local bgNum = getenv("ShowStats"..pname(pn))
-if bgNum == (isOpenDDR() and 6 or 7) then if topscore == nil then bgNum = 2 else bgNum = 3 end end
+if bgNum == (isOpenDDR() and 6 or 7) then
+	if topscore == nil then bgNum = 2 else bgNum = 3 end
+else
+	if faplus then bgNum = bgNum + 1 end
+end
 if bgNum > 0 then barCenter	= -totalWidth/2+barWidth[bgNum]/2 end
 
 local BarLabelTexts = {"Fantastics","Excellents","Greats","Decents","Way-Offs","Misses"}
+BarLabelTexts[0] = "Fantastics+"
 local Numbers,BarLabels,Bars = Def.ActorFrame{},Def.ActorFrame{},Def.ActorFrame{}
+local judgments = {
+	"TapNoteScore_Miss",
+	"TapNoteScore_W5",
+	"TapNoteScore_W4",
+	"TapNoteScore_W3",
+	"TapNoteScore_W2",
+	"TapNoteScore_W1"
+}
+
+function GetTotalTaps()
+	local total = 0
+	for judg in ivalues(judgments) do
+		total = total + STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):GetTapNoteScores(judg)
+	end
+	return total
+end
+
+local function TNS(score)
+	return score == "W0" and "TapNoteScore_W1" or "TapNoteScore_W0"
+end
 
 if getenv("ShowStats"..pname(pn)) < (isOpenDDR() and 6 or 7) then
-	for i = 1,math.min((isOpenDDR() and 5 or 6),getenv("ShowStats"..pname(pn))) do
+	for i = faplus and 0 or 1,math.min((isOpenDDR() and 5 or 6),getenv("ShowStats"..pname(pn))) do
 		local score = i < (isOpenDDR() and 5 or 6) and "W"..i or "Miss"
 		Numbers[#Numbers+1] = Def.BitmapText {
+			Name="NumbersW"..i,
 			File = "ScreenGameplay judgment",
-			Name="Numbers"..score,
-			InitCommand=function(self) self:zoom(0.75):addy(isFinal() and 110 or 100):addx(barCenter+barOffset[bgNum][i]+(barWidth[bgNum]+barSpace[bgNum])*(i-1)):shadowlength(0):maxwidth(barWidth[bgNum]*2):diffuse(TapNoteScoreToColor('TapNoteScore_'..score)):queuecommand("Update") end,
-			JudgmentMessageCommand=function(self,param) if param.Player == pn then self:queuecommand("Update") end end,
+			Text=0,
+			InitCommand=function(self) self:zoom(0.75):addy(isFinal() and 110 or 100):addx(barCenter+barOffset[bgNum][faplus and i+1 or i]+(barWidth[bgNum]+barSpace[bgNum])*(faplus and i or i-1)):shadowlength(0):maxwidth(barWidth[bgNum]*2):diffuse(TapNoteScoreToColor((faplus and i < 2) and TNS(score) or 'TapNoteScore_'..score)) end,
+			JudgmentMessageCommand=function(self,param) if param.Player == pn and not (faplus and i < 2) then self:queuecommand("Update") end end,
+			W0MessageCommand=function(self,param)
+				if param.Player == pn then
+					if self:GetName() == "NumbersW0" then self:settext(param.W0) end
+					if self:GetName() == "NumbersW1" then self:settext(STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):GetTapNoteScores('TapNoteScore_W1')-param.W0) end
+				end
+			end,
 			UpdateCommand=function(self) self:settext(STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):GetTapNoteScores('TapNoteScore_'..score)) end
 		}
 		BarLabels[#BarLabels+1] = Def.BitmapText {
 			File = "_v 26px bold black",
 			Text=BarLabelTexts[(isOpenDDR() and score == "Miss") and i+1 or i],
-			InitCommand=function(self) self:rotationz(-90):addy(-20):addx(barCenter+barOffset[bgNum][i]+(barWidth[bgNum]+barSpace[bgNum])*(i-1)):shadowlength(0):queuecommand("FadeOn") end,
-			FadeOnCommand=function(self) self:sleep(2+(0.25*(i-1))):linear(1):diffusealpha(0) end
+			InitCommand=function(self) self:rotationz(-90):addy(-20):addx(barCenter+barOffset[bgNum][faplus and i+1 or i]+(barWidth[bgNum]+barSpace[bgNum])*(faplus and i or i-1)):shadowlength(0):queuecommand("FadeOn") end,
+			FadeOnCommand=function(self) self:sleep(2+(0.25*(faplus and i or i-1))):linear(1):diffusealpha(0) end
 		}
 		Bars[#Bars+1] = Def.Sprite {
-			Texture = "../w"..((isOpenDDR() and score == "Miss") and i+1 or i),
-			InitCommand=function(self) self:vertalign(bottom):diffusealpha(0.25):addx(barCenter+barOffset[bgNum][i]+(barWidth[bgNum]+barSpace[bgNum])*(i-1)):addy(86):zoomx(0.01*barWidth[bgNum]):zoomy(0) end,
+			Name="PercentW"..i,
+			Texture = "../"..(faplus and "fa" or "w")..((isOpenDDR() and score == "Miss") and i+1 or i),
+			InitCommand=function(self) self:vertalign(bottom):diffusealpha(0.25):addx(barCenter+barOffset[bgNum][faplus and i+1 or i]+(barWidth[bgNum]+barSpace[bgNum])*(faplus and i or i-1)):addy(86):zoomx(0.01*barWidth[bgNum]):zoomy(0) end,
 			Condition=getenv("ShowStats"..pname(pn)) >= i,
-			JudgmentMessageCommand=function(self,param) if param.Player == pn then self:queuecommand("Update") end end,
+			JudgmentMessageCommand=function(self,param) if param.Player == pn and not (faplus and i < 2) then self:queuecommand("Update") end end,
+			W0MessageCommand=function(self,param)
+				if param.Player == pn then
+					if self:GetName() == "PercentW0" then self:zoomy((param.W0/GetTotalTaps())*barHeight) end
+					if self:GetName() == "PercentW1" then self:zoomy(((STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):GetTapNoteScores('TapNoteScore_W1')-param.W0)/GetTotalTaps())*barHeight) end
+				end
+			end,
 			UpdateCommand=function(self)
 				local Percent = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):GetPercentageOfTaps('TapNoteScore_'..score)
 				self:zoomy(Percent*barHeight)
 			end
 		}
 		Bars[#Bars+1] = Def.Sprite {
-			Texture = "../w"..((isOpenDDR() and score == "Miss") and i+1 or i),
-			InitCommand=function(self) self:vertalign(bottom):addx(barCenter+barOffset[bgNum][i]+(barWidth[bgNum]+barSpace[bgNum])*(i-1)):addy(86):zoomx(0.01*barWidth[bgNum]):zoomy(0) end,
+			Name="NotesW"..i,
+			Texture = "../"..(faplus and "fa" or "w")..((isOpenDDR() and score == "Miss") and i+1 or i),
+			InitCommand=function(self) self:vertalign(bottom):addx(barCenter+barOffset[bgNum][faplus and i+1 or i]+(barWidth[bgNum]+barSpace[bgNum])*(faplus and i or i-1)):addy(86):zoomx(0.01*barWidth[bgNum]):zoomy(0) end,
 			Condition=getenv("ShowStats"..pname(pn)) >= i,
-			JudgmentMessageCommand=function(self,param) if param.Player == pn then self:queuecommand("Update") end end,
+			JudgmentMessageCommand=function(self,param) if param.Player == pn and not (faplus and i < 2) then self:queuecommand("Update") end end,
+			W0MessageCommand=function(self,param)
+				if param.Player == pn then
+					if self:GetName() == "NotesW0" then self:zoomy((param.W0/TotalSteps)*barHeight) end
+					if self:GetName() == "NotesW1" then self:zoomy(((STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):GetTapNoteScores('TapNoteScore_W1')-param.W0)/TotalSteps)*barHeight) end
+				end
+			end,
 			UpdateCommand=function(self)
 				local Notes = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):GetTapNoteScores('TapNoteScore_'..score)
 				self:zoomy(Notes/TotalSteps*barHeight)
@@ -112,7 +160,7 @@ return Def.ActorFrame{
 				local move = pn == PLAYER_1 and 78 or -78
 				self:x(startX+(solo and move*WideScreenDiff_(16/10) or 0))
 				self:y(solo and SCREEN_HEIGHT/6*WideScreenDiff_(16/10) or 0)
-			elseif IsGame("po-mu") then
+			elseif IsGame("po-mu") or IsGame("popn") then
 				local move = pn == PLAYER_1 and 72 or -72
 				self:x(startX+(solo and move*WideScreenDiff_(16/10) or 0))
 				self:y(solo and SCREEN_HEIGHT/6*WideScreenDiff_(16/10) or 0)
@@ -148,7 +196,7 @@ return Def.ActorFrame{
 				Texture = "s_"..(isFinal() and "final" or "normal")
 			},
 			Def.Sprite {
-				Texture = (isOpenDDR() and "ddr_bg" or "s_bg")..getenv("ShowStats"..pname(pn))
+				Texture = (isOpenDDR() and "ddr_bg" or (faplus and "fa_bg" or "s_bg"))..getenv("ShowStats"..pname(pn))
 			},
 			Def.Sprite {
 				Texture = "s_glow final",

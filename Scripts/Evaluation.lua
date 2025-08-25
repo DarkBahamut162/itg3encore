@@ -51,6 +51,7 @@ function prepSummary()
 	function playerData(player)
 		local Step = {}
 		local early = {
+			["TapNoteScore_W0"] = 0,
 			["TapNoteScore_W1"] = 0,
 			["TapNoteScore_W2"] = 0,
 			["TapNoteScore_W3"] = 0,
@@ -58,6 +59,7 @@ function prepSummary()
 			["TapNoteScore_W5"] = 0
 		}
 		local late = {
+			["TapNoteScore_W0"] = 0,
 			["TapNoteScore_W1"] = 0,
 			["TapNoteScore_W2"] = 0,
 			["TapNoteScore_W3"] = 0,
