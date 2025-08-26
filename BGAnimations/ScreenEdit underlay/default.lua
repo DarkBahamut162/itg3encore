@@ -19,7 +19,7 @@ return Def.ActorFrame{
 	},
 	Def.Sprite {
 		Texture = "bar",
-		InitCommand=function(self) self:CenterX():y((IsGame("be-mu") or IsGame("beat") or IsGame("po-mu")) and SCREEN_BOTTOM-60*WideScreenDiff() or SCREEN_TOP+60*WideScreenDiff()):zoom(WideScreenDiff()):zoomtowidth(SCREEN_WIDTH) end
+		InitCommand=function(self) self:CenterX():y((IsGame("be-mu") or IsGame("po-mu")) and SCREEN_BOTTOM-60*WideScreenDiff() or SCREEN_TOP+60*WideScreenDiff()):zoom(WideScreenDiff()):zoomtowidth(SCREEN_WIDTH) end
 	},
 	Def.Sprite {
 		Texture = "sides",

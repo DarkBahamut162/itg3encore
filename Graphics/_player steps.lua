@@ -26,7 +26,7 @@ return Def.ActorFrame{
 							end
 						end
 					end
-					if IsGame("be-mu") then
+					if IsGame("be-mu") or IsGame("beat") then
 						local loadScratches = LoadFromCache(SongOrCourse,StepsOrTrail,"Scratches")
 						if loadScratches and not (loadScratches == "" or loadScratches == "0") then output = addToOutput(output,"Scratches: "..loadScratches," | ") end
 						if GetUserPrefN("StylePosition") == 2 then

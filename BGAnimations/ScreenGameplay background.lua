@@ -57,7 +57,7 @@ return Def.ActorFrame {
 		if not isTopScreen("ScreenDemonstration") and not isTopScreen("ScreenDemonstration2") and not isTopScreen("ScreenJukebox") and not isTopScreen("ScreenCreditsGameplay") then
 			self:playcommand("UpdateDiscordInfo")
 			for pn in ivalues(GAMESTATE:GetEnabledPlayers()) do
-				if GAMESTATE:GetNumPlayersEnabled() == 1 and not isDouble() and (IsGame("be-mu") or IsGame("beat") or IsGame("po-mu")) then
+				if GAMESTATE:GetNumPlayersEnabled() == 1 and not isDouble() and (IsGame("be-mu") or IsGame("beat") or IsGame("po-mu") or IsGame("popn")) then
 					if not HasLuaCheck() then
 						if getenv("Rotation"..pname(pn)) == 1 or getenv("Rotation"..pname(pn)) == 4 then
 							SCREENMAN:GetTopScreen():GetChild("SongBackground"):GetChild(""):zoom(zoomS()):xy(pn == PLAYER_1 and xS() or 0,SCREEN_CENTER_Y-SCREEN_CENTER_Y*zoomS())

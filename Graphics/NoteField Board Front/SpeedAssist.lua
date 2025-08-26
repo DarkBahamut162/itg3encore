@@ -1,7 +1,7 @@
 local c,cDl,cDr,cUl,cUr
 local player = ...
 local style = GAMESTATE:GetCurrentStyle()
-local rotate = (IsGame("be-mu") or IsGame("beat") or IsGame("po-mu")) and -90 or 90
+local rotate = (IsGame("be-mu") or IsGame("po-mu")) and -90 or 90
 local reverse = GAMESTATE:GetPlayerState(player):GetCurrentPlayerOptions():Reverse() ~= 0
 if reverse then rotate = rotate * -1 end
 
