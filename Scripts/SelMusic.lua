@@ -1,4 +1,4 @@
-local cacheVersion = "0.40"
+local cacheVersion = "0.41"
 local stepCache = {}
 local typeList = {"avi","f4v","flv","mkv","mp4","mpeg","mpg","mov","ogv","webm","wmv"}
 Master,P1,P2={},{},{}
@@ -928,7 +928,7 @@ function cacheStepBMS(Song,Step)
 	local chaosCount = 0
 	local maxVoltage = 0
 
-	if rows and #rows>0 then
+	if rows then
 		local orderedBeats = orderedIndex(rows)
 		for beat in ivalues(orderedBeats) do
 			local row = rows[beat]

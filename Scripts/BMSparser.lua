@@ -36,12 +36,12 @@ function BMSParser(steps)
 		local timing = {}
 		local allRows = simfileString:gmatch("#(%w+):([%w]+)\n")
 		local _allRows = simfileString:gmatch("#(%w+):([%w.]+)\n")
-		for measure,rows in _allRows do
-			if tonumber(measure) then
-				currentMeasure = math.floor(measure/100)
+		for _measure,_rows in _allRows do
+			if tonumber(_measure) then
+				currentMeasure = math.floor(_measure/100)
 				if timing[currentMeasure] then else timing[currentMeasure] = 1 end
-				if tonumber(measure) % 100 == 2 then
-					timing[currentMeasure] = tonumber(rows)
+				if tonumber(_measure) % 100 == 2 then
+					timing[currentMeasure] = tonumber(_rows)
 				end
 			end
 		end
@@ -78,7 +78,7 @@ function BMSParser(steps)
 					for row in ivalues(rows) do
 						currentRow = currentRow + 1
 						if row ~= "00" then
-							beat = actualBeat+(currentRow/#rows*4)*timing[currentMeasure]
+							beat = actualBeat+(currentRow/#rows*4)*(timing[currentMeasure] or 1)
 							local index = FindInTable(row, holds)
 							if index then
 								table.remove(holds, index)
