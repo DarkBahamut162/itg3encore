@@ -11,12 +11,10 @@ function ChoiceSingle()
 		return {"single"}
 	elseif IsGame("smx") then
 		return {"single"}
-	elseif IsGame("be-mu") or IsGame("beat") then
-		if isOutFox() then
-			return {"single5","single6","single7"}
-		else
-			return {"single5","single7"}
-		end
+	elseif IsGame("be-mu") then
+		return {"single5","single6","single7"}
+	elseif IsGame("beat") then
+		return {"single5","single7"}
 	elseif IsGame("po-mu") then
 		return {"po-mu-three","po-mu-four","po-mu-five","po-mu-seven","po-mu-nine"}
 	elseif IsGame("popn") then
@@ -39,12 +37,10 @@ function ChoiceVersus()
 		return {"versus"}
 	elseif IsGame("smx") then
 		return {"versus"}
-	elseif IsGame("be-mu") or IsGame("beat") then
-		if isOutFox() then
-			return {"versus5","versus6","versus7"}
-		else
-			return {"versus5","versus7"}
-		end
+	elseif IsGame("be-mu") then
+		return {"versus5","versus6","versus7"}
+	elseif IsGame("beat") then
+		return {"versus5","versus7"}
 	elseif IsGame("po-mu") then
 		return {"po-mu-three-versus","po-mu-four-versus","po-mu-five-versus","po-mu-seven-versus","po-mu-nine-versus"}
 	elseif IsGame("techno") then
@@ -65,12 +61,10 @@ function ChoiceDouble()
 		return {"double"}
 	elseif IsGame("smx") then
 		return {"double10"}
-	elseif IsGame("be-mu") or IsGame("beat") then
-		if isOutFox() then
-			return {"double5","double6","double7"}
-		else
-			return {"double5","double7"}
-		end
+	elseif IsGame("be-mu") then
+		return {"double5","double6","double7"}
+	elseif IsGame("beat") then
+		return {"double5","double7"}
 	elseif IsGame("po-mu") then
 		return {nil,nil,nil,nil,"po-mu-nine-double"}
 	elseif IsGame("popn") then
@@ -139,12 +133,10 @@ function StyleName()
 		return {"5 Arrows"}
 	elseif IsGame("smx") then
 		return {"5 Arrows"}
-	elseif IsGame("be-mu") or IsGame("beat") then
-		if isOutFox() then
-			return {"5 Buttons + Turntable","Foot Pedal + 5 Buttons + Turntable","7 Buttons + Turntable"}
-		else
-			return {"5 Buttons + Turntable","7 Buttons + Turntable"}
-		end
+	elseif IsGame("be-mu") then
+		return {"5 Buttons + Turntable","Foot Pedal + 5 Buttons + Turntable","7 Buttons + Turntable"}
+	elseif IsGame("beat") then
+		return {"5 Buttons + Turntable","7 Buttons + Turntable"}
 	elseif IsGame("po-mu") then
 		return {"3 Buttons","4 Buttons","5 Buttons","7 Buttons","9 Buttons"}
 	elseif IsGame("popn") then
@@ -168,12 +160,10 @@ function StepsTypeSingle()
 		return {"StepsType_Pump_Single"}
 	elseif IsGame("smx") then
 		return {"StepsType_Smx_Single"}
-	elseif IsGame("be-mu") or IsGame("beat") then
-		if isOutFox() then
-			return {"StepsType_Bm_Single5","StepsType_Bm_Single6","StepsType_Bm_Single7"}
-		else
-			return {"StepsType_Bm_Single5","StepsType_Bm_Single7"}
-		end
+	elseif IsGame("be-mu") then
+		return {"StepsType_Bm_Single5","StepsType_Bm_Single6","StepsType_Bm_Single7"}
+	elseif IsGame("beat") then
+		return {"StepsType_Bm_Single5","StepsType_Bm_Single7"}
 	elseif IsGame("po-mu") then
 		return {"StepsType_Pnm_Three","StepsType_Pnm_Four","StepsType_Pnm_Five","StepsType_Pnm_Seven","StepsType_Pnm_Nine"}
 	elseif IsGame("popn") then
@@ -197,12 +187,10 @@ function StepsTypeDouble()
 		return {"StepsType_Pump_Double"}
 	elseif IsGame("smx") then
 		return {"StepsType_Smx_Double10"}
-	elseif IsGame("be-mu") or IsGame("beat") then
-		if isOutFox() then
-			return {"StepsType_Bm_Double5","StepsType_Bm_Double6","StepsType_Bm_Double7"}
-		else
-			return {"StepsType_Bm_Double5","StepsType_Bm_Double7"}
-		end
+	elseif IsGame("be-mu") then
+		return {"StepsType_Bm_Double5","StepsType_Bm_Double6","StepsType_Bm_Double7"}
+	elseif IsGame("beat") then
+		return {"StepsType_Bm_Double5","StepsType_Bm_Double7"}
 	elseif IsGame("po-mu") then
 		return {nil,nil,nil,nil,"StepsType_Pnm_Nine_Double"}
 	elseif IsGame("popn") then
