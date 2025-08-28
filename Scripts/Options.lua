@@ -365,7 +365,7 @@ function InitOptions()
 
 	if GetUserPrefN("StylePosition") == nil then
 		SetUserPref("StylePosition",1)
-	elseif GetUserPrefN("StylePosition") > #ChoiceSingle() then
+	elseif ChoiceSingle() and GetUserPrefN("StylePosition") > #ChoiceSingle() then
 		SetUserPref("StylePosition",1)
 	end
 

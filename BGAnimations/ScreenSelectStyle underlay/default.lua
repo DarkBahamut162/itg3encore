@@ -5,7 +5,12 @@ local currentStylePosition = GetUserPrefN("StylePosition")
 local currentBattleMode = getenv("BattleMode")
 local screenName = Var "LoadingScreen" or "ScreenSelectStyle" 
 local enableUD = screenName == "ScreenSelectNumPlayers"
-local output = enableUD and "Current Style: "..StyleName()[currentStylePosition].." | Battle Mode: "..string.gsub(" "..currentBattleMode, "%W%l", string.upper):sub(2) or "Current Style: "..StyleName()[currentStylePosition]
+local output
+if StyleName() and StyleName()[currentStylePosition] then
+	output = enableUD and "Current Style: "..StyleName()[currentStylePosition].." | Battle Mode: "..string.gsub(" "..currentBattleMode, "%W%l", string.upper):sub(2) or "Current Style: "..StyleName()[currentStylePosition]
+else
+	output = "Current Style: UNSUPPORTED!"
+end
 
 for player in ivalues(PlayerNumber) do
 	if VersionDateCheck(20160000) then SCREENMAN:set_input_redirected(player, false) end
