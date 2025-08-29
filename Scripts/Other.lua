@@ -414,7 +414,7 @@ function JudgmentTransformSharedCommand( self, params )
 	local y = -30
 	local ShowMovePlayerStats = getenv("ShowMovePlayerStats"..pname(params.Player)) or 3
 	local add = SCREEN_CENTER_Y/5*(ShowMovePlayerStats-3)
-	if params.bReverse then y = 30 end
+	if params.bReverse then y = y * -1 end
 	local zoom = isOutFox() and 1 or (1+math.min(1,NotefieldZoom()))/2
 
 	self:x( 0 )
