@@ -20,13 +20,17 @@ function ChoiceSingle()
 	elseif IsGame("popn") then
 		return {"popn-five","popn-nine"}
 	elseif IsGame("techno") then
-		return {"single4","single5","single8","single9"}
+		if VersionDateCheck(20210300) then
+			return {"single4","single5","single8","single9"}
+		else
+			return {"single4","single5","single8"}
+		end
 	end
 end
 
 function ChoiceVersus()
 	if IsGame("dance") or IsGame("groove") then
-		if isOutFox() then
+		if isOutFox() and VersionDateCheck(20220000) then
 			return {"versus","solo-versus","threepanel-versus"}
 		else
 			return {"versus",nil,nil}
@@ -42,15 +46,23 @@ function ChoiceVersus()
 	elseif IsGame("beat") then
 		return {"versus5","versus7"}
 	elseif IsGame("po-mu") then
-		return {"po-mu-three-versus","po-mu-four-versus","po-mu-five-versus","po-mu-seven-versus","po-mu-nine-versus"}
+		if VersionDateCheck(20210815) then
+			return {"po-mu-three-versus","po-mu-four-versus","po-mu-five-versus","po-mu-seven-versus","po-mu-nine-versus"}
+		else
+			return {nil,nil,nil,nil,nil}
+		end
 	elseif IsGame("techno") then
-		return {"versus4","versus5","versus8","versus9"}
+		if VersionDateCheck(20210300) then
+			return {"versus4","versus5","versus8","versus9"}
+		else
+			return {"versus4","versus5","versus8"}
+		end
 	end
 end
 
 function ChoiceDouble()
 	if IsGame("dance") or IsGame("groove") then
-		if isOutFox() then
+		if isOutFox() and VersionDateCheck(20220000) then
 			return {"double","solo-double","threepanel-double"}
 		else
 			return {"double",nil,nil}
@@ -66,11 +78,15 @@ function ChoiceDouble()
 	elseif IsGame("beat") then
 		return {"double5","double7"}
 	elseif IsGame("po-mu") then
-		return {nil,nil,nil,nil,"po-mu-nine-double"}
+		return {nil,nil,nil,nil,VersionDateCheck(20210815) and "po-mu-nine-double" or nil}
 	elseif IsGame("popn") then
 		return {nil,nil}
 	elseif IsGame("techno") then
-		return {"double4","double5","double8","double9"}
+		if VersionDateCheck(20210300) then
+			return {"double4","double5","double8","double9"}
+		else
+			return {"double4","double5","double8"}
+		end
 	end
 end
 
@@ -176,7 +192,7 @@ end
 
 function StepsTypeDouble()
 	if IsGame("dance") or IsGame("groove") then
-		if isOutFox() then
+		if isOutFox() and VersionDateCheck(20220000) then
 			return {"StepsType_Dance_Double","StepsType_Dance_Solodouble","StepsType_Dance_Threedouble"}
 		else
 			return {"StepsType_Dance_Double",nil,nil}
@@ -192,7 +208,7 @@ function StepsTypeDouble()
 	elseif IsGame("beat") then
 		return {"StepsType_Bm_Double5","StepsType_Bm_Double7"}
 	elseif IsGame("po-mu") then
-		return {nil,nil,nil,nil,"StepsType_Pnm_Nine_Double"}
+		return {nil,nil,nil,nil,VersionDateCheck(20210815) and "StepsType_Pnm_Nine_Double" or nil}
 	elseif IsGame("popn") then
 		return {nil,nil}
 	elseif IsGame("techno") then
