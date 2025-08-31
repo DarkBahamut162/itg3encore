@@ -55,6 +55,8 @@ setenv("checkGreats"..pname(player),true)
 setenv("check"..pname(player),true)
 setenv("checkAuto"..pname(player),true)
 
+local combo = not (getenv("HideCombo" .. pname(player)) or false)
+
 return Def.ActorFrame{
 	InitCommand=function(self) c = self:GetChildren() end,
 	OnCommand=function(self) screen = SCREENMAN:GetTopScreen() end,
@@ -148,13 +150,13 @@ return Def.ActorFrame{
 				setenv("check"..pname(player),false)
 			end
 		end
-
 		MESSAGEMAN:Broadcast("Combo",{TapNoteScore=(faplus and WX or params.TapNoteScore)})
-		c._C0:settext(JUDGMENT[judg]..(COMBO[judg] and "x"..curCombo or ""))
-		c._C1:visible(current == 1):settext(JUDGMENT[judg]..(COMBO[judg] and "x"..curCombo or "") )
-		c._C2:visible(current == 2):settext(JUDGMENT[judg]..(COMBO[judg] and "x"..curCombo or "") )
-		c._C3:visible(current == 3):settext(JUDGMENT[judg]..(COMBO[judg] and "x"..curCombo or "") )
-		c._C4:visible(current == 4):settext(JUDGMENT[judg]..(COMBO[judg] and "x"..curCombo or "") )
+		local output = JUDGMENT[judg]..((COMBO[judg] and combo) and "x"..curCombo or "")
+		c._C0:settext(output)
+		c._C1:visible(current == 1):settext(output)
+		c._C2:visible(current == 2):settext(output)
+		c._C3:visible(current == 3):settext(output)
+		c._C4:visible(current == 4):settext(output)
 	end,
 	OffCommand=function(self)
 		if getenv("checkFantastics"..pname(player)) then setenv("LastFantastic"..pname(player),isEtterna() and GAMESTATE:GetSongPosition():GetMusicSecondsVisible() or STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetAliveSeconds()) end
