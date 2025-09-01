@@ -75,7 +75,7 @@ return Def.ActorFrame{
 	Def.ActorFrame{
 		Name="Error",
 		Condition=offsetInfo ~= nil and showOffset and getenv("EvalComboP2"),
-		InitCommand=function(self) self:y(isFinal() and -230*WideScreenDiff() or -210*WideScreenDiff()) end,
+		InitCommand=function(self) self:y(-212*WideScreenDiff()) end,
 		BeginCommand=function(self)
 			local screen = SCREENMAN:GetTopScreen()
 			if screen and faplus then
@@ -111,7 +111,7 @@ return Def.ActorFrame{
 			File = "_v 26px bold shadow",
 			Condition=not isnan(average),
 			Text="average "..average.." | median "..math.round(median,3).." | peak "..peak,
-			InitCommand=function(self) self:x(64*WideScreenDiff()):maxwidth(300):y(faplus and -6*WideScreenDiff() or 0) end,
+			InitCommand=function(self) self:x(78*(5/6)*WideScreenDiff()*WideScreenDiff()):maxwidth(300*WideScreenSemiDiff()):y(faplus and -6*WideScreenDiff() or 0) end,
 			OnCommand=function(self) self:zoomx(0.6*WideScreenDiff()):zoomy(0.4*WideScreenDiff()):diffusealpha(0):sleep(3.60):linear(0.7):diffusealpha(1) end,
 			OffCommand=function(self) self:linear(0.2):diffusealpha(0) end
 		}

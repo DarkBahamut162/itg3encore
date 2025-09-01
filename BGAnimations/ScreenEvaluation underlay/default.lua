@@ -2,6 +2,8 @@ local master = GAMESTATE:GetMasterPlayerNumber()
 local percent = isEtterna() and STATSMAN:GetCurStageStats():GetPlayerStageStats(master):GetWifeScore() or 0
 local grade = GetGradeFromPercent(percent)
 local faplus = getenv("SetScoreFA"..pname(PLAYER_1)) or getenv("SetScoreFA"..pname(PLAYER_2)) or false
+local offsetInfo = getenv("OffsetTable")
+local showOffset = ThemePrefs.Get("ShowOffset")
 
 return Def.ActorFrame{
 	OnCommand = function(self)
@@ -142,7 +144,7 @@ return Def.ActorFrame{
 	},
 	Def.BitmapText {
 		File = "_angel glow",
-		InitCommand=function(self) self:x(SCREEN_CENTER_X):y(SCREEN_CENTER_Y-166*WideScreenDiff()):maxwidth(SCREEN_WIDTH/0.7):wrapwidthpixels(faplus and 250/(0.7*WideScreenDiff()) or SCREEN_WIDTH):maxheight(50):vertspacing(-10):zoom(0.6*WideScreenDiff()):shadowlength(0):playcommand("Update") end,
+		InitCommand=function(self) self:x(SCREEN_CENTER_X):y(SCREEN_CENTER_Y-152*WideScreenDiff()):vertalign(bottom):maxwidth(SCREEN_WIDTH/0.7):wrapwidthpixels((offsetInfo ~= nil and showOffset and (getenv("EvalComboP1") or getenv("EvalComboP2"))) and 360 or SCREEN_WIDTH):maxheight((SCREEN_CENTER_Y-166*WideScreenDiff())-40*WideScreenDiff()):vertspacing(-10):zoom(0.6*WideScreenDiff()):shadowlength(0):playcommand("Update") end,
 		OnCommand=function(self) self:diffusealpha(0):sleep(3):linear(0.3):diffusealpha(1) end,
 		OffCommand=function(self) self:linear(0.2):diffusealpha(0) end,
 		UpdateCommand=function(self)
