@@ -5,7 +5,8 @@ local height  = (SCREEN_HEIGHT / graphH)
 local bgColor = color('0, 0, 0, 0.66')
 local normalizeAlpha = (1.0 - bgColor[4]) * 0.8
 local showNoteGraph = getenv("ShowNoteGraph"..pname(pn))
-local rowLimit = showNoteGraph == 2
+local showNoteGraphType = getenv("ShowNoteGraphType"..pname(pn))
+local rowLimit = showNoteGraphType == 1
 local lastSec = nil
 local lastBeat = nil
 local courseMode = GAMESTATE:IsCourseMode()
@@ -239,10 +240,12 @@ local function UpdateGraphAlt()
                     local currentSec = math.round(timingData:GetElapsedTimeFromBeat(v[1]),3)
                     if previousSec ~= currentSec then
                         combo = 1
-                        stepsPerSecList[currentSec] = 1/(currentSec-previousSec)
+                        stepsPerSecList[currentSec] = math.max(combo,1/(currentSec-previousSec))
                     else
-                        combo = combo + 1
-                        stepsPerSecList[currentSec] = stepsPerSecList[currentSec] / (combo-1) * combo
+                        if not rowLimit then
+                            combo = combo + 1
+                            stepsPerSecList[currentSec] = math.max(combo,stepsPerSecList[currentSec] / (combo-1) * combo)
+                        end
                     end
                     if v["length"] then
                         if not lastBeat or (v[1] + v["length"] > lastBeat) then lastBeat = v[1] + v["length"] end
@@ -290,6 +293,7 @@ local function UpdateGraphAltSM(Step)
                     beat = (currentMeasure*4)+(currentRow/#rows*4)
                     local _, count = string.gsub(row, "[L124]", "")
                     if count > 0 then
+                        if rowLimit then count = 1 end
                         local isStop, isDelay, isWarp = false, false, false
                         if stops and #stops > 0 then isStop,stops = HasStopAtBeat(beat,stops) end
                         if delays and #delays > 0 then isDelay,delays = HasDelayAtBeat(beat,delays) end
@@ -298,7 +302,7 @@ local function UpdateGraphAltSM(Step)
                         if isJudgableAtBeat then
                             local currentSec = math.round(timingData:GetElapsedTimeFromBeat(beat),3)
                             if previousSec then
-                                stepsPerSecList[currentSec] = 1/(currentSec-previousSec) * count
+                                stepsPerSecList[currentSec] = math.max(count,1/(currentSec-previousSec) * count)
                             end
                             previousSec = currentSec
                         end
@@ -345,7 +349,7 @@ local function UpdateGraphAltBMS(Step)
                 if not isWarp or (isWarp and (isStop or isDelay)) then
                     local currentSec = math.round(timingData:GetElapsedTimeFromBeat(beat),3)
                     if previousSec then
-                        stepsPerSecList[currentSec] = (1/(currentSec-previousSec)) * chart[beat]
+                        stepsPerSecList[currentSec] = math.max(chart[beat],(1/(currentSec-previousSec)) * chart[beat])
                     end
                     previousSec = currentSec
                 end
@@ -463,7 +467,7 @@ local function GetVerticesAlt(stepsPerSecList)
         local col = color('1, 0, 0, '..alpha)
         vertices[#vertices+1] = { {curX, 0, 0}, {col[1], col[2], col[3], col[4]*0.5} }
 
-        if showNoteGraph == 4 then
+        if showNoteGraph == 3 then
             local colGB = math.min((math.max(nextY, 0) -12) * 0.0833, 1.0)
             col = color(string.format('%.2f, %.2f, %.2f, %.2f', (1-colGB), colGB, colGB, alpha))
             vertices[#vertices+1] = { {(curX+nextX)/2,math.min(nextY * height, graphH), 0}, col }
@@ -483,7 +487,7 @@ local function GetVerticesAlt(stepsPerSecList)
             col = color('0, 0, 0, 1')
             vertices[#vertices+1] = { {curX, 0, 0}, col }
             
-            if showNoteGraph == 4 then
+            if showNoteGraph == 3 then
                 vertices[#vertices+1] = { {(curX+nextX)/2,math.min(math.max(0,(nextY-20)/4) * height, graphH), 0}, col }
             else
                 vertices[#vertices+1] = { {curX, math.min(math.max(0,(curY-20)/4) * height, graphH), 0}, col }
@@ -551,8 +555,8 @@ return Def.ActorFrame{
             CurrentTrailP1ChangedMessageCommand=function(self) if courseMode and pn == PLAYER_1 then self:playcommand("Init") end end,
             CurrentTrailP2ChangedMessageCommand=function(self) if courseMode and pn == PLAYER_2 then self:playcommand("Init") end end,
             InitCommand=function(self)
-                local vertices = showNoteGraph == 4 and GetVerticesAlt((isOutFox() and VersionDateCheck(20200400)) and UpdateGraphAlt() or UpdateGraphAltOld()) or GetVertices((isOutFox() and VersionDateCheck(20200400)) and UpdateGraph() or UpdateGraphOld())
-                self:SetDrawState(showNoteGraph == 4 and {Mode = 'DrawMode_Triangles'} or {Mode = 'DrawMode_Quads'})
+                local vertices = showNoteGraph == 3 and GetVerticesAlt((isOutFox() and VersionDateCheck(20200400)) and UpdateGraphAlt() or UpdateGraphAltOld()) or GetVertices((isOutFox() and VersionDateCheck(20200400)) and UpdateGraph() or UpdateGraphOld())
+                self:SetDrawState(showNoteGraph == 3 and {Mode = 'DrawMode_Triangles'} or {Mode = 'DrawMode_Quads'})
                 self:SetVertices(1, vertices)
                 self:SetNumVertices(#vertices)
                 self:rotationz(pn == PLAYER_1 and 90 or -90)

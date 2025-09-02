@@ -407,6 +407,7 @@ function InitPlayerOptions()
 		setenv("ShowStatsSize"..pname(pn),not isVS() and LoadUserPrefN(pn, "ShowStatsSize", 1) or 1)
 		setenv("ShowStatsPos"..pname(pn),not isVS() and LoadUserPrefN(pn, "ShowStatsPos", 0) or 0)
 		setenv("ShowNoteGraph"..pname(pn),not isVS() and LoadUserPrefN(pn, "ShowNoteGraph", 1) or 1)
+		setenv("ShowNoteGraphType"..pname(pn),not isVS() and LoadUserPrefN(pn, "ShowNoteGraphType", 2) or 2)
 		setenv("SetPacemaker"..pname(pn),not isVS() and LoadUserPrefN(pn, "SetPacemaker", 0) or 0)
 
 		setenv("ShowMods"..pname(pn),LoadUserPrefB(pn, "ShowMods", false))
@@ -706,25 +707,32 @@ function OptionShowNoteGraph()
 	local t = {
 		Name="ShowNoteGraph",
 		LayoutType = "ShowAllInRow",
-		SelectType = "SelectOne",
+		SelectType = "SelectMultiple",
 		OneChoiceForAllPlayers = false,
 		ExportOnChange = false,
-		Choices = { "Off","Row","All","SPS" },
+		Choices = { "Off","Normal","SPS","One","All" },
 		LoadSelections = function(self, list, pn)
-			local selected = getenv("ShowNoteGraph"..pname(pn))
-			if selected and selected ~= 0 then
-				list[selected] = true
+			local ShowNoteGraph = (getenv("ShowNoteGraph"..pname(pn)) or 1)
+			local ShowNoteGraphType = (getenv("ShowNoteGraphType"..pname(pn)) or 1) + 3
+			if ShowNoteGraph and ShowNoteGraph ~= 0 then
+				list[ShowNoteGraph] = true
 			else
 				list[1] = true
 			end
-		end,
-		SaveSelections = function(self, list, pn)
-			for i, choice in ipairs(self.Choices) do
-				if list[i] then
-					setenv("ShowNoteGraph"..pname(pn),SaveUserPref(pn, "ShowNoteGraph", i))
-					break
-				end
+			if ShowNoteGraphType and ShowNoteGraphType ~= 0 then
+				list[ShowNoteGraphType] = true
+			else
+				list[4] = true
 			end
+		end,
+		SaveSelections = function() end,
+		NotifyOfSelection= function(self, pn, choice)
+			if choice <= 3 then
+				setenv("ShowNoteGraph"..pname(pn),SaveUserPref(pn, "ShowNoteGraph", choice))
+			else
+				setenv("ShowNoteGraphType"..pname(pn),SaveUserPref(pn, "ShowNoteGraphType", choice-3))
+			end
+			return true
 		end
 	}
 	setmetatable(t, t)
