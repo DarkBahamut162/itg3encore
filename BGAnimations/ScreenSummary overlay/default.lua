@@ -48,6 +48,10 @@ local gradeToTier = {
     [18] = "Grade_Tier18",
     [19] = "Grade_Failed"
 }
+local summaryFA = {
+	PLAYER_1 = false,
+	PLAYER_2 = false
+}
 for i=1,rounds do
 	if ThemePrefs.Get("ShowSummarySummary") then
 		if version <= 2 then
@@ -55,6 +59,13 @@ for i=1,rounds do
 			P1[rounds+1]["Meter"] = P1[rounds+1]["Meter"] and P1[rounds+1]["Meter"] + P1[i]["Meter"] or P1[i]["Meter"]
 			P1[rounds+1]["Score"] = P1[rounds+1]["Score"] and P1[rounds+1]["Score"] + P1[i]["Score"] or P1[i]["Score"]
 			P1[rounds+1]["Grade"] = P1[rounds+1]["Grade"] and P1[rounds+1]["Grade"] + tierToGrade[P1[i]["Grade"]] or tierToGrade[P1[i]["Grade"]]
+			if P1[i]["FA"] then
+				if not summaryFA[PLAYER_1] then summaryFA[PLAYER_1] = true end
+				P1[rounds+1]["ScoreFA"] = P1[rounds+1]["ScoreFA"] and P1[rounds+1]["ScoreFA"] + P1[i]["ScoreFA"] or P1[i]["ScoreFA"]
+				P1[rounds+1]["TapNoteScore_W0"] = P1[rounds+1]["TapNoteScore_W0"] and P1[rounds+1]["TapNoteScore_W0"] + P1[i]["TapNoteScore_W0"] or P1[i]["TapNoteScore_W0"]
+			else
+				P1[rounds+1]["ScoreFA"] = P1[rounds+1]["ScoreFA"] and P1[rounds+1]["ScoreFA"] + P1[i]["Score"] or P1[i]["Score"]
+			end
 			P1[rounds+1]["TapNoteScore_W1"] = P1[rounds+1]["TapNoteScore_W1"] and P1[rounds+1]["TapNoteScore_W1"] + P1[i]["TapNoteScore_W1"] or P1[i]["TapNoteScore_W1"]
 			P1[rounds+1]["TapNoteScore_W2"] = P1[rounds+1]["TapNoteScore_W2"] and P1[rounds+1]["TapNoteScore_W2"] + P1[i]["TapNoteScore_W2"] or P1[i]["TapNoteScore_W2"]
 			P1[rounds+1]["TapNoteScore_W3"] = P1[rounds+1]["TapNoteScore_W3"] and P1[rounds+1]["TapNoteScore_W3"] + P1[i]["TapNoteScore_W3"] or P1[i]["TapNoteScore_W3"]
@@ -62,6 +73,10 @@ for i=1,rounds do
 			P1[rounds+1]["TapNoteScore_W5"] = P1[rounds+1]["TapNoteScore_W5"] and P1[rounds+1]["TapNoteScore_W5"] + P1[i]["TapNoteScore_W5"] or P1[i]["TapNoteScore_W5"]
 			P1[rounds+1]["TapNoteScore_Miss"] = P1[rounds+1]["TapNoteScore_Miss"] and P1[rounds+1]["TapNoteScore_Miss"] + P1[i]["TapNoteScore_Miss"] or P1[i]["TapNoteScore_Miss"]
 			if showOffset then
+				if P1[i]["FA"] then
+					P1[rounds+1]["TapNoteScore_W0_Early"] = P1[rounds+1]["TapNoteScore_W0_Early"] and P1[rounds+1]["TapNoteScore_W0_Early"] + P1[i]["TapNoteScore_W0_Early"] or P1[i]["TapNoteScore_W0_Early"]
+					P1[rounds+1]["TapNoteScore_W0_Late"] = P1[rounds+1]["TapNoteScore_W0_Late"] and P1[rounds+1]["TapNoteScore_W0_Late"] + P1[i]["TapNoteScore_W0_Late"] or P1[i]["TapNoteScore_W0_Late"]
+				end
 				P1[rounds+1]["TapNoteScore_W1_Early"] = P1[rounds+1]["TapNoteScore_W1_Early"] and P1[rounds+1]["TapNoteScore_W1_Early"] + P1[i]["TapNoteScore_W1_Early"] or P1[i]["TapNoteScore_W1_Early"]
 				P1[rounds+1]["TapNoteScore_W1_Late"] = P1[rounds+1]["TapNoteScore_W1_Late"] and P1[rounds+1]["TapNoteScore_W1_Late"] + P1[i]["TapNoteScore_W1_Late"] or P1[i]["TapNoteScore_W1_Late"]
 				P1[rounds+1]["TapNoteScore_W2_Early"] = P1[rounds+1]["TapNoteScore_W2_Early"] and P1[rounds+1]["TapNoteScore_W2_Early"] + P1[i]["TapNoteScore_W2_Early"] or P1[i]["TapNoteScore_W2_Early"]
@@ -79,6 +94,13 @@ for i=1,rounds do
 			P2[rounds+1]["Meter"] = P2[rounds+1]["Meter"] and P2[rounds+1]["Meter"] + P2[i]["Meter"] or P2[i]["Meter"]
 			P2[rounds+1]["Score"] = P2[rounds+1]["Score"] and P2[rounds+1]["Score"] + P2[i]["Score"] or P2[i]["Score"]
 			P2[rounds+1]["Grade"] = P2[rounds+1]["Grade"] and P2[rounds+1]["Grade"] + tierToGrade[P2[i]["Grade"]] or tierToGrade[P2[i]["Grade"]]
+			if P2[i]["FA"] then
+				if not summaryFA[PLAYER_2] then summaryFA[PLAYER_2] = true end
+				P2[rounds+1]["ScoreFA"] = P2[rounds+1]["ScoreFA"] and P2[rounds+1]["ScoreFA"] + P2[i]["ScoreFA"] or P2[i]["ScoreFA"]
+				P2[rounds+1]["TapNoteScore_W0"] = P2[rounds+1]["TapNoteScore_W0"] and P2[rounds+1]["TapNoteScore_W0"] + P2[i]["TapNoteScore_W0"] or P2[i]["TapNoteScore_W0"]
+			else
+				P2[rounds+1]["ScoreFA"] = P2[rounds+1]["ScoreFA"] and P2[rounds+1]["ScoreFA"] + P2[i]["Score"] or P2[i]["Score"]
+			end
 			P2[rounds+1]["TapNoteScore_W1"] = P2[rounds+1]["TapNoteScore_W1"] and P2[rounds+1]["TapNoteScore_W1"] + P2[i]["TapNoteScore_W1"] or P2[i]["TapNoteScore_W1"]
 			P2[rounds+1]["TapNoteScore_W2"] = P2[rounds+1]["TapNoteScore_W2"] and P2[rounds+1]["TapNoteScore_W2"] + P2[i]["TapNoteScore_W2"] or P2[i]["TapNoteScore_W2"]
 			P2[rounds+1]["TapNoteScore_W3"] = P2[rounds+1]["TapNoteScore_W3"] and P2[rounds+1]["TapNoteScore_W3"] + P2[i]["TapNoteScore_W3"] or P2[i]["TapNoteScore_W3"]
@@ -86,6 +108,10 @@ for i=1,rounds do
 			P2[rounds+1]["TapNoteScore_W5"] = P2[rounds+1]["TapNoteScore_W5"] and P2[rounds+1]["TapNoteScore_W5"] + P2[i]["TapNoteScore_W5"] or P2[i]["TapNoteScore_W5"]
 			P2[rounds+1]["TapNoteScore_Miss"] = P2[rounds+1]["TapNoteScore_Miss"] and P2[rounds+1]["TapNoteScore_Miss"] + P2[i]["TapNoteScore_Miss"] or P2[i]["TapNoteScore_Miss"]
 			if showOffset then
+				if P2[i]["FA"] then
+					P2[rounds+1]["TapNoteScore_W0_Early"] = P2[rounds+1]["TapNoteScore_W0_Early"] and P2[rounds+1]["TapNoteScore_W0_Early"] + P2[i]["TapNoteScore_W0_Early"] or P2[i]["TapNoteScore_W0_Early"]
+					P2[rounds+1]["TapNoteScore_W0_Late"] = P2[rounds+1]["TapNoteScore_W0_Late"] and P2[rounds+1]["TapNoteScore_W0_Late"] + P2[i]["TapNoteScore_W0_Late"] or P2[i]["TapNoteScore_W0_Late"]
+				end
 				P2[rounds+1]["TapNoteScore_W1_Early"] = P2[rounds+1]["TapNoteScore_W1_Early"] and P2[rounds+1]["TapNoteScore_W1_Early"] + P2[i]["TapNoteScore_W1_Early"] or P2[i]["TapNoteScore_W1_Early"]
 				P2[rounds+1]["TapNoteScore_W1_Late"] = P2[rounds+1]["TapNoteScore_W1_Late"] and P2[rounds+1]["TapNoteScore_W1_Late"] + P2[i]["TapNoteScore_W1_Late"] or P2[i]["TapNoteScore_W1_Late"]
 				P2[rounds+1]["TapNoteScore_W2_Early"] = P2[rounds+1]["TapNoteScore_W2_Early"] and P2[rounds+1]["TapNoteScore_W2_Early"] + P2[i]["TapNoteScore_W2_Early"] or P2[i]["TapNoteScore_W2_Early"]
@@ -111,12 +137,18 @@ if ThemePrefs.Get("ShowSummarySummary") then
 			P1[rounds+1]["Difficulty"] = "Difficulty_Edit"
 			P1[rounds+1]["Meter"] = math.round(P1[rounds+1]["Meter"]/rounds)
 			P1[rounds+1]["Score"] = P1[rounds+1]["Score"]/rounds
+			P1[rounds+1]["FA"] = summaryFA[PLAYER_1]
+			if summaryFA[PLAYER_1] then P1[rounds+1]["ScoreFA"] = P1[rounds+1]["ScoreFA"]/rounds end
 			P1[rounds+1]["Grade"] = gradeToTier[math.round(P1[rounds+1]["Grade"]/rounds)]
 		end
 		if version >= 2 then
 			P2[rounds+1]["Difficulty"] = "Difficulty_Edit"
 			P2[rounds+1]["Meter"] = math.round(P2[rounds+1]["Meter"]/rounds)
 			P2[rounds+1]["Score"] = P2[rounds+1]["Score"]/rounds
+			P2[rounds+1]["FA"] = summaryFA[PLAYER_2]
+			if summaryFA[PLAYER_2] then
+				P2[rounds+1]["ScoreFA"] = P2[rounds+1]["ScoreFA"]/rounds
+			end
 			P2[rounds+1]["Grade"] = gradeToTier[math.round(P2[rounds+1]["Grade"]/rounds)]
 		end
 		entries[#entries+1] = loadfile(THEME:GetPathB("ScreenSummary","overlay/Entry"))(version,rounds+1)..{

@@ -79,9 +79,22 @@ function prepSummary()
 			end
 		end
 		for score in ivalues(scores) do Step[score] = STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetTapNoteScores(score) end
+		Step["FA"] = getenv("SetScoreFA"..pname(player)) or false
+		if Step["FA"] then
+			local W0 = getenv("W0"..pname(player))
+			Step["TapNoteScore_W0"] = W0
+			Step["TapNoteScore_W1"] = Step["TapNoteScore_W1"] - W0
+		end
 		for score,amount in pairs(early) do Step[score.."_Early"] = amount end
 		for score,amount in pairs(late) do Step[score.."_Late"] = amount end
 		Step["Score"] = DP(player)
+		if Step["FA"] then
+			local W0Count = getenv("W0"..pname(player)) or 0
+			local WXCount = getenv("WX"..pname(player)) or 0
+			local W0Total = getMaxNotes(player)
+			local W0Percent = scale(W0Total/(W0Total+(WXCount-W0Count)),0.5,1.0,0.9,1.0)
+			Step["ScoreFA"] = DP(player)*W0Percent
+		end
 		Step["Grade"] = STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetGrade()
 		Step["Difficulty"] = GAMESTATE:GetCurrentSteps(player):GetDifficulty()
 		Step["Meter"] = GAMESTATE:GetCurrentSteps(player):GetMeter()
