@@ -1,31 +1,35 @@
 local t = Def.ActorFrame{
 	InitCommand=function(self) self:runcommandsonleaves(function(child) child:ztest(true) end) end,
-	Def.Sprite {
-		Texture = "_course frame "..(isFinal() and "final" or "normal"),
-		InitCommand=function(self) self:zoom(WideScreenDiff()) end
-	},
-	Def.Banner{
-		InitCommand=function(self) self:x(-276*WideScreenDiff()):halign(0):scaletoclipped(128*WideScreenDiff(),40*WideScreenDiff()):diffusealpha(0.5):fadeleft(0.25):faderight(0.25) end,
-		SetCommand=function(self, params)
-			if params.Course then
-				self:LoadFromCourse( params.Course )
+	Def.ActorFrame{
+		OffCommand=function(self) self:stoptweening():linear(0.5):diffusealpha(0) end,
+		Def.Sprite {
+			Texture = "_course frame "..(isFinal() and "final" or "normal"),
+			InitCommand=function(self) self:zoom(WideScreenDiff()) end
+		},
+		Def.Banner{
+			InitCommand=function(self) self:x(-276*WideScreenDiff()):halign(0):scaletoclipped(128*WideScreenDiff(),40*WideScreenDiff()):diffusealpha(0.5):fadeleft(0.25):faderight(0.25) end,
+			SetCommand=function(self, params)
+				if params.Course then
+					self:LoadFromCourse( params.Course )
+				end
 			end
-		end
-	},
-	Def.BitmapText {
-		File = "_v 26px bold white",
-		InitCommand=function(self) self:x(-292*WideScreenDiff()):halign(0):zoom(0.6*WideScreenDiff()):shadowlength(1):wrapwidthpixels(264):maxwidth(264):maxheight(58) end,
-		SetCommand=function(self, params)
-			if params.Course then
-				self:settext( params.Course:GetDisplayFullTitle() )
+		},
+		Def.BitmapText {
+			File = "_v 26px bold white",
+			InitCommand=function(self) self:x(-292*WideScreenDiff()):halign(0):zoom(0.6*WideScreenDiff()):shadowlength(1):wrapwidthpixels(264):maxwidth(264):maxheight(58) end,
+			SetCommand=function(self, params)
+				if params.Course then
+					self:settext( params.Course:GetDisplayFullTitle() )
+				end
 			end
-		end
+		}
 	}
 }
 
 local c
 local Scores = Def.ActorFrame{
-	InitCommand=function(self) c = self:GetChildren() self:x(188*WideScreenDiff()) end
+	InitCommand=function(self) c = self:GetChildren() self:x(188*WideScreenDiff()) end,
+	OffCommand=function(self) self:stoptweening():linear(0.5):diffusealpha(0) end
 }
 
 for i=1,4 do

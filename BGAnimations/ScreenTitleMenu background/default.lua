@@ -345,22 +345,22 @@ return Def.ActorFrame{
 		Texture = "roxor",
 		InitCommand=function(self) self:x(isFinal() and SCREEN_LEFT+50*WideScreenDiff() or SCREEN_LEFT+135*WideScreenDiff()):y(isFinal() and SCREEN_TOP+32*WideScreenDiff() or SCREEN_TOP+30*WideScreenDiff()):valign(1):zoom(WideScreenDiff()):diffusealpha(0) end,
 		OnCommand=function(self) self:sleep(0.5):linear(0.5):diffusealpha(1) end,
-		OffCommand=function(self) self:accelerate(0.5):addy(-100) end
+		OffCommand=function(self) self:accelerate(0.5):addy(isFinal() and -500 or -100) end
 	},
 	Def.Sprite {
 		Texture = isFinal() and "newbx" or THEME:GetPathB("","_thanks/_bx"),
 		InitCommand=function(self) self:x(isFinal() and SCREEN_LEFT+155*WideScreenDiff() or SCREEN_LEFT+268*WideScreenDiff()):y(isFinal() and SCREEN_TOP+35*WideScreenDiff() or SCREEN_TOP+32*WideScreenDiff()):valign(isFinal() and 0.5 or 1):zoom(isFinal() and 0.8*WideScreenDiff() or 0.5*WideScreenDiff()):diffusealpha(0) end,
 		OnCommand=function(self) self:sleep(0.5):linear(0.5):diffusealpha(1) end,
-		OffCommand=function(self) self:accelerate(0.5):addy(-100) end
+		OffCommand=function(self) self:accelerate(0.5):addy(isFinal() and -500 or -100) end
 	},
 	loadfile(THEME:GetPathB("","_thanks/_"..versions[ProductFamily()]))()..{
 		InitCommand=function(self) self:x(isFinal() and SCREEN_LEFT+105*WideScreenDiff() or SCREEN_LEFT+360*WideScreenDiff()):y(isFinal() and SCREEN_TOP+10*WideScreenDiff() or SCREEN_TOP+16*WideScreenDiff()):valign(1):zoom(WideScreenDiff()):diffusealpha(0) end,
 		OnCommand=function(self) self:sleep(0.5):linear(0.5):diffusealpha(1) end,
-		OffCommand=function(self) self:accelerate(0.5):addy(-100) end,
+		OffCommand=function(self) self:accelerate(0.5):addy(isFinal() and -500 or -100) end,
 		Condition=isFinal() and true or SCREEN_LEFT+360*WideScreenDiff() < SCREEN_CENTER_X
 	},
 	loadfile(THEME:GetPathB("ScreenTitleMenu","background/icon"))()..{
-		OffCommand=function(self) self:accelerate(0.5):addy(-100) end 
+		OffCommand=function(self) self:accelerate(0.5):addy(isFinal() and -500 or -100) end 
 	},
 	Def.Quad{
 		InitCommand=function(self) self:FullScreen() end,
@@ -398,6 +398,7 @@ return Def.ActorFrame{
 		File = "ScreenOptions serial number",
 		InitCommand=function(self) self:x(SCREEN_CENTER_X+110*WideScreenDiff()):y(isFinal() and SCREEN_BOTTOM-50*WideScreenDiff() or SCREEN_BOTTOM-42*WideScreenDiff()):shadowlength(2):horizalign(left):maxwidth(SCREEN_WIDTH/5*3/WideScreenDiff()):zoom(0.5*WideScreenDiff()) end,
 		OnCommand=function(self) self:diffusealpha(0):sleep(0.5):linear(0.5):diffusealpha(1):playcommand("Refresh") end,
+		OffCommand=function(self) self:stoptweening():accelerate(0.5):addy(100) end,
 		ScreenChangedMessageCommand=function(self) self:playcommand("Refresh") end,
 		RefreshCommand=function(self)
 			if not isTopScreen("ScreenLogo") then 
@@ -413,6 +414,7 @@ return Def.ActorFrame{
 		File = "ScreenOptions serial number",
 		InitCommand=function(self) self:x(SCREEN_LEFT+25*WideScreenDiff()):y(isFinal() and SCREEN_BOTTOM-50*WideScreenDiff() or SCREEN_BOTTOM-42*WideScreenDiff()):shadowlength(2):horizalign(left):maxwidth(SCREEN_WIDTH/5*3/WideScreenDiff()):zoom(0.5*WideScreenDiff()) end,
 		OnCommand=function(self) self:diffusealpha(0):sleep(0.5):linear(0.5):diffusealpha(1):playcommand("Refresh") end,
+		OffCommand=function(self) self:stoptweening():accelerate(0.5):addy(100) end,
 		ScreenChangedMessageCommand=function(self) self:playcommand("Refresh") end,
 		RefreshCommand=function(self)
 			if not isTopScreen("ScreenLogo") then 
@@ -425,6 +427,7 @@ return Def.ActorFrame{
 		Condition=ThemePrefs.Get("UseStepCache"),
 		InitCommand=function(self) self:x(SCREEN_LEFT+25*WideScreenDiff()):y(isFinal() and SCREEN_BOTTOM-66*WideScreenDiff() or SCREEN_BOTTOM-58*WideScreenDiff()):shadowlength(2):horizalign(left):maxwidth(SCREEN_WIDTH/5*3/WideScreenDiff()):zoom(0.5*WideScreenDiff()) end,
 		OnCommand=function(self) self:diffusealpha(0):sleep(0.5):linear(0.5):diffusealpha(1):playcommand("Refresh") end,
+		OffCommand=function(self) self:stoptweening():accelerate(0.5):addy(100) end,
 		ScreenChangedMessageCommand=function(self) self:playcommand("Refresh") end,
 		RefreshCommand=function(self)
 			if not isTopScreen("ScreenLogo") then 
@@ -436,6 +439,7 @@ return Def.ActorFrame{
 		File = "_r bold 30px",
 		InitCommand=function(self) self:x(isFinal() and SCREEN_CENTER_X+5*WideScreenDiff() or SCREEN_LEFT+5):y(isFinal() and SCREEN_TOP+50*WideScreenDiff() or SCREEN_TOP+40*WideScreenDiff()):shadowlength(2):valign(0):halign(isFinal() and 0.5 or 0):maxwidth(isFinal() and SCREEN_WIDTH/4*3/WideScreenDiff_(16/9) or SCREEN_WIDTH/WideScreenDiff()):zoom(0.6*WideScreenDiff()) end,
 		OnCommand=function(self) self:diffusealpha(0):sleep(0.5):linear(0.5):diffusealpha(1) end,
+		OffCommand=function(self) self:accelerate(0.5):addy(isFinal() and -500 or -100) end,
 		BeginCommand=function(self) self:playcommand("Refresh") end,
 		ScreenChangedMessageCommand=function(self) self:playcommand("Refresh") end,
 		RefreshCommand=function(self)
