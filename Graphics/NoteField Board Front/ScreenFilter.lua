@@ -30,8 +30,7 @@ function getFilter(player,filterWidth,filterAlpha)
 	local special = false
 
 	if filterAlpha == nil then filterAlpha = 0 end
-	if not isOutFox() then filterWidth = filterWidth * math.min(1,NotefieldZoom()) end
-	if isOutFox() then filterWidth = filterWidth * math.min(1,NotefieldZoomOutFox()) end
+	filterWidth = filterWidth * math.min(1,(isOutFox() and VersionDateCheck(20200600)) and NotefieldZoomOutFox() or NotefieldZoom())
 
 	local file = ""
 	local pomuREST = ""

@@ -4,8 +4,7 @@ local style = GAMESTATE:GetCurrentStyle()
 local filterWidth = style:GetWidth(player)
 local widthZoom = Center1Player() and 1 or WideScreenDiff()
 
-if not isOutFox() then filterWidth = filterWidth * math.min(1,NotefieldZoom()) end
-if isOutFox() then filterWidth = filterWidth * math.min(1,NotefieldZoomOutFox()) end
+filterWidth = filterWidth * math.min(1,(isOutFox() and VersionDateCheck(20200600)) and NotefieldZoomOutFox() or NotefieldZoom())
 
 local playeroptions = GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Preferred")
 local Stops,timingData,truebpms,bpm1,bpm2
@@ -53,7 +52,7 @@ local mods = string.find(GAMESTATE:GetPlayerState(player):GetPlayerOptionsString
 local reverse = GAMESTATE:GetPlayerState(player):GetPlayerOptions('ModsLevel_Song'):UsingReverse()
 if mods then reverse = not reverse end
 local PY = reverse and THEME:GetMetric("Player","ReceptorArrowsYReverse") or THEME:GetMetric("Player","ReceptorArrowsYStandard")
-local adjust = isOutFox() and 47-(47 * WideScreenDiff()) or 0
+local adjust = (isOutFox() and VersionDateCheck(20200600)) and 47-(47 * WideScreenDiff()) or 0
 
 local mlevel = GAMESTATE:IsCourseMode() and "ModsLevel_Stage" or "ModsLevel_Preferred"
 local currentMini = 1-math.round(GAMESTATE:GetPlayerState(player):GetPlayerOptions(mlevel):Mini()*50) / 100
