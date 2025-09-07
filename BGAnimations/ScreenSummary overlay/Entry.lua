@@ -81,9 +81,8 @@ if version < 3 then
                 end
             },
             Def.BitmapText {
-                Condition=P1[index]["FA"],
                 File = "_z bold 36px",
-                Text = FormatPercentScore(tonumber(P1[index]["ScoreFA"]) or 0),
+                Text = P1[index]["FA"] and FormatPercentScore(tonumber(P1[index]["ScoreFA"]) or 0) or "",
                 InitCommand=function(self)
                     self:y(14*WideScreenDiff()):diffuse(TapNoteScoreToColor("TapNoteScore_W0")):shadowlength(1)
                     if version == 2 then
@@ -366,9 +365,8 @@ if version > 1 then
                 end
             },
             Def.BitmapText {
-                Condition=P2[index]["FA"],
                 File = "_z bold 36px",
-                Text = FormatPercentScore(tonumber(P2[index]["ScoreFA"]) or 0),
+                Text = P2[index]["FA"] and FormatPercentScore(tonumber(P2[index]["ScoreFA"]) or 0) or "",
                 InitCommand=function(self)
                     self:y(14*WideScreenDiff()):diffuse(TapNoteScoreToColor("TapNoteScore_W0")):shadowlength(1)
                     if version == 2 then
