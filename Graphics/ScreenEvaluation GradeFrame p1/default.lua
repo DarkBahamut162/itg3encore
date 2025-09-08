@@ -74,42 +74,44 @@ return Def.ActorFrame{
 	InitCommand=function(self) c = self:GetChildren() end,
 	Def.ActorFrame{
 		Name="Error",
-		Condition=offsetInfo ~= nil and showOffset and getenv("EvalComboP1"),
 		InitCommand=function(self) self:y(-212*WideScreenDiff()) end,
 		BeginCommand=function(self)
 			local screen = SCREENMAN:GetTopScreen()
 			if screen and faplus then
 				c.Error:addy(4+1.5)
 				c.JudgeFrames:GetChild("W0"):addy(24+1.5)
-				c.OffsetFrames:GetChild("W0"):addy(24+1.5)
 
 				screen:GetChild("W1NumberP1"):addy(20+1.25)
 				c.JudgeFrames:GetChild("W1"):addy(20+1.25)
-				c.OffsetFrames:GetChild("W1"):addy(20+1.25)
 
 				screen:GetChild("W2NumberP1"):addy(16+1)
 				c.JudgeFrames:GetChild("W2"):addy(16+1)
-				c.OffsetFrames:GetChild("W2"):addy(16+1)
 
 				screen:GetChild("W3NumberP1"):addy(12.75)
 				c.JudgeFrames:GetChild("W3"):addy(12.75)
-				c.OffsetFrames:GetChild("W3"):addy(12.75)
 
 				screen:GetChild("W4NumberP1"):addy(8.5)
 				c.JudgeFrames:GetChild("W4"):addy(8.5)
-				c.OffsetFrames:GetChild("W4"):addy(8.5)
 
 				screen:GetChild("W5NumberP1"):addy(4.25)
 				c.JudgeFrames:GetChild("W5"):addy(4.25)
-				c.OffsetFrames:GetChild("W5"):addy(4.25)
 
 				screen:GetChild("MissNumberP1"):addy(0)
 				c.JudgeFrames:GetChild("Miss"):addy(0)
+
+				if showOffset and getenv("EvalComboP1") then
+					c.OffsetFrames:GetChild("W0"):addy(24+1.5)
+					c.OffsetFrames:GetChild("W1"):addy(20+1.25)
+					c.OffsetFrames:GetChild("W2"):addy(16+1)
+					c.OffsetFrames:GetChild("W3"):addy(12.75)
+					c.OffsetFrames:GetChild("W4"):addy(8.5)
+					c.OffsetFrames:GetChild("W5"):addy(4.25)
+				end
 			end
 		end,
 		Def.BitmapText {
 			File = "_v 26px bold shadow",
-			Condition=not isnan(average),
+			Condition=offsetInfo ~= nil and showOffset and getenv("EvalComboP1") and not isnan(average),
 			Text="average "..average.." | median "..math.round(median,3).." | peak "..peak,
 			InitCommand=function(self) self:x(-78*(5/6)*WideScreenDiff()*WideScreenDiff()):maxwidth(300*WideScreenSemiDiff()):y(faplus and -6*WideScreenDiff() or 0) end,
 			OnCommand=function(self) self:zoomx(0.6*WideScreenDiff()):zoomy(0.4*WideScreenDiff()):diffusealpha(0):sleep(3.60):linear(0.7):diffusealpha(1) end,
