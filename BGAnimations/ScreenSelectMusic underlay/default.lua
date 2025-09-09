@@ -208,6 +208,6 @@ return Def.ActorFrame{
 		OffCommand=function(self) self:accelerate(0.75):addx(SCREEN_WIDTH) end
 	},
 	graphs..{
-		Condition=not courseMode and (IsUsingWideScreen() or GetScreenAspectRatio() <= 1),
+		Condition=not courseMode and (IsUsingWideScreen() or GetScreenAspectRatio() <= 1) and not isVS(),
 	}
 }

@@ -217,7 +217,7 @@ return Def.ActorFrame{
 						File = "_z numbers",
 						Name="NumbersW0",
 						Text="0",
-						InitCommand=function(self) self:maxwidth(125):halign(1):addy(10-5):addx(125):shadowlength(1):diffuse(TapNoteScoreToColor('TapNoteScore_W1')) end,
+						InitCommand=function(self) self:maxwidth(125):halign(pn == PLAYER_1 and 1 or 0):addy(10-5):addx(pn == PLAYER_1 and 125 or -125):shadowlength(1):diffuse(TapNoteScoreToColor('TapNoteScore_W1')) end,
 						JudgmentMessageCommand=function(self,param) if param.Player == pn and not faplus then self:queuecommand("Update") end end,
 						UpdateCommand=function(self) self:settext(STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):GetTapNoteScores('TapNoteScore_W1')) end,
 						W0MessageCommand=function(self,param) if param.Player == pn then self:settext(param.W0) end end
@@ -226,7 +226,7 @@ return Def.ActorFrame{
 						File = "_z numbers",
 						Name="NumbersW1",
 						Text="0",
-						InitCommand=function(self) self:maxwidth(125):halign(1):addy(10-5):addx(125):shadowlength(1):diffuse(TapNoteScoreToColor(faplus and 'TapNoteScore_W0' or 'TapNoteScore_W1')) end,
+						InitCommand=function(self) self:maxwidth(125):halign(pn == PLAYER_1 and 1 or 0):addy(10-5):addx(pn == PLAYER_1 and 125 or -125):shadowlength(1):diffuse(TapNoteScoreToColor(faplus and 'TapNoteScore_W0' or 'TapNoteScore_W1')) end,
 						JudgmentMessageCommand=function(self,param) if param.Player == pn and not faplus then self:queuecommand("Update") end end,
 						UpdateCommand=function(self) self:settext(STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):GetTapNoteScores('TapNoteScore_W1')) end,
 						W0MessageCommand=function(self,param) if param.Player == pn then self:settext(STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):GetTapNoteScores('TapNoteScore_W1')-param.W0) end end
@@ -235,7 +235,7 @@ return Def.ActorFrame{
 						File = "_z numbers",
 						Name="NumbersW2",
 						Text="0",
-						InitCommand=function(self) self:maxwidth(125):halign(1):addy(35-4):addx(125):shadowlength(1):diffuse(TapNoteScoreToColor('TapNoteScore_W2')) end,
+						InitCommand=function(self) self:maxwidth(125):halign(pn == PLAYER_1 and 1 or 0):addy(35-4):addx(pn == PLAYER_1 and 125 or -125):shadowlength(1):diffuse(TapNoteScoreToColor('TapNoteScore_W2')) end,
 						JudgmentMessageCommand=function(self,param) if param.Player == pn then self:queuecommand("Update") end end,
 						UpdateCommand=function(self) if stats >= 2 then self:settext(STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):GetTapNoteScores('TapNoteScore_W2')) end end
 					},
@@ -243,7 +243,7 @@ return Def.ActorFrame{
 						File = "_z numbers",
 						Name="NumbersW3",
 						Text="0",
-						InitCommand=function(self) self:maxwidth(125):halign(1):addy(60-3):addx(125):shadowlength(1):diffuse(TapNoteScoreToColor('TapNoteScore_W3')) end,
+						InitCommand=function(self) self:maxwidth(125):halign(pn == PLAYER_1 and 1 or 0):addy(60-3):addx(pn == PLAYER_1 and 125 or -125):shadowlength(1):diffuse(TapNoteScoreToColor('TapNoteScore_W3')) end,
 						JudgmentMessageCommand=function(self,param) if param.Player == pn then self:queuecommand("Update") end end,
 						UpdateCommand=function(self) if stats >= 3 then self:settext(STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):GetTapNoteScores('TapNoteScore_W3')) end end
 					},
@@ -251,7 +251,7 @@ return Def.ActorFrame{
 						File = "_z numbers",
 						Name="NumbersW4",
 						Text="0",
-						InitCommand=function(self) self:maxwidth(125):halign(1):addy(85-2):addx(125):shadowlength(1):diffuse(TapNoteScoreToColor('TapNoteScore_W4')) end,
+						InitCommand=function(self) self:maxwidth(125):halign(pn == PLAYER_1 and 1 or 0):addy(85-2):addx(pn == PLAYER_1 and 125 or -125):shadowlength(1):diffuse(TapNoteScoreToColor('TapNoteScore_W4')) end,
 						JudgmentMessageCommand=function(self,param) if param.Player == pn then self:queuecommand("Update") end end,
 						UpdateCommand=function(self) if stats >= 4 then self:settext(STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):GetTapNoteScores('TapNoteScore_W4')) end end
 					},
@@ -260,7 +260,7 @@ return Def.ActorFrame{
 						File = "_z numbers",
 						Name="NumbersW5",
 						Text="0",
-						InitCommand=function(self) self:maxwidth(125):halign(1):addy(110-1):addx(125):shadowlength(1):diffuse(TapNoteScoreToColor('TapNoteScore_W5')) end,
+						InitCommand=function(self) self:maxwidth(125):halign(pn == PLAYER_1 and 1 or 0):addy(110-1):addx(pn == PLAYER_1 and 125 or -125):shadowlength(1):diffuse(TapNoteScoreToColor('TapNoteScore_W5')) end,
 						JudgmentMessageCommand=function(self,param) if param.Player == pn then self:queuecommand("Update") end end,
 						UpdateCommand=function(self) if stats >= 5 then self:settext(STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):GetTapNoteScores('TapNoteScore_W5')) end end
 					},
@@ -268,7 +268,7 @@ return Def.ActorFrame{
 						File = "_z numbers",
 						Name="NumbersMiss",
 						Text="0",
-						InitCommand=function(self) self:maxwidth(125):halign(1):addy(isOpenDDR() and 110-1 or 135):addx(125):shadowlength(1):diffuse(TapNoteScoreToColor('TapNoteScore_Miss')) end,
+						InitCommand=function(self) self:maxwidth(125):halign(pn == PLAYER_1 and 1 or 0):addy(isOpenDDR() and 110-1 or 135):addx(pn == PLAYER_1 and 125 or -125):shadowlength(1):diffuse(TapNoteScoreToColor('TapNoteScore_Miss')) end,
 						JudgmentMessageCommand=function(self,param) if param.Player == pn then self:queuecommand("Update") end end,
 						UpdateCommand=function(self) if stats >= (isOpenDDR() and 5 or 6) then self:settext(STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):GetTapNoteScores('TapNoteScore_Miss')) end end
 					}
@@ -277,35 +277,10 @@ return Def.ActorFrame{
 					Condition=stats == (isOpenDDR() and 6 or 7),
 					InitCommand=function(self) self:y(-140) end,
 					Def.BitmapText {
-						File = "ScreenGameplay judgment",
-						Name="PlayerName",
-						Text="P",
-						OnCommand=function(self)
-							self:maxwidth(125):halign(1):shadowlength(1):addy(0):diffuse(TapNoteScoreToColor("TapNoteScore_W1"))
-						end
-					},
-					Def.BitmapText {
-						File = "ScreenGameplay judgment",
-						Condition=topscore ~= nil,
-						Name="HighscoreName",
-						Text="H",
-						OnCommand=function(self)
-							self:maxwidth(125):halign(1):shadowlength(1):addy(90):diffuse(TapNoteScoreToColor("TapNoteScore_W3"))
-						end
-					},
-					Def.BitmapText {
-						File = "ScreenGameplay judgment",
-						Name="TargetName",
-						Text="T",
-						OnCommand=function(self)
-							self:maxwidth(125):halign(1):shadowlength(1):addy(120):diffuse(TapNoteScoreToColor("TapNoteScore_Miss"))
-						end
-					},
-					Def.BitmapText {
 						File = "_z numbers",
 						Name="PlayerPoints",
 						OnCommand=function(self)
-							self:maxwidth(125):halign(1):shadowlength(1):addy(0):addx(125):diffuse(PlayerColor(pn)):settext(DPCur(pn))
+							self:maxwidth(125):halign(pn == PLAYER_1 and 1 or 0):shadowlength(1):addy(0):addx(pn == PLAYER_1 and 125 or -125):diffuse(PlayerColor(pn)):diffusebottomedge(TapNoteScoreToColor("TapNoteScore_W1")):settext(DPCur(pn))
 						end,
 						JudgmentMessageCommand=function(self,param) if param.Player == pn then self:queuecommand("Update") end end,
 						UpdateCommand=function(self) self:settext(math.round(DPCur(pn))) end
@@ -315,22 +290,25 @@ return Def.ActorFrame{
 						Condition=topscore ~= nil,
 						Name="HighscorePoints",
 						OnCommand=function(self)
-							self:maxwidth(125):halign(1):shadowlength(1):addy(90):addx(125):diffuse(PlayerColor(pn)):settext(math.ceil(PercentDP(topscore)*StepCounter()))
-						end
+							self:maxwidth(125):halign(pn == PLAYER_1 and 1 or 0):shadowlength(1):addy(90):addx(pn == PLAYER_1 and 125 or -125):diffuse(PlayerColor(pn)):diffusebottomedge(TapNoteScoreToColor("TapNoteScore_W3")):queuecommand("Update") end,
+						JudgmentMessageCommand=function(self,param) if param.Player == pn and topscore ~= nil then self:queuecommand("Update") end end,
+						UpdateCommand=function(self) self:settext(math.ceil(DPCurMax(pn)*PercentDP(topscore))) end
 					},
 					Def.BitmapText {
 						File = "_z numbers",
 						Name="TargetPoints",
 						OnCommand=function(self)
-							self:maxwidth(125):halign(1):shadowlength(1):addy(120):addx(125):diffuse(PlayerColor(pn)):settext(math.ceil(target*StepCounter()))
-						end
+							self:maxwidth(125):halign(pn == PLAYER_1 and 1 or 0):shadowlength(1):addy(120):addx(pn == PLAYER_1 and 125 or -125):diffuse(PlayerColor(pn)):diffusebottomedge(TapNoteScoreToColor("TapNoteScore_Miss")):queuecommand("Update")
+						end,
+						JudgmentMessageCommand=function(self,param) if param.Player == pn then self:queuecommand("Update") end end,
+						UpdateCommand=function(self) self:settext(math.ceil(DPCurMax(pn)*target)) end
 					},
 
 					Def.BitmapText {
 						File = "_z numbers",
 						Condition=topscore ~= nil,
 						Name="PlayerHighscoreDifference",
-						OnCommand=function(self) self:diffuse(color("#00FF00")):halign(1):shadowlength(1):addy(30):addx(125):queuecommand("Update") end,
+						OnCommand=function(self) self:diffuse(color("#00FF00")):halign(pn == PLAYER_1 and 1 or 0):shadowlength(1):addy(30):addx(pn == PLAYER_1 and 125 or -125):queuecommand("Update") end,
 						JudgmentMessageCommand=function(self,param) if param.Player == pn and topscore ~= nil then self:queuecommand("Update") end end,
 						UpdateCommand=function(self)
 							local curHighscoreDP = math.ceil(DPCurMax(pn)*PercentDP(topscore))
@@ -341,7 +319,7 @@ return Def.ActorFrame{
 						File = "_z numbers",
 						Name="PlayerTargetDifference",
 						OnCommand=function(self)
-							self:diffuse(color("#FF0000")):halign(1):shadowlength(1):addy(60):addx(125):queuecommand("Update")
+							self:diffuse(color("#FF0000")):halign(pn == PLAYER_1 and 1 or 0):shadowlength(1):addy(60):addx(pn == PLAYER_1 and 125 or -125):queuecommand("Update")
 						end,
 						JudgmentMessageCommand=function(self,param) if param.Player == pn then self:queuecommand("Update") end end,
 						UpdateCommand=function(self)
