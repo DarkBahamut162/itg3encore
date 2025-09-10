@@ -123,7 +123,7 @@ return Def.ActorFrame{
 		Def.BitmapText {
 			File = "_r bold 30px",
 			Name="AuthorText",
-			InitCommand=function(self) self:x(SCREEN_LEFT+100*WideScreenDiff()):y(SCREEN_CENTER_Y+152*WideScreenDiff()):shadowlength(2):halign(0):zoom(0.6*WideScreenDiff()) end,
+			InitCommand=function(self) self:x(SCREEN_LEFT+100*WideScreenDiff()):y(SCREEN_CENTER_Y+152*WideScreenDiff()):maxwidth(SCREEN_WIDTH/4.25/WideScreenDiff()):shadowlength(2):halign(0):zoom(0.6*WideScreenDiff()) end,
 			SetCommand=function(self)
 				local song = GAMESTATE:GetCurrentSong()
 				local text = ""
@@ -139,7 +139,7 @@ return Def.ActorFrame{
 		Def.BitmapText {
 			File = "_r bold 30px",
 			Name="PlayerName",
-			InitCommand=function(self) self:x(SCREEN_LEFT+44*WideScreenDiff()):y(SCREEN_CENTER_Y+122*WideScreenDiff()):shadowlength(2):halign(0):zoom(0.8*WideScreenDiff()) end,
+			InitCommand=function(self) self:x(SCREEN_LEFT+44*WideScreenDiff()):y(SCREEN_CENTER_Y+122*WideScreenDiff()):maxwidth(SCREEN_WIDTH/4.25/WideScreenDiff()):shadowlength(2):halign(0):zoom(0.8*WideScreenDiff()) end,
 			SetCommand=function(self)
 				if GAMESTATE:IsHumanPlayer(PLAYER_1) then
 					self:settext(GetDisplayNameFromProfileOrMemoryCard(PLAYER_1))
@@ -171,7 +171,7 @@ return Def.ActorFrame{
 		Def.BitmapText {
 			File = "_r bold 30px",
 			Name="AuthorText",
-			InitCommand=function(self) self:x(SCREEN_RIGHT-100*WideScreenDiff()):y(SCREEN_CENTER_Y+152*WideScreenDiff()):shadowlength(2):halign(1):zoom(0.6*WideScreenDiff()) end,
+			InitCommand=function(self) self:x(SCREEN_RIGHT-100*WideScreenDiff()):y(SCREEN_CENTER_Y+152*WideScreenDiff()):maxwidth(SCREEN_WIDTH/4.25/WideScreenDiff()):shadowlength(2):halign(1):zoom(0.6*WideScreenDiff()) end,
 			SetCommand=function(self)
 				local song = GAMESTATE:GetCurrentSong()
 				local text = ""
@@ -187,7 +187,7 @@ return Def.ActorFrame{
 		Def.BitmapText {
 			File = "_r bold 30px",
 			Name="PlayerName",
-			InitCommand=function(self) self:x(SCREEN_RIGHT-44*WideScreenDiff()):y(SCREEN_CENTER_Y+122*WideScreenDiff()):shadowlength(2):halign(1):zoom(0.8*WideScreenDiff()) end,
+			InitCommand=function(self) self:x(SCREEN_RIGHT-44*WideScreenDiff()):y(SCREEN_CENTER_Y+122*WideScreenDiff()):maxwidth(SCREEN_WIDTH/4.25/WideScreenDiff()):shadowlength(2):halign(1):zoom(0.8*WideScreenDiff()) end,
 			SetCommand=function(self)
 				if GAMESTATE:IsHumanPlayer(PLAYER_2) then
 					self:settext(GetDisplayNameFromProfileOrMemoryCard(PLAYER_2))

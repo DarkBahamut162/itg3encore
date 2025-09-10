@@ -178,7 +178,7 @@ local t = Def.ActorFrame{
 			Def.BitmapText {
 				File = "_r bold 30px",
 				Name="AuthorText",
-				InitCommand=function(self) self:x(SCREEN_LEFT+100*WideScreenDiff()):y(SCREEN_CENTER_Y+152*WideScreenDiff()):shadowlength(2*WideScreenDiff()):halign(0):zoom(0.6*WideScreenDiff()) end,
+				InitCommand=function(self) self:x(SCREEN_LEFT+100*WideScreenDiff()):y(SCREEN_CENTER_Y+152*WideScreenDiff()):maxwidth(SCREEN_WIDTH/4.25/WideScreenDiff()):shadowlength(2*WideScreenDiff()):halign(0):zoom(0.6*WideScreenDiff()) end,
 				BeginCommand=function(self)
 					local song = GAMESTATE:GetCurrentSong()
 					local text = ""
@@ -194,7 +194,7 @@ local t = Def.ActorFrame{
 			Def.BitmapText {
 				File = "_r bold 30px",
 				Name="PlayerName",
-				InitCommand=function(self) self:x(SCREEN_LEFT+44*WideScreenDiff()):y(SCREEN_CENTER_Y+122*WideScreenDiff()):shadowlength(2*WideScreenDiff()):halign(0):zoom(0.8*WideScreenDiff()) end,
+				InitCommand=function(self) self:x(SCREEN_LEFT+44*WideScreenDiff()):y(SCREEN_CENTER_Y+122*WideScreenDiff()):maxwidth(SCREEN_WIDTH/4.25/WideScreenDiff()):shadowlength(2*WideScreenDiff()):halign(0):zoom(0.8*WideScreenDiff()) end,
 				BeginCommand=function(self)
 					if GAMESTATE:IsHumanPlayer(PLAYER_1) then
 						self:settext(GetDisplayNameFromProfileOrMemoryCard(PLAYER_1))
@@ -231,7 +231,7 @@ local t = Def.ActorFrame{
 			Def.BitmapText {
 				File = "_r bold 30px",
 				Name="AuthorText",
-				InitCommand=function(self) self:x(SCREEN_RIGHT-100*WideScreenDiff()):y(SCREEN_CENTER_Y+152*WideScreenDiff()):shadowlength(2*WideScreenDiff()):halign(1):zoom(0.6*WideScreenDiff()) end,
+				InitCommand=function(self) self:x(SCREEN_RIGHT-100*WideScreenDiff()):y(SCREEN_CENTER_Y+152*WideScreenDiff()):maxwidth(SCREEN_WIDTH/4.25/WideScreenDiff()):shadowlength(2*WideScreenDiff()):halign(1):zoom(0.6*WideScreenDiff()) end,
 				BeginCommand=function(self)
 					local song = GAMESTATE:GetCurrentSong()
 					local text = ""
@@ -247,7 +247,7 @@ local t = Def.ActorFrame{
 			Def.BitmapText {
 				File = "_r bold 30px",
 				Name="PlayerName",
-				InitCommand=function(self) self:x(SCREEN_RIGHT-44*WideScreenDiff()):y(SCREEN_CENTER_Y+122*WideScreenDiff()):shadowlength(2*WideScreenDiff()):halign(1):zoom(0.8*WideScreenDiff()) end,
+				InitCommand=function(self) self:x(SCREEN_RIGHT-44*WideScreenDiff()):y(SCREEN_CENTER_Y+122*WideScreenDiff()):maxwidth(SCREEN_WIDTH/4.25/WideScreenDiff()):shadowlength(2*WideScreenDiff()):halign(1):zoom(0.8*WideScreenDiff()) end,
 				BeginCommand=function(self)
 					if GAMESTATE:IsHumanPlayer(PLAYER_2) then
 						self:settext(GetDisplayNameFromProfileOrMemoryCard(PLAYER_2))
@@ -261,7 +261,7 @@ local t = Def.ActorFrame{
 	},
 	Def.BitmapText {
 		File = "_r bold 30px",
-		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+127*WideScreenDiff()):maxwidth(SCREEN_WIDTH/8*7/WideScreenDiff()):shadowlength(2*WideScreenDiff()):zoom(0.5*WideScreenDiff()):diffusealpha(1) end,
+		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+127*WideScreenDiff()):maxwidth(SCREEN_WIDTH/WideScreenDiff()):shadowlength(2*WideScreenDiff()):zoom(0.5*WideScreenDiff()):diffusealpha(1) end,
 		SetCommand=function(self)
 			local SongOrSteps = checkBMS() and GAMESTATE:GetCurrentSteps(GAMESTATE:GetMasterPlayerNumber()) or GAMESTATE:GetCurrentSong()
 			local text = ""
@@ -272,7 +272,7 @@ local t = Def.ActorFrame{
 	},
 	Def.BitmapText {
 		File = "_r bold 30px",
-		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+147*WideScreenDiff()):maxwidth(SCREEN_WIDTH/8*6.8/WideScreenDiff()):shadowlength(2*WideScreenDiff()):zoom(0.4*WideScreenDiff()):diffusealpha(1) end,
+		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+147*WideScreenDiff()):maxwidth(SCREEN_WIDTH/WideScreenDiff()):shadowlength(2*WideScreenDiff()):zoom(0.4*WideScreenDiff()):diffusealpha(1) end,
 		SetCommand=function(self)
 			local SongOrSteps = checkBMS() and GAMESTATE:GetCurrentSteps(GAMESTATE:GetMasterPlayerNumber()) or GAMESTATE:GetCurrentSong()
 			local text = ""

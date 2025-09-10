@@ -50,7 +50,7 @@ return Def.ActorFrame{
 	},
 	Def.BitmapText {
 		File = "_r bold 30px",
-		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+127*WideScreenDiff()):maxwidth(SCREEN_WIDTH/8*7/WideScreenDiff()):shadowlength(2):zoom(0.5*WideScreenDiff()):diffusealpha(0) end,
+		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+127*WideScreenDiff()):maxwidth(SCREEN_WIDTH/WideScreenDiff()):shadowlength(2):zoom(0.5*WideScreenDiff()):diffusealpha(0) end,
 		SetCommand=function(self)
 			local SongOrSteps = checkBMS() and GAMESTATE:GetCurrentSteps(GAMESTATE:GetMasterPlayerNumber()) or GAMESTATE:GetCurrentSong()
 			local text = ""
@@ -61,7 +61,7 @@ return Def.ActorFrame{
 	},
 	Def.BitmapText {
 		File = "_r bold 30px",
-		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+147*WideScreenDiff()):maxwidth(SCREEN_WIDTH/8*6.8/WideScreenDiff()):shadowlength(2):zoom(0.4*WideScreenDiff()):diffusealpha(0) end,
+		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+147*WideScreenDiff()):maxwidth(SCREEN_WIDTH/WideScreenDiff()):shadowlength(2):zoom(0.4*WideScreenDiff()):diffusealpha(0) end,
 		SetCommand=function(self)
 			local SongOrSteps = checkBMS() and GAMESTATE:GetCurrentSteps(GAMESTATE:GetMasterPlayerNumber()) or GAMESTATE:GetCurrentSong()
 			local text = ""
