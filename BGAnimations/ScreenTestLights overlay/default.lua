@@ -1,5 +1,39 @@
+local totalDelta = 0
+local tmpDelta = 0
+
+local cabinet = ""
+local controller = ""
+local check = ""
+
+local function Update(self, delta)
+	totalDelta = totalDelta + delta
+	if totalDelta - tmpDelta > 1.0/60 then
+		tmpDelta = totalDelta
+		local text = split("\n",SCREENMAN:GetTopScreen():GetChild("Text"):GetText())
+		if #text >= 2 then
+			if cabinet ~= text[#text-2] then
+				cabinet = text[#text-2]
+				check = split(" ",cabinet)
+				MESSAGEMAN:Broadcast("CabinetReset")
+				if check[#check] == "-----" then else
+					MESSAGEMAN:Broadcast(check[#check])
+				end
+			end
+			if controller ~= text[#text-1] then
+				controller = text[#text-1]
+				check = split(" ",controller)
+				MESSAGEMAN:Broadcast("GameButtonReset")
+				if check[#check] == "-----" then else
+					MESSAGEMAN:Broadcast(check[#check]..check[#check-2])
+				end
+			end
+		end
+	end
+end
+
 return Def.ActorFrame{
 	Def.ActorFrame{
+		OnCommand=function(self) self:SetUpdateFunction(Update) end,
 		Condition=true,
 		Def.Sprite {
 			Texture = "cab",
@@ -50,7 +84,6 @@ return Def.ActorFrame{
 			InitCommand=function(self) self:diffusealpha(0):x(SCREEN_LEFT+97):y(SCREEN_CENTER_Y+19.5) end,
 			CabinetResetMessageCommand=function(self) self:finishtweening():decelerate(.02):diffusealpha(0) end,
 			ButtonsLeftMessageCommand=function(self) self:stoptweening():accelerate(.03):diffusealpha(1) end,
-			ButtonsRightMessageCommand=function(self) self:stoptweening():linear(.03):diffusealpha(1) end,
 			OffCommand=function(self) self:stoptweening() end
 		},
 		Def.Sprite {
@@ -58,7 +91,6 @@ return Def.ActorFrame{
 			InitCommand=function(self) self:diffusealpha(0):x(SCREEN_LEFT+182):y(SCREEN_CENTER_Y+19.5) end,
 			CabinetResetMessageCommand=function(self) self:finishtweening():decelerate(.02):diffusealpha(0) end,
 			ButtonsRightMessageCommand=function(self) self:stoptweening():accelerate(.03):diffusealpha(1) end,
-			ButtonsLeftMessageCommand=function(self) self:stoptweening():linear(.03):diffusealpha(1) end,
 			OffCommand=function(self) self:stoptweening() end
 		},
 
@@ -67,7 +99,6 @@ return Def.ActorFrame{
 			InitCommand=function(self) self:diffusealpha(0):x(SCREEN_LEFT+70):y(SCREEN_CENTER_Y+88) end,
 			CabinetResetMessageCommand=function(self) self:finishtweening():decelerate(.02):diffusealpha(0) end,
 			BassLeftMessageCommand=function(self) self:stoptweening():accelerate(.03):diffusealpha(1) end,
-			BassRightMessageCommand=function(self) self:stoptweening():linear(.03):diffusealpha(1) end,
 			OffCommand=function(self) self:stoptweening() end
 		},
 		Def.Sprite {
@@ -75,7 +106,6 @@ return Def.ActorFrame{
 			InitCommand=function(self) self:diffusealpha(0):x(SCREEN_LEFT+211):y(SCREEN_CENTER_Y+88) end,
 			CabinetResetMessageCommand=function(self) self:finishtweening():decelerate(.02):diffusealpha(0) end,
 			BassRightMessageCommand=function(self) self:stoptweening():accelerate(.03):diffusealpha(1) end,
-			BassLeftMessageCommand=function(self) self:stoptweening():linear(.03):diffusealpha(1) end,
 			OffCommand=function(self) self:stoptweening() end
 		},
 
@@ -189,7 +219,6 @@ return Def.ActorFrame{
 			InitCommand=function(self) self:diffusealpha(0):x(SCREEN_LEFT+111):y(SCREEN_CENTER_Y+3.75) end,
 			CabinetResetMessageCommand=function(self) self:finishtweening():decelerate(.02):diffusealpha(0) end,
 			ButtonsLeftMessageCommand=function(self) self:stoptweening():accelerate(.03):diffusealpha(1) end,
-			ButtonsRightMessageCommand=function(self) self:stoptweening():linear(.03):diffusealpha(1) end,
 			OffCommand=function(self) self:stoptweening() end
 		},
 		Def.Sprite {
@@ -197,7 +226,6 @@ return Def.ActorFrame{
 			InitCommand=function(self) self:diffusealpha(0):x(SCREEN_LEFT+171):y(SCREEN_CENTER_Y+3.75) end,
 			CabinetResetMessageCommand=function(self) self:finishtweening():decelerate(.02):diffusealpha(0) end,
 			ButtonsRightMessageCommand=function(self) self:stoptweening():accelerate(.03):diffusealpha(1) end,
-			ButtonsLeftMessageCommand=function(self) self:stoptweening():linear(.03):diffusealpha(1) end,
 			OffCommand=function(self) self:stoptweening() end
 		},
 
@@ -206,7 +234,6 @@ return Def.ActorFrame{
 			InitCommand=function(self) self:diffusealpha(0):x(SCREEN_LEFT+76):y(SCREEN_CENTER_Y+105) end,
 			CabinetResetMessageCommand=function(self) self:finishtweening():decelerate(.02):diffusealpha(0) end,
 			BassLeftMessageCommand=function(self) self:stoptweening():accelerate(.03):diffusealpha(1) end,
-			BassRightMessageCommand=function(self) self:stoptweening():linear(.03):diffusealpha(1) end,
 			OffCommand=function(self) self:stoptweening() end
 		},
 		Def.Sprite {
@@ -214,7 +241,6 @@ return Def.ActorFrame{
 			InitCommand=function(self) self:diffusealpha(0):x(SCREEN_LEFT+204):y(SCREEN_CENTER_Y+105) end,
 			CabinetResetMessageCommand=function(self) self:finishtweening():decelerate(.02):diffusealpha(0) end,
 			BassRightMessageCommand=function(self) self:stoptweening():accelerate(.03):diffusealpha(1) end,
-			BassLeftMessageCommand=function(self) self:stoptweening():linear(.03):diffusealpha(1) end,
 			OffCommand=function(self) self:stoptweening() end
 		},
 
