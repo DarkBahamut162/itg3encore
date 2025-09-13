@@ -16,14 +16,14 @@ return Def.ActorFrame{
 			File = "_v credit",
 			Condition=not GAMESTATE:IsHumanPlayer(PLAYER_1),
 			InitCommand=function(self)
-				self:xy(SCREEN_CENTER_X-146*WideScreenDiff(),SCREEN_CENTER_Y-70*WideScreenDiff()):zoom(WideScreenDiff()):diffuseshift():effectcolor1(0.8,0.8,0.8,1):effectcolor2(0.4,0.4,0.4,1):effectperiod(2):settext("Not Present"):diffusealpha(0)
+				self:xy(SCREEN_CENTER_X-146*WideScreenDiff(),SCREEN_CENTER_Y-70*WideScreenDiff()):zoom(WideScreenDiff()):diffuseshift():effectcolor1(0.8,0.8,0.8,1):effectcolor2(0.4,0.4,0.4,1):effectperiod(2):settext("Not Present")
 			end
 		},
 		Def.BitmapText {
 			File = "_v credit",
 			Condition=not GAMESTATE:IsHumanPlayer(PLAYER_2),
 			InitCommand=function(self)
-				self:xy(SCREEN_CENTER_X+146*WideScreenDiff(),SCREEN_CENTER_Y-70*WideScreenDiff()):zoom(WideScreenDiff()):diffuseshift():effectcolor1(0.8,0.8,0.8,1):effectcolor2(0.4,0.4,0.4,1):effectperiod(2):settext("Not Present"):diffusealpha(0)
+				self:xy(SCREEN_CENTER_X+146*WideScreenDiff(),SCREEN_CENTER_Y-70*WideScreenDiff()):zoom(WideScreenDiff()):diffuseshift():effectcolor1(0.8,0.8,0.8,1):effectcolor2(0.4,0.4,0.4,1):effectperiod(2):settext("Not Present")
 			end
 		},
 		loadfile(THEME:GetPathB("ScreenWorkoutMenu","underlay/shared-frame"))()..{
