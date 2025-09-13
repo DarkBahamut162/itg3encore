@@ -108,7 +108,11 @@ return Def.ActorFrame{
 		local WX = params.TapNoteScore == "TapNoteScore_W1" and (math.abs(params.TapNoteOffset) <= W0 and "TapNoteScore_W0" or "TapNoteScore_W1" ) or params.TapNoteScore
 
 		if faplus then
-			if tns ~= 'TapNoteScore_Miss' then
+			if judg == 'TapNoteScore_Miss' then
+				WXCounter = WXCounter + 1
+				setenv("WX"..pname(player),WXCounter)
+				MESSAGEMAN:Broadcast("W0",{Player=player,W0=W0Counter,WX=WXCounter})
+			else
 				WXCounter = WXCounter + 1
 				setenv("WX"..pname(player),WXCounter)
 				if math.abs(params.TapNoteOffset) <= W0 then
@@ -116,10 +120,6 @@ return Def.ActorFrame{
 					W0Counter = W0Counter + 1
 					setenv("W0"..pname(player),W0Counter)
 				end
-				MESSAGEMAN:Broadcast("W0",{Player=player,W0=W0Counter,WX=WXCounter})
-			elseif tns == 'TapNoteScore_Miss' then
-				WXCounter = WXCounter + 1
-				setenv("WX"..pname(player),WXCounter)
 				MESSAGEMAN:Broadcast("W0",{Player=player,W0=W0Counter,WX=WXCounter})
 			end
 		end
