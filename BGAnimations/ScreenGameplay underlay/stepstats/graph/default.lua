@@ -6,7 +6,11 @@ local bgColor = color('0, 0, 0, 0.66')
 local normalizeAlpha = (1.0 - bgColor[4]) * 0.8
 local showNoteGraph = getenv("ShowNoteGraph"..pname(pn))
 local showNoteGraphType = getenv("ShowNoteGraphType"..pname(pn))
+local ShowNoteGraphRange = getenv("ShowNoteGraphRange"..pname(pn))
+local ShowStatsSize = getenv("ShowStatsSize"..pname(pn))
+local adjust = ShowNoteGraphRange == 2
 local rowLimit = showNoteGraphType == 1
+local ShowNoteGraphData = getenv("ShowNoteGraphData"..pname(pn))
 local lastSec = nil
 local lastBeat = nil
 local courseMode = GAMESTATE:IsCourseMode()
@@ -14,6 +18,9 @@ local screenMusicCheck = isTopScreen("ScreenSelectMusic") or isTopScreen("Screen
 local screenNetMusicCheck = isTopScreen("ScreenNetSelectMusic") or isTopScreen("ScreenNetSelectMusicFinal")
 local screenCheck = screenMusicCheck or screenNetMusicCheck
 local cropValue = screenNetMusicCheck and 0.64 or screenMusicCheck and 0.6 or 0.5
+local max = 0
+local average = 0
+local counter = 0
 
 local allowednotes = {
 	["TapNoteType_Tap"] = true,
@@ -421,11 +428,25 @@ local function GetVertices(stepsPerSecList)
     local stepsList = stepsPerSecList or {1}
     local addx = graphW / #stepsList
     local vertices = {}
+
+    average,counter,max = 0,0,0
+
+    for _=1, #stepsList do
+        average = average + (stepsList[_] or 0)
+        counter = counter + 1
+        max = math.max(max,stepsList[_] or 0)
+    end
+
     for i=1, #stepsList + 1 do
         local curX = (i > 1) and ((i-1) * graphW / #stepsList+1 - addx) or 0
         local nextX = (i <= #stepsList) and ((i * graphW / #stepsList+1) - addx) or graphW
         local curY = stepsList[(i > 1) and (i-1) or i] or 0
         local nextY = (i <= #stepsList) and (stepsList[i] or 0) or (#stepsList > 0 and stepsList[#stepsList]/2 or 0)
+        if adjust then
+            curY = scale(curY,0,max,0,20)
+            nextY = scale(nextY,0,max,0,20)
+        end
+
         local alpha = 0.65 + 0.3 * normalizeAlpha
         local col = color('1, 0, 0, '..alpha)
         vertices[#vertices+1] = { {curX, 0, 0}, {col[1], col[2], col[3], col[4]*0.5} }
@@ -453,8 +474,13 @@ local function GetVerticesAlt(stepsPerSecList)
     local stepsList = stepsPerSecList or {1}
     local vertices = {}
     local last = 0
-    
+
+    average,counter,max = 0,0,0
+
     for _i,_ in pairs( stepsList ) do
+        max = math.max(max,_)
+        average = average + _
+        counter = counter + 1
         if _i > last then last = _i end
     end
 
@@ -463,6 +489,10 @@ local function GetVerticesAlt(stepsPerSecList)
         local nextX = (i * graphW / last) - 0
         local curY = value/2
         local nextY = value
+        if adjust then
+            curY = scale(curY,0,max,0,20)
+            nextY = scale(nextY,0,max,0,20)
+        end
         local alpha = 0.65 + 0.3 * normalizeAlpha
         local col = color('1, 0, 0, '..alpha)
         vertices[#vertices+1] = { {curX, 0, 0}, {col[1], col[2], col[3], col[4]*0.5} }
@@ -583,6 +613,32 @@ return Def.ActorFrame{
                 self:x(pn == PLAYER_1 and -graphH*1.5 or graphH*1.5):y(175)
             end
         },
+        Def.BitmapText{
+            Condition=ShowNoteGraphData,
+            File = "_r bold shadow 30px",
+            InitCommand=function(self)
+                self:diffuseramp():effectcolor1(PlayerColor(pn)):effectcolor2(color("#FFFFFF")):effectperiod(0.5):effect_hold_at_full(0.5):effectclock('beat'):vertspacing(-10)
+                if screenCheck then
+                    self:x(pn == PLAYER_1 and -graphH*1.525 or graphH*1.525):y(graphH*2.1):zoomx(pn == PLAYER_1 and -1 or 1):maxwidth(graphH):halign(0):valign(0)
+                else
+                    self:x(pn == PLAYER_1 and -graphH*2.55 or graphH*2.55):rotationz(pn == PLAYER_2 and 90 or -90):zoom(WideScreenDiff()):maxwidth(ShowStatsSize == 1 and graphW*0.9 or graphW):valign(1)
+                end
+                self:queuecommand("Draw")
+            end,
+            DoneLoadingNextSongMessageCommand=function(self) self:sleep(1/30):queuecommand("Draw") end,
+            CurrentStepsP1ChangedMessageCommand=function(self) if not courseMode and pn == PLAYER_1 then self:sleep(1/30):queuecommand("Draw") end end,
+            CurrentStepsChangedMessageCommand=function(self) if not courseMode and pn == PLAYER_1 then self:sleep(1/30):queuecommand("Draw") end end,
+            CurrentStepsP2ChangedMessageCommand=function(self) if not courseMode and pn == PLAYER_2 then self:sleep(1/30):queuecommand("Draw") end end,
+            CurrentTrailP1ChangedMessageCommand=function(self) if courseMode and pn == PLAYER_1 then self:sleep(1/30):queuecommand("Draw") end end,
+            CurrentTrailP2ChangedMessageCommand=function(self) if courseMode and pn == PLAYER_2 then self:sleep(1/30):queuecommand("Draw") end end,
+            DrawCommand=function(self)
+                if screenCheck then
+                    self:settext("AVG: "..math.round(average/counter).."\nMAX: "..math.round(max))
+                else
+                    self:settext("Average NPS: "..math.round(average/counter,1).." | Max NPS: "..math.round(max,1))
+                end
+            end
+        }
     },
     Def.Sprite {
         Condition=not screenCheck,

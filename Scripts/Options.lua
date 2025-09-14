@@ -408,6 +408,8 @@ function InitPlayerOptions()
 		setenv("ShowStatsPos"..pname(pn),not isVS() and LoadUserPrefN(pn, "ShowStatsPos", 0) or 0)
 		setenv("ShowNoteGraph"..pname(pn),not isVS() and LoadUserPrefN(pn, "ShowNoteGraph", 1) or 1)
 		setenv("ShowNoteGraphType"..pname(pn),not isVS() and LoadUserPrefN(pn, "ShowNoteGraphType", 2) or 2)
+		setenv("ShowNoteGraphRange"..pname(pn),not isVS() and LoadUserPrefN(pn, "ShowNoteGraphRange", 1) or 1)
+		setenv("ShowNoteGraphData"..pname(pn),not isVS() and LoadUserPrefB(pn, "ShowNoteGraphData", false) or false)
 		setenv("SetPacemaker"..pname(pn),not isVS() and LoadUserPrefN(pn, "SetPacemaker", 0) or 0)
 
 		setenv("ShowMods"..pname(pn),LoadUserPrefB(pn, "ShowMods", false))
@@ -710,10 +712,12 @@ function OptionShowNoteGraph()
 		SelectType = "SelectMultiple",
 		OneChoiceForAllPlayers = false,
 		ExportOnChange = false,
-		Choices = { "Off","Normal","SPS","One","All" },
+		Choices = { "Off","Normal","SPS","One","All","Fixed","Adjusted","Show Data" },
 		LoadSelections = function(self, list, pn)
 			local ShowNoteGraph = (getenv("ShowNoteGraph"..pname(pn)) or 1)
 			local ShowNoteGraphType = (getenv("ShowNoteGraphType"..pname(pn)) or 1) + 3
+			local ShowNoteGraphRange = (getenv("ShowNoteGraphRange"..pname(pn)) or 1) + 5
+			local ShowNoteGraphData = (getenv("ShowNoteGraphData"..pname(pn)) or false)
 			if ShowNoteGraph and ShowNoteGraph ~= 0 then
 				list[ShowNoteGraph] = true
 			else
@@ -724,13 +728,24 @@ function OptionShowNoteGraph()
 			else
 				list[4] = true
 			end
+			if ShowNoteGraphRange and ShowNoteGraphRange ~= 0 then
+				list[ShowNoteGraphRange] = true
+			else
+				list[6] = true
+			end
+			list[8] = ShowNoteGraphData
 		end,
 		SaveSelections = function() end,
 		NotifyOfSelection= function(self, pn, choice)
 			if choice <= 3 then
 				setenv("ShowNoteGraph"..pname(pn),SaveUserPref(pn, "ShowNoteGraph", choice))
-			else
+			elseif choice <= 5 then
 				setenv("ShowNoteGraphType"..pname(pn),SaveUserPref(pn, "ShowNoteGraphType", choice-3))
+			elseif choice <= 7 then
+				setenv("ShowNoteGraphRange"..pname(pn),SaveUserPref(pn, "ShowNoteGraphRange", choice-5))
+			else
+				local ShowNoteGraphData = (getenv("ShowNoteGraphData"..pname(pn)) or false)
+				setenv("ShowNoteGraphData"..pname(pn),SaveUserPref(pn, "ShowNoteGraphData", not ShowNoteGraphData))
 			end
 			return true
 		end
