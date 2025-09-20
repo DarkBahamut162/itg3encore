@@ -160,9 +160,11 @@ function checkBMS()
 	return false
 end
 
-function GetBMSTitle(step)
+function GetBMSTitle(step,solo)
 	local title = GetBMSParameter(step,"TITLE")
+	if solo == 1 then return title end
 	local subtitle = GetBMSParameter(step,"SUBTITLE")
+	if solo == 2 then return subtitle end
 	if subtitle ~= "" then
 		return title .. " " .. subtitle
 	else

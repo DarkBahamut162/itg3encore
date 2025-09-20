@@ -115,5 +115,11 @@ function prepSummary()
 			["Subtitle"] = GAMESTATE:IsCourseMode() and "" or GAMESTATE:GetCurrentSong():GetDisplaySubTitle(),
 			["Artist"] = GAMESTATE:IsCourseMode() and "" or GAMESTATE:GetCurrentSong():GetDisplayArtist()
 		}
+		if checkBMS() and not GAMESTATE:IsCourseMode() then
+			local steps = GAMESTATE:GetCurrentSteps(GAMESTATE:GetMasterPlayerNumber())
+			Master[currentStage]["Title"] = GetBMSTitle(steps,1)
+			Master[currentStage]["Subtitle"] = GetBMSTitle(steps,2)
+			Master[currentStage]["Artist"] = GetBMSArtist(steps)
+		end
 	end
 end
