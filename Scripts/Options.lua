@@ -237,7 +237,7 @@ function SongMods()
 		options = addToOutput(options,"10,11",",")
 	end
 
-	options = addToOutput(options,"12,13,14,7,BGC,M,A,15,19,28,30,S,25",",")
+	options = addToOutput(options,"12,13,14,7,BGC,M,A,15,19,28,30,S,EB,25",",")
 
 	if isRegular() then
 		if HasLuaCheck() then
@@ -264,7 +264,7 @@ function SongMods()
 	if isVS() then
 		options = addToOutput(options,"28,21"..add2,",")
 	elseif GAMESTATE:IsCourseMode() then
-		options = addToOutput(options,"28,S,20,"..add.."P,29,21"..add2,",")
+		options = addToOutput(options,"28,S,EB,20,"..add.."P,29,21"..add2,",")
 	end
 
 	if not (IsGame("pump") or GAMESTATE:IsCourseMode()) then options = addToOutput(options,"31",",") end
@@ -393,6 +393,7 @@ function InitPlayerOptions()
 
 		setenv("ShowMovePlayerStats"..pname(pn),LoadUserPrefN(pn, "ShowMovePlayerStats", 3))
 		setenv("SetScoreType"..pname(pn),LoadUserPrefN(pn, "SetScoreType", 2))
+		setenv("ShowErrorBar"..pname(pn),LoadUserPrefN(pn, "ShowErrorBar", 0))
 		if (isOutFox() and GAMESTATE:GetCurrentGame():CountNotesSeparately() and VersionDateCheck(20210300)) then
 			if getenv("SetScoreType"..pname(pn)) == 4 then
 				SCREENMAN:SystemMessage("WIFE3 is bugged if notes are counted separately! "..pname(pn).."'s ScoreType has been reset to Percent!")
@@ -626,6 +627,42 @@ function OptionSetScoreType()
 				setenv("SetScoreFA"..pname(pn),SaveUserPref(pn, "SetScoreFA", not scoreFA))
 			end
 			return true
+		end
+	}
+	setmetatable(t, t)
+	return t
+end
+
+function OptionShowErrorBar()
+	function Range()
+		if isOpenDDR() then
+			return { "Off","Fantastic","Excellent","Great","Decent","Miss" }
+		else
+			return { "Off","Fantastic","Excellent","Great","Decent","Way Off","Miss" }
+		end
+	end
+	local t = {
+		Name="ShowErrorBar",
+		LayoutType = "ShowAllInRow",
+		SelectType = "SelectOne",
+		OneChoiceForAllPlayers = false,
+		ExportOnChange = false,
+		Choices = Range(),
+		LoadSelections = function(self, list, pn)
+			local selected = (getenv("ShowErrorBar"..pname(pn)) or 0) + 1
+			if selected and selected ~= 0 then
+				list[selected] = true
+			else
+				list[1] = true
+			end
+		end,
+		SaveSelections = function(self, list, pn)
+			for i, choice in ipairs(self.Choices) do
+				if list[i] then
+					setenv("ShowErrorBar"..pname(pn),SaveUserPref(pn, "ShowErrorBar", i-1))
+					break
+				end
+			end
 		end
 	}
 	setmetatable(t, t)

@@ -17,6 +17,7 @@ local player = Var "Player"
 local hide = player and getenv("HideCombo"..pname(player)) or false
 
 return Def.ActorFrame {
+	loadfile(THEME:GetPathG("Player","combo/ErrorBar"))(player)..{ Condition=(getenv("ShowErrorBar"..pname(player)) or 0) > 0 },
 	Def.ActorFrame {
 		OnCommand=function(self) if hide or (IsGame("be-mu") or IsGame("beat")) then self:visible(false) end end,
 		Def.BitmapText {
