@@ -106,11 +106,12 @@ return Def.ActorFrame{
 		InitCommand=function(self) self:x(posX_now):y(SCREEN_HEIGHT/8*7):zoom(0.7*WideScreenDiff()):maxwidth(300) end,
 		BeginCommand=function(self)
 			local SongOrSteps = checkBMS() and GAMESTATE:GetCurrentSteps(GAMESTATE:GetMasterPlayerNumber()) or GAMESTATE:GetCurrentSong()
+			local SongOrCourse = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentCourse() or GAMESTATE:GetCurrentSong()
 			local text = "Now playing:\n"
 			if SongOrSteps then text = text .. (checkBMS() and GetBMSTitle(SongOrSteps) or SongOrSteps:GetDisplayFullTitle()) end
 			text = text .. "\nby "
 			if SongOrSteps then text = text .. (checkBMS() and GetBMSArtist(SongOrSteps) or SongOrSteps:GetDisplayArtist()) end
-			self:settext(text)
+			self:settext(text .. "\n" .. SongOrCourse:GetGroupName())
 		end
 	},
 	Def.Quad{
