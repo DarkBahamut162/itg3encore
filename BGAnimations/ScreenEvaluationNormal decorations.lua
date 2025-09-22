@@ -19,6 +19,7 @@ local W2 = (isOpenDDR() and 0.0333 or PREFSMAN:GetPreference("TimingWindowSecond
 local W3 = (isOpenDDR() and 0.0920 or PREFSMAN:GetPreference("TimingWindowSecondsW3"))*timingChange[timing]
 local W4 = (isOpenDDR() and 0.1420 or PREFSMAN:GetPreference("TimingWindowSecondsW4"))*timingChange[timing]
 local W5 = (isOpenDDR() and 0.0000 or PREFSMAN:GetPreference("TimingWindowSecondsW5"))*timingChange[timing]
+local Wadd = (isOpenDDR() or isEtterna()) and 0.0000 or PREFSMAN:GetPreference("TimingWindowAdd")
 
 if ShowStandardDecoration("StepsDisplay") then
 	for pn in ivalues(GAMESTATE:GetEnabledPlayers()) do
@@ -207,11 +208,11 @@ local function GetVerticesOffsetDot(offset,pn)
     local vertices = {}
 	local max = TotalPossibleStepSeconds()
 	local JudgeScale = (isOutFoxV() and VersionDateCheck(20230624)) and GAMESTATE:GetPlayerState(pn):GetPlayerOptions("ModsLevel_Preferred"):JudgeScale() or 1
-	local jugd = getenv("SetScoreFA"..pname(pn)) and {{W0*JudgeScale,color("#7BE8FF")},{W1*JudgeScale,color("#FFFFFF")}} or {{W1*JudgeScale,color("#7BE8FF")}}
-	jugd[#jugd+1]={W2*JudgeScale,color("#FFA959")}
-	jugd[#jugd+1]={W3*JudgeScale,color("#67FF19")}
-	jugd[#jugd+1]={W4*JudgeScale,color("#D366FF")}
-	if not isOpenDDR() then jugd[#jugd+1]={W5*JudgeScale,color("#FF7149")} end
+	local jugd = getenv("SetScoreFA"..pname(pn)) and {{W0*JudgeScale+Wadd,color("#7BE8FF")},{W1*JudgeScale+Wadd,color("#FFFFFF")}} or {{W1*JudgeScale+Wadd,color("#7BE8FF")}}
+	jugd[#jugd+1]={W2*JudgeScale+Wadd,color("#FFA959")}
+	jugd[#jugd+1]={W3*JudgeScale+Wadd,color("#67FF19")}
+	jugd[#jugd+1]={W4*JudgeScale+Wadd,color("#D366FF")}
+	if not isOpenDDR() then jugd[#jugd+1]={W5*JudgeScale+Wadd,color("#FF7149")} end
 	local maxjudg = math.round(jugd[judges[pn]][1],3)
 
 	vertices[#vertices+1] = { {math.min(1,0)*graphW, (-1-0.01)*graphH, 0}, color("#000080") }
@@ -240,7 +241,7 @@ local function GetVerticesOffsetDot(offset,pn)
 					break
 				end
 			else
-				if math.abs(offset[off][2]) < jugd[j][1] then
+				if math.abs(offset[off][2]) <= jugd[j][1] then
 					curY = curY / maxjudg - 1
 					nextY = nextY / maxjudg - 1
 
@@ -268,11 +269,11 @@ local function GetVerticesOffsetLine(data,pn)
     local vertices = {}
 	local max = 0
 	local JudgeScale = (isOutFoxV() and VersionDateCheck(20230624)) and GAMESTATE:GetPlayerState(pn):GetPlayerOptions("ModsLevel_Preferred"):JudgeScale() or 1
-	local jugd = getenv("SetScoreFA"..pname(pn)) and {{W0*JudgeScale,color("#7BE8FF")},{W1*JudgeScale,color("#FFFFFF")}} or {{W1*JudgeScale,color("#7BE8FF")}}
-	jugd[#jugd+1]={W2*JudgeScale,color("#FFA959")}
-	jugd[#jugd+1]={W3*JudgeScale,color("#67FF19")}
-	jugd[#jugd+1]={W4*JudgeScale,color("#D366FF")}
-	if not isOpenDDR() then jugd[#jugd+1]={W5*JudgeScale,color("#FF7149")} end
+	local jugd = getenv("SetScoreFA"..pname(pn)) and {{W0*JudgeScale+Wadd,color("#7BE8FF")},{W1*JudgeScale+Wadd,color("#FFFFFF")}} or {{W1*JudgeScale+Wadd,color("#7BE8FF")}}
+	jugd[#jugd+1]={W2*JudgeScale+Wadd,color("#FFA959")}
+	jugd[#jugd+1]={W3*JudgeScale+Wadd,color("#67FF19")}
+	jugd[#jugd+1]={W4*JudgeScale+Wadd,color("#D366FF")}
+	if not isOpenDDR() then jugd[#jugd+1]={W5*JudgeScale+Wadd,color("#FF7149")} end
 	local maxjudg = math.round(jugd[judges[pn]][1],3)
     local lines = isOutFox() and VersionDateCheck(20201100)
 
@@ -296,7 +297,7 @@ local function GetVerticesOffsetLine(data,pn)
 		i=math.round(i,3)
 		if offset[i] then
 			for j=1, judges[pn] do
-				if math.abs(i) < jugd[j][1] then
+				if math.abs(i) <= jugd[j][1] then
 					if lines then
 						vertices[#vertices+1] = { {math.min(1,i/maxjudg)*graphW+graphW, -(offset[i]/max)*graphH, 0}, jugd[j][2] }
 						vertices[#vertices+1] = { {math.min(1,i/maxjudg)*graphW+graphW, (0)*graphH, 0}, jugd[j][2] }
