@@ -200,7 +200,7 @@ return Def.ActorFrame{
 			}
 		},
 		Def.ActorFrame{
-			Condition=not isEtterna(),
+			Condition=GAMESTATE:GetCoinMode() == 'CoinMode_Pay' and not isEtterna(),
 			Name="Premiums",
 			InitCommand=function(self)
 				local line1 = self:GetChild("Line1")
