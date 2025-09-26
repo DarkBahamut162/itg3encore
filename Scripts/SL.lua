@@ -183,7 +183,7 @@ function generateFavoritesForMusicWheel()
     if check == 2 then
         SLCombine()
 	elseif check == 1 then
-        if isITGmania() then
+        if isITGmania() and VersionDateCheck(20230317) then
             SONGMAN:SetPreferredSongs(getSLFavoritesPath(loadPlayer), true)
         else
             SL2Other(ToEnumShortString(loadPlayer),getSLFavoritesPath(loadPlayer))

@@ -277,12 +277,10 @@ function ModeMenu()
 	if isEtterna() then return "Group,Title,Bpm,TopGrades,Artist,Genre,Favorites,Overall,Stream,Jumpstream,Handstream,Stamina,JackSpeed,Chordjack,Technical,Length,DateAdded,Author,Ungrouped" end
 	local options = "Group,Title,Artist,Genre,Bpm,Length,"
 
-	if isITGmania() then
+	if isITGmania() and VersionDateCheck(20240225) then
 		options = addToOutput(options,"Meter",",")
 		for player in ivalues(GAMESTATE:GetHumanPlayers()) do
 			if PROFILEMAN:IsPersistentProfile(player) then
-				options = addToOutput(options,"Popularity".. ToEnumShortString(player),",")
-				options = addToOutput(options,"Recent".. ToEnumShortString(player),",")
 				options = addToOutput(options,"Top".. ToEnumShortString(player).."Grades",",")
 			end
 		end
@@ -292,7 +290,18 @@ function ModeMenu()
 		else
 			options = addToOutput(options,"DoubleEasyMeter,DoubleMediumMeter,DoubleHardMeter,DoubleChallengeMeter",",")
 		end
-		options = addToOutput(options,"Popularity,Recent,TopGrades",",")
+		options = addToOutput(options,"TopGrades",",")
+	end
+
+	if isITGmania() and VersionDateCheck(20250304) then
+		for player in ivalues(GAMESTATE:GetHumanPlayers()) do
+			if PROFILEMAN:IsPersistentProfile(player) then
+				options = addToOutput(options,"Popularity".. ToEnumShortString(player),",")
+				options = addToOutput(options,"Recent".. ToEnumShortString(player),",")
+			end
+		end
+	else
+		options = addToOutput(options,"Popularity,Recent",",")
 	end
 
 	options = addToOutput(options,"Preferred,Dance,Battle,Rave",",")

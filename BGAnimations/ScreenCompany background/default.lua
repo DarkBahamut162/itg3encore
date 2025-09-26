@@ -3,7 +3,7 @@ if isOutFoxV() and VersionDateCheck(20231017) and not PREFSMAN:GetPreference("Gi
 	GAMEMAN:SetGame(GAMESTATE:GetCurrentGame():GetName(),THEME:GetCurThemeName())
 end
 
-if isOldStepMania() then
+if isOldStepMania() or (isITGmania() and not VersionDateCheck(20240507)) then
 	local IgnoredDialogs = PREFSMAN:GetPreference("IgnoredDialogs")
 	if not string.find(IgnoredDialogs,"FRAME_DIMENSIONS_WARNING") then
 		IgnoredDialogs = addToOutput(IgnoredDialogs,"FRAME_DIMENSIONS_WARNING",",")
