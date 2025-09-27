@@ -1,5 +1,5 @@
 return Def.ActorFrame{
-	OnCommand=function(self) if isOutFox() and VersionDateCheck(20200500) then GAMESTATE:UpdateDiscordScreenInfo("Selecting PlayMode","",1) end end,
+	OnCommand=function(self) if isOutFox(20200500) then GAMESTATE:UpdateDiscordScreenInfo("Selecting PlayMode","",1) end end,
 	loadfile(THEME:GetPathB("ScreenWithMenuElements","underlay/back"))(),
 	loadfile(THEME:GetPathB("_shared","underlay arrows"))(),
 	Def.Sprite {

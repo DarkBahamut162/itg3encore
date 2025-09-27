@@ -1,4 +1,4 @@
-if isEtterna() and PREFSMAN:GetPreference("AutoConnectMultiplayer") == 1 then
+if isEtterna("0.60") and PREFSMAN:GetPreference("AutoConnectMultiplayer") == 1 then
 	PREFSMAN:SetPreference("AutoConnectMultiplayer", 0)
 	GAMEMAN:SetGame(GAMESTATE:GetCurrentGame():GetName(),THEME:GetCurThemeName())
 end
@@ -46,7 +46,7 @@ end
 
 return Def.ActorFrame{
 	OnCommand=function(self)
-		if isOutFox() and VersionDateCheck(20200500) then
+		if isOutFox(20200500) then
 			GAMESTATE:UpdateDiscordGameMode(GAMESTATE:GetCurrentGame():GetName())
 			GAMESTATE:UpdateDiscordScreenInfo("Title Menu","",1)
 		end

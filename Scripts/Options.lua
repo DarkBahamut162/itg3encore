@@ -30,7 +30,7 @@ end
 
 function ChoiceVersus()
 	if IsGame("dance") or IsGame("groove") then
-		if isOutFox() and VersionDateCheck(20220000) then
+		if isOutFox(20220000) then
 			return {"versus","solo-versus","threepanel-versus"}
 		else
 			return {"versus",nil,nil}
@@ -62,7 +62,7 @@ end
 
 function ChoiceDouble()
 	if IsGame("dance") or IsGame("groove") then
-		if isOutFox() and VersionDateCheck(20220000) then
+		if isOutFox(20220000) then
 			return {"double","solo-double","threepanel-double"}
 		else
 			return {"double",nil,nil}
@@ -192,7 +192,7 @@ end
 
 function StepsTypeDouble()
 	if IsGame("dance") or IsGame("groove") then
-		if isOutFox() and VersionDateCheck(20220000) then
+		if isOutFox(20220000) then
 			return {"StepsType_Dance_Double","StepsType_Dance_Solodouble","StepsType_Dance_Threedouble"}
 		else
 			return {"StepsType_Dance_Double",nil,nil}
@@ -218,11 +218,11 @@ function StepsTypeDouble()
 end
 
 function SongMods()
-	local add,add2 = "",(isOutFoxV() and VersionDateCheck(20230624)) and ",27" or ""
+	local add,add2 = "",isOutFoxV(20230624) and ",27" or ""
 
 	if not isOni() then add = "20G," end
 
-	local fail = (isOutFoxV() and VersionDateCheck(20221111)) and "FV" or "F"
+	local fail = isOutFoxV(20221111) and "FV" or "F"
 	local options = (isEtterna() and "Speed," or "1,") .."2,4,"..fail..","..((isRegular() and VersionDateCheck(20160000)) and (isOpenDDR() and "0DDR" or "0,Flare") or "0")..",3,5"..((isEtterna() or isOldStepMania()) and ",REE,AEE" or ",RE,RE2,AE,AE2,AE3")..(isOutFox() and ",AE4" or "")..",17,9,"
 
 	if isRegular() then
@@ -277,7 +277,7 @@ function ModeMenu()
 	if isEtterna() then return "Group,Title,Bpm,TopGrades,Artist,Genre,Favorites,Overall,Stream,Jumpstream,Handstream,Stamina,JackSpeed,Chordjack,Technical,Length,DateAdded,Author,Ungrouped" end
 	local options = "Group,Title,Artist,Genre,Bpm,Length,"
 
-	if isITGmania() and VersionDateCheck(20240225) then
+	if isITGmania(20240225) then
 		options = addToOutput(options,"Meter",",")
 		for player in ivalues(GAMESTATE:GetHumanPlayers()) do
 			if PROFILEMAN:IsPersistentProfile(player) then
@@ -293,7 +293,7 @@ function ModeMenu()
 		options = addToOutput(options,"TopGrades",",")
 	end
 
-	if isITGmania() and VersionDateCheck(20250304) then
+	if isITGmania(20250304) then
 		for player in ivalues(GAMESTATE:GetHumanPlayers()) do
 			if PROFILEMAN:IsPersistentProfile(player) then
 				options = addToOutput(options,"Popularity".. ToEnumShortString(player),",")
@@ -403,7 +403,7 @@ function InitPlayerOptions()
 		setenv("ShowMovePlayerStats"..pname(pn),LoadUserPrefN(pn, "ShowMovePlayerStats", 3))
 		setenv("SetScoreType"..pname(pn),LoadUserPrefN(pn, "SetScoreType", 2))
 		setenv("ShowErrorBar"..pname(pn),LoadUserPrefN(pn, "ShowErrorBar", 0))
-		if (isOutFox() and GAMESTATE:GetCurrentGame():CountNotesSeparately() and VersionDateCheck(20210300)) then
+		if isOutFox(20210300) and GAMESTATE:GetCurrentGame():CountNotesSeparately() then
 			if getenv("SetScoreType"..pname(pn)) == 4 then
 				SCREENMAN:SystemMessage("WIFE3 is bugged if notes are counted separately! "..pname(pn).."'s ScoreType has been reset to Percent!")
 				setenv("SetScoreType"..pname(pn),SaveUserPref(pn, "SetScoreType", 2))
@@ -592,7 +592,7 @@ end
 
 function OptionSetScoreType()
 	function GetScoreTypes(etterna)
-		if etterna or (not etterna and (isOutFox() and GAMESTATE:GetCurrentGame():CountNotesSeparately() and VersionDateCheck(20210300))) then
+		if etterna or (not etterna and (isOutFox(20210300) and GAMESTATE:GetCurrentGame():CountNotesSeparately())) then
 			return { "Score","Percent","EX","Additive","Subtractive" }
 		else
 			return { "Score","Percent","EX","WIFE3","Additive","Subtractive" }

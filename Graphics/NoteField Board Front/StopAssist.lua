@@ -4,7 +4,7 @@ local style = GAMESTATE:GetCurrentStyle()
 local filterWidth = style:GetWidth(player)
 local widthZoom = Center1Player() and 1 or WideScreenDiff()
 
-filterWidth = filterWidth * math.min(1,(isOutFox() and VersionDateCheck(20200600)) and NotefieldZoomOutFox() or NotefieldZoom())
+filterWidth = filterWidth * math.min(1,isOutFox(20200600) and NotefieldZoomOutFox() or NotefieldZoom())
 
 local playeroptions = GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Preferred")
 local Stops,timingData,truebpms,bpm1,bpm2
@@ -39,8 +39,8 @@ local function Update(self, delta)
 				if playeroptions:CMod() then speedMod = playeroptions:CMod() end
 				if playeroptions:MMod() then speedMod = playeroptions:MMod() end
 				if isOutFox() and playeroptions:AMod() then speedMod = ((bpm1+bpm2)*0.5)/playeroptions:AMod()*Stops[Si]["BPM"] end
-				if isOutFox() and VersionDateCheck(20220300) and playeroptions:CAMod() then speedMod = ((bpm1+bpm2)*0.5)/playeroptions:CAMod()*Stops[Si]["BPM"] end
-				if isOutFox() and VersionDateCheck(20220900) and playeroptions:AVMod() then speedMod = ((bpm1+bpm2)*0.5)/playeroptions:AVMod()*Stops[Si]["BPM"] end
+				if isOutFox(20220300) and playeroptions:CAMod() then speedMod = ((bpm1+bpm2)*0.5)/playeroptions:CAMod()*Stops[Si]["BPM"] end
+				if isOutFox(20220900) and playeroptions:AVMod() then speedMod = ((bpm1+bpm2)*0.5)/playeroptions:AVMod()*Stops[Si]["BPM"] end
 				c.Stop:stoptweening():diffusealpha(1):zoomtoheight(Stops[Si]["Length"]*speedMod):linear(Stops[Si]["Length"]):zoomtoheight(0):linear(0.1):diffusealpha(0)
 				Si = Si + 1
 			end
@@ -52,7 +52,7 @@ local mods = string.find(GAMESTATE:GetPlayerState(player):GetPlayerOptionsString
 local reverse = GAMESTATE:GetPlayerState(player):GetPlayerOptions('ModsLevel_Song'):UsingReverse()
 if mods then reverse = not reverse end
 local PY = reverse and THEME:GetMetric("Player","ReceptorArrowsYReverse") or THEME:GetMetric("Player","ReceptorArrowsYStandard")
-local adjust = (isOutFox() and VersionDateCheck(20200600)) and 47-(47 * WideScreenDiff()) or 0
+local adjust = isOutFox(20200600) and 47-(47 * WideScreenDiff()) or 0
 
 local mlevel = GAMESTATE:IsCourseMode() and "ModsLevel_Stage" or "ModsLevel_Preferred"
 local currentMini = 1-math.round(GAMESTATE:GetPlayerState(player):GetPlayerOptions(mlevel):Mini()*50) / 100

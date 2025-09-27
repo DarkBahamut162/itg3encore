@@ -28,7 +28,7 @@ local function zoomM() return (SCREEN_WIDTH-xM())/SCREEN_WIDTH end
 return Def.ActorFrame {
 	Name="YOU_WISH_YOU_WERE_PLAYING_BEATMANIA_RIGHT_NOW",
 	UpdateDiscordInfoCommand=function()
-		if isOutFox() and VersionDateCheck(20200500) then
+		if isOutFox(20200500) then
 			local song = GAMESTATE:GetCurrentSong()
 			if song then
 				local player = GAMESTATE:GetMasterPlayerNumber()

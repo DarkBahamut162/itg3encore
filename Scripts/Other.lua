@@ -242,29 +242,42 @@ function isDouble()
 	return styleType == 'StyleType_OnePlayerTwoSides' or styleType == 'StyleType_TwoPlayersSharedSides'
 end
 
-function isITGmania()
-	return ProductFamily() == "ITGmania"
+function isITGmania(version)
+	if version then return ProductFamily() == "ITGmania" and VersionDateCheck(version) else return ProductFamily() == "ITGmania" end
 end
 
-function isOutFox()
-	return ProductFamily() == "OutFox" or (isStepMania() and tonumber(split("-",ProductVersion())[1]) == 5.3)
+function isOutFox(version)
+	local productCheck = ProductFamily() == "OutFox" or (isStepMania() and tonumber(split("-",ProductVersion())[1]) == 5.3)
+	if version then return productCheck and VersionDateCheck(version) else return productCheck end
 end
 
-function isEtterna()
-	return ProductFamily() == "Etterna"
+function isEtterna(version)
+	if version then return ProductFamily() == "Etterna" and EtternaVersionCheck(version) else return ProductFamily() == "Etterna" end
 end
 
-function isOutFoxV()
-	local version = tonumber(split("-",ProductVersion())[1])
-	return isOutFox() and version >= 0.5 and version < 5
+function isOutFoxV(version)
+	local versionSplit = tonumber(split("-",ProductVersion())[1])
+	local productCheck = isOutFox() and versionSplit >= 0.5 and versionSplit < 5
+	if version then return productCheck and VersionDateCheck(version) else return productCheck end
 end
 
 function VersionDateCheck(version)
 	return tonumber(VersionDate()) > version
 end
 
-function isOutFoxV043()
-	return isOutFoxV() and VersionDateCheck(20240000)
+function EtternaVersionCheck(version)
+	local current = split("%.",split("-",ProductVersion())[1])
+	local check = split("%.",version)
+	local curV,checkV = 0,0
+	if #current <= 1 then current = {"0","66"} end -- Etterna is run by idiots
+	for i = 1,#current do curV = curV + tonumber(current[i])*math.pow(10,6-(i*2)) end
+	for i = 1,#check do checkV = checkV + tonumber(check[i])*math.pow(10,6-(i*2)) end
+	if curV >= 50000 then curV = 05500 end
+	return curV > checkV
+end
+
+function isOutFoxV043(version)
+	if version then return isOutFoxV(20240000) and VersionDateCheck(version) else return isOutFoxV(20240000) end
 end
 
 function hasAvatar(pn)
@@ -634,7 +647,7 @@ function CachePref()
 				if list[i] then
 					if IMGCache ~= self.Values[i] then
 						local output = ""
-						if isOutFox() and not isOutFoxV() and VersionDateCheck(20201000) then
+						if isOutFox(20201000) and not isOutFoxV() then
 							if i == 4 then
 								output = var.." successfully changed to "..self.Choices[i]
 								if bannerForced then output = addToOutput(output,"Replacement BannerDisplay deactivated!"," | ") end

@@ -7,7 +7,7 @@ local showOffset = ThemePrefs.Get("ShowOffset")
 
 return Def.ActorFrame{
 	OnCommand = function(self)
-		if isOutFox() and VersionDateCheck(20200500) then
+		if isOutFox(20200500) then
 			local StepsOrTrail = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentTrail(master) or GAMESTATE:GetCurrentSteps(master)
 			local song = GAMESTATE:GetCurrentSong()
 			if song then

@@ -34,7 +34,7 @@ local TNSFrames = {
 
 local timing = GetTimingDifficulty()
 local timingChange = { 1.50,1.33,1.16,1.00,0.84,0.66,0.50,0.33,0.20 }
-local JudgeScale = (isOutFoxV() and VersionDateCheck(20230624)) and GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Preferred"):JudgeScale() or 1
+local JudgeScale = isOutFoxV(20230624) and GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Preferred"):JudgeScale() or 1
 local W5 = (isOpenDDR() and 0.142 or PREFSMAN:GetPreference("TimingWindowSecondsW5"))*timingChange[timing]*JudgeScale
 local W0 = 0.0135*timingChange[timing]*JudgeScale
 local Wadd = isOpenDDR() and 0.0000 or PREFSMAN:GetPreference("TimingWindowAdd")

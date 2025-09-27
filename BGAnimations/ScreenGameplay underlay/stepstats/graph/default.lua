@@ -535,7 +535,7 @@ local function GetVerticesAssist(insert)
     local vertices = {}
     local col = color('1, 1, 1, 1')
     local length = lastSec/352/2
-    local lines = isOutFox() and VersionDateCheck(20201100)
+    local lines = isOutFox(20201100)
 
     for sec,typ in pairs(assistList) do
         if typ < 0 then
@@ -585,7 +585,7 @@ return Def.ActorFrame{
             CurrentTrailP1ChangedMessageCommand=function(self) if courseMode and pn == PLAYER_1 then self:playcommand("Init") end end,
             CurrentTrailP2ChangedMessageCommand=function(self) if courseMode and pn == PLAYER_2 then self:playcommand("Init") end end,
             InitCommand=function(self)
-                local vertices = showNoteGraph == 3 and GetVerticesAlt((isOutFox() and VersionDateCheck(20200400)) and UpdateGraphAlt() or UpdateGraphAltOld()) or GetVertices((isOutFox() and VersionDateCheck(20200400)) and UpdateGraph() or UpdateGraphOld())
+                local vertices = showNoteGraph == 3 and GetVerticesAlt(isOutFox(20200400) and UpdateGraphAlt() or UpdateGraphAltOld()) or GetVertices(isOutFox(20200400) and UpdateGraph() or UpdateGraphOld())
                 self:SetDrawState(showNoteGraph == 3 and {Mode = 'DrawMode_Triangles'} or {Mode = 'DrawMode_Quads'})
                 self:SetVertices(1, vertices)
                 self:SetNumVertices(#vertices)
@@ -605,7 +605,7 @@ return Def.ActorFrame{
             InitCommand=function(self) self:sleep(1/30):queuecommand("Draw") end,
             DrawCommand=function(self)
                 local vertices = GetVerticesAssist(UpdateGraphAssist())
-                self:SetDrawState((isOutFox() and VersionDateCheck(20201100)) and {Mode = 'DrawMode_Lines'} or {Mode = 'DrawMode_Quads'})
+                self:SetDrawState(isOutFox(20201100) and {Mode = 'DrawMode_Lines'} or {Mode = 'DrawMode_Quads'})
                 self:SetVertices(1, vertices)
                 self:SetNumVertices(#vertices)
                 self:rotationz(pn == PLAYER_1 and 90 or -90)

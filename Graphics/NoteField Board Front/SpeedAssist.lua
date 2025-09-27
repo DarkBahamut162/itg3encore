@@ -29,8 +29,8 @@ add = add * 2
 local filterWidth = style:GetWidth(player)
 local widthZoom = Center1Player() and 1 or WideScreenDiff()
 
-filterWidth = filterWidth * math.min(1,(isOutFox() and VersionDateCheck(20200600)) and NotefieldZoomOutFox() or NotefieldZoom())
-currentMini = currentMini * math.min(1,(isOutFox() and VersionDateCheck(20200600)) and NotefieldZoomOutFox() or NotefieldZoom())
+filterWidth = filterWidth * math.min(1,isOutFox(20200600) and NotefieldZoomOutFox() or NotefieldZoom())
+currentMini = currentMini * math.min(1,isOutFox(20200600) and NotefieldZoomOutFox() or NotefieldZoom())
 
 local SpeedDowns,SpeedUps,timingData,temp
 

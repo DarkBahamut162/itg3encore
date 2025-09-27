@@ -1,6 +1,6 @@
 return Def.ActorFrame{
 	OnCommand=function(self)
-		if isOutFox() and VersionDateCheck(20200500) then
+		if isOutFox(20200500) then
 			GAMESTATE:UpdateDiscordGameMode(GAMESTATE:GetCurrentGame():GetName())
 			GAMESTATE:UpdateDiscordScreenInfo("Editing a Song","",1)
 		end

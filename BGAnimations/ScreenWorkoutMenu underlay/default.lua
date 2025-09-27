@@ -1,5 +1,5 @@
 return Def.ActorFrame{
-	OnCommand=function(self) if isOutFox() and VersionDateCheck(20200500) then GAMESTATE:UpdateDiscordScreenInfo("Selecting Workout","",1) end end,
+	OnCommand=function(self) if isOutFox(20200500) then GAMESTATE:UpdateDiscordScreenInfo("Selecting Workout","",1) end end,
 	loadfile(THEME:GetPathB("ScreenWithMenuElements","underlay"))(),
 	Def.ActorFrame{
 		OnCommand=function(self) self:addx(-SCREEN_WIDTH):decelerate(0.3):addx(SCREEN_WIDTH) end,

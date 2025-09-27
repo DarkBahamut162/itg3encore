@@ -6,7 +6,7 @@ bannerForced = false
 
 if isEtterna() then elseif isOldStepMania() then
 	bannerForced = PREFSMAN:GetPreference("BannerCache") == "BannerCacheMode_Off"
-elseif isOutFox() and VersionDateCheck(20201000) then
+elseif isOutFox(20201000) then
 	bannerForced = PREFSMAN:GetPreference("ImageCache") ~= "ImageCacheMode_Full"
 else
 	bannerForced = PREFSMAN:GetPreference("ImageCache") == "ImageCacheMode_Off"
@@ -199,7 +199,7 @@ function HasLua(song,changes)
 						return true
 					elseif string.find(parameter[i][current],".",0,true) then else
 						local groupName = song:GetGroupName()
-						local songFolder = (isOutFox() and VersionDateCheck(20221200)) and song:GetSongFolder() or GetSongFolderName(song)
+						local songFolder = isOutFox(20221200) and song:GetSongFolder() or GetSongFolderName(song)
 						local checkFolder = FILEMAN:GetDirListing("/Songs/"..groupName.."/"..songFolder.."/"..parameter[i][current].."/")
 						for insideFiles in ivalues( checkFolder ) do
 							if string.find(insideFiles,".lua",0,true) then return true end
@@ -888,7 +888,7 @@ function cacheStepSM(Song,Step)
 			return {["Version"]="0"}
 		end
 	else
-		if isOutFox() and VersionDateCheck(20200400) then
+		if isOutFox(20200400) then
 			return cacheStep(Song,Step)
 		else
 			local file = getStepCacheFile(Step)
@@ -1023,7 +1023,7 @@ function cacheStepBMS(Song,Step)
 
 		return list
 	else
-		if isOutFox() and VersionDateCheck(20200400) then
+		if isOutFox(20200400) then
 			return cacheStep(Song,Step)
 		else
 			local file = getStepCacheFile(Step)
@@ -1039,7 +1039,7 @@ function cacheStepX(Song,Step)
 	--local checkBMS = filePath:sub(-3):sub(2,2) == 'm'	-- B[M]S & B[M]E & B[M]L & P[M]S
 	local checkPMS = filePath:sub(-3) == 'pms'
 
-	if not (isOutFox() and VersionDateCheck(20200400)) or ((checkSM or checkPMS) and isOutFoxV()) then
+	if not isOutFox(20200400) or ((checkSM or checkPMS) and isOutFoxV()) then
 		return checkSM and cacheStepSM(Song,Step) or cacheStepBMS(Song,Step)
 	else
 		return cacheStep(Song,Step)

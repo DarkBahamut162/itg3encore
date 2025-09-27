@@ -1,9 +1,9 @@
-if isOutFoxV() and VersionDateCheck(20231017) and not PREFSMAN:GetPreference("GimmickMode") then
+if isOutFoxV(20231017) and not PREFSMAN:GetPreference("GimmickMode") then
 	PREFSMAN:SetPreference("GimmickMode", 1)
 	GAMEMAN:SetGame(GAMESTATE:GetCurrentGame():GetName(),THEME:GetCurThemeName())
 end
 
-if isOldStepMania() or (isITGmania() and not VersionDateCheck(20240507)) then
+if isOldStepMania() or (isITGmania() and not VersionDateCheck(20240507)) or (isEtterna() and not EtternaVersionCheck("0.70.99")) then
 	local IgnoredDialogs = PREFSMAN:GetPreference("IgnoredDialogs")
 	if not string.find(IgnoredDialogs,"FRAME_DIMENSIONS_WARNING") then
 		IgnoredDialogs = addToOutput(IgnoredDialogs,"FRAME_DIMENSIONS_WARNING",",")
