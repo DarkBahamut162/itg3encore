@@ -724,3 +724,33 @@ function VideoRenderer()
 		end
 	}
 end
+
+function PreferredSampleRate()
+	local choices = { "Default", "44100 Hz", "48000 Hz" }
+	local values  = { 0, 44100, 48000 }
+
+	return {
+		Name = "PreferredSampleRate",
+		Choices = choices,
+		Values = values,
+		LayoutType = "ShowAllInRow",
+		SelectType = "SelectOne",
+		OneChoiceForAllPlayers = true,
+		ExportOnChange = false,
+		LoadSelections = function(self, list, pn)
+			local pref = PREFSMAN:GetPreference("SoundPreferredSampleRate")
+			local i = FindInTable(pref, self.Values) or 1
+			list[i] = true
+		end,
+		SaveSelections = function(self, list, pn)
+			for i=1, #list do
+				if list[i] then
+					PREFSMAN:SetPreference("SoundPreferredSampleRate", values[i])
+					if isOutFoxV(20230513) then PREFSMAN:SetPreference("SoundPortAudioPreferredSampleRate", values[i]) end
+					if isOutFoxV(20230327) then PREFSMAN:SetPreference("SoundrtAudioPreferredSampleRate", values[i]) end
+					break
+				end
+			end
+		end
+	}
+end
