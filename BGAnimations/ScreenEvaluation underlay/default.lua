@@ -24,6 +24,8 @@ return Def.ActorFrame{
 				GAMESTATE:UpdateDiscordProfile(GAMESTATE:GetPlayerDisplayName(master))
 				GAMESTATE:UpdateDiscordScreenInfo(songname,states,1)
 			end
+		elseif isEtterna("0.57") then
+			updateDiscordStatus(true)
 		end
 	end,
 	loadfile(THEME:GetPathB("ScreenWithMenuElements","underlay/_sides"))(),

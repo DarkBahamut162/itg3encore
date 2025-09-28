@@ -119,6 +119,8 @@ return Def.ActorFrame{
 				end
 			end
 			GAMESTATE:UpdateDiscordScreenInfo(text,"",1)
+		elseif isEtterna("0.57") then
+			updateDiscordStatusForMenus()
 		end
 	end,
 	OffCommand = function(self)

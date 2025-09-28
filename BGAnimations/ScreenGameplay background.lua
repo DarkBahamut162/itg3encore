@@ -50,6 +50,8 @@ return Def.ActorFrame {
 				end
 				GAMESTATE:UpdateDiscordSongPlaying(GAMESTATE:IsCourseMode() and courselength() or state,songname,(song:GetLastSecond() - GAMESTATE:GetCurMusicSeconds())/math.round(GAMESTATE:GetSongOptionsObject("ModsLevel_Song"):MusicRate(),1))
 			end
+		elseif isEtterna("0.57") then
+			updateDiscordStatus(false)
 		end
 	end,
 	InitCommand = function(self) c = self:GetChildren() end,

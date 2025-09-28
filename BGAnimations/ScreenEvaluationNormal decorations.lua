@@ -19,7 +19,7 @@ local W2 = (isOpenDDR() and 0.0333 or PREFSMAN:GetPreference("TimingWindowSecond
 local W3 = (isOpenDDR() and 0.0920 or PREFSMAN:GetPreference("TimingWindowSecondsW3"))*timingChange[timing]
 local W4 = (isOpenDDR() and 0.1420 or PREFSMAN:GetPreference("TimingWindowSecondsW4"))*timingChange[timing]
 local W5 = (isOpenDDR() and 0.0000 or PREFSMAN:GetPreference("TimingWindowSecondsW5"))*timingChange[timing]
-local Wadd = (isOpenDDR() or isEtterna()) and 0.0000 or PREFSMAN:GetPreference("TimingWindowAdd")
+local Wadd = (isOpenDDR() or isEtterna("0.72")) and 0.0000 or PREFSMAN:GetPreference("TimingWindowAdd")
 
 if ShowStandardDecoration("StepsDisplay") then
 	for pn in ivalues(GAMESTATE:GetEnabledPlayers()) do
