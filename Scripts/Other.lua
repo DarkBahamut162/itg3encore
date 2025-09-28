@@ -687,11 +687,16 @@ end
 function VideoRenderer()
 	local choices = { "opengl" }
 	local values  = { "opengl" }
-	local architecture = HOOKS:GetArchName():lower()
 
-	if architecture:match("windows") then
-		table.insert(choices, "d3d")
-		values = { "opengl,d3d", "d3d,opengl" }
+	if isOutFox(20200205) then
+		table.insert(choices, "glad")
+		values = { "opengl,glad", "glad,opengl" }
+	else
+		local architecture = HOOKS:GetArchName():lower()
+		if architecture:match("windows") then
+			table.insert(choices, "d3d")
+			values = { "opengl,d3d", "d3d,opengl" }
+		end
 	end
 
 	return {
