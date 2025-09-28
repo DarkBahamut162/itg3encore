@@ -683,3 +683,44 @@ function CachePref()
 	setmetatable(t, t)
 	return t
 end
+
+function VideoRenderer()
+	local choices = { "opengl" }
+	local values  = { "opengl" }
+	local architecture = HOOKS:GetArchName():lower()
+
+	if architecture:match("windows") then
+		table.insert(choices, "d3d")
+		values = { "opengl,d3d", "d3d,opengl" }
+	end
+
+	return {
+		Name = "VideoRenderer",
+		Choices = choices,
+		LayoutType = "ShowAllInRow",
+		SelectType = "SelectOne",
+		OneChoiceForAllPlayers = true,
+		ExportOnChange = false,
+		LoadSelections = function(self, list, pn)
+			local pref = PREFSMAN:GetPreference("VideoRenderers")
+
+			for renderer in pref:gmatch("(%w+),?") do
+				pref = renderer
+				break
+			end
+
+			if not pref then return end
+
+			local i = FindInTable(pref, self.Choices) or 1
+			list[i] = true
+		end,
+		SaveSelections = function(self, list, pn)
+			for i=1, #list do
+				if list[i] then
+					PREFSMAN:SetPreference("VideoRenderers", values[i])
+					break
+				end
+			end
+		end
+	}
+end
