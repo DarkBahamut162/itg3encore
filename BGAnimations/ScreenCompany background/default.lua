@@ -3,6 +3,11 @@ if isOutFoxV(20231017) and not PREFSMAN:GetPreference("GimmickMode") then
 	GAMEMAN:SetGame(GAMESTATE:GetCurrentGame():GetName(),THEME:GetCurThemeName())
 end
 
+if isOutFoxV() and PREFSMAN:PreferenceExists("KeySoundMode") then
+	local KeySoundMode = PREFSMAN:GetPreference("KeySoundMode")
+	if KeySoundMode ~= "Auto" then PREFSMAN:SetPreference("KeySoundMode", "Auto") end
+end
+
 if isOldStepMania() or (isITGmania() and not VersionDateCheck(20240507)) or (isEtterna() and not EtternaVersionCheck("0.70.99")) then
 	local IgnoredDialogs = PREFSMAN:GetPreference("IgnoredDialogs")
 	if not string.find(IgnoredDialogs,"FRAME_DIMENSIONS_WARNING") then
