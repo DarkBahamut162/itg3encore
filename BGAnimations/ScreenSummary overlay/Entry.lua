@@ -55,6 +55,15 @@ if version < 3 then
                 self:x(version == 2 and borderLeftCenter or borderLeft):valign(1):zoom(1/3*WideScreenDiff()):rotationz(90)
             end
         },
+        Def.BitmapText {
+            Condition = ThemePrefs.Get("ShowCalcDiff"),
+            File = "_z 36px black",
+            Text = P1[index]["CalcedMeter"],
+            InitCommand=function(self)
+                self:shadowlength(1):diffuse(DifficultyToColor( P1[index]["Difficulty"] )):maxwidth(120)
+                self:x(version == 2 and borderLeftCenter or borderLeft):valign(0):zoom(1/3*WideScreenDiff()):rotationz(90)
+            end
+        },
         Def.ActorFrame{
             Def.BitmapText {
                 File = "_z bold 36px",
@@ -337,6 +346,15 @@ if version > 1 then
             InitCommand=function(self)
                 self:shadowlength(1):diffuse(DifficultyToColor( P2[index]["Difficulty"] )):maxwidth(120)
                 self:x(version == 2 and borderRightCenter or borderRight):valign(1):zoom(1/3*WideScreenDiff()):rotationz(-90)
+            end
+        },
+        Def.BitmapText {
+            Condition = ThemePrefs.Get("ShowCalcDiff"),
+            File = "_z 36px black",
+            Text = P2[index]["CalcedMeter"],
+            InitCommand=function(self)
+                self:shadowlength(1):diffuse(DifficultyToColor( P2[index]["Difficulty"] )):maxwidth(120)
+                self:x(version == 2 and borderRightCenter or borderRight):valign(0):zoom(1/3*WideScreenDiff()):rotationz(-90)
             end
         },
         Def.ActorFrame{

@@ -98,6 +98,12 @@ function prepSummary()
 		Step["Grade"] = STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetGrade()
 		Step["Difficulty"] = GAMESTATE:GetCurrentSteps(player):GetDifficulty()
 		Step["Meter"] = GAMESTATE:GetCurrentSteps(player):GetMeter()
+		if ThemePrefs.Get("ShowCalcDiff") then
+			local calced = getCalculatedDifficulty(GAMESTATE:GetCurrentSteps(player))
+			calced = split("\n",calced)
+			calced = split(" ",calced[1])[1]
+			Step["CalcedMeter"] = calced
+		end
 		if player == PLAYER_1 then
 			P1[0] = PROFILEMAN:GetPlayerName(player) == "" and ToEnumShortString(player) or PROFILEMAN:GetPlayerName(player)
 			P1[currentStage] = Step
