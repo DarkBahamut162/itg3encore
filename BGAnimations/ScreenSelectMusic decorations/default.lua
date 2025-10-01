@@ -193,13 +193,40 @@ t[#t+1] = Def.ActorFrame {
 	}
 }
 
+local Artist, Origin
+
 t[#t+1] = Def.ActorFrame{
+	CurrentSongChangedMessageCommand=function(self)
+		if not courseMode and ThemePrefs.Get("ShowOrigin") then
+			if (GAMESTATE:GetCurrentSong() and GetSMParameter(GAMESTATE:GetCurrentSong(),"ORIGIN") or "") == "" then
+				Artist:stoptweening():diffusealpha(1)
+				Origin:stoptweening():diffusealpha(0)
+			else
+				Artist:queuecommand("AnimateArtist")
+				Origin:queuecommand("AnimateOrigin") 
+			end
+		end
+	end,
 	loadfile(THEME:GetPathG('ScreenSelectMusic','BannerFrame'))(),
 	loadfile(THEME:GetPathG(Var "LoadingScreen", "ArtistDisplay"))() .. {
 		InitCommand=function(self)
 			self:name("ArtistDisplay")
+			Artist = self
 			ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen")
-		end
+			if not courseMode and ThemePrefs.Get("ShowOrigin") then self:queuecommand("AnimateArtist") else self:diffusealpha(1) end
+		end,
+		AnimateArtistCommand=function(self) self:diffusealpha(1):sleep(1.75):linear(0.25):diffusealpha(0):sleep(1.75):linear(0.25):diffusealpha(1):queuecommand("AnimateArtist") end,
+		OffCommand=function(self) self:stoptweening():stopeffect():accelerate(0.75):addx(SCREEN_WIDTH) end
+	},
+	loadfile(THEME:GetPathG(Var "LoadingScreen", "OriginDisplay"))() .. {
+		InitCommand=function(self)
+			self:name("OriginDisplay")
+			Origin = self
+			ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen")
+			if not courseMode and ThemePrefs.Get("ShowOrigin") then self:queuecommand("AnimateOrigin") else self:diffusealpha(0) end
+		end,
+		AnimateOriginCommand=function(self) self:diffusealpha(0):sleep(1.75):linear(0.25):diffusealpha(1):sleep(1.75):linear(0.25):diffusealpha(0):queuecommand("AnimateOrigin") end,
+		OffCommand=function(self) self:stoptweening():stopeffect():accelerate(0.75):addx(SCREEN_WIDTH) end
 	},
 	loadfile(THEME:GetPathG(Var "LoadingScreen", "InfoDisplay"))() .. {
 		InitCommand=function(self)

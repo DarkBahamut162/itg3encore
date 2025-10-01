@@ -40,10 +40,15 @@ Shows the **graph** of the **currently selected stepchart** *(VerticalScreen & W
 Shows if song **has anything lua** related (no matter if BG, FG or both)
 - **ShowMODDisplay:**
 Switches back and forth between the stepchart's BPMs and the player's current mod speed 
+- **ShowOrigin**
+Switches back and forth between the song's Artist and the song's origin *(only if Origin Value has been set) *
 - **ShowRounds:**
 Shows either **amount of rounds** or **length specification** during song selection
 - **ShowStepCounter (StepCache Only):**
 Shows **total step quantification amounts** (might be useful especially for BEMU/POMU, including scratches and foots)
+- **ShowTechCounter (ITGmania Only)**
+Shows stepchart's Techniques.
+  - If *both Counters* have been enabled, **both switch between one another** like *BPMDisplay* and *MODDisplay*
 ### [ScreenGameplay]
 - **AnimatePlayerScore:**
 Have the Player Score animate instead of instantly updating

@@ -228,3 +228,246 @@ function SMParser(steps)
         end
     end
 end
+
+function GetTechniques(chartString)
+	local RegexStep = "[124]"
+	local RegexAny = "."
+
+	local RegexL = "^" .. RegexStep .. RegexAny .. RegexAny .. RegexAny
+	local RegexD = "^" .. RegexAny .. RegexStep .. RegexAny .. RegexAny
+	local RegexU = "^" .. RegexAny .. RegexAny .. RegexStep .. RegexAny
+	local RegexR = "^" .. RegexAny .. RegexAny .. RegexAny .. RegexStep
+
+	local NumCrossovers = 0
+	local NumFootswitches = 0
+	local NumSideswitches = 0
+	local NumJacks = 0
+	local NumBrackets = 0
+
+	local LastFoot = false
+	local WasLastStreamFlipped = false
+	local LastStep
+	local LastRepeatedFoot
+	local StepsLR = {}
+	local AnyStepsSinceLastCommitStream = false
+
+	local LastArrowL = "X"
+	local LastArrowR = "X"
+	local TrueLastArrowL = "X"
+	local TrueLastArrowR = "X"
+	local TrueLastFoot = nil
+	local JustBracketed = false
+
+	function CommitStream(tieBreakFoot)
+		local ns = #StepsLR
+		local nx = 0
+		for step in ivalues(StepsLR) do
+			if not step then nx = nx + 1 end
+		end
+
+		local needFlip = false
+		if nx * 2 > ns then
+			needFlip = true
+		elseif nx * 2 == ns then
+			if tieBreakFoot then
+				if JustBracketed then
+					needFlip = false
+				elseif LastFoot then
+					needFlip = (tieBreakFoot == "R")
+				else
+					needFlip = (tieBreakFoot == "L")
+				end
+			elseif NumFootswitches > NumJacks then
+				needFlip = LastFlip -- Match flipness of last chunk -> footswitch
+			else
+				needFlip = not LastFlip -- Don't match -> jack
+			end
+		end
+
+		local splitIndex
+		local splitFirstUncrossedStepIndex
+		local numConsecutiveCrossed = 0
+		for i, step in ipairs(StepsLR) do
+			local stepIsCrossed = step == needFlip
+			if not splitIndex then
+				if stepIsCrossed then
+					numConsecutiveCrossed = numConsecutiveCrossed + 1
+					if numConsecutiveCrossed == 9 then
+						splitIndex = i - 8
+					end
+				else
+					numConsecutiveCrossed = 0
+				end
+			elseif not splitFirstUncrossedStepIndex then
+				if not stepIsCrossed then
+					splitFirstUncrossedStepIndex = i
+				end
+			end
+		end
+
+		if splitIndex then
+			if splitIndex == 1 then
+				splitIndex = splitFirstUncrossedStepIndex
+			end
+
+			local StepsLR1 = {}
+			local StepsLR2 = {}
+			for i, step in ipairs(StepsLR) do
+				if i < splitIndex then
+					StepsLR1[#StepsLR1+1] = step
+				else
+					StepsLR2[#StepsLR2+1] = step
+				end
+			end
+			StepsLR = StepsLR1
+			CommitStream(nil)
+			LastRepeatedFoot = nil
+			StepsLR = StepsLR2
+			CommitStream(tieBreakFoot)
+		else
+			if needFlip then
+				NumCrossovers = NumCrossovers + ns - nx
+			else
+				NumCrossovers = NumCrossovers + nx
+			end
+
+			if LastRepeatedFoot then
+				if needFlip == LastFlip then
+					NumFootswitches = NumFootswitches + 1
+					if LastRepeatedFoot == "L" or LastRepeatedFoot == "R" then
+						NumSideswitches = NumSideswitches + 1
+					end
+				else
+					NumJacks = NumJacks + 1
+				end
+			end
+
+			StepsLR = {}
+			LastFlip = needFlip
+
+			if AnyStepsSinceLastCommitStream then
+				if needFlip then
+					if LastFoot then TrueLastFoot = "L" else TrueLastFoot = "R" end
+					TrueLastArrowL = LastArrowR
+					TrueLastArrowR = LastArrowL
+				else
+					if LastFoot then TrueLastFoot = "R" else TrueLastFoot = "L" end
+					TrueLastArrowL = LastArrowL
+					TrueLastArrowR = LastArrowR
+				end
+			end
+			AnyStepsSinceLastCommitStream = false
+			LastArrowL = ""
+			LastArrowR = ""
+			JustBracketed = false
+		end
+	end
+
+	for line in chartString:gmatch("[^%s*\r\n]+") do
+		if line:match(RegexStep) then
+			local step = ""
+			if line:match(RegexL) then step = step .. "L" end
+			if line:match(RegexD) then step = step .. "D" end
+			if line:match(RegexU) then step = step .. "U" end
+			if line:match(RegexR) then step = step .. "R" end
+
+			if step:len() == 1 then
+				if LastStep and step == LastStep then
+					CommitStream(nil)
+					LastRepeatedFoot = step
+				end
+
+				LastStep = step
+				LastFoot = not LastFoot
+				if step == "L" then
+					StepsLR[#StepsLR+1] = not LastFoot
+				elseif step == "R" then
+					StepsLR[#StepsLR+1] = LastFoot
+				end
+				AnyStepsSinceLastCommitStream = true
+				if LastFoot then
+					LastArrowR = step
+				else
+					LastArrowL = step
+				end
+			elseif step:len() > 1 then
+				if step:len() == 2 then
+					local isBracketLeft  = step:match("L[^R]")
+					local isBracketRight = step:match("[^L]R")
+
+					local tieBreakFoot = nil
+					if isBracketLeft then
+						tieBreakFoot = "L"
+					elseif isBracketRight then
+						tieBreakFoot = "R"
+					end
+					CommitStream(tieBreakFoot)
+					LastStep = nil
+					LastRepeatedFoot = nil
+
+					if isBracketLeft or isBracketRight then
+						if isBracketLeft and (not TrueLastFoot or TrueLastFoot == "R") then
+							if not step:match(TrueLastArrowR) then
+								NumBrackets = NumBrackets + 1
+								TrueLastFoot = "L"
+								LastFoot = false
+								TrueLastArrowL = step:sub(2)
+								JustBracketed = true
+							else
+								TrueLastFoot = nil
+								TrueLastArrowL = "L"
+								TrueLastArrowR = step:sub(2)
+								LastArrowR = TrueLastArrowR
+							end
+							LastArrowL = TrueLastArrowL
+						elseif isBracketRight and (not TrueLastFoot or TrueLastFoot == "L") then
+							if not step:match(TrueLastArrowL) then
+								NumBrackets = NumBrackets + 1
+								TrueLastFoot = "R"
+								LastFoot = true
+								TrueLastArrowR = step:sub(1,1)
+								JustBracketed = true
+							else
+								TrueLastFoot = nil
+								TrueLastArrowL = step:sub(1,1)
+								TrueLastArrowR = "R"
+								LastArrowL = TrueLastArrowL
+							end
+							LastArrowR = TrueLastArrowR
+						end
+					else
+						if step == "DU" then
+							local leftD  = TrueLastArrowL:match("D")
+							local leftU  = TrueLastArrowL:match("U")
+							local rightD = TrueLastArrowR:match("D")
+							local rightU = TrueLastArrowR:match("U")
+							if (leftD and not rightD) or (rightU and not leftU) then
+								TrueLastArrowL = "D"
+								TrueLastArrowR = "U"
+							elseif (leftU and not rightU) or (rightD and not leftD) then
+								TrueLastArrowL = "U"
+								TrueLastArrowR = "D"
+							else
+								TrueLastArrowL = "X"
+								TrueLastArrowR = "X"
+							end
+						else
+							TrueLastArrowL = "X"
+							TrueLastArrowR = "X"
+						end
+						TrueLastFoot = nil
+					end
+				else
+					CommitStream()
+					LastStep = nil
+					LastRepeatedFoot = nil
+					NumBrackets = NumBrackets + 1
+					TrueLastFoot = nil
+				end
+			end
+		end
+	end
+	CommitStream(nil)
+
+	return NumCrossovers, NumFootswitches, NumSideswitches, NumJacks, NumBrackets
+end

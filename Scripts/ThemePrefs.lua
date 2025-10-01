@@ -55,12 +55,22 @@ local Prefs = {
 		Choices = { OptionNameString('Off'), OptionNameString('On') },
 		Values = { false, true }
 	},
+	ShowOrigin = {
+		Default = false,
+		Choices = { OptionNameString('Off'), OptionNameString('On') },
+		Values = { false, true }
+	},
 	ShowRounds = {
 		Default = false,
 		Choices = { OptionNameString('Off'), OptionNameString('On') },
 		Values = { false, true }
 	},
 	ShowStepCounter = {
+		Default = false,
+		Choices = { OptionNameString('Off'), OptionNameString('On') },
+		Values = { false, true }
+	},
+	ShowTechCounter = {
 		Default = false,
 		Choices = { OptionNameString('Off'), OptionNameString('On') },
 		Values = { false, true }
