@@ -53,7 +53,7 @@ local MeterX = {
 }
 
 local function LoadLifeMeterFramePart(f)
-	return LoadActor( THEME:GetPathG("_frame", "1D"),
+	return loadfile( THEME:GetPathG("_frame", "1D"))(
 		{ 121/784, 80/784, 48/784, 106/784, 74/784, 106/784, 48/784, 80/784, 121/784 },
 		Def.Sprite { Texture = f }
 	) .. {
@@ -382,7 +382,7 @@ for side in ivalues(PlayerNumber) do
 	local BubblePadding = 15*2
 
 	local function LoadBubblePart(part)
-		return LoadActor( THEME:GetPathG("_frame", "1D"),
+		return loadfile( THEME:GetPathG("_frame", "1D"))(
 			{ 15/348, 318/348, 15/348 },
 			Def.Sprite { Texture = part }
 		)

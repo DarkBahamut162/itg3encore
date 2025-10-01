@@ -24,7 +24,7 @@ end
 
 local t = Def.ActorFrame{}
 
-t[#t+1] = LoadActor(THEME:GetPathB("ScreenSystemLayer",isEtterna() and "error" or "aux"))
+t[#t+1] = loadfile(THEME:GetPathB("ScreenSystemLayer",isEtterna() and "error" or "aux"))()
 t[#t+1] = Def.ActorFrame{
 	CreditsText(PLAYER_1),
 	CreditsText(PLAYER_2)
