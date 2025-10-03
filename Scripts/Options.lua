@@ -404,7 +404,7 @@ function InitPlayerOptions()
 		setenv("SetScoreType"..pname(pn),LoadUserPrefN(pn, "SetScoreType", 2))
 		setenv("ShowErrorBar"..pname(pn),LoadUserPrefN(pn, "ShowErrorBar", 0))
 		if isOutFox(20210300) and GAMESTATE:GetCurrentGame():CountNotesSeparately() then
-			if getenv("SetScoreType"..pname(pn)) == 4 then
+			if getenv("SetScoreType"..pname(pn)) == 5 then
 				SCREENMAN:SystemMessage("WIFE3 is bugged if notes are counted separately! "..pname(pn).."'s ScoreType has been reset to Percent!")
 				setenv("SetScoreType"..pname(pn),SaveUserPref(pn, "SetScoreType", 2))
 			end
@@ -593,9 +593,9 @@ end
 function OptionSetScoreType()
 	function GetScoreTypes(etterna)
 		if etterna or (not etterna and (isOutFox(20210300) and GAMESTATE:GetCurrentGame():CountNotesSeparately())) then
-			return { "Score","Percent","EX","Additive","Subtractive" }
+			return { "Score","Percent","EX","SN2","Additive","Subtractive" }
 		else
-			return { "Score","Percent","EX","WIFE3","Additive","Subtractive" }
+			return { "Score","Percent","EX","SN2","WIFE3","Additive","Subtractive" }
 		end
 	end
 

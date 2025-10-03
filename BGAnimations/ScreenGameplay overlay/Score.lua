@@ -28,7 +28,7 @@ local time = GetTimeSinceStart()
 local update = true
 local dif = 1
 
-if scoreType == 1 then dif = 4 elseif scoreType == 2 or scoreType == 4 then dif = 10 elseif scoreType == 3 then dif = 5 end
+if scoreType == 1 or scoreType == 4 then dif = 4 elseif scoreType == 2 or scoreType == 5 then dif = 10 elseif scoreType == 3 then dif = 5 end
 
 for w,v in pairs(weight) do
 	if not isOutFox() and string.find(w,"Pro") then else weight[w] = tonumber(THEME:GetMetric('ScoreKeeperNormal', 'PercentScoreWeight'..w)) end
@@ -122,6 +122,8 @@ function wife3(maxms,ts)
 	return wife3_miss_weight
 end
 
+local stepSize = 1
+
 local function UpdateScore(self)
 	if animate then
 		if (GetTimeSinceStart() - time) >= 1/60 then
@@ -135,9 +137,28 @@ local function UpdateScore(self)
 	if not stop and update and (displayScore > 0 or (isSurvival(player) and GAMESTATE:GetSongPosition():GetMusicSecondsVisible() >= GAMESTATE:GetCurrentSong():GetFirstSecond())) then self:GetChild("Score"..pname(player)):queuecommand("RedrawScore") end
 end
 
+local SN = {
+	HoldNoteScore_LetGo = true,
+	HoldNoteScore_MissedHold = true,
+	TapNoteScore_Miss = true,
+	TapNoteScore_W1 = true,
+	TapNoteScore_W2 = true,
+	TapNoteScore_W3 = true,
+	TapNoteScore_W4 = true,
+	TapNoteScore_W5 = true,
+}
+
 return Def.ActorFrame{
 	OnCommand=function(self)
 		if isGamePlay() or isSurvival(player) then self:SetUpdateFunction(UpdateScore) end self:visible(isGamePlay())
+		if scoreType == 4 then
+			local SongOrCourse = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentCourse() or GAMESTATE:GetCurrentSong()
+			local StepsOrTrail = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentTrail(player) or GAMESTATE:GetCurrentSteps(player)
+			if StepsOrTrail then
+				stepSize = StepsOrTrail:GetRadarValues(player):GetValue("RadarCategory_TapsAndHolds") or 0
+				stepSize = math.max(stepSize + StepsOrTrail:GetRadarValues(player):GetValue('RadarCategory_Holds') + StepsOrTrail:GetRadarValues(player):GetValue('RadarCategory_Rolls'),1)
+			end
+		end
 		if scoreDirection == 2 then
 			if scoreType == 1 then
 				if GAMESTATE:GetCurrentSong():IsMarathon() then
@@ -150,10 +171,13 @@ return Def.ActorFrame{
 					displayScore = 100000000
 					maxScore = 100000000
 				end
-			elseif scoreType == 2 or scoreType == 4 then
+			elseif scoreType == 2 or scoreType == 5 then
 				displayScore = 10000
 			elseif scoreType == 3 then
 				displayScore = DPMax(player)
+			else
+				displayScore = 1000000
+				maxScore = 1000000
 			end
 		end
 		self:queuecommand("RedrawScore"):addy(-100):sleep(0.5):decelerate(0.8):addy(100)
@@ -189,7 +213,7 @@ return Def.ActorFrame{
 		end,
 		JudgmentMessageCommand=function(self,param)
 			if stop then stop = false end
-			if scoreType == 4 then
+			if scoreType == 5 then
 				if param.Player == player then
 					if param.HoldNoteScore then
 						if param.HoldNoteScore == "HoldNoteScore_LetGo" or param.HoldNoteScore == "HoldNoteScore_MissedHold" then
@@ -207,9 +231,12 @@ return Def.ActorFrame{
 						end
 					end
 				end
+			elseif scoreType == 4 then
+				if (param.HoldNoteScore and SN[param.HoldNoteScore]) or SN[param.TapNoteScore] then else return end
 			end
 			local short = ToEnumShortString(param.HoldNoteScore and param.HoldNoteScore or param.TapNoteScore)
 			local update = weight[short] and weight[short] ~= 0
+			if scoreType == 4 then update = true end
 			if param.Player == player and update then self:stoptweening():queuecommand("RedrawScore") end
 		end,
 		RedrawScoreCommand=function(self)
@@ -249,6 +276,35 @@ return Def.ActorFrame{
 					Diffuse = PlayerColorSemi(player),
 				})
 			elseif scoreType == 4 then
+				local score = 0
+                local stats = STATSMAN:GetCurStageStats():GetPlayerStageStats(player)
+				local w1 = stats:GetTapNoteScores('TapNoteScore_W1')
+				local w2 = stats:GetTapNoteScores('TapNoteScore_W2')
+				local w3 = stats:GetTapNoteScores('TapNoteScore_W3')
+				local hd = stats:GetHoldNoteScores('HoldNoteScore_Held')
+				if scoreDirection == 1 then
+					local score = (w1 + w2 + w3 + hd) * 100000 / stepSize
+					local sub = (w3*0.5) * 100000 / stepSize
+					score = (math.floor(score-sub) - (w2 + w3))*10
+					output = animateScore(score,displayScore)
+				else
+					local w4 = stats:GetTapNoteScores('TapNoteScore_W4')
+					local w5 = stats:GetTapNoteScores('TapNoteScore_W5')
+					local ms = stats:GetTapNoteScores('TapNoteScore_Miss')
+					local lg = stats:GetHoldNoteScores('HoldNoteScore_LetGo')
+					local mh = stats:GetHoldNoteScores('HoldNoteScore_MissedHold')
+					local curMaxScore = (w1+w2+w3+w4+w5+ms+hd+lg+mh) * 100000 / stepSize
+					local subScore = (w3*0.5) * 100000 / stepSize
+					score = (w1 + w2 + w3 + hd) * 100000 / stepSize
+					output = animateScore(maxScore-(math.ceil(curMaxScore-score+subScore)+w2+w3)*10,displayScore)
+				end
+				self:settextf("%07d",output) -- SN SCORE
+				self:ClearAttributes()
+				self:AddAttribute(0, {
+					Length = math.max(7-string.len(''..output), 0),
+					Diffuse = PlayerColorSemi(player),
+				})
+			elseif scoreType == 5 then
 				if scoreDirection == 1 then
 					output = animateScore(math.max(0,(curwifescore/totalwifescore)*10000),displayScore)/100
 				else
@@ -257,6 +313,6 @@ return Def.ActorFrame{
 				self:settextf("%1.2f%%",output) -- WIFE3
 			end
 		end,
-		OffCommand=function(self) if scoreType == 4 then setenv("WIFE3"..pname(player),curwifescore/totalwifescore) end end
+		OffCommand=function(self) if scoreType == 5 then setenv("WIFE3"..pname(player),curwifescore/totalwifescore) end end
 	}
 }
