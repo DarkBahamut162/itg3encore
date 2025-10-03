@@ -43,6 +43,22 @@ return Def.ActorFrame{
 					Diffuse = PlayerColorSemi(nil),
 				})
 			elseif scoreType == 4 then
+				local score = 0
+                local stats = STATSMAN:GetCurStageStats():GetPlayerStageStats(player)
+				local w1 = stats:GetTapNoteScores('TapNoteScore_W1')
+				local w2 = stats:GetTapNoteScores('TapNoteScore_W2')
+				local w3 = stats:GetTapNoteScores('TapNoteScore_W3')
+				local hd = stats:GetHoldNoteScores('HoldNoteScore_Held')
+				local score = (w1 + w2 + w3 + hd) * 100000 / stepSize
+				local sub = (w3*0.5) * 100000 / stepSize
+				output = (math.floor((score-sub)*W0Percent) - (w2 + w3))*10
+				self:settextf("%07d",output) -- SN SCORE
+				self:ClearAttributes()
+				self:AddAttribute(0, {
+					Length = math.max(7-string.len(''..output), 0),
+					Diffuse = PlayerColorSemi(player),
+				})
+			elseif scoreType == 5 then
 				self:settext(FormatPercentScore(math.max(0,getenv("WIFE3FA"..pname(player))))) -- WIFE3
 			end
 		end,
