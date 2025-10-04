@@ -69,7 +69,7 @@ local function modifiedBPM(speed,mode)
 		modifiedBPM[3] = speed
 	elseif mode == "m" then
         local max = tonumber(THEME:GetMetric('Player', 'MModHighCap'))
-        if absoluteBPM[2] > max then
+        if max > 0 and absoluteBPM[2] > max then
             speed = speed / max
         else
             speed = speed / absoluteBPM[2]
