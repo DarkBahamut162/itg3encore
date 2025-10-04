@@ -110,6 +110,7 @@ local function GetSimfileChartString(SimfileString, StepsType, Difficulty, Steps
 
 	StepsType = StepsType:lower()
 	Difficulty = Difficulty:lower()
+	Filetype = Filetype:lower()
 
 	local NOTEDATA = MixedCaseRegex("NOTEDATA")
 	local NOTES = MixedCaseRegex("NOTES")

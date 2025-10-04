@@ -1,4 +1,4 @@
-local cacheVersion = "0.41"
+local cacheVersion = "0.42"
 local stepCache = {}
 local typeList = {"avi","f4v","flv","mkv","mp4","mpeg","mpg","mov","ogv","webm","wmv"}
 Master,P1,P2={},{},{}
@@ -86,7 +86,7 @@ function GetScreenEvaluationHelpText()
 end
 
 function GetSMParameter(song,parameter)
-	local filePath = song:GetSongFilePath()
+	local filePath = song:GetSongFilePath():lower()
 	if filePath:sub(-2) ~= 'sm' and filePath:sub(-3) ~= 'ssc' then return "" end
 	local file = RageFileUtil.CreateRageFile()
 	file:Open(filePath,1)
@@ -127,7 +127,7 @@ function GetSMParameter(song,parameter)
 end
 
 function GetBMSParameter(step,parameter)
-	local filePath = step:GetFilename()
+	local filePath = step:GetFilename():lower()
 	if filePath:sub(-3):sub(2,2) ~= 'm' then return "" end
 	local file = RageFileUtil.CreateRageFile()
 	file:Open(filePath,1)
@@ -502,7 +502,7 @@ function calcSPS(SPS,max)
 end
 
 function HasKeysounds(Step)
-	local filePath = Step:GetFilename()
+	local filePath = Step:GetFilename():lower()
 	local check = filePath:sub(-3):sub(2,2) == "m" and filePath:sub(-3):sub(1,1) ~= "s"
 	if check then else return false end
     local file = RageFileUtil:CreateRageFile()
@@ -529,7 +529,7 @@ function HasKeysounds(Step)
 end
 
 function CheckNullMeasure(Step)
-	local filePath = Step:GetFilename()
+	local filePath = Step:GetFilename():lower()
 	local check = filePath:sub(-3):sub(2,2) == "m" and filePath:sub(-3):sub(1,1) ~= "s"
 	if check then else return false end
     local file = RageFileUtil:CreateRageFile()
@@ -1034,7 +1034,7 @@ function cacheStepBMS(Song,Step)
 end
 
 function cacheStepX(Song,Step)
-	local filePath = Step:GetFilename()
+	local filePath = Step:GetFilename():lower()
 	local checkSM = filePath:sub(-2):sub(1,1) == 's'	-- [S]M & S[S]C
 	--local checkBMS = filePath:sub(-3):sub(2,2) == 'm'	-- B[M]S & B[M]E & B[M]L & P[M]S
 	local checkPMS = filePath:sub(-3) == 'pms'
