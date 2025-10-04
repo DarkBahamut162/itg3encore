@@ -58,7 +58,7 @@ local function UpdateGraph()
         end
 
         local timingData = StepsOrTrail:GetTimingData()
-        local check = VersionDateCheck(20210666)
+        local check = not isOutFox() or isOutFox(20210666)
         local stops = check and {} or timingData:GetStops()
         local delays = check and {} or timingData:GetDelays()
         local warps = check and {} or timingData:GetWarps()
@@ -226,7 +226,7 @@ local function UpdateGraphAlt()
         end
 
         local timingData = StepsOrTrail:GetTimingData()
-        local check = VersionDateCheck(20210666)
+        local check = not isOutFox() or isOutFox(20210666)
         local stops = check and {} or timingData:GetStops()
         local delays = check and {} or timingData:GetDelays()
         local warps = check and {} or timingData:GetWarps()

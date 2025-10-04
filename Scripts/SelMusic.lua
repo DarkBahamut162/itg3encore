@@ -606,7 +606,7 @@ function cacheStep(Song,Step)
 	local scratches,foots = 0,0
 	local currentBPM,checkBPM,checkCount,maxBPM = 0,0,0,0
 	local checking = false
-	local check = VersionDateCheck(20210666)
+	local check = not isOutFox() or isOutFox(20210666)
 	local stops = timingData:GetStops()
 	local delays = timingData:GetDelays()
 	local warps = timingData:GetWarps()
