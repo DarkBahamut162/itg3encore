@@ -593,6 +593,46 @@ function PreferenceBoolean(value)
 	}
 end
 
+function PreferenceRangeTime(args)
+	args = split("_",args)
+	local value,min,max,steps = args[1],tonumber(args[2]),tonumber(args[3]),tonumber(args[4])
+	local val = PREFSMAN:GetPreference(value)
+	local range = math.floor((max-min)/steps)
+
+	local choices = {}
+	local values = {}
+
+	for i = 0,range do
+		values[i+1] = min+(steps*i)
+		choices[i+1] = string.format('%d:%02d',math.floor(values[i+1]/60),values[i+1]%60)
+	end
+
+	return {
+		Name = value,
+		Choices = choices,
+		Values = values,
+		LayoutType = "ShowOneInRow",
+		SelectType = "SelectOne",
+		OneChoiceForAllPlayers = true,
+		ExportOnChange = false,
+		LoadSelections = function(self, list, pn)
+			local val = PREFSMAN:GetPreference(value)
+			if not val then return end
+
+			local i = FindInTable(val, values) or 1
+			list[i] = true
+		end,
+		SaveSelections = function(self, list, pn)
+			for i=1, #values do
+				if list[i] then
+					PREFSMAN:SetPreference(value, values[i])
+					break
+				end
+			end
+		end
+	}
+end
+
 function EditorNoteskin()
 	local skins = NOTESKIN:GetNoteSkinNames()
 	return {
