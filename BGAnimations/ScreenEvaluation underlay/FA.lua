@@ -51,7 +51,7 @@ return Def.ActorFrame{
 				local hd = stats:GetHoldNoteScores('HoldNoteScore_Held')
 				local score = (w1 + w2 + w3 + hd) * 100000 / stepSize
 				local sub = (w3*0.5) * 100000 / stepSize
-				output = (math.floor((score-sub)*W0Percent) - (w2 + w3))*10
+				output = (math.floor((score-sub)) - ((w1 - W0Count) + w2 + w3))*10
 				self:settextf("%07d",output) -- SN SCORE
 				self:ClearAttributes()
 				self:AddAttribute(0, {

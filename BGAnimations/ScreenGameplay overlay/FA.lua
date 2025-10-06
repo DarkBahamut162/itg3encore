@@ -295,7 +295,7 @@ return Def.ActorFrame{
 				if scoreDirection == 1 then
 					local score = (w1 + w2 + w3 + hd) * 100000 / stepSize
 					local sub = (w3*0.5) * 100000 / stepSize
-					score = (math.floor((score-sub)*W0Percent) - (w2 + w3))*10
+					score = (math.floor((score-sub)) - ((w1 - W0Count) + w2 + w3))*10
 					output = animateScore(score,displayScore)
 				else
 					local w4 = stats:GetTapNoteScores('TapNoteScore_W4')
@@ -304,9 +304,9 @@ return Def.ActorFrame{
 					local lg = stats:GetHoldNoteScores('HoldNoteScore_LetGo')
 					local mh = stats:GetHoldNoteScores('HoldNoteScore_MissedHold')
 					local curMaxScore = (w1+w2+w3+w4+w5+ms+hd+lg+mh) * 100000 / stepSize
-					local subScore = (w3*0.5) * 100000 / stepSize * W0Percent
-					score = (w1 + w2 + w3 + hd) * 100000 / stepSize * W0Percent
-					output = animateScore(maxScore-(math.ceil((curMaxScore-score+subScore))+w2+w3)*10,displayScore)
+					local subScore = (w3*0.5) * 100000 / stepSize
+					score = (w1 + w2 + w3 + hd) * 100000 / stepSize
+					output = animateScore(maxScore-(math.ceil((curMaxScore-score+subScore))+(w1-W0Count)+w2+w3)*10,displayScore)
 				end
 				self:settextf("%07d",output) -- SN SCORE
 				self:ClearAttributes()
