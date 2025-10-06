@@ -316,6 +316,8 @@ local t = Def.ActorFrame{
 
 					local JudgeScale = isOutFoxV(20230624) and GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Preferred"):JudgeScale() or 1
 					local W0 = 0.0135*timingChange[timing]*JudgeScale
+					local Wadd = (isOpenDDR() or isEtterna("0.72")) and 0.0000 or PREFSMAN:GetPreference("TimingWindowAdd")
+					W0 = W0 + Wadd
 					local WX = params.TapNoteScore == "TapNoteScore_W1" and (math.abs(params.TapNoteOffset) <= W0 and "TapNoteScore_W0" or "TapNoteScore_W1" ) or params.TapNoteScore
 
 					local faplus = getenv("SetScoreFA"..pname(player))
