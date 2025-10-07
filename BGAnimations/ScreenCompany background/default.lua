@@ -8,6 +8,15 @@ if isOutFoxV() and PREFSMAN:PreferenceExists("KeySoundMode") then
 	if KeySoundMode ~= "Auto" then PREFSMAN:SetPreference("KeySoundMode", "Auto") end
 end
 
+if isOldStepMania() and not VersionDateCheck(20160000) then
+	local IgnoredDialogs = PREFSMAN:GetPreference("IgnoredDialogs")
+	if not string.find(IgnoredDialogs,"LUA_ERROR") then
+		IgnoredDialogs = addToOutput(IgnoredDialogs,"LUA_ERROR",",")
+		PREFSMAN:SetPreference("IgnoredDialogs", IgnoredDialogs)
+		GAMEMAN:SetGame(GAMESTATE:GetCurrentGame():GetName(),THEME:GetCurThemeName())
+	end
+end
+
 if isOldStepMania() or (isITGmania() and not VersionDateCheck(20240507)) or (isEtterna() and not EtternaVersionCheck("0.70.99")) then
 	local IgnoredDialogs = PREFSMAN:GetPreference("IgnoredDialogs")
 	if not string.find(IgnoredDialogs,"FRAME_DIMENSIONS_WARNING") then
