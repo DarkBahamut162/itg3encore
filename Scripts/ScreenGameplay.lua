@@ -154,52 +154,17 @@ function HoldEvenOdd(player)
 end
 
 function Actor:LyricCommand(side)
-	self:settext( Var "LyricText" )
-	self:draworder(102)
-	self:vertspacing(-10)
-
-	self:stoptweening()
-	self:shadowlengthx(0)
-	self:shadowlengthy(5)
-	self:strokecolor(color("#000000"))
-
-	local Zoom = SCREEN_WIDTH / (self:GetZoomedWidth()+1)
-	if( Zoom > 1 ) then
-		Zoom = 1
-	end
-	self:zoomx( Zoom )
+	self:settext( Var "LyricText" ):draworder(102):vertspacing(-10):stoptweening():zoomx( math.min(1,SCREEN_WIDTH / (self:GetWidth()+1) * (isFinal() and 17/20 or 9/10)) )
 
 	local lyricColor = Var "LyricColor"
 	local Factor = 1
-	if side == "Back" then
-		Factor = 0.5
-	elseif side == "Front" then
-		Factor = 0.9
-	end
-	self:diffuse( {
-		lyricColor[1] * Factor,
-		lyricColor[2] * Factor,
-		lyricColor[3] * Factor,
-		lyricColor[4] * Factor } )
+	if side == "Back" then Factor = 0.5 elseif side == "Front" then Factor = 0.9 end
+	self:diffuse({lyricColor[1]*Factor,lyricColor[2]*Factor,lyricColor[3]*Factor,lyricColor[4]*Factor})
+	if side == "Front" then self:cropright(1) else self:cropleft(0) end
+	self:diffusealpha(0):linear(0.1):diffusealpha(1):linear( Var "LyricDuration" * 0.75)
+	if side == "Front" then self:cropright(0) else self:cropleft(1) end
+	self:sleep( Var "LyricDuration" * 0.25 ):linear(0.1):diffusealpha(0)
 
-	if side == "Front" then
-		self:cropright(1)
-	else
-		self:cropleft(0)
-	end
-
-	self:diffusealpha(0)
-	self:linear(0.2)
-	self:diffusealpha(0.75)
-	self:linear( Var "LyricDuration" * 0.75)
-	if side == "Front" then
-		self:cropright(0)
-	else
-		self:cropleft(1)
-	end
-	self:sleep( Var "LyricDuration" * 0.25 )
-	self:linear(0.2)
-	self:diffusealpha(0)
 	return self
 end
 
