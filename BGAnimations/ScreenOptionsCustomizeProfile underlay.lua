@@ -195,6 +195,8 @@ local function exit_screen(newscreen)
 	SCREENMAN:PlayStartSound()
 end
 
+local update = true
+
 local function input(event)
 	local pn = event.PlayerNumber
 	if not pn then return false end
@@ -209,6 +211,7 @@ local function input(event)
 				profile[item.set](profile, value)
 				MESSAGEMAN:Broadcast("Change")
 			elseif item.item_type == "number" then
+				update = false
 				if isOutFoxV() or not isOutFox() then
 					SCREENMAN:AddNewScreenToTop("ScreenTextEntry")
 					local question = {
@@ -219,11 +222,13 @@ local function input(event)
 							if answer == "" then answer = "0" end
 							profile[item.set](profile, answer)
 							menu_values[menu_pos]:playcommand("Set", {item_value_to_text(item, answer)})
+							update = true
 						end,
 						ValidateAppend = function(answer,append)
 							return not ((answer == "" or answer == "0") and append == "0") and tonumber(append) ~= nil
 						end,
 						OnCancel = function()
+							update = true
 							SCREENMAN:PlayInvalidSound()
 						end,
 						FormatAnswerForDisplay = function(answer)
@@ -244,6 +249,7 @@ local function input(event)
 				end
 				SCREENMAN:PlayStartSound()
 			elseif item.item_type == "string" then
+				update = false
 				SCREENMAN:AddNewScreenToTop("ScreenTextEntry")
 				local question = {
 					Question = item.question,
@@ -253,8 +259,10 @@ local function input(event)
 						profile[item.set](profile, answer)
 						if item.name == "profile" then MESSAGEMAN:Broadcast("ChangeProfile") end
 						menu_values[menu_pos]:playcommand("Set", {item_value_to_text(item, answer)})
+						update = true
 					end,
 					OnCancel = function()
+						update = true
 						SCREENMAN:PlayInvalidSound()
 					end
 				}
@@ -299,12 +307,14 @@ local function input(event)
 				profile[item.set](profile, number_entry.value)
 				menu_values[menu_pos]:playcommand("Set", {item_value_to_text(item, number_entry.value)})
 			else
+				update = true
 				SCREENMAN:PlayCancelSound()
 			end
 			fade_actor_to(fader, 0)
 			fade_actor_to(number_entry.container, 0)
 			cursor_on_menu = "main"
 		elseif button == "Start" then
+			update = true
 			MESSAGEMAN:Broadcast("Change")
 		elseif button == "MenuLeft" or button == "MenuUp" or button == "MenuRight" or button == "MenuDown" then
 			MESSAGEMAN:Broadcast("Next")
@@ -331,12 +341,36 @@ local function input(event)
 		end
 	end
 end
-
+local delta = 0
 local args = {
 	Def.Actor{
 		OnCommand=function()
 			MESSAGEMAN:Broadcast("UpdateCursor",{ind=1})
 			SCREENMAN:GetTopScreen():AddInputCallback(input)
+		end,
+		MouseWheelUpMessageCommand=function()
+			if GetTimeSinceStart() - delta > 1/60 and update then
+				delta = GetTimeSinceStart()
+				if menu_pos > 1 then
+					menu_pos = menu_pos - 1
+					update_menu_cursor()
+					MESSAGEMAN:Broadcast("Next")
+				else
+					SCREENMAN:PlayInvalidSound()
+				end
+			end
+		end,
+		MouseWheelDownMessageCommand=function()
+			if GetTimeSinceStart() - delta > 1/60 and update then
+				delta = GetTimeSinceStart()
+				if menu_pos < #menu_items then
+					menu_pos = menu_pos + 1
+					update_menu_cursor()
+					MESSAGEMAN:Broadcast("Next")
+				else
+					SCREENMAN:PlayInvalidSound()
+				end
+			end
 		end,
 		OffCommand=function() SCREENMAN:GetTopScreen():RemoveInputCallback(input) end
 	}

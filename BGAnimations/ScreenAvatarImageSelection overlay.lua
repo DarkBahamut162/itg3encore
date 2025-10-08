@@ -11,6 +11,7 @@ local lastX = 0
 local lastY = 0
 local curX = 0
 local curY = 0
+local delta = 0
 
 local t = Def.ActorFrame{
     ChangeItemsMessageCommand=function(self,param)
@@ -157,6 +158,18 @@ end
 
 t.OnCommand=function() SCREENMAN:GetTopScreen():AddInputCallback( Controller ) end
 t.OffCommand=function() SCREENMAN:GetTopScreen():RemoveInputCallback( Controller ) end
+t.MouseWheelUpMessageCommand=function()
+    if GetTimeSinceStart() - delta > 1/60 then
+        delta = GetTimeSinceStart()
+        ChangeInput(-1)
+    end
+end
+t.MouseWheelDownMessageCommand=function()
+    if GetTimeSinceStart() - delta > 1/60 then
+        delta = GetTimeSinceStart()
+        ChangeInput(1)
+    end
+end
 
 t[#t+1] = Def.Sound{
 	File = THEME:GetPathS("ScreenOptions","change"),

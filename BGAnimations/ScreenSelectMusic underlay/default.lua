@@ -1,4 +1,5 @@
 local selectHeld = { PLAYER_1 = false, PLAYER_2 = false }
+local middleHeld = false
 local insideFavorites = false
 local changed = false
 local outfoxed = false
@@ -31,6 +32,15 @@ local PREVIOUS = {}
 local enableMOD = ThemePrefs.Get("ShowMODDisplay")
 
 local InputHandler = function(event)
+	if event.DeviceInput.device == "InputDevice_Mouse" then
+		if string.find(event.DeviceInput.button,"middle") then
+			if event.type == "InputEventType_FirstPress" and not middleHeld then
+				middleHeld = true
+			elseif event.type == "InputEventType_Release" and middleHeld then
+				middleHeld = false
+			end
+		end
+	end
 	if not event.PlayerNumber or not event.button then return false end
 	if event.type == "InputEventType_FirstPress" then
 		if (event.GameButton == "MenuUp" or event.GameButton == "Up") and selectHeld[event.PlayerNumber] then
@@ -175,8 +185,85 @@ local graphs = showGraph and (#GAMESTATE:GetHumanPlayers() == 1 and loadfile(THE
 	}
 }) or Def.ActorFrame{}
 
+local delta = 0
+local wheel
+
 return Def.ActorFrame{
     InitCommand=function() if ((isOutFox() and not isOutFoxV()) or active) and not isEtterna() then generateFavoritesForMusicWheel() end end,
+	MouseWheelUpMessageCommand=function(self)
+		if GetTimeSinceStart() - delta > 1/60 then
+			delta = GetTimeSinceStart()
+			if not middleHeld then
+				self:playcommand("MusicWheelMove",{Move=-1})
+			elseif middleHeld then
+				self:playcommand("DifficultyMove",{Move=-1})
+			end
+		end
+	end,
+	MouseWheelDownMessageCommand=function(self)
+		if GetTimeSinceStart() - delta > 1/60 then
+			delta = GetTimeSinceStart()
+			if not middleHeld then
+				self:playcommand("MusicWheelMove",{Move=1})
+			elseif middleHeld then
+				self:playcommand("DifficultyMove",{Move=1})
+			end
+		end
+	end,
+	MusicWheelMoveCommand=function(self,params)
+		local screen = SCREENMAN:GetTopScreen()
+		screen:GetMusicWheel():Move(params.Move)
+		screen:GetMusicWheel():Move(0)
+	end,
+	DifficultyMoveCommand=function(self,params)
+		local player = GAMESTATE:GetMasterPlayerNumber()
+		local song = GAMESTATE:GetCurrentSong()
+		if song then
+			local stepsAll = SongUtil.GetPlayableSteps(song)
+			if #stepsAll > 1 then
+				local chartint = 1
+				local steps = GAMESTATE:GetCurrentSteps(player)
+				for k,v in pairs(stepsAll) do
+					if v == steps then
+						chartint = k
+						break
+					end
+				end
+				if (params.Move == -1 and chartint > 1) or (params.Move == 1 and chartint < #stepsAll) then
+					GAMESTATE:SetCurrentSteps(player, stepsAll[chartint+params.Move])
+					GAMESTATE:SetPreferredDifficulty(player, stepsAll[chartint+params.Move]:GetDifficulty())
+					SOUND:PlayOnce(THEME:GetPathS("ScreenSelectMusic difficulty", params.Move == -1 and "easier" or "harder"), true)
+				end
+			end
+		end
+	end,
+	MouseLeftClickMessageCommand=function(self,params) if params.IsPressed then MESSAGEMAN:Broadcast("LeftClick") end end,
+	LeftClickMessageCommand=function(self)
+		if GetTimeSinceStart() - delta > 1/60 then
+			delta = GetTimeSinceStart()
+			if wheel then
+				local idx = wheel:GetCurrentIndex()
+				local num = math.ceil(12/WideScreenDiff_(16/10))
+				local dum = (INPUTFILTER:GetMouseY() - SCREEN_HEIGHT/2) / SCREEN_HEIGHT
+				if dum > 0 then dum = dum + (40/SCREEN_HEIGHT/2) end
+				local adjust = dum > 0 and math.floor(num * dum) or math.ceil(num * dum)
+				if adjust == 0 then
+					if "Section" == ToEnumShortString(wheel:GetSelectedType()) then
+						local check1 = GAMESTATE:GetExpandedSectionName()
+						local check2 = wheel:GetSelectedSection()
+						wheel:SetOpenSection(check1 == check2 and "" or check2)
+					end
+				else
+					wheel:Move(adjust)
+					wheel:Move(0)
+					if "Section" == ToEnumShortString(wheel:GetSelectedType()) then
+						wheel:SetOpenSection(wheel:GetSelectedSection())
+					end
+				end
+			end
+		end
+	end,
+	BeginCommand = function(self) wheel = SCREENMAN:GetTopScreen():GetMusicWheel() end,
 	OnCommand=function()
 		for pn in ivalues(GAMESTATE:GetEnabledPlayers()) do
 			local playeroptions = GAMESTATE:GetPlayerState(pn):GetPlayerOptions("ModsLevel_Song")

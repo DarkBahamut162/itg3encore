@@ -449,8 +449,26 @@ local function GetWeightPercent(array,skill)
 	return total == 0 and 0 or math.round(array[SkillsDefault[currentSkill]][skill]/total*100,3)
 end
 
+local delta = 0
+
 return Def.ActorFrame{
 	InitCommand=function(self) self:y(SCREEN_CENTER_Y-SCREEN_CENTER_Y*WideScreenDiff()) end,
+	MouseWheelUpMessageCommand=function()
+		if GetTimeSinceStart() - delta > 1/60 and not editing and not checking then
+			delta = GetTimeSinceStart()
+			if currentList - 1 < 1 then currentList = totalList else currentList = currentList - 1 end
+			if currentList <= totalWeights then weight.Current:y((currentList-1)*16*WideScreenDiff()) else weight.Current:y(currentList*16*WideScreenDiff()) end
+			SOUND:PlayOnce( THEME:GetPathS( 'OptionsList', "left" ) )
+		end
+	end,
+	MouseWheelDownMessageCommand=function()
+		if GetTimeSinceStart() - delta > 1/60 and not editing and not checking then
+			delta = GetTimeSinceStart()
+			if currentList + 1 > totalList then currentList = 1 else currentList = currentList + 1 end
+			if currentList <= totalWeights then weight.Current:y((currentList-1)*16*WideScreenDiff()) else weight.Current:y(currentList*16*WideScreenDiff()) end
+			SOUND:PlayOnce( THEME:GetPathS( 'OptionsList', "right" ) )
+		end
+	end,
 	OnCommand=function() SCREENMAN:GetTopScreen():AddInputCallback(InputHandler) end,
 	OffCommand=function() SCREENMAN:GetTopScreen():RemoveInputCallback(InputHandler) end,
 	Def.ActorFrame{
