@@ -49,7 +49,46 @@ Branch.AfterWorkoutMenu = function()
 end
 
 Branch.PostProfileSave = function()
-	if GAMESTATE:IsEventMode() then return SelectMusicOrCourse() end
+	if GAMESTATE:IsEventMode() then return SelectMusicOrCourse() else
+		if not isEtterna() and not GAMESTATE:IsCourseMode() and ThemePrefs.Get("TrueRounds") then
+			local songsPerPlay = PREFSMAN:GetPreference("SongsPerPlay")
+			local stagesPlayed = STATSMAN:GetStagesPlayed()
+			local totalStageNum = math.huge
+			local totalStage = { [PLAYER_1] = 0, [PLAYER_2] = 0 }
+			local LongCutoff = PREFSMAN:GetPreference("LongVerSongSeconds")
+			local MarathonCutoff = PREFSMAN:GetPreference("MarathonVerSongSeconds")
+			for player in ivalues(GAMESTATE:GetHumanPlayers()) do
+				for stage = 1, stagesPlayed do
+					local playedSS = STATSMAN:GetPlayedStageStats(stage)
+					local playerSS = playedSS:GetPlayerStageStats(player)
+					local song = playedSS:GetPlayedSongs()[1]
+					local steps = playerSS:GetPlayedSteps()[1]
+					local trueSeconds = 0
+
+					if ThemePrefs.Get("UseStepCache") then
+						trueSeconds = tonumber(LoadFromCache(song,steps,"TrueSeconds")) or 0
+					else
+						trueSeconds = song:GetFirstSecond() > song:GetLastSecond() and 0 or song:GetLastSecond()-song:GetFirstSecond()
+					end
+
+					local IsMarathon = trueSeconds > MarathonCutoff
+					local IsLong     = trueSeconds > LongCutoff
+					local ActualSongCost = (IsMarathon and 3) or (IsLong and 2) or 1
+					totalStage[player] = totalStage[player] + ActualSongCost
+				end
+				totalStageNum = math.min(totalStageNum,totalStage[player])
+			end
+			local TrueLeft = songsPerPlay-totalStageNum
+
+			if GAMESTATE:GetNumStagesLeft(GAMESTATE:GetMasterPlayerNumber()) < TrueLeft then
+				for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
+					for i=1, math.abs(TrueLeft - GAMESTATE:GetNumStagesLeft(GAMESTATE:GetMasterPlayerNumber())) do
+						GAMESTATE:AddStageToPlayer(pn)
+					end
+				end
+			end
+		end
+	end
 	if STATSMAN:GetCurStageStats():AllFailed() or GAMESTATE:GetSmallestNumStagesLeftForAnyHumanPlayer() == 0 then return "ScreenNameEntryTraditional" end
 	return SelectMusicOrCourse()
 end

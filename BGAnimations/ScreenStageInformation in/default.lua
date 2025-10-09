@@ -1,8 +1,25 @@
 local curStage = isEtterna() and "Stage_Event" or GAMESTATE:GetCurrentStage()
+local stageNum = curStage:gsub("%D+", "")
 local songsPerPlay = isEtterna() and 0 or PREFSMAN:GetPreference("SongsPerPlay")
-
-if curStage:gsub("%D+", "") == songsPerPlay then curStage = 'Stage_Final' end
-if GAMESTATE:IsEventMode() then curStage = 'Stage_Event' end
+if stageNum == songsPerPlay then curStage = 'Stage_Final' end
+if curStage == "Stage_Final" then stageNum = songsPerPlay end
+if GAMESTATE:IsEventMode() then curStage = 'Stage_Event' else
+	if not GAMESTATE:IsCourseMode() and not isEtterna() and ThemePrefs.Get("TrueRounds") then
+		local before = GetTotalStageCost()
+		local current = GetCurrentTrueStageCost()
+		local total = before+current
+		if total == songsPerPlay then
+			curStage = 'Stage_Final'
+		elseif before+1 ~= stageNum then
+			local add = {
+				[1] = "st",
+				[2] = "nd",
+				[3] = "rd"
+			}
+			curStage = "Stage_"..(before+1)..(add[(before+1)] and add[(before+1)] or "th")
+		end
+	end
+end
 if IsNetSMOnline() then curStage = 'Stage_Online' end
 
 if not isEtterna() and (isOni() or GAMESTATE:IsAnExtraStage()) then

@@ -19,6 +19,11 @@ local Prefs = {
 		Choices = { OptionNameString('Off'), OptionNameString('On') },
 		Values = { false, true }
 	},
+	TrueRounds = {
+		Default = false,
+		Choices = { OptionNameString('Off'), OptionNameString('On') },
+		Values = { false, true }
+	},
 	UseStepCache = {
 		Default = false,
 		Choices = { OptionNameString('Off'), OptionNameString('On') },

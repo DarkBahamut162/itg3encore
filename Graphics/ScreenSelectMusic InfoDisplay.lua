@@ -1,8 +1,11 @@
 local enableRounds = ThemePrefs.Get("ShowRounds")
+local enableTrueRounds = ThemePrefs.Get("TrueRounds")
 local enableLua = ThemePrefs.Get("ShowHasLua")
+local usesStepCache = ThemePrefs.Get("UseStepCache")
 local courseMode = GAMESTATE:IsCourseMode()
 local eventMode = GAMESTATE:IsEventMode()
-local usesStepCache = ThemePrefs.Get("UseStepCache")
+local LongCutoff = PREFSMAN:GetPreference("LongVerSongSeconds")
+local MarathonCutoff = PREFSMAN:GetPreference("MarathonVerSongSeconds")
 
 return Def.ActorFrame{
 	Def.BitmapText {
@@ -34,12 +37,26 @@ return Def.ActorFrame{
 					local EC = VersionDateCheck(20150300) and SongOrCourse:GetPreviewMusicPath() or GetPreviewMusicPath(SongOrCourse)
 					local step = nil
 					if enableRounds then
-						if SongOrCourse:IsLong() then
-							output = eventMode and "LONG" or "COUNTS AS 2 ROUNDS"
-							self:diffuseshift():effectcolor1(color("#FFFF00")):effectcolor2(color("#FFFFFF")):effectclock(EC ~= "" and "beat" or "timerglobal")
-						elseif SongOrCourse:IsMarathon() then
+						local IsMarathon = SongOrCourse:IsMarathon()
+						local IsLong     = SongOrCourse:IsLong()
+						
+						if enableTrueRounds then
+							if not step then step = GAMESTATE:GetCurrentSteps(GAMESTATE:GetMasterPlayerNumber()) end
+							if step then
+								local trueSeconds = 0
+								if usesStepCache then trueSeconds = tonumber(LoadFromCache(SongOrCourse,step,"TrueSeconds")) or 0 end
+								if trueSeconds <= 0 then trueSeconds = SongOrCourse:GetFirstSecond() > SongOrCourse:GetLastSecond() and 0 or SongOrCourse:GetLastSecond()-SongOrCourse:GetFirstSecond() end
+
+								IsMarathon = trueSeconds > MarathonCutoff
+								IsLong     = trueSeconds > LongCutoff
+							end
+						end
+						if IsMarathon then
 							output = eventMode and "MARATHON" or "COUNTS AS 3 ROUNDS"
 							self:diffuseshift():effectcolor1(color("#FF0000")):effectcolor2(color("#FFFFFF")):effectclock(EC ~= "" and "beat" or "timerglobal")
+						elseif IsLong then
+							output = eventMode and "LONG" or "COUNTS AS 2 ROUNDS"
+							self:diffuseshift():effectcolor1(color("#FFFF00")):effectcolor2(color("#FFFFFF")):effectclock(EC ~= "" and "beat" or "timerglobal")
 						else
 							self:stopeffect()
 						end

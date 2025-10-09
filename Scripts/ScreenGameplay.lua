@@ -259,3 +259,67 @@ end
 function PercentDP(topscore)
 	return isEtterna() and topscore:GetWifeScore() or topscore:GetPercentDP()
 end
+
+function GetTotalStageCost(before)
+	local stagesPlayed = STATSMAN:GetStagesPlayed()
+	local totalStageNum = math.huge
+	local totalStage = { [PLAYER_1] = 0, [PLAYER_2] = 0 }
+	local LongCutoff = PREFSMAN:GetPreference("LongVerSongSeconds")
+	local MarathonCutoff = PREFSMAN:GetPreference("MarathonVerSongSeconds")
+	local sub = before and 1 or 0
+
+	for player in ivalues(GAMESTATE:GetHumanPlayers()) do
+		for stage = 1, stagesPlayed-sub do
+			local playedSS = STATSMAN:GetPlayedStageStats(stage)
+			local playerSS = playedSS:GetPlayerStageStats(player)
+			local steps = playerSS:GetPlayedSteps()[1]
+			local song = playedSS:GetPlayedSongs()[1]
+			local trueSeconds = 0
+
+			if ThemePrefs.Get("UseStepCache") then
+				trueSeconds = tonumber(LoadFromCache(song,steps,"TrueSeconds")) or 0
+			else
+				trueSeconds = song:GetFirstSecond() > song:GetLastSecond() and 0 or song:GetLastSecond()-song:GetFirstSecond()
+			end
+
+			local IsMarathon = trueSeconds > MarathonCutoff
+			local IsLong     = trueSeconds > LongCutoff
+			local ActualSongCost = (IsMarathon and 3) or (IsLong and 2) or 1
+			totalStage[player] = totalStage[player] + ActualSongCost
+		end
+		totalStageNum = math.min(totalStageNum,totalStage[player])
+	end
+
+	return totalStageNum
+end
+
+function GetCurrentTrueStageCost()
+	local curStage = math.huge
+	local song = GAMESTATE:GetCurrentSong()
+	if song then
+		local LongCutoff = PREFSMAN:GetPreference("LongVerSongSeconds")
+		local MarathonCutoff = PREFSMAN:GetPreference("MarathonVerSongSeconds")
+
+		for player in ivalues(GAMESTATE:GetHumanPlayers()) do
+			local steps = GAMESTATE:GetCurrentSteps(player)
+			if steps then
+				local trueSeconds = 0
+
+				if ThemePrefs.Get("UseStepCache") then
+					trueSeconds = tonumber(LoadFromCache(song,steps,"TrueSeconds")) or 0
+				else
+					trueSeconds = song:GetFirstSecond() > song:GetLastSecond() and 0 or song:GetLastSecond()-song:GetFirstSecond()
+				end
+
+				local IsMarathon = trueSeconds > MarathonCutoff
+				local IsLong     = trueSeconds > LongCutoff
+				local ActualSongCost = (IsMarathon and 3) or (IsLong and 2) or 1
+				curStage = math.min(curStage,ActualSongCost)
+			end
+		end
+
+		return curStage
+	else
+		return 0
+	end
+end
