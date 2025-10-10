@@ -43,6 +43,18 @@ return Def.ActorFrame{
 					Diffuse = PlayerColorSemi(nil),
 				})
 			elseif scoreType == 4 then
+				local stepSize = 1
+				local SongOrCourse = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentCourse() or GAMESTATE:GetCurrentSong()
+				local StepsOrTrail = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentTrail(player) or GAMESTATE:GetCurrentSteps(player)
+				if StepsOrTrail then
+					if IsCourseSecret() or not IsCourseFixed() then
+						stepSize = RadarCategory_Trail(StepsOrTrail,player,"RadarCategory_TapsAndHolds")
+						stepSize = math.max(stepSize + RadarCategory_Trail(StepsOrTrail,player,"RadarCategory_Holds") + RadarCategory_Trail(StepsOrTrail,player,"RadarCategory_Rolls"),1)
+					else
+						stepSize = StepsOrTrail:GetRadarValues(player):GetValue("RadarCategory_TapsAndHolds") or 0
+						stepSize = math.max(stepSize + StepsOrTrail:GetRadarValues(player):GetValue('RadarCategory_Holds') + StepsOrTrail:GetRadarValues(player):GetValue('RadarCategory_Rolls'),1)
+					end
+				end
 				local score = 0
                 local stats = STATSMAN:GetCurStageStats():GetPlayerStageStats(player)
 				local w1 = stats:GetTapNoteScores('TapNoteScore_W1')
@@ -56,7 +68,7 @@ return Def.ActorFrame{
 				self:ClearAttributes()
 				self:AddAttribute(0, {
 					Length = math.max(7-string.len(''..output), 0),
-					Diffuse = PlayerColorSemi(player),
+					Diffuse = PlayerColorSemi(nil),
 				})
 			elseif scoreType == 5 then
 				self:settext(FormatPercentScore(math.max(0,getenv("WIFE3FA"..pname(player))))) -- WIFE3
