@@ -51,6 +51,8 @@ function ChoiceVersus()
 		else
 			return {nil,nil,nil,nil,nil}
 		end
+	elseif IsGame("popn") then
+		return {nil,nil}
 	elseif IsGame("techno") then
 		if VersionDateCheck(20210300) then
 			return {"versus4","versus5","versus8","versus9"}
