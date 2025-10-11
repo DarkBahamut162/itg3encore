@@ -260,11 +260,21 @@ return Def.ActorFrame{
 						local check1 = GAMESTATE:GetExpandedSectionName()
 						local check2 = wheel:GetSelectedSection()
 						wheel:SetOpenSection(check1 == check2 and "" or check2)
+						if check1 == check2 then
+							SOUND:PlayOnce(THEME:GetPathS("Common", "invalid"), true)
+						else
+							SOUND:PlayOnce(THEME:GetPathS("MusicWheel", "expand"), true)
+						end
 					end
 				else
+					local check1 = GAMESTATE:GetExpandedSectionName()
 					wheel:Move(adjust)
 					wheel:Move(0)
 					if "Section" == ToEnumShortString(wheel:GetSelectedType()) then
+						local check2 = wheel:GetSelectedSection()
+						if check1 ~= check2 then
+							SOUND:PlayOnce(THEME:GetPathS("MusicWheel", "expand"), true)
+						end
 						wheel:SetOpenSection(wheel:GetSelectedSection())
 					end
 				end
