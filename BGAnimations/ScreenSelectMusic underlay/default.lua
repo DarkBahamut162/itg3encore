@@ -93,7 +93,15 @@ local InputHandler = function(event)
 			if enableMOD then
 				if event.GameButton == 'EffectDown' then
 					if MOD[event.PlayerNumber] == "x" then
-						MOD[event.PlayerNumber] = "av"
+						if isOutFox(20220900) then
+							MOD[event.PlayerNumber] = "av"
+						elseif isOutFox(20220300) then
+							MOD[event.PlayerNumber] = "ca"
+						elseif isOutFox(20210200) then
+							MOD[event.PlayerNumber] = "a"
+						else
+							MOD[event.PlayerNumber] = "m"
+						end
 					elseif MOD[event.PlayerNumber] == "c" then
 						MOD[event.PlayerNumber] = "x"
 					elseif MOD[event.PlayerNumber] == "m" then
@@ -111,11 +119,11 @@ local InputHandler = function(event)
 					elseif MOD[event.PlayerNumber] == "c" then
 						MOD[event.PlayerNumber] = "m"
 					elseif MOD[event.PlayerNumber] == "m" then
-						MOD[event.PlayerNumber] = "a"
+						if isOutFox(20210200) then MOD[event.PlayerNumber] = "a" else MOD[event.PlayerNumber] = "x" end
 					elseif MOD[event.PlayerNumber] == "a" then
-						MOD[event.PlayerNumber] = "ca"
+						if isOutFox(20220300) then MOD[event.PlayerNumber] = "ca" else MOD[event.PlayerNumber] = "x" end
 					elseif MOD[event.PlayerNumber] == "ca" then
-						MOD[event.PlayerNumber] = "av"
+						if isOutFox(20220900) then MOD[event.PlayerNumber] = "av" else MOD[event.PlayerNumber] = "x" end
 					elseif MOD[event.PlayerNumber] == "av" then
 						MOD[event.PlayerNumber] = "x"
 					end
@@ -268,7 +276,7 @@ return Def.ActorFrame{
 		for pn in ivalues(GAMESTATE:GetEnabledPlayers()) do
 			local playeroptions = GAMESTATE:GetPlayerState(pn):GetPlayerOptions("ModsLevel_Song")
 			if playeroptions:MMod() then MOD[pn] = "m" CURRENT[pn] = playeroptions:MMod() break end
-			if isOutFox() then if playeroptions:AMod() then MOD[pn] = "a" CURRENT[pn] = playeroptions:AMod() break end end
+			if isOutFox(20210200) then if playeroptions:AMod() then MOD[pn] = "a" CURRENT[pn] = playeroptions:AMod() break end end
 			if isOutFox(20220300) then if playeroptions:CAMod() then MOD[pn] = "ca" CURRENT[pn] = playeroptions:CAMod() break end end
 			if isOutFox(20220900) then if playeroptions:AVMod() then MOD[pn] = "av" CURRENT[pn] = playeroptions:AVMod() break end end
 			if playeroptions:XMod() then MOD[pn] = "x" CURRENT[pn] = playeroptions:XMod()*100 end

@@ -44,7 +44,7 @@ local function checkInitSpeedMods(pn)
 	if playeroptions:XMod()						then pX[pn] = playeroptions:XMod()*100 pXmod[pn] = "x" end
 	if playeroptions:CMod()						then pX[pn] = playeroptions:CMod() pXmod[pn] = "C" end
 	if playeroptions:MMod()						then pX[pn] = playeroptions:MMod() pXmod[pn] = "m" end
-	if isOutFox() and playeroptions:AMod()		then pX[pn] = playeroptions:AMod() pXmod[pn] = "a" end
+	if isOutFox(20210200) and playeroptions:AMod()		then pX[pn] = playeroptions:AMod() pXmod[pn] = "a" end
 	if isOutFox(20220300) and playeroptions:CAMod()		then pX[pn] = playeroptions:CAMod() pXmod[pn] = "ca" end
 	if isOutFox(20220900) and playeroptions:AVMod()		then pX[pn] = playeroptions:AVMod() pXmod[pn] = "av" end
 end
