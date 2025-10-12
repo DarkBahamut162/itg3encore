@@ -570,7 +570,7 @@ function OptionMovePlayerStats()
 		SelectType = "SelectOne",
 		OneChoiceForAllPlayers = false,
 		ExportOnChange = false,
-		Choices = { "Top","Top|Center","Center","Center|Bottom","Bottom" },
+		Choices = { "Near","Near|Center","Center","Center|Far","Far" },
 		LoadSelections = function(self, list, pn)
 			local selected = getenv("ShowMovePlayerStats"..pname(pn))
 			if selected and selected ~= 0 then
