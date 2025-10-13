@@ -67,9 +67,30 @@ return Def.ActorFrame{
 							output = addToOutput(output,"NO KEYSOUNDS"," & ")
 							self:diffuse(Color("Red"))
 						end
-						if step and not isOutFoxV043() and CheckNullMeasure(step) then
-							output = addToOutput(output,"NULL MEASURE"," & ")
-							self:diffuse(Color("Red"))
+						if step and not isOutFoxV043() then
+							local check,nulls = CheckNullMeasure(step)
+							if check then
+								table.sort(nulls)
+								local temp,low,high = {},0,0
+								for i=1,#nulls+1 do
+									if low == 0 then
+										low,high = nulls[i],nulls[i]
+									elseif nulls[i] == high+1 then
+										high = nulls[i]
+									elseif nulls[i] ~= high+1 or i == #nulls+1 then
+										if low == high then
+											temp[#temp+1] = low
+										else
+											temp[#temp+1] = low.."-"..high
+										end
+										low,high = nulls[i],nulls[i]
+									end
+								end
+								nulls = table.concat(temp,"|")
+								if string.len(nulls) >= 48 then nulls = "TOO MANY" end
+								output = addToOutput(output,"NULL MEASURE ("..nulls..")"," & ")
+								self:diffuse(Color("Red"))
+							end
 						end
 					end
 					if HasVideo(SongOrCourse,"BGCHANGES") then

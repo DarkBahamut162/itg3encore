@@ -560,19 +560,20 @@ function CheckNullMeasure(Step)
 	end
 	file:Close()
 	file:destroy()
+	local output = {}
 	if minMeasure then
 		for measure,length in pairs( checkMeasurelength ) do
 			if length ~= 1 then
 				if not checkNotes[measure] then
 					if measure >= minMeasure and measure <= maxMeasure then
 						ret = true
-						break
+						output[#output+1] = measure
 					end
 				end
 			end
 		end
 	end
-	return ret
+	return ret, output
 end
 
 function cacheStep(Song,Step)
