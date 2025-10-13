@@ -204,7 +204,6 @@ return Def.ActorFrame{
 		File = "_r bold 30px",
 		InitCommand=function(self) self:x(SCREEN_LEFT+28*WideScreenDiff()):y(SCREEN_TOP+52*WideScreenDiff()):shadowlength(2):valign(0):halign(0):maxwidth(SCREEN_WIDTH/WideScreenDiff()):zoom(0.6*WideScreenDiff()) end,
 		OnCommand=function(self) self:diffusealpha(0):sleep(0.5):linear(0.5):diffusealpha(1):playcommand("Refresh") end,
-		BeginCommand=function(self) self:playcommand("Refresh") end,
 		ScreenChangedMessageCommand=function(self) self:playcommand("Refresh") end,
 		RefreshCommand=function(self)
 			local songs = SONGMAN:GetAllSongs()
