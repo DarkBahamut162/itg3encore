@@ -158,14 +158,15 @@ end
 
 t.OnCommand=function() SCREENMAN:GetTopScreen():AddInputCallback( Controller ) end
 t.OffCommand=function() SCREENMAN:GetTopScreen():RemoveInputCallback( Controller ) end
+local mouseEnabled = ThemePrefs.Get("MouseEnabled")
 t.MouseWheelUpMessageCommand=function()
-    if GetTimeSinceStart() - delta > 1/60 then
+    if mouseEnabled and GetTimeSinceStart() - delta > 1/60 then
         delta = GetTimeSinceStart()
         ChangeInput(-1)
     end
 end
 t.MouseWheelDownMessageCommand=function()
-    if GetTimeSinceStart() - delta > 1/60 then
+    if mouseEnabled and GetTimeSinceStart() - delta > 1/60 then
         delta = GetTimeSinceStart()
         ChangeInput(1)
     end

@@ -9,6 +9,11 @@ local Prefs = {
 		Choices = { OptionNameString('Normal'), OptionNameString('Final') },
 		Values = { false, true }
 	},
+	MouseEnabled = {
+		Default = false,
+		Choices = { OptionNameString('Off'), OptionNameString('On') },
+		Values = { false, true }
+	},
 	ShowClock = {
 		Default = false,
 		Choices = { OptionNameString('Off'), OptionNameString('On') },

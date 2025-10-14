@@ -195,11 +195,12 @@ local graphs = showGraph and (#GAMESTATE:GetHumanPlayers() == 1 and loadfile(THE
 
 local delta = 0
 local wheel
+local mouseEnabled = ThemePrefs.Get("MouseEnabled")
 
 return Def.ActorFrame{
     InitCommand=function() if ((isOutFox() and not isOutFoxV()) or active) and not isEtterna() then generateFavoritesForMusicWheel() end end,
 	MouseWheelUpMessageCommand=function(self)
-		if GetTimeSinceStart() - delta > 1/60 then
+		if mouseEnabled and GetTimeSinceStart() - delta > 1/60 then
 			delta = GetTimeSinceStart()
 			if not middleHeld then
 				self:playcommand("MusicWheelMove",{Move=-1})
@@ -209,7 +210,7 @@ return Def.ActorFrame{
 		end
 	end,
 	MouseWheelDownMessageCommand=function(self)
-		if GetTimeSinceStart() - delta > 1/60 then
+		if mouseEnabled and GetTimeSinceStart() - delta > 1/60 then
 			delta = GetTimeSinceStart()
 			if not middleHeld then
 				self:playcommand("MusicWheelMove",{Move=1})
@@ -247,7 +248,7 @@ return Def.ActorFrame{
 	end,
 	MouseLeftClickMessageCommand=function(self,params) if params.IsPressed then MESSAGEMAN:Broadcast("LeftClick") end end,
 	LeftClickMessageCommand=function(self)
-		if GetTimeSinceStart() - delta > 1/60 then
+		if mouseEnabled and GetTimeSinceStart() - delta > 1/60 then
 			delta = GetTimeSinceStart()
 			if wheel then
 				local idx = wheel:GetCurrentIndex()

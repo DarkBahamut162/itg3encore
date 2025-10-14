@@ -342,6 +342,7 @@ local function input(event)
 	end
 end
 local delta = 0
+local mouseEnabled = ThemePrefs.Get("MouseEnabled")
 local args = {
 	Def.Actor{
 		OnCommand=function()
@@ -349,7 +350,7 @@ local args = {
 			SCREENMAN:GetTopScreen():AddInputCallback(input)
 		end,
 		MouseWheelUpMessageCommand=function()
-			if GetTimeSinceStart() - delta > 1/60 and update then
+			if mouseEnabled and GetTimeSinceStart() - delta > 1/60 and update then
 				delta = GetTimeSinceStart()
 				if menu_pos > 1 then
 					menu_pos = menu_pos - 1
@@ -361,7 +362,7 @@ local args = {
 			end
 		end,
 		MouseWheelDownMessageCommand=function()
-			if GetTimeSinceStart() - delta > 1/60 and update then
+			if mouseEnabled and GetTimeSinceStart() - delta > 1/60 and update then
 				delta = GetTimeSinceStart()
 				if menu_pos < #menu_items then
 					menu_pos = menu_pos + 1

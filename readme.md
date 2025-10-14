@@ -19,6 +19,8 @@ Most additional features have been moved to an additional **Theme Options** menu
 ### [Global]
 - **EncoreThemeMode:**
 Switch between **Encore Normal *(Light Mode)*** and **Encore Final *(Dark Mode)*** mode.
+- **MouseEnabled**
+Enables MouseControls wherever possible *(CustomSelections & MusicWheel Only)*
 - **ShowClock:**
 Shows **current time and date** on most/all menus
 - **SLFavorites:**
