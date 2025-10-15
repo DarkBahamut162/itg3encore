@@ -163,6 +163,13 @@ return Def.ActorFrame{
 				for _,pn in pairs(offsetInfo) do
 					if not check then check = #pn > 0 end
 					if check then check = getenv("EvalCombo"..pname(_)) end
+					if check then
+						check = false
+						for _,note in pairs(pn) do
+							if note[2] ~= "Miss" then check = true end
+							break
+						end
+					end
 				end
 
 				if check then

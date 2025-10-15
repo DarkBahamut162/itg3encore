@@ -67,7 +67,7 @@ if offsetInfo and showOffset then
 	average = math.round(average/counter,3)
 end
 
-showOffset = offsetInfo and offsetInfo[PLAYER_2] and #offsetInfo[PLAYER_2] > 0 and getenv("EvalComboP2")
+showOffset = offsetInfo and offsetInfo[PLAYER_2] and #offsetInfo[PLAYER_2] > 0 and counter > 0 and getenv("EvalComboP2")
 local faplus = getenv("SetScoreFA"..pname(PLAYER_2))
 local c
 
