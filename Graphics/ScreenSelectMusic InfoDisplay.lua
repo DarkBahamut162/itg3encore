@@ -35,16 +35,16 @@ return Def.ActorFrame{
 				--lua.ReportScriptError( SongOrCourse:GetGroupName().." | "..SongOrCourse:GetDisplayFullTitle().." / "..SongOrCourse:GetDisplayArtist() )
 				if SongOrCourse then
 					local EC = VersionDateCheck(20150300) and SongOrCourse:GetPreviewMusicPath() or GetPreviewMusicPath(SongOrCourse)
-					local step = nil
+					local steps = nil
 					if enableRounds then
 						local IsMarathon = SongOrCourse:IsMarathon()
 						local IsLong     = SongOrCourse:IsLong()
 						
 						if enableTrueRounds then
-							if not step then step = GAMESTATE:GetCurrentSteps(GAMESTATE:GetMasterPlayerNumber()) end
-							if step then
+							if not steps then steps = GAMESTATE:GetCurrentSteps(GAMESTATE:GetMasterPlayerNumber()) end
+							if steps then
 								local trueSeconds = 0
-								if usesStepCache then trueSeconds = tonumber(LoadFromCache(SongOrCourse,step,"TrueSeconds")) or 0 end
+								if usesStepCache then trueSeconds = tonumber(LoadFromCache(SongOrCourse,steps,"TrueSeconds")) or 0 end
 								if trueSeconds <= 0 then trueSeconds = SongOrCourse:GetFirstSecond() > SongOrCourse:GetLastSecond() and 0 or SongOrCourse:GetLastSecond()-SongOrCourse:GetFirstSecond() end
 
 								IsMarathon = trueSeconds > MarathonCutoff
@@ -62,13 +62,13 @@ return Def.ActorFrame{
 						end
 					end
 					if IsGame("po-mu") or IsGame("be-mu") then
-						if not step then step = GAMESTATE:GetCurrentSteps(GAMESTATE:GetMasterPlayerNumber()) end
-						if step and not HasKeysounds(step) then
+						if not steps then steps = GAMESTATE:GetCurrentSteps(GAMESTATE:GetMasterPlayerNumber()) end
+						if steps and not HasKeysounds(steps) then
 							output = addToOutput(output,"NO KEYSOUNDS"," & ")
 							self:diffuse(Color("Red"))
 						end
-						if step and not isOutFoxV043() then
-							local check,nulls = CheckNullMeasure(step)
+						if steps and not isOutFoxV043() then
+							local check,nulls = CheckNullMeasure(steps)
 							if check then
 								table.sort(nulls)
 								local temp,low,high = {},0,0

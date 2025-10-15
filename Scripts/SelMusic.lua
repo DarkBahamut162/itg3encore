@@ -126,8 +126,8 @@ function GetSMParameter(song,parameter)
 	return tmp[1]
 end
 
-function GetBMSParameter(step,parameter)
-	local filePath = step:GetFilename():lower()
+function GetBMSParameter(steps,parameter)
+	local filePath = steps:GetFilename():lower()
 	if filePath:sub(-3):sub(2,2) ~= 'm' then return "" end
 	local file = RageFileUtil.CreateRageFile()
 	file:Open(filePath,1)
@@ -160,10 +160,10 @@ function checkBMS()
 	return false
 end
 
-function GetBMSTitle(step,solo)
-	local title = GetBMSParameter(step,"TITLE")
+function GetBMSTitle(steps,solo)
+	local title = GetBMSParameter(steps,"TITLE")
 	if solo == 1 then return title end
-	local subtitle = GetBMSParameter(step,"SUBTITLE")
+	local subtitle = GetBMSParameter(steps,"SUBTITLE")
 	if solo == 2 then return subtitle end
 	if subtitle ~= "" then
 		return title .. " " .. subtitle
@@ -172,9 +172,9 @@ function GetBMSTitle(step,solo)
 	end
 end
 
-function GetBMSArtist(step)
-	local artist = GetBMSParameter(step,"ARTIST")
-	local subartist = GetBMSParameter(step,"SUBARTIST")
+function GetBMSArtist(steps)
+	local artist = GetBMSParameter(steps,"ARTIST")
+	local subartist = GetBMSParameter(steps,"SUBARTIST")
 	if subartist ~= "" then
 		return artist .. " " .. subartist
 	else
@@ -269,8 +269,8 @@ function RadarCategory_Notes(SongOrCourse,StepsOrTrail)
 				local entries = StepsOrTrail:GetTrailEntries()
 				for i=1, #entries do
 					local song = entries[i]:GetSong()
-					local step = entries[i]:GetSteps()
-					local StepCounter = LoadFromCache(song,step,"StepCounter")
+					local steps = entries[i]:GetSteps()
+					local StepCounter = LoadFromCache(song,steps,"StepCounter")
 					if StepCounter and StepCounter ~= "" then
 						StepCounter = split("_",StepCounter)
 						for i=1,#StepCounter do total = total + (tonumber(StepCounter[i])*i) end
@@ -1141,9 +1141,9 @@ function GetConvertDifficulty(Song,Step,songLength)
 	return LV100(tapspoint)
 end
 
-function getTrueBPMsCalculated(song,step)
-	local timingdata = step:GetTimingData()
-	local bpms = step:GetDisplayBpms()
+function getTrueBPMsCalculated(song,steps)
+	local timingdata = steps:GetTimingData()
+	local bpms = steps:GetDisplayBpms()
 	local truebpms = timingdata:GetActualBPM()
 
 	bpms[1] = math.round(bpms[1],3)
@@ -1213,26 +1213,26 @@ function getTrueBPMsCalculated(song,step)
 	end
 end
 
-function getAllTheBPMs(song,step,BPMtype)
+function getAllTheBPMs(song,steps,BPMtype)
 	local bpms = {0,0,0}
 	if BPMtype == 0 then
 		if song:IsDisplayBpmSecret() or song:IsDisplayBpmRandom() then
 			bpms = {"???","???","???"}
 		else
-			bpms = step:GetDisplayBpms()
+			bpms = steps:GetDisplayBpms()
 			bpms[3] = 0
 		end
 	elseif BPMtype == 1 then
-		bpms = step:GetTimingData():GetActualBPM()
+		bpms = steps:GetTimingData():GetActualBPM()
 		bpms[3] = 0
 	elseif BPMtype == 2 then
 		local usesStepCache = ThemePrefs.Get("UseStepCache")
-		local trueBPM = usesStepCache and tonumber(LoadFromCache(song,step,"TrueMaxBPM")) or -1
+		local trueBPM = usesStepCache and tonumber(LoadFromCache(song,steps,"TrueMaxBPM")) or -1
 		if usesStepCache and trueBPM >= 0 then
-			bpms = step:GetTimingData():GetActualBPM()
+			bpms = steps:GetTimingData():GetActualBPM()
 			bpms[3]=trueBPM
 		else
-			bpms = getTrueBPMsCalculated(song,step)
+			bpms = getTrueBPMsCalculated(song,steps)
 		end
 	end
 
@@ -1328,7 +1328,7 @@ function getCalculatedDifficulty(Step)
 	end
 end
 
-function grooveRadar(song,step,RadarValues)
+function grooveRadar(song,steps,RadarValues)
 	local stream,voltage,air,freeze,chaos = 0,0,0,0,0
 
 	if not isEtterna() then
@@ -1338,12 +1338,12 @@ function grooveRadar(song,step,RadarValues)
 		freeze = RadarValues:GetValue('RadarCategory_Freeze')
 		chaos = RadarValues:GetValue('RadarCategory_Chaos')
 	else
-		local maxVoltage = tonumber(LoadFromCache(song,step,"maxVoltage"))
-		local chaosCount = tonumber(LoadFromCache(song,step,"chaosCount"))
+		local maxVoltage = tonumber(LoadFromCache(song,steps,"maxVoltage"))
+		local chaosCount = tonumber(LoadFromCache(song,steps,"chaosCount"))
 
 		local total = 0
 		if not VersionDateCheck(20150500) then
-			total = RadarCategory_Notes(song,step)
+			total = RadarCategory_Notes(song,steps)
 		else
 			total = RadarValues:GetValue('RadarCategory_Notes') or 0
 		end
@@ -1356,8 +1356,8 @@ function grooveRadar(song,step,RadarValues)
 
 	if not IsGame("pump") then
 		local usesStepCache = ThemePrefs.Get("UseStepCache")
-		local totalSeconds = usesStepCache and tonumber(LoadFromCache(song,step,"TrueSeconds")) or song:GetLastSecond() - song:GetFirstSecond()
-		local totalBeats = usesStepCache and tonumber(LoadFromCache(song,step,"TrueBeats")) or song:GetLastBeat() - song:GetFirstBeat()
+		local totalSeconds = usesStepCache and tonumber(LoadFromCache(song,steps,"TrueSeconds")) or song:GetLastSecond() - song:GetFirstSecond()
+		local totalBeats = usesStepCache and tonumber(LoadFromCache(song,steps,"TrueBeats")) or song:GetLastBeat() - song:GetFirstBeat()
 		local avg_bps_OLD = song:GetLastBeat() / song:MusicLengthSeconds()
 		local avg_bps_NEW = totalBeats / totalSeconds
 
