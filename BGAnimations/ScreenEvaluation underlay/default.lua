@@ -146,7 +146,7 @@ return Def.ActorFrame{
 	},
 	Def.BitmapText {
 		File = "_angel glow",
-		InitCommand=function(self) self:x(SCREEN_CENTER_X):y(SCREEN_CENTER_Y-152*WideScreenDiff()):vertalign(bottom):maxwidth(SCREEN_WIDTH/0.7):wrapwidthpixels((offsetInfo ~= nil and showOffset and (getenv("EvalComboP1") or getenv("EvalComboP2"))) and 360 or SCREEN_WIDTH):maxheight((SCREEN_CENTER_Y-166*WideScreenDiff())-40*WideScreenDiff()):vertspacing(-10):zoom(0.6*WideScreenDiff()):shadowlength(0):playcommand("Update") end,
+		InitCommand=function(self) self:x(SCREEN_CENTER_X):y(SCREEN_CENTER_Y-152*WideScreenDiff()):vertalign(bottom):maxwidth(SCREEN_WIDTH/0.7):maxheight((SCREEN_CENTER_Y-166*WideScreenDiff())-40*WideScreenDiff()):vertspacing(-10):zoom(0.6*WideScreenDiff()):shadowlength(0):playcommand("Update") end,
 		OnCommand=function(self) self:diffusealpha(0):sleep(3):linear(0.3):diffusealpha(1) end,
 		OffCommand=function(self) self:linear(0.2):diffusealpha(0) end,
 		UpdateCommand=function(self)
@@ -157,6 +157,17 @@ return Def.ActorFrame{
 				local text = ""
 				if SongOrSteps then text = checkBMS() and GetBMSTitle(SongOrSteps) or SongOrSteps:GetDisplayFullTitle() end
 				self:settext(text.."\n"..GAMESTATE:GetCurrentSong():GetGroupName())
+			end
+			if showOffset then
+				local check = offsetInfo == nil
+				for _,pn in pairs(offsetInfo) do
+					if not check then check = #pn > 0 end
+					if check then check = getenv("EvalCombo"..pname(_)) end
+				end
+
+				if check then
+					if self:GetWidth() > 360*2 then self:wrapwidthpixels(360*2):maxwidth(360) else self:maxwidth(360) end
+				end
 			end
 		end
 	},

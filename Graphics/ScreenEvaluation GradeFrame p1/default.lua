@@ -67,6 +67,7 @@ if offsetInfo and showOffset then
 	average = math.round(average/counter,3)
 end
 
+showOffset = offsetInfo and offsetInfo[PLAYER_1] and #offsetInfo[PLAYER_1] > 0 and getenv("EvalComboP1")
 local faplus = getenv("SetScoreFA"..pname(PLAYER_1))
 local c
 
@@ -99,7 +100,7 @@ return Def.ActorFrame{
 				screen:GetChild("MissNumberP1"):addy(0)
 				c.JudgeFrames:GetChild("Miss"):addy(0)
 
-				if showOffset and getenv("EvalComboP1") then
+				if showOffset then
 					c.OffsetFrames:GetChild("W0"):addy(24+1.5)
 					c.OffsetFrames:GetChild("W1"):addy(20+1.25)
 					c.OffsetFrames:GetChild("W2"):addy(16+1)
@@ -111,7 +112,7 @@ return Def.ActorFrame{
 		end,
 		Def.BitmapText {
 			File = "_v 26px bold shadow",
-			Condition=offsetInfo ~= nil and showOffset and getenv("EvalComboP1") and not isnan(average),
+			Condition=showOffset,
 			Text="average "..average.." | median "..math.round(median,3).." | peak "..peak,
 			InitCommand=function(self) self:x(-78*(5/6)*WideScreenDiff()*WideScreenDiff()):maxwidth(300*WideScreenSemiDiff()):y(faplus and -6*WideScreenDiff() or 0) end,
 			OnCommand=function(self) self:zoomx(0.6*WideScreenDiff()):zoomy(0.4*WideScreenDiff()):diffusealpha(0):sleep(3.60):linear(0.7):diffusealpha(1) end,
@@ -119,7 +120,7 @@ return Def.ActorFrame{
 		}
 	},
 	Def.ActorFrame{
-		InitCommand=function(self) c = self:GetChildren() if WideScreenDiff_(1.4) < 1 and showOffset and getenv("EvalComboP1") then self:zoomx(5/6) end end,
+		InitCommand=function(self) c = self:GetChildren() if WideScreenDiff_(1.4) < 1 and showOffset then self:zoomx(5/6) end end,
 		Name="JudgeFrames",
 		Def.ActorFrame{
 			Name="W0",
@@ -262,7 +263,7 @@ return Def.ActorFrame{
 		}
 	},
 	Def.ActorFrame{
-		Condition=showOffset and getenv("EvalComboP1"),
+		Condition=showOffset,
 		InitCommand=function(self) if WideScreenDiff_(1.4) < 1 then self:zoomx(5/6) end end,
 		Name="OffsetFrames",
 		Def.ActorFrame{

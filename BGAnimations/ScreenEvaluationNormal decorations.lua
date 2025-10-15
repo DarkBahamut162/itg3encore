@@ -330,6 +330,7 @@ local checkUpdate = false
 local InputHandler = function(event)
 	if not event.PlayerNumber or not event.button then return false end
 	if not GAMESTATE:IsHumanPlayer(event.PlayerNumber) then return false end
+	if offsetInfo == nil or offsetInfo[event.PlayerNumber] == nil or #offsetInfo[event.PlayerNumber] == 0 or not getenv("EvalCombo"..pname(event.PlayerNumber)) then return false end
 	if event.type == "InputEventType_FirstPress" then
 		if event.GameButton == "MenuLeft" or event.GameButton == "MenuRight" then
 			if event.GameButton == "MenuLeft" then
@@ -464,7 +465,7 @@ local function GraphDisplay(pn)
 			}
 		end
 	end
-	if enableOffsets and offsetInfo and offsetInfo[pn] then
+	if enableOffsets and offsetInfo and offsetInfo[pn] and #offsetInfo[pn] > 0 and getenv("EvalCombo"..pname(pn)) then
 		display[#display+1] = Def.ActorMultiVertex{
 			Name="Dot"..pname(pn),
 			InitCommand=function(self) self:diffusealpha(0):playcommand("Draw") end,

@@ -537,8 +537,6 @@ function setCA(value,player)
 	GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Current"):CAMod(value)
 end
 
-function isnan(x) return x ~= x end
-
 function offsetMS(value)
 	local val = PREFSMAN:GetPreference(value)
 	local ms = round(val * 1000)
