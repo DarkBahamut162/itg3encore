@@ -415,7 +415,10 @@ function JudgmentTransformCommand( self, params )
 	local y = -30
 	local ShowMovePlayerStats = getenv("ShowMovePlayerStats"..pname(params.Player)) or 3
 	local add = SCREEN_CENTER_Y/5*(ShowMovePlayerStats-3)
-	if params.bReverse then y = y * -1 end
+	if params.bReverse then
+		y = y * -1
+		add = add * -1
+	end
 	if isOutFox(20201100) and (IsGame("beat") or IsGame("be-mu") or IsGame("popn") or IsGame("po-mu")) then add = add * -1 end
 	local zoom = isOutFox() and 1 or (1+math.min(1,NotefieldZoom()))/2
 
@@ -432,7 +435,10 @@ function ComboTransformCommand( self, params )
 	local y = 30
 	local ShowMovePlayerStats = getenv("ShowMovePlayerStats"..pname(params.Player)) or 3
 	local add = SCREEN_CENTER_Y/5*(ShowMovePlayerStats-3)
-	if params.bReverse then y = -40 end
+	if params.bReverse then
+		y = -40
+		add = add * -1
+	end
 	if isOutFox(20201100) and (IsGame("beat") or IsGame("be-mu") or IsGame("popn") or IsGame("po-mu")) then add = add * -1 end
 	local zoom = isOutFox() and 1 or (1+math.min(1,NotefieldZoom()))/2
 
