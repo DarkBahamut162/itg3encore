@@ -419,7 +419,10 @@ function JudgmentTransformCommand( self, params )
 		y = y * -1
 		add = add * -1
 	end
-	if isOutFox(20201100) and (IsGame("beat") or IsGame("be-mu") or IsGame("popn") or IsGame("po-mu")) then add = add * -1 end
+	if isOutFox(20201100) and (IsGame("beat") or IsGame("be-mu") or IsGame("popn") or IsGame("po-mu")) then
+		y = y * -1
+		add = add * -1
+	end
 	local zoom = isOutFox() and 1 or (1+math.min(1,NotefieldZoom()))/2
 
 	self:x( 0 )
@@ -439,7 +442,10 @@ function ComboTransformCommand( self, params )
 		y = -40
 		add = add * -1
 	end
-	if isOutFox(20201100) and (IsGame("beat") or IsGame("be-mu") or IsGame("popn") or IsGame("po-mu")) then add = add * -1 end
+	if isOutFox(20201100) and (IsGame("beat") or IsGame("be-mu") or IsGame("popn") or IsGame("po-mu")) then
+		y = y * -1
+		add = add * -1
+	end
 	local zoom = isOutFox() and 1 or (1+math.min(1,NotefieldZoom()))/2
 
 	self:x( 0 )
