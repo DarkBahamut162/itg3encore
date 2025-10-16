@@ -1312,12 +1312,13 @@ function getCalculatedDifficulty(Step)
 	end
 
 	local output = {}
+	local decimals = ThemePrefs.Get("ShowCalcDiffDecimals")
 	if DB9 > YA and DB9 > SPS then
-		output = {math.round(DB9),"DB9"}
+		output = {math.round(DB9,decimals),"DB9"}
 	elseif YA > DB9 and YA > SPS then
-		output = {math.round(YA),"Y&A"}
+		output = {math.round(YA,decimals),"Y&A"}
 	elseif SPS > DB9 and SPS > YA then
-		output = {math.round(SPS),"SPS"}
+		output = {math.round(SPS,decimals),"SPS"}
 	end
 	if output[1] and output[1] ~= OG then
 		repeatCheck[value] = output[1].." "..output[2].."\n"..OG.." OG"

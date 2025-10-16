@@ -45,6 +45,11 @@ local Prefs = {
 		Choices = { OptionNameString('Off'), OptionNameString('On') },
 		Values = { false, true }
 	},
+	ShowCalcDiffDecimals = {
+		Default = 0,
+		Choices = { "0", "1", "2" },
+		Values = { 0, 1, 2 }
+	},
 	DanceDifficultyType = {
 		Default = true,
 		Choices = { "Old", "New" },

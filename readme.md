@@ -34,6 +34,8 @@ Activate StepCache to use the chart's data for more accurate values or enable ot
 Change the BPMDisplay type from **DisplayBPM** (default), **ActualBPM** (total range) and **CalculatedBPM** (playable range | more accurate when using StepCache)
 - **ShowCalcDiff:**
 Show the calculated Difficulty of the currently selected stepchart *(currently banner only)*. Shows **DB9** *(average steps per second)*, **Y&A** *(RadarValue Calculation)* and **SPS (StepCache Only)** *(median steps per second per steps)*
+- **ShowCalcDiffDecimals**
+Change the amount of decimals for the calculated Difficulty.
   - **DanceDifficultyType (Dance Mode Only):**
 Switch between **OLD & X-SCALE** difficulty ranges
 - **ShowGraph:**
@@ -43,7 +45,7 @@ Shows if song **has anything lua** related (no matter if BG, FG or both)
 - **ShowMODDisplay:**
 Switches back and forth between the stepchart's BPMs and the player's current mod speed 
 - **ShowOrigin**
-Switches back and forth between the song's Artist and the song's origin *(only if Origin Value has been set) *
+Switches back and forth between the song's Artist and the song's origin *(only if Origin Value has been set)*
 - **ShowRounds:**
 Shows either **amount of rounds** or **length specification** during song selection
 - **ShowStepCounter (StepCache Only):**

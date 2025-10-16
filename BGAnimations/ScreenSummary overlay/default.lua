@@ -52,12 +52,15 @@ local summaryFA = {
 	PLAYER_1 = false,
 	PLAYER_2 = false
 }
+local showCalcDiff = ThemePrefs.Get("ShowCalcDiff")
+local decimal = ThemePrefs.Get("ShowCalcDiffDecimals")
+
 for i=1,rounds do
 	if ThemePrefs.Get("ShowSummarySummary") then
 		if version <= 2 then
 			if not P1[rounds+1] then P1[rounds+1] = {} end
 			P1[rounds+1]["Meter"] = P1[rounds+1]["Meter"] and P1[rounds+1]["Meter"] + P1[i]["Meter"] or P1[i]["Meter"]
-			if ThemePrefs.Get("ShowCalcDiff") then P1[rounds+1]["CalcedMeter"] = P1[rounds+1]["CalcedMeter"] and P1[rounds+1]["CalcedMeter"] + P1[i]["CalcedMeter"] or P1[i]["CalcedMeter"] end
+			if showCalcDiff then P1[rounds+1]["CalcedMeter"] = P1[rounds+1]["CalcedMeter"] and P1[rounds+1]["CalcedMeter"] + P1[i]["CalcedMeter"] or P1[i]["CalcedMeter"] end
 			P1[rounds+1]["Score"] = P1[rounds+1]["Score"] and P1[rounds+1]["Score"] + P1[i]["Score"] or P1[i]["Score"]
 			P1[rounds+1]["Grade"] = P1[rounds+1]["Grade"] and P1[rounds+1]["Grade"] + tierToGrade[P1[i]["Grade"]] or tierToGrade[P1[i]["Grade"]]
 			if P1[i]["FA"] then
@@ -93,7 +96,7 @@ for i=1,rounds do
 		if version >= 2 then
 			if not P2[rounds+1] then P2[rounds+1] = {} end
 			P2[rounds+1]["Meter"] = P2[rounds+1]["Meter"] and P2[rounds+1]["Meter"] + P2[i]["Meter"] or P2[i]["Meter"]
-			if ThemePrefs.Get("ShowCalcDiff") then P2[rounds+1]["CalcedMeter"] = P2[rounds+1]["CalcedMeter"] and P2[rounds+1]["CalcedMeter"] + P2[i]["CalcedMeter"] or P2[i]["CalcedMeter"] end
+			if showCalcDiff then P2[rounds+1]["CalcedMeter"] = P2[rounds+1]["CalcedMeter"] and P2[rounds+1]["CalcedMeter"] + P2[i]["CalcedMeter"] or P2[i]["CalcedMeter"] end
 			P2[rounds+1]["Score"] = P2[rounds+1]["Score"] and P2[rounds+1]["Score"] + P2[i]["Score"] or P2[i]["Score"]
 			P2[rounds+1]["Grade"] = P2[rounds+1]["Grade"] and P2[rounds+1]["Grade"] + tierToGrade[P2[i]["Grade"]] or tierToGrade[P2[i]["Grade"]]
 			if P2[i]["FA"] then
@@ -138,7 +141,7 @@ if ThemePrefs.Get("ShowSummarySummary") then
 		if version <= 2 then
 			P1[rounds+1]["Difficulty"] = "Difficulty_Edit"
 			P1[rounds+1]["Meter"] = math.round(P1[rounds+1]["Meter"]/rounds)
-			if ThemePrefs.Get("ShowCalcDiff") then P1[rounds+1]["CalcedMeter"] = math.round(P1[rounds+1]["CalcedMeter"]/rounds) end
+			if showCalcDiff then P1[rounds+1]["CalcedMeter"] = math.round(P1[rounds+1]["CalcedMeter"]/rounds,decimal) end
 			P1[rounds+1]["Score"] = P1[rounds+1]["Score"]/rounds
 			P1[rounds+1]["FA"] = summaryFA[PLAYER_1]
 			if summaryFA[PLAYER_1] then P1[rounds+1]["ScoreFA"] = P1[rounds+1]["ScoreFA"]/rounds end
@@ -147,7 +150,7 @@ if ThemePrefs.Get("ShowSummarySummary") then
 		if version >= 2 then
 			P2[rounds+1]["Difficulty"] = "Difficulty_Edit"
 			P2[rounds+1]["Meter"] = math.round(P2[rounds+1]["Meter"]/rounds)
-			if ThemePrefs.Get("ShowCalcDiff") then P2[rounds+1]["CalcedMeter"] = math.round(P2[rounds+1]["CalcedMeter"]/rounds) end
+			if showCalcDiff then P2[rounds+1]["CalcedMeter"] = math.round(P2[rounds+1]["CalcedMeter"]/rounds,decimal) end
 			P2[rounds+1]["Score"] = P2[rounds+1]["Score"]/rounds
 			P2[rounds+1]["FA"] = summaryFA[PLAYER_2]
 			if summaryFA[PLAYER_2] then
