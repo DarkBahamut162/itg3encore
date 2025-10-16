@@ -61,7 +61,7 @@ if version < 3 then
             Text = P1[index]["CalcedMeter"],
             InitCommand=function(self)
                 self:shadowlength(1):diffuse(DifficultyToColor( P1[index]["Difficulty"] )):maxwidth(120)
-                self:x(version == 2 and borderLeftCenter or borderLeft):valign(0):zoom(1/3*WideScreenDiff()):rotationz(90)
+                self:x(version == 2 and borderLeftCenter or borderLeft):addx(-4):valign(0):zoom(1/3*WideScreenDiff()):rotationz(90)
             end
         },
         Def.ActorFrame{
@@ -354,7 +354,7 @@ if version > 1 then
             Text = P2[index]["CalcedMeter"],
             InitCommand=function(self)
                 self:shadowlength(1):diffuse(DifficultyToColor( P2[index]["Difficulty"] )):maxwidth(120)
-                self:x(version == 2 and borderRightCenter or borderRight):valign(0):zoom(1/3*WideScreenDiff()):rotationz(-90)
+                self:x(version == 2 and borderRightCenter or borderRight):addx(4):valign(0):zoom(1/3*WideScreenDiff()):rotationz(-90)
             end
         },
         Def.ActorFrame{
