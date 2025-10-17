@@ -202,8 +202,8 @@ t[#t+1] = Def.ActorFrame{
 				Artist:stoptweening():diffusealpha(1)
 				Origin:stoptweening():diffusealpha(0)
 			else
-				Artist:queuecommand("AnimateArtist")
-				Origin:queuecommand("AnimateOrigin") 
+				Artist:stoptweening():queuecommand("AnimateArtist")
+				Origin:stoptweening():queuecommand("AnimateOrigin") 
 			end
 		end
 	end,

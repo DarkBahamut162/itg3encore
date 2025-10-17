@@ -93,21 +93,22 @@ function setOFFavorites(player)
     local selected = PROFILEMAN:IsPersistentProfile(player) and player or "Machine"
     OFFavorites[selected] = {}
 	local file = RageFileUtil.CreateRageFile()
-	file:Open(getOFFavoritesPath(selected),1)
-	file:Seek(1)
-	local line
-    local reading = false
-	while true do
-		if file:AtEOF() then break elseif file then
-			line = file:GetLine()
-            if line == "<FavSongs/>" or line == "</FavSongs>" then break elseif line == "<FavSongs>" then reading = true elseif reading then
-                local line = split("/", line)
-                OFFavorites[selected][#OFFavorites[selected] + 1] = SONGMAN:FindSong(line[3] .. "/" .. line[4])
+	if file:Open(getOFFavoritesPath(selected),1) then
+        file:Seek(1)
+        local line
+        local reading = false
+        while true do
+            if file:AtEOF() then break elseif file then
+                line = file:GetLine()
+                if line == "<FavSongs/>" or line == "</FavSongs>" then break elseif line == "<FavSongs>" then reading = true elseif reading then
+                    local line = split("/", line)
+                    OFFavorites[selected][#OFFavorites[selected] + 1] = SONGMAN:FindSong(line[3] .. "/" .. line[4])
+                end
             end
-		end
-	end
-	file:Close()
-	file:destroy()
+        end
+        file:Close()
+        file:destroy()
+    end
 end
 
 function generateFavoritesForMusicWheel()

@@ -21,7 +21,7 @@ if isStepMania() and not VersionDateCheck(20150500) then
 	function Actor:effect_hold_at_full(fEffectPeriod) return self:effectperiod(1) end
 end
 
-if isOutFox() then
+if isOutFoxV() then
 	function ToEnumShortString(value)
 		local output = split("_",value)
 		return output[#output]
