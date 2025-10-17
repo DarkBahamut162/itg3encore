@@ -328,6 +328,9 @@ return Def.ActorFrame{
 				self:settextf("%1.2f%%",output) -- WIFE3
 			end
 		end,
-		OffCommand=function(self) if scoreType == 5 then setenv("WIFE3FA"..pname(player),curwifescore/totalwifescore*W0Percent) end end
+		OffCommand=function(self)
+			if scoreDirection == 2 then scoreDirection = 1 self:queuecommand("RedrawScore") end
+			if scoreType == 5 then setenv("WIFE3FA"..pname(player),curwifescore/totalwifescore*W0Percent) end
+		end
 	}
 }
