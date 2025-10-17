@@ -1,28 +1,13 @@
 local c
 local mlevel = GAMESTATE:IsCourseMode() and "ModsLevel_Stage" or "ModsLevel_Preferred"
 local currentMini = 1-math.round(GAMESTATE:GetPlayerState(GAMESTATE:GetMasterPlayerNumber()):GetPlayerOptions(mlevel):Mini()*50) / 100
+local currentTiny = 1-math.round(GAMESTATE:GetPlayerState(GAMESTATE:GetMasterPlayerNumber()):GetPlayerOptions(mlevel):Tiny()*50) / 100
+currentMini = currentMini * currentTiny
+local style = GAMESTATE:GetCurrentStyle()
 
-local function width(pos)
-	if IsGame("be-mu") or IsGame("beat") then
-		local width = {
-			[1] = 240,
-			[2] = 272
-		}
-		return width[pos] or 304
-	else
-		local width = {
-			[1] = 96,
-			[2] = 128,
-			[3] = 160,
-			[4] = 224
-		}
-		return width[pos] or 288
-	end
-end
-
-local function xS() return SCREEN_WIDTH*0.25+width(GetUserPrefN("StylePosition"))/2*currentMini end
+local function xS() return SCREEN_WIDTH*0.25+style:GetWidth(GAMESTATE:GetMasterPlayerNumber())/2*currentMini end
 local function zoomS() return (SCREEN_WIDTH-xS())/SCREEN_WIDTH end
-local function xM() return SCREEN_CENTER_X+width(GetUserPrefN("StylePosition"))/2*currentMini end
+local function xM() return SCREEN_CENTER_X+style:GetWidth(GAMESTATE:GetMasterPlayerNumber())/2*currentMini end
 local function zoomM() return (SCREEN_WIDTH-xM())/SCREEN_WIDTH end
 
 return Def.ActorFrame {
