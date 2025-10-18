@@ -35,6 +35,7 @@ return Def.ActorFrame{
 				--lua.ReportScriptError( SongOrCourse:GetGroupName().." | "..SongOrCourse:GetDisplayFullTitle().." / "..SongOrCourse:GetDisplayArtist() )
 				if SongOrCourse then
 					local EC = VersionDateCheck(20150300) and SongOrCourse:GetPreviewMusicPath() or GetPreviewMusicPath(SongOrCourse)
+					self:diffuse(Color("White"))
 					local steps = nil
 					if enableRounds then
 						local IsMarathon = SongOrCourse:IsMarathon()
@@ -70,31 +71,19 @@ return Def.ActorFrame{
 						if steps and not isOutFoxV043() then
 							local check,nulls = CheckNullMeasure(steps)
 							if check then
-								table.sort(nulls)
-								local temp,low,high = {},0,0
-								for i=1,#nulls+1 do
-									if low == 0 then
-										low,high = nulls[i],nulls[i]
-									elseif nulls[i] == high+1 then
-										high = nulls[i]
-									elseif nulls[i] ~= high+1 or i == #nulls+1 then
-										if low == high then
-											temp[#temp+1] = low
-										else
-											temp[#temp+1] = low.."-"..high
-										end
-										low,high = nulls[i],nulls[i]
-									end
-								end
-								nulls = table.concat(temp,"|")
+								nulls = condendeNullMeasures(nulls)
 								if string.len(nulls) >= 48 then nulls = "TOO MANY" end
 								output = addToOutput(output,"NULL MEASURE ("..nulls..")"," & ")
 								self:diffuse(Color("Red"))
 							end
 						end
-					end
-					if HasVideo(SongOrCourse,"BGCHANGES") then
-						output = addToOutput(output,"VIDEO"," & ")
+						if steps and HasVideoBMS(steps,"BMP..") then
+							output = addToOutput(output,"VIDEO"," & ")
+						end
+					else
+						if HasVideo(SongOrCourse,"BGCHANGES") then
+							output = addToOutput(output,"VIDEO"," & ")
+						end
 					end
 					if enableLua then
 						if HasLuaCheck() then

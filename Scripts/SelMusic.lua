@@ -232,6 +232,21 @@ function HasVideo(song,changes)
 	return false
 end
 
+function HasVideoBMS(steps,changes)
+	local parameter = GetBMSParameter(steps,changes)
+	if parameter ~= "" then
+		parameter = split(",",parameter)
+		for i=1,#parameter do
+			for typ in ivalues(typeList) do
+				if string.find(parameter[i],typ,0,true) then
+					return true
+				end
+			end
+		end
+	end
+	return false
+end
+
 function HasLuaCheck()
 	local song = GAMESTATE:GetCurrentSong()
 	return HasLua(song,"BGCHANGES") or HasLua(song,"BGCHANGES2") or HasLua(song,"FGCHANGES")
@@ -574,6 +589,26 @@ function CheckNullMeasure(Step)
 		end
 	end
 	return ret, output
+end
+
+function condendeNullMeasures(nulls)
+	table.sort(nulls)
+	local temp,low,high = {},0,0
+	for i=1,#nulls+1 do
+		if low == 0 then
+			low,high = nulls[i],nulls[i]
+		elseif nulls[i] == high+1 then
+			high = nulls[i]
+		elseif nulls[i] ~= high+1 or i == #nulls+1 then
+			if low == high then
+				temp[#temp+1] = low
+			else
+				temp[#temp+1] = low.."-"..high
+			end
+			low,high = nulls[i],nulls[i]
+		end
+	end
+	return table.concat(temp,"|")
 end
 
 function cacheStep(Song,Step)
