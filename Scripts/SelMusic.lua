@@ -591,7 +591,7 @@ function CheckNullMeasure(Step)
 	return ret, output
 end
 
-function condendeNullMeasures(nulls)
+function condenseNullMeasures(nulls)
 	table.sort(nulls)
 	local temp,low,high = {},0,0
 	for i=1,#nulls+1 do

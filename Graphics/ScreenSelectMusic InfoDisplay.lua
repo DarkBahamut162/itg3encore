@@ -71,7 +71,7 @@ return Def.ActorFrame{
 						if steps and not isOutFoxV043() then
 							local check,nulls = CheckNullMeasure(steps)
 							if check then
-								nulls = condendeNullMeasures(nulls)
+								nulls = condenseNullMeasures(nulls)
 								if string.len(nulls) >= 48 then nulls = "TOO MANY" end
 								output = addToOutput(output,"NULL MEASURE ("..nulls..")"," & ")
 								self:diffuse(Color("Red"))
