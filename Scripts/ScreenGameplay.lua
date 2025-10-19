@@ -260,6 +260,100 @@ function PercentDP(topscore)
 	return isEtterna() and topscore:GetWifeScore() or topscore:GetPercentDP()
 end
 
+local w1,w2,w3,w4,w5,miss = {},{},{},{},{},{}
+function GetTrueJudgment(params,player)
+	local _w1 = STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetTapNoteScores('TapNoteScore_W1')
+	local _w2 = STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetTapNoteScores('TapNoteScore_W2')
+	local _w3 = STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetTapNoteScores('TapNoteScore_W3')
+	local _w4 = STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetTapNoteScores('TapNoteScore_W4')
+	local _w5 = STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetTapNoteScores('TapNoteScore_W5')
+	local _miss = STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetTapNoteScores('TapNoteScore_Miss')
+	local currentJudgment = "TapNoteScore_None"
+	if w1[player] and w2[player] and w3[player] and w4[player] and w5[player] and miss[player] then
+		if w1[player] < _w1 then
+			currentJudgment = "TapNoteScore_W1"
+		elseif w2[player] < _w2 then
+			currentJudgment = "TapNoteScore_W2"
+		elseif w3[player] < _w3 then
+			currentJudgment = "TapNoteScore_W3"
+		elseif w4[player] < _w4 then
+			currentJudgment = "TapNoteScore_W4"
+		elseif w5[player] < _w5 then
+			currentJudgment = "TapNoteScore_W5"
+		elseif miss[player] < _miss then
+			currentJudgment = "TapNoteScore_Miss"
+		end
+	end
+	if params ~= nil and currentJudgment ~= "TapNoteScore_None" then
+		local output = ""
+		local semi = ""
+		local counter = 0
+		local late = -1
+		for col,tapnote in pairs(params.Notes) do
+			local tnt = ToEnumShortString(tapnote:GetTapNoteType())
+			if tnt == "Tap" or tnt == "HoldHead" or tnt == "LongNoteHead" or tnt == "Lift" then
+				counter = counter + 1
+				local tns = tapnote:GetTapNoteResult():GetTapNoteScore()
+				local tno = string.format("%0.10f", tonumber(tapnote:GetTapNoteResult():GetTapNoteOffset()))
+				if string.find(tns,"Miss") then currentJudgment = tns tno = 1 end
+				if currentJudgment == tns then
+					late = math.max(late,tonumber(tno))
+					output = addToOutput(output,tns,"|")
+					semi = addToOutput(semi,tno,"|")
+				end
+			end
+		end
+		local check1 = split("|",output)
+		local check2 = split("|",semi)
+		if #check1 > 1 and #check2 > 1 then
+			if string.find(semi,string.format("%0.10f",tonumber(late))) then
+				params.TapNoteScore = currentJudgment
+				params.TapNoteOffset = string.format("%0.10f",tonumber(late))
+			else
+				lua.ReportScriptError(params.TapNoteScore.." (REGISTERED) ~= "..currentJudgment.." (COUNTED)".." | "..output.." | "..semi.." ("..late..")")
+			end
+		else
+			params.TapNoteScore = output
+			params.TapNoteOffset = tonumber(semi)
+		end
+
+		if GAMESTATE:GetCurrentGame():CountNotesSeparately() and getenv("SetScoreFA"..pname(player)) then
+			local timing = GetTimingDifficulty()
+			local timingChange = { 1.50,1.33,1.16,1.00,0.84,0.66,0.50,0.33,0.20 }
+			local JudgeScale = isOutFoxV(20230624) and GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Preferred"):JudgeScale() or 1
+			local W0 = 0.0135*timingChange[timing]*JudgeScale
+			local Wadd = (isOpenDDR() or isEtterna("0.72")) and 0.0000 or PREFSMAN:GetPreference("TimingWindowAdd")
+
+			if not isEtterna() then W0 = W0 + Wadd end
+
+			local W0Counter = getenv("W0"..pname(player)) or 0
+			local WXCounter = getenv("WX"..pname(player)) or 0
+
+			WXCounter = WXCounter + 1
+			setenv("WX"..pname(player),WXCounter)
+
+			if params.TapNoteScore == "TapNoteScore_W1" then
+				if math.abs(params.TapNoteOffset) <= W0 then
+					W0Counter = W0Counter + 1
+					setenv("W0"..pname(player),W0Counter)
+				end
+			end
+
+			MESSAGEMAN:Broadcast("W0",{Player=player,W0=W0Counter,WX=WXCounter})
+		end
+	else
+		if params ~= nil then params.TapNoteScore = "TapNoteScore_None" end
+	end
+	w1[player] = _w1
+	w2[player] = _w2
+	w3[player] = _w3
+	w4[player] = _w4
+	w5[player] = _w5
+	miss[player] = _miss
+
+	return params
+end
+
 function GetTotalStageCost(before)
 	local stagesPlayed = STATSMAN:GetStagesPlayed()
 	local totalStageNum = math.huge

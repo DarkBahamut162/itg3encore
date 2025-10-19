@@ -69,7 +69,10 @@ return Def.ActorFrame{
 		ResetCommand=function(self) self:finishtweening():x(0):y(IsGame("po-mu") and -45 or 0):stopeffect():visible(false) end
 	},
 	InitCommand = function(self) c = self:GetChildren() end,
-	OnCommand=function(self) screen = SCREENMAN:GetTopScreen() end,
+	OnCommand=function(self)
+		if GAMESTATE:GetCurrentGame():CountNotesSeparately() then GetTrueJudgment(nil,player) end
+		screen = SCREENMAN:GetTopScreen()
+	end,
 	JudgmentMessageCommand=function(self, param)
 		if param.Player ~= player then return end
 		if not param.TapNoteScore then return end
@@ -86,25 +89,22 @@ return Def.ActorFrame{
 		end
 		if isEtterna() then JudgmentTransformCommand( self, {["Player"] = PLAYER_1, ["bReverse"] = GAMESTATE:GetPlayerState():GetCurrentPlayerOptions():UsingReverse()} ) end
 
+		if GAMESTATE:GetCurrentGame():CountNotesSeparately() then param = GetTrueJudgment(param,player) end
 		local tns = param.TapNoteScore
+		if tns == "TapNoteScore_None" or tns == "" then return end
 		local iNumStates = c.Judgment:GetNumStates()
 		local iFrame = TNSFrames[tns]
-		if faplus then
-			if tns ~= 'TapNoteScore_Miss' and iFrame then
-				WXCounter = WXCounter + 1
-				setenv("WX"..pname(player),WXCounter)
-				if math.abs(param.TapNoteOffset) <= W0 then
-					tns = "TapNoteScore_W0"
-					iFrame = TNSFrames[tns]
-					W0Counter = W0Counter + 1
-					setenv("W0"..pname(player),W0Counter)
-				end
-				MESSAGEMAN:Broadcast("W0",{Player=player,W0=W0Counter,WX=WXCounter})
-			elseif tns == 'TapNoteScore_Miss' then
-				WXCounter = WXCounter + 1
-				setenv("WX"..pname(player),WXCounter)
-				MESSAGEMAN:Broadcast("W0",{Player=player,W0=W0Counter,WX=WXCounter})
+		if not iFrame then return end
+		if not GAMESTATE:GetCurrentGame():CountNotesSeparately() and faplus and iFrame then
+			WXCounter = WXCounter + 1
+			setenv("WX"..pname(player),WXCounter)
+			if tns == "TapNoteScore_W1" and math.abs(param.TapNoteOffset) <= W0 then
+				tns = "TapNoteScore_W0"
+				iFrame = TNSFrames[tns]
+				W0Counter = W0Counter + 1
+				setenv("W0"..pname(player),W0Counter)
 			end
+			MESSAGEMAN:Broadcast("W0",{Player=player,W0=W0Counter,WX=WXCounter})
 		end
 
 		if ((GAMESTATE:GetPlayerState(player):GetPlayerController() == 'PlayerController_Autoplay') or
@@ -118,7 +118,6 @@ return Def.ActorFrame{
 			setenv("check"..pname(player),false)
 			setenv("EvalCombo"..pname(player),false)
 		end
-		if not iFrame then return end
 		if getenv("check"..pname(player)) then
 			if getenv("checkFantastics"..pname(player)) and iFrame > 0 then
 				setenv("checkFantastics"..pname(player),false)

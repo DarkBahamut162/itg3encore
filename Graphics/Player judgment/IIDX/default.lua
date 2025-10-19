@@ -25,17 +25,17 @@ local COMBO = {
 
 local function JudgeCMD(self,TNS)
 	if TNS == "TapNoteScore_W0" or TNS == "TapNoteScore_W1" then
-		self:diffusealpha(1):zoomx(1.3):zoomy(1.7):decelerate(0.1):zoom(1):sleep(0.85):accelerate(0.1):diffusealpha(0):zoomx(1.5):zoomy(0)
+		self:stoptweening():diffusealpha(1):zoomx(1.3):zoomy(1.7):decelerate(0.1):zoom(1):sleep(0.85):accelerate(0.1):diffusealpha(0):zoomx(1.5):zoomy(0)
 	elseif TNS == "TapNoteScore_W2" then
-		self:diffusealpha(1):zoomx(1.3):zoomy(1.7):decelerate(0.1):zoom(1):sleep(0.85):accelerate(0.1):diffusealpha(0):zoomx(1.5):zoom(0)
+		self:stoptweening():diffusealpha(1):zoomx(1.3):zoomy(1.7):decelerate(0.1):zoom(1):sleep(0.85):accelerate(0.1):diffusealpha(0):zoomx(1.5):zoom(0)
 	elseif TNS == "TapNoteScore_W3" then
-		self:diffusealpha(1):zoomx(1.3):zoomy(1.7):decelerate(0.1):zoom(1):sleep(0.85):accelerate(0.1):diffusealpha(0):zoomx(1.5):zoom(0)
+		self:stoptweening():diffusealpha(1):zoomx(1.3):zoomy(1.7):decelerate(0.1):zoom(1):sleep(0.85):accelerate(0.1):diffusealpha(0):zoomx(1.5):zoom(0)
 	elseif TNS == "TapNoteScore_W4" then
-		self:diffusealpha(1):zoomx(1.3):zoomy(1.7):decelerate(0.1):zoom(1):sleep(0.85):accelerate(0.1):zoom(0)
+		self:stoptweening():diffusealpha(1):zoomx(1.3):zoomy(1.7):decelerate(0.1):zoom(1):sleep(0.85):accelerate(0.1):zoom(0)
 	elseif TNS == "TapNoteScore_W5" then
-		self:diffusealpha(1):zoomx(1.3):zoomy(1.7):decelerate(0.1):zoom(1):sleep(0.85):accelerate(0.1):zoom(0)
+		self:stoptweening():diffusealpha(1):zoomx(1.3):zoomy(1.7):decelerate(0.1):zoom(1):sleep(0.85):accelerate(0.1):zoom(0)
 	elseif TNS == "TapNoteScore_Miss" then
-		self:diffusealpha(1):zoomx(1.3):zoomy(1.7):decelerate(0.1):zoom(1):sleep(0.85):accelerate(0.1):zoom(0)
+		self:stoptweening():diffusealpha(1):zoomx(1.3):zoomy(1.7):decelerate(0.1):zoom(1):sleep(0.85):accelerate(0.1):zoom(0)
 	end
 end
 
@@ -61,22 +61,25 @@ local combo = not (getenv("HideCombo" .. pname(player)) or false)
 
 return Def.ActorFrame{
 	InitCommand=function(self) c = self:GetChildren() end,
-	OnCommand=function(self) screen = SCREENMAN:GetTopScreen() end,
+	OnCommand=function(self)
+		if GAMESTATE:GetCurrentGame():CountNotesSeparately() then GetTrueJudgment(nil,player) end
+		screen = SCREENMAN:GetTopScreen()
+	end,
 	Def.BitmapText{ Name = "_C1", File = (faplus and "FA" or "Normal").."/_C1.ini" }..{
-		ComboMessageCommand=function(self,params) self:finishtweening() JudgeCMD(self,params.TapNoteScore) end
+		ComboMessageCommand=function(self,params) JudgeCMD(self,params.TapNoteScore) end
 	},
 	Def.BitmapText{ Name = "_C2", File = (faplus and "FA" or "Normal").."/_C2.ini" }..{
-		ComboMessageCommand=function(self,params) self:finishtweening() JudgeCMD(self,params.TapNoteScore) end
+		ComboMessageCommand=function(self,params) JudgeCMD(self,params.TapNoteScore) end
 	},
 	Def.BitmapText{ Name = "_C3", File = (faplus and "FA" or "Normal").."/_C3.ini" }..{
-		ComboMessageCommand=function(self,params) self:finishtweening() JudgeCMD(self,params.TapNoteScore) end
+		ComboMessageCommand=function(self,params) JudgeCMD(self,params.TapNoteScore) end
 	},
 	Def.BitmapText{ Name = "_C4", File = (faplus and "FA" or "Normal").."/_C4.ini" }..{
-		ComboMessageCommand=function(self,params) self:finishtweening() JudgeCMD(self,params.TapNoteScore) end
+		ComboMessageCommand=function(self,params) JudgeCMD(self,params.TapNoteScore) end
 	},
 	Def.BitmapText{ Name = "_C0", File = (faplus and "FA" or "Normal").."/_C0.ini" }..{
 		InitCommand=function(self) self:blend(Blend.Add):diffuseblink():effectperiod(0.05):effectcolor1(color("1,1,1,0.5")):effectcolor2(color("1,1,1,0")) end,
-		ComboMessageCommand=function(self,params) self:finishtweening() JudgeCMD(self,params.TapNoteScore) end
+		ComboMessageCommand=function(self,params) JudgeCMD(self,params.TapNoteScore) end
 	},
 	JudgmentMessageCommand=function(self,params)
 		if params.Player ~= player or string.find(params.TapNoteScore,"Checkpoint") or string.find(params.TapNoteScore,"None") or params.TapNoteScore == "TapNoteScore_" then return end
@@ -93,72 +96,68 @@ return Def.ActorFrame{
 			return
 		end
 
-		PSS = STATSMAN:GetCurStageStats():GetPlayerStageStats(player)
+		if GAMESTATE:GetCurrentGame():CountNotesSeparately() then params = GetTrueJudgment(params,player) end
 		local judg = params.TapNoteScore
-		local curCombo = PSS:GetCurrentCombo()
+		if judg == "TapNoteScore_None" or judg == "" then else
+			PSS = STATSMAN:GetCurStageStats():GetPlayerStageStats(player)
 
-		if current <= 3 and not PSS:FullComboOfScore('TapNoteScore_W1') and not PSS:FullComboOfScore('TapNoteScore_W2')  and not PSS:FullComboOfScore('TapNoteScore_W3') then
-			current = 4
-		elseif current <= 2 and not PSS:FullComboOfScore('TapNoteScore_W1') and not PSS:FullComboOfScore('TapNoteScore_W2')  and PSS:FullComboOfScore('TapNoteScore_W3') then
-			current = 3
-		elseif current <= 1 and not PSS:FullComboOfScore('TapNoteScore_W1') and PSS:FullComboOfScore('TapNoteScore_W2') then
-			current = 2
-		elseif current == 0 and PSS:FullComboOfScore('TapNoteScore_W1') then
-			current = 1
-		end
+			if current <= 3 and not PSS:FullComboOfScore('TapNoteScore_W1') and not PSS:FullComboOfScore('TapNoteScore_W2')  and not PSS:FullComboOfScore('TapNoteScore_W3') then
+				current = 4
+			elseif current <= 2 and not PSS:FullComboOfScore('TapNoteScore_W1') and not PSS:FullComboOfScore('TapNoteScore_W2')  and PSS:FullComboOfScore('TapNoteScore_W3') then
+				current = 3
+			elseif current <= 1 and not PSS:FullComboOfScore('TapNoteScore_W1') and PSS:FullComboOfScore('TapNoteScore_W2') then
+				current = 2
+			elseif current == 0 and PSS:FullComboOfScore('TapNoteScore_W1') then
+				current = 1
+			end
 
-		local WX = params.TapNoteScore == "TapNoteScore_W1" and (math.abs(params.TapNoteOffset) <= W0 and "TapNoteScore_W0" or "TapNoteScore_W1" ) or params.TapNoteScore
+			local WX = params.TapNoteScore == "TapNoteScore_W1" and (math.abs(params.TapNoteOffset) <= W0 and "TapNoteScore_W0" or "TapNoteScore_W1" ) or params.TapNoteScore
 
-		if faplus then
-			if judg == 'TapNoteScore_Miss' then
+			if not GAMESTATE:GetCurrentGame():CountNotesSeparately() and faplus then
 				WXCounter = WXCounter + 1
 				setenv("WX"..pname(player),WXCounter)
-				MESSAGEMAN:Broadcast("W0",{Player=player,W0=W0Counter,WX=WXCounter})
-			else
-				WXCounter = WXCounter + 1
-				setenv("WX"..pname(player),WXCounter)
-				if math.abs(params.TapNoteOffset) <= W0 then
-					judg = "TapNoteScore_W0"
+				if WX == "TapNoteScore_W0" then
 					W0Counter = W0Counter + 1
 					setenv("W0"..pname(player),W0Counter)
 				end
 				MESSAGEMAN:Broadcast("W0",{Player=player,W0=W0Counter,WX=WXCounter})
 			end
-		end
 
-		if ((GAMESTATE:GetPlayerState(player):GetPlayerController() == 'PlayerController_Autoplay') or
-		(GAMESTATE:GetPlayerState(player):GetPlayerController() == 'PlayerController_Cpu')) and
-		getenv("checkAuto"..pname(player)) then
-			if not isOutFox() then GAMESTATE:ApplyGameCommand('mod,no savescore',player) end
-			setenv("checkFantastics"..pname(player),false)
-			setenv("checkPerfects"..pname(player),false)
-			setenv("checkGreats"..pname(player),false)
-			setenv("checkAuto"..pname(player),false)
-			setenv("check"..pname(player),false)
-			setenv("EvalCombo"..pname(player),false)
-		end
-		if getenv("check"..pname(player)) then
-			if getenv("checkFantastics"..pname(player)) and current > 1 then
+			if ((GAMESTATE:GetPlayerState(player):GetPlayerController() == 'PlayerController_Autoplay') or
+			(GAMESTATE:GetPlayerState(player):GetPlayerController() == 'PlayerController_Cpu')) and
+			getenv("checkAuto"..pname(player)) then
+				if not isOutFox() then GAMESTATE:ApplyGameCommand('mod,no savescore',player) end
 				setenv("checkFantastics"..pname(player),false)
-				setenv("LastFantastic"..pname(player),isEtterna() and GAMESTATE:GetSongPosition():GetMusicSecondsVisible() or STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetAliveSeconds())
-			end
-			if getenv("checkPerfects"..pname(player)) and current > 2 then
 				setenv("checkPerfects"..pname(player),false)
-				setenv("LastPerfect"..pname(player),isEtterna() and GAMESTATE:GetSongPosition():GetMusicSecondsVisible() or STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetAliveSeconds())
-			end
-			if getenv("checkGreats"..pname(player)) and current > 3 then
 				setenv("checkGreats"..pname(player),false)
-				setenv("LastGreat"..pname(player),isEtterna() and GAMESTATE:GetSongPosition():GetMusicSecondsVisible() or STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetAliveSeconds())
+				setenv("checkAuto"..pname(player),false)
 				setenv("check"..pname(player),false)
+				setenv("EvalCombo"..pname(player),false)
 			end
+			if getenv("check"..pname(player)) then
+				if getenv("checkFantastics"..pname(player)) and current > 1 then
+					setenv("checkFantastics"..pname(player),false)
+					setenv("LastFantastic"..pname(player),isEtterna() and GAMESTATE:GetSongPosition():GetMusicSecondsVisible() or STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetAliveSeconds())
+				end
+				if getenv("checkPerfects"..pname(player)) and current > 2 then
+					setenv("checkPerfects"..pname(player),false)
+					setenv("LastPerfect"..pname(player),isEtterna() and GAMESTATE:GetSongPosition():GetMusicSecondsVisible() or STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetAliveSeconds())
+				end
+				if getenv("checkGreats"..pname(player)) and current > 3 then
+					setenv("checkGreats"..pname(player),false)
+					setenv("LastGreat"..pname(player),isEtterna() and GAMESTATE:GetSongPosition():GetMusicSecondsVisible() or STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetAliveSeconds())
+					setenv("check"..pname(player),false)
+				end
+			end
+			local curCombo = PSS:GetCurrentCombo()
+			local output = JUDGMENT[WX]..((COMBO[WX] and combo) and "x"..curCombo or "")
+			c._C0:settext(output)
+			c._C1:visible(current == 1):settext(output)
+			c._C2:visible(current == 2):settext(output)
+			c._C3:visible(current == 3):settext(output)
+			c._C4:visible(current == 4):settext(output)
+			MESSAGEMAN:Broadcast("Combo",{TapNoteScore=(faplus and WX or params.TapNoteScore)})
 		end
-		MESSAGEMAN:Broadcast("Combo",{TapNoteScore=(faplus and WX or params.TapNoteScore)})
-		local output = JUDGMENT[judg]..((COMBO[judg] and combo) and "x"..curCombo or "")
-		c._C0:settext(output)
-		c._C1:visible(current == 1):settext(output)
-		c._C2:visible(current == 2):settext(output)
-		c._C3:visible(current == 3):settext(output)
-		c._C4:visible(current == 4):settext(output)
 	end,
 	OffCommand=function(self)
 		if getenv("checkFantastics"..pname(player)) then setenv("LastFantastic"..pname(player),isEtterna() and GAMESTATE:GetSongPosition():GetMusicSecondsVisible() or STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetAliveSeconds()) end
