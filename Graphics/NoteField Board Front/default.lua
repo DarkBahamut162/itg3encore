@@ -12,11 +12,13 @@ local t = Def.ActorFrame{
 }
 
 for pn in ivalues(player) do
+	local NMcheck,NMs = CheckNullMeasure(GAMESTATE:GetCurrentSteps(pn))
 	t[#t+1] = Def.ActorFrame{
 		Name=pname(pn),
 		loadfile(THEME:GetPathG("NoteField","Board Front/ScreenFilter"))(pn),
 		loadfile(THEME:GetPathG("NoteField","Board Front/danger"))(pn)..{ Condition=not isOni() and PREFSMAN:GetPreference("ShowDanger") },
-		loadfile(THEME:GetPathG("NoteField","Board Front/dead"))(pn)
+		loadfile(THEME:GetPathG("NoteField","Board Front/dead"))(pn),
+		loadfile(THEME:GetPathG("NoteField","Board Front/NullMeasure"))(pn,NMs)..{ Condition=NMcheck and not isOutFoxV043() }
 	}
 end
 
