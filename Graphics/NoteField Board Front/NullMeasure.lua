@@ -1,4 +1,5 @@
 local player, NullMeasures = ...
+if NullMeasures == nil then return Def.ActorFrame{} end
 assert( player )
 
 local totalDelta = 0
