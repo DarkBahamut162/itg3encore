@@ -372,7 +372,7 @@ return Def.ActorFrame{
 	},
 	Def.BitmapText {
 		File = "_v 26px bold black",
-		InitCommand=function(self) self:CenterX():y(isFinal() and SCREEN_BOTTOM-60*WideScreenDiff() or SCREEN_BOTTOM-34*WideScreenDiff()):diffusealpha(0):shadowlength(0):zoom(0.5*WideScreenDiff()):maxwidth(SCREEN_WIDTH/2) end,
+		InitCommand=function(self) self:CenterX():y(isFinal() and SCREEN_BOTTOM-60*WideScreenDiff() or SCREEN_BOTTOM-34*WideScreenDiff()):diffusealpha(0):shadowlength(0):zoom(0.5*WideScreenDiff()) end,
 		OnCommand=function(self) self:sleep(0.5):linear(0.5):diffusealpha(1):playcommand("Refresh") end,
 		OffCommand=function(self) self:accelerate(0.5):addy(100):diffusealpha(0) end,
 		ScreenChangedMessageCommand=function(self) self:playcommand("Refresh") end,
@@ -547,7 +547,7 @@ return Def.ActorFrame{
 	Def.ActorFrame{
 		Condition=ThemePrefs.Get("ShowClock"),
 		Name="TIME & DATE",
-		InitCommand=function(self) self:CenterX():y(isFinal() and SCREEN_BOTTOM+11 or SCREEN_BOTTOM-6) end,
+		InitCommand=function(self) self:CenterX():y(isFinal() and SCREEN_BOTTOM+11*WideScreenDiff() or SCREEN_BOTTOM-6*WideScreenDiff()) end,
 		Def.BitmapText {
 			File = "_v 26px bold black",
 			SetCommand=function(self) self:settext( string.format('%02i:%02i:%02i %s %02i %04i', Hour(), Minute(), Second(), string.sub(MonthToString(MonthOfYear()),1,3), DayOfMonth(), Year()) ):sleep(1/6):queuecommand("Set") end,
