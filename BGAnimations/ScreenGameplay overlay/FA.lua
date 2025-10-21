@@ -62,24 +62,6 @@ end
 local wife3_mine_hit_weight = -7
 local wife3_hold_drop_weight = -4.5
 local wife3_miss_weight = -5.5
-
-function getMaxNotes(player)
-	local SongOrCourse = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentCourse() or GAMESTATE:GetCurrentSong()
-	local StepsOrTrail = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentTrail(player) or GAMESTATE:GetCurrentSteps(player)
-	if StepsOrTrail then
-		if GAMESTATE:GetCurrentGame():CountNotesSeparately() then
-			if not VersionDateCheck(20150500) then
-				return RadarCategory_Notes(SongOrCourse,StepsOrTrail)
-			else
-				return StepsOrTrail:GetRadarValues(player):GetValue("RadarCategory_Notes")
-			end
-		else
-			return StepsOrTrail:GetRadarValues(player):GetValue("RadarCategory_TapsAndHolds") or 0
-		end
-	end
-	return 0
-end
-
 local curwifescore = 0
 local maxwifescore = 0
 local totalwifescore = getMaxNotes(player)*2

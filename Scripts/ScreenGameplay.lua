@@ -260,6 +260,23 @@ function PercentDP(topscore)
 	return isEtterna() and topscore:GetWifeScore() or topscore:GetPercentDP()
 end
 
+function getMaxNotes(player)
+	local SongOrCourse = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentCourse() or GAMESTATE:GetCurrentSong()
+	local StepsOrTrail = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentTrail(player) or GAMESTATE:GetCurrentSteps(player)
+	if StepsOrTrail then
+		if GAMESTATE:GetCurrentGame():CountNotesSeparately() then
+			if not VersionDateCheck(20150500) then
+				return RadarCategory_Notes(SongOrCourse,StepsOrTrail)
+			else
+				return StepsOrTrail:GetRadarValues(player):GetValue("RadarCategory_Notes")
+			end
+		else
+			return StepsOrTrail:GetRadarValues(player):GetValue("RadarCategory_TapsAndHolds") or 0
+		end
+	end
+	return 0
+end
+
 local w1,w2,w3,w4,w5,miss = {},{},{},{},{},{}
 function GetTrueJudgment(params,player)
 	local _w1 = STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetTapNoteScores('TapNoteScore_W1')
