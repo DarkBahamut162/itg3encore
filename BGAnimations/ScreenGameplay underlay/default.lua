@@ -8,7 +8,7 @@ for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
 end
 
 t[#t+1] = Def.ActorFrame{
-	loadfile(THEME:GetPathB("ScreenGameplay","underlay/beginner"))()..{ Condition=PREFSMAN:GetPreference("ShowBeginnerHelper") and isRegular() and GAMESTATE:GetEasiestStepsDifficulty() == 'Difficulty_Beginner' },
+	loadfile(THEME:GetPathB("ScreenGameplay","underlay/beginner"))()..{ Condition=(PREFSMAN:PreferenceExists("ShowBeginnerHelper") and PREFSMAN:GetPreference("ShowBeginnerHelper")) and isRegular() and GAMESTATE:GetEasiestStepsDifficulty() == 'Difficulty_Beginner' },
 	loadfile(THEME:GetPathB("ScreenGameplay","underlay/stepstats"))()..{ Condition=stats }
 }
 
