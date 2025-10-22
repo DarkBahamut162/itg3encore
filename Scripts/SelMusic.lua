@@ -79,7 +79,7 @@ end
 
 function GetScreenEvaluationHelpText()
 	local ret = THEME:GetString("ScreenEvaluation", "HelpText")
-	if ThemePrefs.Get("ShowOffset") then
+	if ThemePrefs.Get("ShowOffset") and not isVS() then
 		ret = addToOutput(ret,THEME:GetString("ScreenEvaluation","HelpTextView"),"::")
 	end
 	return ret
