@@ -79,34 +79,34 @@ return Def.ActorFrame{
 		BeginCommand=function(self)
 			local screen = SCREENMAN:GetTopScreen()
 			if screen and faplus then
-				c.Error:addy(4+1.5)
-				c.JudgeFrames:GetChild("W0"):addy(24+1.5)
+				c.Error:addy(4+1.5*WideScreenDiff())
+				c.JudgeFrames:GetChild("W0"):addy(25.5*WideScreenDiff())
 
-				screen:GetChild("W1NumberP1"):addy(20+1.25)
-				c.JudgeFrames:GetChild("W1"):addy(20+1.25)
+				screen:GetChild("W1NumberP1"):addy(21.25*WideScreenDiff())
+				c.JudgeFrames:GetChild("W1"):addy(21.25*WideScreenDiff())
 
-				screen:GetChild("W2NumberP1"):addy(16+1)
-				c.JudgeFrames:GetChild("W2"):addy(16+1)
+				screen:GetChild("W2NumberP1"):addy(17*WideScreenDiff())
+				c.JudgeFrames:GetChild("W2"):addy(17*WideScreenDiff())
 
-				screen:GetChild("W3NumberP1"):addy(12.75)
-				c.JudgeFrames:GetChild("W3"):addy(12.75)
+				screen:GetChild("W3NumberP1"):addy(12.75*WideScreenDiff())
+				c.JudgeFrames:GetChild("W3"):addy(12.75*WideScreenDiff())
 
-				screen:GetChild("W4NumberP1"):addy(8.5)
-				c.JudgeFrames:GetChild("W4"):addy(8.5)
+				screen:GetChild("W4NumberP1"):addy(8.5*WideScreenDiff())
+				c.JudgeFrames:GetChild("W4"):addy(8.5*WideScreenDiff())
 
-				screen:GetChild("W5NumberP1"):addy(4.25)
-				c.JudgeFrames:GetChild("W5"):addy(4.25)
+				screen:GetChild("W5NumberP1"):addy(4.25*WideScreenDiff())
+				c.JudgeFrames:GetChild("W5"):addy(4.25*WideScreenDiff())
 
 				screen:GetChild("MissNumberP1"):addy(0)
 				c.JudgeFrames:GetChild("Miss"):addy(0)
 
 				if showOffset then
-					c.OffsetFrames:GetChild("W0"):addy(24+1.5)
-					c.OffsetFrames:GetChild("W1"):addy(20+1.25)
-					c.OffsetFrames:GetChild("W2"):addy(16+1)
-					c.OffsetFrames:GetChild("W3"):addy(12.75)
-					c.OffsetFrames:GetChild("W4"):addy(8.5)
-					c.OffsetFrames:GetChild("W5"):addy(4.25)
+					c.OffsetFrames:GetChild("W0"):addy(25.5*WideScreenDiff())
+					c.OffsetFrames:GetChild("W1"):addy(21.25*WideScreenDiff())
+					c.OffsetFrames:GetChild("W2"):addy(17*WideScreenDiff())
+					c.OffsetFrames:GetChild("W3"):addy(12.75*WideScreenDiff())
+					c.OffsetFrames:GetChild("W4"):addy(8.5*WideScreenDiff())
+					c.OffsetFrames:GetChild("W5"):addy(4.25*WideScreenDiff())
 				end
 			end
 		end,

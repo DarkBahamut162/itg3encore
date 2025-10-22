@@ -231,7 +231,7 @@ return Def.ActorFrame{
 		},
 		Def.Sprite {
 			Texture = THEME:GetPathB("ScreenRanking","underlay/left "..(isFinal() and "final" or "normal")),
-			InitCommand=function(self) self:x(SCREEN_CENTER_X+(87)*WideScreenDiff()):y(SCREEN_TOP+4*WideScreenDiff()):zoom(WideScreenDiff()):vertalign(top):horizalign(right):zoomtowidth(174) end
+			InitCommand=function(self) self:x(SCREEN_CENTER_X+(87)*WideScreenDiff()):y(SCREEN_TOP+4*WideScreenDiff()):zoom(WideScreenDiff()):vertalign(top):horizalign(right):zoomtowidth(174*WideScreenDiff()) end
 		},
 		Def.Sprite {
 			Texture = THEME:GetPathB("ScreenRanking","underlay/right "..(isFinal() and "final" or "normal")),
