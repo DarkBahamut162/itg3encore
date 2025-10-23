@@ -1,7 +1,6 @@
 local master = GAMESTATE:GetMasterPlayerNumber()
 local percent = isEtterna() and STATSMAN:GetCurStageStats():GetPlayerStageStats(master):GetWifeScore() or 0
 local grade = GetGradeFromPercent(percent)
-local faplus = getenv("SetScoreFA"..pname(PLAYER_1)) or getenv("SetScoreFA"..pname(PLAYER_2)) or false
 local offsetInfo = getenv("OffsetTable")
 local showOffset = ThemePrefs.Get("ShowOffset")
 
