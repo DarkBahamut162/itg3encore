@@ -54,11 +54,14 @@ local summaryFA = {
 }
 local showCalcDiff = ThemePrefs.Get("ShowCalcDiff")
 local decimal = ThemePrefs.Get("ShowCalcDiffDecimals")
+local counted = { [PLAYER_1] = 0,[PLAYER_2] = 0 }
 
 for i=1,rounds do
 	if ThemePrefs.Get("ShowSummarySummary") then
-		if version <= 2 then
+		if version <= 2 and not P1[i]["AutoPlayer"] then
+			counted[PLAYER_1] = counted[PLAYER_1] + 1
 			if not P1[rounds+1] then P1[rounds+1] = {} end
+			P1[rounds+1]["AutoPlayer"] = false
 			P1[rounds+1]["Meter"] = P1[rounds+1]["Meter"] and P1[rounds+1]["Meter"] + P1[i]["Meter"] or P1[i]["Meter"]
 			if showCalcDiff then P1[rounds+1]["CalcedMeter"] = P1[rounds+1]["CalcedMeter"] and P1[rounds+1]["CalcedMeter"] + P1[i]["CalcedMeter"] or P1[i]["CalcedMeter"] end
 			P1[rounds+1]["Score"] = P1[rounds+1]["Score"] and P1[rounds+1]["Score"] + P1[i]["Score"] or P1[i]["Score"]
@@ -93,8 +96,10 @@ for i=1,rounds do
 				P1[rounds+1]["TapNoteScore_W5_Late"] = P1[rounds+1]["TapNoteScore_W5_Late"] and P1[rounds+1]["TapNoteScore_W5_Late"] + P1[i]["TapNoteScore_W5_Late"] or P1[i]["TapNoteScore_W5_Late"]
 			end
 		end
-		if version >= 2 then
+		if version >= 2 and not P2[i]["AutoPlayer"] then
+			counted[PLAYER_2] = counted[PLAYER_2] + 1
 			if not P2[rounds+1] then P2[rounds+1] = {} end
+			P2[rounds+1]["AutoPlayer"] = false
 			P2[rounds+1]["Meter"] = P2[rounds+1]["Meter"] and P2[rounds+1]["Meter"] + P2[i]["Meter"] or P2[i]["Meter"]
 			if showCalcDiff then P2[rounds+1]["CalcedMeter"] = P2[rounds+1]["CalcedMeter"] and P2[rounds+1]["CalcedMeter"] + P2[i]["CalcedMeter"] or P2[i]["CalcedMeter"] end
 			P2[rounds+1]["Score"] = P2[rounds+1]["Score"] and P2[rounds+1]["Score"] + P2[i]["Score"] or P2[i]["Score"]
@@ -138,29 +143,35 @@ end
 if ThemePrefs.Get("ShowSummarySummary") then
 	if rounds > 1 then
 		entries[#entries+1] = Def.ActorFrame{}
-		if version <= 2 then
+		if version <= 2 and counted[PLAYER_1] > 1 then
 			P1[rounds+1]["Difficulty"] = "Difficulty_Edit"
-			P1[rounds+1]["Meter"] = math.round(P1[rounds+1]["Meter"]/rounds)
-			if showCalcDiff then P1[rounds+1]["CalcedMeter"] = math.round(P1[rounds+1]["CalcedMeter"]/rounds,decimal) end
-			P1[rounds+1]["Score"] = P1[rounds+1]["Score"]/rounds
+			P1[rounds+1]["Meter"] = math.round(P1[rounds+1]["Meter"]/counted[PLAYER_1])
+			if showCalcDiff then P1[rounds+1]["CalcedMeter"] = math.round(P1[rounds+1]["CalcedMeter"]/counted[PLAYER_1],decimal) end
+			P1[rounds+1]["Score"] = P1[rounds+1]["Score"]/counted[PLAYER_1]
 			P1[rounds+1]["FA"] = summaryFA[PLAYER_1]
-			if summaryFA[PLAYER_1] then P1[rounds+1]["ScoreFA"] = P1[rounds+1]["ScoreFA"]/rounds end
-			P1[rounds+1]["Grade"] = gradeToTier[math.round(P1[rounds+1]["Grade"]/rounds)]
+			if summaryFA[PLAYER_1] then P1[rounds+1]["ScoreFA"] = P1[rounds+1]["ScoreFA"]/counted[PLAYER_1] end
+			P1[rounds+1]["Grade"] = gradeToTier[math.round(P1[rounds+1]["Grade"]/counted[PLAYER_1])]
+		else
+			P1[rounds+1] = nil
 		end
-		if version >= 2 then
+		if version >= 2 and counted[PLAYER_2] > 1 then
 			P2[rounds+1]["Difficulty"] = "Difficulty_Edit"
-			P2[rounds+1]["Meter"] = math.round(P2[rounds+1]["Meter"]/rounds)
-			if showCalcDiff then P2[rounds+1]["CalcedMeter"] = math.round(P2[rounds+1]["CalcedMeter"]/rounds,decimal) end
-			P2[rounds+1]["Score"] = P2[rounds+1]["Score"]/rounds
+			P2[rounds+1]["Meter"] = math.round(P2[rounds+1]["Meter"]/counted[PLAYER_2])
+			if showCalcDiff then P2[rounds+1]["CalcedMeter"] = math.round(P2[rounds+1]["CalcedMeter"]/counted[PLAYER_2],decimal) end
+			P2[rounds+1]["Score"] = P2[rounds+1]["Score"]/counted[PLAYER_2]
 			P2[rounds+1]["FA"] = summaryFA[PLAYER_2]
 			if summaryFA[PLAYER_2] then
-				P2[rounds+1]["ScoreFA"] = P2[rounds+1]["ScoreFA"]/rounds
+				P2[rounds+1]["ScoreFA"] = P2[rounds+1]["ScoreFA"]/counted[PLAYER_2]
 			end
-			P2[rounds+1]["Grade"] = gradeToTier[math.round(P2[rounds+1]["Grade"]/rounds)]
+			P2[rounds+1]["Grade"] = gradeToTier[math.round(P2[rounds+1]["Grade"]/counted[PLAYER_2])]
+		else
+			P2[rounds+1] = nil
 		end
-		entries[#entries+1] = loadfile(THEME:GetPathB("ScreenSummary","overlay/Entry"))(version,rounds+1)..{
-			InitCommand=function(self) self:Center() end
-		}
+		if counted[PLAYER_1] > 1 or counted[PLAYER_2] > 1 then
+			entries[#entries+1] = loadfile(THEME:GetPathB("ScreenSummary","overlay/Entry"))(version,rounds+1)..{
+				InitCommand=function(self) self:Center() end
+			}
+		end
 	end
 end
 

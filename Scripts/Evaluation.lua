@@ -87,6 +87,11 @@ function prepSummary()
 		end
 		for score,amount in pairs(early) do Step[score.."_Early"] = amount end
 		for score,amount in pairs(late) do Step[score.."_Late"] = amount end
+		if isVS() then
+			Step["AutoPlayer"] = GAMESTATE:IsHumanPlayer(player) and not getenv("EvalCombo"..pname(player)) or false
+		else
+			Step["AutoPlayer"] = not getenv("EvalCombo"..pname(player))
+		end
 		Step["Score"] = DP(player)
 		if Step["FA"] then
 			local W0Count = getenv("W0"..pname(player)) or 0
