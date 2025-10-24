@@ -13,11 +13,11 @@ return Def.ActorFrame{
 		InitCommand=function(self)
 			self:diffuse(PlayerColor(nil)):valign(0)
 			if isTopScreen("ScreenEvaluationWorkout") or isTopScreen("ScreenEvaluationCourseWorkout") then
-				self:x(player == PLAYER_1 and SCREEN_CENTER_X-58*WideScreenDiff() or SCREEN_CENTER_X+58*WideScreenDiff()):y(SCREEN_CENTER_Y+102*WideScreenDiff()):zoom(1/3*WideScreenDiff())
+				self:x(player == PLAYER_1 and SCREEN_CENTER_X-58*WideScreenDiff() or SCREEN_CENTER_X+58*WideScreenDiff()):y(SCREEN_CENTER_Y+88*WideScreenDiff()):zoom(1/3*WideScreenDiff())
 			elseif isTopScreen("ScreenEvaluationRave") then
 				self:x(player == PLAYER_1 and SCREEN_CENTER_X-196*WideScreenDiff() or SCREEN_CENTER_X+196*WideScreenDiff()):y(SCREEN_CENTER_Y+170*WideScreenDiff()):zoom(0.5*WideScreenDiff())
 			else
-				self:x(player == PLAYER_1 and SCREEN_CENTER_X-199*WideScreenDiff() or SCREEN_CENTER_X+199*WideScreenDiff()):y(SCREEN_CENTER_Y+62*WideScreenDiff()):zoom(0.5*WideScreenDiff())
+				self:x(player == PLAYER_1 and SCREEN_CENTER_X-199*WideScreenDiff() or SCREEN_CENTER_X+199*WideScreenDiff()):y(SCREEN_CENTER_Y+60*WideScreenDiff()):zoom(0.5*WideScreenDiff())
 			end
 			local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(player)
 			local output = 0

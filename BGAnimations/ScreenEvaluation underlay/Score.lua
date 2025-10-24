@@ -7,7 +7,7 @@ return Def.ActorFrame{
 		InitCommand=function(self)
 			self:diffuse(PlayerColor(player))
 			if isTopScreen("ScreenEvaluationWorkout") or isTopScreen("ScreenEvaluationCourseWorkout") then
-				self:x(player == PLAYER_1 and SCREEN_CENTER_X-58*WideScreenDiff() or SCREEN_CENTER_X+58*WideScreenDiff()):y(SCREEN_CENTER_Y+92*WideScreenDiff()):zoom(2/3*WideScreenDiff())
+				self:x(player == PLAYER_1 and SCREEN_CENTER_X-58*WideScreenDiff() or SCREEN_CENTER_X+58*WideScreenDiff()):y(SCREEN_CENTER_Y+92*WideScreenDiff()):zoom(2/3*WideScreenDiff()):addy(getenv("SetScoreFA"..pname(player)) and -12*WideScreenDiff() or 0)
 			elseif isTopScreen("ScreenEvaluationRave") then
 				self:x(player == PLAYER_1 and SCREEN_CENTER_X-196*WideScreenDiff() or SCREEN_CENTER_X+196*WideScreenDiff()):y(SCREEN_CENTER_Y+160*WideScreenDiff()):zoom(WideScreenDiff())
 			else
@@ -63,7 +63,7 @@ return Def.ActorFrame{
 					Diffuse = PlayerColorSemi(player),
 				})
 			elseif scoreType == 5 then
-				self:settext(FormatPercentScore(math.max(0,getenv("WIFE3"..pname(player))))) -- WIFE3
+				self:settext(FormatPercentScore(math.max(0,getenv("WIFE3"..pname(player)) or 0))) -- WIFE3
 			end
 		end,
 		OnCommand=function(self) self:addx(player == PLAYER_1 and -EvalTweenDistance() or EvalTweenDistance()):sleep(3):decelerate(0.3):addx(player == PLAYER_1 and EvalTweenDistance() or -EvalTweenDistance()) end,

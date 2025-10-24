@@ -18,6 +18,13 @@ if ShowStandardDecoration("StageDisplay") then
 end
 
 return Def.ActorFrame{
+	OnCommand=function(self)
+		for pn in ivalues({PLAYER_1,PLAYER_2}) do
+			if GAMESTATE:IsPlayerEnabled(pn) and getenv("SetScoreFA"..pname(pn)) then
+				SCREENMAN:GetTopScreen():GetChild("Grade"..pname(pn)):queuecommand("FA")
+			end
+		end
+	end,
 	t,
 	Def.ActorFrame{
 		loadfile(THEME:GetPathB("ScreenEvaluationWorkout","overlay/P1"))()..{
