@@ -618,10 +618,11 @@ return Def.ActorFrame{
             File = "_r bold shadow 30px",
             InitCommand=function(self)
                 self:diffuseramp():effectcolor1(PlayerColor(pn)):effectcolor2(color("#FFFFFF")):effectperiod(0.5):effect_hold_at_full(0.5):effectclock('beat'):vertspacing(-10)
-                if screenCheck then
+                if screenCheck and GetScreenAspectRatio() > 1 then
                     self:x(pn == PLAYER_1 and -graphH*1.525 or graphH*1.525):y(graphH*2.1):zoomx(pn == PLAYER_1 and -1 or 1):maxwidth(graphH):halign(0):valign(0)
                 else
-                    self:x(pn == PLAYER_1 and -graphH*2.55 or graphH*2.55):rotationz(pn == PLAYER_2 and 90 or -90):zoom(WideScreenDiff()):maxwidth(ShowStatsSize == 1 and graphW*0.9 or graphW):valign(1)
+                    self:x(pn == PLAYER_1 and -graphH*2.55 or graphH*2.55):rotationz(pn == PLAYER_2 and 90 or -90):maxwidth(ShowStatsSize == 1 and graphW*0.9 or graphW):valign(1)
+                    if screenCheck then self:valign(0) if pn == PLAYER_2 then self:zoom(-1) else self:zoomy(-1) end end
                 end
                 self:queuecommand("Draw")
             end,
@@ -632,7 +633,7 @@ return Def.ActorFrame{
             CurrentTrailP1ChangedMessageCommand=function(self) if courseMode and pn == PLAYER_1 then self:sleep(1/30):queuecommand("Draw") end end,
             CurrentTrailP2ChangedMessageCommand=function(self) if courseMode and pn == PLAYER_2 then self:sleep(1/30):queuecommand("Draw") end end,
             DrawCommand=function(self)
-                if screenCheck then
+                if screenCheck and GetScreenAspectRatio() > 1 then
                     self:settext("AVG: "..math.round(average/counter).."\nMAX: "..math.round(max))
                 else
                     self:settext("Average NPS: "..math.round(average/counter,1).." | Max NPS: "..math.round(max,1))
