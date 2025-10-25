@@ -143,7 +143,7 @@ return Def.ActorFrame{
 		if tns == 'TapNoteScore_Miss' then
 			c.Judgment:rotationz(IsGame("po-mu") and (getenv("Rotation"..pname(player)) == 2 and 90 or -90) or 0 + (30 * StepEvenOdd(param.Player)))
 		else
-			c.Judgment:rotationz(IsGame("po-mu") and (getenv("Rotation"..pname(player)) == 2 and 90 or -90) or 0 + math.min(math.abs(param.TapNoteOffset), W5) * 10 / W5 * StepEvenOdd(param.Player))
+			c.Judgment:rotationz(IsGame("po-mu") and (getenv("Rotation"..pname(player)) == 2 and 90 or -90) or 0 + math.min(param.TapNoteOffset, W5) * 10 / W5)
 		end
 		JudgeCmds[param.TapNoteScore](c.Judgment)
 		c.Judgment:setstate( iFrame )
