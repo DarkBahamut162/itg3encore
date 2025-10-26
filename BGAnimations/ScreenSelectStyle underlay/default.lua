@@ -1,15 +1,17 @@
 local c
 local selectState = false
 local styles = ChoiceSingle()
-local currentStylePosition = GetUserPrefN("StylePosition")
 local currentBattleMode = getenv("BattleMode")
+local currentStylePosition = GetUserPrefN("StylePosition")
+local currentStyles = StyleName()
 local screenName = Var "LoadingScreen" or "ScreenSelectStyle" 
 local enableUD = screenName == "ScreenSelectNumPlayers"
-local output
-if StyleName() and StyleName()[currentStylePosition] then
-	output = enableUD and "Current Style: "..StyleName()[currentStylePosition].." | Battle Mode: "..string.gsub(" "..currentBattleMode, "%W%l", string.upper):sub(2) or "Current Style: "..StyleName()[currentStylePosition]
-else
-	output = "Current Style: UNSUPPORTED!"
+local output = "Current Style: UNSUPPORTED!"
+local outputBM = ""
+
+if currentStyles and currentStyles[currentStylePosition] then
+	output = "Current Style: "..currentStyles[currentStylePosition]
+	if enableUD then outputBM = "Battle Mode: "..string.gsub(" "..currentBattleMode, "%W%l", string.upper):sub(2) end
 end
 
 for player in ivalues(PlayerNumber) do
@@ -18,7 +20,6 @@ end
 
 local InputHandler = function(event)
 	if not event.PlayerNumber or not event.button then return false end
-
 	if event.type == "InputEventType_FirstPress" then
 		if event.GameButton == "MenuLeft" and selectState then
 			if styles and #styles > 1 then
@@ -27,6 +28,7 @@ local InputHandler = function(event)
 				else
 					SetUserPref("StylePosition",currentStylePosition-1)
 				end
+				SOUND:PlayOnce( THEME:GetPathS( 'Common', "start" ) )
 				SCREENMAN:GetTopScreen():SetNextScreenName(screenName)
 				SCREENMAN:GetTopScreen():StartTransitioningScreen("SM_GoToNextScreen")
 			end
@@ -37,6 +39,7 @@ local InputHandler = function(event)
 				else
 					SetUserPref("StylePosition",currentStylePosition+1)
 				end
+				SOUND:PlayOnce( THEME:GetPathS( 'Common', "start" ) )
 				SCREENMAN:GetTopScreen():SetNextScreenName(screenName)
 				SCREENMAN:GetTopScreen():StartTransitioningScreen("SM_GoToNextScreen")
 			end
@@ -46,16 +49,27 @@ local InputHandler = function(event)
 			else
 				setenv("BattleMode","rave")
 			end
+			SOUND:PlayOnce( THEME:GetPathS( 'Common', "start" ) )
 			SCREENMAN:GetTopScreen():SetNextScreenName(screenName)
 			SCREENMAN:GetTopScreen():StartTransitioningScreen("SM_GoToNextScreen")
 		elseif event.GameButton == "Select" and not selectState then
-			for player in ivalues(PlayerNumber) do
-				if VersionDateCheck(20160000) then SCREENMAN:set_input_redirected(player, true) end
+			if (styles and #styles > 1) or enableUD then
+				for player in ivalues(PlayerNumber) do
+					if VersionDateCheck(20160000) then SCREENMAN:set_input_redirected(player, true) end
+				end
+				SOUND:PlayOnce( THEME:GetPathS( 'OptionsList', "opened" ) )
+				selectState = true
+				if styles and #styles > 1 then
+					c.Left:stoptweening():linear(0.125):diffusealpha(1)
+					c.Center:stoptweening():linear(0.125):diffusealpha(0.5)
+					c.Right:stoptweening():linear(0.125):diffusealpha(1)
+				end
+				if enableUD then
+					c.Up:stoptweening():linear(0.125):diffusealpha(1)
+					c.BattleMode:stoptweening():linear(0.125):diffusealpha(0.5)
+					c.Down:stoptweening():linear(0.125):diffusealpha(1)
+				end
 			end
-			SOUND:PlayOnce( THEME:GetPathS( 'OptionsList', "opened" ) )
-			selectState = true
-			c.Left:linear(0.125):diffusealpha(1)
-			c.Right:linear(0.125):diffusealpha(1)
 		end
 	elseif event.type == "InputEventType_Release" and event.GameButton == "Select" and selectState then
 		for player in ivalues(PlayerNumber) do
@@ -63,16 +77,26 @@ local InputHandler = function(event)
 		end
 		SOUND:PlayOnce( THEME:GetPathS( 'OptionsList', "closed" ) )
 		selectState = false
-		c.Left:linear(0.125):diffusealpha(0)
-		c.Right:linear(0.125):diffusealpha(0)
+		c.Left:stoptweening():linear(0.125):diffusealpha((currentStyles and #currentStyles > 1) and 0.5 or 0)
+		c.Center:stoptweening():linear(0.125):diffusealpha(1)
+		c.Right:stoptweening():linear(0.125):diffusealpha((currentStyles and #currentStyles > 1) and 0.5 or 0)
+		if enableUD then
+			c.Up:stoptweening():linear(0.125):diffusealpha(0.5)
+			c.BattleMode:stoptweening():linear(0.125):diffusealpha(1)
+			c.Down:stoptweening():linear(0.125):diffusealpha(0.5)
+		end
 	end
 end
 
 return Def.ActorFrame{
 	BeginCommand = function(self)
 		c = self:GetChildren()
-		c.Left:addx((-c.Center:GetWidth()/4-8)*WideScreenDiff())
-		c.Right:addx((c.Center:GetWidth()/4+8)*WideScreenDiff())
+		c.Left:addx((-c.Center:GetWidth()/4-4)*WideScreenDiff())
+		c.Right:addx((c.Center:GetWidth()/4+4)*WideScreenDiff())
+		if enableUD then
+			c.Up:addx((-c.BattleMode:GetWidth()/4-4)*WideScreenDiff())
+			c.Down:addx((c.BattleMode:GetWidth()/4+4)*WideScreenDiff())
+		end
 	end,
 	OnCommand=function()
 		if styles and #styles > 1 or enableUD then SCREENMAN:GetTopScreen():AddInputCallback(InputHandler) end
@@ -114,14 +138,42 @@ return Def.ActorFrame{
 		File = "_v 26px bold shadow",
 		Name="Left",
 		Text="&MENULEFT;",
-		InitCommand=function(self) self:x(SCREEN_CENTER_X):y(SCREEN_CENTER_Y-160*WideScreenDiff()):zoom(0.5*WideScreenDiff()):diffusealpha(0) end,
+		InitCommand=function(self) self:x(SCREEN_CENTER_X):y(SCREEN_CENTER_Y-160*WideScreenDiff()):zoom(0.5*WideScreenDiff()):valign(0.75):diffusealpha((currentStyles and #currentStyles > 1) and 0.5 or 0) end,
+		OnCommand=function(self) self:settext((currentStylePosition>1 and currentStyles[currentStylePosition-1] or currentStyles[#currentStyles]).." "..self:GetText()):halign(1) end,
 		OffCommand=function(self) self:linear(0.125):diffusealpha(0) end
 	},
 	Def.BitmapText {
 		File = "_v 26px bold shadow",
 		Name="Right",
 		Text="&MENURIGHT;",
-		InitCommand=function(self) self:x(SCREEN_CENTER_X):y(SCREEN_CENTER_Y-160*WideScreenDiff()):zoom(0.5*WideScreenDiff()):diffusealpha(0) end,
+		InitCommand=function(self) self:x(SCREEN_CENTER_X):y(SCREEN_CENTER_Y-160*WideScreenDiff()):zoom(0.5*WideScreenDiff()):valign(0.75):diffusealpha((currentStyles and #currentStyles > 1) and 0.5 or 0) end,
+		OnCommand=function(self) self:settext(self:GetText().." "..(currentStylePosition<#currentStyles and currentStyles[currentStylePosition+1] or currentStyles[1])):halign(0) end,
+		OffCommand=function(self) self:linear(0.125):diffusealpha(0) end
+	},
+	Def.BitmapText {
+		Condition=enableUD,
+		File = "_v 26px bold shadow",
+		Name="BattleMode",
+		InitCommand=function(self) self:x(SCREEN_CENTER_X):y(SCREEN_CENTER_Y-162*WideScreenDiff()):zoom(0.5*WideScreenDiff()):cropleft(0.5):cropright(0.5):settext(outputBM):valign(-0.75) end,
+		OnCommand=function(self) self:decelerate(0.5):cropleft(0):cropright(0) end,
+		OffCommand=function(self) self:accelerate(0.5):cropleft(0.5):cropright(0.5) end
+	},
+	Def.BitmapText {
+		Condition=enableUD,
+		File = "_v 26px bold shadow",
+		Name="Up",
+		Text="&MENUUP;",
+		InitCommand=function(self) self:x(SCREEN_CENTER_X):y(SCREEN_CENTER_Y-162*WideScreenDiff()):zoom(0.5*WideScreenDiff()):valign(0.75):diffusealpha(0.5):valign(-0.75) end,
+		OnCommand=function(self) self:settext((currentBattleMode == "rave" and "Battle" or "Rave").." "..self:GetText()):halign(1) end,
+		OffCommand=function(self) self:linear(0.125):diffusealpha(0) end
+	},
+	Def.BitmapText {
+		Condition=enableUD,
+		File = "_v 26px bold shadow",
+		Name="Down",
+		Text="&MENUDOWN;",
+		InitCommand=function(self) self:x(SCREEN_CENTER_X):y(SCREEN_CENTER_Y-162*WideScreenDiff()):zoom(0.5*WideScreenDiff()):valign(0.75):diffusealpha(0.5):valign(-0.75) end,
+		OnCommand=function(self) self:settext(self:GetText().." "..(currentBattleMode == "rave" and "Battle" or "Rave")):halign(0) end,
 		OffCommand=function(self) self:linear(0.125):diffusealpha(0) end
 	}
 }
