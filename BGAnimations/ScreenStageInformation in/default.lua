@@ -61,6 +61,7 @@ for pn in ivalues(GAMESTATE:GetEnabledPlayers()) do
 	setenv("LastGreat"..pname(pn),0)
 	setenv("FlareDisplay"..pname(pn),nil)
 	setenv("W0"..pname(pn),0)
+	setenv("W1"..pname(pn),0)
 	setenv("WX"..pname(pn),0)
 
 	if isOpenDDR() then

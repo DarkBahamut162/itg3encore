@@ -81,7 +81,11 @@ local judgments = {
 function GetTotalTaps()
 	local total = 0
 	for judg in ivalues(judgments) do
-		total = total + STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):GetTapNoteScores(judg)
+		if faplus and judg == "TapNoteScore_W1" then
+			total = total + getenv("W0"..pname(pn)) + getenv("W1"..pname(pn))
+		else
+			total = total + STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):GetTapNoteScores(judg)
+		end
 	end
 	return total
 end
@@ -102,7 +106,7 @@ if getenv("ShowStats"..pname(pn)) < (isOpenDDR() and 6 or 7) then
 			W0MessageCommand=function(self,param)
 				if param.Player == pn then
 					if self:GetName() == "NumbersW0" then self:settext(param.W0) end
-					if self:GetName() == "NumbersW1" then self:settext(STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):GetTapNoteScores('TapNoteScore_W1')-param.W0) end
+					if self:GetName() == "NumbersW1" then self:settext(param.W1) end
 				end
 			end,
 			UpdateCommand=function(self) self:settext(STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):GetTapNoteScores('TapNoteScore_'..score)) end
@@ -122,7 +126,7 @@ if getenv("ShowStats"..pname(pn)) < (isOpenDDR() and 6 or 7) then
 			W0MessageCommand=function(self,param)
 				if param.Player == pn then
 					if self:GetName() == "PercentW0" then self:zoomy((param.W0/GetTotalTaps())*barHeight) end
-					if self:GetName() == "PercentW1" then self:zoomy(((STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):GetTapNoteScores('TapNoteScore_W1')-param.W0)/GetTotalTaps())*barHeight) end
+					if self:GetName() == "PercentW1" then self:zoomy((param.W1/GetTotalTaps())*barHeight) end
 				end
 			end,
 			UpdateCommand=function(self)
@@ -139,7 +143,7 @@ if getenv("ShowStats"..pname(pn)) < (isOpenDDR() and 6 or 7) then
 			W0MessageCommand=function(self,param)
 				if param.Player == pn then
 					if self:GetName() == "NotesW0" then self:zoomy((param.W0/TotalSteps)*barHeight) end
-					if self:GetName() == "NotesW1" then self:zoomy(((STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):GetTapNoteScores('TapNoteScore_W1')-param.W0)/TotalSteps)*barHeight) end
+					if self:GetName() == "NotesW1" then self:zoomy((param.W1/TotalSteps)*barHeight) end
 				end
 			end,
 			UpdateCommand=function(self)

@@ -49,6 +49,7 @@ local W0 = 0.0135*timingChange[timing]*JudgeScale
 local Wadd = (isOpenDDR() or isEtterna("0.72")) and 0.0000 or PREFSMAN:GetPreference("TimingWindowAdd")
 W0 = W0 + Wadd
 local W0Counter = getenv("W0"..pname(player)) or 0
+local W1Counter = getenv("W1"..pname(player)) or 0
 local WXCounter = getenv("WX"..pname(player)) or 0
 
 setenv("checkFantastics"..pname(player),true)
@@ -119,8 +120,11 @@ return Def.ActorFrame{
 				if WX == "TapNoteScore_W0" then
 					W0Counter = W0Counter + 1
 					setenv("W0"..pname(player),W0Counter)
+				elseif WX == "TapNoteScore_W1" then
+					W1Counter = W1Counter + 1
+					setenv("W1"..pname(player),W1Counter)
 				end
-				MESSAGEMAN:Broadcast("W0",{Player=player,W0=W0Counter,WX=WXCounter})
+				MESSAGEMAN:Broadcast("W0",{Player=player,W0=W0Counter,W1=W1Counter,WX=WXCounter})
 			end
 
 			if ((GAMESTATE:GetPlayerState(player):GetPlayerController() == 'PlayerController_Autoplay') or

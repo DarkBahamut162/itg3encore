@@ -64,7 +64,11 @@ local judgments = {
 function GetTotalTaps()
 	local total = 0
 	for judg in ivalues(judgments) do
-		total = total + STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):GetTapNoteScores(judg)
+		if faplus and judg == "TapNoteScore_W1" then
+			total = total + getenv("W0"..pname(pn)) + getenv("W1"..pname(pn))
+		else
+			total = total + STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):GetTapNoteScores(judg)
+		end
 	end
 	return total
 end
@@ -81,7 +85,7 @@ if stats < (isOpenDDR() and 6 or 7) then
 			W0MessageCommand=function(self,param)
 				if param.Player == pn then
 					if self:GetName() == "PercentW0" then self:zoomy((param.W0/GetTotalTaps())*barHeight) end
-					if self:GetName() == "PercentW1" then self:zoomy(((STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):GetTapNoteScores('TapNoteScore_W1')-param.W0)/GetTotalTaps())*barHeight) end
+					if self:GetName() == "PercentW1" then self:zoomy((param.W1/GetTotalTaps())*barHeight) end
 				end
 			end,
 			UpdateCommand=function(self)
@@ -98,7 +102,7 @@ if stats < (isOpenDDR() and 6 or 7) then
 			W0MessageCommand=function(self,param)
 				if param.Player == pn then
 					if self:GetName() == "NotesW0" then self:zoomy((param.W0/TotalSteps)*barHeight) end
-					if self:GetName() == "NotesW1" then self:zoomy(((STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):GetTapNoteScores('TapNoteScore_W1')-param.W0)/TotalSteps)*barHeight) end
+					if self:GetName() == "NotesW1" then self:zoomy((param.W1/TotalSteps)*barHeight) end
 				end
 			end,
 			UpdateCommand=function(self)
@@ -229,7 +233,7 @@ return Def.ActorFrame{
 						InitCommand=function(self) self:maxwidth(125):halign(pn == PLAYER_1 and 1 or 0):addy(10-5):addx(pn == PLAYER_1 and 125 or -125):shadowlength(1):diffuse(TapNoteScoreToColor(faplus and 'TapNoteScore_W0' or 'TapNoteScore_W1')) end,
 						JudgmentMessageCommand=function(self,param) if param.Player == pn and not faplus then self:queuecommand("Update") end end,
 						UpdateCommand=function(self) self:settext(STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):GetTapNoteScores('TapNoteScore_W1')) end,
-						W0MessageCommand=function(self,param) if param.Player == pn then self:settext(STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):GetTapNoteScores('TapNoteScore_W1')-param.W0) end end
+						W0MessageCommand=function(self,param) if param.Player == pn then self:settext(param.W1) end end
 					},
 					Def.BitmapText {
 						File = "_z numbers",

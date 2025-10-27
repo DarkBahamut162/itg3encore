@@ -45,6 +45,7 @@ if not isEtterna() then
 end
 
 local W0Counter = getenv("W0"..pname(player)) or 0
+local W1Counter = getenv("W1"..pname(player)) or 0
 local WXCounter = getenv("WX"..pname(player)) or 0
 local judgment
 
@@ -98,13 +99,18 @@ return Def.ActorFrame{
 		if not GAMESTATE:GetCurrentGame():CountNotesSeparately() and faplus and iFrame then
 			WXCounter = WXCounter + 1
 			setenv("WX"..pname(player),WXCounter)
-			if tns == "TapNoteScore_W1" and math.abs(param.TapNoteOffset) <= W0 then
-				tns = "TapNoteScore_W0"
-				iFrame = TNSFrames[tns]
-				W0Counter = W0Counter + 1
-				setenv("W0"..pname(player),W0Counter)
+			if tns == "TapNoteScore_W1" then
+				if math.abs(param.TapNoteOffset) <= W0 then
+					tns = "TapNoteScore_W0"
+					iFrame = TNSFrames[tns]
+					W0Counter = W0Counter + 1
+					setenv("W0"..pname(player),W0Counter)
+				else
+					W1Counter = W1Counter + 1
+					setenv("W1"..pname(player),W1Counter)
+				end
 			end
-			MESSAGEMAN:Broadcast("W0",{Player=player,W0=W0Counter,WX=WXCounter})
+			MESSAGEMAN:Broadcast("W0",{Player=player,W0=W0Counter,W1=W1Counter,WX=WXCounter})
 		end
 
 		if ((GAMESTATE:GetPlayerState(player):GetPlayerController() == 'PlayerController_Autoplay') or

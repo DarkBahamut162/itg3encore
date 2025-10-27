@@ -304,34 +304,36 @@ function GetTrueJudgment(params,player)
 	if params ~= nil and currentJudgment ~= "TapNoteScore_None" then
 		local output = ""
 		local semi = ""
-		local counter = 0
 		local late = -1
+		local early = 1
 		for col,tapnote in pairs(params.Notes) do
 			local tnt = ToEnumShortString(tapnote:GetTapNoteType())
 			if tnt == "Tap" or tnt == "HoldHead" or tnt == "LongNoteHead" or tnt == "Lift" then
-				counter = counter + 1
 				local tns = tapnote:GetTapNoteResult():GetTapNoteScore()
-				local tno = string.format("%0.10f", tonumber(tapnote:GetTapNoteResult():GetTapNoteOffset()))
-				if string.find(tns,"Miss") then currentJudgment = tns tno = 1 end
-				if currentJudgment == tns then
-					late = math.max(late,tonumber(tno))
-					output = addToOutput(output,tns,"|")
-					semi = addToOutput(semi,tno,"|")
-				end
+				local tno = string.format("%0.10f", tapnote:GetTapNoteResult():GetTapNoteOffset())
+				if string.find(tns,"Miss") then tno = string.format("%0.10f", 1) end
+				late = math.max(late,tonumber(tno))
+				early = math.min(early,tonumber(tno))
+				output = addToOutput(output,tns,"|")
+				semi = addToOutput(semi,tno,"|")
 			end
 		end
 		local check1 = split("|",output)
 		local check2 = split("|",semi)
 		if #check1 > 1 and #check2 > 1 then
-			if string.find(semi,string.format("%0.10f",tonumber(late))) then
-				params.TapNoteScore = currentJudgment
-				params.TapNoteOffset = string.format("%0.10f",tonumber(late))
+			local check = math.abs(early) >= math.abs(late) and early or late
+			local index = FindInTable(string.format("%0.10f",check),check2)
+			if index then
+				params.TapNoteScore = check1[index]
+				params.TapNoteOffset = string.format("%0.10f",tonumber(check))
+				params.Early = tonumber(check) < 0
 			else
 				lua.ReportScriptError(params.TapNoteScore.." (REGISTERED) ~= "..currentJudgment.." (COUNTED)".." | "..output.." | "..semi.." ("..late..")")
 			end
 		else
 			params.TapNoteScore = output
-			params.TapNoteOffset = tonumber(semi)
+			params.TapNoteOffset = string.format("%0.10f",tonumber(semi))
+			params.Early = tonumber(semi) < 0
 		end
 
 		if GAMESTATE:GetCurrentGame():CountNotesSeparately() and getenv("SetScoreFA"..pname(player)) then
@@ -344,6 +346,7 @@ function GetTrueJudgment(params,player)
 			if not isEtterna() then W0 = W0 + Wadd end
 
 			local W0Counter = getenv("W0"..pname(player)) or 0
+			local W1Counter = getenv("W1"..pname(player)) or 0
 			local WXCounter = getenv("WX"..pname(player)) or 0
 
 			WXCounter = WXCounter + 1
@@ -353,10 +356,13 @@ function GetTrueJudgment(params,player)
 				if math.abs(params.TapNoteOffset) <= W0 then
 					W0Counter = W0Counter + 1
 					setenv("W0"..pname(player),W0Counter)
+				else
+					W1Counter = W1Counter + 1
+					setenv("W1"..pname(player),W1Counter)
 				end
 			end
 
-			MESSAGEMAN:Broadcast("W0",{Player=player,W0=W0Counter,WX=WXCounter})
+			MESSAGEMAN:Broadcast("W0",{Player=player,W0=W0Counter,W1=W1Counter,WX=WXCounter})
 		end
 	else
 		if params ~= nil then params.TapNoteScore = "TapNoteScore_None" end
