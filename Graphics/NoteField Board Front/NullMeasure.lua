@@ -39,9 +39,9 @@ local function CheckMeasure(check,measures)
 		local measure = measures[1]
 		if string.find(measure,"-") then
 			measure = tonumber(split('-',measure)[2])+1
-			if check < range[2] then
+			if check < measure then
 				return false, measures
-			elseif check >= range[2] then
+			elseif check >= measure then
 				table.remove(measures,1)
 				return true, measures
 			end
