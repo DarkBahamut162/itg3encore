@@ -125,20 +125,6 @@ for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
 	end
 end
 
-local function TotalPossibleStepSeconds()
-	local fSecs = 0
-	local s = STATSMAN:GetPlayedStageStats(1)
-	local played = isITGmania() and #s:GetPlayedSongs() or #s:GetPossibleSongs()
-	for a = 1, played do
-		fSecs = fSecs + s:GetPossibleSongs()[a]:GetStepsSeconds()
-	end
-
-    local songoptions = GAMESTATE:GetSongOptionsObject("ModsLevel_Song")
-    if not songoptions then return fSecs end
-
-    return fSecs / songoptions:MusicRate()
-end
-
 local function CalcMinusStepSeconds(pn)
 	if isEtterna() then return 0 end
 	local fSecs = 0
