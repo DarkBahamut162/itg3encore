@@ -2,7 +2,6 @@ local player = ...
 assert(player,"[Graphics/_player scores] player required")
 local courseMode = GAMESTATE:IsCourseMode()
 local c
-local enableFlare = GAMESTATE:IsPlayerEnabled(player) and getenv("Flare"..pname(player)) > 0 or false
 
 return Def.ActorFrame{
 	InitCommand=function(self) c = self:GetChildren() if IsUsingWideScreen() and hasAvatar(player) then self:x(player == PLAYER_1 and 48 or -48) end end,
@@ -51,23 +50,21 @@ return Def.ActorFrame{
 					c.ProfileScore:GetChild("ScorePercent"):settext("0.00%")
 				end
 			end
-			if enableFlare then flare = GetFlare(player,SongOrCourse,StepsOrTrail) end
+			flare = GetFlare(player,SongOrCourse,StepsOrTrail)
 		else
 			c.MachineScore:GetChild("ScoreName"):settext("?")
 			c.MachineScore:GetChild("ScorePercent"):settext("?")
 			c.ProfileScore:GetChild("ScorePercent"):settext("?")
 		end
-		if enableFlare then
-			if flare == 10 then
-				c.ProfileScore:GetChild("ScoreName"):rainbow()
-				c.ProfileScore:GetChild("FlareName"):settext("FX")
-			elseif flare == 0 then
-				c.ProfileScore:GetChild("ScoreName"):stopeffect():diffuse(color("#fff"))
-				c.ProfileScore:GetChild("FlareName"):settext("")
-			else
-				c.ProfileScore:GetChild("ScoreName"):stopeffect():diffuse(color(flareColor[flare]))
-				c.ProfileScore:GetChild("FlareName"):settext("F"..flare)
-			end
+		if flare == 10 then
+			c.ProfileScore:GetChild("ScoreName"):rainbow()
+			c.ProfileScore:GetChild("FlareName"):settext("FX")
+		elseif flare == 0 then
+			c.ProfileScore:GetChild("ScoreName"):stopeffect():diffuse(color("#fff"))
+			c.ProfileScore:GetChild("FlareName"):settext("")
+		else
+			c.ProfileScore:GetChild("ScoreName"):stopeffect():diffuse(color(flareColor[flare]))
+			c.ProfileScore:GetChild("FlareName"):settext("F"..flare)
 		end
 	end,
 	Def.ActorFrame{
@@ -106,7 +103,7 @@ return Def.ActorFrame{
 			Name="ScoreName",
 			Text=HumanAndUSBReady(player) and "CARD" or "YOU",
 			InitCommand=function(self) self:y(85):diffusealpha(0):zoom(0.55):shadowlength(2):maxwidth(175) end,
-			OnCommand=function(self) self:sleep(0.85):linear(0.2):diffusealpha(1):diffuse(color("#000")) end,
+			OnCommand=function(self) self:sleep(0.85):linear(0.2):diffusealpha(1) end,
 			OffCommand=function(self) self:linear(0.4):diffusealpha(0) end
 		},
 		Def.BitmapText {
