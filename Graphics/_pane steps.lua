@@ -83,8 +83,8 @@ end
 
 return Def.ActorFrame{
 	InitCommand=function(self) if IsUsingWideScreen() and hasAvatar(player) then self:x(player == PLAYER_1 and 48 or -48) end c = self:GetChildren() end,
-	OnCommand=function(self) self:diffusealpha(0):sleep(0.85):linear(0.2):diffusealpha(1) end,
-	OffCommand=function(self) self:accelerate(0.2):diffusealpha(0) end,
+	OnCommand=function(self) self:addx(player == PLAYER_1 and -SCREEN_WIDTH or SCREEN_WIDTH):decelerate(0.75):addx(player == PLAYER_2 and -SCREEN_WIDTH or SCREEN_WIDTH) end,
+	OffCommand=function(self) self:accelerate(0.75):addx(player == PLAYER_1 and -SCREEN_WIDTH or SCREEN_WIDTH) end,
 	CurrentSongChangedMessageCommand=function(self) if not courseMode then self:playcommand("Set") end end,
 	CurrentCourseChangedMessageCommand=function(self) if courseMode then self:playcommand("Set") end end,
 	["CurrentSteps".. pname(player) .."ChangedMessageCommand"]=function(self) if not courseMode then self:playcommand("Set") end end,
@@ -101,12 +101,12 @@ return Def.ActorFrame{
 	Def.BitmapText {
 		File = "_z 36px shadowx",
 		Name="StepCount",
-		InitCommand=function(self) self:x(-67):y(120+8-5):zoom(0.35):diffusealpha(0):shadowlength(1) end
+		InitCommand=function(self) self:x(-67):y(120+8-5):zoom(0.35):shadowlength(1) end
 	},
 	Def.BitmapText {
 		File = "_z 36px shadowx",
 		Name="TotalCount",
-		InitCommand=function(self) self:x(-67):y(120+8+5):zoom(0.35):diffusealpha(0):shadowlength(1) end
+		InitCommand=function(self) self:x(-67):y(120+8+5):zoom(0.35):shadowlength(1) end
 	},
 	Def.BitmapText {
 		File = "_v 26px bold white",

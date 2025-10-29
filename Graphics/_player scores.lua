@@ -5,6 +5,8 @@ local c
 
 return Def.ActorFrame{
 	InitCommand=function(self) c = self:GetChildren() if IsUsingWideScreen() and hasAvatar(player) then self:x(player == PLAYER_1 and 48 or -48) end end,
+	OnCommand=function(self) self:addx(player == PLAYER_1 and -SCREEN_WIDTH or SCREEN_WIDTH):decelerate(0.75):addx(player == PLAYER_2 and -SCREEN_WIDTH or SCREEN_WIDTH) end,
+	OffCommand=function(self) self:accelerate(0.75):addx(player == PLAYER_1 and -SCREEN_WIDTH or SCREEN_WIDTH) end,
 	CurrentSongChangedMessageCommand=function(self) if not courseMode then self:queuecommand("Set") end end,
 	CurrentCourseChangedMessageCommand=function(self) if courseMode then self:queuecommand("Set") end end,
 	["CurrentSteps".. pname(player) .."ChangedMessageCommand"]=function(self) if not courseMode then self:queuecommand("Set") end end,
@@ -74,17 +76,13 @@ return Def.ActorFrame{
 			File = "_z 36px shadowx",
 			Name="ScoreName",
 			Text="MACH",
-			InitCommand=function(self) self:y(85):diffusealpha(0):zoom(0.55):shadowlength(2):maxwidth(175) end,
-			OnCommand=function(self) self:sleep(0.5):linear(0.2):diffusealpha(1) end,
-			OffCommand=function(self) self:linear(0.4):diffusealpha(0) end
+			InitCommand=function(self) self:y(85):zoom(0.55):shadowlength(2):maxwidth(175) end
 		},
 		Def.BitmapText {
 			File = "_z 36px shadowx",
 			Name="ScorePercent",
 			Text="0.00%",
-			InitCommand=function(self) self:y(100):diffusealpha(0):zoom(0.55):shadowlength(2):maxwidth(175):diffusebottomedge(color("#AAAAAA")) end,
-			OnCommand=function(self) self:sleep(0.6):linear(0.2):diffusealpha(1) end,
-			OffCommand=function(self) self:linear(0.4):diffusealpha(0) end
+			InitCommand=function(self) self:y(100):zoom(0.55):shadowlength(2):maxwidth(175):diffusebottomedge(color("#AAAAAA")) end
 		}
 	},
 
@@ -94,25 +92,19 @@ return Def.ActorFrame{
 		Def.BitmapText {
 			File = "_z 36px shadowx",
 			Name="FlareName",
-			InitCommand=function(self) self:x(32):y(85):rotationz(90):diffusealpha(0):zoom(0.25):shadowlength(2):maxwidth(175) end,
-			OnCommand=function(self) self:sleep(0.85):linear(0.2):diffusealpha(1) end,
-			OffCommand=function(self) self:linear(0.4):diffusealpha(0) end
+			InitCommand=function(self) self:x(32):y(85):rotationz(90):zoom(0.25):shadowlength(2):maxwidth(175) end
 		},
 		Def.BitmapText {
 			File = "_z 36px shadowx",
 			Name="ScoreName",
 			Text=HumanAndUSBReady(player) and "CARD" or "YOU",
-			InitCommand=function(self) self:y(85):diffusealpha(0):zoom(0.55):shadowlength(2):maxwidth(175) end,
-			OnCommand=function(self) self:sleep(0.85):linear(0.2):diffusealpha(1) end,
-			OffCommand=function(self) self:linear(0.4):diffusealpha(0) end
+			InitCommand=function(self) self:y(85):zoom(0.55):shadowlength(2):maxwidth(175) end
 		},
 		Def.BitmapText {
 			File = "_z 36px shadowx",
 			Name="ScorePercent",
 			Text="0.00%",
-			InitCommand=function(self) self:y(100):diffusealpha(0):zoom(0.55):shadowlength(2):maxwidth(175):diffusebottomedge(PlayerColor(player)) end,
-			OnCommand=function(self) self:sleep(0.6):linear(0.2):diffusealpha(1) end,
-			OffCommand=function(self) self:linear(0.4):diffusealpha(0) end
+			InitCommand=function(self) self:y(100):zoom(0.55):shadowlength(2):maxwidth(175):diffusebottomedge(PlayerColor(player)) end
 		}
 	}
 }

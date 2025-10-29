@@ -45,6 +45,8 @@ end
 
 return Def.ActorFrame{
 	InitCommand=function(self) self:y(-1) if IsUsingWideScreen() and hasAvatar(player) then self:x(player == PLAYER_1 and 48 or -48) end  c = self:GetChildren() end,
+	OnCommand=function(self) self:addx(player == PLAYER_1 and -SCREEN_WIDTH or SCREEN_WIDTH):decelerate(0.75):addx(player == PLAYER_2 and -SCREEN_WIDTH or SCREEN_WIDTH) end,
+	OffCommand=function(self) self:accelerate(0.75):addx(player == PLAYER_1 and -SCREEN_WIDTH or SCREEN_WIDTH) end,
 	CurrentSongChangedMessageCommand=function(self) if not courseMode then self:RunCommandsRecursively( function(self) self:stoptweening() end ):playcommand("Set") end end,
 	CurrentCourseChangedMessageCommand=function(self) if courseMode then self:RunCommandsRecursively( function(self) self:stoptweening() end ):playcommand("Set")  end end,
 	["CurrentSteps".. pname(player) .."ChangedMessageCommand"]=function(self) if not courseMode then self:RunCommandsRecursively( function(self) self:stoptweening() end ):playcommand("Set")  end end,
@@ -68,39 +70,34 @@ return Def.ActorFrame{
 		Name="Jumps",
 		InitCommand=function(self) self:x(-127+100):diffusealpha(0):maxwidth(22) end,
 		SelectMenuOpenedMessageCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(1) end,
-		SelectMenuClosedMessageCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(0) end,
-		OffCommand=function(self) self:stoptweening():linear(0.12):diffusealpha(0) end
+		SelectMenuClosedMessageCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(0) end
 	},
 	Def.BitmapText {
 		File = "smallnumbers",
 		Name="Holds",
 		InitCommand=function(self) self:x(-102+100):diffusealpha(0):maxwidth(22) end,
 		SelectMenuOpenedMessageCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(1) end,
-		SelectMenuClosedMessageCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(0) end,
-		OffCommand=function(self) self:stoptweening():linear(0.12):diffusealpha(0) end
+		SelectMenuClosedMessageCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(0) end
 	},
 	Def.BitmapText {
 		File = "smallnumbers",
 		Name="Mines",
 		InitCommand=function(self) self:x(-77+100):diffusealpha(0):maxwidth(22) end,
 		SelectMenuOpenedMessageCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(1) end,
-		SelectMenuClosedMessageCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(0) end,
-		OffCommand=function(self) self:stoptweening():linear(0.12):diffusealpha(0) end
+		SelectMenuClosedMessageCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(0) end
 	},
 	Def.BitmapText {
 		File = "smallnumbers",
 		Name="Hands",
 		InitCommand=function(self) self:x(-52+100):diffusealpha(0):maxwidth(22) end,
 		SelectMenuOpenedMessageCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(1) end,
-		SelectMenuClosedMessageCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(0) end,
-		OffCommand=function(self) self:stoptweening():linear(0.12):diffusealpha(0) end
+		SelectMenuClosedMessageCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(0) end
 	},
 	Def.BitmapText {
 		File = "smallnumbers",
 		Name="Rolls",
 		InitCommand=function(self) self:x(-27+100):diffusealpha(0):maxwidth(22) end,
 		SelectMenuOpenedMessageCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(1) end,
-		SelectMenuClosedMessageCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(0) end,
-		OffCommand=function(self) self:stoptweening():linear(0.12):diffusealpha(0) end
+		SelectMenuClosedMessageCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(0) end
 	}
 }
