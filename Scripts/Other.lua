@@ -139,12 +139,23 @@ function EnabledAndProfile(pn)
 	return GAMESTATE:IsPlayerEnabled(pn) and (not isEtterna() and MEMCARDMAN:GetCardState(pn) ~= 'MemoryCardState_none' or false)
 end
 
+function HumanAndUSBReady(pn)
+	return GAMESTATE:IsHumanPlayer(pn) and (not isEtterna() and MEMCARDMAN:GetCardState(pn) == 'MemoryCardState_ready' or false)
+end
+
 function EnabledAndUSBReady(pn)
-	if isEtterna() then
-		return false
-	else
-		return GAMESTATE:IsPlayerEnabled(pn) and MEMCARDMAN:GetCardState(pn) == 'MemoryCardState_ready'
+	return GAMESTATE:IsPlayerEnabled(pn) and (not isEtterna() and MEMCARDMAN:GetCardState(pn) == 'MemoryCardState_ready' or false)
+end
+
+function USBReady(pn)
+	return not isEtterna() and MEMCARDMAN:GetCardState(pn) == 'MemoryCardState_ready' or false
+end
+
+function AnyUSBReady()
+	for pn in ivalues({PLAYER_1,PLAYER_2}) do
+		if USBReady(pn) then return true end
 	end
+	return false
 end
 
 function GetDisplayNameFromProfileOrMemoryCard(pn)
@@ -288,8 +299,8 @@ function hasAvatar(pn)
 	end
 end
 
-function isStepMania()
-	return ProductFamily() == "StepMania"
+function isStepMania(version)
+	if version then return ProductFamily() == "StepMania" and VersionDateCheck(version) else return ProductFamily() == "StepMania" end
 end
 
 function isOldStepMania()
@@ -810,4 +821,49 @@ function PreferredSampleRate()
 			end
 		end
 	}
+end
+
+function GetProfileToEdit(player)
+	local ret = {
+		Name = "GetProfileToEdit"..(player and pname(player) or "P0"),
+		Choices = {"No USB Detected"},
+		LayoutType = "ShowAllInRow",
+		SelectType = "SelectMultiple",
+		OneChoiceForAllPlayers = true,
+		ExportOnChange = false,
+		LoadSelections = function() end,
+		SaveSelections = function(self)
+			local pname = self.Name:sub(-2)
+			if pname == "P0" then
+				SOUND:PlayOnce(THEME:GetPathS("Common","Start"))
+				setenv("EditUSBProfile",player)						
+				SCREENMAN:GetTopScreen():SetNextScreenName( "ScreenOptionsService" )
+				SCREENMAN:GetTopScreen():StartTransitioningScreen("SM_GoToNextScreen")
+			else
+				local player = pname == "P1" and PLAYER_1 or PLAYER_2
+				if USBReady(player) then
+					SOUND:PlayOnce(THEME:GetPathS("Common","Start"))
+					setenv("EditUSBProfile",player)						
+					SCREENMAN:GetTopScreen():SetNextScreenName( "ScreenOptionsCustomizeProfile" )
+					SCREENMAN:GetTopScreen():StartTransitioningScreen("SM_GoToNextScreen")
+				else
+					SOUND:PlayOnce(THEME:GetPathS("Common","invalid"))
+				end
+			end
+		end,
+		GenChoices= function(self)
+			GAMESTATE:LoadProfiles()
+			local pname = self.Name:sub(-2)
+			if pname == "P0" then
+				self.Choices={"Exit"}
+			else
+				local player = pname == "P1" and PLAYER_1 or PLAYER_2
+				local output = PROFILEMAN:GetProfile(player):GetDisplayName()
+				if output == "" then output = "NoName" end
+				self.Choices={output}
+			end
+		end
+	}
+	if not player or USBReady(player) then ret:GenChoices() end
+	return ret
 end

@@ -13,9 +13,18 @@
 -- 4.1  The L/R indicators
 -- 5.  The Menu Fader
 
-local profile = GAMESTATE:GetEditLocalProfile()
-local master = GAMESTATE:GetMasterPlayerNumber()
-local profile_id = GAMESTATE:GetEditLocalProfileID()
+local profile,master,profile_id
+
+if getenv("EditUSBProfile") then
+	GAMESTATE:LoadProfiles()
+	master = getenv("EditUSBProfile")
+	profile = PROFILEMAN:GetProfile(master)
+	profile_id = nil
+else
+	profile = GAMESTATE:GetEditLocalProfile()
+	master = GAMESTATE:GetMasterPlayerNumber()
+	profile_id = GAMESTATE:GetEditLocalProfileID()
+end
 
 -- 1.  The Numpad
 -- This is what sets up how the numpad looks.  See Scripts/04 NumPadEntry.lua
@@ -122,7 +131,7 @@ if #char_list > 0 then
 		list = char_list
 	}
 end
-if isOutFox() then
+if isOutFox() and profile_id then
 	menu_items[#menu_items+1] = {
 		name = "avatimg_edit",
 		item_type = "menu",
@@ -187,9 +196,15 @@ local function update_list_cursor()
 end
 
 local function exit_screen(newscreen)
-	PROFILEMAN:SaveLocalProfile(profile_id)
 	if newscreen then
 		SCREENMAN:GetTopScreen():SetNextScreenName( newscreen )
+	else
+		if profile_id then
+			PROFILEMAN:SaveLocalProfile(profile_id)
+		else
+			GAMESTATE:SaveProfiles()
+			SCREENMAN:GetTopScreen():SetNextScreenName( "ScreenOptionsManageUSBProfiles" )
+		end
 	end
 	SCREENMAN:GetTopScreen():StartTransitioningScreen("SM_GoToNextScreen")
 	SCREENMAN:PlayStartSound()
@@ -499,7 +514,7 @@ for i, item in ipairs(menu_items) do
 	}
 end
 
-local AvI = isOutFox() and LoadModule("Config.Load.lua")( "AvatarImage", "/Save/LocalProfiles/"..profile_id.."/OutFoxPrefs.ini" ) or false
+local AvI = (isOutFox() and profile_id) and LoadModule("Config.Load.lua")( "AvatarImage", "/Save/LocalProfiles/"..profile_id.."/OutFoxPrefs.ini" ) or false
 local ProfileImage = AvI and AvI or THEME:GetPathG("UserProfile","generic icon")
 
 args[#args+1] = Def.ActorFrame{
@@ -513,24 +528,24 @@ args[#args+1] = Def.ActorFrame{
 	},
     Def.Sprite{
 		Condition=isOutFox(),
-        InitCommand=function(self) self:Load( ProfileImage ) end,
+        InitCommand=function(self) self:Load( ProfileImage ):visible(profile_id ~= nil) end,
         OnCommand=function(self) self:xy( 38, 136 ):halign(0):setsize(96,96) end
     },
 	Def.BitmapText{
 		Font = "Common Normal",
-		Text = "Profile: "..profile:GetDisplayName(),
-		OnCommand=function(self) self:xy( isOutFox() and 150 or 50, 100 ):halign(0):shadowlength(3) end,
+		Text = (profile_id and "" or "USB ").."Profile: "..profile:GetDisplayName(),
+		OnCommand=function(self) self:xy( (isOutFox() and profile_id) and 150 or 50, 100 ):halign(0):shadowlength(3) end,
 		ChangeProfileMessageCommand=function(self) self:settext("Profile: "..profile:GetDisplayName()) end
 	},
 	Def.BitmapText{
 		Font = "Common Normal",
 		Text = "GUID: "..profile:GetGUID(),
-		OnCommand=function(self) self:xy( isOutFox() and 150 or 50, 136 ):halign(0):shadowlength(3) end
+		OnCommand=function(self) self:xy( (isOutFox() and profile_id) and 150 or 50, 136 ):halign(0):shadowlength(3) end
 	},
 	Def.BitmapText{
 		Font = "Common Normal",
 		Text = Screen.String("TotalTime").. ": "..SecondsToHHMMSS(profile:GetTotalGameplaySeconds()),
-		OnCommand=function(self) self:xy( isOutFox() and 150 or 50, 172 ):halign(0):shadowlength(3) end
+		OnCommand=function(self) self:xy( (isOutFox() and profile_id) and 150 or 50, 172 ):halign(0):shadowlength(3) end
 	}
 }
 
