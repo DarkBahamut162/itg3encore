@@ -544,6 +544,7 @@ function HasKeysounds(Step)
 end
 
 function CheckNullMeasure(Step)
+	if not Step then return false end
 	local filePath = Step:GetFilename():lower()
 	local check = filePath:sub(-3):sub(2,2) == "m" and filePath:sub(-3):sub(1,1) ~= "s"
 	if check then else return false end
