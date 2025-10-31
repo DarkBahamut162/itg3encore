@@ -335,6 +335,8 @@ local t = Def.ActorFrame{
 	end
 }
 
+if ThemePrefs.Get("ShowGameplaySeconds") then t[#t+1] = loadfile(THEME:GetPathB("ScreenGameplay","overlay/Time"))() end
+
 for pn in ivalues(GAMESTATE:GetEnabledPlayers()) do
 	if isOni() and not isLifeline(pn) or isSurvival(pn) then t[#t+1] = loadfile(THEME:GetPathB("ScreenGameplay","overlay/DeltaSeconds"))(pn) end
 	t[#t+1] = loadfile(THEME:GetPathB("ScreenGameplay","overlay/FCSplash"))(pn)

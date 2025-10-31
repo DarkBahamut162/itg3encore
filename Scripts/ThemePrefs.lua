@@ -101,6 +101,11 @@ local Prefs = {
 		Choices = { OptionNameString('Off'), OptionNameString('On') },
 		Values = { false, true }
 	},
+	ShowGameplaySeconds = {
+		Default = false,
+		Choices = { OptionNameString('Off'), OptionNameString('On') },
+		Values = { false, true }
+	},
 	ShowGameplaySpeed = {
 		Default = false,
 		Choices = { OptionNameString('Off'), OptionNameString('On') },

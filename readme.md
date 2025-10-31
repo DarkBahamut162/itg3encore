@@ -58,6 +58,8 @@ Shows stepchart's Techniques.
 Have the Player Score animate instead of instantly updating
 - **AnimateSongTitle:**
 Have the Song Title scroll during GamePlay (not possible on d3d)
+- **ShowGameplaySeconds**
+Ability to show current Seconds during GamePlay.
 - **ShowGameplaySpeed:**
 Ability to show current Speed and Mod during GamePlay. Also enables modifying said speed mods during GamePlay
   - Hold **SELECT** and press **LEFT**/**RIGHT** or press either EffectButtons on their own
