@@ -240,6 +240,7 @@ function SongMods()
 	end
 
 	options = addToOutput(options,"12,13,14,7,BGC,M,A,15,19,28,30,S,EB,25",",")
+	if isITGmania(20250327) then add2 = addToOutput(add2,",HLT",",") end
 
 	if isRegular() then
 		if HasLuaCheck() then
