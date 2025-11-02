@@ -312,12 +312,18 @@ local function SwitchView(pn)
 end
 
 local checkUpdate = false
+local ctrlHeld = false
 
 local InputHandler = function(event)
+	if event.type == "InputEventType_FirstPress" then
+		if string.find(event.DeviceInput.button,"ctrl") and not ctrlHeld then ctrlHeld = true end
+	elseif event.type == "InputEventType_Release" then
+		if string.find(event.DeviceInput.button,"ctrl") and ctrlHeld then ctrlHeld = false end
+	end
 	if not event.PlayerNumber or not event.button then return false end
 	if not GAMESTATE:IsHumanPlayer(event.PlayerNumber) then return false end
 	if offsetInfo == nil or offsetInfo[event.PlayerNumber] == nil or #offsetInfo[event.PlayerNumber] == 0 or not getenv("EvalCombo"..pname(event.PlayerNumber)) then return false end
-	if event.type == "InputEventType_FirstPress" then
+	if not ctrlHeld and event.type == "InputEventType_FirstPress" then
 		if event.GameButton == "MenuLeft" or event.GameButton == "MenuRight" then
 			if event.GameButton == "MenuLeft" then
 				view[event.PlayerNumber] = view[event.PlayerNumber] - 1

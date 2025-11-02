@@ -16,7 +16,7 @@ if enableOffsets then
 		judgments[player] = {}
 		offsetdata[player] = {}
 		for i=1,GAMESTATE:GetCurrentStyle(player):ColumnsPerPlayer() do
-			judgments[player][i] = { ProW1=0, ProW2=0, ProW3=0, ProW4=0, ProW5=0, W1=0, W2=0, W3=0, W4=0, W5=0, Miss=0 }
+			judgments[player][i] = { ProW0=0, ProW1=0, ProW2=0, ProW3=0, ProW4=0, ProW5=0, W0=0, W1=0, W2=0, W3=0, W4=0, W5=0, Miss=0 }
 		end
 	end
 end
@@ -305,19 +305,19 @@ local t = Def.ActorFrame{
 		if params.Player == params.Player and not string.find(params.TapNoteScore,"Checkpoint") and not string.find(params.TapNoteScore,"None") and params.TapNoteScore ~= "TapNoteScore_" and enableOffsets then
 			local player = params.Player
 			if params.Notes then
+				local JudgeScale = isOutFoxV(20230624) and GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Preferred"):JudgeScale() or 1
+				local W0 = 0.0135*timingChange[timing]*JudgeScale
+				local Wadd = (isOpenDDR() or isEtterna("0.72")) and 0.0000 or PREFSMAN:GetPreference("TimingWindowAdd")
+				W0 = W0 + Wadd
 				for i,col in pairs(params.Notes) do
-					local tns = ToEnumShortString(params.TapNoteScore)
-					if tns and tns ~= "" then judgments[player][i][tns] = judgments[player][i][tns] + 1 end
+					local tns = ToEnumShortString(col:GetTapNoteResult():GetTapNoteScore())
+					if tns == "W1" then tns = math.abs(col:GetTapNoteResult():GetTapNoteOffset()) <= W0 and "W0" or "W1" end
+					if tns and tns ~= "" and tns ~= "None" then judgments[player][i][tns] = judgments[player][i][tns] + 1 end
 				end
 				if params.TapNoteOffset then
 					local vStats = STATSMAN:GetCurStageStats():GetPlayerStageStats( player )
 					local time = GAMESTATE:IsCourseMode() and vStats:GetAliveSeconds() or GAMESTATE:GetCurMusicSeconds()
 					local noff = params.TapNoteScore == "TapNoteScore_Miss" and "Miss" or params.TapNoteOffset
-
-					local JudgeScale = isOutFoxV(20230624) and GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Preferred"):JudgeScale() or 1
-					local W0 = 0.0135*timingChange[timing]*JudgeScale
-					local Wadd = (isOpenDDR() or isEtterna("0.72")) and 0.0000 or PREFSMAN:GetPreference("TimingWindowAdd")
-					W0 = W0 + Wadd
 					local WX = params.TapNoteScore == "TapNoteScore_W1" and (math.abs(params.TapNoteOffset) <= W0 and "TapNoteScore_W0" or "TapNoteScore_W1" ) or params.TapNoteScore
 
 					local faplus = getenv("SetScoreFA"..pname(player))
