@@ -13,8 +13,6 @@ local currentMini = 1-math.round(GAMESTATE:GetPlayerState(player):GetPlayerOptio
 local currentTiny = 1-math.round(GAMESTATE:GetPlayerState(player):GetPlayerOptions(mlevel):Tiny()*50) / 100
 currentMini = currentMini * currentTiny * WideScreenDiff()
 
-local style = GAMESTATE:GetCurrentStyle()
-
 if tilt > 0 then
 	currentMini = currentMini * scale(tilt,0,1,1,0.9)
 	add = add + math.abs(scale(tilt,0,1,0,-45)/stretch)
@@ -24,7 +22,7 @@ else
 end
 
 local filterAlpha = tonumber(getenv("ScreenFilter"..pname(player)) or 0)
-local filterWidth = style:GetWidth(player)
+local filterWidth = GAMESTATE:GetCurrentStyle():GetWidth(player)
 local currentTick = 1
 
 local faplus = getenv("SetScoreFA"..pname(player)) or false

@@ -221,11 +221,10 @@ function GameplayMarginsFix(enabled_players,styletype)
 end
 
 function NotefieldZoom()
-	local style = GAMESTATE:GetCurrentStyle()
 	local leftPX, centerPX, rightPX = GameplayMarginsFix()
 	local screen_space = Center1Player() and SCREEN_WIDTH or SCREEN_CENTER_X
 	local field_space = screen_space - math.abs(leftPX) - math.abs(rightPX)
-	local style_width = style:GetWidth(GAMESTATE:GetMasterPlayerNumber())
+	local style_width = GAMESTATE:GetCurrentStyle():GetWidth(GAMESTATE:GetMasterPlayerNumber())
 
 	return field_space / style_width
 end
