@@ -127,8 +127,7 @@ return Def.ActorFrame{
 				MESSAGEMAN:Broadcast("W0",{Player=player,W0=W0Counter,W1=W1Counter,WX=WXCounter})
 			end
 
-			if ((GAMESTATE:GetPlayerState(player):GetPlayerController() == 'PlayerController_Autoplay') or
-			(GAMESTATE:GetPlayerState(player):GetPlayerController() == 'PlayerController_Cpu')) and
+			if GAMESTATE:GetPlayerState(player):GetPlayerController() ~= 'PlayerController_Human' and
 			getenv("checkAuto"..pname(player)) then
 				if not isOutFox() then GAMESTATE:ApplyGameCommand('mod,no savescore',player) end
 				setenv("checkFantastics"..pname(player),false)

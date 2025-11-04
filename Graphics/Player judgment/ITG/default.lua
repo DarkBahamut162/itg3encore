@@ -73,6 +73,7 @@ return Def.ActorFrame{
 	OnCommand=function(self)
 		if GAMESTATE:GetCurrentGame():CountNotesSeparately() then GetTrueJudgment(nil,player) end
 		screen = SCREENMAN:GetTopScreen()
+		self:zoom(judgment == "_pop 1x" and 8/9 or 1)
 	end,
 	JudgmentMessageCommand=function(self, param)
 		if param.Player ~= player then return end
@@ -112,10 +113,16 @@ return Def.ActorFrame{
 			end
 			MESSAGEMAN:Broadcast("W0",{Player=player,W0=W0Counter,W1=W1Counter,WX=WXCounter})
 		end
+		if GAMESTATE:GetCurrentGame():CountNotesSeparately() and faplus and iFrame and (IsGame("po-mu") or IsGame("popn")) then
+			if tns == "TapNoteScore_W1" then
+				if math.abs(param.TapNoteOffset) <= W0 then
+					tns = "TapNoteScore_W0"
+					iFrame = TNSFrames[tns]
+				end
+			end
+		end
 
-		if ((GAMESTATE:GetPlayerState(player):GetPlayerController() == 'PlayerController_Autoplay') or
-		(GAMESTATE:GetPlayerState(player):GetPlayerController() == 'PlayerController_Cpu')) and
-		getenv("checkAuto"..pname(player)) then
+		if GAMESTATE:GetPlayerState(player):GetPlayerController() ~= 'PlayerController_Human' and getenv("checkAuto"..pname(player)) then
 			if not isOutFox() then GAMESTATE:ApplyGameCommand('mod,no savescore',player) end
 			setenv("checkFantastics"..pname(player),false)
 			setenv("checkPerfects"..pname(player),false)

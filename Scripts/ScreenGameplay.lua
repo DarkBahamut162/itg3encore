@@ -364,7 +364,7 @@ function GetTrueJudgment(params,player)
 			MESSAGEMAN:Broadcast("W0",{Player=player,W0=W0Counter,W1=W1Counter,WX=WXCounter})
 		end
 	else
-		if params ~= nil then params.TapNoteScore = "TapNoteScore_None" end
+		if params ~= nil and not (IsGame("po-mu") or IsGame("popn")) then params.TapNoteScore = "TapNoteScore_None" end
 	end
 	w1[player] = _w1
 	w2[player] = _w2
