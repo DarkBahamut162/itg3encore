@@ -241,6 +241,7 @@ function SongMods()
 
 	options = addToOutput(options,"12,13,14,7,BGC,M,A,15,19,28,30,S,EB,25",",")
 	if isITGmania(20250327) then add2 = addToOutput(add2,",HLT",",") end
+	if isITGmania(20220612) then add2 = addToOutput(add2,",DTW",",") end
 
 	if isRegular() then
 		if HasLuaCheck() then
@@ -484,7 +485,7 @@ function OptionOrientation()
 			end
 		end,
 		SaveSelections = function(self, list, pn)
-			for i, choice in ipairs(self.Choices) do
+			for i=1,#list do
 				if list[i] then setenv("Rotation"..pname(pn),SaveUserPref(pn, "Rotation", i)) end
 			end
 		end
@@ -581,7 +582,7 @@ function OptionMovePlayerStats()
 			end
 		end,
 		SaveSelections = function(self, list, pn)
-			for i, choice in ipairs(self.Choices) do
+			for i=1,#list do
 				if list[i] then
 					setenv("ShowMovePlayerStats"..pname(pn),SaveUserPref(pn, "ShowMovePlayerStats", i))
 					break
@@ -669,12 +670,42 @@ function OptionShowErrorBar()
 			end
 		end,
 		SaveSelections = function(self, list, pn)
-			for i, choice in ipairs(self.Choices) do
+			for i=1,#list do
 				if list[i] then
 					setenv("ShowErrorBar"..pname(pn),SaveUserPref(pn, "ShowErrorBar", i-1))
 					break
 				end
 			end
+		end
+	}
+	setmetatable(t, t)
+	return t
+end
+
+function OptionDisableTimingWindow()
+	local t = {
+		Name="DisableTimingWindow",
+		LayoutType = "ShowAllInRow",
+		SelectType = "SelectMultiple",
+		OneChoiceForAllPlayers = false,
+		ExportOnChange = false,
+		Choices = { "Fantastic","Excellent","Great","Decent","Way Off" },
+		LoadSelections = function(self, list, pn)
+			local windows = {true,true,true,true,true}
+			local playeroptions = GAMESTATE:GetPlayerState(pn):GetPlayerOptions("ModsLevel_Preferred")
+			local disabledWindows = playeroptions:GetDisabledTimingWindows()
+
+			for w in ivalues(disabledWindows) do windows[tonumber(ToEnumShortString(w):sub(-1))] = false end
+			for i=1,#list do list[i] = not windows[i] end
+		end,
+		SaveSelections = function(self, list, pn)
+			local playeroptions = GAMESTATE:GetPlayerState(pn):GetPlayerOptions("ModsLevel_Preferred")
+			playeroptions:ResetDisabledTimingWindows()
+
+			for i=1,#list do
+				if list[i] then playeroptions:DisableTimingWindow("TimingWindow_W"..i) end
+			end
+			setenv("ShowColumnCues"..pname(pn),SaveUserPref(pn, "ShowColumnCues", total))
 		end
 	}
 	setmetatable(t, t)
@@ -820,7 +851,7 @@ function OptionSetPacemaker()
 			end
 		end,
 		SaveSelections = function(self, list, pn)
-			for i, choice in ipairs(self.Choices) do
+			for i=1,#list do
 				if list[i] then
 					setenv("SetPacemaker"..pname(pn),SaveUserPref(pn, "SetPacemaker", i))
 					break
@@ -885,7 +916,7 @@ function OptionOrientationRestricted()
 			list[2] = getenv("Rotation"..pname(pn)) == 5
 		end,
 		SaveSelections = function(self, list, pn)
-			for i, choice in ipairs(self.Choices) do
+			for i=1,#list do
 				if list[i] then
 					setenv("Rotation"..pname(pn),SaveUserPref(pn, "Rotation", (i-1)*4+1))
 				end
@@ -919,7 +950,7 @@ function OptionSongFrame()
 			list[11] = getenv("SongFrame"..pname(pn)) == "_virtual"
 		end,
 		SaveSelections = function(self, list, pn)
-			for i, choice in ipairs(self.Choices) do
+			for i=1,#list do
 				if list[i] then
 					setenv("SongFrame"..pname(pn),SaveUserPref(pn, "SongFrame", self.Values[i]))
 				end
