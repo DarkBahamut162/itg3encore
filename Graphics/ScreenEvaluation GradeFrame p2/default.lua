@@ -93,13 +93,13 @@ local faplus = getenv("SetScoreFA"..pname(PLAYER_2))
 local c
 
 local width = {
-	["TapNoteScore_W0"] = 265,
-	["TapNoteScore_W1"] = 255,
-	["TapNoteScore_W2"] = 245,
-	["TapNoteScore_W3"] = 235,
-	["TapNoteScore_W4"] = 225,
-	["TapNoteScore_W5"] = 215,
-	["TapNoteScore_Miss"] = 205
+	["TapNoteScore_W0"] = 300,
+	["TapNoteScore_W1"] = 290,
+	["TapNoteScore_W2"] = 280,
+	["TapNoteScore_W3"] = 270,
+	["TapNoteScore_W4"] = 260,
+	["TapNoteScore_W5"] = 250,
+	["TapNoteScore_Miss"] = 240
 }
 local ctrlHeld = false
 local switched = false
@@ -123,13 +123,13 @@ local InputHandler = function(event)
 	if event.PlayerNumber ~= PLAYER_2 then return false end
 	if ctrlHeld and event.type == "InputEventType_FirstPress" then
 		if event.GameButton == "MenuLeft" and not switched then
-			if faplus then c.JudgeFrames:GetChild("W0"):GetChild("W0JudgmentP2"):settext("F+"):addx(5) end
-			c.JudgeFrames:GetChild("W1"):GetChild("W1JudgmentP2"):settext("F")
-			c.JudgeFrames:GetChild("W2"):GetChild("W2JudgmentP2"):settext("E")
-			c.JudgeFrames:GetChild("W3"):GetChild("W3JudgmentP2"):settext("G")
-			c.JudgeFrames:GetChild("W4"):GetChild("W4JudgmentP2"):settext("D")
-			c.JudgeFrames:GetChild("W5"):GetChild("W5JudgmentP2"):settext("W")
-			c.JudgeFrames:GetChild("Miss"):GetChild("MissJudgmentP2"):settext("M")
+			if faplus then c.JudgeFrames:GetChild("W0"):GetChild("W0JudgmentP2"):settext("") end
+			c.JudgeFrames:GetChild("W1"):GetChild("W1JudgmentP2"):settext("")
+			c.JudgeFrames:GetChild("W2"):GetChild("W2JudgmentP2"):settext("")
+			c.JudgeFrames:GetChild("W3"):GetChild("W3JudgmentP2"):settext("")
+			c.JudgeFrames:GetChild("W4"):GetChild("W4JudgmentP2"):settext("")
+			c.JudgeFrames:GetChild("W5"):GetChild("W5JudgmentP2"):settext("")
+			c.JudgeFrames:GetChild("Miss"):GetChild("MissJudgmentP2"):settext("")
 			if faplus then c.JudgeFrames:GetChild("W0"):GetChild("W0ColumnP2"):diffusealpha(1) end
 			c.JudgeFrames:GetChild("W1"):GetChild("W1ColumnP2"):diffusealpha(1)
 			c.JudgeFrames:GetChild("W2"):GetChild("W2ColumnP2"):diffusealpha(1)
@@ -153,7 +153,7 @@ local InputHandler = function(event)
 			end
 			switched = true
 		elseif event.GameButton == "MenuRight" and switched then
-			if faplus then c.JudgeFrames:GetChild("W0"):GetChild("W0JudgmentP2"):settext("FANTASTIC+"):addx(-5) end
+			if faplus then c.JudgeFrames:GetChild("W0"):GetChild("W0JudgmentP2"):settext("FANTASTIC+") end
 			c.JudgeFrames:GetChild("W1"):GetChild("W1JudgmentP2"):settext("FANTASTIC")
 			c.JudgeFrames:GetChild("W2"):GetChild("W2JudgmentP2"):settext("EXCELLENT")
 			c.JudgeFrames:GetChild("W3"):GetChild("W3JudgmentP2"):settext("GREAT")
@@ -240,7 +240,7 @@ return Def.ActorFrame{
 			File="_v 26px bold shadow",
 			Condition=showOffset,
 			Text="average "..average.." | median "..math.round(median,3).." | peak "..peak,
-			InitCommand=function(self) self:x(78*(5/6)*WideScreenDiff()*WideScreenDiff()):maxwidth(300*WideScreenSemiDiff()):y(faplus and -6*WideScreenDiff() or 0) end,
+			InitCommand=function(self) self:x(78*(5/6)*WideScreenDiff()*WideScreenDiff()):maxwidth(300*WideScreenSemiDiff()):y(faplus and -3*WideScreenDiff() or 2*WideScreenDiff()) end,
 			OnCommand=function(self) self:zoomx(0.6*WideScreenDiff()):zoomy(0.4*WideScreenDiff()):diffusealpha(0):sleep(3.60):linear(0.7):diffusealpha(1) end,
 			OffCommand=function(self) self:linear(0.2):diffusealpha(0) end
 		}
@@ -269,7 +269,7 @@ return Def.ActorFrame{
 			Def.BitmapText {
 				Name="W0Column"..PlayerNumberToString(PLAYER_2),
 				File=THEME:GetPathF("ScreenEvaluation","JudgmentLineNumber"),
-				InitCommand=function(self) self:x(130*WideScreenDiff()):diffuse(PlayerColor(PLAYER_2)):horizalign(right):diffusealpha(0):zoom(0.6*WideScreenDiff()) end
+				InitCommand=function(self) self:x(62*WideScreenDiff()):diffuse(PlayerColor(PLAYER_2)):diffusealpha(0):zoom(0.6*WideScreenDiff()) end
 			},
 			Def.RollingNumbers{
 				Font=THEME:GetPathF("ScreenEvaluation","JudgmentLineNumber"),
@@ -300,7 +300,7 @@ return Def.ActorFrame{
 			Def.BitmapText {
 				Name="W1Column"..PlayerNumberToString(PLAYER_2),
 				File=THEME:GetPathF("ScreenEvaluation","JudgmentLineNumber"),
-				InitCommand=function(self) self:x(130*WideScreenDiff()):diffuse(PlayerColor(PLAYER_2)):horizalign(right):diffusealpha(0):zoom(0.6*WideScreenDiff()) end
+				InitCommand=function(self) self:x(65*WideScreenDiff()):diffuse(PlayerColor(PLAYER_2)):diffusealpha(0):zoom(0.6*WideScreenDiff()) end
 			},
 			Def.RollingNumbers{
 				Condition=faplus,
@@ -325,7 +325,7 @@ return Def.ActorFrame{
 			Def.BitmapText {
 				Name="W2Column"..PlayerNumberToString(PLAYER_2),
 				File=THEME:GetPathF("ScreenEvaluation","JudgmentLineNumber"),
-				InitCommand=function(self) self:x(130*WideScreenDiff()):diffuse(PlayerColor(PLAYER_2)):horizalign(right):diffusealpha(0):zoom(0.6*WideScreenDiff()) end
+				InitCommand=function(self) self:x(68*WideScreenDiff()):diffuse(PlayerColor(PLAYER_2)):diffusealpha(0):zoom(0.6*WideScreenDiff()) end
 			},
 			Def.BitmapText {
 				Name="W2Judgment"..PlayerNumberToString(PLAYER_2),
@@ -348,7 +348,7 @@ return Def.ActorFrame{
 			Def.BitmapText {
 				Name="W3Column"..PlayerNumberToString(PLAYER_2),
 				File=THEME:GetPathF("ScreenEvaluation","JudgmentLineNumber"),
-				InitCommand=function(self) self:x(130*WideScreenDiff()):diffuse(PlayerColor(PLAYER_2)):horizalign(right):diffusealpha(0):zoom(0.6*WideScreenDiff()) end
+				InitCommand=function(self) self:x(71*WideScreenDiff()):diffuse(PlayerColor(PLAYER_2)):diffusealpha(0):zoom(0.6*WideScreenDiff()) end
 			},
 			Def.BitmapText {
 				Name="W3Judgment"..PlayerNumberToString(PLAYER_2),
@@ -371,7 +371,7 @@ return Def.ActorFrame{
 			Def.BitmapText {
 				Name="W4Column"..PlayerNumberToString(PLAYER_2),
 				File=THEME:GetPathF("ScreenEvaluation","JudgmentLineNumber"),
-				InitCommand=function(self) self:x(130*WideScreenDiff()):diffuse(PlayerColor(PLAYER_2)):horizalign(right):diffusealpha(0):zoom(0.6*WideScreenDiff()) end
+				InitCommand=function(self) self:x(74*WideScreenDiff()):diffuse(PlayerColor(PLAYER_2)):diffusealpha(0):zoom(0.6*WideScreenDiff()) end
 			},
 			Def.BitmapText {
 				Name="W4Judgment"..PlayerNumberToString(PLAYER_2),
@@ -394,7 +394,7 @@ return Def.ActorFrame{
 			Def.BitmapText {
 				Name="W5Column"..PlayerNumberToString(PLAYER_2),
 				File=THEME:GetPathF("ScreenEvaluation","JudgmentLineNumber"),
-				InitCommand=function(self) self:x(130*WideScreenDiff()):diffuse(PlayerColor(PLAYER_2)):horizalign(right):diffusealpha(0):zoom(0.6*WideScreenDiff()) end
+				InitCommand=function(self) self:x(77*WideScreenDiff()):diffuse(PlayerColor(PLAYER_2)):diffusealpha(0):zoom(0.6*WideScreenDiff()) end
 			},
 			Def.BitmapText {
 				Name="W5Judgment"..PlayerNumberToString(PLAYER_2),
@@ -418,7 +418,7 @@ return Def.ActorFrame{
 			Def.BitmapText {
 				Name="MissColumn"..PlayerNumberToString(PLAYER_2),
 				File=THEME:GetPathF("ScreenEvaluation","JudgmentLineNumber"),
-				InitCommand=function(self) self:x(130*WideScreenDiff()):diffuse(PlayerColor(PLAYER_2)):horizalign(right):diffusealpha(0):zoom(0.6*WideScreenDiff()) end
+				InitCommand=function(self) self:x(80*WideScreenDiff()):diffuse(PlayerColor(PLAYER_2)):diffusealpha(0):zoom(0.6*WideScreenDiff()) end
 			},
 			Def.BitmapText {
 				Name="MissJudgment"..PlayerNumberToString(PLAYER_2),
