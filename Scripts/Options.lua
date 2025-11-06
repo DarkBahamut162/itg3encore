@@ -408,6 +408,7 @@ function InitPlayerOptions()
 		setenv("ShowMovePlayerStats"..pname(pn),LoadUserPrefN(pn, "ShowMovePlayerStats", 3))
 		setenv("SetScoreType"..pname(pn),LoadUserPrefN(pn, "SetScoreType", 2))
 		setenv("ShowErrorBar"..pname(pn),LoadUserPrefN(pn, "ShowErrorBar", 0))
+		if isITGmania(20240307) then setenv("BeatBars"..pname(pn),LoadUserPrefN(pn, "BeatBars", 0)) end
 		if isOutFox(20210300) and GAMESTATE:GetCurrentGame():CountNotesSeparately() then
 			if getenv("SetScoreType"..pname(pn)) == 5 then
 				SCREENMAN:SystemMessage("WIFE3 is bugged if notes are counted separately! "..pname(pn).."'s ScoreType has been reset to Percent!")
