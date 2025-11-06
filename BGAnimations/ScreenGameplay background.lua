@@ -61,6 +61,12 @@ return Def.ActorFrame {
 					end
 				end
 				if SCREENMAN:GetTopScreen():GetChild("Player"..pname(pn)) and SCREENMAN:GetTopScreen():GetChild("Player"..pname(pn)):GetChild("NoteField") then
+					if isITGmania(20240307) then
+						local bits = NumberToBits(getenv("BeatBars"..pname(pn)) or 0,4)
+						local notefield = SCREENMAN:GetTopScreen():GetChild("Player"..pname(pn)):GetChild("NoteField")
+						notefield:SetBeatBars(bits[1] or bits[2] or bits[3] or bits[4])
+						notefield:SetBeatBarsAlpha((bits[4] or bits[3]) and 1 or 0,bits[3] and 0.75 or 0,bits[2] and 0.5 or 0,bits[1] and 0.25 or 0)
+					end
 					local rotationZ = 0
 					local posX = SCREEN_CENTER_X
 					if getenv("Rotation"..pname(pn)) == 2 then
