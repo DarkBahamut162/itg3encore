@@ -2,6 +2,7 @@ return Def.ActorFrame{
 	InitCommand=function(self) self:fov(52.4) end,
 	Def.ActorFrame{
 		InitCommand=function(self) self:x(SCREEN_CENTER_X+10*WideScreenDiff()):y(SCREEN_CENTER_Y+130*WideScreenDiff()):spin():effectmagnitude(60,0,0) end,
+		OnCommand=function(self) self:fov(70) end,
 		loadfile(THEME:GetPathG("_memory","card"))()..{
 			OnCommand=function(self) self:zoom(1.1*WideScreenDiff()):linear(4.9):accelerate(0.25):addx(75*WideScreenDiff()):decelerate(0.25):addx(75*WideScreenDiff()):sleep(4.8):accelerate(0.25):addx(-75*WideScreenDiff()):decelerate(0.25):addx(-75*WideScreenDiff()) end,
 			OffCommand=function(self) self:stoptweening():accelerate(0.5):addx(-SCREEN_WIDTH*1.5) end
