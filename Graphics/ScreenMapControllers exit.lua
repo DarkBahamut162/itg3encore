@@ -1,5 +1,25 @@
+local totalLines = 0
+local currentLine = 0
+local threshold = 0
+
 return Def.ActorFrame{
 	InitCommand=function(self) self:y(-77*WideScreenDiff()) end,
+	OnCommand=function(self)
+		local scroller = SCREENMAN:GetTopScreen():GetChild("LineScroller")
+		totalLines = #scroller:GetChild("Line") + 1
+		threshold = totalLines - 7
+		self:ztest(false):diffusealpha(0)
+	end,
+	MapControllersFocusChangedMessageCommand=function(self, params)
+		if currentLine ~= params.bmt:GetParent().ItemIndex then
+			if currentLine < threshold and params.bmt:GetParent().ItemIndex >= threshold then
+				self:stoptweening():accelerate(0.1):diffusealpha(1)
+			elseif currentLine >= threshold and params.bmt:GetParent().ItemIndex < threshold then
+				self:stoptweening():decelerate(0.1):diffusealpha(0)
+			end
+			currentLine = params.bmt:GetParent().ItemIndex
+		end
+	end,
 	Def.Sprite {
 		Texture = THEME:GetPathG("ScreenOptions","more/moreexit"),
 		Text="Exit",
