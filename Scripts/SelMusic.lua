@@ -63,9 +63,10 @@ function GetScreenSelectMusicHelpText()
 
 	if not IsNetSMOnline() then
 		ret = addToOutput(ret,THEME:GetString("ScreenSelectMusic","SelectButtonAvailableHelpTextAppend"),"::")
-	end
-	if not IsNetSMOnline() and DifficultyChangingAvailable() then
-		ret = addToOutput(ret,THEME:GetString("ScreenSelectMusic","DifficultyChangingAvailableHelpTextAppend"),"::")
+		ret = addToOutput(ret,THEME:GetString("ScreenSelectMusic","CtrlButtonAvailableHelpTextAppend"),"::")
+		if DifficultyChangingAvailable() then
+			ret = addToOutput(ret,THEME:GetString("ScreenSelectMusic","DifficultyChangingAvailableHelpTextAppend"),"::")
+		end
 	end
 	if ModeMenuAvailable() then
 		ret = addToOutput(ret,THEME:GetString("ScreenSelectMusic","SortMenuAvailableHelpTextAppend"),"::")

@@ -101,6 +101,22 @@ local HelpDisplay = isEtterna() and Def.BitmapText {
 	SelectMenuClosedMessageCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(0):zoomx(0.3*WideScreenDiff()) end
 }
 
+local ctrlHeld = { PLAYER_1 = false, PLAYER_2 = false}
+local highscores = { PLAYER_1 = 0, PLAYER_2 = 0}
+
+local InputHandler = function(event)
+	if string.find(event.DeviceInput.button,"ctrl") then
+		local pn = string.find(event.DeviceInput.button,"left") and PLAYER_1 or PLAYER_2
+		if GAMESTATE:IsHumanPlayer(pn) then
+			if event.type == "InputEventType_FirstPress" then
+				if not ctrlHeld[pn] then MESSAGEMAN:Broadcast("ControlMenuOpened"..pname(pn)) end
+			elseif event.type == "InputEventType_Release" then
+				if ctrlHeld[pn] then MESSAGEMAN:Broadcast("ControlMenuClosed"..pname(pn)) end
+			end
+		end
+	end
+end
+
 return Def.ActorFrame{
 	OnCommand=function(self)
 		if isOutFox(20200500) then
@@ -122,6 +138,7 @@ return Def.ActorFrame{
 		elseif isEtterna("0.57") then
 			updateDiscordStatusForMenus()
 		end
+		SCREENMAN:GetTopScreen():AddInputCallback(InputHandler)
 	end,
 	OffCommand = function(self)
 		if isOni() then
@@ -135,8 +152,140 @@ return Def.ActorFrame{
 				if playeroptions:CMod() then GAMESTATE:ApplyGameCommand('mod,'..playeroptions:CMod().."c",pn) end
 			end
 		end
+		SCREENMAN:GetTopScreen():RemoveInputCallback(InputHandler)
 	end,
 
+	Def.ActorFrame{
+		Name="HighscoreListP1",
+		InitCommand=function(self) self:x(SCREEN_LEFT):y(SCREEN_BOTTOM-100*WideScreenDiff()):addx(-SCREEN_WIDTH):player(PLAYER_1):draworder(-2) end,
+		OnCommand=function(self) self:decelerate(0.75):addx(SCREEN_WIDTH) end,
+		OffCommand=function(self) self:accelerate(0.75):addx(-SCREEN_WIDTH) end,
+		ShowCommand=function(self) self:stoptweening():decelerate(0.3):y(SCREEN_BOTTOM-(127+15*math.max(0,math.min(highscores[PLAYER_1]-1,10)))*WideScreenDiff()) end,
+		HideCommand=function(self) self:stoptweening():decelerate(0.3):y(SCREEN_BOTTOM-100*WideScreenDiff()) end,
+		ControlMenuOpenedP1MessageCommand=function(self) ctrlHeld[PLAYER_1] = true self:playcommand((courseMode and GAMESTATE:GetCurrentCourse() or GAMESTATE:GetCurrentSong()) and "Show" or "Hide") end,
+		ControlMenuClosedP1MessageCommand=function(self) ctrlHeld[PLAYER_1] = false self:playcommand("Hide") end,
+		CurrentSongChangedMessageCommand=function(self) if not courseMode and ctrlHeld[PLAYER_1] then if not GAMESTATE:GetCurrentSong() then self:playcommand("Hide") else self:playcommand("Show") end end end,
+		CurrentCourseChangedMessageCommand=function(self) if courseMode and ctrlHeld[PLAYER_1] then if not GAMESTATE:GetCurrentCourse() then self:playcommand("Hide") else self:playcommand("Show") end end end,
+		Def.Sprite {
+			Texture = THEME:GetPathB("ScreenEditMenu","underlay/main"),
+			InitCommand=function(self) self:horizalign(right):vertalign(top):xy(300*WideScreenDiff(),-18*WideScreenDiff()):zoom(WideScreenDiff()) end
+		},
+		Def.BitmapText {
+			File = "_v 26px bold white",
+			InitCommand=function(self) self:maxwidth(500):horizalign(left):vertalign(top):x(20*WideScreenDiff()):y(-4*WideScreenDiff()):shadowlength(0.5):zoom(0.5*WideScreenDiff()) end,
+			CurrentStepsP1ChangedMessageCommand=function(self) if not courseMode then self:playcommand("Update") end end,
+			CurrentStepsChangedMessageCommand=function(self) if not courseMode then self:playcommand("Update") end end,
+			CurrentTrailP1ChangedMessageCommand=function(self) if courseMode then self:playcommand("Update") end end,
+			UpdateCommand=function(self)
+				local song = GAMESTATE:GetCurrentSong()
+				local output = ""
+				if song then
+					local steps = GAMESTATE:GetCurrentSteps(PLAYER_1)
+					if steps then
+						--local machine = PROFILEMAN:GetMachineProfile():GetHighScoreList(song,steps):GetHighScores()
+						local profile = PROFILEMAN:GetProfile(PLAYER_1):GetHighScoreList(song,steps):GetHighScores()
+						highscores[PLAYER_1] = #profile
+						if #profile == 0 then
+							output = "NO HIGHSCORES"
+						else
+							for place,highscore in pairs(profile) do
+								output = addToOutput(output,"#"..place..": "..string.format("%03.2f%%",highscore:GetPercentDP()*100).." | "..highscore:GetName().." | "..highscore:GetDate(),"\n")
+							end
+						end
+						if ctrlHeld[PLAYER_1] then self:GetParent():stoptweening():decelerate(0.3):y(SCREEN_BOTTOM-(127+15*math.max(0,math.min(highscores[PLAYER_1]-1,9)))*WideScreenDiff()) end
+					end
+				elseif courseMode then
+					local course = GAMESTATE:GetCurrentCourse()
+					if course then
+						local trail = GAMESTATE:GetCurrentTrail(PLAYER_1)
+						if trail then
+							--local machine = PROFILEMAN:GetMachineProfile():GetHighScoreList(course,trail):GetHighScores()
+							local profile = PROFILEMAN:GetProfile(PLAYER_1):GetHighScoreList(course,trail):GetHighScores()
+							highscores[PLAYER_1] = #profile
+							if #profile == 0 then
+								output = "NO HIGHSCORES"
+							else
+								for place,highscore in pairs(profile) do
+									output = addToOutput(output,"#"..place..": "..string.format("%03.2f%%",highscore:GetPercentDP()*100).." | "..highscore:GetName().." | "..highscore:GetDate(),"\n")
+								end
+							end
+							if ctrlHeld[PLAYER_1] then self:GetParent():stoptweening():decelerate(0.3):y(SCREEN_BOTTOM-(127+15*math.max(0,math.min(highscores[PLAYER_1]-1,9)))*WideScreenDiff()) end
+						end
+					end
+				else
+					self:playcommand("ControlMenuClosedP1Message")
+				end
+
+				self:settext(output)
+			end
+		}
+	},
+
+	Def.ActorFrame{
+		Name="HighscoreListP2",
+		InitCommand=function(self) self:x(SCREEN_RIGHT):y(SCREEN_BOTTOM-100*WideScreenDiff()):addx(SCREEN_WIDTH):player(PLAYER_2):draworder(-2) end,
+		OnCommand=function(self) self:decelerate(0.75):addx(-SCREEN_WIDTH) end,
+		OffCommand=function(self) self:accelerate(0.75):addx(SCREEN_WIDTH) end,
+		ShowCommand=function(self) self:stoptweening():decelerate(0.3):y(SCREEN_BOTTOM-(127+15*math.max(0,math.min(highscores[PLAYER_2]-1,10)))*WideScreenDiff()) end,
+		HideCommand=function(self) self:stoptweening():decelerate(0.3):y(SCREEN_BOTTOM-100*WideScreenDiff()) end,
+		ControlMenuOpenedP2MessageCommand=function(self) ctrlHeld[PLAYER_2] = true self:playcommand((courseMode and GAMESTATE:GetCurrentCourse() or GAMESTATE:GetCurrentSong()) and "Show" or "Hide") end,
+		ControlMenuClosedP2MessageCommand=function(self) ctrlHeld[PLAYER_2] = false self:playcommand("Hide") end,
+		CurrentSongChangedMessageCommand=function(self) if not courseMode and ctrlHeld[PLAYER_2] then if not GAMESTATE:GetCurrentSong() then self:playcommand("Hide") else self:playcommand("Show") end end end,
+		CurrentCourseChangedMessageCommand=function(self) if courseMode and ctrlHeld[PLAYER_2] then if not GAMESTATE:GetCurrentCourse() then self:playcommand("Hide") else self:playcommand("Show") end end end,
+		Def.Sprite {
+			Texture = THEME:GetPathB("ScreenEditMenu","underlay/main"),
+			InitCommand=function(self) self:horizalign(right):vertalign(top):xy(300*WideScreenDiff(),-18*WideScreenDiff()):zoom(WideScreenDiff()) end
+		},
+		Def.BitmapText {
+			File = "_v 26px bold white",
+			InitCommand=function(self) self:maxwidth(500):horizalign(right):vertalign(top):x(-20*WideScreenDiff()):y(-4*WideScreenDiff()):shadowlength(0.5):zoom(0.5*WideScreenDiff()) end,
+			CurrentStepsP2ChangedMessageCommand=function(self) if not courseMode then self:playcommand("Update") end end,
+			CurrentStepsChangedMessageCommand=function(self) if not courseMode then self:playcommand("Update") end end,
+			CurrentTrailP2ChangedMessageCommand=function(self) if courseMode then self:playcommand("Update") end end,
+			UpdateCommand=function(self)
+				local song = GAMESTATE:GetCurrentSong()
+				local output = ""
+				if song then
+					local steps = GAMESTATE:GetCurrentSteps(PLAYER_2)
+					if steps then
+						--local machine = PROFILEMAN:GetMachineProfile():GetHighScoreList(song,steps):GetHighScores()
+						local profile = PROFILEMAN:GetProfile(PLAYER_2):GetHighScoreList(song,steps):GetHighScores()
+						highscores[PLAYER_2] = #profile
+						if #profile == 0 then
+							output = "NO HIGHSCORES"
+						else
+							for place,highscore in pairs(profile) do
+								output = addToOutput(output,"#"..place..": "..string.format("%03.2f%%",highscore:GetPercentDP()*100).." | "..highscore:GetName().." | "..highscore:GetDate(),"\n")
+							end
+						end
+						if ctrlHeld[PLAYER_2] then self:GetParent():stoptweening():decelerate(0.3):y(SCREEN_BOTTOM-(127+15*math.max(0,math.min(highscores[PLAYER_2]-1,9)))*WideScreenDiff()) end
+					end
+				elseif courseMode then
+					local course = GAMESTATE:GetCurrentCourse()
+					if course then
+						local trail = GAMESTATE:GetCurrentTrail(PLAYER_2)
+						if trail then
+							--local machine = PROFILEMAN:GetMachineProfile():GetHighScoreList(course,trail):GetHighScores()
+							local profile = PROFILEMAN:GetProfile(PLAYER_2):GetHighScoreList(course,trail):GetHighScores()
+							highscores[PLAYER_2] = #profile
+							if #profile == 0 then
+								output = "NO HIGHSCORES"
+							else
+								for place,highscore in pairs(profile) do
+									output = addToOutput(output,"#"..place..": "..string.format("%03.2f%%",highscore:GetPercentDP()*100).." | "..highscore:GetName().." | "..highscore:GetDate(),"\n")
+								end
+							end
+							if ctrlHeld[PLAYER_2] then self:GetParent():stoptweening():decelerate(0.3):y(SCREEN_BOTTOM-(127+15*math.max(0,math.min(highscores[PLAYER_2]-1,9)))*WideScreenDiff()) end
+						end
+					end
+				else
+					self:playcommand("ControlMenuClosedP2Message")
+				end
+
+				self:settext(output)
+			end
+		}
+	},
 	Def.ActorFrame{
 		Name="StepArtistP1",
 		InitCommand=function(self) self:x(SCREEN_LEFT):y(SCREEN_BOTTOM-109*WideScreenDiff()):addx(-SCREEN_WIDTH):player(PLAYER_1):draworder(-2) end,
@@ -155,8 +304,8 @@ return Def.ActorFrame{
 		Def.BitmapText {
 			File = "_v 26px bold white",
 			InitCommand=function(self) self:maxwidth(350):horizalign(left):x(20*WideScreenDiff()):y(2*WideScreenDiff()):shadowlength(0.5):zoom(0.5*WideScreenDiff()) end,
-			CurrentSongChangedMessageCommand=function(self) if not courseMode then if not GAMESTATE:GetCurrentSong() then self:playcommand("SelectMenuClosedMessageCommand") end end end,
-			CurrentCourseChangedMessageCommand=function(self) if courseMode then if not GAMESTATE:GetCurrentCourse() then self:playcommand("SelectMenuClosedMessageCommand") end end end,
+			CurrentSongChangedMessageCommand=function(self) if not courseMode then if not GAMESTATE:GetCurrentSong() then self:playcommand("SelectMenuClosedMessage") end end end,
+			CurrentCourseChangedMessageCommand=function(self) if courseMode then if not GAMESTATE:GetCurrentCourse() then self:playcommand("SelectMenuClosedMessage") end end end,
 			CurrentStepsP1ChangedMessageCommand=function(self) if not courseMode then self:playcommand("Update") end end,
 			CurrentStepsChangedMessageCommand=function(self) if not courseMode then self:playcommand("Update") end end,
 			CurrentTrailP1ChangedMessageCommand=function(self) if courseMode then self:playcommand("Update") end end,
@@ -178,7 +327,7 @@ return Def.ActorFrame{
 						end
 					end
 				else
-					self:playcommand("SelectMenuClosedMessageCommand")
+					self:playcommand("SelectMenuClosedMessage")
 				end
 
 				if output ~= "" then output = "Stepartist: " .. output else output = "Stepartist: Unknown" end
@@ -212,8 +361,8 @@ return Def.ActorFrame{
 		Def.BitmapText {
 			File = "_v 26px bold white",
 			InitCommand=function(self) self:maxwidth(350):horizalign(right):x(-20*WideScreenDiff()):y(2*WideScreenDiff()):shadowlength(0.5):zoom(0.5*WideScreenDiff()) end,
-			CurrentSongChangedMessageCommand=function(self) if not courseMode then if not GAMESTATE:GetCurrentSong() then self:playcommand("SelectMenuClosedMessageCommand") end end end,
-			CurrentCourseChangedMessageCommand=function(self) if courseMode then if not GAMESTATE:GetCurrentCourse() then self:playcommand("SelectMenuClosedMessageCommand") end end end,
+			CurrentSongChangedMessageCommand=function(self) if not courseMode then if not GAMESTATE:GetCurrentSong() then self:playcommand("SelectMenuClosedMessage") end end end,
+			CurrentCourseChangedMessageCommand=function(self) if courseMode then if not GAMESTATE:GetCurrentCourse() then self:playcommand("SelectMenuClosedMessage") end end end,
 			CurrentStepsP2ChangedMessageCommand=function(self) if not courseMode then self:playcommand("Update") end end,
 			CurrentTrailP2ChangedMessageCommand=function(self) if courseMode then self:playcommand("Update") end end,
 			UpdateCommand=function(self)
@@ -234,7 +383,7 @@ return Def.ActorFrame{
 						end
 					end
 				else
-					self:playcommand("SelectMenuClosedMessageCommand")
+					self:playcommand("SelectMenuClosedMessage")
 				end
 
 				if output ~= "" then output = "Stepartist: " .. output else output = "Stepartist: Unknown" end
