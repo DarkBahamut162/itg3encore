@@ -16,7 +16,7 @@ end
 
 local function updateFavorites()
 	if insideFavorites then
-		if not isITGmania() and changed then reloadPreferredSortSM() end
+		if not isITGmania(20230317) and changed then reloadPreferredSortSM() end
 		SCREENMAN:GetTopScreen():GetMusicWheel():ChangeSort(isEtterna() and "SortOrder_Favorites" or "SortOrder_Preferred")
 	else
 		local screen = SCREENMAN:GetTopScreen()
@@ -300,7 +300,7 @@ return Def.ActorFrame{
 		local s = GAMESTATE:GetSortOrder()
 		if s ~= nil then
 			if SortOrderToLocalizedString(s) == "Preferred" or SortOrderToLocalizedString(s) == "Favorites" then
-				if not isITGmania() and changed and not outfoxed then reloadPreferredSortSM() end
+				if not isITGmania(20230317) and changed and not outfoxed then reloadPreferredSortSM() end
 				insideFavorites = true
 				outfoxed = false
 				changed = false
