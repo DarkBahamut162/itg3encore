@@ -40,6 +40,7 @@ return Def.ActorFrame{
 					if enableRounds then
 						local IsMarathon = SongOrCourse:IsMarathon()
 						local IsLong     = SongOrCourse:IsLong()
+						local IsShort    = SongOrCourse:MusicLengthSeconds() < 60
 						
 						if enableTrueRounds then
 							if not steps then steps = GAMESTATE:GetCurrentSteps(GAMESTATE:GetMasterPlayerNumber()) end
@@ -50,6 +51,7 @@ return Def.ActorFrame{
 
 								IsMarathon = trueSeconds > MarathonCutoff
 								IsLong     = trueSeconds > LongCutoff
+								IsShort    = trueSeconds < 60
 							end
 						end
 						if IsMarathon then
@@ -59,7 +61,12 @@ return Def.ActorFrame{
 							output = eventMode and "LONG" or "COUNTS AS 2 ROUNDS"
 							self:diffuseshift():effectcolor1(color("#FFFF00")):effectcolor2(color("#FFFFFF")):effectclock(EC ~= "" and "beat" or "timerglobal")
 						else
-							self:stopeffect()
+							if eventMode and IsShort then 
+								self:diffuseshift():effectcolor1(color("#00FF00")):effectcolor2(color("#FFFFFF")):effectclock(EC ~= "" and "beat" or "timerglobal")
+								output = "SHORT"
+							else
+								self:stopeffect()
+							end
 						end
 					end
 					if IsGame("po-mu") or IsGame("be-mu") then
