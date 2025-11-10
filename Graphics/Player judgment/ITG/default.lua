@@ -39,10 +39,8 @@ local W5 = (isOpenDDR() and 0.142 or PREFSMAN:GetPreference("TimingWindowSeconds
 local W0 = 0.0135*timingChange[timing]*JudgeScale
 local Wadd = (isOpenDDR() or isEtterna("0.72")) and 0.0000 or PREFSMAN:GetPreference("TimingWindowAdd")
 
-if not isEtterna() then
-	W0 = W0 + Wadd
-	W5 = W5 + Wadd
-end
+W0 = W0 + Wadd
+W5 = W5 + Wadd
 
 local W0Counter = getenv("W0"..pname(player)) or 0
 local W1Counter = getenv("W1"..pname(player)) or 0
