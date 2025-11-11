@@ -364,8 +364,8 @@ function InitRotationOptions()
 				setenv("RotationP1",5)
 				setenv("RotationP2",5)
 			else
-				setenv("RotationP1",LoadUserPrefN(PLAYER_1, "Effect", 5))
-				setenv("RotationP2",LoadUserPrefN(PLAYER_2, "Effect", 5))
+				setenv("RotationP1",LoadUserPrefN(PLAYER_1, "Rotation", 5))
+				setenv("RotationP2",LoadUserPrefN(PLAYER_2, "Rotation", 5))
 			end
 		else
 			setenv("RotationP1",1)
