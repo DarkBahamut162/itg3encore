@@ -410,7 +410,7 @@ function InitPlayerOptions()
 		setenv("ShowErrorBar"..pname(pn),LoadUserPrefN(pn, "ShowErrorBar", 0))
 		if isITGmania(20240307) then setenv("BeatBars"..pname(pn),LoadUserPrefN(pn, "BeatBars", 0)) end
 		if isOutFox(20210300) and GAMESTATE:GetCurrentGame():CountNotesSeparately() then
-			if getenv("SetScoreType"..pname(pn)) == 5 then
+			if getenv("SetScoreType"..pname(pn)) == 6 then
 				SCREENMAN:SystemMessage("WIFE3 is bugged if notes are counted separately! "..pname(pn).."'s ScoreType has been reset to Percent!")
 				setenv("SetScoreType"..pname(pn),SaveUserPref(pn, "SetScoreType", 2))
 			end
@@ -599,9 +599,9 @@ end
 function OptionSetScoreType()
 	function GetScoreTypes(etterna)
 		if etterna or (not etterna and (isOutFox(20210300) and GAMESTATE:GetCurrentGame():CountNotesSeparately())) then
-			return { "Score","Percent","EX","SN2","Additive","Subtractive" }
+			return { "Score","Percent","EX","SN2","IIDX","Additive","Subtractive" }
 		else
-			return { "Score","Percent","EX","SN2","WIFE3","Additive","Subtractive" }
+			return { "Score","Percent","EX","SN2","IIDX","WIFE3","Additive","Subtractive" }
 		end
 	end
 
@@ -707,7 +707,6 @@ function OptionDisableTimingWindow()
 			for i=1,#list do
 				if list[i] then playeroptions:DisableTimingWindow("TimingWindow_W"..i) end
 			end
-			setenv("ShowColumnCues"..pname(pn),SaveUserPref(pn, "ShowColumnCues", total))
 		end
 	}
 	setmetatable(t, t)

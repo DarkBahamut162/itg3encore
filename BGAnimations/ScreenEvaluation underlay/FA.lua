@@ -2,6 +2,7 @@ local player = ...
 local scoreType = getenv("SetScoreType"..pname(GAMESTATE:IsHumanPlayer(player) and player or OtherPlayer[player]))
 
 local W0Count = getenv("W0"..pname(player)) or 0
+local W1Count = getenv("W1"..pname(player)) or 0
 local WXCount = getenv("WX"..pname(player)) or 0
 local W0Total = getMaxNotes(player)
 local W0Percent = scale(W0Total/(W0Total+(WXCount-W0Count)),0.5,1.0,0.9,1.0)
@@ -71,6 +72,33 @@ return Def.ActorFrame{
 					Diffuse = PlayerColorSemi(nil),
 				})
 			elseif scoreType == 5 then
+				local stepSize = 1
+				local SongOrCourse = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentCourse() or GAMESTATE:GetCurrentSong()
+				local StepsOrTrail = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentTrail(player) or GAMESTATE:GetCurrentSteps(player)
+				if StepsOrTrail then
+					if IsCourseSecret() or not IsCourseFixed() then
+						stepSize = RadarCategory_Trail(StepsOrTrail,player,"RadarCategory_TapsAndHolds")
+						stepSize = math.max(stepSize + RadarCategory_Trail(StepsOrTrail,player,"RadarCategory_Holds") + RadarCategory_Trail(StepsOrTrail,player,"RadarCategory_Rolls"),1)
+					else
+						stepSize = StepsOrTrail:GetRadarValues(player):GetValue("RadarCategory_TapsAndHolds") or 0
+						stepSize = math.max(stepSize + StepsOrTrail:GetRadarValues(player):GetValue('RadarCategory_Holds') + StepsOrTrail:GetRadarValues(player):GetValue('RadarCategory_Rolls'),1)
+					end
+				end
+				local score = 0
+                local stats = STATSMAN:GetCurStageStats():GetPlayerStageStats(player)
+				local w1 = stats:GetTapNoteScores('TapNoteScore_W1')
+				local w2 = stats:GetTapNoteScores('TapNoteScore_W2')
+				local w3 = stats:GetTapNoteScores('TapNoteScore_W3')
+				local hd = stats:GetHoldNoteScores('HoldNoteScore_Held')
+				local score = ((W0Count*(4/3) + (W1Count+hd) + w2*(2/3) + w3*(2/15)) * 200000 / stepSize) / (4/3)
+				output = math.floor(score)
+				self:settextf("%06d",output) -- SN SCORE
+				self:ClearAttributes()
+				self:AddAttribute(0, {
+					Length = math.max(6-string.len(''..output), 0),
+					Diffuse = PlayerColorSemi(nil),
+				})
+			elseif scoreType == 6 then
 				self:settext(FormatPercentScore(math.max(0,getenv("WIFE3FA"..pname(player))))) -- WIFE3
 			end
 		end,
