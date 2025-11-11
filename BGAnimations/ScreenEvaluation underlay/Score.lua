@@ -1,38 +1,5 @@
 local player = ...
 local scoreType = getenv("SetScoreType"..pname(GAMESTATE:IsHumanPlayer(player) and player or OtherPlayer[player]))
-local enableEPL = ThemePrefs.Get("ExperimentalProfileLevel")
-local Data = nil
-local EXP_STEPS = 0
-local CALC_LV = 1
-local allowed = false
-
-if GAMESTATE:IsHumanPlayer(player) and enableEPL and getenv("EvalCombo"..pname(player)) then
-	local PSS = STATSMAN:GetCurStageStats():GetPlayerStageStats(player)
-	local length = TotalPossibleStepSeconds()
-	if (isEtterna("0.55") and not STATSMAN:GetCurStageStats():Failed() or (not PSS:GetFailed() and PSS:GetAliveSeconds() > length)) then
-		allowed = true
-	end
-
-	local Song = GAMESTATE:GetCurrentSong()
-	local Steps = GAMESTATE:GetCurrentSteps(player)
-	local SPS = tonumber(LoadFromCache(Song,Steps,"StepsPerSecond"))
-	local trueSeconds = tonumber(LoadFromCache(Song,Steps,"TrueSeconds"))
-	EXP_STEPS = math.floor(DP(player)*SPS*100*(trueSeconds/120))
-
-	Data = GetData(player)
-	local CALC_EXP = 0
-	local CALC_NEXT = 0
-
-	while CALC_EXP < Data["EXP"] + EXP_STEPS do
-		CALC_EXP = CALC_EXP + math.pow(2,CALC_LV)
-		CALC_LV = CALC_LV + 1
-	end
-	if CALC_EXP > Data["EXP"] + EXP_STEPS then
-		CALC_LV = CALC_LV - 1
-		CALC_NEXT = CALC_EXP - math.pow(2,CALC_LV)
-	end
-end
-
 local stepSize = 1
 
 if scoreType == 4 or scoreType == 5 then
@@ -116,9 +83,6 @@ return Def.ActorFrame{
 			end
 		end,
 		OnCommand=function(self) self:addx(player == PLAYER_1 and -EvalTweenDistance() or EvalTweenDistance()):sleep(3):decelerate(0.3):addx(player == PLAYER_1 and EvalTweenDistance() or -EvalTweenDistance()) end,
-		OffCommand=function(self)
-			self:accelerate(0.3):addx(player == PLAYER_1 and -EvalTweenDistance() or EvalTweenDistance())
-			if GAMESTATE:IsHumanPlayer(player) and allowed then if UpdateData(player,{["LV"]=CALC_LV,["EXP"]=Data["EXP"]+EXP_STEPS}) then SaveData(player) end end
-		end
+		OffCommand=function(self) self:accelerate(0.3):addx(player == PLAYER_1 and -EvalTweenDistance() or EvalTweenDistance()) end
 	}
 }
