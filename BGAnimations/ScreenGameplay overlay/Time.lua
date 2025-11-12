@@ -16,17 +16,31 @@ if courseMode then
         local seconds = 0
 		local entries = trail:GetTrailEntries()
 		for i, entry in ipairs(entries) do
-			seconds = seconds + (entry:GetSong():GetLastSecond()-entry:GetSong():GetFirstSecond())
-			table.insert(trialSeconds, seconds)
-			table.insert(trialFirstSecond, entry:GetSong():GetFirstSecond())
+            local first = 0
+            if ThemePrefs.Get("UseStepCache") then
+                local steps = GAMESTATE:GetCurrentSteps(master)
+                seconds = seconds + tonumber(LoadFromCache(entry:GetSong(),entry:GetSteps(),"TrueSeconds"))
+                first = tonumber(LoadFromCache(entry:GetSong(),entry:GetSteps(),"TrueFirstSecond"))
+            else
+                seconds = seconds + (entry:GetSong():GetLastSecond()-entry:GetSong():GetFirstSecond())
+                first = entry:GetSong():GetFirstSecond()
+            end
+            table.insert(trialSeconds, seconds)
+            table.insert(trialFirstSecond, first)
 		end
         totalSeconds = seconds
     end
 else
 	local song = GAMESTATE:GetCurrentSong()
 	if song then
-        totalSeconds = song:GetLastSecond()-song:GetFirstSecond()
-        firstSeconds = song:GetFirstSecond()
+        if ThemePrefs.Get("UseStepCache") then
+            local steps = GAMESTATE:GetCurrentSteps(master)
+            totalSeconds = tonumber(LoadFromCache(song,steps,"TrueSeconds"))
+            firstSeconds = tonumber(LoadFromCache(song,steps,"TrueFirstSecond"))
+        else
+            totalSeconds = song:GetLastSecond()-song:GetFirstSecond()
+            firstSeconds = song:GetFirstSecond()
+        end
     end
 end
 if totalSeconds < 0 then totalSeconds = 0 end
