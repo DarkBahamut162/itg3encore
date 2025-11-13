@@ -18,6 +18,7 @@ for pn in ivalues(player) do
 		loadfile(THEME:GetPathG("NoteField","Board Front/ScreenFilter"))(pn),
 		loadfile(THEME:GetPathG("NoteField","Board Front/danger"))(pn)..{ Condition=not isOni() and PREFSMAN:GetPreference("ShowDanger") },
 		loadfile(THEME:GetPathG("NoteField","Board Front/dead"))(pn),
+		loadfile(THEME:GetPathG("NoteField","Board Front/ColumnCues"))(pn),
 		loadfile(THEME:GetPathG("NoteField","Board Front/NullMeasure"))(pn,NMs)..{ Condition=NMcheck and not isOutFoxV043() }
 	}
 end

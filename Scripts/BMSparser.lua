@@ -29,6 +29,7 @@ function BMSParser(steps)
 		local currentMeasure = -1
 		local currentRow = -1
 		local beatData = {}
+		local actualBeatData = {}
 		local holds = {}
 		local lastHold = 0
 		local scratch = 0
@@ -61,6 +62,7 @@ function BMSParser(steps)
 						currentRow = currentRow + 1
 						if row ~= "00" then
 							beat = actualBeat+(currentRow/#rows*4)*(timing[currentMeasure-1] or 1)
+							if actualBeatData[beat] then actualBeatData[beat][#actualBeatData[beat]+1] = tonumber(measure) % 100 else actualBeatData[beat] = {tonumber(measure) % 100} end
 							beatData[beat] = beatData[beat] and beatData[beat] + 1 or 1
 							if filetype ~= "pms" then
 								if tonumber(measure) % 10 == 6 then
@@ -79,6 +81,7 @@ function BMSParser(steps)
 						currentRow = currentRow + 1
 						if row ~= "00" then
 							beat = actualBeat+(currentRow/#rows*4)*(timing[currentMeasure] or 1)
+							if actualBeatData[beat] then actualBeatData[beat][#actualBeatData[beat]+1] = tonumber(measure) % 100 else actualBeatData[beat] = {tonumber(measure) % 100} end
 							local index = FindInTable(row, holds)
 							if index then
 								table.remove(holds, index)
@@ -99,6 +102,6 @@ function BMSParser(steps)
 				end
 			end
 		end
-		return beatData, lastHold, scratch, foot
+		return beatData, lastHold, scratch, foot, actualBeatData
 	end
 end

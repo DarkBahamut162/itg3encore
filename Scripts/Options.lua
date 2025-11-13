@@ -239,7 +239,7 @@ function SongMods()
 		options = addToOutput(options,"10,11",",")
 	end
 
-	options = addToOutput(options,"12,13,14,7,BGC,M,A,15,19,28,30,S,EB,25",",")
+	options = addToOutput(options,"12,13,14,7,BGC,M,A,15,19,28,30,S,EB,CC,25",",")
 	if isITGmania(20250327) then add2 = addToOutput(add2,",HLT",",") end
 	if isITGmania(20220612) then add2 = addToOutput(add2,",DTW",",") end
 	if isITGmania(20240307) then add2 = addToOutput(add2,",BB",",") end
@@ -269,7 +269,7 @@ function SongMods()
 	if isVS() then
 		options = addToOutput(options,"28,21"..add2,",")
 	elseif GAMESTATE:IsCourseMode() then
-		options = addToOutput(options,"28,S,EB,20,"..add.."P,29,21"..add2,",")
+		options = addToOutput(options,"28,S,EB,CC,20,"..add.."P,29,21"..add2,",")
 	end
 
 	if not (IsGame("pump") or GAMESTATE:IsCourseMode()) then options = addToOutput(options,"31",",") end
@@ -408,6 +408,7 @@ function InitPlayerOptions()
 		setenv("ShowMovePlayerStats"..pname(pn),LoadUserPrefN(pn, "ShowMovePlayerStats", 3))
 		setenv("SetScoreType"..pname(pn),LoadUserPrefN(pn, "SetScoreType", 2))
 		setenv("ShowErrorBar"..pname(pn),LoadUserPrefN(pn, "ShowErrorBar", 0))
+		setenv("ShowColumnCues"..pname(pn),LoadUserPrefN(pn, "ShowColumnCues", 0))
 		if isITGmania(20240307) then setenv("BeatBars"..pname(pn),LoadUserPrefN(pn, "BeatBars", 0)) end
 		if isOutFox(20210300) and GAMESTATE:GetCurrentGame():CountNotesSeparately() then
 			if getenv("SetScoreType"..pname(pn)) == 6 then
@@ -722,6 +723,35 @@ function NumberToBits(num,bits)
 		t[b] = t[b] == 1
     end
     return t
+end
+
+function OptionShowColumnCues()
+	function Range()
+		if isOpenDDR() then
+			return { "Preview","Miss","Decent","Great","Excellent","Fantastic" }
+		else
+			return { "Preview","Miss","Way Off","Decent","Great","Excellent","Fantastic" }
+		end
+	end
+	local t = {
+		Name="ShowColumnCues",
+		LayoutType = "ShowAllInRow",
+		SelectType = "SelectMultiple",
+		OneChoiceForAllPlayers = false,
+		ExportOnChange = false,
+		Choices = Range(),
+		LoadSelections = function(self, list, pn)
+			local bits = NumberToBits(getenv("ShowColumnCues"..pname(pn)) or 0,isOpenDDR() and 6 or 7)
+			for i=1,#list do list[i] = bits[8-i] end
+		end,
+		SaveSelections = function(self, list, pn)
+			local total = 0
+			for i=1,#list do if list[i] then total = total + math.pow(2,i-1) end end
+			setenv("ShowColumnCues"..pname(pn),SaveUserPref(pn, "ShowColumnCues", total))
+		end
+	}
+	setmetatable(t, t)
+	return t
 end
 
 function OptionBeatBars()

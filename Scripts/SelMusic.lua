@@ -1,4 +1,4 @@
-local cacheVersion = "0.42"
+local cacheVersion = "0.43"
 local stepCache = {}
 local typeList = {"avi","f4v","flv","mkv","mp4","mpeg","mpg","mov","ogv","webm","wmv"}
 Master,P1,P2={},{},{}
@@ -649,11 +649,14 @@ function cacheStep(Song,Step)
 	local delays = timingData:GetDelays()
 	local warps = timingData:GetWarps()
 	local IsJudgableAtBeat = false
+	local firstArrow = 0
+	local firstArrowCheck = false
 
 	local noteData = isOutFoxV043() and Step:GetNoteData() or Song:GetNoteData(chartint)
 	for _,v in pairs( noteData ) do
 		local isStop, isDelay, isWarp = false, false, false
 		if currentBeat < v[1] then
+			if currentBeat ~= 0 and not firstArrowCheck then firstArrowCheck = true end
 			currentBeat = v[1]
 			currentNotes = 0
 			lastSec = currentSec
@@ -744,8 +747,12 @@ function cacheStep(Song,Step)
 			["Version"] = cacheVersion,
 			["StepCounter"] = table.concat(noteCounter,"_"),
 			["StepsPerSecond"] = total2,
+			["TrueFirstBeat"] = firstBeat,
+			["TrueLastBeat"] = lastBeat,
 			["TrueBeats"] = lastBeat-firstBeat,
 			["TrueMaxBPM"] = maxBPM,
+			["TrueFirstSecond"] = Step:GetTimingData():GetElapsedTimeFromBeat(firstBeat),
+			["TrueLastSecond"] = Step:GetTimingData():GetElapsedTimeFromBeat(lastBeat),
 			["TrueSeconds"] = Step:GetTimingData():GetElapsedTimeFromBeat(lastBeat)-Step:GetTimingData():GetElapsedTimeFromBeat(firstBeat)
 		}
 
@@ -762,8 +769,12 @@ function cacheStep(Song,Step)
 			LoadModule("Config.Save.lua")("Version",cacheVersion,file)
 			LoadModule("Config.Save.lua")("StepCounter",table.concat(noteCounter,"_"),file)
 			LoadModule("Config.Save.lua")("StepsPerSecond",total2,file)
+			LoadModule("Config.Save.lua")("TrueFirstBeat",firstBeat,file)
+			LoadModule("Config.Save.lua")("TrueLastBeat",lastBeat,file)
 			LoadModule("Config.Save.lua")("TrueBeats",lastBeat-firstBeat,file)
 			LoadModule("Config.Save.lua")("TrueMaxBPM",maxBPM,file)
+			LoadModule("Config.Save.lua")("TrueFirstSecond",Step:GetTimingData():GetElapsedTimeFromBeat(firstBeat),file)
+			LoadModule("Config.Save.lua")("TrueLastSecond",Step:GetTimingData():GetElapsedTimeFromBeat(lastBeat),file)
 			LoadModule("Config.Save.lua")("TrueSeconds",Step:GetTimingData():GetElapsedTimeFromBeat(lastBeat)-Step:GetTimingData():GetElapsedTimeFromBeat(firstBeat),file)
 			if stepType[2] == "Bm" then
 				if #noteCounter == 7 or #noteCounter == 14 then
@@ -817,6 +828,7 @@ function cacheStepSM(Song,Step)
 	local beats = {}
 	local chaosCount = 0
 	local maxVoltage = 0
+	local firstRow
 
 	if chart then
 		chart = split("\n,\n",chart)
@@ -830,6 +842,7 @@ function cacheStepSM(Song,Step)
 				beat = (currentMeasure*4)+(currentRow/#rows*4)
 				local _, count = string.gsub(row, "[L124]", "")
 				if count > 0 then
+					if not firstRow then firstRow = row end
 					local isStop, isDelay, isWarp = false, false, false
 					currentBPM = math.round(timingData:GetBPMAtBeat(beat),3)
 					if stops and #stops > 0 then isStop,stops = HasStopAtBeat(beat,stops) end
@@ -892,10 +905,15 @@ function cacheStepSM(Song,Step)
 			local file = getStepCacheFile(Step)
 			local list = {
 				["Version"] = cacheVersion,
+				["FirstRow"] = firstRow,
 				["StepCounter"] = table.concat(noteCounter,"_"),
 				["StepsPerSecond"] = total2,
+				["TrueFirstBeat"] = firstBeat,
+				["TrueLastBeat"] = lastBeat,
 				["TrueBeats"] = lastBeat-firstBeat,
 				["TrueMaxBPM"] = maxBPM,
+				["TrueFirstSecond"] = firstSecond,
+				["TrueLastSecond"] = lastSecond,
 				["TrueSeconds"] = lastSecond-firstSecond
 			}
 
@@ -908,10 +926,15 @@ function cacheStepSM(Song,Step)
 				LoadModule("Config.SaveAll.lua")(list,file)
 			else
 				LoadModule("Config.Save.lua")("Version",cacheVersion,file)
+				LoadModule("Config.Save.lua")("FirstRow",firstRow,file)
 				LoadModule("Config.Save.lua")("StepCounter",table.concat(noteCounter,"_"),file)
 				LoadModule("Config.Save.lua")("StepsPerSecond",total2,file)
+				LoadModule("Config.Save.lua")("TrueFirstBeat",firstBeat,file)
+				LoadModule("Config.Save.lua")("TrueLastBeat",lastBeat,file)
 				LoadModule("Config.Save.lua")("TrueBeats",lastBeat-firstBeat,file)
 				LoadModule("Config.Save.lua")("TrueMaxBPM",maxBPM,file)
+				LoadModule("Config.Save.lua")("TrueFirstSecond",firstSecond,file)
+				LoadModule("Config.Save.lua")("TrueLastSecond",lastSecond,file)
 				LoadModule("Config.Save.lua")("TrueSeconds",lastSecond-firstSecond,file)
 				if isEtterna() then
 					LoadModule("Config.Save.lua")("chaosCount",chaosCount,file)
@@ -950,8 +973,8 @@ function cacheStepBMS(Song,Step)
 	local timingData = Step:GetTimingData()
 	local stepsPerSec = {}
 	local noteCounter = {}
-	local rows,lastHold,scratch,foot = BMSParser(Step)
-	local firstBeat = 0
+	local rows,lastHold,scratch,foot,data = BMSParser(Step)
+	local firstBeat = nil
 	local lastBeat = lastHold or 0
 	local currentBPM,checkBPM,checkCount,maxBPM = 0,0,0,0
 	local lastSec = 0
@@ -996,7 +1019,7 @@ function cacheStepBMS(Song,Step)
 
 				local currentSec = timingData:GetElapsedTimeFromBeat(beat)
 				noteCounter[row] = noteCounter[row] + 1
-				if firstBeat > beat then firstBeat = beat end
+				if not firstBeat then firstBeat = beat end
 				if beat > lastBeat then lastBeat = beat end
 
 				if lastSec > 0 then
@@ -1026,12 +1049,19 @@ function cacheStepBMS(Song,Step)
 		local total = calcSPS(stepsPerSec)
 		local total2 = calcSPS(stepsPerSec,total)
 		local file = getStepCacheFile(Step)
+		local data_ = orderedIndex(data)
+		local firstRow = table.concat(data[data_[1]],"_")
 		local list = {
 			["Version"] = cacheVersion,
+			["FirstRow"] = firstRow,
 			["StepCounter"] = table.concat(noteCounter,"_"),
 			["StepsPerSecond"] = total2,
+			["TrueFirstBeat"] = firstBeat,
+			["TrueLastBeat"] = lastBeat,
 			["TrueBeats"] = lastBeat-firstBeat,
 			["TrueMaxBPM"] = maxBPM,
+			["TrueFirstSecond"] = firstSecond,
+			["TrueLastSecond"] = lastSecond,
 			["TrueSeconds"] = lastSecond-firstSecond,
 			["Scratches"] = scratch,
 			["Foots"] = foot
@@ -1046,10 +1076,15 @@ function cacheStepBMS(Song,Step)
 			LoadModule("Config.SaveAll.lua")(list,file)
 		else
 			LoadModule("Config.Save.lua")("Version",cacheVersion,file)
+			LoadModule("Config.Save.lua")("FirstRow",firstRow,file)
 			LoadModule("Config.Save.lua")("StepCounter",table.concat(noteCounter,"_"),file)
 			LoadModule("Config.Save.lua")("StepsPerSecond",total2,file)
+			LoadModule("Config.Save.lua")("TrueFirstBeat",firstBeat,file)
+			LoadModule("Config.Save.lua")("TrueLastBeat",lastBeat,file)
 			LoadModule("Config.Save.lua")("TrueBeats",lastBeat-firstBeat,file)
 			LoadModule("Config.Save.lua")("TrueMaxBPM",maxBPM,file)
+			LoadModule("Config.Save.lua")("TrueFirstSecond",firstSecond,file)
+			LoadModule("Config.Save.lua")("TrueLastSecond",lastSecond,file)
 			LoadModule("Config.Save.lua")("TrueSeconds",lastSecond-firstSecond,file)
 			LoadModule("Config.Save.lua")("Scratches",scratch,file)
 			LoadModule("Config.Save.lua")("Foots",foot,file)
