@@ -62,10 +62,10 @@ local index = 1
 local _switch = THEME:GetMetric("HelpDisplay","TipSwitchTime")
 local _start = GetTimeSinceStart()
 
-local HelpDisplay = isEtterna() and Def.BitmapText {
+local HelpDisplay = isEtterna("0.65") and Def.BitmapText {
 	File=THEME:GetPathF("HelpDisplay","text"),
 	InitCommand=function(self)
-		local s = isOutFox() and THEME:GetString("ScreenSelectMusic", "HelpSelectTextOutFox"..(ThemePrefs.Get("SLFavorites") and "WithSL" or "")) or THEME:GetString("ScreenSelectMusic", "HelpSelectText"..(ThemePrefs.Get("SLFavorites") and "WithSL" or ""))
+		local s = THEME:GetString("ScreenSelectMusic", "HelpSelectText"..(ThemePrefs.Get("SLFavorites") and "WithSL" or ""))
 		_text = split("::",s)
 		self:diffuseshift():effectcolor1(color("#FFFFFF")):effectcolor2(color("#9A9999")):effectperiod(1.5):maxwidth(269):shadowlength(2):queuecommand("Update")
 		self:CenterX():zoomx(0.3*WideScreenDiff()):zoomy(0.6*WideScreenDiff()):diffusealpha(0)
@@ -86,10 +86,10 @@ local HelpDisplay = isEtterna() and Def.BitmapText {
 	SelectMenuOpenedMessageCommand=function(self) self:bounceend(0.2):diffusealpha(1):zoomx(0.6*WideScreenDiff()) end,
 	SelectMenuClosedMessageCommand=function(self) self:linear(0.2):diffusealpha(0):zoomx(0.3*WideScreenDiff()) end
 	} or Def.HelpDisplay {
-	Condition=not isEtterna(),
+	Condition=not isEtterna("0.65"),
 	File=THEME:GetPathF("HelpDisplay", "text"),
 	InitCommand=function(self)
-		local s = isOutFox() and THEME:GetString("ScreenSelectMusic", "HelpSelectTextOutFox"..(ThemePrefs.Get("SLFavorites") and "WithSL" or "")) or THEME:GetString("ScreenSelectMusic", "HelpSelectText"..(ThemePrefs.Get("SLFavorites") and "WithSL" or ""))
+		local s = isOutFox(20230000) and THEME:GetString("ScreenSelectMusic", "HelpSelectTextOutFox"..(ThemePrefs.Get("SLFavorites") and "WithSL" or "")) or THEME:GetString("ScreenSelectMusic", "HelpSelectText"..(ThemePrefs.Get("SLFavorites") and "WithSL" or ""))
 		self:SetSecsBetweenSwitches(THEME:GetMetric("HelpDisplay","TipSwitchTime"))
 		self:SetTipsColonSeparated(s)
 		self:maxwidth(269):shadowlength(2)
@@ -156,6 +156,7 @@ return Def.ActorFrame{
 	end,
 
 	Def.ActorFrame{
+		Condition=not isEtterna("0.55"),
 		Name="HighscoreListP1",
 		InitCommand=function(self) self:x(SCREEN_LEFT):y(SCREEN_BOTTOM-100*WideScreenDiff()):addx(-SCREEN_WIDTH):player(PLAYER_1):draworder(-2) end,
 		OnCommand=function(self) self:decelerate(0.75):addx(SCREEN_WIDTH) end,
@@ -222,6 +223,7 @@ return Def.ActorFrame{
 	},
 
 	Def.ActorFrame{
+		Condition=not isEtterna("0.55"),
 		Name="HighscoreListP2",
 		InitCommand=function(self) self:x(SCREEN_RIGHT):y(SCREEN_BOTTOM-100*WideScreenDiff()):addx(SCREEN_WIDTH):player(PLAYER_2):draworder(-2) end,
 		OnCommand=function(self) self:decelerate(0.75):addx(-SCREEN_WIDTH) end,
@@ -343,7 +345,7 @@ return Def.ActorFrame{
 		}
 	},
 	Def.ActorFrame{
-		Condition=not isEtterna(),
+		Condition=not isEtterna("0.55"),
 		Name="StepArtistP2",
 		InitCommand=function(self) self:x(SCREEN_RIGHT):y(SCREEN_BOTTOM-109*WideScreenDiff()):addx(SCREEN_WIDTH):player(PLAYER_2):draworder(-2) end,
 		OnCommand=function(self) self:decelerate(0.75):addx(-SCREEN_WIDTH) end,
@@ -511,7 +513,7 @@ return Def.ActorFrame{
 			}
 		},
 		Def.ActorFrame{
-			Condition=not isEtterna() and GAMESTATE:IsPlayerEnabled(PLAYER_2) and not isDouble(),
+			Condition=not isEtterna("0.55") and GAMESTATE:IsPlayerEnabled(PLAYER_2) and not isDouble(),
 			Name="LightP2",
 			Def.Sprite {
 				Texture = THEME:GetPathG("_pane elements/_lneon",isFinal() and "final" or "normal"),
@@ -578,7 +580,7 @@ return Def.ActorFrame{
 		},
 		Def.ActorFrame{
 			Name="PaneDisplayP2",
-			Condition=not isEtterna() and GAMESTATE:IsHumanPlayer(PLAYER_2),
+			Condition=not isEtterna("0.55") and GAMESTATE:IsHumanPlayer(PLAYER_2),
 			InitCommand=function(self) self:x(SCREEN_RIGHT/WideScreenDiff()-SCREEN_WIDTH/5.415/WideScreenDiff()):player(PLAYER_2) end,
 			loadfile(THEME:GetPathG("_pane","icons"))(PLAYER_2),
 			loadfile(THEME:GetPathG("_pane","fill"))(PLAYER_2),
@@ -673,7 +675,7 @@ return Def.ActorFrame{
 	},
 	Def.ActorFrame{
 		Name="OptionsListBaseP2",
-		Condition=not isEtterna(),
+		Condition=not isEtterna("0.55"),
 		InitCommand=function(self) self:x(SCREEN_CENTER_X+220*WideScreenDiff()):y(SCREEN_CENTER_Y+22*WideScreenDiff()):zoomy(WideScreenDiff()):zoomx(isFinal() and 1.1*WideScreenDiff() or 1*WideScreenDiff()) end,
 		Def.Sprite {
 			Texture = THEME:GetPathG("options pane",isFinal() and "final" or "normal"),

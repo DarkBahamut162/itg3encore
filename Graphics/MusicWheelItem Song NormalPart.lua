@@ -5,7 +5,7 @@ return Def.ActorFrame{
 	Def.ActorFrame{
 		Condition=GAMESTATE:IsHumanPlayer(PLAYER_1),
 		Def.Sprite{
-			Condition=isOutFox(),
+			Condition=isOutFox(20230000),
 			InitCommand=function(self) self:Load( THEME:GetPathB("","_thanks/_outfox/logo") ):xy(120,-12):setsize(16,16):visible(false) end,
 			OnCommand=function(self) self:diffuseshift():effectcolor1(PlayerColor(PLAYER_1)):effectcolor2(PlayerColorSemi(PLAYER_1)) end,
 			SetCommand=function(self,params)
@@ -14,7 +14,7 @@ return Def.ActorFrame{
 
 					if isOutFoxV(20230628) then
 						isFav = GetPlayerOrMachineProfile(PLAYER_1):SongIsFavorite(params.Song)
-					elseif isOutFox() then
+					elseif isOutFox(20230000) then
 						isFav = FindInTable(params.Song, getOFFavorites(PLAYER_1))
 					end
 
@@ -48,7 +48,7 @@ return Def.ActorFrame{
 	Def.ActorFrame{
 		Condition=GAMESTATE:IsHumanPlayer(PLAYER_2),
 		Def.Sprite{
-			Condition=isOutFox(),
+			Condition=isOutFox(20230000),
 			InitCommand=function(self) self:Load( THEME:GetPathB("","_thanks/_outfox/logo") ):xy(120,12):setsize(16,16):visible(false) end,
 			OnCommand=function(self) self:diffuseshift():effectcolor1(PlayerColor(PLAYER_2)):effectcolor2(PlayerColorSemi(PLAYER_2)) end,
 			SetCommand=function(self,params)
@@ -57,7 +57,7 @@ return Def.ActorFrame{
 
 					if isOutFoxV() then
 						isFav = GetPlayerOrMachineProfile(PLAYER_2):SongIsFavorite(params.Song)
-					elseif isOutFox() then
+					elseif isOutFox(20230000) then
 						isFav = FindInTable(params.Song, getOFFavorites(PLAYER_2))
 					end
 

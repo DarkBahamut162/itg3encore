@@ -58,6 +58,7 @@ setenv("checkGreats"..pname(player),true)
 setenv("check"..pname(player),true)
 setenv("checkAuto"..pname(player),true)
 
+if not isOutFox(20200530) then GAMESTATE:ApplyGameCommand('mod,savescore',player) end
 local combo = not (getenv("HideCombo" .. pname(player)) or false)
 
 return Def.ActorFrame{
@@ -129,7 +130,7 @@ return Def.ActorFrame{
 
 			if GAMESTATE:GetPlayerState(player):GetPlayerController() ~= 'PlayerController_Human' and
 			getenv("checkAuto"..pname(player)) then
-				if not isOutFox() then GAMESTATE:ApplyGameCommand('mod,no savescore',player) end
+				if not isOutFox(20200530) then GAMESTATE:ApplyGameCommand('mod,no savescore',player) end
 				setenv("checkFantastics"..pname(player),false)
 				setenv("checkPerfects"..pname(player),false)
 				setenv("checkGreats"..pname(player),false)

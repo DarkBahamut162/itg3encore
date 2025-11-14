@@ -31,7 +31,7 @@ for i=1,3 do
 	local thing = Def.ActorFrame{
 		InitCommand=function(self) self:x(scale(i,1,3,SCREEN_LEFT+300*WideScreenDiff(),SCREEN_RIGHT-100*WideScreenDiff())) end
 	}
-	for n=2,isEtterna() and 5 or 7 do
+	for n=2,isEtterna("0.55") and 5 or 7 do
 		local num = Def.BitmapText {
 			File = "_eurostile normal",
 			InitCommand=function(self) self:y(scale(n,1,7,SCREEN_CENTER_Y-150*WideScreenDiff(),SCREEN_CENTER_Y+10*WideScreenDiff())):zoom(0.6*WideScreenDiff()):halign(1) end,
@@ -98,7 +98,7 @@ local totals = Def.ActorFrame{
 			InitCommand=function(self) self:x(SCREEN_CENTER_X+106*WideScreenDiff()):y(-24*WideScreenDiff()):horizalign(right):zoom(0.7*WideScreenDiff()) end,
 			BeginCommand=function(self)
 				local val = 0
-				for i=2,isEtterna() and 5 or 7 do
+				for i=2,isEtterna("0.55") and 5 or 7 do
 					if i > 5 then
 						val = val + prof:GetCoursesActual(StepsTypeSingle()[GetUserPrefN("StylePosition")],diffs[i])
 					else
@@ -122,7 +122,7 @@ local totals = Def.ActorFrame{
 			InitCommand=function(self) self:x(SCREEN_CENTER_X+106*WideScreenDiff()):y(-4*WideScreenDiff()):horizalign(right):zoom(0.7*WideScreenDiff()) end,
 			BeginCommand=function(self)
 				local val = 0
-				for i=2,isEtterna() and 5 or 7 do
+				for i=2,isEtterna("0.55") and 5 or 7 do
 					if i > 5 then
 						val = val + prof:GetCoursesPossible(StepsTypeSingle()[GetUserPrefN("StylePosition")],diffs[i])
 					else

@@ -70,7 +70,7 @@ function songfail(bVertex)
 end
 
 function AllowOptionsMenu()
-	if isEtterna() then
+	if isEtterna("0.65") then
 		return true
 	elseif GAMESTATE:IsAnExtraStage() then
 		return false
@@ -241,22 +241,22 @@ end
 
 function DP(player)
 	local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(player)
-	return math.max(0,isEtterna() and pss:GetWifeScore() or pss:GetPercentDancePoints())
+	return math.max(0,isEtterna("0.64") and pss:GetWifeScore() or pss:GetPercentDancePoints())
 end
 function DPCur(player)
 	local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(player)
-	return math.max(0,isEtterna() and pss:GetCurWifeScore() or pss:GetActualDancePoints())
+	return math.max(0,isEtterna("0.64") and pss:GetCurWifeScore() or pss:GetActualDancePoints())
 end
 function DPMax(player)
 	local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(player)
-	return isEtterna() and math.round(pss:GetCurWifeScore()/pss:GetWifeScore()) or pss:GetPossibleDancePoints()
+	return isEtterna("0.64") and math.round(pss:GetCurWifeScore()/pss:GetWifeScore()) or pss:GetPossibleDancePoints()
 end
 function DPCurMax(player)
 	local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(player)
-	return isEtterna() and pss:GetMaxWifeScore() or pss:GetCurrentPossibleDancePoints()
+	return isEtterna("0.64") and pss:GetMaxWifeScore() or pss:GetCurrentPossibleDancePoints()
 end
 function PercentDP(topscore)
-	return isEtterna() and topscore:GetWifeScore() or topscore:GetPercentDP()
+	return isEtterna("0.64") and topscore:GetWifeScore() or topscore:GetPercentDP()
 end
 
 function getMaxNotes(player)

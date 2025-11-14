@@ -4,11 +4,12 @@ if isEtterna("0.60") and PREFSMAN:GetPreference("AutoConnectMultiplayer") == 1 t
 end
 
 local versions = {
-	["Etterna"]		= "etterna",
-	["ITGmania"]	= "itgmania",
-	["OpenDDR"]		= "openddr",
-	["OutFox"]		= "outfox",
-	["StepMania"]	= tonumber(split("-",ProductVersion())[1]) == 5.3 and "oldfox" or "stepmania"
+	["Etterna"]					= "etterna",
+	["StepMania - Etterna"]		= "etterna",
+	["ITGmania"]				= "itgmania",
+	["OpenDDR"]					= "openddr",
+	["OutFox"]					= "outfox",
+	["StepMania"]				= tonumber(split("-",ProductVersion())[1]) == 5.3 and "oldfox" or "stepmania"
 }
 
 local groups = SONGMAN:GetSongGroupNames()

@@ -91,7 +91,7 @@ return Def.ActorFrame {
 							posX = SCREEN_CENTER_X+SCREEN_WIDTH/4
 						end
 					elseif getenv("Rotation"..pname(pn)) == 5 and not isDouble() then
-						if ToEnumShortString(GAMESTATE:GetCurrentStyle():GetStyleType()) == "OnePlayerOneSide" then
+						if ToEnumShortString(style:GetStyleType()) == "OnePlayerOneSide" then
 							posX = SCREEN_CENTER_X
 						end
 					elseif getenv("Rotation"..pname(pn)) == 1 and not isDouble() then

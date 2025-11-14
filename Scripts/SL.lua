@@ -179,7 +179,7 @@ function generateFavoritesForMusicWheel()
                 end
             end
         end
-        if isOutFox() and not VersionDateCheck(20230628) then setOFFavorites(pn) end
+        if isOutFox(20230000) and not VersionDateCheck(20230628) then setOFFavorites(pn) end
     end
     if check == 2 then
         SLCombine()

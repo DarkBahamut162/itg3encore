@@ -126,7 +126,7 @@ for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
 end
 
 local function CalcMinusStepSeconds(pn)
-	if isEtterna() then return 0 end
+	if isEtterna("0.55") then return 0 end
 	local fSecs = 0
 
 	if GAMESTATE:IsCourseMode() then
@@ -487,7 +487,7 @@ local function GraphDisplay(pn)
 		if last == 1 and tonumber(float[#float][2][1]) < 0 then last = 0 end
 
 		if flareLevel > 0 and last > 0 then
-			if (isEtterna() and not STATSMAN:GetCurStageStats():Failed() or (not PSS:GetFailed() and PSS:GetAliveSeconds() > length)) and GAMESTATE:GetPlayerState(pn):GetPlayerController() == 'PlayerController_Human' then
+			if (isEtterna("0.55") and not STATSMAN:GetCurStageStats():Failed() or (not PSS:GetFailed() and PSS:GetAliveSeconds() > length)) and GAMESTATE:GetPlayerState(pn):GetPlayerController() == 'PlayerController_Human' then
 				local Song = GAMESTATE:GetCurrentSong()
 				local Steps = GAMESTATE:GetCurrentSteps(pn)
 				if UpdateFlare(Song,Steps,last,pn) then SaveFlare(pn) end

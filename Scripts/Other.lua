@@ -1,5 +1,5 @@
 function Get2PlayerJoinMessage()
-	if not GAMESTATE:PlayersCanJoin() or isEtterna() then return "" end
+	if not GAMESTATE:PlayersCanJoin() or isEtterna("0.55") then return "" end
 	if GAMESTATE:GetCoinMode()=='CoinMode_Free' or GAMESTATE:GetCoinMode()=='CoinMode_Home' then
 		return "2 Player mode available"
 	end
@@ -132,23 +132,23 @@ function GetScreenNameEntryTraditionalHelpText()
 end
 
 function HumanAndProfile(pn)
-	return GAMESTATE:IsHumanPlayer(pn) and (not isEtterna() and MEMCARDMAN:GetCardState(pn) ~= 'MemoryCardState_none' or false)
+	return GAMESTATE:IsHumanPlayer(pn) and (not isEtterna("0.65") and MEMCARDMAN:GetCardState(pn) ~= 'MemoryCardState_none' or false)
 end
 
 function EnabledAndProfile(pn)
-	return GAMESTATE:IsPlayerEnabled(pn) and (not isEtterna() and MEMCARDMAN:GetCardState(pn) ~= 'MemoryCardState_none' or false)
+	return GAMESTATE:IsPlayerEnabled(pn) and (not isEtterna("0.65") and MEMCARDMAN:GetCardState(pn) ~= 'MemoryCardState_none' or false)
 end
 
 function HumanAndUSBReady(pn)
-	return GAMESTATE:IsHumanPlayer(pn) and (not isEtterna() and MEMCARDMAN:GetCardState(pn) == 'MemoryCardState_ready' or false)
+	return GAMESTATE:IsHumanPlayer(pn) and (not isEtterna("0.65") and MEMCARDMAN:GetCardState(pn) == 'MemoryCardState_ready' or false)
 end
 
 function EnabledAndUSBReady(pn)
-	return GAMESTATE:IsPlayerEnabled(pn) and (not isEtterna() and MEMCARDMAN:GetCardState(pn) == 'MemoryCardState_ready' or false)
+	return GAMESTATE:IsPlayerEnabled(pn) and (not isEtterna("0.65") and MEMCARDMAN:GetCardState(pn) == 'MemoryCardState_ready' or false)
 end
 
 function USBReady(pn)
-	return not isEtterna() and MEMCARDMAN:GetCardState(pn) == 'MemoryCardState_ready' or false
+	return not isEtterna("0.65") and MEMCARDMAN:GetCardState(pn) == 'MemoryCardState_ready' or false
 end
 
 function AnyUSBReady()
@@ -241,7 +241,7 @@ function isGamePlay()
 end
 
 function isPlayMode(mode)
-	if isEtterna() then
+	if isEtterna("0.70.2") then
 		return "PlayMode_Regular" == mode
 	else
 		return GAMESTATE:GetPlayMode() == mode
@@ -263,11 +263,20 @@ function isOutFox(version)
 end
 
 function isEtterna(version)
-	if version then return ProductFamily() == "Etterna" and EtternaVersionCheck(version) else return ProductFamily() == "Etterna" end
+	if ProductFamily() == "Etterna" then
+		if type(version) == "number" then version = "0" end
+		if version then return EtternaVersionCheck(version) else return true end
+	elseif ProductFamily() == "StepMania - Etterna" then
+		if type(version) == "string" then version = 20170908 end
+		if version then return VersionDateCheck(version) else return true end
+	end
+	return false
 end
 
 function isOutFoxV(version)
-	local versionSplit = tonumber(split("-",ProductVersion())[1])
+	local versionSplit = tonumber(split("-",ProductVersion())[1]:sub(1,3))
+	-- Thanks LTS
+	if not versionSplit then versionSplit = tonumber(split("-",ProductVersion())[2]:sub(1,3)) end
 	local productCheck = isOutFox() and versionSplit >= 0.5 and versionSplit < 5
 	if version then return productCheck and VersionDateCheck(version) else return productCheck end
 end
@@ -284,7 +293,7 @@ function EtternaVersionCheck(version)
 	for i = 1,#current do curV = curV + tonumber(current[i])*math.pow(10,6-(i*2)) end
 	for i = 1,#check do checkV = checkV + tonumber(check[i])*math.pow(10,6-(i*2)) end
 	if curV >= 50000 then curV = 05500 end
-	return curV > checkV
+	return curV >= checkV
 end
 
 function isOutFoxV043(version)
@@ -619,7 +628,6 @@ end
 function PreferenceRangeTime(args)
 	args = split("_",args)
 	local value,min,max,steps = args[1],tonumber(args[2]),tonumber(args[3]),tonumber(args[4])
-	local val = PREFSMAN:GetPreference(value)
 	local range = math.floor((max-min)/steps)
 
 	local choices = {}
@@ -687,8 +695,8 @@ function EditorNoteskin()
 end
 
 function CachePref()
-	local name = isOldStepMania() and "BannerCache" or "ImageCache"
-	local var = isOldStepMania() and "BannerCacheMode" or "ImageCacheMode"
+	local name = (isOldStepMania() or isEtterna()) and "BannerCache" or "ImageCache"
+	local var = (isOldStepMania() or isEtterna()) and "BannerCacheMode" or "ImageCacheMode"
 	local IMGCache = PREFSMAN:GetPreference(name)
 
 	local t = {

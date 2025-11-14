@@ -1,6 +1,6 @@
 function ChoiceSingle()
 	if IsGame("dance") or IsGame("groove") then
-		if isEtterna() then
+		if isEtterna("0.70.1") then
 			return {"single","threepanel"}
 		else
 			return {"single","solo","threepanel"}
@@ -110,9 +110,9 @@ function GetStyles()
 			end
 		else
 			if ChoiceDouble()[GetUserPrefN("StylePosition")] then
-				return isEtterna() and "1,3" or "1,2,3"
+				return isEtterna("0.55") and "1,3" or "1,2,3"
 			else
-				if isEtterna() then
+				if isEtterna("0.55") then
 					return "1"
 				elseif ChoiceVersus()[GetUserPrefN("StylePosition")] then
 					return "1,2"
@@ -140,7 +140,7 @@ end
 
 function StyleName()
 	if IsGame("dance") or IsGame("groove") then
-		if isEtterna() then
+		if isEtterna("0.70.1") then
 			return {"4 Arrows","3 Arrows"}
 		else
 			return {"4 Arrows","6 Arrows","3 Arrows"}
@@ -167,7 +167,7 @@ end
 
 function StepsTypeSingle()
 	if IsGame("dance") or IsGame("groove") then
-		if isEtterna() then
+		if isEtterna("0.70.1") then
 			return {"StepsType_Dance_Single","StepsType_Dance_Threepanel"}
 		else
 			return {"StepsType_Dance_Single","StepsType_Dance_Solo","StepsType_Dance_Threepanel"}
@@ -279,7 +279,7 @@ function SongMods()
 end
 
 function ModeMenu()
-	if isEtterna() then return "Group,Title,Bpm,TopGrades,Artist,Genre,Favorites,Overall,Stream,Jumpstream,Handstream,Stamina,JackSpeed,Chordjack,Technical,Length,DateAdded,Author,Ungrouped" end
+	if isEtterna("0.62") then return "Group,Title,Bpm,TopGrades,Artist,Genre,Favorites,Overall,Stream,Jumpstream,Handstream,Stamina,JackSpeed,Chordjack,Technical,Length,DateAdded,Author,Ungrouped" end
 	local options = "Group,Title,Artist,Genre,Bpm,Length,"
 
 	if isITGmania(20240225) then
@@ -606,7 +606,7 @@ function OptionSetScoreType()
 		end
 	end
 
-	local options = GetScoreTypes(isEtterna())
+	local options = GetScoreTypes(isEtterna("0.65"))
 	options[#options+1] = "FA+"
 
 	local t = {

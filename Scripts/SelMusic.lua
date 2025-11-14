@@ -4,12 +4,14 @@ local typeList = {"avi","f4v","flv","mkv","mp4","mpeg","mpg","mov","ogv","webm",
 Master,P1,P2={},{},{}
 bannerForced = false
 
-if isEtterna() then elseif isOldStepMania() then
-	bannerForced = PREFSMAN:GetPreference("BannerCache") == "BannerCacheMode_Off"
-elseif isOutFox(20201000) then
+if isOutFox(20201000) then
 	bannerForced = PREFSMAN:GetPreference("ImageCache") ~= "ImageCacheMode_Full"
 else
-	bannerForced = PREFSMAN:GetPreference("ImageCache") == "ImageCacheMode_Off"
+	if isOldStepMania() or isEtterna() then
+		bannerForced = PREFSMAN:GetPreference("BannerCache") == "BannerCacheMode_Off"
+	else
+		bannerForced = PREFSMAN:GetPreference("ImageCache") == "ImageCacheMode_Off"
+	end
 end
 
 function getCacheVersion()
@@ -431,7 +433,7 @@ end
 function getStepCacheFile(Step)
 	local filename = split("/",Step:GetFilename())
 	local Song = nil
-	if not isEtterna() then 
+	if not isEtterna("0.55") then
 		if Step:IsAutogen() then Song = SONGMAN:GetSongFromSteps(Step) end
 	end
 	local groupName = filename[#filename-2] or Song and Song:GetGroupName() or ""
@@ -876,7 +878,7 @@ function cacheStepSM(Song,Step)
 						end
 						lastSec = currentSec
 
-						if isEtterna() then
+						if isEtterna("0.55") then
 							if getNoteType(beat) >= 12 then chaosCount = chaosCount + 1 end
 							for _=1,count do table.insert(beats,beat) end
 							for i=1,#beats do
@@ -917,7 +919,7 @@ function cacheStepSM(Song,Step)
 				["TrueSeconds"] = lastSecond-firstSecond
 			}
 
-			if isEtterna() then
+			if isEtterna("0.55") then
 				list["chaosCount"] = chaosCount
 				list["maxVoltage"] = maxVoltage
 			end
@@ -936,7 +938,7 @@ function cacheStepSM(Song,Step)
 				LoadModule("Config.Save.lua")("TrueFirstSecond",firstSecond,file)
 				LoadModule("Config.Save.lua")("TrueLastSecond",lastSecond,file)
 				LoadModule("Config.Save.lua")("TrueSeconds",lastSecond-firstSecond,file)
-				if isEtterna() then
+				if isEtterna("0.55") then
 					LoadModule("Config.Save.lua")("chaosCount",chaosCount,file)
 					LoadModule("Config.Save.lua")("maxVoltage",maxVoltage,file)
 				end
@@ -1028,7 +1030,7 @@ function cacheStepBMS(Song,Step)
 				end
 				lastSec = currentSec
 
-				if isEtterna() then
+				if isEtterna("0.55") then
 					if getNoteType(beat) >= 12 then chaosCount = chaosCount + 1 end
 					for _=1,row do table.insert(beats,beat) end
 					for i=1,#beats do
@@ -1067,7 +1069,7 @@ function cacheStepBMS(Song,Step)
 			["Foots"] = foot
 		}
 
-		if isEtterna() then
+		if isEtterna("0.55") then
 			list["chaosCount"] = chaosCount
 			list["maxVoltage"] = maxVoltage
 		end
@@ -1088,7 +1090,7 @@ function cacheStepBMS(Song,Step)
 			LoadModule("Config.Save.lua")("TrueSeconds",lastSecond-firstSecond,file)
 			LoadModule("Config.Save.lua")("Scratches",scratch,file)
 			LoadModule("Config.Save.lua")("Foots",foot,file)
-			if isEtterna() then
+			if isEtterna("0.55") then
 				LoadModule("Config.Save.lua")("chaosCount",chaosCount,file)
 				LoadModule("Config.Save.lua")("maxVoltage",maxVoltage,file)
 			end
@@ -1346,7 +1348,7 @@ function getCalculatedDifficulty(Step)
 	local totalSeconds = usesStepCache and tonumber(LoadFromCache(Song,Step,"TrueSeconds")) or (Song:GetLastSecond() - Song:GetFirstSecond())
 	local stepCounter = usesStepCache and split("_",LoadFromCache(Song,Step,"StepCounter") or "") or {}
 	local stepType = split("_",Step:GetStepsType())
-	local stepSum = isOutFox() and 0 or math.round(Step:GetRadarValues(GAMESTATE:GetMasterPlayerNumber()):GetValue('RadarCategory_TapsAndHolds') / totalSeconds * getColumnsPerPlayer(stepType[2],stepType[3],true) / 2)
+	local stepSum = usesStepCache and 0 or math.round(Step:GetRadarValues(GAMESTATE:GetMasterPlayerNumber()):GetValue('RadarCategory_TapsAndHolds') / totalSeconds * getColumnsPerPlayer(stepType[2],stepType[3],true) / 2)
 
 	if totalSeconds < 0 then
 		totalSeconds = Song:GetLastSecond() - Song:GetFirstSecond()
@@ -1376,10 +1378,10 @@ function getCalculatedDifficulty(Step)
 	local SPS = 0
 
 	if IsGame("be-mu") or IsGame("beat") then
-		if not isEtterna() then YA = GetConvertDifficulty(Song,Step,totalSeconds) / 2 end
+		if not isEtterna("0.55") then YA = GetConvertDifficulty(Song,Step,totalSeconds) / 2 end
 		if usesStepCache then SPS = tonumber(LoadFromCache(Song,Step,"StepsPerSecond")) / 2 end
 	else
-		if not IsGame("pump") and not isEtterna() then YA = GetConvertDifficulty(Song,Step,totalSeconds) * (getColumnsPerPlayer(stepType[2],stepType[3],true) / 4) * ddrtype end
+		if not IsGame("pump") and not isEtterna("0.55") then YA = GetConvertDifficulty(Song,Step,totalSeconds) * (getColumnsPerPlayer(stepType[2],stepType[3],true) / 4) * ddrtype end
 		if usesStepCache then SPS = tonumber(LoadFromCache(Song,Step,"StepsPerSecond")) * (getColumnsPerPlayer(stepType[2],stepType[3],true) / 4) * ddrtype end
 	end
 
@@ -1404,7 +1406,7 @@ end
 function grooveRadar(song,steps,RadarValues)
 	local stream,voltage,air,freeze,chaos = 0,0,0,0,0
 
-	if not isEtterna() then
+	if not isEtterna(20160826) then
 		stream = RadarValues:GetValue('RadarCategory_Stream')
 		voltage = RadarValues:GetValue('RadarCategory_Voltage')
 		air = RadarValues:GetValue('RadarCategory_Air')

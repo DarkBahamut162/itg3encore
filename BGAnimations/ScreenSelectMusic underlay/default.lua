@@ -45,7 +45,7 @@ local InputHandler = function(event)
 	if event.type == "InputEventType_FirstPress" then
 		if (event.GameButton == "MenuUp" or event.GameButton == "Up") and selectHeld[event.PlayerNumber] then
 			if GAMESTATE:GetCurrentSong() then
-				if isOutFox() then
+				if isOutFox(20230000) then
 					if not VersionDateCheck(20230628) then setOFFavorites(event.PlayerNumber) end
 					outfoxed = true
 				elseif isEtterna() then
@@ -59,7 +59,7 @@ local InputHandler = function(event)
 					end
 				end
 			end
-		elseif (event.GameButton == "MenuDown" or event.GameButton == "Down") and selectHeld[event.PlayerNumber] and isOutFox() and active then
+		elseif (event.GameButton == "MenuDown" or event.GameButton == "Down") and selectHeld[event.PlayerNumber] and isOutFox(20230000) and active then
 			if GAMESTATE:GetCurrentSong() and PROFILEMAN:IsPersistentProfile(event.PlayerNumber) then
 				changed = true
 				addOrRemoveFavorite(event.PlayerNumber)
@@ -198,7 +198,7 @@ local wheel
 local mouseEnabled = ThemePrefs.Get("MouseEnabled")
 
 return Def.ActorFrame{
-    InitCommand=function() if ((isOutFox() and not isOutFoxV()) or active) and not isEtterna() then generateFavoritesForMusicWheel() end end,
+    InitCommand=function() if ((isOutFox(20230000) and not isOutFoxV()) or active) and not isEtterna() then generateFavoritesForMusicWheel() end end,
 	MouseWheelUpMessageCommand=function(self)
 		if mouseEnabled and GetTimeSinceStart() - delta > 1/60 then
 			delta = GetTimeSinceStart()
@@ -293,9 +293,9 @@ return Def.ActorFrame{
 			if playeroptions:XMod() then MOD[pn] = "x" CURRENT[pn] = playeroptions:XMod()*100 end
 			if playeroptions:CMod() then MOD[pn] = "c" CURRENT[pn] = playeroptions:CMod() end
 		end
-		if (isOutFox() and not isOutFoxV()) or active or enableMOD then SCREENMAN:GetTopScreen():AddInputCallback(InputHandler) end
+		if (isOutFox(20230000) and not isOutFoxV()) or active or enableMOD then SCREENMAN:GetTopScreen():AddInputCallback(InputHandler) end
 	end,
-	OffCommand=function() if (isOutFox() and not isOutFoxV()) or active or enableMOD then SCREENMAN:GetTopScreen():RemoveInputCallback(InputHandler) end end,
+	OffCommand=function() if (isOutFox(20230000) and not isOutFoxV()) or active or enableMOD then SCREENMAN:GetTopScreen():RemoveInputCallback(InputHandler) end end,
 	SortOrderChangedMessageCommand=function(self)
 		local s = GAMESTATE:GetSortOrder()
 		if s ~= nil then

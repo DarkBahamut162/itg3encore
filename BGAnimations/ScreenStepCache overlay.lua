@@ -207,7 +207,7 @@ return Def.ActorFrame{
 				for curSong=1,#songs do
 					local steps = songs[curSong]:GetAllSteps()
 					for curStep=1,#steps do
-						if steps[curStep] and not (not isEtterna() and steps[curStep]:IsAutogen()) then
+						if steps[curStep] and not (not isEtterna("0.55") and steps[curStep]:IsAutogen()) then
 							local stepType = split("_",steps[curStep]:GetStepsType())[2]
 							if cacheStepTypes[stepType] then
 								local filename = split("/",steps[curStep]:GetFilename())
@@ -283,8 +283,8 @@ return Def.ActorFrame{
 						local quickSM = filePath:sub(-2):sub(1,1) == 's'	-- [S]M & S[S]C
 						--local quickBMS = filePath:sub(-3):sub(2,2) == 'm'	-- B[M]S & B[M]E & B[M]L & P[M]S
 						--local quickPMS = filePath:sub(-3) == 'pms'
-						--if not isOutFox() or (quickSM and isOutFoxV()) then
-						if not isOutFox() then
+						--if not isOutFox(20200404) or (quickSM and isOutFoxV()) then
+						if not isOutFox(20200404) then
 							if quickSM then cacheStepSM(nil,stepsToCache[curStep]) else cacheStepBMS(nil,stepsToCache[curStep]) end
 						else cacheStep(nil,stepsToCache[curStep]) end
 						local stepType = split("_",stepsToCache[curStep]:GetStepsType())[2]
