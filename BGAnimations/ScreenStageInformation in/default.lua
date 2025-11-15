@@ -30,14 +30,6 @@ if not isEtterna() and (isOni() or GAMESTATE:IsAnExtraStage()) then
 end
 
 for pn in ivalues(GAMESTATE:GetEnabledPlayers()) do
-	if getenv("ShowStats"..pname(pn)) > 0 then
-		if GAMESTATE:IsCourseMode() then
-			if IsCourseSecret() then
-				setenv("ShowStats"..pname(pn),0)
-			end
-		end
-	end
-
 	if getenv("Flare"..pname(pn)) and getenv("Flare"..pname(pn)) > 0 then
 		if isSurvival(pn) then GAMESTATE:ApplyGameCommand('mod,no lifetime,bar,normal-drain',pn) end
 		if isMGD(pn) then GAMESTATE:ApplyGameCommand('mod,no battery,bar,normal-drain',pn) end

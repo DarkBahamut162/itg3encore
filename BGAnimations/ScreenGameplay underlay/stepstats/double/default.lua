@@ -236,6 +236,7 @@ return Def.ActorFrame{
 						W0MessageCommand=function(self,param) if param.Player == pn then self:settext(param.W1) end end
 					},
 					Def.BitmapText {
+						Condition=stats >= 2,
 						File = "_z numbers",
 						Name="NumbersW2",
 						Text="0",
@@ -244,6 +245,7 @@ return Def.ActorFrame{
 						UpdateCommand=function(self) if stats >= 2 then self:settext(STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):GetTapNoteScores('TapNoteScore_W2')) end end
 					},
 					Def.BitmapText {
+						Condition=stats >= 3,
 						File = "_z numbers",
 						Name="NumbersW3",
 						Text="0",
@@ -252,6 +254,7 @@ return Def.ActorFrame{
 						UpdateCommand=function(self) if stats >= 3 then self:settext(STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):GetTapNoteScores('TapNoteScore_W3')) end end
 					},
 					Def.BitmapText {
+						Condition=stats >= 4,
 						File = "_z numbers",
 						Name="NumbersW4",
 						Text="0",
@@ -260,7 +263,7 @@ return Def.ActorFrame{
 						UpdateCommand=function(self) if stats >= 4 then self:settext(STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):GetTapNoteScores('TapNoteScore_W4')) end end
 					},
 					Def.BitmapText {
-						Condition=not isOpenDDR(),
+						Condition=stats >= 5 and not isOpenDDR(),
 						File = "_z numbers",
 						Name="NumbersW5",
 						Text="0",
@@ -269,6 +272,7 @@ return Def.ActorFrame{
 						UpdateCommand=function(self) if stats >= 5 then self:settext(STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):GetTapNoteScores('TapNoteScore_W5')) end end
 					},
 					Def.BitmapText {
+						Condition=stats >= (isOpenDDR() and 5 or 6),
 						File = "_z numbers",
 						Name="NumbersMiss",
 						Text="0",

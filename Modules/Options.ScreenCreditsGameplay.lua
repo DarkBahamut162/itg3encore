@@ -23,13 +23,19 @@ return function()
 			end
 		end
 		if Song then
-			GAMESTATE:SetCurrentPlayMode("PlayMode_Regular")
-			GAMESTATE:SetCurrentSong(Song)
-			GAMESTATE:SetCurrentStyle('versus')
-			GAMESTATE:SetCurrentSteps(PLAYER_1,Song:GetAllSteps()[3])
-			GAMESTATE:SetCurrentSteps(PLAYER_2,Song:GetAllSteps()[3])
-
-			return "ScreenCreditsGameplay;name,"..name
+			local availableSteps = Song:GetStepsByStepsType(StepsTypeSingle()[GetUserPrefN("StylePosition")])
+			local chosen
+			for steps in ivalues(availableSteps) do
+				if steps:GetDifficulty() == "Difficulty_Medium" then chosen = steps break end
+			end
+			if chosen then
+				GAMESTATE:SetCurrentPlayMode("PlayMode_Regular")
+				GAMESTATE:SetCurrentSong(Song)
+				GAMESTATE:SetCurrentStyle('versus')
+				GAMESTATE:SetCurrentSteps(PLAYER_1,chosen)
+				GAMESTATE:SetCurrentSteps(PLAYER_2,chosen)
+				return "ScreenCreditsGameplay;name,"..name
+			end
 		else
 			return "ScreenCredits;name,"..name
 		end

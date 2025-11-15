@@ -13,6 +13,15 @@ else
 		bannerForced = PREFSMAN:GetPreference("ImageCache") == "ImageCacheMode_Off"
 	end
 end
+if PREFSMAN:PreferenceExists("ShowBanners") and not tobool(PREFSMAN:GetPreference("ShowBanners")) then
+	local check = false
+	if isOldStepMania() or isEtterna() then
+		check = PREFSMAN:GetPreference("BannerCache") == "BannerCacheMode_Full"
+	else
+		check = PREFSMAN:GetPreference("ImageCache") == "ImageCacheMode_Full"
+	end
+	if check then bannerForced = true end
+end
 
 function getCacheVersion()
 	return cacheVersion

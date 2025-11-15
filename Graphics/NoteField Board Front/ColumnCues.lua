@@ -131,41 +131,17 @@ else
 				end
 			end
 		else
-			if isDouble() then
-				local half = notes / 2
-				for note in ivalues(firstRow) do
-					if note == "11" or note == "51" then noteData[#noteData+1] = {"",1} end
-					if note == "12" or note == "52" then noteData[#noteData+1] = {"",2} end
-					if note == "13" or note == "53" then noteData[#noteData+1] = {"",3} end
-					if note == "14" or note == "54" then noteData[#noteData+1] = {"",4} end
-					if note == "15" or note == "55" then noteData[#noteData+1] = {"",5} end
-					if note == "16" or note == "56" then noteData[#noteData+1] = {"",6} end
-					if note == "17" or note == "57" then noteData[#noteData+1] = {"",7} end
-					if note == "18" or note == "58" then noteData[#noteData+1] = {"",8} end
-					if note == "19" or note == "59" then noteData[#noteData+1] = {"",9} end
-					if note == "21" or note == "61" then noteData[#noteData+1] = {"",half+1} end
-					if note == "22" or note == "62" then noteData[#noteData+1] = {"",half+2} end
-					if note == "23" or note == "63" then noteData[#noteData+1] = {"",half+3} end
-					if note == "24" or note == "64" then noteData[#noteData+1] = {"",half+4} end
-					if note == "25" or note == "65" then noteData[#noteData+1] = {"",half+5} end
-					if note == "26" or note == "66" then noteData[#noteData+1] = {"",half+6} end
-					if note == "27" or note == "67" then noteData[#noteData+1] = {"",half+7} end
-					if note == "28" or note == "68" then noteData[#noteData+1] = {"",half+8} end
-					if note == "29" or note == "69" then noteData[#noteData+1] = {"",half+9} end
-				end
-			else
-				local add = notes-9
-				for note in ivalues(firstRow) do
-					if note == "11" or note == "51" then noteData[#noteData+1] = {"",1+add} end
-					if note == "12" or note == "52" then noteData[#noteData+1] = {"",2+add} end
-					if note == "13" or note == "53" then noteData[#noteData+1] = {"",3+add} end
-					if note == "14" or note == "54" then noteData[#noteData+1] = {"",4+add} end
-					if note == "15" or note == "55" then noteData[#noteData+1] = {"",5+add} end
-					if note == "22" or note == "62" then noteData[#noteData+1] = {"",6+add} end
-					if note == "23" or note == "63" then noteData[#noteData+1] = {"",7+add} end
-					if note == "24" or note == "64" then noteData[#noteData+1] = {"",8+add} end
-					if note == "25" or note == "65" then noteData[#noteData+1] = {"",9+add} end
-				end
+			local add = notes-9
+			for note in ivalues(firstRow) do
+				if note == "11" or note == "51" then noteData[#noteData+1] = {"",1+add} end
+				if note == "12" or note == "52" then noteData[#noteData+1] = {"",2+add} end
+				if note == "13" or note == "53" then noteData[#noteData+1] = {"",3+add} end
+				if note == "14" or note == "54" then noteData[#noteData+1] = {"",4+add} end
+				if note == "15" or note == "55" then noteData[#noteData+1] = {"",5+add} end
+				if note == "22" or note == "62" then noteData[#noteData+1] = {"",6+add} end
+				if note == "23" or note == "63" then noteData[#noteData+1] = {"",7+add} end
+				if note == "24" or note == "64" then noteData[#noteData+1] = {"",8+add} end
+				if note == "25" or note == "65" then noteData[#noteData+1] = {"",9+add} end
 			end
 		end
 	end

@@ -1,7 +1,7 @@
 if isTopScreen("ScreenDemonstration2") then return Def.ActorFrame{} end
 
 local pn = GAMESTATE:GetMasterPlayerNumber()
-local graph = getenv("ShowNoteGraph"..pname(pn)) > 1
+local graph = (getenv("ShowNoteGraph"..pname(pn)) or 0) > 1
 local solo = getenv("Rotation"..pname(pn)) == 5
 local startX = pn == PLAYER_1 and SCREEN_WIDTH/4 or -SCREEN_WIDTH/4
 if graph and getenv("ShowStats"..pname(pn)) == 0 then startX = startX * 2 end
@@ -20,7 +20,7 @@ local barOffset		= {
 	[7] = {0,0,0,0,0,0,0}
 }
 local barHeight,totalWidth,barCenter = 228,202,0
-local target = THEME:GetMetric("PlayerStageStats", "GradePercentTier" .. string.format("%02d", 18-getenv("SetPacemaker"..pname(pn))))
+local target = THEME:GetMetric("PlayerStageStats", "GradePercentTier" .. string.format("%02d", 18-(getenv("SetPacemaker"..pname(pn)) or 0)))
 local TotalSteps = 0
 local faplus = getenv("SetScoreFA"..pname(pn))
 
@@ -58,7 +58,7 @@ if StepsOrTrail then
 	holdsAndRolls = holds + rolls
 end
 
-local bgNum = getenv("ShowStats"..pname(pn))
+local bgNum = getenv("ShowStats"..pname(pn)) or 0
 if bgNum == (isOpenDDR() and 6 or 7) then
 	if topscore == nil then bgNum = 2 else bgNum = 3 end
 else
@@ -94,8 +94,8 @@ local function TNS(score)
 	return score == "W0" and "TapNoteScore_W1" or "TapNoteScore_W0"
 end
 
-if getenv("ShowStats"..pname(pn)) < (isOpenDDR() and 6 or 7) then
-	for i = faplus and 0 or 1,math.min((isOpenDDR() and 5 or 6),getenv("ShowStats"..pname(pn))) do
+if (getenv("ShowStats"..pname(pn)) or 0) < (isOpenDDR() and 6 or 7) then
+	for i = faplus and 0 or 1,math.min((isOpenDDR() and 5 or 6),getenv("ShowStats"..pname(pn)) or 0) do
 		local score = i < (isOpenDDR() and 5 or 6) and "W"..i or "Miss"
 		Numbers[#Numbers+1] = Def.BitmapText {
 			Name="NumbersW"..i,
@@ -195,12 +195,12 @@ return Def.ActorFrame{
 			end
 		},
 		Def.ActorFrame{
-			Condition=getenv("ShowStats"..pname(pn)) > 0,
+			Condition=(getenv("ShowStats"..pname(pn)) or 0) > 0,
 			Def.Sprite {
 				Texture = "s_"..(isFinal() and "final" or "normal")
 			},
 			Def.Sprite {
-				Texture = (isOpenDDR() and "ddr_bg" or (faplus and "fa_bg" or "s_bg"))..getenv("ShowStats"..pname(pn))
+				Texture = (isOpenDDR() and "ddr_bg" or (faplus and "fa_bg" or "s_bg"))..(getenv("ShowStats"..pname(pn)) or 0)
 			},
 			Def.Sprite {
 				Texture = "s_glow final",
@@ -209,7 +209,7 @@ return Def.ActorFrame{
 			}
 		},
 		Def.ActorFrame{
-			Condition=getenv("ShowStats"..pname(pn)) > 0 and getenv("ShowStats"..pname(pn)) < (isOpenDDR() and 6 or 7),
+			Condition=(getenv("ShowStats"..pname(pn)) or 0) > 0 and (getenv("ShowStats"..pname(pn)) or 0) < (isOpenDDR() and 6 or 7),
 			Def.BitmapText {
 				File = "_z bold gray 36px",
 				Condition=isFinal(),

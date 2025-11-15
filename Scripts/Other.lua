@@ -720,9 +720,15 @@ function CachePref()
 						local output = ""
 						if isOutFox(20201000) and not isOutFoxV() then
 							if i == 4 then
-								output = var.." successfully changed to "..self.Choices[i]
-								if bannerForced then output = addToOutput(output,"Replacement BannerDisplay deactivated!"," | ") end
-								bannerForced = false
+								if PREFSMAN:PreferenceExists("ShowBanners") and not tobool(PREFSMAN:GetPreference("ShowBanners")) or false then
+									output = var.." has next to no effect since Banners have been turned off!"
+									if not bannerForced then output = addToOutput(output,"Replacement BannerDisplay activated!"," | ") end
+									bannerForced = true
+								else
+									output = var.." successfully changed to "..self.Choices[i]
+									if bannerForced then output = addToOutput(output,"Replacement BannerDisplay deactivated!"," | ") end
+									bannerForced = false
+								end
 							else
 								output = var.." is currently bugged within this version of Project OutFox"
 								if not bannerForced then output = addToOutput(output,"Replacement BannerDisplay activated!"," | ") end
