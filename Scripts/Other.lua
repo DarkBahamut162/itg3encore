@@ -664,6 +664,117 @@ function PreferenceRangeTime(args)
 	}
 end
 
+function CustomSongsLoadTimeout()
+	local choices = {}
+	local values = {}
+
+	for i = 1,9 do
+		values[#values+1] = i
+		choices[#values+1] = string.format('%ds',values[#values])
+	end
+	for i = 0,10 do
+		values[#values+1] = 10+i*5
+		choices[#values+1] = string.format('%ds',values[#values])
+	end
+
+	return {
+		Name="CustomSongsLoadTimeout",
+		Choices=choices,
+		LayoutType = "ShowAllInRow",
+		SelectType = "SelectOne",
+		OneChoiceForAllPlayers = true,
+		ExportOnChange = false,
+		LoadSelections = function(self, list, pn)
+			local pref = PREFSMAN:GetPreference("CustomSongsLoadTimeout")
+			local i = FindInTable(pref, values) or 1
+			list[i] = true
+		end,
+		SaveSelections = function(self, list, pn)
+			for i=1, #choices do
+				if list[i] then
+					PREFSMAN:SetPreference("CustomSongsLoadTimeout", values[i])
+					break
+				end
+			end
+		end
+	}
+end
+
+function CustomSongsMaxSeconds()
+	local choices = {}
+	local values = {}
+
+	for i = 0,(900-105)/15 do
+		values[i+1] = 105+(15*i)
+		choices[i+1] = string.format('%d:%02d',math.floor(values[i+1]/60),values[i+1]%60)
+	end
+
+	table.insert(choices, "2:00:00")
+	table.insert(values, 7200)
+
+	return {
+		Name="CustomSongsMaxSeconds",
+		Choices=choices,
+		LayoutType = "ShowAllInRow",
+		SelectType = "SelectOne",
+		OneChoiceForAllPlayers = true,
+		ExportOnChange = false,
+		LoadSelections = function(self, list, pn)
+			local time = SecondsToMMSS(PREFSMAN:GetPreference("CustomSongsMaxSeconds")):gsub("^0*", "")
+			local i = FindInTable(time, choices) or 1
+			list[i] = true
+		end,
+		SaveSelections = function(self, list, pn)
+			for i=1, #choices do
+				if list[i] then
+					PREFSMAN:SetPreference("CustomSongsMaxSeconds", values[i])
+					break
+				end
+			end
+		end
+	}
+end
+
+function CustomSongsMaxMegabytes()
+	local choices = {}
+	local values = {}
+
+	for i = 1,9 do
+		values[#values+1] = i
+		choices[#values+1] = string.format('%d MB',values[#values])
+	end
+	for i = 1,9 do
+		values[#values+1] = 10*i
+		choices[#values+1] = string.format('%d MB',values[#values])
+	end
+	for i = 1,10 do
+		values[#values+1] = 100*i
+		choices[#values+1] = string.format('%d MB',values[#values])
+	end
+
+	return {
+		Name="CustomSongsMaxMegabytes",
+		Choices=choices,
+		LayoutType = "ShowAllInRow",
+		SelectType = "SelectOne",
+		OneChoiceForAllPlayers = true,
+		ExportOnChange = false,
+		LoadSelections = function(self, list, pn)
+			local pref = PREFSMAN:GetPreference("CustomSongsMaxMegabytes")
+			local i = FindInTable(pref, values) or 1
+			list[i] = true
+		end,
+		SaveSelections = function(self, list, pn)
+			for i=1, #choices do
+				if list[i] then
+					PREFSMAN:SetPreference("CustomSongsMaxMegabytes", values[i])
+					break
+				end
+			end
+		end
+	}
+end
+
 function EditorNoteskin()
 	local skins = NOTESKIN:GetNoteSkinNames()
 	return {
