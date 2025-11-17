@@ -1,21 +1,4 @@
 local credits = {}
-local creditWideScreenDiff=math.ceil((SCREEN_HEIGHT-SCREEN_HEIGHT*WideScreenDiff())/24)
-local creditsDiffuse = {
-	[ 98+creditWideScreenDiff] = color("#76B1D5"),
-	[146+creditWideScreenDiff] = color("#ffa800"),
-	[149+creditWideScreenDiff] = color("#ffa800"),
-	[150+creditWideScreenDiff] = color("#ddf3ff"),
-	[157+creditWideScreenDiff] = color("#ffa800"),
-	[158+creditWideScreenDiff] = color("#ddf3ff"),
-	[163+creditWideScreenDiff] = color("#ffa800"),
-	[164+creditWideScreenDiff] = color("#ddf3ff"),
-	[169+creditWideScreenDiff] = color("#ffa800"),
-	[170+creditWideScreenDiff] = color("#ddf3ff"),
-	[175+creditWideScreenDiff] = color("#ffa800"),
-	[176+creditWideScreenDiff] = color("#ddf3ff"),
-	[181+creditWideScreenDiff] = color("#ffa800"),
-	[182+creditWideScreenDiff] = color("#ddf3ff")
-}
 
 for i=1,math.ceil((SCREEN_HEIGHT-SCREEN_HEIGHT*WideScreenDiff())/24) do
 	credits[#credits+1] = Def.ActorFrame{}
@@ -119,7 +102,7 @@ credits[#credits+1] = Def.ActorFrame{}
 credits[#credits+1] = Def.ActorFrame{}
 credits[#credits+1] = Def.ActorFrame{}
 credits[#credits+1] = Def.ActorFrame{}
-credits[#credits+1] = Def.BitmapText { File = "_r bold 30px", Text="Test Team"}
+credits[#credits+1] = Def.BitmapText { File = "_r bold 30px", Text="Test Team", InitCommand=function(self) self:AddAttribute(0, {Length = -1, Diffuse = color("#76B1D5")}) end}
 credits[#credits+1] = Def.BitmapText { File = "_r bold 30px", Text="G. PolloxxX"}
 credits[#credits+1] = Def.BitmapText { File = "_r bold 30px", Text="Lil Lion"}
 credits[#credits+1] = Def.BitmapText { File = "_r bold 30px", Text="Matt Vandermeulen"}
@@ -167,43 +150,43 @@ credits[#credits+1] = Def.BitmapText { File = "_r bold 30px", Text="Justin 'Pags
 credits[#credits+1] = Def.ActorFrame{}
 credits[#credits+1] = Def.ActorFrame{}
 credits[#credits+1] = Def.ActorFrame{}
-credits[#credits+1] = Def.BitmapText { File = "_r bold 30px", Text="Special Thanks to:"}
+credits[#credits+1] = Def.BitmapText { File = "_r bold 30px", Text="Special Thanks to:", InitCommand=function(self) self:AddAttribute(0, {Length = -1, Diffuse = color("#ffa800")}) end}
 credits[#credits+1] = Def.ActorFrame{}
 credits[#credits+1] = Def.Sprite { Texture = THEME:GetPathB("","_thanks/_bx") }
-credits[#credits+1] = Def.BitmapText { File = "_r bold 30px", Text="Boxorroxors"}
-credits[#credits+1] = Def.BitmapText { File = "_r bold 30px", Text="www.boxorroxors.net"}
+credits[#credits+1] = Def.BitmapText { File = "_r bold 30px", Text="Boxorroxors", InitCommand=function(self) self:AddAttribute(0, {Length = -1, Diffuse = color("#ffa800")}) end}
+credits[#credits+1] = Def.BitmapText { File = "_r bold 30px", Text="www.boxorroxors.net", InitCommand=function(self) self:AddAttribute(0, {Length = -1, Diffuse = color("#ddf3ff")}) end}
 credits[#credits+1] = Def.ActorFrame{}
 credits[#credits+1] = Def.ActorFrame{}
 credits[#credits+1] = Def.ActorFrame{}
 credits[#credits+1] = loadfile(THEME:GetPathB("","_thanks/_sci"))()
 credits[#credits+1] = Def.ActorFrame{}
 credits[#credits+1] = Def.ActorFrame{}
-credits[#credits+1] = Def.BitmapText { File = "_r bold 30px", Text="SCI Recordings!"}
-credits[#credits+1] = Def.BitmapText { File = "_r bold 30px", Text="www.scirecordings.com"}
+credits[#credits+1] = Def.BitmapText { File = "_r bold 30px", Text="SCI Recordings!", InitCommand=function(self) self:AddAttribute(0, {Length = -1, Diffuse = color("#ffa800")}) end}
+credits[#credits+1] = Def.BitmapText { File = "_r bold 30px", Text="www.scirecordings.com", InitCommand=function(self) self:AddAttribute(0, {Length = -1, Diffuse = color("#ddf3ff")}) end}
 credits[#credits+1] = Def.ActorFrame{}
 credits[#credits+1] = Def.ActorFrame{}
 credits[#credits+1] = Def.Sprite { Texture = THEME:GetPathB("","_thanks/_itgf") }
 credits[#credits+1] = Def.ActorFrame{}
-credits[#credits+1] = Def.BitmapText { File = "_r bold 30px", Text="ITGfreak/Rhythmatic.net"}
-credits[#credits+1] = Def.BitmapText { File = "_r bold 30px", Text="www.rhythmatic.net"}
+credits[#credits+1] = Def.BitmapText { File = "_r bold 30px", Text="ITGfreak/Rhythmatic.net", InitCommand=function(self) self:AddAttribute(0, {Length = -1, Diffuse = color("#ffa800")}) end}
+credits[#credits+1] = Def.BitmapText { File = "_r bold 30px", Text="www.rhythmatic.net", InitCommand=function(self) self:AddAttribute(0, {Length = -1, Diffuse = color("#ddf3ff")}) end}
 credits[#credits+1] = Def.ActorFrame{}
 credits[#credits+1] = Def.ActorFrame{}
 credits[#credits+1] = Def.Sprite { Texture = THEME:GetPathB("","_thanks/_gs") }
 credits[#credits+1] = Def.ActorFrame{}
-credits[#credits+1] = Def.BitmapText { File = "_r bold 30px", Text="GrooveStats"}
-credits[#credits+1] = Def.BitmapText { File = "_r bold 30px", Text="www.groovestats.com"}
+credits[#credits+1] = Def.BitmapText { File = "_r bold 30px", Text="GrooveStats", InitCommand=function(self) self:AddAttribute(0, {Length = -1, Diffuse = color("#ffa800")}) end}
+credits[#credits+1] = Def.BitmapText { File = "_r bold 30px", Text="www.groovestats.com", InitCommand=function(self) self:AddAttribute(0, {Length = -1, Diffuse = color("#ddf3ff")}) end}
 credits[#credits+1] = Def.ActorFrame{}
 credits[#credits+1] = Def.ActorFrame{}
 credits[#credits+1] = Def.Sprite { Texture = THEME:GetPathB("","_thanks/_n3k") }
 credits[#credits+1] = Def.ActorFrame{}
-credits[#credits+1] = Def.BitmapText { File = "_r bold 30px", Text="Naota3k"}
-credits[#credits+1] = Def.BitmapText { File = "_r bold 30px", Text="www.naota3k.com"}
+credits[#credits+1] = Def.BitmapText { File = "_r bold 30px", Text="Naota3k", InitCommand=function(self) self:AddAttribute(0, {Length = -1, Diffuse = color("#ffa800")}) end}
+credits[#credits+1] = Def.BitmapText { File = "_r bold 30px", Text="www.naota3k.com", InitCommand=function(self) self:AddAttribute(0, {Length = -1, Diffuse = color("#ddf3ff")}) end}
 credits[#credits+1] = Def.ActorFrame{}
 credits[#credits+1] = Def.ActorFrame{}
 credits[#credits+1] = Def.Sprite { Texture = THEME:GetPathB("","_thanks/_rx") }
 credits[#credits+1] = Def.ActorFrame{}
-credits[#credits+1] = Def.BitmapText { File = "_r bold 30px", Text="RoXoR"}
-credits[#credits+1] = Def.BitmapText { File = "_r bold 30px", Text="www.roxorgames.com"}
+credits[#credits+1] = Def.BitmapText { File = "_r bold 30px", Text="RoXoR", InitCommand=function(self) self:AddAttribute(0, {Length = -1, Diffuse = color("#ffa800")}) end}
+credits[#credits+1] = Def.BitmapText { File = "_r bold 30px", Text="www.roxorgames.com", InitCommand=function(self) self:AddAttribute(0, {Length = -1, Diffuse = color("#ddf3ff")}) end}
 credits[#credits+1] = Def.ActorFrame{}
 credits[#credits+1] = Def.ActorFrame{}
 credits[#credits+1] = Def.ActorFrame{}
@@ -234,7 +217,6 @@ return Def.ActorFrame{
 			TransformFunction=function(self,offset,itemIndex,numItems)
 				self:y(offset*24*WideScreenDiff()):zoom(0.7*WideScreenDiff()):ztest(1)
 				if itemIndex <= 97+math.ceil((SCREEN_HEIGHT-SCREEN_HEIGHT*WideScreenDiff())/24) and itemIndex ~= 0 then self:zoom(1*WideScreenDiff()) end
-				if creditsDiffuse[itemIndex] then self:diffuse(creditsDiffuse[itemIndex]) end
 			end,
 			children = credits
 		}
