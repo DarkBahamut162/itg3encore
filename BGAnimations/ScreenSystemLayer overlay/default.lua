@@ -31,22 +31,26 @@ t[#t+1] = Def.ActorFrame{
 }
 t[#t+1] = Def.ActorFrame{
 	Def.Quad{
+		Name="BG",
 		InitCommand=function(self) self:zoomtowidth(SCREEN_WIDTH):zoomtoheight(30):horizalign(left):vertalign(top):y(SCREEN_TOP):diffuse(color("0,0,0,0")) end,
 		OnCommand=function(self) self:finishtweening():diffusealpha(0.85) end,
-		OffCommand=function(self) self:sleep(3):linear(0.5):diffusealpha(0) end
+		OffCommand=function(self,param) self:sleep(param.TIME):linear(0.5):diffusealpha(0) end
 	},
 	Def.BitmapText{
 		Font="Common Normal",
 		Name="Text",
 		InitCommand=function(self) self:maxwidth((SCREEN_WIDTH-20)*1.75):horizalign(left):vertalign(top):y(SCREEN_TOP+10):x(SCREEN_LEFT+10):shadowlength(1):diffusealpha(0) end,
 		OnCommand=function(self) self:finishtweening():diffusealpha(1):zoom(0.5) end,
-		OffCommand=function(self) self:sleep(3):linear(0.5):diffusealpha(0) end
+		OffCommand=function(self,param) self:sleep(param.TIME):linear(0.5):diffusealpha(0) end
 	},
 	SystemMessageMessageCommand=function(self,params)
 		self:GetChild("Text"):settext(params.Message)
+		local _,lines = string.gsub(params.Message,"\n","")
+		local _,count = string.gsub(params.Message,".","")
+		self:GetChild("BG"):zoomtoheight(10+(lines+1)*18)
 		self:playcommand("On")
 		if params.NoAnimate then self:finishtweening() end
-		self:playcommand("Off")
+		self:playcommand("Off",{TIME=count*0.1})
 	end,
 	HideSystemMessageMessageCommand=function(self) self:finishtweening() end
 }
