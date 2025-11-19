@@ -23,9 +23,25 @@ end
 
 local timing = GetTimingDifficulty()
 local timingChange = { 1.50,1.33,1.16,1.00,0.84,0.66,0.50,0.33,0.20 }
+local ctrlHeld = false
+
+local InputHandler = function(event)
+	if event.type == "InputEventType_FirstPress" then
+		if string.find(event.DeviceInput.button,"ctrl") and not ctrlHeld then ctrlHeld = true end
+		if ctrlHeld then
+			if event.DeviceInput.button == "DeviceButton_r" then
+				setenv("Restart",getenv("Restart")+1)
+				SCREENMAN:GetTopScreen():SetPrevScreenName(Branch.BeforeGameplay()):begin_backing_out()
+			end
+		end
+	elseif event.type == "InputEventType_Release" then
+		if string.find(event.DeviceInput.button,"ctrl") and ctrlHeld then ctrlHeld = false end
+	end
+end
 
 local t = Def.ActorFrame{
-	OnCommand=function(self)
+	OnCommand=function()
+		SCREENMAN:GetTopScreen():AddInputCallback(InputHandler)
 		for pn in ivalues(GAMESTATE:GetEnabledPlayers()) do
 			local playeroptions = GAMESTATE:GetPlayerState(pn):GetPlayerOptions("ModsLevel_Song")
 			if playeroptions:MMod() then MOD[pn] = "m" CURRENT[pn] = playeroptions:MMod() break end
@@ -36,6 +52,7 @@ local t = Def.ActorFrame{
 			if playeroptions:CMod() then MOD[pn] = "c" CURRENT[pn] = playeroptions:CMod() end
 		end
 	end,
+	OffCommand=function() SCREENMAN:GetTopScreen():RemoveInputCallback(InputHandler) end,
 	CodeMessageCommand = function(self, params)
 		if params.Name == 'SpeedUp' or params.Name == 'SpeedDown' then
 			if MOD[params.PlayerNumber] == "a" or MOD[params.PlayerNumber] == "ca" or MOD[params.PlayerNumber] == "av" then

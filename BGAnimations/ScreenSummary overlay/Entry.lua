@@ -724,6 +724,15 @@ return Def.ActorFrame{
                     self:settext("Overall\nPerformance")
                 end
             end
+        },
+        Def.BitmapText {
+            File = "_v 26px bold black",
+            InitCommand=function(self) self:x(bannerX):y(25*WideScreenDiff()):zoom(0.4*WideScreenDiff()):shadowlength(1) end,
+            OnCommand=function(self)
+                if Master[index] and Master[index]["Restart"] and Master[index]["Restart"] > 0 then
+                    self:settext(Master[index]["Restart"]..(Master[index]["Restart"] == 1 and " Restart" or " Restarts"))
+                end
+            end
         }
     },
     playerScore

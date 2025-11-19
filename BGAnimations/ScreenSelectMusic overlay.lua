@@ -1,5 +1,6 @@
 local t = Def.ActorFrame{}
 local tOnline = Def.ActorFrame{}
+setenv("Restart",0)
 
 if ShowStandardDecoration("StyleIcon") then
 	t[#t+1] = loadfile(THEME:GetPathG(Var "LoadingScreen", "StyleIcon"))() .. {
@@ -101,7 +102,7 @@ local HelpDisplay = isEtterna("0.65") and Def.BitmapText {
 	SelectMenuClosedMessageCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(0):zoomx(0.3*WideScreenDiff()) end
 }
 
-local ctrlHeld = { PLAYER_1 = false, PLAYER_2 = false}
+local ctrlHeld = { PLAYER_1 = false, PLAYER_2 = false }
 local highscores = { PLAYER_1 = 0, PLAYER_2 = 0}
 
 local InputHandler = function(event)
