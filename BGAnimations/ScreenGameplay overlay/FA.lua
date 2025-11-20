@@ -248,9 +248,9 @@ return Def.ActorFrame{
 				self:settext(SecondsToMSSMsMs(pss:GetLifeRemainingSeconds())) -- SURVIVAL
 			elseif scoreType == 1 then
 				if scoreDirection == 1 then
-					output = animateScore(pss:GetScore()*W0Percent,displayScore)
+					output = animateScore(math.floor(pss:GetScore()*W0Percent),displayScore)
 				else
-					output = animateScore(maxScore-(pss:GetCurMaxScore()-pss:GetScore())*W0Percent,displayScore)
+					output = animateScore(math.ceil(maxScore-(pss:GetCurMaxScore()-pss:GetScore()*W0Percent)),displayScore)
 				end
 				self:settextf("%09d",output) -- SCORE
 				self:ClearAttributes()
