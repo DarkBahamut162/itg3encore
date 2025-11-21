@@ -191,8 +191,8 @@ return Def.ActorFrame{
 	Def.ActorFrame{
 		Name="Error",
 		InitCommand=function(self) self:y(-212*WideScreenDiff()) end,
-		OnCommand=function() if showOffset then SCREENMAN:GetTopScreen():AddInputCallback(InputHandler) end end,
-		OffCommand=function() if showOffset then SCREENMAN:GetTopScreen():RemoveInputCallback(InputHandler) end end,
+		OnCommand=function() SCREENMAN:GetTopScreen():AddInputCallback(InputHandler) end,
+		OffCommand=function() SCREENMAN:GetTopScreen():RemoveInputCallback(InputHandler) end,
 		BeginCommand=function(self)
 			local screen = SCREENMAN:GetTopScreen()
 			if screen then
