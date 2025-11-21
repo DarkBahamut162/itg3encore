@@ -32,7 +32,6 @@ return Def.ActorFrame{
 					Length = math.max(9-string.len(''..output), 0),
 					Diffuse = PlayerColorSemi(nil),
 				})
-				if isTopScreen("ScreenEvaluationWorkout") or isTopScreen("ScreenEvaluationCourseWorkout") then self:zoomx(1/2*WideScreenDiff()) else self:zoomx(8/9*WideScreenDiff()) end
 			elseif scoreType == 2 then
 				self:settext(FormatPercentScore(DP(player)*W0Percent)) -- PERCENT
 			elseif scoreType == 3 then
