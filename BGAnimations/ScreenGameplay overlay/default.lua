@@ -11,13 +11,11 @@ local Overlay = #GAMESTATE:GetHumanPlayers() == 2 and Def.ActorFrame{
 } or loadfile(THEME:GetPathB("ScreenGameplay","overlay/Overlay"))(GAMESTATE:GetMasterPlayerNumber())
 
 local judgments,offsetdata = {},{}
-if enableOffsets then
-	for player in ivalues(GAMESTATE:GetEnabledPlayers()) do
-		judgments[player] = {}
-		offsetdata[player] = {}
-		for i=1,GAMESTATE:GetCurrentStyle(player):ColumnsPerPlayer() do
-			judgments[player][i] = { ProW0=0, ProW1=0, ProW2=0, ProW3=0, ProW4=0, ProW5=0, W0=0, W1=0, W2=0, W3=0, W4=0, W5=0, Miss=0 }
-		end
+for player in ivalues(GAMESTATE:GetEnabledPlayers()) do
+	judgments[player] = {}
+	offsetdata[player] = {}
+	for i=1,GAMESTATE:GetCurrentStyle(player):ColumnsPerPlayer() do
+		judgments[player][i] = { ProW0=0, ProW1=0, ProW2=0, ProW3=0, ProW4=0, ProW5=0, W0=0, W1=0, W2=0, W3=0, W4=0, W5=0, Miss=0 }
 	end
 end
 
@@ -319,7 +317,7 @@ local t = Def.ActorFrame{
 	},
 	loadfile(THEME:GetPathB("","_coins"))()..{ InitCommand=function(self) self:visible(not isEtterna() and not GAMESTATE:IsDemonstration()) end },
 	JudgmentMessageCommand=function(self, params)
-		if params.Player == params.Player and not string.find(params.TapNoteScore,"Checkpoint") and not string.find(params.TapNoteScore,"None") and params.TapNoteScore ~= "TapNoteScore_" and enableOffsets then
+		if not string.find(params.TapNoteScore,"Checkpoint") and not string.find(params.TapNoteScore,"None") and params.TapNoteScore ~= "TapNoteScore_" then
 			local player = params.Player
 			if params.Notes then
 				local JudgeScale = isOutFoxV(20230624) and GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Preferred"):JudgeScale() or 1
@@ -331,7 +329,7 @@ local t = Def.ActorFrame{
 					if tns == "W1" then tns = math.abs(col:GetTapNoteResult():GetTapNoteOffset()) <= W0 and "W0" or "W1" end
 					if tns and tns ~= "" and tns ~= "None" then judgments[player][i][tns] = judgments[player][i][tns] + 1 end
 				end
-				if params.TapNoteOffset then
+				if params.TapNoteOffset and enableOffsets then
 					local vStats = STATSMAN:GetCurStageStats():GetPlayerStageStats( player )
 					local time = GAMESTATE:IsCourseMode() and vStats:GetAliveSeconds() or GAMESTATE:GetCurMusicSeconds()
 					local noff = params.TapNoteScore == "TapNoteScore_Miss" and "Miss" or params.TapNoteOffset
@@ -345,10 +343,8 @@ local t = Def.ActorFrame{
 		end
 	end,
 	OffCommand=function(self)
-		if enableOffsets then
-			setenv( "perColJudgeData", judgments )
-			setenv( "OffsetTable", offsetdata )
-		end
+		setenv( "perColJudgeData", judgments )
+		if enableOffsets then setenv( "OffsetTable", offsetdata ) end
 	end
 }
 

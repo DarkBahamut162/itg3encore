@@ -51,23 +51,6 @@ if offsetInfo and showOffset then
 		end
 	end
 
-	for col=1,NumColumns do
-		column[col] = {
-			["TapNoteScore_W0"] = 0,
-			["TapNoteScore_W1"] = 0,
-			["TapNoteScore_W2"] = 0,
-			["TapNoteScore_W3"] = 0,
-			["TapNoteScore_W4"] = 0,
-			["TapNoteScore_W5"] = 0,
-			["TapNoteScore_Miss"] = 0
-		}
-		for tns,t in pairs(columnInfo[PLAYER_2][col]) do
-			tns = "TapNoteScore_"..tns
-			if column[col][tns] then column[col][tns] = t end
-			maxJudg = math.max(maxJudg,t)
-		end
-	end
-
 	for i = -maxRange,maxRange*2+0.001,0.001 do
 		i = math.round(i,3)
 		if errors[i] and errors[i] > peak_counter then
@@ -88,7 +71,26 @@ if offsetInfo and showOffset then
 	average = math.round(average/counter,3)
 end
 
-showOffset = offsetInfo and offsetInfo[PLAYER_2] and #offsetInfo[PLAYER_2] > 0 and counter > 0 and getenv("EvalComboP2")
+if columnInfo then
+	for col=1,NumColumns do
+		column[col] = {
+			["TapNoteScore_W0"] = 0,
+			["TapNoteScore_W1"] = 0,
+			["TapNoteScore_W2"] = 0,
+			["TapNoteScore_W3"] = 0,
+			["TapNoteScore_W4"] = 0,
+			["TapNoteScore_W5"] = 0,
+			["TapNoteScore_Miss"] = 0
+		}
+		for tns,t in pairs(columnInfo[PLAYER_2][col]) do
+			tns = "TapNoteScore_"..tns
+			if column[col][tns] then column[col][tns] = t end
+			maxJudg = math.max(maxJudg,t)
+		end
+	end
+end
+
+showOffset = showOffset and offsetInfo and offsetInfo[PLAYER_2] and #offsetInfo[PLAYER_2] > 0 and counter > 0 and getenv("EvalComboP2")
 local faplus = getenv("SetScoreFA"..pname(PLAYER_2))
 local c
 
