@@ -357,6 +357,7 @@ for pn in ivalues(GAMESTATE:GetEnabledPlayers()) do
 	if (isRegular() or isNonstop() or isLifeline(pn)) and getenv("SetScoreFA"..pname(pn)) then t[#t+1] = loadfile(THEME:GetPathB("ScreenGameplay","overlay/FA"))(pn) end
 	t[#t+1] = loadfile(THEME:GetPathB("ScreenGameplay","overlay/Dynamic"))(pn)
 	if getenv("Flare"..pname(pn)) and getenv("Flare"..pname(pn)) > 0 and isRegular() then t[#t+1] = loadfile(THEME:GetPathB("ScreenGameplay","overlay/Flare"))(pn) end
+	if getenv("SetPacemakerFail"..pname(pn)) and getenv("SetPacemakerFail"..pname(pn)) > 1 and not isVS() then t[#t+1] = loadfile(THEME:GetPathB("ScreenGameplay","overlay/PacemakerFail"))(pn) end
 end
 
 return t

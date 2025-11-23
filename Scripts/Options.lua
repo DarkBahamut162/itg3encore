@@ -246,15 +246,15 @@ function SongMods()
 
 	if isRegular() then
 		if HasLuaCheck() then
-			options = addToOutput(options,"20,"..add.."P,29,21"..add2..",24",",")
+			options = addToOutput(options,"20,"..add.."P,PF,29,21"..add2..",24",",")
 		else
-			options = addToOutput(options,"20,"..add.."P,29"..add2..",24",",")
+			options = addToOutput(options,"20,"..add.."P,PF,29"..add2..",24",",")
 		end
 	elseif isNonstop() then
 		if IsCourseSecret() then
-			options = addToOutput(options,"20,"..add.."P,29"..add2..",24",",")
+			options = addToOutput(options,"20,"..add.."P,PF,29"..add2..",24",",")
 		else
-			options = addToOutput(options,"20,"..add.."P,29,21"..add2..",24",",")
+			options = addToOutput(options,"20,"..add.."P,PF,29,21"..add2..",24",",")
 		end
 	end
 
@@ -269,7 +269,7 @@ function SongMods()
 	if isVS() then
 		options = addToOutput(options,"28,21"..add2,",")
 	elseif GAMESTATE:IsCourseMode() then
-		options = addToOutput(options,"28,S,EB,CC,20,"..add.."P,29,21"..add2,",")
+		options = addToOutput(options,"28,S,EB,CC,20,"..add.."P,PF,29,21"..add2,",")
 	end
 
 	if not (IsGame("pump") or GAMESTATE:IsCourseMode()) then options = addToOutput(options,"31",",") end
@@ -428,6 +428,7 @@ function InitPlayerOptions()
 		setenv("ShowNoteGraphRange"..pname(pn),not isVS() and LoadUserPrefN(pn, "ShowNoteGraphRange", 1) or 1)
 		setenv("ShowNoteGraphData"..pname(pn),not isVS() and LoadUserPrefB(pn, "ShowNoteGraphData", false) or false)
 		setenv("SetPacemaker"..pname(pn),not isVS() and LoadUserPrefN(pn, "SetPacemaker", 0) or 0)
+		setenv("SetPacemakerFail"..pname(pn),not isVS() and LoadUserPrefN(pn, "SetPacemakerFail", 0) or 0)
 
 		setenv("ShowMods"..pname(pn),LoadUserPrefB(pn, "ShowMods", false))
 		setenv("ShowSpeedAssist"..pname(pn),LoadUserPrefB(pn, "ShowSpeedAssist", false))
@@ -918,6 +919,35 @@ function OptionSetPacemaker()
 			for i=1,#list do
 				if list[i] then
 					setenv("SetPacemaker"..pname(pn),SaveUserPref(pn, "SetPacemaker", i))
+					break
+				end
+			end
+		end
+	}
+	setmetatable(t, t)
+	return t
+end
+
+function OptionSetPacemakerFail()
+	local t = {
+		Name="SetPacemakerFail",
+		LayoutType = "ShowAllInRow",
+		SelectType = "SelectOne",
+		OneChoiceForAllPlayers = false,
+		ExportOnChange = false,
+		Choices = { "Off","Restart","Fail" },
+		LoadSelections = function(self, list, pn)
+			local selected = getenv("SetPacemakerFail"..pname(pn))
+			if selected and selected ~= 0 then
+				list[selected] = true
+			else
+				list[1] = true
+			end
+		end,
+		SaveSelections = function(self, list, pn)
+			for i=1,#list do
+				if list[i] then
+					setenv("SetPacemakerFail"..pname(pn),SaveUserPref(pn, "SetPacemakerFail", i))
 					break
 				end
 			end
