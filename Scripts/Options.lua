@@ -394,6 +394,7 @@ function InitPlayerOptions()
 	for pn in ivalues(GAMESTATE:GetEnabledPlayers()) do
 		setenv("Flare"..pname(pn),(not isVS() and VersionDateCheck(20160000)) and LoadUserPrefN(pn, "Flare", 0) or 0)
 		setenv("FlareType"..pname(pn),(not isVS() and VersionDateCheck(20160000)) and LoadUserPrefN(pn, "FlareType", 1) or 1)
+		setenv("FlareAccurate"..pname(pn),(not isVS() and VersionDateCheck(20160000)) and LoadUserPrefB(pn, "FlareAccurate", false) or false)
 
 		setenv("Effect"..pname(pn),not isVS() and LoadUserPrefN(pn, "Effect", 0) or 0)
 
@@ -445,19 +446,24 @@ function OptionFlare()
 		SelectType = "SelectMultiple",
 		OneChoiceForAllPlayers = false,
 		ExportOnChange = false,
-		Choices = { "Off","F1","F2","F3","F4","F5","F6","F7","F8","F9","FX","FF","Old","New" },
+		Choices = { "Off","F1","F2","F3","F4","F5","F6","F7","F8","F9","FX","FF","Old","New","Accurate" },
 		LoadSelections = function(self, list, pn)
 			local flare = getenv("Flare"..pname(pn))
 			local flareType = getenv("FlareType"..pname(pn))
+			local flareAccurate = getenv("FlareAccurate"..pname(pn))
 			list[flare+1] = true
 			list[flareType+12] = true
+			if flareAccurate then list[15] = true end
 		end,
 		SaveSelections = function() end,
 		NotifyOfSelection= function(self, pn, choice)
 			if choice <= 12 then
 				setenv("Flare"..pname(pn),SaveUserPref(pn, "Flare", choice-1))
-			else
+			elseif choice <= 14 then
 				setenv("FlareType"..pname(pn),SaveUserPref(pn, "FlareType", choice-12))
+			else
+				local flareAccurate = (getenv("FlareAccurate"..pname(pn)) or false)
+				setenv("FlareAccurate"..pname(pn),SaveUserPref(pn, "FlareAccurate", not flareAccurate))
 			end
 			return true
 		end

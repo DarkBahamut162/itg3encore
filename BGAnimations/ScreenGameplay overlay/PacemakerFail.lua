@@ -1,4 +1,5 @@
 local player = ...
+local scoreType = (getenv("SetScoreType"..pname(player)) or 2) == 2
 local scoreDirection = 2
 local animate = ThemePrefs.Get("AnimatePlayerScore")
 local target = THEME:GetMetric("PlayerStageStats", "GradePercentTier" .. string.format("%02d", 18-getenv("SetPacemaker"..pname(player))))*10000
@@ -77,14 +78,14 @@ return Def.ActorFrame{
 		Name="Target"..pname(player),
 		Text=string.format("%1.2f%%",target/100),
 		InitCommand=function(self)
-			self:visible(not getenv("HideScore"..pname(player))):x(math.floor(scale(player == PLAYER_1 and 0.05 or 0.95,0,1,SCREEN_LEFT,SCREEN_RIGHT))):zoom(0.4*WideScreenDiff()):y(SCREEN_TOP+66*WideScreenDiff())
+			self:visible(not getenv("HideScore"..pname(player))):x(math.floor(scale(player == PLAYER_1 and 0.05 or 0.95,0,1,SCREEN_LEFT,SCREEN_RIGHT))):zoom(0.4*WideScreenDiff()):y(SCREEN_TOP+((getenv("FlareAccurate"..pname(player)) and not isSurvival(player)) and 56 or 66)*WideScreenDiff())
 		end
 	},
 	Def.BitmapText {
-		File = "_r bold numbers",
+		File = ((not scoreType or isSurvival(player)) and "_r bold numbers" or "_r bold shadow"),
 		Name="Score"..pname(player),
 		InitCommand=function(self)
-			self:visible(not getenv("HideScore"..pname(player))):diffuse(PlayerColor(player)):x(math.floor(scale(player == PLAYER_1 and 0.05 or 0.95,0,1,SCREEN_LEFT,SCREEN_RIGHT))):zoom(0.4*WideScreenDiff()):y(SCREEN_TOP+56*WideScreenDiff())
+			self:visible(not getenv("HideScore"..pname(player))):diffuse(PlayerColor(player)):x(math.floor(scale(player == PLAYER_1 and 0.05 or 0.95,0,1,SCREEN_LEFT,SCREEN_RIGHT))):zoomx(((not scoreType or isSurvival(player)) and 0.4 or 0.3)*WideScreenDiff()):zoomy(0.4*WideScreenDiff()):y(SCREEN_TOP+((getenv("FlareAccurate"..pname(player)) and not isSurvival(player)) and 46 or 56)*WideScreenDiff())
 			if IsGame("pump") then self:addy(10) if GAMESTATE:GetNumPlayersEnabled() == 1 and getenv("Rotation"..pname(player)) == 5 then self:CenterX() end end
 		end,
 		JudgmentMessageCommand=function(self,param)
@@ -100,7 +101,11 @@ return Def.ActorFrame{
 			else
 				output = animateScore((DPMax(player)-(DPCurMax(player)-DPCur(player)))/DPMax(player)*10000,displayScore)/100
 			end
-			self:settextf("%1.2f%%",output)
+			if not scoreType or isSurvival(player) then
+				self:settextf("%1.2f%%",output)
+			else
+				self:settext("PACEMAKER")
+			end
 		end,
 		OffCommand=function(self) if scoreDirection == 2 then scoreDirection = 1 self:queuecommand("RedrawScore") end end
 	}
