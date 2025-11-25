@@ -439,7 +439,8 @@ function JudgmentTransformCommand( self, params )
 		y = y * -1
 		add = add * -1
 	end
-	if isOutFox(20201100) and (IsGame("beat") or IsGame("be-mu") or IsGame("popn") or IsGame("po-mu")) then
+	local mods = string.find(GAMESTATE:GetPlayerState(params.Player):GetPlayerOptionsString("ModsLevel_Song"),"FlipUpsideDown")
+	if mods then
 		y = y * -1
 		add = add * -1
 	end
@@ -462,7 +463,8 @@ function ComboTransformCommand( self, params )
 		y = -40
 		add = add * -1
 	end
-	if isOutFox(20201100) and (IsGame("beat") or IsGame("be-mu") or IsGame("popn") or IsGame("po-mu")) then
+	local mods = string.find(GAMESTATE:GetPlayerState(params.Player):GetPlayerOptionsString("ModsLevel_Song"),"FlipUpsideDown")
+	if mods then
 		y = y * -1
 		add = add * -1
 	end
