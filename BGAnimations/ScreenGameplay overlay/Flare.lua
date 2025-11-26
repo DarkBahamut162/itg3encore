@@ -169,7 +169,6 @@ return Def.ActorFrame{
 			Name="Score"..pname(pn),
 			InitCommand=function(self)
 				self:visible(not getenv("HideScore"..pname(pn))):diffuse(PlayerColor(pn)):x(math.floor(scale(pn == PLAYER_1 and 0.05 or 0.95,0,1,SCREEN_LEFT,SCREEN_RIGHT))):zoomx((not scoreType and 0.3 or 0.4)*WideScreenDiff()):zoomy(0.4*WideScreenDiff()):y(SCREEN_TOP+(getenv("SetPacemakerFail"..pname(pn)) > 1 and 66 or 56)*WideScreenDiff())
-				if IsGame("pump") then self:addy(10) if GAMESTATE:GetNumPlayersEnabled() == 1 and getenv("Rotation"..pname(pn)) == 5 then self:CenterX() end end
 			end,
 			JudgmentMessageCommand=function(self,param)
 				if stop then stop = false end

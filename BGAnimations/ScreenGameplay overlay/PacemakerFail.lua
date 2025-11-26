@@ -86,7 +86,6 @@ return Def.ActorFrame{
 		Name="Score"..pname(player),
 		InitCommand=function(self)
 			self:visible(not getenv("HideScore"..pname(player))):diffuse(PlayerColor(player)):x(math.floor(scale(player == PLAYER_1 and 0.05 or 0.95,0,1,SCREEN_LEFT,SCREEN_RIGHT))):zoomx(((not scoreType or isSurvival(player)) and 0.4 or 0.3)*WideScreenDiff()):zoomy(0.4*WideScreenDiff()):y(SCREEN_TOP+((getenv("FlareAccurate"..pname(player)) and not isSurvival(player)) and 46 or 56)*WideScreenDiff())
-			if IsGame("pump") then self:addy(10) if GAMESTATE:GetNumPlayersEnabled() == 1 and getenv("Rotation"..pname(player)) == 5 then self:CenterX() end end
 		end,
 		JudgmentMessageCommand=function(self,param)
 			if stop then stop = false end

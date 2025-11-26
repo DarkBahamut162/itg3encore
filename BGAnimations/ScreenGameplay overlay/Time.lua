@@ -56,9 +56,9 @@ end
 
 return Def.ActorFrame{
     InitCommand=function(self) self:SetUpdateFunction(Update) c = self:GetChildren() end,
-    OnCommand=function(self) self:addy(-100):sleep(0.5):queuecommand("TweenOn") end,
-    OffCommand=function(self) totalDelta = 0 self:queuecommand("TweenOff") end,
-    TweenOnCommand=function(self) self:decelerate(0.8):addy(100) end,
+    OnCommand=function(self) self:addy(-100):sleep(IsGame("pump") and 1 or 0.5):queuecommand("TweenOn") end,
+    OffCommand=function(self) totalDelta = 0 if not IsGame("pump") then self:queuecommand("TweenOff") end end,
+    TweenOnCommand=function(self) self:decelerate(IsGame("pump") and 0.4 or 0.8):addy(IsGame("pump") and 140 or 100) end,
     TweenOffCommand=function(self) if AnyPlayerFullComboed() then self:sleep(1) end self:accelerate(0.8):addy(-100) end,
     CurrentSongChangedMessageCommand=function()
         if courseMode then
