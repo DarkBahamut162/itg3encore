@@ -2,7 +2,7 @@ local player = ...
 assert(player,"[ScreenEvaluation PersonalRecord] requires player")
 local record = STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetPersonalHighScoreIndex()
 
-if getenv("EvalCombo"..pname(player)) and isEtterna() then
+if getenv("EvalCombo"..pname(player)) and isEtterna("0.55") then
 	local score = SCOREMAN:GetMostRecentScore()
 	local origTable = getScoresByKey(player)
 	local rtTable = getRateTable(origTable) or {}

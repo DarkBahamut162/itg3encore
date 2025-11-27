@@ -30,7 +30,7 @@ return Def.ActorFrame{
 				if timingData:HasScrollChanges() then scroll = true end
 				if timingData:HasSpeedChanges() then speed = true end
 				if timingData:HasFakes() or rv:GetValue('RadarCategory_Fakes') > 0 then fake = true end
-				if not isEtterna() and step:HasAttacks() then attack = true end
+				if not isEtterna("0.55") and step:HasAttacks() then attack = true end
 
 				jump = rv:GetValue('RadarCategory_Jumps') > 0
 				hold = rv:GetValue('RadarCategory_Holds') > 0
@@ -52,7 +52,7 @@ return Def.ActorFrame{
 					if timingData:HasScrollChanges() then scroll = true end
 					if timingData:HasSpeedChanges() then speed = true end
 					if timingData:HasFakes() then fake = true end
-					if not isEtterna() and step:HasAttacks() then attack = true end
+					if not isEtterna("0.55") and step:HasAttacks() then attack = true end
 				end
 
 				local rv = trail:GetRadarValues(player)

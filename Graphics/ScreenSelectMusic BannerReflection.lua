@@ -1,6 +1,6 @@
 local courseMode = GAMESTATE:IsCourseMode()
 
-return isEtterna() and Def.Sprite{
+return isEtterna("0.65") and Def.Sprite{
 		InitCommand=function(self) self:x(SCREEN_CENTER_X+140*WideScreenDiff()):y(SCREEN_CENTER_Y+26*WideScreenDiff()):zoomy(-1):ztest(true) end,
 		SetCommand=function(self)
 			local song = GAMESTATE:GetCurrentSong()

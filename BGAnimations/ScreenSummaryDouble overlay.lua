@@ -22,7 +22,7 @@ local t = Def.ActorFrame{
 	}
 }
 
-if isEtterna() then XML() end
+if isEtterna("0.55") then XML() end
 
 local types = { "Actual","Possible","PercentComplete" }
 local prof = PROFILEMAN:GetMachineProfile()
@@ -41,7 +41,7 @@ for i=1,3 do
 					if n > 5 then
 						val = prof:GetCoursesActual(StepsTypeDouble()[GetUserPrefN("StylePosition")],diffs[n])
 					else
-						if isEtterna() then
+						if isEtterna("0.55") then
 							val = GetSongsActualEtterna(StepsTypeDouble()[GetUserPrefN("StylePosition")],diffs[n])
 						else
 							val = prof:GetSongsActual(StepsTypeDouble()[GetUserPrefN("StylePosition")],diffs[n])
@@ -52,7 +52,7 @@ for i=1,3 do
 					if n > 5 then
 						val = prof:GetCoursesPossible(StepsTypeDouble()[GetUserPrefN("StylePosition")],diffs[n])
 					else
-						if isEtterna() then
+						if isEtterna("0.55") then
 							val = GetSongsPossibleEtterna(StepsTypeDouble()[GetUserPrefN("StylePosition")],diffs[n])
 						else
 							val = prof:GetSongsPossible(StepsTypeDouble()[GetUserPrefN("StylePosition")],diffs[n])
@@ -63,7 +63,7 @@ for i=1,3 do
 					if n > 5 then
 						val = prof:GetCoursesPercentComplete(StepsTypeDouble()[GetUserPrefN("StylePosition")],diffs[n])
 					else
-						if isEtterna() then
+						if isEtterna("0.55") then
 							val = GetSongsPercentCompleteEtterna(StepsTypeDouble()[GetUserPrefN("StylePosition")],diffs[n])
 						else
 							val = prof:GetSongsPercentComplete(StepsTypeDouble()[GetUserPrefN("StylePosition")],diffs[n])
@@ -81,7 +81,7 @@ for i=1,3 do
 end
 
 local shortGrade = GetGradeFromPercent(
-	isEtterna() and GetTotalPercentCompleteEtterna(StepsTypeDouble()[GetUserPrefN("StylePosition")]) or
+	isEtterna("0.55") and GetTotalPercentCompleteEtterna(StepsTypeDouble()[GetUserPrefN("StylePosition")]) or
 	GetTotalPercentComplete(prof,StepsTypeDouble()[GetUserPrefN("StylePosition")])
 )
 
@@ -102,7 +102,7 @@ local totals = Def.ActorFrame{
 					if i > 5 then
 						val = val + prof:GetCoursesActual(StepsTypeDouble()[GetUserPrefN("StylePosition")],diffs[i])
 					else
-						if isEtterna() then
+						if isEtterna("0.55") then
 							val = val + GetSongsActualEtterna(StepsTypeDouble()[GetUserPrefN("StylePosition")],diffs[i])
 						else
 							val = val + prof:GetSongsActual(StepsTypeDouble()[GetUserPrefN("StylePosition")],diffs[i])
@@ -126,7 +126,7 @@ local totals = Def.ActorFrame{
 					if i > 5 then
 						val = val + prof:GetCoursesPossible(StepsTypeDouble()[GetUserPrefN("StylePosition")],diffs[i])
 					else
-						if isEtterna() then
+						if isEtterna("0.55") then
 							val = val + GetSongsPossibleEtterna(StepsTypeDouble()[GetUserPrefN("StylePosition")],diffs[i])
 						else
 							val = val + prof:GetSongsPossible(StepsTypeDouble()[GetUserPrefN("StylePosition")],diffs[i])
@@ -145,7 +145,7 @@ local totals = Def.ActorFrame{
 			File = "_r bold numbers",
 			InitCommand=function(self) self:x(SCREEN_CENTER_X+136*WideScreenDiff()):y(20*WideScreenDiff()):horizalign(right):zoom(WideScreenDiff()) end,
 			BeginCommand=function(self)
-				local val = isEtterna() and GetTotalPercentCompleteEtterna(StepsTypeDouble()[GetUserPrefN("StylePosition")]) or GetTotalPercentComplete(prof,StepsTypeDouble()[GetUserPrefN("StylePosition")])
+				local val = isEtterna("0.55") and GetTotalPercentCompleteEtterna(StepsTypeDouble()[GetUserPrefN("StylePosition")]) or GetTotalPercentComplete(prof,StepsTypeDouble()[GetUserPrefN("StylePosition")])
 				if val ~= val then val = 0 end
 				self:settext(FormatPercentScore(val))
 

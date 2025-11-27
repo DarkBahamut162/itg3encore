@@ -4,7 +4,7 @@ local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(player)
 local record = pss:GetMachineHighScoreIndex()
 
 if getenv("EvalCombo"..pname(player)) and not isOutFoxV() and GAMESTATE:IsEventMode() and record == -1 then
-	if isEtterna() then
+	if isEtterna("0.55") then
 		local score = SCOREMAN:GetMostRecentScore()
 		local origTable = getScoresByKey(player)
 		local rtTable = getRateTable(origTable) or {}

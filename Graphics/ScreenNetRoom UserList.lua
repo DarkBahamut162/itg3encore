@@ -19,10 +19,10 @@ return Def.ActorFrame{
 		InitListCommand=function(self)
 			local topScreen = SCREENMAN:GetTopScreen()
 			if topScreen then
-				local children = isEtterna() and NSMAN:GetLobbyUserList() or topScreen:GetChild("Users")
+				local children = isEtterna("0.64") and NSMAN:GetLobbyUserList() or topScreen:GetChild("Users")
 				if children then
 					userList = ""
-					if isEtterna() then
+					if isEtterna("0.64") then
 						for i = 1, #children do
 							userList = addToOutput(userList,children[i],"\n")
 						end

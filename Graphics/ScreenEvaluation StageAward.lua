@@ -4,8 +4,8 @@ assert(player,"[ScreenEvaluation StageAward] requires player")
 local t = Def.ActorFrame{}
 
 if getenv("EvalCombo"..pname(player)) then
-	local award = not isEtterna() and STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetStageAward() or nil
-	if isEtterna() then
+	local award = not isEtterna("0.65") and STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetStageAward() or nil
+	if isEtterna("0.65") then
 		local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(player)
 		if pss:FullCombo() then
 			if pss:FullComboOfScore('TapNoteScore_W3') then

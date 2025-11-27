@@ -96,7 +96,7 @@ end
 Branch.PlayerOptions = function()
 	local restricted = { PlayMode_Oni = true }
 	local optionsScreen = "ScreenPlayerOptions"
-	if not isEtterna() and restricted[GAMESTATE:GetPlayMode()] then
+	if not isEtterna("0.70.2") and restricted[GAMESTATE:GetPlayMode()] then
 		optionsScreen = "ScreenPlayerOptionsRestricted"
 	end
 	if SCREENMAN:GetTopScreen():GetGoToOptions() then

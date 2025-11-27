@@ -14,7 +14,7 @@ t[#t+1] = loadfile(THEME:GetPathG(Var "LoadingScreen", "Triangle"))() .. {
 	end
 }
 
-if isEtterna() then
+if isEtterna("0.65") then
 	t[#t+1] = Def.Sprite {
 		InitCommand=function(self) self:x(SCREEN_CENTER_X+140*WideScreenDiff()):y(SCREEN_CENTER_Y-91*WideScreenDiff()):ztest(true) end,
 		OnCommand=function(self) self:addx(SCREEN_WIDTH):decelerate(0.75):addx(-SCREEN_WIDTH) end,

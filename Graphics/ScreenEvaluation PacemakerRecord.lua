@@ -14,10 +14,10 @@ if getenv("EvalCombo"..pname(player)) then
 		local Target = target*Max
 
 		if GAMESTATE:IsCourseMode() then SongOrCourse,StepsOrTrail = GAMESTATE:GetCurrentCourse(),GAMESTATE:GetCurrentTrail(player) else SongOrCourse,StepsOrTrail = GAMESTATE:GetCurrentSong(),GAMESTATE:GetCurrentSteps(player) end
-		if not isEtterna() and not scorelist then scorelist = PROFILEMAN:GetMachineProfile():GetHighScoreList(SongOrCourse,StepsOrTrail) end
-		if not isEtterna() and not scorelist then scorelist = PROFILEMAN:GetProfile(player):GetHighScoreList(SongOrCourse,StepsOrTrail) end
+		if not isEtterna("0.55") and not scorelist then scorelist = PROFILEMAN:GetMachineProfile():GetHighScoreList(SongOrCourse,StepsOrTrail) end
+		if not isEtterna("0.55") and not scorelist then scorelist = PROFILEMAN:GetProfile(player):GetHighScoreList(SongOrCourse,StepsOrTrail) end
 		if scorelist then topscore = scorelist:GetHighScores() end
-		if isEtterna() then
+		if isEtterna("0.55") then
 			local score = SCOREMAN:GetMostRecentScore()
 			local origTable = getScoresByKey(player)
 			local rtTable = getRateTable(origTable) or {}
@@ -65,7 +65,7 @@ local switch = THEME:GetMetric("HelpDisplay","TipSwitchTime")
 local startA = GetTimeSinceStart()
 local startB = GetTimeSinceStart()
 
-local HelpDisplay = isEtterna() and Def.ActorFrame{
+local HelpDisplay = isEtterna("0.65") and Def.ActorFrame{
 	Def.BitmapText {
 		File=THEME:GetPathF("HelpDisplay","text"),
 		InitCommand=function(self)

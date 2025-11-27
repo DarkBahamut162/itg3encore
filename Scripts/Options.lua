@@ -279,7 +279,7 @@ function SongMods()
 end
 
 function ModeMenu()
-	if isEtterna("0.62") then return "Group,Title,Bpm,TopGrades,Artist,Genre,Favorites,Overall,Stream,Jumpstream,Handstream,Stamina,JackSpeed,Chordjack,Technical,Length,DateAdded,Author,Ungrouped" end
+	if isEtterna("0.55") and isEtterna("0.62") then return "Group,Title,Bpm,TopGrades,Artist,Genre,Favorites,Overall,Stream,Jumpstream,Handstream,Stamina,JackSpeed,Chordjack,Technical,Length,DateAdded,Author,Ungrouped" end
 	local options = "Group,Title,Artist,Genre,Bpm,Length,"
 
 	if isITGmania(20240225) then
@@ -411,7 +411,7 @@ function InitPlayerOptions()
 		setenv("ShowErrorBar"..pname(pn),LoadUserPrefN(pn, "ShowErrorBar", 0))
 		setenv("ShowColumnCues"..pname(pn),LoadUserPrefN(pn, "ShowColumnCues", 0))
 		if isITGmania(20240307) then setenv("BeatBars"..pname(pn),LoadUserPrefN(pn, "BeatBars", 0)) end
-		if isOutFox(20210300) and GAMESTATE:GetCurrentGame():CountNotesSeparately() then
+		if (isOutFox(20210300) or isEtterna("0.50")) and GAMESTATE:GetCurrentGame():CountNotesSeparately() then
 			if getenv("SetScoreType"..pname(pn)) == 6 then
 				SCREENMAN:SystemMessage("WIFE3 is bugged if notes are counted separately! "..pname(pn).."'s ScoreType has been reset to Percent!")
 				setenv("SetScoreType"..pname(pn),SaveUserPref(pn, "SetScoreType", 2))
@@ -613,7 +613,7 @@ function OptionSetScoreType()
 		end
 	end
 
-	local options = GetScoreTypes(isEtterna("0.65"))
+	local options = GetScoreTypes(isEtterna("0.50"))
 	options[#options+1] = "FA+"
 
 	local t = {

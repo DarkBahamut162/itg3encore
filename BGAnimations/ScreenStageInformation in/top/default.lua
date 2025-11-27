@@ -1,4 +1,4 @@
-local Banner = isEtterna() and Def.Sprite{
+local Banner = isEtterna("0.65") and Def.Sprite{
 	InitCommand=function(self) self:diffusealpha(0):ztest(true) end,
 	OnCommand=function(self) self:playcommand("Set"):linear(1):diffusealpha(1) end,
 	SetCommand=function(self)

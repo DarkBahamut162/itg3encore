@@ -9,7 +9,7 @@ return Def.ActorFrame{
 				end
 			else
 				local stageNum = curStage:gsub("%D+", "")
-				local songsPerPlay = isEtterna() and 0 or PREFSMAN:GetPreference("SongsPerPlay")
+				local songsPerPlay = isEtterna("0.55") and 0 or PREFSMAN:GetPreference("SongsPerPlay")
 				if stageNum == songsPerPlay then curStage = 'Stage_Final' end
 				if curStage == "Stage_Final" then stageNum = songsPerPlay end
 				if GAMESTATE:IsEventMode() then curStage = 'Stage_Event' else

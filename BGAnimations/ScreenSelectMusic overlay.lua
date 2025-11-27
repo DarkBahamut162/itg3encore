@@ -87,7 +87,6 @@ local HelpDisplay = isEtterna("0.65") and Def.BitmapText {
 	SelectMenuOpenedMessageCommand=function(self) self:bounceend(0.2):diffusealpha(1):zoomx(0.6*WideScreenDiff()) end,
 	SelectMenuClosedMessageCommand=function(self) self:linear(0.2):diffusealpha(0):zoomx(0.3*WideScreenDiff()) end
 	} or Def.HelpDisplay {
-	Condition=not isEtterna("0.65"),
 	File=THEME:GetPathF("HelpDisplay", "text"),
 	InitCommand=function(self)
 		local s = isOutFox(20230000) and THEME:GetString("ScreenSelectMusic", "HelpSelectTextOutFox"..(ThemePrefs.Get("SLFavorites") and "WithSL" or "")) or THEME:GetString("ScreenSelectMusic", "HelpSelectText"..(ThemePrefs.Get("SLFavorites") and "WithSL" or ""))
@@ -103,7 +102,7 @@ local HelpDisplay = isEtterna("0.65") and Def.BitmapText {
 }
 
 local ctrlHeld = { PLAYER_1 = false, PLAYER_2 = false }
-local highscores = { PLAYER_1 = 0, PLAYER_2 = 0}
+local highscores = { PLAYER_1 = 0, PLAYER_2 = 0 }
 
 local InputHandler = function(event)
 	if string.find(event.DeviceInput.button,"ctrl") then

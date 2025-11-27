@@ -1,4 +1,4 @@
-local extra = isEtterna() and false and STATSMAN:GetCurStageStats():GetStage():lower():find("extra")
+local extra = isEtterna("0.69") and false and STATSMAN:GetCurStageStats():GetStage():lower():find("extra")
 local failedExtra = false
 
 if extra then
@@ -8,7 +8,7 @@ if extra then
 end
 
 local passed = false
-if isEtterna() then passed = not STATSMAN:GetCurStageStats():Failed() else passed = STATSMAN:GetCurStageStats():OnePassed() end
+if isEtterna("0.71") then passed = not STATSMAN:GetCurStageStats():Failed() else passed = STATSMAN:GetCurStageStats():OnePassed() end
 
 prepSummary()
 

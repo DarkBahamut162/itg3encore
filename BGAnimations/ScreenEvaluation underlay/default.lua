@@ -1,5 +1,5 @@
 local master = GAMESTATE:GetMasterPlayerNumber()
-local percent = isEtterna() and STATSMAN:GetCurStageStats():GetPlayerStageStats(master):GetWifeScore() or 0
+local percent = isEtterna("0.50") and STATSMAN:GetCurStageStats():GetPlayerStageStats(master):GetWifeScore() or 0
 local grade = GetGradeFromPercent(percent)
 local offsetInfo = getenv("OffsetTable")
 local showOffset = ThemePrefs.Get("ShowOffset")
@@ -76,7 +76,7 @@ return Def.ActorFrame{
 		OffCommand=function(self) self:linear(0.2):diffusealpha(0) end
 	},
 	Def.BitmapText {
-		Condition=not isEtterna(),
+		Condition=not isEtterna("0.65"),
 		File = "_v 26px bold shadow",
 		InitCommand=function(self) if GAMESTATE:IsPlayerEnabled(PLAYER_2) then self:settext(DisplayCustomModifiersText(PLAYER_2)) end self:maxwidth(350):zoom(0.5*WideScreenDiff()):x(SCREEN_CENTER_X+8*WideScreenDiff()):y(SCREEN_CENTER_Y+9*WideScreenDiff()):horizalign(left):shadowlength(0):diffusebottomedge(color("#BBB9FB")) end,
 		OnCommand=function(self) self:diffusealpha(0):sleep(3):linear(0.8):diffusealpha(1) end,
@@ -136,7 +136,7 @@ return Def.ActorFrame{
 			OffCommand=function(self) self:accelerate(0.3):addx(-EvalTweenDistance()) end
 		},
 		Def.Sprite {
-			Condition=not isEtterna(),
+			Condition=not isEtterna("0.65"),
 			Texture = THEME:GetPathG("ScreenEvaluation","GraphFrame p1/_base"),
 			InitCommand=function(self) self:player(PLAYER_2):x(THEME:GetMetric("ScreenEvaluation","GradeFrameP2X")+55*WideScreenDiff()):y(THEME:GetMetric("ScreenEvaluation","GradeFrameP2Y")+101*WideScreenDiff()):zoomx(-1*WideScreenDiff()):zoomy(WideScreenDiff()):addx(EvalTweenDistance()) end,
 			OnCommand=function(self) self:sleep(3):decelerate(0.3):addx(-EvalTweenDistance()) end,

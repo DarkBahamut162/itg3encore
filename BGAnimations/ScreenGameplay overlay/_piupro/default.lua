@@ -454,7 +454,7 @@ local function MakeStageCreditIcons(pn)
 	if GAMESTATE:IsCourseMode() then
 		Total = GAMESTATE:GetCurrentCourse():GetEstimatedNumStages()
 	else
-		Total = isEtterna() and 0 or PREFSMAN:GetPreference("SongsPerPlay")
+		Total = isEtterna("0.55") and 0 or PREFSMAN:GetPreference("SongsPerPlay")
 	end
 
 	local Width = scale(Total, 3, 5, 20, 28)
@@ -532,7 +532,7 @@ end
 
 local Overlay = Def.ActorFrame { TopFrame }
 
-if not isEtterna() and Var "LoadingScreen" ~= "ScreenDemonstration" then
+if not isEtterna("0.55") and Var "LoadingScreen" ~= "ScreenDemonstration" then
 	local LastCoins = 0
 	local CreditsString = THEME:GetString("ScreenSystemLayer", "CreditsCredits")
 	CreditsText = Def.BitmapText {

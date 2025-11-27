@@ -1,5 +1,5 @@
 function MemoryCheck()
-	if isEtterna() then return false else return GAMESTATE:IsAnyHumanPlayerUsingMemoryCard() end
+	if isEtterna("0.55") then return false else return GAMESTATE:IsAnyHumanPlayerUsingMemoryCard() end
 end
 
 return Def.ActorFrame{

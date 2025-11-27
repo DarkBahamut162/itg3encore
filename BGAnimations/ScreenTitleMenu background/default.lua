@@ -419,7 +419,7 @@ return Def.ActorFrame{
 		ScreenChangedMessageCommand=function(self) self:playcommand("Refresh") end,
 		RefreshCommand=function(self)
 			if not isTopScreen("ScreenLogo") then 
-				self:settext(ProductFamily() .. " " .. ProductVersion() .. (not isEtterna() and " (" .. VersionDate() .. ")" or ""))
+				self:settext(ProductFamily() .. " " .. ProductVersion() .. (not isEtterna(20191216) and " (" .. VersionDate() .. ")" or ""))
 			end
 		end
 	},
@@ -454,7 +454,7 @@ return Def.ActorFrame{
 				local groupsDoubleCount = 0
 
 				local courses = {}
-				if not isEtterna() then
+				if not isEtterna("0.55") then
 					courses = SONGMAN:GetAllCourses(PREFSMAN:GetPreference("AutogenGroupCourses"))
 				end
 				local coursesMarathonSingle = 0
@@ -483,7 +483,7 @@ return Def.ActorFrame{
 							end
 						end
 					end
-					if isOutFox() and ((not isOutFoxV() and IsGame("be-mu")) or (not isOutFoxV043() and IsGame("po-mu"))) and not isEtterna() then else
+					if isOutFox() and ((not isOutFoxV() and IsGame("be-mu")) or (not isOutFoxV043() and IsGame("po-mu"))) and not isEtterna("0.55") then else
 						if #courses > 0 then
 							for i=1,#courses do
 								if courses[i]:GetCourseType() == "CourseType_Nonstop" then
@@ -514,7 +514,7 @@ return Def.ActorFrame{
 						output = addToOutput(output,"Songs: "..songsSingle.." singles ("..groupsSingleCount.." groups) & "..songsDouble.." doubles ("..groupsDoubleCount.." groups)","\n")
 					end
 
-					if not isEtterna() then
+					if not isEtterna("0.55") then
 						if isOutFox() and ((not isOutFoxV() and IsGame("be-mu")) or (not isOutFoxV043() and IsGame("po-mu"))) then
 							output = addToOutput(output,"Courses: ? marathons & ? survivals","\n")
 						else

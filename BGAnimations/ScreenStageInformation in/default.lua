@@ -1,6 +1,6 @@
-local curStage = isEtterna() and "Stage_Event" or GAMESTATE:GetCurrentStage()
+local curStage = isEtterna("0.69") and "Stage_Event" or GAMESTATE:GetCurrentStage()
 local stageNum = curStage:gsub("%D+", "")
-local songsPerPlay = isEtterna() and 0 or PREFSMAN:GetPreference("SongsPerPlay")
+local songsPerPlay = isEtterna("0.55") and 0 or PREFSMAN:GetPreference("SongsPerPlay")
 if stageNum == songsPerPlay then curStage = 'Stage_Final' end
 if curStage == "Stage_Final" then stageNum = songsPerPlay end
 if GAMESTATE:IsEventMode() then curStage = 'Stage_Event' else
@@ -22,7 +22,7 @@ if GAMESTATE:IsEventMode() then curStage = 'Stage_Event' else
 end
 if IsNetSMOnline() then curStage = 'Stage_Online' end
 
-if not isEtterna() and (isOni() or GAMESTATE:IsAnExtraStage()) then
+if not isEtterna("0.69") and (isOni() or GAMESTATE:IsAnExtraStage()) then
 	for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
 		local noteskin = GAMESTATE:GetPlayerState(pn):GetPlayerOptions("ModsLevel_Preferred"):NoteSkin()
 		GAMESTATE:ApplyGameCommand('mod,'..noteskin,pn)
@@ -161,7 +161,7 @@ return Def.ActorFrame{
 		}
 	},
 	Def.ActorFrame{
-		Condition=not isEtterna(),
+		Condition=not isEtterna("0.65"),
 		Name="P2Frame",
 		InitCommand=function(self) self:visible(GAMESTATE:IsPlayerEnabled(PLAYER_2)) end,
 		Def.Sprite {

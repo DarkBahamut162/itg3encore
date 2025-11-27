@@ -7,7 +7,7 @@ return Def.ActorFrame{
 	},
 	Def.Sprite {
 		Texture = "_lside",
-		Condition=not isEtterna() and not isFinal(),
+		Condition=not isEtterna("0.55") and not isFinal(),
 		InitCommand=function(self) self:x(SCREEN_LEFT):zoom(WideScreenDiff()):halign(0):valign(0) end,
 		OnCommand=function(self)
 			local timer = SCREENMAN:GetTopScreen():GetChild('Timer')

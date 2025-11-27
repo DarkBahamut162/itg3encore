@@ -5,7 +5,7 @@ local t = Def.ActorFrame{
 	}
 }
 
-if isEtterna() then XML() end
+if isEtterna("0.55") then XML() end
 
 local prof = PROFILEMAN:GetMachineProfile()
 local diffs = { nil, 'Difficulty_Easy', 'Difficulty_Medium', 'Difficulty_Hard', 'Difficulty_Challenge', 'Difficulty_Medium', 'Difficulty_Hard' }

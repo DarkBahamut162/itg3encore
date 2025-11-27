@@ -18,7 +18,7 @@ return Def.ActorFrame{
 		local flare = 0
 
 		if SongOrCourse and StepsOrTrail then
-			if isEtterna() then
+			if isEtterna("0.50") then
 				local scores = GetDisplayScore()
 				if scores then
 					c.MachineScore:GetChild("ScoreName"):settext("NEXT")

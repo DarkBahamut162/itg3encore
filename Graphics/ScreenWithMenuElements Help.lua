@@ -3,7 +3,7 @@ local index = 1
 local switch = THEME:GetMetric("HelpDisplay","TipSwitchTime")
 local start = GetTimeSinceStart()
 
-return isEtterna() and Def.BitmapText {
+return isEtterna("0.65") and Def.BitmapText {
 	File=THEME:GetPathF("HelpDisplay","text"),
 	InitCommand=function(self)
 		local s = THEME:GetString(Var "LoadingScreen","HelpText")
