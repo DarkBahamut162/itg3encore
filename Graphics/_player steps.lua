@@ -68,6 +68,7 @@ return Def.ActorFrame{
 			end
 		end,
 		EmptyCommand=function(self) self:settext("") end,
+		OffCommand=function(self) self:stoptweening() end,
 		AnimateStepsCommand=function(self) self:diffusealpha(1):sleep(1.75):linear(0.25):diffusealpha(0):sleep(1.75):linear(0.25):diffusealpha(1):queuecommand("AnimateSteps") end,
 		CurrentSongChangedMessageCommand=function(self) if not courseMode then if not GAMESTATE:GetCurrentSong() then self:playcommand("Empty") end end end,
 		CurrentCourseChangedMessageCommand=function(self) if courseMode then if not GAMESTATE:GetCurrentCourse() then self:playcommand("Empty") end end end,
@@ -110,6 +111,7 @@ return Def.ActorFrame{
 			end
 		end,
 		EmptyCommand=function(self) self:settext("") end,
+		OffCommand=function(self) self:stoptweening() end,
 		AnimateTechsCommand=function(self) self:diffusealpha(0):sleep(1.75):linear(0.25):diffusealpha(1):sleep(1.75):linear(0.25):diffusealpha(0):queuecommand("AnimateTechs") end,
 		CurrentSongChangedMessageCommand=function(self) if not courseMode then if not GAMESTATE:GetCurrentSong() then self:playcommand("Empty") end end end,
 		CurrentCourseChangedMessageCommand=function(self) if courseMode then if not GAMESTATE:GetCurrentCourse() then self:playcommand("Empty") end end end,
