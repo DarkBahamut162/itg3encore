@@ -102,12 +102,20 @@ end
 
 t[#t+1] = Def.Sound {
 	File = THEME:GetPathS("OptionsList","opened"),
-	OptionsListOpenedMessageCommand=function(self) self:play() end
+	OptionsListOpenedMessageCommand=function(self) self:play() end,
+	ControlMenuOpenedP1MessageCommand=function(self) self:play() end,
+	ControlMenuOpenedP2MessageCommand=function(self) self:play() end,
+	ShiftMenuOpenedP1MessageCommand=function(self) self:play() end,
+	ShiftMenuOpenedP2MessageCommand=function(self) self:play() end
 }
 
 t[#t+1] = Def.Sound {
 	File = THEME:GetPathS("OptionsList","closed"),
-	OptionsListClosedMessageCommand=function(self) self:play() end
+	OptionsListClosedMessageCommand=function(self) self:play() end,
+	ControlMenuClosedP1MessageCommand=function(self) self:play() end,
+	ControlMenuClosedP2MessageCommand=function(self) self:play() end,
+	ShiftMenuClosedP1MessageCommand=function(self) self:play() end,
+	ShiftMenuClosedP2MessageCommand=function(self) self:play() end
 }
 
 t[#t+1] = Def.Sound {
@@ -303,8 +311,8 @@ t[#t+1] = Def.BitmapText {
 	SetCommand=function(self)
 		local s = GAMESTATE:GetSortOrder()
 		if s ~= nil then
-			local s = SortOrderToLocalizedString( s )
-			self:settext( "SORT: " .. string.upper( s ) )
+			local s = SortOrderToLocalizedString(s)
+			self:settext("SORT: ".. s:upper())
 			self:playcommand("Sort")
 		else return end
 	end
