@@ -118,9 +118,9 @@ end
 
 local InputHandler = function(event)
 	if event.type == "InputEventType_FirstPress" then
-		if string.find(event.DeviceInput.button,"ctrl") and not ctrlHeld then ctrlHeld = true end
+		if string.find(event.DeviceInput.button,"left ctrl") and not ctrlHeld then ctrlHeld = true end
 	elseif event.type == "InputEventType_Release" then
-		if string.find(event.DeviceInput.button,"ctrl") and ctrlHeld then ctrlHeld = false end
+		if string.find(event.DeviceInput.button,"left ctrl") and ctrlHeld then ctrlHeld = false end
 	end
 	if event.PlayerNumber ~= PLAYER_1 then return false end
 	if ctrlHeld and event.type == "InputEventType_FirstPress" then

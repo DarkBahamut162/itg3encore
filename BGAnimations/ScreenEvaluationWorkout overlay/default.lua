@@ -19,8 +19,8 @@ end
 
 return Def.ActorFrame{
 	OnCommand=function(self)
-		for pn in ivalues({PLAYER_1,PLAYER_2}) do
-			if GAMESTATE:IsPlayerEnabled(pn) and getenv("SetScoreFA"..pname(pn)) then
+		for pn in ivalues(GAMESTATE:GetEnabledPlayers()) do
+			if getenv("SetScoreFA"..pname(pn)) then
 				SCREENMAN:GetTopScreen():GetChild("Grade"..pname(pn)):queuecommand("FA")
 			end
 		end
