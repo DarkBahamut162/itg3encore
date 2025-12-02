@@ -82,7 +82,22 @@ return Def.ActorFrame{
 				self:settext(FormatPercentScore(math.max(0,getenv("WIFE3"..pname(player)) or 0))) -- WIFE3
 			end
 		end,
-		OnCommand=function(self) self:addx(player == PLAYER_1 and -EvalTweenDistance() or EvalTweenDistance()):sleep(3):decelerate(0.3):addx(player == PLAYER_1 and EvalTweenDistance() or -EvalTweenDistance()) end,
-		OffCommand=function(self) self:accelerate(0.3):addx(player == PLAYER_1 and -EvalTweenDistance() or EvalTweenDistance()) end
+		OnCommand=function(self)
+			self:addx(player == PLAYER_1 and -EvalTweenDistance() or EvalTweenDistance()):sleep(3):decelerate(0.3):addx(player == PLAYER_1 and EvalTweenDistance() or -EvalTweenDistance())
+		end,
+		OffCommand=function(self)
+			self:accelerate(0.3):addx(player == PLAYER_1 and -EvalTweenDistance() or EvalTweenDistance())
+			local Song = GAMESTATE:GetCurrentSong()
+			local seconds = 0
+            if ThemePrefs.Get("UseStepCache") then
+                local Steps = GAMESTATE:GetCurrentSteps(player)
+                seconds = tonumber(LoadFromCache(Song,Steps,"TrueSeconds"))
+            else
+                seconds = Song:GetLastSecond()-Song:GetFirstSecond()
+            end
+			seconds = seconds / GAMESTATE:GetSongOptionsObject("ModsLevel_Preferred"):MusicRate()
+			local total = getenv("TimePlayed"..pname(player))
+			setenv("TimePlayed"..pname(player),total+seconds)
+		end
 	}
 }

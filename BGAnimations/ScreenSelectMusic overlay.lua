@@ -116,9 +116,9 @@ local InputHandler = function(event)
 		end
 	end
 end
-
 return Def.ActorFrame{
 	OnCommand=function(self)
+		if getenv("SessionStart") == 0 then setenv("SessionStart",GetTimeSinceStart()) end
 		if isOutFox(20200500) then
 			GAMESTATE:UpdateDiscordProfile(GAMESTATE:GetPlayerDisplayName(GAMESTATE:GetMasterPlayerNumber()))
 			local text = ""
@@ -701,5 +701,56 @@ return Def.ActorFrame{
 			end
 		}
 	},
-	loadfile(THEME:GetPathB("","_coins"))()
+	loadfile(THEME:GetPathB("","_coins"))(),
+	Def.ActorFrame{
+		Condition=ThemePrefs.Get("ShowTime"),
+		Def.ActorFrame{
+			Name="Session",
+			InitCommand=function(self) self:x(isFinal() and SCREEN_CENTER_X-175*WideScreenDiff() or 150*WideScreenDiff()+(SCREEN_WIDTH-450*WideScreenDiff())/2):y(SCREEN_TOP+(isFinal() and 40 or 51)*WideScreenDiff()) end,
+			OnCommand=function(self) self:addy(-100):decelerate(0.8):addy(100) end,
+			OffCommand=function(self) self:accelerate(0.5):addy(-100) end,
+			Def.BitmapText {
+				File = "_v 26px bold black",
+				InitCommand=function(self) self:zoom(0.5*WideScreenDiff()):playcommand("Set"):halign(isFinal() and 1 or 0.5) end,
+				SetCommand=function(self)
+					local time = GetTimeSinceStart() - getenv("SessionStart")
+					self:settext( string.format('Session Time: %02i:%02i', math.floor(time/60), math.floor(time%60))):sleep(1/6):queuecommand("Set")
+				end
+			}
+		},
+		Def.ActorFrame{
+			Condition=GAMESTATE:IsHumanPlayer(PLAYER_1),
+			Name="TimePlayerP1",
+			InitCommand=function(self)
+				local adjust = WideScaleFixed(95*WideScreenDiff(),130*WideScreenDiff())
+				self:x(SCREEN_CENTER_X-adjust):y(SCREEN_BOTTOM-11*WideScreenDiff())
+			end,
+			OnCommand=function(self) self:addy(100):decelerate(0.6):addy(-100) end,
+			OffCommand=function(self) self:accelerate(0.5):addy(100) end,
+			Def.BitmapText {
+				File = "_v 26px bold black",
+				OnCommand=function(self)
+					local time = getenv("TimePlayedP1")
+					self:settext( string.format('Time Played\n%02i:%02i', math.floor(time/60), math.floor(time%60))):zoom(0.5*WideScreenDiff()):diffuse(PlayerColor(PLAYER_1)):shadowlength(0):halign(1):valign(1):vertspacing(-8)
+				end
+			}
+		},
+		Def.ActorFrame{
+			Condition=GAMESTATE:IsHumanPlayer(PLAYER_2),
+			Name="TimePlayerP2",
+			InitCommand=function(self)
+				local adjust = WideScaleFixed(95*WideScreenDiff(),130*WideScreenDiff())
+				self:x(SCREEN_CENTER_X+adjust):y(SCREEN_BOTTOM-11*WideScreenDiff())
+			end,
+			OnCommand=function(self) self:addy(100):decelerate(0.6):addy(-100) end,
+			OffCommand=function(self) self:accelerate(0.5):addy(100) end,
+			Def.BitmapText {
+				File = "_v 26px bold black",
+				OnCommand=function(self)
+					local time = getenv("TimePlayedP2")
+					self:settext( string.format('Time Played\n%02i:%02i', math.floor(time/60), math.floor(time%60))):zoom(0.5*WideScreenDiff()):diffuse(PlayerColor(PLAYER_2)):shadowlength(0):halign(0):valign(1):vertspacing(-8)
+				end
+			}
+		}
+	}
 }

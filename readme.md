@@ -53,6 +53,8 @@ Shows **total step quantification amounts** (might be useful especially for BEMU
 - **ShowTechCounter (ITGmania Only)**
 Shows stepchart's Techniques.
   - If *both Counters* have been enabled, **both switch between one another** like *BPMDisplay* and *MODDisplay*
+- **ShowTime**
+Shows Session Time and Time Played per Player.
 ### [ScreenGameplay]
 - **AnimatePlayerScore:**
 Have the Player Score animate instead of instantly updating
