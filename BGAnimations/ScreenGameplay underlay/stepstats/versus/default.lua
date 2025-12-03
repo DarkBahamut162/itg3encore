@@ -2,6 +2,7 @@ local SongOrCourse, StepsOrTrail, scorelist, topscore = {},{},{},{}
 local bgNum = {}
 local IIDX = false
 local atLeastOneHighscoreExists = false
+local trueVS = not isVS() and GAMESTATE:GetNumPlayersEnabled() == 2 and GAMESTATE:GetCurrentSteps(PLAYER_1) == GAMESTATE:GetCurrentSteps(PLAYER_2)
 
 if getenv("ShowStatsP1") == nil or getenv("ShowStatsP2") == nil then return Def.ActorFrame{} else
 	for pn in ivalues(GAMESTATE:GetEnabledPlayers()) do
@@ -24,7 +25,7 @@ if getenv("ShowStatsP1") == nil or getenv("ShowStatsP2") == nil then return Def.
 			t[#t+1] = Def.ActorFrame{
 				Name="Player"..pname(pn),
 				loadfile(THEME:GetPathB("ScreenGameplay","underlay/stepstats/double"))(pn)..{
-					InitCommand=function(self) self:zoom((atLeastOneHighscoreExists and IIDX or not IIDX) and 3/4 or 1) end
+					InitCommand=function(self) self:zoom(trueVS and 3/4 or 1) end
 				}
 			}
 		end
@@ -40,7 +41,7 @@ if getenv("ShowStatsP1") == nil or getenv("ShowStatsP2") == nil then return Def.
 		else return ReturnValue end
 	end
 
-	if not isVS() then
+	if trueVS then
 		t[#t+1] = Def.ActorFrame{
 			InitCommand=function(self) self:CenterX():y(SCREEN_TOP+115) end,
 			Def.Sprite {
