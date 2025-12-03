@@ -445,10 +445,12 @@ function getStepCacheFile(Step)
 	if not isEtterna("0.55") then
 		if Step:IsAutogen() then Song = SONGMAN:GetSongFromSteps(Step) end
 	end
-	local groupName = filename[#filename-2] or Song and Song:GetGroupName() or ""
-	local songName = filename[#filename-1] or Song and Song:GetSongFolder() or ""
+	if #filename == 1 and Song then filename = split("/",Song:GetSongDir()) end
+	if #filename == 1 and Song then filename = split("/",Song:GetSongFilePath()) end
+	local groupName = filename[#filename-2] or Song:GetGroupName() or ""
+	local songName = filename[#filename-1] or (isOutFox() and Song:GetSongFolder() or "") or ""
 	if string.find(groupName,"@") then
-		local Song = SONGMAN:GetSongFromSteps(Step)
+		if not Song then Song = SONGMAN:GetSongFromSteps(Step) end
 		groupName = Song:GetGroupName()
 	end
 
@@ -1305,7 +1307,7 @@ function getAllTheBPMs(song,steps,BPMtype)
 			bpms = steps:GetDisplayBpms()
 			bpms[3] = 0
 		end
-	elseif BPMtype == 1 then
+	elseif BPMtype == 1 or (not isEtterna("0.55") and steps:IsAutogen()) then
 		bpms = steps:GetTimingData():GetActualBPM()
 		bpms[3] = 0
 	elseif BPMtype == 2 then

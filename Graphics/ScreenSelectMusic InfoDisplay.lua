@@ -46,7 +46,7 @@ return Def.ActorFrame{
 							if not steps then steps = GAMESTATE:GetCurrentSteps(GAMESTATE:GetMasterPlayerNumber()) end
 							if steps then
 								local trueSeconds = 0
-								if usesStepCache then trueSeconds = tonumber(LoadFromCache(SongOrCourse,steps,"TrueSeconds")) or 0 end
+								if usesStepCache and not (not isEtterna("0.55") and steps:IsAutogen()) then trueSeconds = tonumber(LoadFromCache(SongOrCourse,steps,"TrueSeconds")) or 0 end
 								if trueSeconds <= 0 then trueSeconds = SongOrCourse:GetFirstSecond() > SongOrCourse:GetLastSecond() and 0 or SongOrCourse:GetLastSecond()-SongOrCourse:GetFirstSecond() end
 
 								IsMarathon = trueSeconds > MarathonCutoff
@@ -100,6 +100,10 @@ return Def.ActorFrame{
 					end
 					if SongOrCourse:HasLyrics() then
 						output = addToOutput(output,"LYRICS"," & ")
+					end
+					if not isEtterna("0.55") then
+						if not steps then steps = GAMESTATE:GetCurrentSteps(GAMESTATE:GetMasterPlayerNumber()) end
+						if steps and steps:IsAutogen() then output = addToOutput(output,"AUTOGEN"," & ") end
 					end
 				else
 					self:stopeffect()
