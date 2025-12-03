@@ -1,3 +1,8 @@
+local showData = {
+	[PLAYER_1] = false,
+	[PLAYER_2] = false
+}
+
 local function CreditsText(pn)
 	local text = LoadFont(Var "LoadingScreen","credits")..{
 		InitCommand=function(self)
@@ -6,7 +11,20 @@ local function CreditsText(pn)
 		end,
 		UpdateTextCommand=function(self)
 			local str = ScreenSystemLayerHelpers.GetCreditsMessage(pn)
-			self:settext(str)
+			local data = nil
+			if showData[pn] and PROFILEMAN:IsPersistentProfile(pn) then data = GetData(pn) self:settext("LV"..data["LV"].." | EXP "..data["EXP"].."\n"..str):vertspacing(-8) else self:settext(str) end
+		end,
+		EnablePlayerStatsMessageCommand=function(self,param)
+			if param.PLAYER and self:GetName() == "Credits"..pname(param.PLAYER) then
+				if not showData[pn] and PROFILEMAN:IsPersistentProfile(pn) then showData[pn] = true end
+				self:queuecommand("UpdateText")
+			end
+		end,
+		DisablePlayerStatsMessageCommand=function(self,param)
+			if param.PLAYER and self:GetName() == "Credits"..pname(param.PLAYER) then
+				if showData[pn] and PROFILEMAN:IsPersistentProfile(pn) then showData[pn] = false end
+				self:queuecommand("UpdateText")
+			end
 		end,
 		UpdateVisibleCommand=function(self)
 			local screen = SCREENMAN:GetTopScreen()

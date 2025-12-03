@@ -9,6 +9,11 @@ local Prefs = {
 		Choices = { OptionNameString('Normal'), OptionNameString('Final') },
 		Values = { false, true }
 	},
+	ExperimentalProfileLevel = {
+		Default = false,
+		Choices = { OptionNameString('Off'), OptionNameString('On') },
+		Values = { false, true }
+	},
 	MouseEnabled = {
 		Default = false,
 		Choices = { OptionNameString('Off'), OptionNameString('On') },
@@ -86,6 +91,11 @@ local Prefs = {
 		Values = { false, true }
 	},
 	ShowTechCounter = {
+		Default = false,
+		Choices = { OptionNameString('Off'), OptionNameString('On') },
+		Values = { false, true }
+	},
+	ShowTime = {
 		Default = false,
 		Choices = { OptionNameString('Off'), OptionNameString('On') },
 		Values = { false, true }

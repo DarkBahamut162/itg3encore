@@ -1,3 +1,7 @@
+if ThemePrefs.Get("ExperimentalProfileLevel") then
+	for pn in ivalues({PLAYER_1,PLAYER_2}) do MESSAGEMAN:Broadcast("DisablePlayerStats",{PLAYER=pn}) end
+end
+
 setenv("SessionStart",0)
 for pn in ivalues({PLAYER_1,PLAYER_2}) do setenv("TimePlayed"..pname(pn),0) end
 

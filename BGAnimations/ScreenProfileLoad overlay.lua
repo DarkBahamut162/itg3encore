@@ -4,7 +4,12 @@ end
 
 return Def.ActorFrame{
 	OffCommand=function()
-		for pn in ivalues(GAMESTATE:GetHumanPlayers()) do LoadFlare(pn) end
+		local category = isDouble() and StepsTypeDouble()[GetUserPrefN("StylePosition")] or StepsTypeSingle()[GetUserPrefN("StylePosition")]
+		SetCategory(category)
+		for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
+			if ThemePrefs.Get("ExperimentalProfileLevel") then LoadData(pn) MESSAGEMAN:Broadcast("EnablePlayerStats",{PLAYER=pn}) end
+			LoadFlare(pn) 
+		end
 		InitRotationOptions()
 		InitPlayerOptions()
 	end,

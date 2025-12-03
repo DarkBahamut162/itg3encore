@@ -102,6 +102,22 @@ if version < 3 then
                             self:x(scale(1.5/9,0,1,borderLeft,version==1 and borderRight or borderLeftCenter)):zoom(1/4*WideScreenDiff())
                         end
                     end
+                },
+                Def.BitmapText {
+                    Condition=ThemePrefs.Get("ExperimentalProfileLevel"),
+                    File = "_v 26px bold black",
+                    Text = P1[index]["EXP"] and math.abs(P1[index]["EXP"]).." EXP" or "0 EXP",
+                    InitCommand=function(self)
+                        self:y(25*WideScreenDiff()):zoom(0.5*WideScreenDiff()):shadowlength(1):maxheight(13)
+                        if version == 2 then
+                            self:x(scale(1/5,0,1,borderLeft,version==1 and borderRight or borderLeftCenter))
+                        else
+                            self:x(scale(1.5/9,0,1,borderLeft,version==1 and borderRight or borderLeftCenter))
+                        end
+                    end,
+                    OnCommand=function(self)
+                        if P1[index]["EXP"] and P1[index]["EXP"] < 0 then self:diffuse(Color("Red")) end
+                    end
                 }
             },
             Def.ActorFrame{
@@ -428,6 +444,22 @@ if version > 1 then
                             self:x(scale(1-1.5/9,0,1,version==3 and borderLeft or borderRightCenter,borderRight)):zoom(1/4*WideScreenDiff())
                         end
                     end
+                },
+                Def.BitmapText {
+                    Condition=ThemePrefs.Get("ExperimentalProfileLevel"),
+                    File = "_v 26px bold black",
+                    Text = P2[index]["EXP"] and math.abs(P2[index]["EXP"]).." EXP" or "0 EXP",
+                    InitCommand=function(self)
+                        self:y(25*WideScreenDiff()):zoom(0.5*WideScreenDiff()):shadowlength(1):maxheight(13)
+                        if version == 2 then
+                            self:x(scale(1-1/5,0,1,version==3 and borderLeft or borderRightCenter,borderRight))
+                        else
+                            self:x(scale(1-1.5/9,0,1,version==3 and borderLeft or borderRightCenter,borderRight))
+                        end
+                    end,
+                    OnCommand=function(self)
+                        if P2[index]["EXP"] and P2[index]["EXP"] < 0 then self:diffuse(Color("Red")) end
+                    end
                 }
             },
             Def.ActorFrame{
@@ -717,20 +749,27 @@ return Def.ActorFrame{
             OnCommand=function(self)
                 if Master[index] then
                     local output = Master[index]["Title"]
-                    if Master[index]["Subtitle"] ~= "" then output = addToOutput(output,Master[index]["Subtitle"],"\n") end
-                    if Master[index]["Artist"] ~= "" then output = addToOutput(output,Master[index]["Artist"],"\n") end
-                    self:settext(output)
-                else
-                    self:settext("Overall\nPerformance")
+                    if Master[index]["Subtitle"] and Master[index]["Subtitle"] ~= "" then output = addToOutput(output,Master[index]["Subtitle"],"\n") end
+                    if Master[index]["Artist"] and Master[index]["Artist"] ~= "" then output = addToOutput(output,Master[index]["Artist"],"\n") end
+                    self:settext(output or "Overall\nPerformance")
                 end
             end
         },
         Def.BitmapText {
             File = "_v 26px bold black",
-            InitCommand=function(self) self:x(bannerX):y(25*WideScreenDiff()):zoom(0.4*WideScreenDiff()):shadowlength(1) end,
+            InitCommand=function(self) self:x(bannerX):y(-25*WideScreenDiff()):zoom(0.4*WideScreenDiff()):shadowlength(1) end,
             OnCommand=function(self)
                 if Master[index] and Master[index]["Restart"] and Master[index]["Restart"] > 0 then
                     self:settext(Master[index]["Restart"]..(Master[index]["Restart"] == 1 and " Restart" or " Restarts"))
+                end
+            end
+        },
+        Def.BitmapText {
+            File = "_v 26px bold black",
+            InitCommand=function(self) self:x(bannerX):y(25*WideScreenDiff()):zoom(0.5*WideScreenDiff()):shadowlength(1):maxheight(13) end,
+            OnCommand=function(self)
+                if Master[index] then
+                    self:settext((Master[index]["EXP"] and Master[index]["EXP"] or 0).." EXP")
                 end
             end
         }

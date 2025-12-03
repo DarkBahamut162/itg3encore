@@ -58,7 +58,9 @@ local counted = { [PLAYER_1] = 0,[PLAYER_2] = 0 }
 
 for i=1,rounds do
 	if ThemePrefs.Get("ShowSummarySummary") then
-		if version <= 2 and not P1[i]["AutoPlayer"] then
+		if not Master[rounds+1] then Master[rounds+1] = {} end
+		if Master[i]["EXP"] then Master[rounds+1]["EXP"] = Master[rounds+1]["EXP"] and Master[rounds+1]["EXP"] + Master[i]["EXP"] or Master[i]["EXP"] end
+		if version <= 2 and P1[i] and not P1[i]["AutoPlayer"] then
 			counted[PLAYER_1] = counted[PLAYER_1] + 1
 			if not P1[rounds+1] then P1[rounds+1] = {} end
 			P1[rounds+1]["AutoPlayer"] = false
@@ -66,6 +68,7 @@ for i=1,rounds do
 			if showCalcDiff then P1[rounds+1]["CalcedMeter"] = P1[rounds+1]["CalcedMeter"] and P1[rounds+1]["CalcedMeter"] + P1[i]["CalcedMeter"] or P1[i]["CalcedMeter"] end
 			P1[rounds+1]["Score"] = P1[rounds+1]["Score"] and P1[rounds+1]["Score"] + P1[i]["Score"] or P1[i]["Score"]
 			P1[rounds+1]["Grade"] = P1[rounds+1]["Grade"] and P1[rounds+1]["Grade"] + tierToGrade[P1[i]["Grade"]] or tierToGrade[P1[i]["Grade"]]
+			if P1[i]["EXP"] then P1[rounds+1]["EXP"] = P1[rounds+1]["EXP"] and P1[rounds+1]["EXP"] + P1[i]["EXP"] or P1[i]["EXP"] end
 			if P1[i]["FA"] then
 				if not summaryFA[PLAYER_1] then summaryFA[PLAYER_1] = true end
 				P1[rounds+1]["ScoreFA"] = P1[rounds+1]["ScoreFA"] and P1[rounds+1]["ScoreFA"] + P1[i]["ScoreFA"] or P1[i]["ScoreFA"]
@@ -96,7 +99,7 @@ for i=1,rounds do
 				P1[rounds+1]["TapNoteScore_W5_Late"] = P1[rounds+1]["TapNoteScore_W5_Late"] and P1[rounds+1]["TapNoteScore_W5_Late"] + P1[i]["TapNoteScore_W5_Late"] or P1[i]["TapNoteScore_W5_Late"]
 			end
 		end
-		if version >= 2 and not P2[i]["AutoPlayer"] then
+		if version >= 2 and P2[i] and not P2[i]["AutoPlayer"] then
 			counted[PLAYER_2] = counted[PLAYER_2] + 1
 			if not P2[rounds+1] then P2[rounds+1] = {} end
 			P2[rounds+1]["AutoPlayer"] = false
@@ -104,6 +107,7 @@ for i=1,rounds do
 			if showCalcDiff then P2[rounds+1]["CalcedMeter"] = P2[rounds+1]["CalcedMeter"] and P2[rounds+1]["CalcedMeter"] + P2[i]["CalcedMeter"] or P2[i]["CalcedMeter"] end
 			P2[rounds+1]["Score"] = P2[rounds+1]["Score"] and P2[rounds+1]["Score"] + P2[i]["Score"] or P2[i]["Score"]
 			P2[rounds+1]["Grade"] = P2[rounds+1]["Grade"] and P2[rounds+1]["Grade"] + tierToGrade[P2[i]["Grade"]] or tierToGrade[P2[i]["Grade"]]
+			if P2[index]["EXP"] then P2[rounds+1]["EXP"] = P2[rounds+1]["EXP"] and P2[rounds+1]["EXP"] + P2[i]["EXP"] or P2[i]["EXP"] end
 			if P2[i]["FA"] then
 				if not summaryFA[PLAYER_2] then summaryFA[PLAYER_2] = true end
 				P2[rounds+1]["ScoreFA"] = P2[rounds+1]["ScoreFA"] and P2[rounds+1]["ScoreFA"] + P2[i]["ScoreFA"] or P2[i]["ScoreFA"]
@@ -185,6 +189,10 @@ if version == 1 then
 	summaryX = SCREEN_CENTER_X-220*WideScreenDiff()
 elseif version == 3 then
 	summaryX = SCREEN_CENTER_X+220*WideScreenDiff()
+end
+
+if ThemePrefs.Get("ExperimentalProfileLevel") then
+	for pn in ivalues(GAMESTATE:GetHumanPlayers()) do MESSAGEMAN:Broadcast("DisablePlayerStats",{PLAYER=pn}) end
 end
 
 return Def.ActorFrame{
