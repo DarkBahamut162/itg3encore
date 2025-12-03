@@ -3,24 +3,27 @@ local stepCache = {}
 local typeList = {"avi","f4v","flv","mkv","mp4","mpeg","mpg","mov","ogv","webm","wmv"}
 Master,P1,P2={},{},{}
 bannerForced = false
+local full = isOutFoxV() and "FullRes" or "Full"
 
-if isOutFox(20201000) then
-	bannerForced = PREFSMAN:GetPreference("ImageCache") ~= "ImageCacheMode_Full"
-else
-	if isOldStepMania() or isEtterna() then
-		bannerForced = PREFSMAN:GetPreference("BannerCache") == "BannerCacheMode_Off"
+if not isOutFoxV() then
+	if isOutFox(20201000) then
+		bannerForced = PREFSMAN:GetPreference("ImageCache") ~= "ImageCacheMode_"..full
 	else
-		bannerForced = PREFSMAN:GetPreference("ImageCache") == "ImageCacheMode_Off"
+		if isOldStepMania() or isEtterna() then
+			bannerForced = PREFSMAN:GetPreference("BannerCache") == "BannerCacheMode_Off"
+		else
+			bannerForced = PREFSMAN:GetPreference("ImageCache") == "ImageCacheMode_Off"
+		end
 	end
-end
-if PREFSMAN:PreferenceExists("ShowBanners") and not tobool(PREFSMAN:GetPreference("ShowBanners")) then
-	local check = false
-	if isOldStepMania() or isEtterna() then
-		check = PREFSMAN:GetPreference("BannerCache") == "BannerCacheMode_Full"
-	else
-		check = PREFSMAN:GetPreference("ImageCache") == "ImageCacheMode_Full"
+	if PREFSMAN:PreferenceExists("ShowBanners") and not tobool(PREFSMAN:GetPreference("ShowBanners")) then
+		local check = false
+		if isOldStepMania() or isEtterna() then
+			check = PREFSMAN:GetPreference("BannerCache") == "BannerCacheMode_"..full
+		else
+			check = PREFSMAN:GetPreference("ImageCache") == "ImageCacheMode_"..full
+		end
+		if check then bannerForced = true end
 	end
-	if check then bannerForced = true end
 end
 
 function getCacheVersion()
