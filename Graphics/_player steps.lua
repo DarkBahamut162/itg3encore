@@ -26,42 +26,46 @@ return Def.ActorFrame{
 				local output = ""
 
 				if SongOrCourse and StepsOrTrail then
-					local loadStepCounter = LoadFromCache(SongOrCourse,StepsOrTrail,"StepCounter")
-					if loadStepCounter and loadStepCounter ~= "" then
-						loadStepCounter = split("_",loadStepCounter)
-						for i=1,#loadStepCounter do
-							local temp = ""
-							if loadStepCounter[i] and tonumber(loadStepCounter[i]) > 0 then
-								for dot=1,i do temp = addToOutput(temp,"•") end
-								output = addToOutput(output,temp.." "..loadStepCounter[i]," | ")
+					if StepsOrTrail:IsAutogen() then
+						output = "StepCounter disabled because of Autogen"
+					else
+						local loadStepCounter = LoadFromCache(SongOrCourse,StepsOrTrail,"StepCounter")
+						if loadStepCounter and loadStepCounter ~= "" then
+							loadStepCounter = split("_",loadStepCounter)
+							for i=1,#loadStepCounter do
+								local temp = ""
+								if loadStepCounter[i] and tonumber(loadStepCounter[i]) > 0 then
+									for dot=1,i do temp = addToOutput(temp,"•") end
+									output = addToOutput(output,temp.." "..loadStepCounter[i]," | ")
+								end
 							end
 						end
-					end
-					if IsGame("be-mu") or IsGame("beat") then
-						local loadScratches = LoadFromCache(SongOrCourse,StepsOrTrail,"Scratches")
-						if loadScratches and not (loadScratches == "" or loadScratches == "0") then output = addToOutput(output,"Scratches: "..loadScratches," | ") end
-						if GetUserPrefN("StylePosition") == 2 then
-							local loadFoots = LoadFromCache(SongOrCourse,StepsOrTrail,"Foots")
-							if loadFoots and not (loadFoots == "" or loadFoots == "0") then output = addToOutput(output,"Foots: "..loadFoots," | ") end
+						if IsGame("be-mu") or IsGame("beat") then
+							local loadScratches = LoadFromCache(SongOrCourse,StepsOrTrail,"Scratches")
+							if loadScratches and not (loadScratches == "" or loadScratches == "0") then output = addToOutput(output,"Scratches: "..loadScratches," | ") end
+							if GetUserPrefN("StylePosition") == 2 then
+								local loadFoots = LoadFromCache(SongOrCourse,StepsOrTrail,"Foots")
+								if loadFoots and not (loadFoots == "" or loadFoots == "0") then output = addToOutput(output,"Foots: "..loadFoots," | ") end
+							end
 						end
-					end
 
-					if output == "" then
-						local EC = not courseMode and (VersionDateCheck(20150300) and SongOrCourse:GetPreviewMusicPath() or GetPreviewMusicPath(SongOrCourse)) or " "
-						self:diffuseshift():effectcolor1(color("#FF0000")):effectcolor2(color("#FFFFFF")):effectclock(EC ~= "" and "beat" or "timerglobal")
-						if StepsOrTrail:GetRadarValues(player):GetValue('RadarCategory_TapsAndHolds') == 0 then
-							output = "NOTHING TO LOAD"
+						if output == "" then
+							local EC = not courseMode and (VersionDateCheck(20150300) and SongOrCourse:GetPreviewMusicPath() or GetPreviewMusicPath(SongOrCourse)) or " "
+							self:diffuseshift():effectcolor1(color("#FF0000")):effectcolor2(color("#FFFFFF")):effectclock(EC ~= "" and "beat" or "timerglobal")
+							if StepsOrTrail:GetRadarValues(player):GetValue('RadarCategory_TapsAndHolds') == 0 then
+								output = "NOTHING TO LOAD"
+							else
+								output = "FAILED TO LOAD"
+							end
 						else
-							output = "FAILED TO LOAD"
+							self:stopeffect()
 						end
-					else
-						self:stopeffect()
-					end
-					
-					local rv = StepsOrTrail:GetRadarValues(player)
-					local lifts = rv:GetValue('RadarCategory_Lifts')
+						
+						local rv = StepsOrTrail:GetRadarValues(player)
+						local lifts = rv:GetValue('RadarCategory_Lifts')
 
-					if lifts and lifts ~= 0 then output = addToOutput(output,"Lifts: "..lifts," | ") end
+						if lifts and lifts ~= 0 then output = addToOutput(output,"Lifts: "..lifts," | ") end
+					end
 				end
 
 				self:settext(output)
@@ -85,26 +89,30 @@ return Def.ActorFrame{
 				local steps = not courseMode and GAMESTATE:GetCurrentSteps(player) or nil
 				local output = ""
 				if steps then
-					if isITGmania(20250313) then
-						local techCounts = steps:CalculateTechCounts(player)
-
-						local Crossovers = techCounts:GetValue("TechCountsCategory_Crossovers")
-						local Footswitches = techCounts:GetValue("TechCountsCategory_Footswitches")
-						local Sideswitches = techCounts:GetValue("TechCountsCategory_Sideswitches")
-						local Jacks = techCounts:GetValue("TechCountsCategory_Jacks")
-						local Brackets = techCounts:GetValue("TechCountsCategory_Brackets")
-						if Crossovers > 0 then output = addToOutput(output,Crossovers.." Crossover"..(Crossovers > 1 and "s" or "")," | ") end
-						if Footswitches > 0 then output = addToOutput(output,Footswitches.." Footswitch"..(Footswitches > 1 and "es" or "")," | ") end
-						if Sideswitches > 0 then output = addToOutput(output,Sideswitches.." Sideswitch"..(Sideswitches > 1 and "es" or "")," | ") end
-						if Jacks > 0 then output = addToOutput(output,Jacks.." Jack"..(Jacks > 1 and "s" or "")," | ") end
-						if Brackets > 0 then output = addToOutput(output,Brackets.." Bracket"..(Brackets > 1 and "s" or "")," | ") end
+					if steps:IsAutogen() then
+						output = "TechCounter disabled because of Autogen"
 					else
-						local Crossovers, Footswitches, Sideswitches, Jacks, Brackets = GetTechniques(SMParser(steps).."\n")
-						if Crossovers > 0 then output = addToOutput(output,Crossovers.." Crossover"..(Crossovers > 1 and "s" or "")," | ") end
-						if Footswitches > 0 then output = addToOutput(output,Footswitches.." Footswitch"..(Footswitches > 1 and "es" or "")," | ") end
-						if Sideswitches > 0 then output = addToOutput(output,Sideswitches.." Sideswitch"..(Sideswitches > 1 and "es" or "")," | ") end
-						if Jacks > 0 then output = addToOutput(output,Jacks.." Jack"..(Jacks > 1 and "s" or "")," | ") end
-						if Brackets > 0 then output = addToOutput(output,Brackets.." Bracket"..(Brackets > 1 and "s" or "")," | ") end
+						if isITGmania(20250313) then
+							local techCounts = steps:CalculateTechCounts(player)
+
+							local Crossovers = techCounts:GetValue("TechCountsCategory_Crossovers")
+							local Footswitches = techCounts:GetValue("TechCountsCategory_Footswitches")
+							local Sideswitches = techCounts:GetValue("TechCountsCategory_Sideswitches")
+							local Jacks = techCounts:GetValue("TechCountsCategory_Jacks")
+							local Brackets = techCounts:GetValue("TechCountsCategory_Brackets")
+							if Crossovers > 0 then output = addToOutput(output,Crossovers.." Crossover"..(Crossovers > 1 and "s" or "")," | ") end
+							if Footswitches > 0 then output = addToOutput(output,Footswitches.." Footswitch"..(Footswitches > 1 and "es" or "")," | ") end
+							if Sideswitches > 0 then output = addToOutput(output,Sideswitches.." Sideswitch"..(Sideswitches > 1 and "es" or "")," | ") end
+							if Jacks > 0 then output = addToOutput(output,Jacks.." Jack"..(Jacks > 1 and "s" or "")," | ") end
+							if Brackets > 0 then output = addToOutput(output,Brackets.." Bracket"..(Brackets > 1 and "s" or "")," | ") end
+						else
+							local Crossovers, Footswitches, Sideswitches, Jacks, Brackets = GetTechniques(SMParser(steps).."\n")
+							if Crossovers > 0 then output = addToOutput(output,Crossovers.." Crossover"..(Crossovers > 1 and "s" or "")," | ") end
+							if Footswitches > 0 then output = addToOutput(output,Footswitches.." Footswitch"..(Footswitches > 1 and "es" or "")," | ") end
+							if Sideswitches > 0 then output = addToOutput(output,Sideswitches.." Sideswitch"..(Sideswitches > 1 and "es" or "")," | ") end
+							if Jacks > 0 then output = addToOutput(output,Jacks.." Jack"..(Jacks > 1 and "s" or "")," | ") end
+							if Brackets > 0 then output = addToOutput(output,Brackets.." Bracket"..(Brackets > 1 and "s" or "")," | ") end
+						end
 					end
 					self:settext(output == "" and "No Tech" or output)
 				end
