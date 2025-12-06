@@ -409,7 +409,7 @@ function InitPlayerOptions()
 		setenv("ShowMovePlayerStats"..pname(pn),LoadUserPrefN(pn, "ShowMovePlayerStats", 3))
 		setenv("SetScoreType"..pname(pn),LoadUserPrefN(pn, "SetScoreType", 2))
 		setenv("ShowErrorBar"..pname(pn),LoadUserPrefN(pn, "ShowErrorBar", 0))
-		setenv("ShowColumnCues"..pname(pn),LoadUserPrefN(pn, "ShowColumnCues", 0))
+		setenv("ShowColumns"..pname(pn),LoadUserPrefN(pn, "ShowColumns", 0))
 		if isITGmania(20240307) then setenv("BeatBars"..pname(pn),LoadUserPrefN(pn, "BeatBars", 0)) end
 		if (isOutFox(20210300) or isEtterna("0.50")) and GAMESTATE:GetCurrentGame():CountNotesSeparately() then
 			if getenv("SetScoreType"..pname(pn)) == 6 then
@@ -732,7 +732,7 @@ function NumberToBits(num,bits)
     return t
 end
 
-function OptionShowColumnCues()
+function OptionShowColumns()
 	function Range()
 		if isOpenDDR() then
 			return { "Preview","Miss","Decent","Great","Excellent","Fantastic" }
@@ -741,20 +741,20 @@ function OptionShowColumnCues()
 		end
 	end
 	local t = {
-		Name="ShowColumnCues",
+		Name="ShowColumns",
 		LayoutType = "ShowAllInRow",
 		SelectType = "SelectMultiple",
 		OneChoiceForAllPlayers = false,
 		ExportOnChange = false,
 		Choices = Range(),
 		LoadSelections = function(self, list, pn)
-			local bits = NumberToBits(getenv("ShowColumnCues"..pname(pn)) or 0,isOpenDDR() and 6 or 7)
+			local bits = NumberToBits(getenv("ShowColumns"..pname(pn)) or 0,isOpenDDR() and 6 or 7)
 			for i=1,#list do list[i] = bits[8-i] end
 		end,
 		SaveSelections = function(self, list, pn)
 			local total = 0
 			for i=1,#list do if list[i] then total = total + math.pow(2,i-1) end end
-			setenv("ShowColumnCues"..pname(pn),SaveUserPref(pn, "ShowColumnCues", total))
+			setenv("ShowColumns"..pname(pn),SaveUserPref(pn, "ShowColumns", total))
 		end
 	}
 	setmetatable(t, t)

@@ -18,8 +18,8 @@ local widthFixed = {
 	["foot"] = 40,
 	["scratch"] = 60,
 }
-local columnCues = getenv("ShowColumnCues"..pname(player)) or 0
-local bits = NumberToBits(columnCues,isOpenDDR() and 6 or 7)
+local columns = getenv("ShowColumns"..pname(player)) or 0
+local bits = NumberToBits(columns,isOpenDDR() and 6 or 7)
 local checkJudgments = {}
 local judgments = {
 	"TapNoteScore_Miss",
@@ -168,7 +168,7 @@ local function Update(self, delta)
     end
 end
 
-if columnCues > 0 then
+if columns > 0 then
 	local t = Def.ActorFrame{
 		InitCommand=function(self) c = self:GetChildren() end,
 		OnCommand=function(self)
