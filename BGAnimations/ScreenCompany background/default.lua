@@ -31,10 +31,12 @@ if FILEMAN:DoesFileExist("Save/Keymaps.ini") then
 	local altAvailable = {true,true}
 	local ctrlAvailable = {true,true}
 	local shiftAvailable = {true,true}
-	for key, value in pairs(keys[GAMESTATE:GetCurrentGame():GetName()]) do
-		if string.find(value,"alt") then if string.find(value,"left") then altAvailable[1] = false else altAvailable[2] = false end end
-		if string.find(value,"ctrl") then if string.find(value,"left") then ctrlAvailable[1] = false else ctrlAvailable[2] = false end end
-		if string.find(value,"shift") then if string.find(value,"left") then shiftAvailable[1] = false else shiftAvailable[2] = false end end
+	if keys[GAMESTATE:GetCurrentGame():GetName()] then
+		for key, value in pairs(keys[GAMESTATE:GetCurrentGame():GetName()]) do
+			if string.find(value,"alt") then if string.find(value,"left") then altAvailable[1] = false else altAvailable[2] = false end end
+			if string.find(value,"ctrl") then if string.find(value,"left") then ctrlAvailable[1] = false else ctrlAvailable[2] = false end end
+			if string.find(value,"shift") then if string.find(value,"left") then shiftAvailable[1] = false else shiftAvailable[2] = false end end
+		end
 	end
 
 	local err = ""
