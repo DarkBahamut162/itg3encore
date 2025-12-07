@@ -30,12 +30,19 @@ function isMGD(player)
 	return GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Preferred"):LifeSetting() == "LifeType_Battery"
 end
 
-function TotalPossibleStepSeconds()
+function TotalPossibleStepSeconds(player)
 	local fSecs = 0
 	local s = STATSMAN:GetPlayedStageStats(1)
 	local played = isITGmania() and #s:GetPlayedSongs() or #s:GetPossibleSongs()
 	for a = 1, played do
-		fSecs = fSecs + s:GetPossibleSongs()[a]:GetStepsSeconds()
+		if player then
+			local Song = GAMESTATE:GetCurrentSong()
+			local Steps = GAMESTATE:GetCurrentSteps(player)
+			local trueSeconds = tonumber(LoadFromCache(Song,Steps,"TrueSeconds"))
+			fSecs = fSecs + trueSeconds
+		else
+			fSecs = fSecs + s:GetPossibleSongs()[a]:GetStepsSeconds()
+		end
 	end
 
     local songoptions = GAMESTATE:GetSongOptionsObject("ModsLevel_Song")

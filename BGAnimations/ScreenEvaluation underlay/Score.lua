@@ -7,7 +7,7 @@ local EXP_MAX = 0
 local CALC_LV = 1
 local allowed = getenv("EvalCombo"..pname(player))
 local PSS = STATSMAN:GetCurStageStats():GetPlayerStageStats(player)
-local length = TotalPossibleStepSeconds()
+local length = TotalPossibleStepSeconds(player)
 local cleared = isEtterna("0.55") and not STATSMAN:GetCurStageStats():Failed() or (not PSS:GetFailed() and PSS:GetAliveSeconds() > length)
 
 if PROFILEMAN:IsPersistentProfile(player) and enableEPL then
