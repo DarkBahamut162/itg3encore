@@ -153,18 +153,19 @@ local function Update(self, delta)
 		tmpDelta = totalDelta
 		local YoffsetBeat = ArrowEffects.GetYOffset(GAMESTATE:GetPlayerState(player),1,trueFirst)/64
 		local currentBeat = GAMESTATE:GetSongPosition():GetSongBeatVisible()
-		if YoffsetBeat < 6 then
+		if YoffsetBeat < 6 and first then
 			for note in ivalues( noteData ) do
 				if first then c["Column"..note[2]]:accelerate(0.1):diffuse(0,0,0,0) end
 			end
 			if first then first = false end
+		elseif YoffsetBeat < 0 then
+			checking = false
 		elseif YoffsetBeat >= 6 then
 			for note in ivalues( noteData ) do
 				if not first then c["Column"..note[2]]:decelerate(0.1):diffuse(Color("White")) end
 			end
 			if not first then first = true end
 		end
-		if GAMESTATE:GetSongPosition():GetSongBeatVisible() >= trueFirst then checking = false end
     end
 end
 
