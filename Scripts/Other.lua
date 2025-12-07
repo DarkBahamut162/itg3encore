@@ -444,6 +444,10 @@ function JudgmentTransformCommand( self, params )
 		y = y * -1
 		add = add * -1
 	end
+	if isOutFoxV(20231200) and (IsGame("be-mu") or IsGame("po-mu")) then
+		y = y * -1
+		add = add * -1
+	end
 	local zoom = isOutFox() and 1 or (1+math.min(1,NotefieldZoom()))/2
 
 	self:x( 0 )
@@ -465,6 +469,10 @@ function ComboTransformCommand( self, params )
 	end
 	local mods = string.find(GAMESTATE:GetPlayerState(params.Player):GetPlayerOptionsString("ModsLevel_Song"),"FlipUpsideDown")
 	if mods then
+		y = y * -1
+		add = add * -1
+	end
+	if isOutFoxV(20231200) and (IsGame("be-mu") or IsGame("po-mu")) then
 		y = y * -1
 		add = add * -1
 	end
