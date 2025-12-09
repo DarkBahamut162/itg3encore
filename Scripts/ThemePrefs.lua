@@ -45,6 +45,10 @@ local Prefs = {
 		Values = { false, true }
 	},
 	--[ScreenSelectMusic]
+	MusicWheelStyle ={
+		Default = "ITG",
+		Choices = { "ITG", "IIDX" }
+	},
 	ShowBPMDisplayType = {
 		Default = 0,
 		Choices = { "DisplayBPM", "ActualBPM", "CalculatedBPM" },
