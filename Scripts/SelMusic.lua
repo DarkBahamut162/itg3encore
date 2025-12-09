@@ -3,6 +3,7 @@ local stepCache = {}
 local typeList = {"avi","f4v","flv","mkv","mp4","mpeg","mpg","mov","ogv","webm","wmv"}
 Master,P1,P2={},{},{}
 bannerForced = false
+KeysChecked = false
 local full = isOutFoxV() and "FullRes" or "Full"
 
 if not isOutFoxV() then
@@ -77,17 +78,11 @@ function GetScreenSelectMusicHelpText()
 
 	if not IsNetSMOnline() then
 		ret = addToOutput(ret,THEME:GetString("ScreenSelectMusic","SelectButtonAvailableHelpTextAppend"),"::")
-		ret = addToOutput(ret,THEME:GetString("ScreenSelectMusic","CtrlButtonAvailableHelpTextAppend"),"::")
-		if DifficultyChangingAvailable() then
-			ret = addToOutput(ret,THEME:GetString("ScreenSelectMusic","DifficultyChangingAvailableHelpTextAppend"),"::")
-		end
+		if ThemePrefs.Get("KeyboardEnabled") then ret = addToOutput(ret,THEME:GetString("ScreenSelectMusic","CtrlButtonAvailableHelpTextAppend"),"::") end
+		if DifficultyChangingAvailable() then ret = addToOutput(ret,THEME:GetString("ScreenSelectMusic","DifficultyChangingAvailableHelpTextAppend"),"::") end
 	end
-	if ModeMenuAvailable() then
-		ret = addToOutput(ret,THEME:GetString("ScreenSelectMusic","SortMenuAvailableHelpTextAppend"),"::")
-	end
-	if getenv("Workout") and IsHome() then
-		ret = addToOutput(ret,THEME:GetString("ScreenSelectMusic","WorkoutHelpTextAppend"),"::")
-	end
+	if ModeMenuAvailable() then ret = addToOutput(ret,THEME:GetString("ScreenSelectMusic","SortMenuAvailableHelpTextAppend"),"::") end
+	if getenv("Workout") and IsHome() then ret = addToOutput(ret,THEME:GetString("ScreenSelectMusic","WorkoutHelpTextAppend"),"::") end
 
 	return ret
 end

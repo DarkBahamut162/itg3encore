@@ -14,6 +14,11 @@ local Prefs = {
 		Choices = { OptionNameString('Off'), OptionNameString('On') },
 		Values = { false, true }
 	},
+	KeyboardEnabled = {
+		Default = false,
+		Choices = { OptionNameString('Off'), OptionNameString('On') },
+		Values = { false, true }
+	},
 	MouseEnabled = {
 		Default = false,
 		Choices = { OptionNameString('Off'), OptionNameString('On') },

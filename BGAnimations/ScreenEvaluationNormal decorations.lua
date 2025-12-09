@@ -313,12 +313,21 @@ end
 
 local checkUpdate = false
 local ctrlHeld = false
+local keyboardEnabled = ThemePrefs.Get("KeyboardEnabled")
 
 local InputHandler = function(event)
-	if event.type == "InputEventType_FirstPress" then
-		if string.find(event.DeviceInput.button,"ctrl") and not ctrlHeld then ctrlHeld = true end
-	elseif event.type == "InputEventType_Release" then
-		if string.find(event.DeviceInput.button,"ctrl") and ctrlHeld then ctrlHeld = false end
+	if keyboardEnabled then
+		if event.type == "InputEventType_FirstPress" then
+			if string.find(event.DeviceInput.button,"ctrl") and not ctrlHeld then ctrlHeld = true end
+		elseif event.type == "InputEventType_Release" then
+			if string.find(event.DeviceInput.button,"ctrl") and ctrlHeld then ctrlHeld = false end
+		end
+	else
+		if event.type == "InputEventType_FirstPress" then
+			if event.GameButton == "Select" and not ctrlHeld then ctrlHeld = true end
+		elseif event.type == "InputEventType_Release" then
+			if event.GameButton == "Select" and ctrlHeld then ctrlHeld = false end
+		end
 	end
 	if not event.PlayerNumber or not event.button then return false end
 	if not GAMESTATE:IsHumanPlayer(event.PlayerNumber) then return false end

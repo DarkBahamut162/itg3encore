@@ -101,17 +101,41 @@ local HelpDisplay = isEtterna("0.65") and Def.BitmapText {
 	SelectMenuClosedMessageCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(0):zoomx(0.3*WideScreenDiff()) end
 }
 
+local keyboardEnabled = ThemePrefs.Get("KeyboardEnabled")
 local ctrlHeld = { PLAYER_1 = false, PLAYER_2 = false }
 local highscores = { PLAYER_1 = 0, PLAYER_2 = 0 }
 
 local InputHandler = function(event)
-	if string.find(event.DeviceInput.button,"ctrl") then
-		local pn = string.find(event.DeviceInput.button,"left") and PLAYER_1 or PLAYER_2
-		if GAMESTATE:IsHumanPlayer(pn) then
-			if event.type == "InputEventType_FirstPress" then
-				if not ctrlHeld[pn] then MESSAGEMAN:Broadcast("ControlMenuOpened"..pname(pn)) end
-			elseif event.type == "InputEventType_Release" then
-				if ctrlHeld[pn] then MESSAGEMAN:Broadcast("ControlMenuClosed"..pname(pn)) end
+	if keyboardEnabled then
+		if string.find(event.DeviceInput.button,"ctrl") then
+			local pn = string.find(event.DeviceInput.button,"left") and PLAYER_1 or PLAYER_2
+			if GAMESTATE:IsHumanPlayer(pn) then
+				if event.type == "InputEventType_FirstPress" then
+					if not ctrlHeld[pn] and GAMESTATE:GetCurrentSong() then
+						MESSAGEMAN:Broadcast("ControlMenuOpened"..pname(pn))
+						ctrlHeld[pn] = true
+					end
+				elseif event.type == "InputEventType_Release" then
+					if ctrlHeld[pn] then MESSAGEMAN:Broadcast("ControlMenuClosed"..pname(pn)) end
+					ctrlHeld[pn] = false
+				end
+			end
+		end
+	else
+		if event.PlayerNumber then
+			if event.GameButton == "Select" then
+				if GAMESTATE:IsHumanPlayer(event.PlayerNumber) then
+					if event.type == "InputEventType_FirstPress" then
+						if GAMESTATE:GetCurrentSong() and not ctrlHeld[event.PlayerNumber] then
+							ctrlHeld[event.PlayerNumber] = true
+							MESSAGEMAN:Broadcast("ControlMenuOpened"..pname(event.PlayerNumber))
+						end
+					elseif event.type == "InputEventType_Release" then
+						ctrlHeld[event.PlayerNumber] = false
+						MESSAGEMAN:Broadcast("SelectMenuClosed",{Player=event.PlayerNumber})
+						MESSAGEMAN:Broadcast("ControlMenuClosed"..pname(event.PlayerNumber))
+					end
+				end
 			end
 		end
 	end
@@ -163,8 +187,8 @@ return Def.ActorFrame{
 		OffCommand=function(self) self:accelerate(0.75):addx(-SCREEN_WIDTH) end,
 		ShowCommand=function(self) self:stoptweening():decelerate(0.3):y(SCREEN_BOTTOM-(127+15*math.max(0,math.min(highscores[PLAYER_1]-1,10)))*WideScreenDiff()) end,
 		HideCommand=function(self) self:stoptweening():decelerate(0.3):y(SCREEN_BOTTOM-100*WideScreenDiff()) end,
-		ControlMenuOpenedP1MessageCommand=function(self) ctrlHeld[PLAYER_1] = true self:playcommand((courseMode and GAMESTATE:GetCurrentCourse() or GAMESTATE:GetCurrentSong()) and "Show" or "Hide") end,
-		ControlMenuClosedP1MessageCommand=function(self) ctrlHeld[PLAYER_1] = false self:playcommand("Hide") end,
+		ControlMenuOpenedP1MessageCommand=function(self) self:playcommand((courseMode and GAMESTATE:GetCurrentCourse() or GAMESTATE:GetCurrentSong()) and "Show" or "Hide") end,
+		ControlMenuClosedP1MessageCommand=function(self) self:playcommand("Hide") end,
 		CurrentSongChangedMessageCommand=function(self) if not courseMode and ctrlHeld[PLAYER_1] then if not GAMESTATE:GetCurrentSong() then self:playcommand("Hide") else self:playcommand("Show") end end end,
 		CurrentCourseChangedMessageCommand=function(self) if courseMode and ctrlHeld[PLAYER_1] then if not GAMESTATE:GetCurrentCourse() then self:playcommand("Hide") else self:playcommand("Show") end end end,
 		Def.Sprite {
@@ -180,13 +204,15 @@ return Def.ActorFrame{
 			UpdateCommand=function(self)
 				local song = GAMESTATE:GetCurrentSong()
 				local output = ""
+				local add = keyboardEnabled and 0 or 1.1
 				if song then
 					local steps = GAMESTATE:GetCurrentSteps(PLAYER_1)
 					if steps then
 						--local machine = PROFILEMAN:GetMachineProfile():GetHighScoreList(song,steps):GetHighScores()
 						local profile = PROFILEMAN:GetProfile(PLAYER_1):GetHighScoreList(song,steps):GetHighScores()
-						highscores[PLAYER_1] = #profile
+						highscores[PLAYER_1] = #profile + add
 						if #profile == 0 then
+							highscores[PLAYER_1] = highscores[PLAYER_1] + add / 1.1
 							output = "NO HIGHSCORES"
 						else
 							for place,highscore in pairs(profile) do
@@ -202,7 +228,7 @@ return Def.ActorFrame{
 						if trail then
 							--local machine = PROFILEMAN:GetMachineProfile():GetHighScoreList(course,trail):GetHighScores()
 							local profile = PROFILEMAN:GetProfile(PLAYER_1):GetHighScoreList(course,trail):GetHighScores()
-							highscores[PLAYER_1] = #profile
+							highscores[PLAYER_1] = #profile + add
 							if #profile == 0 then
 								output = "NO HIGHSCORES"
 							else
@@ -230,8 +256,8 @@ return Def.ActorFrame{
 		OffCommand=function(self) self:accelerate(0.75):addx(SCREEN_WIDTH) end,
 		ShowCommand=function(self) self:stoptweening():decelerate(0.3):y(SCREEN_BOTTOM-(127+15*math.max(0,math.min(highscores[PLAYER_2]-1,10)))*WideScreenDiff()) end,
 		HideCommand=function(self) self:stoptweening():decelerate(0.3):y(SCREEN_BOTTOM-100*WideScreenDiff()) end,
-		ControlMenuOpenedP2MessageCommand=function(self) ctrlHeld[PLAYER_2] = true self:playcommand((courseMode and GAMESTATE:GetCurrentCourse() or GAMESTATE:GetCurrentSong()) and "Show" or "Hide") end,
-		ControlMenuClosedP2MessageCommand=function(self) ctrlHeld[PLAYER_2] = false self:playcommand("Hide") end,
+		ControlMenuOpenedP2MessageCommand=function(self) self:playcommand((courseMode and GAMESTATE:GetCurrentCourse() or GAMESTATE:GetCurrentSong()) and "Show" or "Hide") end,
+		ControlMenuClosedP2MessageCommand=function(self) self:playcommand("Hide") end,
 		CurrentSongChangedMessageCommand=function(self) if not courseMode and ctrlHeld[PLAYER_2] then if not GAMESTATE:GetCurrentSong() then self:playcommand("Hide") else self:playcommand("Show") end end end,
 		CurrentCourseChangedMessageCommand=function(self) if courseMode and ctrlHeld[PLAYER_2] then if not GAMESTATE:GetCurrentCourse() then self:playcommand("Hide") else self:playcommand("Show") end end end,
 		Def.Sprite {
@@ -247,13 +273,15 @@ return Def.ActorFrame{
 			UpdateCommand=function(self)
 				local song = GAMESTATE:GetCurrentSong()
 				local output = ""
+				local add = keyboardEnabled and 0 or 1.1
 				if song then
 					local steps = GAMESTATE:GetCurrentSteps(PLAYER_2)
 					if steps then
 						--local machine = PROFILEMAN:GetMachineProfile():GetHighScoreList(song,steps):GetHighScores()
 						local profile = PROFILEMAN:GetProfile(PLAYER_2):GetHighScoreList(song,steps):GetHighScores()
-						highscores[PLAYER_2] = #profile
+						highscores[PLAYER_2] = #profile + add
 						if #profile == 0 then
+							highscores[PLAYER_2] = highscores[PLAYER_2] + add / 1.1
 							output = "NO HIGHSCORES"
 						else
 							for place,highscore in pairs(profile) do
@@ -269,7 +297,7 @@ return Def.ActorFrame{
 						if trail then
 							--local machine = PROFILEMAN:GetMachineProfile():GetHighScoreList(course,trail):GetHighScores()
 							local profile = PROFILEMAN:GetProfile(PLAYER_2):GetHighScoreList(course,trail):GetHighScores()
-							highscores[PLAYER_2] = #profile
+							highscores[PLAYER_2] = #profile + add
 							if #profile == 0 then
 								output = "NO HIGHSCORES"
 							else
@@ -295,8 +323,10 @@ return Def.ActorFrame{
 		OffCommand=function(self) self:accelerate(0.75):addx(-SCREEN_WIDTH) end,
 		ShowCommand=function(self) self:stoptweening():decelerate(0.3):y(SCREEN_BOTTOM-127*WideScreenDiff()) end,
 		HideCommand=function(self) self:stoptweening():decelerate(0.3):y(SCREEN_BOTTOM-109*WideScreenDiff()) end,
-		SelectMenuOpenedMessageCommand=function(self)
-			self:playcommand((courseMode and GAMESTATE:GetCurrentCourse() or GAMESTATE:GetCurrentSong()) and "Show" or "Hide")
+		SelectMenuOpenedMessageCommand=function(self,param)
+			if param.Player == PLAYER_1 then
+				self:playcommand((courseMode and GAMESTATE:GetCurrentCourse() or GAMESTATE:GetCurrentSong()) and "Show" or "Hide")
+			end
 		end,
 		SelectMenuClosedMessageCommand=function(self) self:playcommand("Hide") end,
 		Def.Sprite {
@@ -352,8 +382,10 @@ return Def.ActorFrame{
 		OffCommand=function(self) self:accelerate(0.75):addx(SCREEN_WIDTH) end,
 		ShowCommand=function(self) self:stoptweening():decelerate(0.3):y(SCREEN_BOTTOM-127*WideScreenDiff()) end,
 		HideCommand=function(self) self:stoptweening():decelerate(0.3):y(SCREEN_BOTTOM-109*WideScreenDiff()) end,
-		SelectMenuOpenedMessageCommand=function(self)
-			self:playcommand((courseMode and GAMESTATE:GetCurrentCourse() or GAMESTATE:GetCurrentSong()) and "Show" or "Hide")
+		SelectMenuOpenedMessageCommand=function(self,param)
+			if param.Player == PLAYER_2 then
+				self:playcommand((courseMode and GAMESTATE:GetCurrentCourse() or GAMESTATE:GetCurrentSong()) and "Show" or "Hide")
+			end
 		end,
 		SelectMenuClosedMessageCommand=function(self) self:playcommand("Hide") end,
 		Def.Sprite {

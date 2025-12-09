@@ -104,6 +104,7 @@ local width = {
 	["TapNoteScore_Miss"] = 240
 }
 local ctrlHeld = false
+local keyboardEnabled = ThemePrefs.Get("KeyboardEnabled")
 local switched = false
 
 local function GetJudgmentsOfTNS(tns)
@@ -117,73 +118,83 @@ local function GetJudgmentsOfTNS(tns)
 end
 
 local InputHandler = function(event)
-	if event.type == "InputEventType_FirstPress" then
-		if string.find(event.DeviceInput.button,"right ctrl") and not ctrlHeld then ctrlHeld = true end
-	elseif event.type == "InputEventType_Release" then
-		if string.find(event.DeviceInput.button,"right ctrl") and ctrlHeld then ctrlHeld = false end
-	end
 	if event.PlayerNumber ~= PLAYER_2 then return false end
+	if keyboardEnabled then
+		if event.type == "InputEventType_FirstPress" then
+			if string.find(event.DeviceInput.button,"right ctrl") and not ctrlHeld then ctrlHeld = true end
+		elseif event.type == "InputEventType_Release" then
+			if string.find(event.DeviceInput.button,"right ctrl") and ctrlHeld then ctrlHeld = false end
+		end
+	else
+		if event.type == "InputEventType_FirstPress" then
+			if event.GameButton == "Select" and not ctrlHeld then ctrlHeld = true end
+		elseif event.type == "InputEventType_Release" then
+			if event.GameButton == "Select" and ctrlHeld then ctrlHeld = false end
+		end
+	end
 	if ctrlHeld and event.type == "InputEventType_FirstPress" then
-		if event.GameButton == "MenuLeft" and not switched then
-			if faplus then c.JudgeFrames:GetChild("W0"):GetChild("W0JudgmentP2"):settext("") end
-			c.JudgeFrames:GetChild("W1"):GetChild("W1JudgmentP2"):settext("")
-			c.JudgeFrames:GetChild("W2"):GetChild("W2JudgmentP2"):settext("")
-			c.JudgeFrames:GetChild("W3"):GetChild("W3JudgmentP2"):settext("")
-			c.JudgeFrames:GetChild("W4"):GetChild("W4JudgmentP2"):settext("")
-			c.JudgeFrames:GetChild("W5"):GetChild("W5JudgmentP2"):settext("")
-			c.JudgeFrames:GetChild("Miss"):GetChild("MissJudgmentP2"):settext("")
-			if faplus then c.JudgeFrames:GetChild("W0"):GetChild("W0ColumnP2"):diffusealpha(1) end
-			c.JudgeFrames:GetChild("W1"):GetChild("W1ColumnP2"):diffusealpha(1)
-			c.JudgeFrames:GetChild("W2"):GetChild("W2ColumnP2"):diffusealpha(1)
-			c.JudgeFrames:GetChild("W3"):GetChild("W3ColumnP2"):diffusealpha(1)
-			c.JudgeFrames:GetChild("W4"):GetChild("W4ColumnP2"):diffusealpha(1)
-			c.JudgeFrames:GetChild("W5"):GetChild("W5ColumnP2"):diffusealpha(1)
-			c.JudgeFrames:GetChild("Miss"):GetChild("MissColumnP2"):diffusealpha(1)
-			local screen = SCREENMAN:GetTopScreen()
-			if screen then
-				if faplus then
-					c.JudgeFrames:GetChild("W0"):GetChild("W0NumberP2"):diffusealpha(0)
-					c.JudgeFrames:GetChild("W1"):GetChild("W1NumberP2"):diffusealpha(0)
-				else
-					screen:GetChild("W1NumberP2"):diffusealpha(0)
+		if event.GameButton == "MenuLeft" or event.GameButton == "MenuRight" then
+			if not switched then
+				if faplus then c.JudgeFrames:GetChild("W0"):GetChild("W0JudgmentP2"):settext("") end
+				c.JudgeFrames:GetChild("W1"):GetChild("W1JudgmentP2"):settext("")
+				c.JudgeFrames:GetChild("W2"):GetChild("W2JudgmentP2"):settext("")
+				c.JudgeFrames:GetChild("W3"):GetChild("W3JudgmentP2"):settext("")
+				c.JudgeFrames:GetChild("W4"):GetChild("W4JudgmentP2"):settext("")
+				c.JudgeFrames:GetChild("W5"):GetChild("W5JudgmentP2"):settext("")
+				c.JudgeFrames:GetChild("Miss"):GetChild("MissJudgmentP2"):settext("")
+				if faplus then c.JudgeFrames:GetChild("W0"):GetChild("W0ColumnP2"):diffusealpha(1) end
+				c.JudgeFrames:GetChild("W1"):GetChild("W1ColumnP2"):diffusealpha(1)
+				c.JudgeFrames:GetChild("W2"):GetChild("W2ColumnP2"):diffusealpha(1)
+				c.JudgeFrames:GetChild("W3"):GetChild("W3ColumnP2"):diffusealpha(1)
+				c.JudgeFrames:GetChild("W4"):GetChild("W4ColumnP2"):diffusealpha(1)
+				c.JudgeFrames:GetChild("W5"):GetChild("W5ColumnP2"):diffusealpha(1)
+				c.JudgeFrames:GetChild("Miss"):GetChild("MissColumnP2"):diffusealpha(1)
+				local screen = SCREENMAN:GetTopScreen()
+				if screen then
+					if faplus then
+						c.JudgeFrames:GetChild("W0"):GetChild("W0NumberP2"):diffusealpha(0)
+						c.JudgeFrames:GetChild("W1"):GetChild("W1NumberP2"):diffusealpha(0)
+					else
+						screen:GetChild("W1NumberP2"):diffusealpha(0)
+					end
+					screen:GetChild("W2NumberP2"):diffusealpha(0)
+					screen:GetChild("W3NumberP2"):diffusealpha(0)
+					screen:GetChild("W4NumberP2"):diffusealpha(0)
+					screen:GetChild("W5NumberP2"):diffusealpha(0)
+					screen:GetChild("MissNumberP2"):diffusealpha(0)
 				end
-				screen:GetChild("W2NumberP2"):diffusealpha(0)
-				screen:GetChild("W3NumberP2"):diffusealpha(0)
-				screen:GetChild("W4NumberP2"):diffusealpha(0)
-				screen:GetChild("W5NumberP2"):diffusealpha(0)
-				screen:GetChild("MissNumberP2"):diffusealpha(0)
-			end
-			switched = true
-		elseif event.GameButton == "MenuRight" and switched then
-			if faplus then c.JudgeFrames:GetChild("W0"):GetChild("W0JudgmentP2"):settext("FANTASTIC+") end
-			c.JudgeFrames:GetChild("W1"):GetChild("W1JudgmentP2"):settext("FANTASTIC")
-			c.JudgeFrames:GetChild("W2"):GetChild("W2JudgmentP2"):settext("EXCELLENT")
-			c.JudgeFrames:GetChild("W3"):GetChild("W3JudgmentP2"):settext("GREAT")
-			c.JudgeFrames:GetChild("W4"):GetChild("W4JudgmentP2"):settext("DECENT")
-			c.JudgeFrames:GetChild("W5"):GetChild("W5JudgmentP2"):settext("WAY OFF")
-			c.JudgeFrames:GetChild("Miss"):GetChild("MissJudgmentP2"):settext("MISS")
-			if faplus then c.JudgeFrames:GetChild("W0"):GetChild("W0ColumnP2"):diffusealpha(0) end
-			c.JudgeFrames:GetChild("W1"):GetChild("W1ColumnP2"):diffusealpha(0)
-			c.JudgeFrames:GetChild("W2"):GetChild("W2ColumnP2"):diffusealpha(0)
-			c.JudgeFrames:GetChild("W3"):GetChild("W3ColumnP2"):diffusealpha(0)
-			c.JudgeFrames:GetChild("W4"):GetChild("W4ColumnP2"):diffusealpha(0)
-			c.JudgeFrames:GetChild("W5"):GetChild("W5ColumnP2"):diffusealpha(0)
-			c.JudgeFrames:GetChild("Miss"):GetChild("MissColumnP2"):diffusealpha(0)
-			local screen = SCREENMAN:GetTopScreen()
-			if screen then
-				if faplus then
-					c.JudgeFrames:GetChild("W0"):GetChild("W0NumberP2"):diffusealpha(1)
-					c.JudgeFrames:GetChild("W1"):GetChild("W1NumberP2"):diffusealpha(1)
-				else
-					screen:GetChild("W1NumberP2"):diffusealpha(1)
+				switched = true
+			elseif switched then
+				if faplus then c.JudgeFrames:GetChild("W0"):GetChild("W0JudgmentP2"):settext("FANTASTIC+") end
+				c.JudgeFrames:GetChild("W1"):GetChild("W1JudgmentP2"):settext("FANTASTIC")
+				c.JudgeFrames:GetChild("W2"):GetChild("W2JudgmentP2"):settext("EXCELLENT")
+				c.JudgeFrames:GetChild("W3"):GetChild("W3JudgmentP2"):settext("GREAT")
+				c.JudgeFrames:GetChild("W4"):GetChild("W4JudgmentP2"):settext("DECENT")
+				c.JudgeFrames:GetChild("W5"):GetChild("W5JudgmentP2"):settext("WAY OFF")
+				c.JudgeFrames:GetChild("Miss"):GetChild("MissJudgmentP2"):settext("MISS")
+				if faplus then c.JudgeFrames:GetChild("W0"):GetChild("W0ColumnP2"):diffusealpha(0) end
+				c.JudgeFrames:GetChild("W1"):GetChild("W1ColumnP2"):diffusealpha(0)
+				c.JudgeFrames:GetChild("W2"):GetChild("W2ColumnP2"):diffusealpha(0)
+				c.JudgeFrames:GetChild("W3"):GetChild("W3ColumnP2"):diffusealpha(0)
+				c.JudgeFrames:GetChild("W4"):GetChild("W4ColumnP2"):diffusealpha(0)
+				c.JudgeFrames:GetChild("W5"):GetChild("W5ColumnP2"):diffusealpha(0)
+				c.JudgeFrames:GetChild("Miss"):GetChild("MissColumnP2"):diffusealpha(0)
+				local screen = SCREENMAN:GetTopScreen()
+				if screen then
+					if faplus then
+						c.JudgeFrames:GetChild("W0"):GetChild("W0NumberP2"):diffusealpha(1)
+						c.JudgeFrames:GetChild("W1"):GetChild("W1NumberP2"):diffusealpha(1)
+					else
+						screen:GetChild("W1NumberP2"):diffusealpha(1)
+					end
+					screen:GetChild("W2NumberP2"):diffusealpha(1)
+					screen:GetChild("W3NumberP2"):diffusealpha(1)
+					screen:GetChild("W4NumberP2"):diffusealpha(1)
+					screen:GetChild("W5NumberP2"):diffusealpha(1)
+					screen:GetChild("MissNumberP2"):diffusealpha(1)
 				end
-				screen:GetChild("W2NumberP2"):diffusealpha(1)
-				screen:GetChild("W3NumberP2"):diffusealpha(1)
-				screen:GetChild("W4NumberP2"):diffusealpha(1)
-				screen:GetChild("W5NumberP2"):diffusealpha(1)
-				screen:GetChild("MissNumberP2"):diffusealpha(1)
+				switched = false
 			end
-			switched = false
 		end
 	end
 end

@@ -22,18 +22,33 @@ end
 local timing = GetTimingDifficulty()
 local timingChange = { 1.50,1.33,1.16,1.00,0.84,0.66,0.50,0.33,0.20 }
 local ctrlHeld = false
+local keyboardEnabled = ThemePrefs.Get("KeyboardEnabled")
 
 local InputHandler = function(event)
-	if event.type == "InputEventType_FirstPress" then
-		if string.find(event.DeviceInput.button,"ctrl") and not ctrlHeld then ctrlHeld = true end
-		if ctrlHeld then
-			if event.DeviceInput.button == "DeviceButton_r" then
-				setenv("Restart",getenv("Restart")+1)
-				SCREENMAN:GetTopScreen():SetPrevScreenName(Branch.BeforeGameplay()):begin_backing_out()
+	if keyboardEnabled then
+		if event.type == "InputEventType_FirstPress" then
+			if string.find(event.DeviceInput.button,"ctrl") and not ctrlHeld then ctrlHeld = true end
+			if ctrlHeld then
+				if event.DeviceInput.button == "DeviceButton_r" then
+					setenv("Restart",getenv("Restart")+1)
+					SCREENMAN:GetTopScreen():SetPrevScreenName(Branch.BeforeGameplay()):begin_backing_out()
+				end
 			end
+		elseif event.type == "InputEventType_Release" then
+			if string.find(event.DeviceInput.button,"ctrl") and ctrlHeld then ctrlHeld = false end
 		end
-	elseif event.type == "InputEventType_Release" then
-		if string.find(event.DeviceInput.button,"ctrl") and ctrlHeld then ctrlHeld = false end
+	else
+		if event.type == "InputEventType_FirstPress" then
+			if event.GameButton == "Select" and not ctrlHeld then ctrlHeld = true end
+			if ctrlHeld then
+				if event.GameButton == "Start" then
+					setenv("Restart",getenv("Restart")+1)
+					SCREENMAN:GetTopScreen():SetPrevScreenName(Branch.BeforeGameplay()):begin_backing_out()
+				end
+			end
+		elseif event.type == "InputEventType_Release" then
+			if event.GameButton == "Select" and ctrlHeld then ctrlHeld = false end
+		end
 	end
 end
 
@@ -326,8 +341,11 @@ local t = Def.ActorFrame{
 				W0 = W0 + Wadd
 				for i,col in pairs(params.Notes) do
 					local tns = ToEnumShortString(col:GetTapNoteResult():GetTapNoteScore())
-					if tns == "W1" then tns = math.abs(col:GetTapNoteResult():GetTapNoteOffset()) <= W0 and "W0" or "W1" end
-					if tns and tns ~= "" and tns ~= "None" then judgments[player][i][tns] = judgments[player][i][tns] + 1 end
+					local tno = col:GetTapNoteResult():GetTapNoteOffset()
+					if tns == "W1" then tns = math.abs(tno) <= W0 and "W0" or "W1" end
+					if tns and tns ~= "" and tns ~= "None" then
+						judgments[player][i][tns] = judgments[player][i][tns] + 1
+					end
 				end
 				if params.TapNoteOffset and enableOffsets then
 					local vStats = STATSMAN:GetCurStageStats():GetPlayerStageStats( player )
