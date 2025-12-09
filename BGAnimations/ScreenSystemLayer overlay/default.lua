@@ -4,7 +4,8 @@ local showData = {
 }
 
 local function CreditsText(pn)
-	local text = LoadFont(Var "LoadingScreen","credits")..{
+	local text = Def.BitmapText {
+		File = THEME:GetPathF(Var "LoadingScreen", "credits"),
 		InitCommand=function(self)
 			self:name("Credits"..PlayerNumberToString(pn))
 			ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen")
