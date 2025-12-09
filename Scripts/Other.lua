@@ -433,8 +433,8 @@ end
 
 function JudgmentTransformCommand( self, params )
 	local y = -30
-	local ShowMovePlayerStats = getenv("ShowMovePlayerStats"..pname(params.Player)) or 3
-	local add = SCREEN_CENTER_Y/5*(ShowMovePlayerStats-3)
+	local ShowMovePlayerfieldStats = getenv("ShowMovePlayerfieldStats"..pname(params.Player)) or 3
+	local add = SCREEN_CENTER_Y/5*(ShowMovePlayerfieldStats-3)
 	if params.bReverse then
 		y = y * -1
 		add = add * -1
@@ -461,8 +461,8 @@ end
 
 function ComboTransformCommand( self, params )
 	local y = 30
-	local ShowMovePlayerStats = getenv("ShowMovePlayerStats"..pname(params.Player)) or 3
-	local add = SCREEN_CENTER_Y/5*(ShowMovePlayerStats-3)
+	local ShowMovePlayerfieldStats = getenv("ShowMovePlayerfieldStats"..pname(params.Player)) or 3
+	local add = SCREEN_CENTER_Y/5*(ShowMovePlayerfieldStats-3)
 	if params.bReverse then
 		y = -40
 		add = add * -1

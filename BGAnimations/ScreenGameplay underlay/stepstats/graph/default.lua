@@ -4,13 +4,13 @@ local graphH  = 92
 local height  = (SCREEN_HEIGHT / graphH)
 local bgColor = color('0, 0, 0, 0.66')
 local normalizeAlpha = (1.0 - bgColor[4]) * 0.8
-local showNoteGraph = getenv("ShowNoteGraph"..pname(pn))
-local showNoteGraphType = getenv("ShowNoteGraphType"..pname(pn))
-local ShowNoteGraphRange = getenv("ShowNoteGraphRange"..pname(pn))
+local playerNoteGraph = getenv("PlayerNoteGraph"..pname(pn))
+local playerNoteGraphType = getenv("PlayerNoteGraphType"..pname(pn))
+local playerNoteGraphRange = getenv("PlayerNoteGraphRange"..pname(pn))
 local ShowStatsSize = getenv("ShowStatsSize"..pname(pn))
-local adjust = ShowNoteGraphRange == 2
-local rowLimit = showNoteGraphType == 1
-local ShowNoteGraphData = getenv("ShowNoteGraphData"..pname(pn))
+local adjust = playerNoteGraphRange == 2
+local rowLimit = playerNoteGraphType == 1
+local playerNoteGraphData = getenv("PlayerNoteGraphData"..pname(pn))
 local lastSec = nil
 local lastBeat = nil
 local courseMode = GAMESTATE:IsCourseMode()
@@ -497,7 +497,7 @@ local function GetVerticesAlt(stepsPerSecList)
         local col = color('1, 0, 0, '..alpha)
         vertices[#vertices+1] = { {curX, 0, 0}, {col[1], col[2], col[3], col[4]*0.5} }
 
-        if showNoteGraph == 3 then
+        if playerNoteGraph == 3 then
             local colGB = math.min((math.max(nextY, 0) -12) * 0.0833, 1.0)
             col = color(string.format('%.2f, %.2f, %.2f, %.2f', (1-colGB), colGB, colGB, alpha))
             vertices[#vertices+1] = { {(curX+nextX)/2,math.min(nextY * height, graphH), 0}, col }
@@ -517,7 +517,7 @@ local function GetVerticesAlt(stepsPerSecList)
             col = color('0, 0, 0, 1')
             vertices[#vertices+1] = { {curX, 0, 0}, col }
             
-            if showNoteGraph == 3 then
+            if playerNoteGraph == 3 then
                 vertices[#vertices+1] = { {(curX+nextX)/2,math.min(math.max(0,(nextY-20)/4) * height, graphH), 0}, col }
             else
                 vertices[#vertices+1] = { {curX, math.min(math.max(0,(curY-20)/4) * height, graphH), 0}, col }
@@ -585,8 +585,8 @@ return Def.ActorFrame{
             CurrentTrailP1ChangedMessageCommand=function(self) if courseMode and pn == PLAYER_1 then self:playcommand("Init") end end,
             CurrentTrailP2ChangedMessageCommand=function(self) if courseMode and pn == PLAYER_2 then self:playcommand("Init") end end,
             InitCommand=function(self)
-                local vertices = showNoteGraph == 3 and GetVerticesAlt(isOutFox(20200400) and UpdateGraphAlt() or UpdateGraphAltOld()) or GetVertices(isOutFox(20200400) and UpdateGraph() or UpdateGraphOld())
-                self:SetDrawState(showNoteGraph == 3 and {Mode = 'DrawMode_Triangles'} or {Mode = 'DrawMode_Quads'})
+                local vertices = playerNoteGraph == 3 and GetVerticesAlt(isOutFox(20200400) and UpdateGraphAlt() or UpdateGraphAltOld()) or GetVertices(isOutFox(20200400) and UpdateGraph() or UpdateGraphOld())
+                self:SetDrawState(playerNoteGraph == 3 and {Mode = 'DrawMode_Triangles'} or {Mode = 'DrawMode_Quads'})
                 self:SetVertices(1, vertices)
                 self:SetNumVertices(#vertices)
                 self:rotationz(pn == PLAYER_1 and 90 or -90)
@@ -614,7 +614,7 @@ return Def.ActorFrame{
             end
         },
         Def.BitmapText{
-            Condition=ShowNoteGraphData,
+            Condition=playerNoteGraphData,
             File = "_r bold shadow 30px",
             InitCommand=function(self)
                 self:diffuseramp():effectcolor1(PlayerColor(pn)):effectcolor2(color("#FFFFFF")):effectperiod(0.5):effect_hold_at_full(0.5):effectclock('beat'):vertspacing(-10)

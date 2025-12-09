@@ -136,7 +136,7 @@ return Def.ActorFrame{
 			end
 		end,
 		loadfile(THEME:GetPathB("ScreenGameplay","underlay/stepstats/graph"))(pn)..{
-			Condition=getenv("ShowNoteGraph"..pname(pn)) > 1,
+			Condition=getenv("PlayerNoteGraph"..pname(pn)) > 1,
 			InitCommand=function(self) self:x(pn == PLAYER_1 and 53 or -53):y(graphPos and -15 or 70):zoom(0.5) end
 		},
 		loadfile(THEME:GetPathB("ScreenGameplay","underlay/stepstats/double/d_bg"))(pn),

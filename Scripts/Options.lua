@@ -406,9 +406,9 @@ function InitPlayerOptions()
 		setenv("UnderTapJudgments"..pname(pn),LoadUserPrefB(pn, "UnderTapJudgments", false))
 		setenv("UnderHoldJudgments"..pname(pn),LoadUserPrefB(pn, "UnderHoldJudgments", false))
 
-		setenv("ShowMovePlayerStats"..pname(pn),LoadUserPrefN(pn, "ShowMovePlayerStats", 3))
+		setenv("ShowMovePlayerfieldStats"..pname(pn),LoadUserPrefN(pn, "ShowMovePlayerfieldStats", 3))
 		setenv("SetScoreType"..pname(pn),LoadUserPrefN(pn, "SetScoreType", 2))
-		setenv("ShowErrorBar"..pname(pn),LoadUserPrefN(pn, "ShowErrorBar", 0))
+		setenv("ErrorBar"..pname(pn),LoadUserPrefN(pn, "ErrorBar", 0))
 		setenv("ShowColumns"..pname(pn),LoadUserPrefN(pn, "ShowColumns", 0))
 		if isITGmania(20240307) then setenv("BeatBars"..pname(pn),LoadUserPrefN(pn, "BeatBars", 0)) end
 		if (isOutFox(20210300) or isEtterna("0.50")) and GAMESTATE:GetCurrentGame():CountNotesSeparately() then
@@ -424,10 +424,10 @@ function InitPlayerOptions()
 		setenv("ShowStats"..pname(pn),not isVS() and LoadUserPrefN(pn, "ShowStats", 0) or 0)
 		setenv("ShowStatsSize"..pname(pn),not isVS() and LoadUserPrefN(pn, "ShowStatsSize", 1) or 1)
 		setenv("ShowStatsPos"..pname(pn),not isVS() and LoadUserPrefN(pn, "ShowStatsPos", 0) or 0)
-		setenv("ShowNoteGraph"..pname(pn),not isVS() and LoadUserPrefN(pn, "ShowNoteGraph", 1) or 1)
-		setenv("ShowNoteGraphType"..pname(pn),not isVS() and LoadUserPrefN(pn, "ShowNoteGraphType", 2) or 2)
-		setenv("ShowNoteGraphRange"..pname(pn),not isVS() and LoadUserPrefN(pn, "ShowNoteGraphRange", 1) or 1)
-		setenv("ShowNoteGraphData"..pname(pn),not isVS() and LoadUserPrefB(pn, "ShowNoteGraphData", false) or false)
+		setenv("PlayerNoteGraph"..pname(pn),not isVS() and LoadUserPrefN(pn, "PlayerNoteGraph", 1) or 1)
+		setenv("PlayerNoteGraphType"..pname(pn),not isVS() and LoadUserPrefN(pn, "PlayerNoteGraphType", 2) or 2)
+		setenv("PlayerNoteGraphRange"..pname(pn),not isVS() and LoadUserPrefN(pn, "PlayerNoteGraphRange", 1) or 1)
+		setenv("PlayerNoteGraphData"..pname(pn),not isVS() and LoadUserPrefB(pn, "PlayerNoteGraphData", false) or false)
 		setenv("SetPacemaker"..pname(pn),not isVS() and LoadUserPrefN(pn, "SetPacemaker", 0) or 0)
 		setenv("SetPacemakerFail"..pname(pn),not isVS() and LoadUserPrefN(pn, "SetPacemakerFail", 0) or 0)
 
@@ -575,16 +575,16 @@ function OptionUnderFieldOptions()
 	return t
 end
 
-function OptionMovePlayerStats()
+function OptionMovePlayerfieldStats()
 	local t = {
-		Name="MovePlayerStats",
+		Name="MovePlayerfieldStats",
 		LayoutType = "ShowAllInRow",
 		SelectType = "SelectOne",
 		OneChoiceForAllPlayers = false,
 		ExportOnChange = false,
 		Choices = { "Near","Near|Center","Center","Center|Far","Far" },
 		LoadSelections = function(self, list, pn)
-			local selected = getenv("ShowMovePlayerStats"..pname(pn))
+			local selected = getenv("ShowMovePlayerfieldStats"..pname(pn))
 			if selected and selected ~= 0 then
 				list[selected] = true
 			else
@@ -594,7 +594,7 @@ function OptionMovePlayerStats()
 		SaveSelections = function(self, list, pn)
 			for i=1,#list do
 				if list[i] then
-					setenv("ShowMovePlayerStats"..pname(pn),SaveUserPref(pn, "ShowMovePlayerStats", i))
+					setenv("ShowMovePlayerfieldStats"..pname(pn),SaveUserPref(pn, "ShowMovePlayerfieldStats", i))
 					break
 				end
 			end
@@ -656,7 +656,7 @@ function OptionSetScoreType()
 	return t
 end
 
-function OptionShowErrorBar()
+function OptionErrorBar()
 	function Range()
 		if isOpenDDR() then
 			return { "Off","Fantastic","Excellent","Great","Decent","Miss" }
@@ -665,14 +665,14 @@ function OptionShowErrorBar()
 		end
 	end
 	local t = {
-		Name="ShowErrorBar",
+		Name="ErrorBar",
 		LayoutType = "ShowAllInRow",
 		SelectType = "SelectOne",
 		OneChoiceForAllPlayers = false,
 		ExportOnChange = false,
 		Choices = Range(),
 		LoadSelections = function(self, list, pn)
-			local selected = (getenv("ShowErrorBar"..pname(pn)) or 0) + 1
+			local selected = (getenv("ErrorBar"..pname(pn)) or 0) + 1
 			if selected and selected ~= 0 then
 				list[selected] = true
 			else
@@ -682,7 +682,7 @@ function OptionShowErrorBar()
 		SaveSelections = function(self, list, pn)
 			for i=1,#list do
 				if list[i] then
-					setenv("ShowErrorBar"..pname(pn),SaveUserPref(pn, "ShowErrorBar", i-1))
+					setenv("ErrorBar"..pname(pn),SaveUserPref(pn, "ErrorBar", i-1))
 					break
 				end
 			end
@@ -825,7 +825,7 @@ function OptionShowStats()
 	options[#options+1] = "Mini (Top)"
 
 	local t = {
-		Name="ShowStats",
+		Name="PlayerStats",
 		LayoutType = "ShowAllInRow",
 		SelectType = "SelectMultiple",
 		OneChoiceForAllPlayers = false,
@@ -856,47 +856,47 @@ function OptionShowStats()
 	return t
 end
 
-function OptionShowNoteGraph()
+function OptionPlayerNoteGraph()
 	local t = {
-		Name="ShowNoteGraph",
+		Name="PlayerNoteGraph",
 		LayoutType = "ShowAllInRow",
 		SelectType = "SelectMultiple",
 		OneChoiceForAllPlayers = false,
 		ExportOnChange = false,
 		Choices = { "Off","Normal","SPS","One","All","Fixed","Adjusted","Show Data" },
 		LoadSelections = function(self, list, pn)
-			local ShowNoteGraph = (getenv("ShowNoteGraph"..pname(pn)) or 1)
-			local ShowNoteGraphType = (getenv("ShowNoteGraphType"..pname(pn)) or 1) + 3
-			local ShowNoteGraphRange = (getenv("ShowNoteGraphRange"..pname(pn)) or 1) + 5
-			local ShowNoteGraphData = (getenv("ShowNoteGraphData"..pname(pn)) or false)
-			if ShowNoteGraph and ShowNoteGraph ~= 0 then
-				list[ShowNoteGraph] = true
+			local PlayerNoteGraph = (getenv("PlayerNoteGraph"..pname(pn)) or 1)
+			local PlayerNoteGraphType = (getenv("PlayerNoteGraphType"..pname(pn)) or 1) + 3
+			local PlayerNoteGraphRange = (getenv("PlayerNoteGraphRange"..pname(pn)) or 1) + 5
+			local PlayerNoteGraphData = (getenv("PlayerNoteGraphData"..pname(pn)) or false)
+			if PlayerNoteGraph and PlayerNoteGraph ~= 0 then
+				list[PlayerNoteGraph] = true
 			else
 				list[1] = true
 			end
-			if ShowNoteGraphType and ShowNoteGraphType ~= 0 then
-				list[ShowNoteGraphType] = true
+			if PlayerNoteGraphType and PlayerNoteGraphType ~= 0 then
+				list[PlayerNoteGraphType] = true
 			else
 				list[4] = true
 			end
-			if ShowNoteGraphRange and ShowNoteGraphRange ~= 0 then
-				list[ShowNoteGraphRange] = true
+			if PlayerNoteGraphRange and PlayerNoteGraphRange ~= 0 then
+				list[PlayerNoteGraphRange] = true
 			else
 				list[6] = true
 			end
-			list[8] = ShowNoteGraphData
+			list[8] = PlayerNoteGraphData
 		end,
 		SaveSelections = function() end,
 		NotifyOfSelection= function(self, pn, choice)
 			if choice <= 3 then
-				setenv("ShowNoteGraph"..pname(pn),SaveUserPref(pn, "ShowNoteGraph", choice))
+				setenv("PlayerNoteGraph"..pname(pn),SaveUserPref(pn, "PlayerNoteGraph", choice))
 			elseif choice <= 5 then
-				setenv("ShowNoteGraphType"..pname(pn),SaveUserPref(pn, "ShowNoteGraphType", choice-3))
+				setenv("PlayerNoteGraphType"..pname(pn),SaveUserPref(pn, "PlayerNoteGraphType", choice-3))
 			elseif choice <= 7 then
-				setenv("ShowNoteGraphRange"..pname(pn),SaveUserPref(pn, "ShowNoteGraphRange", choice-5))
+				setenv("PlayerNoteGraphRange"..pname(pn),SaveUserPref(pn, "PlayerNoteGraphRange", choice-5))
 			else
-				local ShowNoteGraphData = (getenv("ShowNoteGraphData"..pname(pn)) or false)
-				setenv("ShowNoteGraphData"..pname(pn),SaveUserPref(pn, "ShowNoteGraphData", not ShowNoteGraphData))
+				local PlayerNoteGraphData = (getenv("PlayerNoteGraphData"..pname(pn)) or false)
+				setenv("PlayerNoteGraphData"..pname(pn),SaveUserPref(pn, "PlayerNoteGraphData", not PlayerNoteGraphData))
 			end
 			return true
 		end
@@ -963,9 +963,9 @@ function OptionSetPacemakerFail()
 	return t
 end
 
-function OptionShowAssists()
+function OptionPlayerAssists()
 	local t = {
-		Name="ShowAssists",
+		Name="PlayerAssists",
 		LayoutType = "ShowAllInRow",
 		SelectType = "SelectMultiple",
 		OneChoiceForAllPlayers = false,
@@ -984,9 +984,9 @@ function OptionShowAssists()
 	return t
 end
 
-function OptionShowModifiers()
+function OptionPlayerModifiers()
 	local t = {
-		Name="ShowModifiers",
+		Name="PlayerModifiers",
 		LayoutType = "ShowAllInRow",
 		SelectType = "SelectMultiple",
 		OneChoiceForAllPlayers = false,
@@ -1099,25 +1099,25 @@ function DisplayCustomModifiersText(pn)
 	if getenv("ShowMods"..pname(pn)) then output = addToOutput(output,"Show Mods",", ") end
 	if getenv("ShowStats"..pname(pn)) and getenv("ShowStats"..pname(pn)) > 0 then
 		if GAMESTATE:GetNumPlayersEnabled() == 2 and not isDouble() then
-			if getenv("ShowNoteGraph"..pname(pn)) > 1 then
+			if getenv("PlayerNoteGraph"..pname(pn)) > 1 then
 				output = addToOutput(output,"Show Stats",", ")
 			else
 				output = addToOutput(output,"Show Stats & NoteGraph",", ")
 			end
 		elseif getenv("ShowStatsSize"..pname(pn)) == 1 then
-			if getenv("ShowNoteGraph"..pname(pn)) > 1 then
+			if getenv("PlayerNoteGraph"..pname(pn)) > 1 then
 				output = addToOutput(output,"Show FullStats",", ")
 			else
 				output = addToOutput(output,"Show FullStats & NoteGraph",", ")
 			end
 		elseif getenv("ShowStatsSize"..pname(pn)) == 2 then
-			if getenv("ShowNoteGraph"..pname(pn)) > 1 then
+			if getenv("PlayerNoteGraph"..pname(pn)) > 1 then
 				output = addToOutput(output,"Show MiniStats",", ")
 			else
 				output = addToOutput(output,"Show MiniStats & NoteGraph",", ")
 			end
 		end
-	elseif getenv("ShowNoteGraph"..pname(pn)) and getenv("ShowNoteGraph"..pname(pn)) > 1 then
+	elseif getenv("PlayerNoteGraph"..pname(pn)) and getenv("PlayerNoteGraph"..pname(pn)) > 1 then
 		output = addToOutput(output,"Show NoteGraph",", ")
 	end
 

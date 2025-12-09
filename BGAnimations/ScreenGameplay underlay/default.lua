@@ -2,7 +2,7 @@ local t = Def.ActorFrame{ Name="GameplayUnderlay" }
 local stats = false
 
 for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
-	if (getenv("ShowStats"..pname(pn)) and getenv("ShowStats"..pname(pn)) > 0) or (getenv("ShowNoteGraph"..pname(pn)) and getenv("ShowNoteGraph"..pname(pn)) > 1) then
+	if (getenv("ShowStats"..pname(pn)) and getenv("ShowStats"..pname(pn)) > 0) or (getenv("PlayerNoteGraph"..pname(pn)) and getenv("PlayerNoteGraph"..pname(pn)) > 1) then
 		stats = true
 	end
 end

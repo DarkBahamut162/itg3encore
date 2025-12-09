@@ -54,7 +54,7 @@ if not isOpenDDR() then judg[#judg+1] = W4 end
 local Wmax = (isOpenDDR() and W4 or W5)
 local width = isFinal() and 125 or 125/2
 
-local errorBar = getenv("ShowErrorBar"..pname(player)) or 0
+local errorBar = getenv("ErrorBar"..pname(player)) or 0
 if errorBar == 1 then
 	Wmax = W1
 elseif errorBar == 2 then
