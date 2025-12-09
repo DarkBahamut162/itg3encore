@@ -206,7 +206,10 @@ local Artist, Origin
 t[#t+1] = Def.ActorFrame{
 	CurrentSongChangedMessageCommand=function(self)
 		if not courseMode and ThemePrefs.Get("ShowOrigin") then
-			if (GAMESTATE:GetCurrentSong() and GetSMParameter(GAMESTATE:GetCurrentSong(),"ORIGIN") or "") == "" then
+			if SCREENMAN:GetTopScreen():IsTransitioning() then
+				Artist:stoptweening():queuecommand("Off")
+				Origin:stoptweening():queuecommand("Off") 
+			elseif (GAMESTATE:GetCurrentSong() and GetSMParameter(GAMESTATE:GetCurrentSong(),"ORIGIN") or "") == "" then
 				Artist:stoptweening():diffusealpha(1)
 				Origin:stoptweening():diffusealpha(0)
 			else
