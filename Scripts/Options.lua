@@ -314,6 +314,27 @@ function ModeMenu()
 	return options
 end
 
+function TitleMenu()
+	local output = "01"
+	if GameModeEnabled() then
+		if ThemePrefs.Get("AllowBattle") then output = addToOutput(output,"02",",") end
+		if ThemePrefs.Get("AllowMarathon") then output = addToOutput(output,"03",",") end
+		if ThemePrefs.Get("AllowSurvival") then output = addToOutput(output,"04",",") end
+		if ThemePrefs.Get("AllowFitness") then output = addToOutput(output,"05",",") end
+		if ThemePrefs.Get("AllowJukebox") then output = addToOutput(output,"06",",") end
+		if ThemePrefs.Get("AllowEdit") then output = addToOutput(output,"07",",") end
+		if ThemePrefs.Get("AllowRecords") then output = addToOutput(output,"08",",") end
+	else
+		if ThemePrefs.Get("AllowBattle") then output = addToOutput(output,"02",",") end
+		if ThemePrefs.Get("AllowMarathon") then output = addToOutput(output,"03",",") end
+		if ThemePrefs.Get("AllowSurvival") then output = addToOutput(output,"04",",") end
+		if ThemePrefs.Get("AllowFitness") then output = addToOutput(output,"05",",") end
+		if ThemePrefs.Get("AllowEdit") then output = addToOutput(output,"07",",") end
+	end
+	output = addToOutput(output,"09,11",",")
+	return output
+end
+
 local function LoadUserPref(pn, option, default)
 	if not PROFILEMAN:IsPersistentProfile(pn) then return default end
     local f = RageFileUtil.CreateRageFile()
