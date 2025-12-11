@@ -28,9 +28,9 @@ Enable the Experimental Profile Leveling System
   - **EXP** gained through **Cleared Songs**
     - **EXP** is calculated through the Song's **SPS-Level** and the **Player's Percentage Score**
       - **MusicRate** and **SongLength**  are part of the equation.
-- **KeyboardControl:**
-  - **Extra features** requiring special keys like **CTRL** or **SHIFT** might be moved to **SELECT**
-    - Some **controls** have **changed** if enabled/disabled!
+- **KeyboardEnabled:**
+  - **Extra features** requiring special keys like **CTRL** or **SHIFT** might be moved to **SELECT** if disabled
+    - Some other **controls** might have **changed** if enabled/disabled!
 - **MouseEnabled:**
 Enables MouseControls wherever possible *(CustomSelections & MusicWheel Only)*
 - **ShowClock:**
@@ -40,9 +40,9 @@ Activate ability to favorite songs like in SL
   - Hold **SELECT** and press **UP** to un/favorite *(in StepMania/ITGmania/Etterna)*
   - Hold **SELECT** and press **DOWN** to un/favorite *(in OutFox because it uses the upper config for OF Favorites)*
 - **TrueRounds:**
-**Rounds/Lengths** have been adjusted if the **StepChart's Length** is shorter than the **Song's Length**
+**Rounds/Lengths** will be adjusted if the **StepChart's Length** is shorter than the **Song's Length**
 - **UseStepCache:**
-Activate StepCache to use the chart's data for more accurate values or enable other features requiring it
+Activate StepCache to use the chart's data for more accurate values or enable other features requiring it *(cached values are listed further down)*
 ### [ScreenTitleMenu]
 - **Allow Battle/Marathon/Survival/Fitness/Jukebox/Edit/Share/Records:**
 Ability to **enable/disable** certain **options** within **ScreenTitleMenu**
@@ -66,12 +66,12 @@ Ability to chance the BPMDisplay type
     - More accurate when using **StepCache**!
 - **ShowCalcDiff:**
 Show the calculated Difficulty of the currently selected stepchart.
-  - **DB9** *(average steps per second)*
-  - **Y&A** *(RadarValue Calculation)*
-  - **SPS (StepCache Only)** *(median steps per second per steps)*
+  - The **highest value** will be displayed alongside the original difficulty *(OG)*
+    - **DB9** *(average steps per second)*
+    - **Y&A** *(RadarValue Calculation)*
+    - **SPS (StepCache Only)** *(median steps per second per steps)*
 - **ShowCalcDiffDecimals**
-Change the amount of decimals for the calculated Difficulty
-  - **DanceDifficultyType *(GameMode Dance Only)*:**
+Change the amount of decimals for the calculated Difficulty- **DanceDifficultyType *(GameMode Dance Only)*:**
 Switch between **Old DDR/ITG & DDR X-SCALE** difficulty ranges
 - **ShowGraph:**
 Shows the **graph** of the **currently selected stepchart** *(VerticalScreen & WideScreen only)*
@@ -83,15 +83,14 @@ Switches back and forth between the stepchart's BPMs and the player's current mo
 Switches back and forth between the song's Artist and the song's origin *(only if Origin Value has been set)*
 - **ShowRounds:**
 Shows either **amount of rounds** or **length specification** during song selection
+  - Will be adjusted if **TrueRounds** is enabled
 - **ShowStepCounter (StepCache Only):**
 Shows **total step quantification amounts** (might be useful especially for BEMU/POMU, including scratches and foots)
-- **ShowTime:**
-Shows amount of time during the **Session** and **Gameplay per player**
 - **ShowTechCounter (ITGmania Only)**
 Shows stepchart's Techniques
   - If *both Counters* have been enabled, **both switch between one another** like *BPMDisplay* and *MODDisplay*
 - **ShowTime**
-Shows Session Time and Time Played per Player
+Shows **Session Time** and **Time Played** per Player
 ### [ScreenGameplay]
 - **AnimatePlayerScore:**
 Have the Player Score animate instead of instantly updating
@@ -99,6 +98,7 @@ Have the Player Score animate instead of instantly updating
 Have the Song Title scroll during GamePlay *(not possible on d3d)*
 - **ShowSeconds**
 Ability to show current Seconds during GamePlay
+  - More accurate when StepCache is enabled
 - **ShowSpeedMod:**
 Ability to show current Speed and Mod during GamePlay. Also enables modifying said speed mods during GamePlay
   - Hold **SELECT** and press **LEFT**/**RIGHT** or press either EffectButtons on their own
