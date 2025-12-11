@@ -50,7 +50,7 @@ function IsAutoStyle(check)
 	return AutoStyle
 end
 
-function GetAutoMode()
+function GetAutoPlayMode()
 	local AutoMode = ThemePrefs.Get("AutoPlayMode")
 	if AutoMode and IsAutoStyle(true) then
 		if AutoMode == "dance" then
