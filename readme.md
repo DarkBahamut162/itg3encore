@@ -71,7 +71,8 @@ Show the calculated Difficulty of the currently selected stepchart.
     - **Y&A** *(RadarValue Calculation)*
     - **SPS (StepCache Only)** *(median steps per second per steps)*
 - **ShowCalcDiffDecimals**
-Change the amount of decimals for the calculated Difficulty- **DanceDifficultyType *(GameMode Dance Only)*:**
+Change the amount of decimals for the calculated Difficulty
+- **DanceDifficultyType *(GameMode Dance Only)*:**
 Switch between **Old DDR/ITG & DDR X-SCALE** difficulty ranges
 - **ShowGraph:**
 Shows the **graph** of the **currently selected stepchart** *(VerticalScreen & WideScreen only)*
