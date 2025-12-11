@@ -402,13 +402,19 @@ function InitOptions()
 	setenv("HighScoreableP1",false)
 	setenv("HighScoreableP2",false)
 
-	if GetUserPrefN("StylePosition") == nil then
+	if IsAutoStyle(true) then
+		local style = IsAutoStyle()
+		for i,choice in ipairs(ChoiceSingle()) do if choice == style then SetUserPref("StylePosition",i) end end
+		for i,choice in ipairs(ChoiceVersus()) do if choice == style then SetUserPref("StylePosition",i) end end
+		for i,choice in ipairs(ChoiceDouble()) do if choice == style then SetUserPref("StylePosition",i) end end
+	elseif GetUserPrefN("StylePosition") == nil then
 		SetUserPref("StylePosition",1)
 	elseif ChoiceSingle() and GetUserPrefN("StylePosition") > #ChoiceSingle() then
 		SetUserPref("StylePosition",1)
 	end
 
-	setenv("BattleMode","rave")
+	local battle = ThemePrefs.Get("AutoBattle")
+	if battle then setenv("BattleMode",battle) else setenv("BattleMode","rave") end
 end
 
 function InitPlayerOptions()

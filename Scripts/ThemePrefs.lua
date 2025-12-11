@@ -2,6 +2,173 @@ local function OptionNameString(str)
 	return THEME:GetString('OptionNames',str)
 end
 
+function IsAutoPlayMode(check)
+	local AutoMode = ""
+	if ThemePrefs.Get("AutoPlayMode") then
+		if check then return true end
+		AutoMode = addToOutput(AutoMode,"Auto Play Mode: "..ThemePrefs.Get("AutoPlayMode"),"\n")
+	end
+	if check then return false end
+	return AutoMode
+end
+
+function IsAutoStyle(check)
+	local AutoStyle = ""
+	if IsGame("dance") and ThemePrefs.Get("AutoStyleDance") then
+		if check then return true end
+		AutoStyle = addToOutput(AutoStyle,"Auto Style: "..ThemePrefs.Get("AutoStyleDance"),"\n")
+	elseif IsGame("groove") and ThemePrefs.Get("AutoStyleGroove") then
+		if check then return true end
+		AutoStyle = addToOutput(AutoStyle,"Auto Style: "..ThemePrefs.Get("AutoStyleGroove"),"\n")
+	elseif IsGame("solo") and ThemePrefs.Get("AutoStyleSolo") then
+		if check then return true end
+		AutoStyle = addToOutput(AutoStyle,"Auto Style: "..ThemePrefs.Get("AutoStyleSolo"),"\n")
+	elseif IsGame("pump") and ThemePrefs.Get("AutoStylePump") then
+		if check then return true end
+		AutoStyle = addToOutput(AutoStyle,"Auto Style: "..ThemePrefs.Get("AutoStylePump"),"\n")
+	elseif IsGame("smx") and ThemePrefs.Get("AutoStyleSmx") then
+		if check then return true end
+		AutoStyle = addToOutput(AutoStyle,"Auto Style: "..ThemePrefs.Get("AutoStyleSmx"),"\n")
+	elseif IsGame("be-mu") and ThemePrefs.Get("AutoStyleBeMu") then
+		if check then return true end
+		AutoStyle = addToOutput(AutoStyle,"Auto Style: "..ThemePrefs.Get("AutoStyleBeMu"),"\n")
+	elseif IsGame("beat") and ThemePrefs.Get("AutoStyleBeat") then
+		if check then return true end
+		AutoStyle = addToOutput(AutoStyle,"Auto Style: "..ThemePrefs.Get("AutoStyleBeat"),"\n")
+	elseif IsGame("po-mu") and ThemePrefs.Get("AutoStylePoMu") then
+		if check then return true end
+		AutoStyle = addToOutput(AutoStyle,"Auto Style: "..ThemePrefs.Get("AutoStylePoMu"),"\n")
+	elseif IsGame("popn") and ThemePrefs.Get("AutoStylePopn") then
+		if check then return true end
+		AutoStyle = addToOutput(AutoStyle,"Auto Style: "..ThemePrefs.Get("AutoStylePopn"),"\n")
+	elseif IsGame("rechno") and ThemePrefs.Get("AutoStyleTechno") then
+		if check then return true end
+		AutoStyle = addToOutput(AutoStyle,"Auto Style: "..ThemePrefs.Get("AutoStyleTechno"),"\n")
+	end
+	if check then return false end
+	if AutoStyle ~= "" and ThemePrefs.Get("AllowBattle") then AutoStyle = addToOutput(AutoStyle,"Auto Battle: "..ThemePrefs.Get("AutoBattle"),"\n") end
+	return AutoStyle
+end
+
+function GetAutoMode()
+	local AutoMode = ThemePrefs.Get("AutoPlayMode")
+	if AutoMode and IsAutoStyle(true) then
+		if AutoMode == "dance" then
+			return "name,Dance;style,"..split(",",GetAutoStyle())[1]..";difficulty,medium;screen,ScreenProfileLoad"
+		elseif AutoMode == "battle" then
+			return "name,Battle;style,"..split(",",GetAutoStyle())[1]..";difficulty,medium;playmode,"..split(",",GetAutoStyle())[2]..";screen,ScreenProfileLoad"
+		elseif AutoMode == "marathon" then
+			return "name,Marathon;playmode,nonstop;style,"..split(",",GetAutoStyle())[1]..";difficulty,medium;screen,ScreenProfileLoad"
+		elseif AutoMode == "survival" then
+			return "name,Survival;playmode,oni;mod,lifetime;style,"..split(",",GetAutoStyle())[1]..";difficulty,medium;screen,ScreenProfileLoad"
+		elseif AutoMode == "fitness" then
+			return "name,Fitness;style,"..split(",",GetAutoStyle())[1]..";difficulty,medium;screen,ScreenProfileLoad;setenv,Workout,true"
+		end
+	else
+		return "screen,"..Branch.StartGame()
+	end
+end
+
+function GetAutoStyle()
+	if IsGame("dance") then
+		return ThemePrefs.Get('AutoStyleDance')..","..ThemePrefs.Get('AutoBattle')
+	elseif IsGame("groove") then
+		return ThemePrefs.Get('AutoStyleGroove')..","..ThemePrefs.Get('AutoBattle')
+	elseif IsGame("solo") then
+		return ThemePrefs.Get('AutoStyleSolo')..","..ThemePrefs.Get('AutoBattle')
+	elseif IsGame("pump") then
+		return ThemePrefs.Get('AutoStylePump')..","..ThemePrefs.Get('AutoBattle')
+	elseif IsGame("smx") then
+		return ThemePrefs.Get('AutoStyleSmx')..","..ThemePrefs.Get('AutoBattle')
+	elseif IsGame("be-mu") then
+		return ThemePrefs.Get('AutoStyleBeMu')..","..ThemePrefs.Get('AutoBattle')
+	elseif IsGame("beat") then
+		return ThemePrefs.Get('AutoStyleBeat')..","..ThemePrefs.Get('AutoBattle')
+	elseif IsGame("po-mu") then
+		return ThemePrefs.Get('AutoStylePoMu')..","..ThemePrefs.Get('AutoBattle')
+	elseif IsGame("popn") then
+		return ThemePrefs.Get('AutoStylePopn')..","..ThemePrefs.Get('AutoBattle')
+	elseif IsGame("rechno") then
+		return ThemePrefs.Get('AutoStyleTechno')..","..ThemePrefs.Get('AutoBattle')
+	end
+	return ""
+end
+
+function GetAutoStyleMenu()
+	if IsGame("dance") then
+		return ",AutoStyleDance,AutoBattle"
+	elseif IsGame("groove") then
+		return ",AutoStyleGroove,AutoBattle"
+	elseif IsGame("solo") then
+		return ",AutoStyleSolo,AutoBattle"
+	elseif IsGame("pump") then
+		return ",AutoStylePump,AutoBattle"
+	elseif IsGame("smx") then
+		return ",AutoStyleSmx,AutoBattle"
+	elseif IsGame("be-mu") then
+		return ",AutoStyleBeMu,AutoBattle"
+	elseif IsGame("beat") then
+		return ",AutoStyleBeat,AutoBattle"
+	elseif IsGame("po-mu") then
+		return ",AutoStylePoMu,AutoBattle"
+	elseif IsGame("popn") then
+		return ",AutoStylePopn,AutoBattle"
+	elseif IsGame("rechno") then
+		return ",AutoStyleTechno,AutoBattle"
+	end
+	return ""
+end
+
+function AutoPlayMode(value)
+	local Choices = {"None"}
+	local Values = {nil}
+
+	Values[#Choices+1]="dance"
+	Choices[#Choices+1]="Dance"
+	Values[#Choices+1]="battle"
+	Choices[#Choices+1]="Battle"
+	Values[#Choices+1]="marathon"
+	Choices[#Choices+1]="Marathon"
+	Values[#Choices+1]="survival"
+	Choices[#Choices+1]="Survival"
+	Values[#Choices+1]="fitness"
+	Choices[#Choices+1]="Fitness"
+
+	if value then return Values else return Choices end
+end
+
+function AutoStyle(value)
+	local Choices = {"None"}
+	local Values = {nil}
+
+	for choice in ivalues(ChoiceSingle()) do
+		if choice then
+			local upper = ""
+			for word in ivalues(split("-",choice)) do upper = upper .. string.gsub(" "..word, "%W%l", string.upper):sub(2) end
+			Values[#Choices+1]=choice
+			Choices[#Choices+1]=upper
+		end
+	end
+	for choice in ivalues(ChoiceVersus()) do
+		if choice then
+			local upper = ""
+			for word in ivalues(split("-",choice)) do upper = upper .. string.gsub(" "..word, "%W%l", string.upper):sub(2) end
+			Values[#Choices+1]=choice
+			Choices[#Choices+1]=upper
+		end
+	end
+	for choice in ivalues(ChoiceDouble()) do
+		if choice then
+			local upper = ""
+			for word in ivalues(split("-",choice)) do upper = upper .. string.gsub(" "..word, "%W%l", string.upper):sub(2) end
+			Values[#Choices+1]=choice
+			Choices[#Choices+1]=upper
+		end
+	end
+
+	if value then return Values else return Choices end
+end
+
 local Prefs = {
 	--[Global]
 	EncoreThemeMode = {
@@ -80,8 +247,71 @@ local Prefs = {
 		Choices = { OptionNameString('Off'), OptionNameString('On') },
 		Values = { false, true }
 	},
+	--[ScreenTitleJoin]
+	AutoPlayMode = {
+		Default = false,
+		Choices = AutoPlayMode(false),
+		Values = AutoPlayMode(true)
+	},
+	--[ScreenSelectStyle]
+	AutoStyleDance = {
+		Default = false,
+		Choices = AutoStyle(false),
+		Values = AutoStyle(true)
+	},
+	AutoStyleGroove = {
+		Default = false,
+		Choices = AutoStyle(false),
+		Values = AutoStyle(true)
+	},
+	AutoStyleSolo = {
+		Default = false,
+		Choices = AutoStyle(false),
+		Values = AutoStyle(true)
+	},
+	AutoStylePump = {
+		Default = false,
+		Choices = AutoStyle(false),
+		Values = AutoStyle(true)
+	},
+	AutoStyleSmx = {
+		Default = false,
+		Choices = AutoStyle(false),
+		Values = AutoStyle(true)
+	},
+	AutoStyleBeMu = {
+		Default = false,
+		Choices = AutoStyle(false),
+		Values = AutoStyle(true)
+	},
+	AutoStyleBeat = {
+		Default = false,
+		Choices = AutoStyle(false),
+		Values = AutoStyle(true)
+	},
+	AutoStylePoMu = {
+		Default = false,
+		Choices = AutoStyle(false),
+		Values = AutoStyle(true)
+	},
+	AutoStylePopn = {
+		Default = false,
+		Choices = AutoStyle(false),
+		Values = AutoStyle(true)
+	},
+	AutoStyleTechno = {
+		Default = false,
+		Choices = AutoStyle(false),
+		Values = AutoStyle(true)
+	},
+	--[ScreenSelectNumPlayers]
+	AutoBattle = {
+		Default = "rave",
+		Choices = { "Rave", "Battle" },
+		Values = { "rave", "battle" }
+	},
 	--[ScreenSelectMusic]
-	MusicWheelStyle ={
+	MusicWheelStyle = {
 		Default = "ITG",
 		Choices = { "ITG", "IIDX" }
 	},

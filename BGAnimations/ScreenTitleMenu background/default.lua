@@ -559,7 +559,12 @@ return Def.ActorFrame{
 						end
 					end
 					output = addToOutput(output,"Current Game Mode: "..GAMESTATE:GetCurrentGame():GetName(),"\n")
-					output = addToOutput(output,"Current Style: "..StyleName()[GetUserPrefN("StylePosition")],"\n")
+					if isTopScreen('ScreenTitleJoin') and (IsAutoPlayMode(true) and IsAutoStyle(true)) then output = addToOutput(output,IsAutoPlayMode(),"\n") end
+					if isTopScreen('ScreenTitleJoin') and (IsAutoPlayMode(true) and IsAutoStyle(true)) or (isTopScreen('ScreenTitleMenu') and IsAutoStyle(true)) then
+						output = addToOutput(output,IsAutoStyle(),"\n")
+					else
+						output = addToOutput(output,"Current Style: "..StyleName()[GetUserPrefN("StylePosition")],"\n")
+					end
 					self:settext(output):vertspacing(-10)
 				else
 					if GameModeEnabled() then
