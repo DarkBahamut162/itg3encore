@@ -8,36 +8,71 @@ It's sources have being displayed down below.
 ## Warning:
 This Theme has been optimized for **Project OutFox** but also works on **ITGmania**, **StepMania 5** and **Etterna**!<br>
 **ITGmania** might be your second pick since **.mp4** background videos work without much issue on it.<br>
-It might work incorrectly when used anywhere else!<br>
+Videos might not work correctly when used anywhere else!<br>
+This is an Engine Issue I cannot fix! *(unless fixed by newer versions)*<br>
 Since this theme is being updated periodically: If anything broke or isn't working correctly, please report it **ASAP** so I can take a look and fix it.
 
-You also might need to switch your **VideoRenderer** to **OpenGL** as **GLAD** breaks the graphics after playing just one round *(depending if they have been fixed yet everywhere)*. Something similar might happen when the **VideoRenderer** is set to **d3d**.
+When using certain versions of OutFox *(from 0.4.17 to 0.4.18.1)*, you might need to switch your **VideoRenderer** to **OpenGL** as **GLAD** breaks the graphics after playing just one round *(depending if they have been fixed yet everywhere)*.
+When the **VideoRenderer** is set to **d3d**, certain animations or options might not be possible.
+Please use 0.4.19 (LTS) or 0.5.042 (V) otherwise! *(0.5.043 seems to be more ChonkFox than OutFox with the longer file loading times)*
 
 ## Information:
 Most additional features have been moved to an additional **Theme Options** menu. They are as follows:
 
 ### [Global]
 - **EncoreThemeMode:**
-Switch between **Encore Normal *(Light Mode)*** and **Encore Final *(Dark Mode)*** mode.
-- **MouseEnabled**
+Switch between **Encore Normal *(Light Mode)*** and **Encore Final *(Dark Mode)*** mode
+- **ExperimentalProfileLevel:**
+Enable the Experimental Profile Leveling System
+  - **Differentiates** between **GameModes** and **Styles**
+  - **EXP** gained through **Cleared Songs**
+    - **EXP** is calculated through the Song's **SPS-Level** and the **Player's Percentage Score**
+      - **MusicRate** and **SongLength**  are part of the equation.
+- **KeyboardControl:**
+  - **Extra features** requiring special keys like **CTRL** or **SHIFT** might be moved to **SELECT**
+    - Some **controls** have **changed** if enabled/disabled!
+- **MouseEnabled:**
 Enables MouseControls wherever possible *(CustomSelections & MusicWheel Only)*
 - **ShowClock:**
 Shows **current time and date** on most/all menus
 - **SLFavorites:**
 Activate ability to favorite songs like in SL
-  - Hold **SELECT** and press **UP** to un/favorite *(in StepMania/ITGmania)*
+  - Hold **SELECT** and press **UP** to un/favorite *(in StepMania/ITGmania/Etterna)*
   - Hold **SELECT** and press **DOWN** to un/favorite *(in OutFox because it uses the upper config for OF Favorites)*
+- **TrueRounds:**
+**Rounds/Lengths** have been adjusted if the **StepChart's Length** is shorter than the **Song's Length**
 - **UseStepCache:**
 Activate StepCache to use the chart's data for more accurate values or enable other features requiring it
+### [ScreenTitleMenu]
+- **Allow Battle/Marathon/Survival/Fitness/Jukebox/Edit/Share/Records:**
+Ability to **enable/disable** certain **options** within **ScreenTitleMenu**
+### [ScreenTitleJoin]
+- **GetAutoPlayMode:**
+Ability to **AutoSelect** the **PlayMode** when in **ScreenTitleJoin**
+### [ScreenSelectStyle]
+- **AutoStyleDance/Groove/Solo/Pump/Smx/BeMu/Beat/PoMu/Popn/Techno:**
+Ability to **AutoSelect** the **Style** to skip **ScreenSelectStyle/ScreenSelectNumPlayers**
+### [ScreenSelectNumPlayers]
+- **AutoBattle:**
+Ability to **AutoSelect** the **BattleMode** to skip **ScreenSelectNumPlayers**
 ### [ScreenSelectMusic]
+- **MusicWheelStyle:**
+Ability to change **Wheel Behavior** between **ITG** and **IIDX**
 - **ShowBPMDisplayType:**
-Change the BPMDisplay type from **DisplayBPM** (default), **ActualBPM** (total range) and **CalculatedBPM** (playable range | more accurate when using StepCache)
+Ability to chance the BPMDisplay type
+  - **DisplayBPM** displays the **set BPM** of the **Song** *(including ???s)*
+  - **ActualBPM** displays the **minimum & maximum BPMs** of the **Song** *(excluding ???s)*
+  - **CalculatedBPM** displays the **true minimum & maximum BPMs** of the **Song** outside of Speed Ups
+    - More accurate when using **StepCache**!
 - **ShowCalcDiff:**
-Show the calculated Difficulty of the currently selected stepchart *(currently banner only)*. Shows **DB9** *(average steps per second)*, **Y&A** *(RadarValue Calculation)* and **SPS (StepCache Only)** *(median steps per second per steps)*
+Show the calculated Difficulty of the currently selected stepchart.
+  - **DB9** *(average steps per second)*
+  - **Y&A** *(RadarValue Calculation)*
+  - **SPS (StepCache Only)** *(median steps per second per steps)*
 - **ShowCalcDiffDecimals**
-Change the amount of decimals for the calculated Difficulty.
-  - **DanceDifficultyType (Dance Mode Only):**
-Switch between **OLD & X-SCALE** difficulty ranges
+Change the amount of decimals for the calculated Difficulty
+  - **DanceDifficultyType *(GameMode Dance Only)*:**
+Switch between **Old DDR/ITG & DDR X-SCALE** difficulty ranges
 - **ShowGraph:**
 Shows the **graph** of the **currently selected stepchart** *(VerticalScreen & WideScreen only)*
 - **ShowHasLua:**
@@ -50,19 +85,21 @@ Switches back and forth between the song's Artist and the song's origin *(only i
 Shows either **amount of rounds** or **length specification** during song selection
 - **ShowStepCounter (StepCache Only):**
 Shows **total step quantification amounts** (might be useful especially for BEMU/POMU, including scratches and foots)
+- **ShowTime:**
+Shows amount of time during the **Session** and **Gameplay per player**
 - **ShowTechCounter (ITGmania Only)**
-Shows stepchart's Techniques.
+Shows stepchart's Techniques
   - If *both Counters* have been enabled, **both switch between one another** like *BPMDisplay* and *MODDisplay*
 - **ShowTime**
-Shows Session Time and Time Played per Player.
+Shows Session Time and Time Played per Player
 ### [ScreenGameplay]
 - **AnimatePlayerScore:**
 Have the Player Score animate instead of instantly updating
 - **AnimateSongTitle:**
-Have the Song Title scroll during GamePlay (not possible on d3d)
-- **ShowGameplaySeconds**
-Ability to show current Seconds during GamePlay.
-- **ShowGameplaySpeed:**
+Have the Song Title scroll during GamePlay *(not possible on d3d)*
+- **ShowSeconds**
+Ability to show current Seconds during GamePlay
+- **ShowSpeedMod:**
 Ability to show current Speed and Mod during GamePlay. Also enables modifying said speed mods during GamePlay
   - Hold **SELECT** and press **LEFT**/**RIGHT** or press either EffectButtons on their own
 ### [ScreenEvaluation]
@@ -74,7 +111,7 @@ Shows **earlies** and **lates** of any timing window **during evaluation** exclu
     - Judgment Lined *(Added)*
 ### [ScreenSummary]
 - **ShowSummary:**
-Shows **songs played and their stats** after going back to title screen.
+Shows **songs played and their stats** after going back to title screen
   - Shows more if **ShowOffset** has been enabled
 - **ShowSummarySummary:**
 Shows the **session's overall performance**
@@ -131,7 +168,7 @@ I could have actually forked it but I didn't. My reasoning was that it wasn't go
 * All **LoadActor()** transformed to **Def.\***
 * Added most **Final Encore Theme** stuff while adding/adjusting a few other things.
 * Fixed **Legacy Online Mode** *(I think?)*
-* Actually fixed **Course Mode** (Battle, Marathon & Survival Mode)
+* Actually fixed **Battle/Course Mode** (Battle/Rave, Marathon & Survival Mode)
   * Fixed/Better **Song List**
   * Displays **_panes** & **StepArtists** and correctly calculate their difficulty color
   * Fixed **LifeMeterBar/LifeMeterTime** *(except for Marathon Mode?)*
@@ -147,6 +184,8 @@ I could have actually forked it but I didn't. My reasoning was that it wasn't go
 * Shows **ProductFamily** & **ProductVersion**
 * Shows **StepCacheVersion** *(when StepCache enabled)*
 * Shows **Current Game Mode** and **Current Style**
+  - May also show **AutoPlayMode** and **AutoStyle** and **AutoBattle** depending on Screen & Settings
+    - **AutoStyle** overwrites **Current Style**
 * Shows total amount of playable **Single/Double Songs/Courses** in current **GameMode/Style** *(if able)*
 
 **ScreenSelectStyle:**
@@ -158,17 +197,28 @@ I could have actually forked it but I didn't. My reasoning was that it wasn't go
 
 **ScreenSelectMusic:**
 * Shows **TimingData** and **"GrooveRadar"**
+* Shows **TOTAL** and **STEPS** NoteCounter of currently selected Song's Difficulty
 * Shows **StepCounter** *(when StepCounter & StepCache enabled)*
+* Shows **TechCounter** *(when TechCounter enabled | ITGmania only)*
 * Shows **Player Avatar** *(Project OutFox AND WideScreen only)*
+* Shows **Player's Level & EXP** over their Username *(when ExperimentalProfileLevel enabled)*
+* Shows **Session Time & Player's Time Played** *(when ShowTime enabled)*
+  - **Session Time** starts upon first entry of **ScreenSelectMusic**
+* Shows **HighscoreList** by holding CTRL
+  - **Left CTRL** for **Player 1** / **Right CTRL** for **Player 2**
+* Shows **Player's MODDisplay** *(when ShowMODDisplay enabled)*
+* Shows **Song's rigin** *(when ShowOrigin enabled & if Song has Origin)*
+* Shows **Player's NoteGraph** *(when ShowGraph enabled)*
 * Shows **CDTitle** next to the banner frame *(VerticalScreen & WideScreen only)*
 * Shows various indications between **Artist** and **BPM** line:
+  * **Autogen**
   * **HasLua**
   * **HasLyric**
   * **HasNoKeysounds** & **ContainsNullMeasure** *(BE-MU / PO-MU Mode only)*
   * **HasVideo**
   * **Rounds/Length specification**
 * Updates **BPMs** and **TIMEs** according to **Current Music Rate**
-* Ability to change current **Speed Mod** and **Speed Type** (if enabled)
+* Ability to change current **Speed Mod** and **Speed Type** (when enabled)
 
 **ScreenPlayerOptions:**
 * Removed **D-Pad** Modifier since it breaks other Modifiers (like the new SpeedMod)
@@ -178,6 +228,46 @@ I could have actually forked it but I didn't. My reasoning was that it wasn't go
 * Added ability to switch between **Normal Score**, **Percentage** and **EX Score** via **Player Options**
   * Added ability to choose between **additive** or **subtractive** style
 * Updates **BPMs** and **TIMEs** according to **Current Music Rate**
+* Added various PlayerOptions:
+  - **LifeType:** **LifeLine** *(Battery)* & **Survival** *(Timer)*
+  - **FlareLevel:** **Flare 1-10** & **Flare Float**
+    - Ability to change between **Old** & **New** score requirement
+    - Ability to have it **Accurate** *(uses SN2 scoring)*
+  - **Fade:** Enable both **Fade In** & **F.I.Dynamic** to enable simulated **Dynamic Sudden**
+    - Same goes for **Fade Out** & **F.O.Dynamic** for simulated **Dynamic Hidden**
+  - **MovePlayerfieldStats:** Bring both **Combo & Judgment** either **nearer** towards or **farther** away from the **Receptors**
+  - **ScoreTypes:** **Score**, **Percent**, **EX**, **SN2**, **IIDX**, **WIFE3***
+    - Have the selected ScoreTypes **Additive** or **Subtractive**
+    - Enable an additional FA+ Scoring to the selected ScoreType
+    - WIFE3 *(from Etterna)* can't be selected if the GameMode is on **CountNotesSeperately** because of a judgment bug in the engine.
+  - **ErrorBar:** Selectable **Range of Judgment** to be displayed *(lowest first)*
+  - **PlayerStats:** Selectable **Range of Judgment** to be displayed *(highest first)*
+    - **IIDX** switches **StatsMode** to a fully functional **IIDX pacemaker** and shows **Player**, **Highscore** *(if available)* and **Pacemaker**
+    - Ability to switch between **FullSize** & **MiniSize**
+      - **Mini (Bottom/Top)** decides where the data is being displayed *(NoteGraph is being show on th eopposite end)*
+  - **PlayerNoteGraph:** Customizable **NoteGraph**
+    - **Normal** *Steps per second*
+    - **SPS** *Steps per second per Step*
+    - **One** *Row of notes count as one*
+    - **All** *Row counts all notes within*
+    - **Fixed** *Display NoteGraph in a fixed rate: Red = 0-20 NPS | Black = 20-100 NPS*
+    - **Adjusted** *Adjust NoteGraph to use the full height*
+    - **ShowData** Shows **average & maximum NPS** next to **NoteGraph**
+  - **Pacemaker:** Selectable **Grade** to reach during Gameplay
+  - **PacemakerOnFail:** What the game does when **Player fails the Pacemaker**
+  - **PlayerAssists:** Ability to show **SpeedChanges/Stops** during Gameplay
+  - **SongFrame:** Ability to change the SongFrame
+    - Bunnies *(Pink Fuzzy Bunnies)*
+    - Disconnect *(Disconnected Hardkore)*
+    - Energy *(Energizer)*
+    - Hasse *(Hasse Mich)*
+    - Love *(Love Eternal)*
+    - Nightmare *(Dream to Nightmare)*
+    - Normal *(Default)*
+    - Pandy *(Pandemonium)*
+    - Smiley *(Summer ~Speedy Mix~)*
+    - Vertex *(Base from VerTex)*
+    - Virtual *(Virtual Emotion)*
 
 **ScreenGameplay:**
 * Better **StatsDisplay** going from a range of 1-6 instead of just 3
@@ -187,11 +277,26 @@ I could have actually forked it but I didn't. My reasoning was that it wasn't go
 * Fixed **Rounds/Songs Display**
 * Added back **Rotation** to **Judgments** & **Holds**
 * Ability to change SpeedMod by 25/0.25
-  * Disabled on OutFox-specific ones ***(Amod/CAmon/AVmon)***
+  * Disabled on OutFox-specific ones ***(Amod/CAmod/AVmod)***
 * Shows **Current Speed & Mod**
 
 **ScreenEvaluation:**
 * Re-added **marvelous/perfect/great color bar** on top of the **LifeGraph**
+
+**StepCache:** *(Caching additional info for each StepChart)*
+  - Version *(StepCacheVersion during Caching)*
+  - FirstRow *(For Preview)*
+  - StepCounter *(Condensed StepCounter)*
+  - StepsPerSecond *(Raw SPS)*
+  - TrueFirstBeat *(Beat of First Real Note)*
+  - TrueLastBeat *(Beat of Last Real Note)*
+  - TrueBeats *(Real Duration of Stepchart in Beats)*
+  - TrueMaxBPM *(Actual Highest BPM with Notes)*
+  - TrueFirstSecond *(Second of First Real Note)*
+  - TrueLastSecond *(Second of Last Real Note)*
+  - TrueSeconds *(Real Duration of Stepchart in Seconds)*
+  - chaosCount *(Etterna only)*
+  - maxVoltage *(Etterna only)*
 ---
 
 The following has been re-introduced from **OpenITG's ITG3Encore Theme**:
