@@ -401,6 +401,7 @@ function InitOptions()
 	GAMESTATE:SetFailTypeExplicitlySet(true)
 	setenv("HighScoreableP1",false)
 	setenv("HighScoreableP2",false)
+	SetAllowLateJoin(true)
 
 	if IsAutoStyle(true) then
 		local style = IsAutoStyle()

@@ -2,9 +2,13 @@ local cacheVersion = "0.43"
 local stepCache = {}
 local typeList = {"avi","f4v","flv","mkv","mp4","mpeg","mpg","mov","ogv","webm","wmv"}
 Master,P1,P2={},{},{}
+AllowLateJoin = true
 bannerForced = false
 KeysChecked = false
 local full = isOutFoxV() and "FullRes" or "Full"
+
+function AllowLateJoin() return AllowLateJoin end
+function SetAllowLateJoin(change) AllowLateJoin = change end
 
 if not isOutFoxV() then
 	if isOutFox(20201000) then

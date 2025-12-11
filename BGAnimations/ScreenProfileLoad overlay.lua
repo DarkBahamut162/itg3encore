@@ -3,6 +3,7 @@ function MemoryCheck()
 end
 
 local preload = GAMESTATE:GetCoinMode()=='CoinMode_Home' and IsAutoStyle(true) or (IsAutoPlayMode(true) and IsAutoStyle(true))
+SetAllowLateJoin(false)
 
 return Def.ActorFrame{
 	OffCommand=function()
