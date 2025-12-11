@@ -107,7 +107,7 @@ for i=1,rounds do
 			if showCalcDiff then P2[rounds+1]["CalcedMeter"] = P2[rounds+1]["CalcedMeter"] and P2[rounds+1]["CalcedMeter"] + P2[i]["CalcedMeter"] or P2[i]["CalcedMeter"] end
 			P2[rounds+1]["Score"] = P2[rounds+1]["Score"] and P2[rounds+1]["Score"] + P2[i]["Score"] or P2[i]["Score"]
 			P2[rounds+1]["Grade"] = P2[rounds+1]["Grade"] and P2[rounds+1]["Grade"] + tierToGrade[P2[i]["Grade"]] or tierToGrade[P2[i]["Grade"]]
-			if P2[index]["EXP"] then P2[rounds+1]["EXP"] = P2[rounds+1]["EXP"] and P2[rounds+1]["EXP"] + P2[i]["EXP"] or P2[i]["EXP"] end
+			if P2[i]["EXP"] then P2[rounds+1]["EXP"] = P2[rounds+1]["EXP"] and P2[rounds+1]["EXP"] + P2[i]["EXP"] or P2[i]["EXP"] end
 			if P2[i]["FA"] then
 				if not summaryFA[PLAYER_2] then summaryFA[PLAYER_2] = true end
 				P2[rounds+1]["ScoreFA"] = P2[rounds+1]["ScoreFA"] and P2[rounds+1]["ScoreFA"] + P2[i]["ScoreFA"] or P2[i]["ScoreFA"]
