@@ -6,8 +6,6 @@ local EXP_STEPS = 0
 local EXP_MAX = 0
 local CALC_LV = 1
 local allowed = getenv("EvalCombo"..pname(player))
-local PSS = STATSMAN:GetCurStageStats():GetPlayerStageStats(player)
-local length = TotalPossibleStepSeconds(player)
 
 local cleared = false
 if isEtterna("0.71") then cleared = not STATSMAN:GetCurStageStats():Failed() else cleared = STATSMAN:GetCurStageStats():OnePassed() end

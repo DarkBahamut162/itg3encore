@@ -192,7 +192,7 @@ local function GetVerticesOffsetDot(offset,pn)
 	local graphH = 68/2
 	local graphW = 192
     local vertices = {}
-	local max = TotalPossibleStepSeconds(pn)
+	local max = TotalPossibleStepSeconds()
 	local JudgeScale = isOutFoxV(20230624) and GAMESTATE:GetPlayerState(pn):GetPlayerOptions("ModsLevel_Preferred"):JudgeScale() or 1
 	local jugd = getenv("SetScoreFA"..pname(pn)) and {{W0*JudgeScale+Wadd,color("#7BE8FF")},{W1*JudgeScale+Wadd,color("#FFFFFF")}} or {{W1*JudgeScale+Wadd,color("#7BE8FF")}}
 	jugd[#jugd+1]={W2*JudgeScale+Wadd,color("#FFA959")}
@@ -358,7 +358,7 @@ local InputHandler = function(event)
 end
 
 local function GraphDisplay(pn)
-	local length = TotalPossibleStepSeconds(pn)
+	local length = TotalPossibleStepSeconds()
 	local lastMarvelousSecond = getenv("LastFantastic"..pname(pn)) - CalcMinusStepSeconds(pn)
 	local lastPerfectSecond = getenv("LastPerfect"..pname(pn)) - CalcMinusStepSeconds(pn)
 	local lastGreatSecond = getenv("LastGreat"..pname(pn)) - CalcMinusStepSeconds(pn)

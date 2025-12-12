@@ -56,12 +56,12 @@ end
 
 function TotalPossibleStepSeconds(player)
 	local fSecs = 0
-	local s = STATSMAN:GetPlayedStageStats(1)
+	local s = STATSMAN:GetCurStageStats()
 	local played = isITGmania() and #s:GetPlayedSongs() or #s:GetPossibleSongs()
 	for a = 1, played do
 		if player then
-			local Song = GAMESTATE:GetCurrentSong()
-			local Steps = GAMESTATE:GetCurrentSteps(player)
+			local Song = s:GetPossibleSongs()[a]
+			local Steps = s:GetPlayerStageStats(player):GetPossibleSteps()[a]
 			local trueSeconds = tonumber(LoadFromCache(Song,Steps,"TrueSeconds"))
 			fSecs = fSecs + trueSeconds
 		else
@@ -69,8 +69,8 @@ function TotalPossibleStepSeconds(player)
 		end
 	end
 
-    local songoptions = GAMESTATE:GetSongOptionsObject("ModsLevel_Song")
-    if not songoptions then return fSecs end
+	local songoptions = GAMESTATE:GetSongOptionsObject("ModsLevel_Song")
+	if not songoptions then return fSecs end
 
     return fSecs / songoptions:MusicRate()
 end
