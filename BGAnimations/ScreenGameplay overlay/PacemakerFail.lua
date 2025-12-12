@@ -46,7 +46,6 @@ local function UpdateScore(self)
 				elseif failType == 3 then
 					local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(player):FailPlayer()
 					SCREENMAN:GetTopScreen():GetChild('Player'..pname(player)):SetLife(0)
-					SCREENMAN:GetTopScreen():PauseGame(true)
 					SCREENMAN:GetTopScreen():PostScreenMessage("SM_BeginFailed", 0)
 				end
 			end

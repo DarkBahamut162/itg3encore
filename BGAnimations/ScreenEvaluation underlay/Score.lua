@@ -8,7 +8,9 @@ local CALC_LV = 1
 local allowed = getenv("EvalCombo"..pname(player))
 local PSS = STATSMAN:GetCurStageStats():GetPlayerStageStats(player)
 local length = TotalPossibleStepSeconds(player)
-local cleared = isEtterna("0.55") and not STATSMAN:GetCurStageStats():Failed() or (not PSS:GetFailed() and PSS:GetAliveSeconds() > length)
+
+local cleared = false
+if isEtterna("0.71") then cleared = not STATSMAN:GetCurStageStats():Failed() else cleared = STATSMAN:GetCurStageStats():OnePassed() end
 
 if PROFILEMAN:IsPersistentProfile(player) and enableEPL then
 	local PSS = STATSMAN:GetCurStageStats():GetPlayerStageStats(player)

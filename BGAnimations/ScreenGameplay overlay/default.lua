@@ -349,7 +349,7 @@ local t = Def.ActorFrame{
 				end
 				if params.TapNoteOffset and enableOffsets then
 					local vStats = STATSMAN:GetCurStageStats():GetPlayerStageStats( player )
-					local time = GAMESTATE:IsCourseMode() and vStats:GetAliveSeconds() or GAMESTATE:GetCurMusicSeconds()
+					local time = GAMESTATE:IsCourseMode() and vStats:GetAliveSeconds() or GAMESTATE:GetCurMusicSeconds()/GAMESTATE:GetSongOptionsObject("ModsLevel_Song"):MusicRate()
 					local noff = params.TapNoteScore == "TapNoteScore_Miss" and "Miss" or params.TapNoteOffset
 					local WX = params.TapNoteScore == "TapNoteScore_W1" and (math.abs(params.TapNoteOffset) <= W0 and "TapNoteScore_W0" or "TapNoteScore_W1" ) or params.TapNoteScore
 
@@ -363,6 +363,31 @@ local t = Def.ActorFrame{
 	OffCommand=function(self)
 		setenv( "perColJudgeData", judgments )
 		if enableOffsets then setenv( "OffsetTable", offsetdata ) end
+		local fail = false
+		if isEtterna() or (isOutFox() and not isOutFox(20220200)) then
+			local failCounter = 0
+			for pn in ivalues(GAMESTATE:GetEnabledPlayers()) do
+				local PSS = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn)
+				local length = TotalPossibleStepSecondsCurrent(pn)
+				local cleared = false
+				if isEtterna("0.71") then
+					cleared = not STATSMAN:GetCurStageStats():Failed() and GAMESTATE:GetCurMusicSeconds()/GAMESTATE:GetSongOptionsObject("ModsLevel_Song"):MusicRate() > length
+				else
+					cleared = not PSS:GetFailed() and PSS:GetAliveSeconds() > length
+				end
+				if not cleared then failCounter = failCounter + 1 end
+			end
+			if failCounter == GAMESTATE:GetNumPlayersEnabled() then fail = true end
+		else
+			fail = STATSMAN:GetCurStageStats():GaveUp()
+		end
+		if fail then
+			for pn in ivalues(GAMESTATE:GetEnabledPlayers()) do
+				STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):FailPlayer()
+				SCREENMAN:GetTopScreen():GetChild('Player'..pname(pn)):SetLife(0)
+			end
+			MESSAGEMAN:Broadcast("ForceFail")
+		end
 	end
 }
 

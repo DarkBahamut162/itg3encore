@@ -30,6 +30,30 @@ function isMGD(player)
 	return GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Preferred"):LifeSetting() == "LifeType_Battery"
 end
 
+function TotalPossibleStepSecondsCurrent(player)
+	local fSecs = 0
+	local StepsOrTrail = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentTrail(player) or GAMESTATE:GetCurrentSteps(player)
+	if GAMESTATE:IsCourseMode() then
+		if StepsOrTrail then
+			local entries = StepsOrTrail:GetTrailEntries()
+			for i=1, #entries do
+				local song = entries[i]:GetSong()
+				local step = entries[i]:GetSteps()
+				local trueSeconds = tonumber(LoadFromCache(Song,StepsOrTrail,"TrueSeconds"))
+				fSecs = fSecs and fSecs + trueSeconds or trueSeconds
+			end
+		end
+	else
+		local Song = GAMESTATE:GetCurrentSong()
+		fSecs = tonumber(LoadFromCache(Song,StepsOrTrail,"TrueSeconds"))
+	end
+
+    local songoptions = GAMESTATE:GetSongOptionsObject("ModsLevel_Song")
+    if not songoptions then return fSecs end
+
+    return fSecs / songoptions:MusicRate()
+end
+
 function TotalPossibleStepSeconds(player)
 	local fSecs = 0
 	local s = STATSMAN:GetPlayedStageStats(1)
