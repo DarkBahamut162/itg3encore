@@ -26,7 +26,7 @@ return Def.ActorFrame{
 				local output = ""
 
 				if SongOrCourse and StepsOrTrail then
-					if StepsOrTrail:IsAutogen() then
+					if not isEtterna("0.55") and StepsOrTrail:IsAutogen() then
 						output = "StepCounter disabled because of Autogen"
 					else
 						local loadStepCounter = LoadFromCache(SongOrCourse,StepsOrTrail,"StepCounter")

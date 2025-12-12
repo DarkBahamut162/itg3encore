@@ -141,7 +141,7 @@ return Def.ActorFrame{
 			seconds = seconds / GAMESTATE:GetSongOptionsObject("ModsLevel_Preferred"):MusicRate()
 			local total = getenv("TimePlayed"..pname(player))
 			setenv("TimePlayed"..pname(player),total+seconds)
-			if GAMESTATE:IsHumanPlayer(player) and allowed then if UpdateData(player,{["LV"]=CALC_LV,["EXP"]=Data["EXP"]+EXP_STEPS}) then SaveData(player) end end
+			if GAMESTATE:IsHumanPlayer(player) and allowed and Data then if UpdateData(player,{["LV"]=CALC_LV,["EXP"]=Data["EXP"]+EXP_STEPS}) then SaveData(player) end end
 		end
 	},
 	Def.BitmapText {

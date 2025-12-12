@@ -178,7 +178,7 @@ return Def.ActorFrame{
 		end
 	},
 	Def.ActorFrame{
-		Condition=isEtterna(),
+		Condition=isEtterna("0.55"),
 		loadfile(THEME:GetPathG("GradeDisplayEval",grade))()..{
 			InitCommand=function(self)
 				self:player(master):name("Grade" .. PlayerNumberToString(master))
