@@ -364,7 +364,7 @@ local t = Def.ActorFrame{
 		setenv( "perColJudgeData", judgments )
 		if enableOffsets then setenv( "OffsetTable", offsetdata ) end
 		local fail = false
-		if isEtterna() or (isOutFox() and not isOutFox(20220200)) then
+		if isStepMania() or isEtterna() or (isOutFox() and not isOutFox(20220200)) then
 			local failCounter = 0
 			for pn in ivalues(GAMESTATE:GetEnabledPlayers()) do
 				local PSS = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn)
