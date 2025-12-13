@@ -7,7 +7,6 @@ bannerForced = false
 KeysChecked = false
 local full = isOutFoxV() and "FullRes" or "Full"
 
-function AllowLateJoin() return AllowLateJoin end
 function SetAllowLateJoin(change) AllowLateJoin = change end
 
 if not isOutFoxV() then
