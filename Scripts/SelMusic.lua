@@ -973,6 +973,159 @@ function cacheStepSM(Song,Step)
 	end
 end
 
+function cacheStepDWI(Song,Step)
+	local stepType = split("_",Step:GetStepsType())
+	local timingData = Step:GetTimingData()
+	local stepsPerSec = {}
+	local noteCounter = {}
+	local firstBeat = nil
+	local lastBeat = 0
+	local lastSec = 0
+	local currentBPM,checkBPM,checkCount,maxBPM = 0,0,0,0
+
+	local stops = timingData:GetStops()
+	local delays = timingData:GetDelays()
+	local warps = timingData:GetWarps()
+
+	for i=1,getColumnsPerPlayer(stepType[2],stepType[3]) do
+		noteCounter[i] = 0
+	end
+
+	local chart = DWIParser(Step)
+	local beat = 0
+
+	local beats = {}
+	local chaosCount = 0
+	local maxVoltage = 0
+	local firstRow
+
+	if chart then
+		local currentMeasure = -1
+		for measure in ivalues(chart) do
+			currentMeasure = currentMeasure + 1
+			local currentRow = -1
+			for row in ivalues(measure) do
+				currentRow = currentRow + 1
+				beat = (currentMeasure*4)+(currentRow/#measure*4)
+				local _, count = string.gsub(row, "[L124]", "")
+				if count > 0 then
+					if not firstRow then firstRow = row end
+					local isStop, isDelay, isWarp = false, false, false
+					currentBPM = math.round(timingData:GetBPMAtBeat(beat),3)
+					if stops and #stops > 0 then isStop,stops = HasStopAtBeat(beat,stops) end
+					if delays and #delays > 0 then isDelay,delays = HasDelayAtBeat(beat,delays) end
+					if warps and #warps > 0 then isWarp,warps = HasWarpAtBeat(beat,warps) end
+					local isJudgableAtBeat = not isWarp or (isWarp and (isStop or isDelay))
+					if isJudgableAtBeat then
+						if currentBPM > maxBPM and not checking and not (isStop or isDelay) then
+							checking = true
+							if currentBPM > checkBPM then checkBPM = currentBPM end
+							checkCount = 0
+						elseif math.abs(1-checkBPM/currentBPM) <= 0.02 and checking and not (isStop or isDelay) then
+							checkCount = checkCount + 1
+							if checkCount > 4 then
+								if currentBPM > checkBPM then checkBPM = currentBPM end
+								if currentBPM > maxBPM then maxBPM = checkBPM end
+							end
+						else
+							checkBPM = 0
+							checking = false
+						end
+
+						local currentSec = timingData:GetElapsedTimeFromBeat(beat)
+						noteCounter[count] = noteCounter[count] + 1
+						if not firstBeat then firstBeat = beat end
+						lastBeat = beat
+
+						if lastSec > 0 then
+							local currentSPS = 1 / (currentSec - lastSec) * count
+							if stepsPerSec[currentSPS] then stepsPerSec[currentSPS] = stepsPerSec[currentSPS] + 1 else stepsPerSec[currentSPS] = 1 end
+						end
+						lastSec = currentSec
+
+						if isEtterna("0.55") then
+							if getNoteType(beat) >= 12 then chaosCount = chaosCount + 1 end
+							for _=1,count do table.insert(beats,beat) end
+							for i=1,#beats do
+								if beats[i] and beats[i] < beat - 8 then
+									table.remove(beats,i)
+									i=i-1
+								else
+									break
+								end
+							end
+							maxVoltage = math.max(maxVoltage,#beats)
+						end
+					end
+				end
+				if string.find(row,"[L1234]") then
+					lastBeat = beat
+				end
+			end
+		end
+
+		if firstBeat then
+			local firstSecond = timingData:GetElapsedTimeFromBeat(firstBeat)
+			local lastSecond = timingData:GetElapsedTimeFromBeat(lastBeat)
+			local total = calcSPS(stepsPerSec)
+			local total2 = calcSPS(stepsPerSec,total)
+			local file = getStepCacheFile(Step)
+			local list = {
+				["Version"] = cacheVersion,
+				["FirstRow"] = firstRow,
+				["StepCounter"] = table.concat(noteCounter,"_"),
+				["StepsPerSecond"] = total2,
+				["TrueFirstBeat"] = firstBeat,
+				["TrueLastBeat"] = lastBeat,
+				["TrueBeats"] = lastBeat-firstBeat,
+				["TrueMaxBPM"] = maxBPM,
+				["TrueFirstSecond"] = firstSecond,
+				["TrueLastSecond"] = lastSecond,
+				["TrueSeconds"] = lastSecond-firstSecond
+			}
+
+			if isEtterna("0.55") then
+				list["chaosCount"] = chaosCount
+				list["maxVoltage"] = maxVoltage
+			end
+
+			if getenv("cacheing") then
+				LoadModule("Config.SaveAll.lua")(list,file)
+			else
+				LoadModule("Config.Save.lua")("Version",cacheVersion,file)
+				LoadModule("Config.Save.lua")("FirstRow",firstRow,file)
+				LoadModule("Config.Save.lua")("StepCounter",table.concat(noteCounter,"_"),file)
+				LoadModule("Config.Save.lua")("StepsPerSecond",total2,file)
+				LoadModule("Config.Save.lua")("TrueFirstBeat",firstBeat,file)
+				LoadModule("Config.Save.lua")("TrueLastBeat",lastBeat,file)
+				LoadModule("Config.Save.lua")("TrueBeats",lastBeat-firstBeat,file)
+				LoadModule("Config.Save.lua")("TrueMaxBPM",maxBPM,file)
+				LoadModule("Config.Save.lua")("TrueFirstSecond",firstSecond,file)
+				LoadModule("Config.Save.lua")("TrueLastSecond",lastSecond,file)
+				LoadModule("Config.Save.lua")("TrueSeconds",lastSecond-firstSecond,file)
+				if isEtterna("0.55") then
+					LoadModule("Config.Save.lua")("chaosCount",chaosCount,file)
+					LoadModule("Config.Save.lua")("maxVoltage",maxVoltage,file)
+				end
+			end
+
+			return list
+		else
+			local file = getStepCacheFile(Step)
+			LoadModule("Config.Save.lua")("Version","0",file)
+			return {["Version"]="0"}
+		end
+	else
+		if isOutFox(20200400) then
+			return cacheStep(Song,Step)
+		else
+			local file = getStepCacheFile(Step)
+			LoadModule("Config.Save.lua")("Version","0",file)
+			return {["Version"]="0"}
+		end
+	end
+end
+
 local function orderedIndex(t)
     local orderedIndex = {}
     for key in pairs(t) do
@@ -1123,11 +1276,18 @@ end
 function cacheStepX(Song,Step)
 	local filePath = Step:GetFilename():lower()
 	local checkSM = filePath:sub(-2):sub(1,1) == 's'	-- [S]M & S[S]C
+	local checkDWI = filePath:sub(-3):sub(1,1) == 'd'	-- [D]WI
 	--local checkBMS = filePath:sub(-3):sub(2,2) == 'm'	-- B[M]S & B[M]E & B[M]L & P[M]S
 	local checkPMS = filePath:sub(-3) == 'pms'
 
 	if not isOutFox(20200400) or ((checkSM or checkPMS) and isOutFoxV()) then
-		return checkSM and cacheStepSM(Song,Step) or cacheStepBMS(Song,Step)
+		if checkSM then
+			return cacheStepSM(Song,Step)
+		elseif checkDWI then
+			return cacheStepDWI(Song,Step)
+		else
+			return cacheStepBMS(Song,Step)
+		end
 	else
 		return cacheStep(Song,Step)
 	end

@@ -151,6 +151,54 @@ local function UpdateGraphSM(Step)
     return stepsPerSecList
 end
 
+local function UpdateGraphDWI(Step)
+    lastSec = 0
+    lastBeat = 0
+	local stepsPerSecList = {}
+    if Step then
+        local timingData = Step:GetTimingData()
+
+        local stops = timingData:GetStops()
+        local delays = timingData:GetDelays()
+        local warps = timingData:GetWarps()
+        local chart = DWIParser(Step)
+        
+        local beat = 0
+        if chart then
+            local currentMeasure = -1
+            for measure in ivalues(chart) do
+                currentMeasure = currentMeasure + 1
+                local currentRow = -1
+                for row in ivalues(measure) do
+                    currentRow = currentRow + 1
+                    beat = (currentMeasure*4)+(currentRow/#measure*4)
+                    local _, count = string.gsub(row, "[L124]", "")
+                    if count > 0 then
+                        if rowLimit then count = 1 end
+                        local isStop, isDelay, isWarp = false, false, false
+                        if stops and #stops > 0 then isStop,stops = HasStopAtBeat(beat,stops) end
+                        if delays and #delays > 0 then isDelay,delays = HasDelayAtBeat(beat,delays) end
+                        if warps and #warps > 0 then isWarp,warps = HasWarpAtBeat(beat,warps) end
+                        local isJudgableAtBeat = not isWarp or (isWarp and (isStop or isDelay))
+                        if isJudgableAtBeat then
+                            local currentSec = math.ceil(timingData:GetElapsedTimeFromBeat(beat))
+                            stepsPerSecList[currentSec] = stepsPerSecList[currentSec] and stepsPerSecList[currentSec] + count or count
+                        end
+                    end
+                    if lastBeat ~= beat and string.find(row,"[L1234]") then
+                        lastBeat = beat
+                    end
+                end
+            end
+            for i=1,math.ceil(timingData:GetElapsedTimeFromBeat(lastBeat)) do
+                if not stepsPerSecList[i] then stepsPerSecList[i] = 0 end
+            end
+            lastSec = timingData:GetElapsedTimeFromBeat(lastBeat)
+        end
+    end
+    return stepsPerSecList
+end
+
 local function UpdateGraphBMS(Step)
     lastSec = 0
     lastBeat = 0
@@ -194,8 +242,11 @@ local function UpdateGraphOld()
         if Step then
             local filePath = Step:GetFilename()
             local checkSM = filePath:sub(-2):sub(1,1) == 's'	-- [S]M & S[S]C
+            local checkDWI = filePath:sub(-3):sub(1,1) == 'd'	-- [D]WI
             if checkSM then
                 return UpdateGraphSM(Step)
+            elseif checkDWI then
+                return UpdateGraphDWI(Step)
             else
                 return UpdateGraphBMS(Step)
             end
@@ -328,6 +379,58 @@ local function UpdateGraphAltSM(Step)
     return stepsPerSecList
 end
 
+local function UpdateGraphAltDWI(Step)
+    lastSec = 0
+    lastBeat = 0
+	local stepsPerSecList = {}
+    if Step then
+        local timingData = Step:GetTimingData()
+
+        local stops = timingData:GetStops()
+        local delays = timingData:GetDelays()
+        local warps = timingData:GetWarps()
+        local chart = DWIParser(Step)
+        local previousSec = nil
+        
+        local beat = 0
+        if chart then
+            local currentMeasure = -1
+            for measure in ivalues(chart) do
+                currentMeasure = currentMeasure + 1
+                local currentRow = -1
+                for row in ivalues(measure) do
+                    currentRow = currentRow + 1
+                    beat = (currentMeasure*4)+(currentRow/#measure*4)
+                    local _, count = string.gsub(row, "[L124]", "")
+                    if count > 0 then
+                        if rowLimit then count = 1 end
+                        local isStop, isDelay, isWarp = false, false, false
+                        if stops and #stops > 0 then isStop,stops = HasStopAtBeat(beat,stops) end
+                        if delays and #delays > 0 then isDelay,delays = HasDelayAtBeat(beat,delays) end
+                        if warps and #warps > 0 then isWarp,warps = HasWarpAtBeat(beat,warps) end
+                        local isJudgableAtBeat = not isWarp or (isWarp and (isStop or isDelay))
+                        if isJudgableAtBeat then
+                            local currentSec = math.round(timingData:GetElapsedTimeFromBeat(beat),3)
+                            if previousSec then
+                                stepsPerSecList[currentSec] = math.max(count,1/(currentSec-previousSec) * count)
+                            end
+                            previousSec = currentSec
+                        end
+                    end
+                    if lastBeat ~= beat and string.find(row,"[L1234]") then
+                        lastBeat = beat
+                    end
+                end
+            end
+            for i=1,math.ceil(timingData:GetElapsedTimeFromBeat(lastBeat)) do
+                if not stepsPerSecList[i] then stepsPerSecList[i] = 0 end
+            end
+            lastSec = timingData:GetElapsedTimeFromBeat(lastBeat)
+        end
+    end
+    return stepsPerSecList
+end
+
 local function UpdateGraphAltBMS(Step)
     lastSec = 0
     lastBeat = 0
@@ -378,8 +481,11 @@ local function UpdateGraphAltOld()
         if Step then
             local filePath = Step:GetFilename()
             local checkSM = filePath:sub(-2):sub(1,1) == 's'	-- [S]M & S[S]C
+            local checkDWI = filePath:sub(-3):sub(1,1) == 'd'
             if checkSM then
                 return UpdateGraphAltSM(Step)
+            elseif checkDWI then
+                return UpdateGraphAltDWI(Step)
             else
                 return UpdateGraphAltBMS(Step)
             end
