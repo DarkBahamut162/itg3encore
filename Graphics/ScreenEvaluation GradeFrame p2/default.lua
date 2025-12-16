@@ -118,7 +118,6 @@ local function GetJudgmentsOfTNS(tns)
 end
 
 local InputHandler = function(event)
-	if event.PlayerNumber ~= PLAYER_2 then return false end
 	if keyboardEnabled then
 		if event.type == "InputEventType_FirstPress" then
 			if string.find(event.DeviceInput.button,"right ctrl") and not ctrlHeld then ctrlHeld = true end
@@ -132,6 +131,7 @@ local InputHandler = function(event)
 			if event.GameButton == "Select" and ctrlHeld then ctrlHeld = false end
 		end
 	end
+	if event.PlayerNumber ~= PLAYER_2 and not ctrlHeld then return false end
 	if ctrlHeld and event.type == "InputEventType_FirstPress" then
 		if event.GameButton == "MenuLeft" or event.GameButton == "MenuRight" then
 			if not switched then
