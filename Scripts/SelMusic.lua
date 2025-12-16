@@ -91,9 +91,9 @@ function GetScreenSelectMusicHelpText()
 end
 
 function GetScreenEvaluationHelpText()
-	local ret = THEME:GetString("ScreenEvaluation", "HelpText")
+	local ret = ThemePrefs.Get("KeyboardEnabled") and THEME:GetString("ScreenEvaluation", "HelpTextKeyboard") or THEME:GetString("ScreenEvaluation", "HelpText")
 	if ThemePrefs.Get("ShowOffset") and not isVS() then
-		ret = addToOutput(ret,THEME:GetString("ScreenEvaluation","HelpTextView"),"::")
+		ret = addToOutput(ret,ThemePrefs.Get("KeyboardEnabled") and THEME:GetString("ScreenEvaluation", "HelpTextViewKeyboard") or THEME:GetString("ScreenEvaluation","HelpTextView"),"::")
 	end
 	return ret
 end
