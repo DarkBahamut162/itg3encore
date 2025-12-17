@@ -1,16 +1,17 @@
 function Get2PlayerJoinMessage()
 	if not GAMESTATE:PlayersCanJoin() or isEtterna("0.55") then return "" end
-	if GAMESTATE:GetCoinMode()=='CoinMode_Free' or GAMESTATE:GetCoinMode()=='CoinMode_Home' then
-		return "2 Player mode available"
-	end
+	local s = "2 Player mode available"
+	if GAMESTATE:GetCoinMode()=='CoinMode_Free' or GAMESTATE:GetCoinMode()=='CoinMode_Home' then return s end
 	local numSidesNotJoined = NUM_PLAYERS - GAMESTATE:GetNumSidesJoined()
 	if GAMESTATE:GetPremium() == 'Premium_2PlayersFor1Credit' then
 		numSidesNotJoined = numSidesNotJoined - 1
 	end
 	local coinsRequiredToJoinRest = numSidesNotJoined * PREFSMAN:GetPreference("CoinsPerCredit")
 	local remaining = coinsRequiredToJoinRest - GAMESTATE:GetCoins()
-	local s = "For 2 Players, insert " .. remaining .. " more coin(s)"
-	if remaining > 1 then s = s.."s" end
+	if remaining > 0 then
+		s = "For 2 Players, insert " .. remaining .. " more coin"
+		if remaining > 1 then s = s.."s" end
+	end
 	return s
 end
 
