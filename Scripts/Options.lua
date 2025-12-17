@@ -244,19 +244,7 @@ function SongMods()
 	if isITGmania(20220612) then add2 = addToOutput(add2,",DTW",",") end
 	if isITGmania(20240307) then add2 = addToOutput(add2,",BB",",") end
 
-	if isRegular() then
-		if HasLuaCheck() then
-			options = addToOutput(options,"20,"..add.."P,PF,29,21"..add2..",24",",")
-		else
-			options = addToOutput(options,"20,"..add.."P,PF,29"..add2..",24",",")
-		end
-	elseif isNonstop() then
-		if IsCourseSecret() then
-			options = addToOutput(options,"20,"..add.."P,PF,29"..add2..",24",",")
-		else
-			options = addToOutput(options,"20,"..add.."P,PF,29,21"..add2..",24",",")
-		end
-	end
+	options = addToOutput(options,"20,"..add.."P,PF,29,21"..add2..",24",",")
 
 	if GAMESTATE:IsCourseMode() then
 		if (GAMESTATE:GetNumPlayersEnabled() == 1 and not isDouble()) then

@@ -39,14 +39,6 @@ for pn in ivalues(GAMESTATE:GetEnabledPlayers()) do
 		GAMESTATE:GetPlayerState(pn):GetPlayerOptions('ModsLevel_Current'):FailSetting('FailType_Immediate')
 	end
 
-	if getenv("ShowMods"..pname(pn)) then
-		if not GAMESTATE:IsCourseMode() and not isVS() then
-			if not HasLuaCheck() then
-				setenv("ShowMods"..pname(pn),false)
-			end
-		end
-	end
-
 	setenv("EvalCombo"..pname(pn),true)
 	setenv("LastFantastic"..pname(pn),0)
 	setenv("LastPerfect"..pname(pn),0)
