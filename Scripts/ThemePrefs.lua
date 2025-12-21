@@ -8,51 +8,38 @@ function IsAutoPlayMode(check)
 		if check then return true end
 		AutoMode = addToOutput(AutoMode,"Auto Play Mode: "..ThemePrefs.Get("AutoPlayMode"),"\n")
 	end
-	if check then return false end
-	return AutoMode
+	if check then return false else return AutoMode end
 end
 
-function IsAutoStyle(check)
+function IsAutoStyle()
 	local AutoStyle = ""
 	if IsGame("dance") and ThemePrefs.Get("AutoStyleDance") then
-		if check then return true end
-		AutoStyle = addToOutput(AutoStyle,"Auto Style: "..ThemePrefs.Get("AutoStyleDance"),"\n")
+		return true
 	elseif IsGame("groove") and ThemePrefs.Get("AutoStyleGroove") then
-		if check then return true end
-		AutoStyle = addToOutput(AutoStyle,"Auto Style: "..ThemePrefs.Get("AutoStyleGroove"),"\n")
+		return true
 	elseif IsGame("solo") and ThemePrefs.Get("AutoStyleSolo") then
-		if check then return true end
-		AutoStyle = addToOutput(AutoStyle,"Auto Style: "..ThemePrefs.Get("AutoStyleSolo"),"\n")
+		return true
 	elseif IsGame("pump") and ThemePrefs.Get("AutoStylePump") then
-		if check then return true end
-		AutoStyle = addToOutput(AutoStyle,"Auto Style: "..ThemePrefs.Get("AutoStylePump"),"\n")
+		return true
 	elseif IsGame("smx") and ThemePrefs.Get("AutoStyleSmx") then
-		if check then return true end
-		AutoStyle = addToOutput(AutoStyle,"Auto Style: "..ThemePrefs.Get("AutoStyleSmx"),"\n")
+		return true
 	elseif IsGame("be-mu") and ThemePrefs.Get("AutoStyleBeMu") then
-		if check then return true end
-		AutoStyle = addToOutput(AutoStyle,"Auto Style: "..ThemePrefs.Get("AutoStyleBeMu"),"\n")
+		return true
 	elseif IsGame("beat") and ThemePrefs.Get("AutoStyleBeat") then
-		if check then return true end
-		AutoStyle = addToOutput(AutoStyle,"Auto Style: "..ThemePrefs.Get("AutoStyleBeat"),"\n")
+		return true
 	elseif IsGame("po-mu") and ThemePrefs.Get("AutoStylePoMu") then
-		if check then return true end
-		AutoStyle = addToOutput(AutoStyle,"Auto Style: "..ThemePrefs.Get("AutoStylePoMu"),"\n")
+		return true
 	elseif IsGame("popn") and ThemePrefs.Get("AutoStylePopn") then
-		if check then return true end
-		AutoStyle = addToOutput(AutoStyle,"Auto Style: "..ThemePrefs.Get("AutoStylePopn"),"\n")
+		return true
 	elseif IsGame("rechno") and ThemePrefs.Get("AutoStyleTechno") then
-		if check then return true end
-		AutoStyle = addToOutput(AutoStyle,"Auto Style: "..ThemePrefs.Get("AutoStyleTechno"),"\n")
+		return true
 	end
-	if check then return false end
-	if AutoStyle ~= "" and ThemePrefs.Get("AllowBattle") then AutoStyle = addToOutput(AutoStyle,"Auto Battle: "..ThemePrefs.Get("AutoBattle"),"\n") end
-	return AutoStyle
+	return false
 end
 
 function GetAutoPlayMode()
 	local AutoMode = ThemePrefs.Get("AutoPlayMode")
-	if AutoMode and IsAutoStyle(true) then
+	if AutoMode and IsAutoStyle() then
 		if AutoMode == "dance" then
 			return "name,Dance;style,"..split(",",GetAutoStyle())[1]..";difficulty,medium;screen,ScreenProfileLoad"
 		elseif AutoMode == "battle" then

@@ -222,8 +222,38 @@ return Def.ActorFrame{
 			local coursesSurvivalDouble = 0
 
 			if (StepsTypeSingle() or StepsTypeDouble()) and (IsGame("dance") or isOutFoxV() or not isOutFox()) then
-				local StepsTypeSingle = StepsTypeSingle()[GetUserPrefN("StylePosition")]
-				local StepsTypeDouble = StepsTypeDouble()[GetUserPrefN("StylePosition")]
+				local auto = nil
+				local style = IsAutoStyle()
+				local versus = false
+				local double = false
+				if style then
+					if IsGame("dance") and ThemePrefs.Get("AutoStyleDance") then
+						style = ThemePrefs.Get("AutoStyleDance")
+					elseif IsGame("groove") and ThemePrefs.Get("AutoStyleGroove") then
+						style = ThemePrefs.Get("AutoStyleGroove")
+					elseif IsGame("solo") and ThemePrefs.Get("AutoStyleSolo") then
+						style = ThemePrefs.Get("AutoStyleSolo")
+					elseif IsGame("pump") and ThemePrefs.Get("AutoStylePump") then
+						style = ThemePrefs.Get("AutoStylePump")
+					elseif IsGame("smx") and ThemePrefs.Get("AutoStyleSmx") then
+						style = ThemePrefs.Get("AutoStyleSmx")
+					elseif IsGame("be-mu") and ThemePrefs.Get("AutoStyleBeMu") then
+						style = ThemePrefs.Get("AutoStyleBeMu")
+					elseif IsGame("beat") and ThemePrefs.Get("AutoStyleBeat") then
+						style = ThemePrefs.Get("AutoStyleBeat")
+					elseif IsGame("po-mu") and ThemePrefs.Get("AutoStylePoMu") then
+						style = ThemePrefs.Get("AutoStylePoMu")
+					elseif IsGame("popn") and ThemePrefs.Get("AutoStylePopn") then
+						style = ThemePrefs.Get("AutoStylePopn")
+					elseif IsGame("rechno") and ThemePrefs.Get("AutoStyleTechno") then
+						style = ThemePrefs.Get("AutoStyleTechno")
+					end
+					for i,choice in ipairs(ChoiceSingle()) do if choice == style then auto = i end end
+					for i,choice in ipairs(ChoiceVersus()) do if choice == style then auto = i versus = true end end
+					for i,choice in ipairs(ChoiceDouble()) do if choice == style then auto = i double = true end end
+				end
+				local StepsTypeSingle = StepsTypeSingle()[auto or GetUserPrefN("StylePosition")]
+				local StepsTypeDouble = StepsTypeDouble()[auto or GetUserPrefN("StylePosition")]
 				if #songs > 0 then
 					for i=1,#songs do
 						if songs[i]:HasStepsType(StepsTypeSingle) then
@@ -294,9 +324,11 @@ return Def.ActorFrame{
 					end
 				end
 				output = addToOutput(output,"Current Game Mode: "..GAMESTATE:GetCurrentGame():GetName(),"\n")
-				if isTopScreen('ScreenTitleAlt') and (IsAutoPlayMode(true) and IsAutoStyle(true)) then output = addToOutput(output,IsAutoPlayMode(),"\n") end
-				if isTopScreen('ScreenTitleAlt') and (IsAutoPlayMode(true) and IsAutoStyle(true)) or (isTopScreen('ScreenTitleMenuAlt') and IsAutoStyle(true)) then
-					output = addToOutput(output,IsAutoStyle(),"\n")
+				if isTopScreen('ScreenTitleAlt') and (IsAutoPlayMode(true) and IsAutoStyle()) then output = addToOutput(output,IsAutoPlayMode(),"\n") end
+				if isTopScreen('ScreenTitleAlt') and (IsAutoPlayMode(true) and IsAutoStyle()) or (isTopScreen('ScreenTitleMenuAlt') and IsAutoStyle()) then
+					output = addToOutput(output,"Auto Style: "..StyleName()[auto or GetUserPrefN("StylePosition")],"\n")
+					if versus then output = output.." (Versus)" elseif double then output = output.." (Double)" else output = output.." (Single)" end
+					if ThemePrefs.Get("AllowBattle") then output = addToOutput(output,"Auto Battle: "..string.gsub(" "..ThemePrefs.Get("AutoBattle"), "%W%l", string.upper):sub(2),"\n") end
 				else
 					output = addToOutput(output,"Current Style: "..StyleName()[GetUserPrefN("StylePosition")],"\n")
 				end

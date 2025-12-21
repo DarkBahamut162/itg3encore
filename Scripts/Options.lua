@@ -391,8 +391,8 @@ function InitOptions()
 	setenv("HighScoreableP2",false)
 	SetAllowLateJoin(true)
 
-	if IsAutoStyle(true) then
-		local style = IsAutoStyle()
+	if IsAutoStyle() then
+		local style = split(",",GetAutoStyle())[1]
 		for i,choice in ipairs(ChoiceSingle()) do if choice == style then SetUserPref("StylePosition",i) end end
 		for i,choice in ipairs(ChoiceVersus()) do if choice == style then SetUserPref("StylePosition",i) end end
 		for i,choice in ipairs(ChoiceDouble()) do if choice == style then SetUserPref("StylePosition",i) end end

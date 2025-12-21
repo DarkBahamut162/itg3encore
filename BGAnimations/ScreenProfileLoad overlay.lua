@@ -2,7 +2,7 @@ function MemoryCheck()
 	if isEtterna("0.55") then return false else return GAMESTATE:IsAnyHumanPlayerUsingMemoryCard() end
 end
 
-local preload = GAMESTATE:GetCoinMode()=='CoinMode_Home' and IsAutoStyle(true) or (IsAutoPlayMode(true) and IsAutoStyle(true))
+local preload = GAMESTATE:GetCoinMode()=='CoinMode_Home' and IsAutoStyle() or (IsAutoPlayMode(true) and IsAutoStyle())
 SetAllowLateJoin(false)
 
 return Def.ActorFrame{
