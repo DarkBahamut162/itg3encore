@@ -439,3 +439,35 @@ function GetCurrentTrueStageCost()
 		return 0
 	end
 end
+
+function GetTrueWidth(player)
+	local style = GAMESTATE:GetCurrentStyle()
+	local width = style:GetWidth(player)
+
+	if IsGame("be-mu") or IsGame("beat") or IsGame("po-mu") or IsGame("popn") then
+		local widthFixed = {
+			["Key2"] = 28,
+			["Key4"] = 28,
+			["Key6"] = 28,
+			["Blue"] = 28,
+			["Yellow"] = 28,
+			["Key1"] = 36,
+			["Key3"] = 36,
+			["Key5"] = 36,
+			["Key7"] = 36,
+			["Green"] = 36,
+			["Red"] = 36,
+			["White"] = 36,
+			["foot"] = 40,
+			["scratch"] = 60,
+		}
+		local NumColumns = style:ColumnsPerPlayer()
+		width = 0
+		for ColumnIndex = 1, NumColumns do
+			local info = style:GetColumnInfo(player, ColumnIndex)
+			width = width + widthFixed[info.Name] + 2
+		end
+	end
+
+	return width
+end

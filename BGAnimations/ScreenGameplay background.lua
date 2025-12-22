@@ -4,32 +4,7 @@ local currentMini = 1-math.round(GAMESTATE:GetPlayerState(GAMESTATE:GetMasterPla
 local currentTiny = 1-math.round(GAMESTATE:GetPlayerState(GAMESTATE:GetMasterPlayerNumber()):GetPlayerOptions(mlevel):Tiny()*50) / 100
 currentMini = currentMini * currentTiny
 local style = GAMESTATE:GetCurrentStyle()
-local width = style:GetWidth(GAMESTATE:GetMasterPlayerNumber())
-local widthFixed = {
-	["Key2"] = 28,
-	["Key4"] = 28,
-	["Key6"] = 28,
-	["Blue"] = 28,
-	["Yellow"] = 28,
-	["Key1"] = 36,
-	["Key3"] = 36,
-	["Key5"] = 36,
-	["Key7"] = 36,
-	["Green"] = 36,
-	["Red"] = 36,
-	["White"] = 36,
-	["foot"] = 40,
-	["scratch"] = 60,
-}
-
-if IsGame("be-mu") or IsGame("beat") or IsGame("po-mu") or IsGame("popn") then
-	local NumColumns = style:ColumnsPerPlayer()
-	width = 0
-	for ColumnIndex = 1, NumColumns do
-		local info = style:GetColumnInfo(GAMESTATE:GetMasterPlayerNumber(), ColumnIndex)
-		width = width + widthFixed[info.Name] + 2
-	end
-end
+local width = GetTrueWidth(GAMESTATE:GetMasterPlayerNumber())
 
 local function xS() return SCREEN_WIDTH*0.25+width/2*currentMini end
 local function zoomS() return (SCREEN_WIDTH-xS())/SCREEN_WIDTH end

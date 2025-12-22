@@ -1,6 +1,6 @@
 local c
 local player = ...
-local filterWidth = GAMESTATE:GetCurrentStyle():GetWidth(player)
+local filterWidth = GetTrueWidth(player)
 local widthZoom = Center1Player() and 1 or WideScreenDiff()
 
 filterWidth = filterWidth * math.min(1,isOutFox(20200600) and NotefieldZoomOutFox() or NotefieldZoom())

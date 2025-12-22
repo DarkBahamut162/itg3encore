@@ -1,7 +1,7 @@
 local player = ...
 local style = GAMESTATE:GetCurrentStyle()
 local NumColumns = style:ColumnsPerPlayer()
-local width = style:GetWidth(player)
+local width = GetTrueWidth(player)
 local widthFixed = {
 	["Key2"] = 28,
 	["Key4"] = 28,

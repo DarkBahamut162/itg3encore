@@ -22,7 +22,7 @@ else
 end
 
 local filterAlpha = tonumber(getenv("ScreenFilter"..pname(player)) or 0)
-local filterWidth = GAMESTATE:GetCurrentStyle():GetWidth(player)
+local filterWidth = GetTrueWidth(player)
 local currentTick = 1
 
 local faplus = getenv("SetScoreFA"..pname(player)) or false

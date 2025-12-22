@@ -95,7 +95,7 @@ function getFilter(player,filterWidth,filterAlpha)
 end
 
 local filterAlpha = tonumber(getenv("ScreenFilter"..pname(player)))
-local filterWidth = style:GetWidth(player)
+local filterWidth = GetTrueWidth(player)
 
 t[#t+1] = Def.ActorFrame{
 	getFilter(player,filterWidth,filterAlpha),
