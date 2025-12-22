@@ -59,11 +59,15 @@ local function CheckMeasure(check,measures)
 end
 
 local measures = ""
+local coloring = {}
 
 local function SetMeasures(M)
 	measures = ""
+	coloring = {}
 	for measure = 0, #M do
+		local begin = string.len(measures)+1
 		measures = addToOutput(measures,"\n",M[#M-measure+1])
+		coloring[#coloring+1] = {FIRST = begin-1, LAST = string.len(measures)-begin, COLOR = color("1,1,1,"..math.min(1,math.max(0.1,math.pow(measure/#M,4))))}
 	end
 end
 
@@ -82,8 +86,14 @@ local function Update(self, delta)
 			resetDisplay,NullMeasures = CheckMeasure(currentMeasure,NullMeasures)
 			if resetDisplay then SetMeasures(NullMeasures) end
 			if #NullMeasures == 0 then c.NullMeasure:linear(1):diffusealpha(0) end
+			c.NullMeasure:settext(measures.."Measure "..currentMeasure)
+			for i,pair in pairs(coloring) do
+				c.NullMeasure:AddAttribute(pair.FIRST, {
+					Length = pair.LAST,
+					Diffuse = pair.COLOR
+				})
+			end
 		end
-		c.NullMeasure:settext(measures.."Measure "..currentMeasure)
 	end
 end
 
