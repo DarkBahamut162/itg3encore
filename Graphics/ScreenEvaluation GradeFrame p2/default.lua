@@ -607,6 +607,20 @@ return Def.ActorFrame{
 		OnCommand=function(self) self:sleep(3):decelerate(0.3):addx(-EvalTweenDistance()) end,
 		OffCommand=function(self) self:accelerate(0.3):addx(EvalTweenDistance()) end
 	},
+	Def.BitmapText {
+		Condition=ThemePrefs.Get("ShowSurvivedTime"),
+		File="_v 26px bold shadow",
+		InitCommand=function(self)
+			local fail = STATSMAN:GetCurStageStats(PLAYER_2):GetPlayerStageStats(PLAYER_2):GetFailed()
+			local alive = STATSMAN:GetCurStageStats(PLAYER_2):GetPlayerStageStats(PLAYER_2):GetAliveSeconds()
+			local first = LoadFromCache(GAMESTATE:GetCurrentSong(),GAMESTATE:GetCurrentSteps(PLAYER_2),"TrueFirstSecond")
+			local last = LoadFromCache(GAMESTATE:GetCurrentSong(),GAMESTATE:GetCurrentSteps(PLAYER_2),"TrueLastSecond")
+			self:x(52*WideScreenDiff()):y(118*WideScreenDiff()):settext(fail and Time(alive-first).." - "..Time(last-first) or Time(last-first)):zoomx(0.5*WideScreenDiff()):zoomy(0.4*WideScreenDiff()):addx(-EvalTweenDistance())
+			if fail then self:diffuseshift():effectcolor1(color("#FFFFFF")):effectcolor2(color("#FF0000")):effectclock("timerglobal") end
+		end,
+		OnCommand=function(self) self:sleep(3):decelerate(0.3):addx(EvalTweenDistance()) end,
+		OffCommand=function(self) self:accelerate(0.3):addx(-EvalTweenDistance()) end
+	},
 	Def.Sprite {
 		Texture="../ScreenEvaluation GradeFrame p1/_glass",
 		InitCommand=function(self) self:diffusealpha(0.2):x(52*WideScreenDiff()):y(100*WideScreenDiff()):addx(EvalTweenDistance()):zoomx(-1*WideScreenDiff()):zoomy(WideScreenDiff()) end,
