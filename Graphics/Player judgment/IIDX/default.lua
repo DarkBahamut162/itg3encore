@@ -59,6 +59,7 @@ setenv("check"..pname(player),true)
 setenv("checkAuto"..pname(player),true)
 
 if not isOutFox(20200530) then GAMESTATE:ApplyGameCommand('mod,savescore',player) end
+local judgment = not (getenv("HideJudgment" .. pname(player)) or false)
 local combo = not (getenv("HideCombo" .. pname(player)) or false)
 
 return Def.ActorFrame{
@@ -154,7 +155,7 @@ return Def.ActorFrame{
 				end
 			end
 			local curCombo = PSS:GetCurrentCombo()
-			local output = JUDGMENT[WX]..((COMBO[WX] and combo) and "x"..curCombo or "")
+			local output = (judgment and JUDGMENT[WX].."x" or "")..((COMBO[WX] and combo) and curCombo or "")
 			c._C0:settext(output)
 			c._C1:visible(current == 1):settext(output)
 			c._C2:visible(current == 2):settext(output)

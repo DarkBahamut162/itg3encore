@@ -415,6 +415,7 @@ function InitPlayerOptions()
 		setenv("Effect"..pname(pn),not isVS() and LoadUserPrefN(pn, "Effect", 0) or 0)
 
 		setenv("HideScore"..pname(pn),LoadUserPrefB(pn, "HideScore", false))
+		setenv("HideJudgment"..pname(pn),LoadUserPrefB(pn, "HideJudgment", false))
 		setenv("HideCombo"..pname(pn),LoadUserPrefB(pn, "HideCombo", false))
 		setenv("HideLife"..pname(pn),LoadUserPrefB(pn, "HideLife", false))
 
@@ -552,16 +553,18 @@ function OptionTournamentOptions()
 		SelectType = "SelectMultiple",
 		OneChoiceForAllPlayers = false,
 		ExportOnChange = false,
-		Choices = { "Hide Score", "Hide Combo", "Hide Lifebar" },
+		Choices = { "Hide Score", "Hide Judgment", "Hide Combo", "Hide Lifebar" },
 		LoadSelections = function(self, list, pn)
 			list[1] = getenv("HideScore"..pname(pn))
-			list[2] = getenv("HideCombo"..pname(pn))
-			list[3] = getenv("HideLife"..pname(pn))
+			list[2] = getenv("HideJudgment"..pname(pn))
+			list[3] = getenv("HideCombo"..pname(pn))
+			list[4] = getenv("HideLife"..pname(pn))
 		end,
 		SaveSelections = function(self, list, pn)
 			setenv("HideScore"..pname(pn),SaveUserPref(pn, "HideScore", list[1]))
-			setenv("HideCombo"..pname(pn),SaveUserPref(pn, "HideCombo", list[2]))
-			setenv("HideLife"..pname(pn),SaveUserPref(pn, "HideLife", list[3]))
+			setenv("HideJudgment"..pname(pn),SaveUserPref(pn, "HideJudgment", list[2]))
+			setenv("HideCombo"..pname(pn),SaveUserPref(pn, "HideCombo", list[3]))
+			setenv("HideLife"..pname(pn),SaveUserPref(pn, "HideLife", list[4]))
 		end
 	}
 	setmetatable(t, t)
@@ -1092,12 +1095,13 @@ function DisplayCustomModifiersText(pn)
 		end
 	end
 
-	if getenv("HideScore"..pname(pn)) and getenv("HideLife"..pname(pn)) and getenv("HideCombo"..pname(pn)) then
+	if getenv("HideScore"..pname(pn)) and getenv("HideLife"..pname(pn)) and getenv("HideCombo"..pname(pn)) and getenv("HideJudgment"..pname(pn)) then
 		output = addToOutput(output,"Hide All",", ")
 	else
 		if getenv("HideScore"..pname(pn)) then output = addToOutput(output,"Hide Score",", ") end
 		if getenv("HideLife"..pname(pn)) then output = addToOutput(output,"Hide Life",", ") end
 		if getenv("HideCombo"..pname(pn)) then output = addToOutput(output,"Hide Combo",", ") end
+		if getenv("HideJudgment"..pname(pn)) then output = addToOutput(output,"Hide Judgment",", ") end
 	end
 
 	if getenv("Rotation"..pname(pn)) == 2 then output = addToOutput(output,"Rotated Left",", ")
