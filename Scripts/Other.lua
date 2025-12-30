@@ -1,5 +1,5 @@
 function Get2PlayerJoinMessage()
-	if not GAMESTATE:PlayersCanJoin() or isEtterna("0.55") then return "" end
+	if not GAMESTATE:PlayersCanJoin() or isEtterna("0.55") or GAMESTATE:IsEventMode() then return "" end
 	local s = "2 Player mode available"
 	if GAMESTATE:GetCoinMode()=='CoinMode_Free' or GAMESTATE:GetCoinMode()=='CoinMode_Home' then return s end
 	local numSidesNotJoined = NUM_PLAYERS - GAMESTATE:GetNumSidesJoined()

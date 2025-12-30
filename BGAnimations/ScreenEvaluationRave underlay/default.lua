@@ -136,7 +136,7 @@ return Def.ActorFrame{
 	loadfile(THEME:GetPathB("ScreenWithMenuElements","underlay/_base"))(),
 	loadfile(THEME:GetPathB("ScreenWithMenuElements","underlay/_expandtop"))(),
 	Def.Sprite {
-		Texture = "../ScreenEvaluation underlay/evaluation banner mask",
+		Texture = THEME:GetPathB("ScreenEvaluation","underlay/evaluation banner mask"),
 		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+135):zoom(WideScreenDiff()):zbuffer(true):blend(Blend.NoEffect):diffusealpha(0) end,
 		OnCommand=function(self) self:sleep(2.8):diffusealpha(1) end,
 		OffCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(0) end

@@ -344,7 +344,7 @@ local t = Def.ActorFrame{
 					local tns = ToEnumShortString(col:GetTapNoteResult():GetTapNoteScore())
 					local tno = col:GetTapNoteResult():GetTapNoteOffset()
 					if tns == "W1" and faplus then tns = math.abs(tno) <= W0 and "W0" or "W1" end
-					if tns and tns ~= "" and tns ~= "None" then
+					if tns and tns ~= "" and tns ~= "None" and not string.find(tns,"Mine") then
 						judgments[player][i][tns] = judgments[player][i][tns] + 1
 					end
 				end
