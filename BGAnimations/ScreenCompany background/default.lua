@@ -33,7 +33,7 @@ if isOutFox(20220900) and not isOutFox(20230400) then
 end
 
 if isITGmania() then
-	if string.find(PREFSMAN:GetPreference("HttpAllowHosts"),"api.github.com") and ThemeVersion=="????????" then
+	if string.find(PREFSMAN:GetPreference("HttpAllowHosts"),"api.github.com") and CheckVersion=="????????" then
 		NETWORK:HttpRequest{
 			url="https://api.github.com/repos/DarkBahamut162/itg3encore/commits/master",
 			headers=headers,
