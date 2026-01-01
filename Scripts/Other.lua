@@ -1015,3 +1015,11 @@ function GetProfileToEdit(player)
 	if not player or USBReady(player) then ret:GenChoices() end
 	return ret
 end
+
+function Time(time)
+	return math.floor(time/60)..":"..string.format("%05.2f",time%60)
+end
+
+function DoesDanceRepoExist()
+	return FILEMAN:DoesFileExist("Characters/DanceRepo/DRoutines.lua")
+end

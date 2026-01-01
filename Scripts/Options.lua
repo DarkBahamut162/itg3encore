@@ -261,6 +261,9 @@ function SongMods()
 	end
 
 	if not (IsGame("pump") or GAMESTATE:IsCourseMode()) then options = addToOutput(options,"31",",") end
+	if DoesDanceRepoExist() then
+		options = addToOutput(options,"SelectDanceStage,OptionRowCharacters,CutInOverVideo,VideoOverStage,BoomSync,DiscoStars,RMStage,CharacterSync,CharaShadow,SNEnv",",")
+	end
 
 	options = addToOutput(options,"16",",")
 	return options

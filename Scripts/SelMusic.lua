@@ -226,6 +226,8 @@ function HasLua(song,changes)
 end
 
 function HasVideo(song,changes)
+	if not song then song = GAMESTATE:GetCurrentSong() end
+	if not changes then changes = "BGCHANGES" end
 	local parameter = GetSMParameter(song,changes)
 	if parameter ~= "" then
 		parameter = split(",",parameter)

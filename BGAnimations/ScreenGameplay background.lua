@@ -11,7 +11,9 @@ local function zoomS() return (SCREEN_WIDTH-xS())/SCREEN_WIDTH end
 local function xM() return SCREEN_CENTER_X+width/2*currentMini end
 local function zoomM() return (SCREEN_WIDTH-xM())/SCREEN_WIDTH end
 
-return Def.ActorFrame {
+local multi = GAMESTATE:GetNumPlayersEnabled() == 1 and not isDouble() and (IsGame("be-mu") or IsGame("beat") or IsGame("po-mu") or IsGame("popn"))
+
+local t = Def.ActorFrame {
 	Name="YOU_WISH_YOU_WERE_PLAYING_BEATMANIA_RIGHT_NOW",
 	UpdateDiscordInfoCommand=function()
 		if isOutFox(20200500) then
@@ -45,7 +47,7 @@ return Def.ActorFrame {
 		if not isTopScreen("ScreenDemonstration") and not isTopScreen("ScreenDemonstration2") and not isTopScreen("ScreenJukebox") and not isTopScreen("ScreenCreditsGameplay") then
 			self:playcommand("UpdateDiscordInfo")
 			for pn in ivalues(GAMESTATE:GetEnabledPlayers()) do
-				if GAMESTATE:GetNumPlayersEnabled() == 1 and not isDouble() and (IsGame("be-mu") or IsGame("beat") or IsGame("po-mu") or IsGame("popn")) then
+				if multi then
 					if not HasLuaCheck() then
 						if getenv("Rotation"..pname(pn)) == 1 or getenv("Rotation"..pname(pn)) == 4 then
 							SCREENMAN:GetTopScreen():GetChild("SongBackground"):GetChild(""):zoom(zoomS()):xy(pn == PLAYER_1 and xS() or 0,SCREEN_CENTER_Y-SCREEN_CENTER_Y*zoomS())
@@ -148,3 +150,14 @@ return Def.ActorFrame {
 		MULTICommand=function(self) self:SetTarget( SCREENMAN:GetTopScreen():GetChild("SongBackground"):GetChild("") ):x(xM()):y(SCREEN_HEIGHT/3*2) end
 	}
 }
+
+local DanceStageSelected = getenv("SelectDanceStage") or "OFF"
+if DanceStageSelected ~= "OFF" and DoesDanceRepoExist() and not HasLuaCheck() then
+	t[#t+1] = loadfile(THEME:GetPathB("", "BGScripts/DanceStages"))()..{
+		OnCommand=function()
+			SCREENMAN:GetTopScreen():GetChild("SongBackground"):visible(false)
+		end
+	}
+end
+
+return t
