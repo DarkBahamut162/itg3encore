@@ -110,6 +110,9 @@ Shows **earlies** and **lates** of any timing window **during evaluation** exclu
     - Life/Flare Graph
     - Judgment Dotted *(Added)*
     - Judgment Lined *(Added)*
+- **ShowSurvivedTime:**
+Shows **Survived Time** out of **Total Time** if failed between **LifeGraph** and **ComboGraph**
+  - If cleared, only shows **Total Time** instead
 ### [ScreenSummary]
 - **ShowSummary:**
 Shows **songs played and their stats** after going back to title screen
