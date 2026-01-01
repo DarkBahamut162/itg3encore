@@ -32,6 +32,27 @@ if isOutFox(20220900) and not isOutFox(20230400) then
 	end
 end
 
+if isITGmania() then
+	if string.find(PREFSMAN:GetPreference("HttpAllowHosts"),"api.github.com") and ThemeVersion=="????????" then
+		NETWORK:HttpRequest{
+			url="https://api.github.com/repos/DarkBahamut162/itg3encore/commits/master",
+			headers=headers,
+			connectTimeout=3,
+			transferTimeout=10,
+			onResponse=function(response)
+				local json = JsonDecode(response.body)
+				local date = json.commit.author.date
+				local TZ = split(" ",json.commit.verification.payload)
+				for value in ivalues(TZ) do
+					if value:sub(1,1) == "+" or value:sub(1,1) == "-" then TimeZone = value:sub(1,5) break end
+				end
+
+				CheckVersion = date:gsub('[-:Z]+',''):gsub('[T]+',' ')
+			end
+		}
+	end
+end
+
 return Def.ActorFrame{
 	Def.Sprite {
 		Texture="roxor video",

@@ -444,20 +444,56 @@ return Def.ActorFrame{
 		OffCommand=function(self) self:stoptweening():accelerate(0.5):addy(100) end,
 		ScreenChangedMessageCommand=function(self) self:playcommand("Refresh") end,
 		RefreshCommand=function(self)
-			if not isTopScreen("ScreenLogo") then 
+			if not isTopScreen("ScreenLogo") then
 				self:settext(ProductFamily() .. " " .. ProductVersion() .. (not isEtterna(20191216) and " (" .. VersionDate() .. ")" or ""))
 			end
 		end
 	},
 	Def.BitmapText {
 		File = "ScreenOptions serial number",
-		Condition=ThemePrefs.Get("UseStepCache"),
 		InitCommand=function(self) self:x(SCREEN_LEFT+25*WideScreenDiff()):y(isFinal() and SCREEN_BOTTOM-66*WideScreenDiff() or SCREEN_BOTTOM-58*WideScreenDiff()):shadowlength(2):horizalign(left):maxwidth(SCREEN_WIDTH/5*3/WideScreenDiff()):zoom(0.5*WideScreenDiff()) end,
 		OnCommand=function(self) self:diffusealpha(0):sleep(0.5):linear(0.5):diffusealpha(1):playcommand("Refresh") end,
 		OffCommand=function(self) self:stoptweening():accelerate(0.5):addy(100) end,
 		ScreenChangedMessageCommand=function(self) self:playcommand("Refresh") end,
 		RefreshCommand=function(self)
-			if not isTopScreen("ScreenLogo") then 
+			if not isTopScreen("ScreenLogo") then
+				local version = GetThemeVersion()
+				if isITGmania() and tobool(PREFSMAN:GetPreference("HttpEnabled")) and string.find(PREFSMAN:GetPreference("HttpAllowHosts"),"api.github.com") and ThemeVersion ~= "????????" then
+					local color = Color("Red")
+					if split(" ",ThemeVersion)[1]==split(" ",CheckVersion)[1] then
+						local time1 = tonumber(split(" ",ThemeVersion)[2])
+						local add = tonumber(TimeZone)*100
+						local time2 = tonumber(split(" ",CheckVersion)[2])+add
+						if time1 ~= time2 then
+							color = Color("Yellow")
+						else
+							color = Color("Green")
+						end
+					else
+						color = Color("Red")
+					end
+					self:diffuse(color)
+				end
+				self:settext("ITG3Encore ("..version..")")
+			end
+		end
+	},
+	Def.BitmapText {
+		File = "ScreenOptions serial number",
+		Condition=ThemePrefs.Get("UseStepCache"),
+		InitCommand=function(self)
+			self:x(SCREEN_LEFT+25*WideScreenDiff()):shadowlength(2):horizalign(left):maxwidth(SCREEN_WIDTH/5*3/WideScreenDiff()):zoom(0.5*WideScreenDiff())
+			if ThemePrefs.Get("UseStepCache") then
+				self:y(isFinal() and SCREEN_BOTTOM-82*WideScreenDiff() or SCREEN_BOTTOM-74*WideScreenDiff())
+			else
+				self:y(isFinal() and SCREEN_BOTTOM-66*WideScreenDiff() or SCREEN_BOTTOM-58*WideScreenDiff())
+			end
+		end,
+		OnCommand=function(self) self:diffusealpha(0):sleep(0.5):linear(0.5):diffusealpha(1):playcommand("Refresh") end,
+		OffCommand=function(self) self:stoptweening():accelerate(0.5):addy(100) end,
+		ScreenChangedMessageCommand=function(self) self:playcommand("Refresh") end,
+		RefreshCommand=function(self)
+			if not isTopScreen("ScreenLogo") then
 				self:settext("DB9's StepCache: v"..getCacheVersion())
 			end
 		end

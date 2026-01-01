@@ -5,7 +5,24 @@ Master,P1,P2={},{},{}
 AllowLateJoin = true
 bannerForced = false
 KeysChecked = false
+ThemeVersion = "????????"
+CheckVersion = "????????"
+TimeZone = "+0100"
 local full = isOutFoxV() and "FullRes" or "Full"
+
+function GetThemeVersion()
+	if not FILEMAN:DoesFileExist(THEME:GetCurrentThemeDirectory().."/version.txt") then return "????????" end
+
+	local configfile = RageFileUtil.CreateRageFile()
+	configfile:Open(THEME:GetCurrentThemeDirectory().."/version.txt", 1)
+
+	ThemeVersion = configfile:Read():gsub('[-:]+','')
+
+	configfile:Close()
+	configfile:destroy()
+
+	return split(" ",ThemeVersion)[1]
+end
 
 function SetAllowLateJoin(change) AllowLateJoin = change end
 
