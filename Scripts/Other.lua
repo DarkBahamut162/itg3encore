@@ -1023,3 +1023,24 @@ end
 function DoesDanceRepoExist()
 	return FILEMAN:DoesFileExist("Characters/DanceRepo/DRoutines.lua")
 end
+
+function CheckThemeVersion()
+	if string.find(PREFSMAN:GetPreference("HttpAllowHosts"),"api.github.com") and CheckVersion=="????????" then
+		NETWORK:HttpRequest{
+			url="https://api.github.com/repos/DarkBahamut162/itg3encore/commits/master",
+			headers=headers,
+			connectTimeout=3,
+			transferTimeout=10,
+			onResponse=function(response)
+				local json = JsonDecode(response.body)
+				local date = json.commit.author.date
+				local TZ = split(" ",json.commit.verification.payload)
+				for value in ivalues(TZ) do
+					if value:sub(1,1) == "+" or value:sub(1,1) == "-" then TimeZone = value:sub(1,5) break end
+				end
+
+				CheckVersion = date:gsub('[-:Z]+',''):gsub('[T]+',' ')
+			end
+		}
+	end
+end

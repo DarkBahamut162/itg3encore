@@ -460,6 +460,7 @@ return Def.ActorFrame{
 				local version = GetThemeVersion()
 				if isITGmania() and tobool(PREFSMAN:GetPreference("HttpEnabled")) and string.find(PREFSMAN:GetPreference("HttpAllowHosts"),"api.github.com") and ThemeVersion ~= "????????" then
 					local color = Color("Red")
+					if CheckVersion == "????????" then CheckThemeVersion() end
 					if split(" ",ThemeVersion)[1]==split(" ",CheckVersion)[1] then
 						local time1 = tonumber(split(" ",ThemeVersion)[2])
 						local add = tonumber(TimeZone)*100
