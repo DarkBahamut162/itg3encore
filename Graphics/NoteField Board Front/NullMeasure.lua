@@ -1,5 +1,5 @@
 local player, NullMeasures = ...
-if NullMeasures == nil then return Def.ActorFrame{} end
+if not GAMESTATE:IsHumanPlayer(player) or NullMeasures == nil then return Def.ActorFrame{} end
 assert( player )
 
 local totalDelta = 0

@@ -1,4 +1,5 @@
 local player = ...
+if not GAMESTATE:IsHumanPlayer(player) then return Def.ActorFrame{} end
 local style = GAMESTATE:GetCurrentStyle()
 local NumColumns = style:ColumnsPerPlayer()
 local width = GetTrueWidth(player)
@@ -54,94 +55,97 @@ local tmpDelta = 0
 local checking = true
 local first = true
 local c
-
-local song = GAMESTATE:GetCurrentSong()
-local steps = GAMESTATE:GetCurrentSteps(player)
-local data_steps = BMSParser(steps)
-local trueFirst = tonumber(LoadFromCache(song,steps,"TrueFirstBeat"))
-local timingData = steps:GetTimingData()
-local chartint = 1
 local noteData = {}
+local trueFirst = 0
 
-if isOutFox(20200400) then
-	if not isOutFoxV043() then
-		for i,current in pairs( song:GetAllSteps() ) do
-			if current == steps then
-				chartint = i
-				break
-			end
-		end
-	end
-	noteData = isOutFoxV043() and steps:GetNoteData(trueFirst,trueFirst) or song:GetNoteData(chartint,trueFirst,trueFirst)
-else
-	local filePath = steps:GetFilename():lower()
-	if filePath:sub(-2):sub(1,1) == 's' then
-		local firstRow = LoadFromCache(song,steps,"FirstRow")
-		local check = {
-			["L"] = true,
-			["1"] = true,
-			["2"] = true,
-			["4"] = true,
-		}
-		for i=1, string.len(firstRow) do
-			if check[firstRow:sub(i,i)] then
-				noteData[#noteData+1] = {"",i}
-				break
-			end
-		end
-	else
-		local firstRow = split("_",LoadFromCache(song,steps,"FirstRow"))
-		local notes = NumColumns
-		if IsGame("be-mu") or IsGame("beat") then 
-			if isDouble() then
-				local add = ((notes == 14 and player == PLAYER_2) or notes < 14) and 0 or 1
-				local half = notes / 2
-				for note in ivalues(firstRow) do
-					if note == "11" or note == "51" then noteData[#noteData+1] = {"",1+add} end
-					if note == "12" or note == "52" then noteData[#noteData+1] = {"",2+add} end
-					if note == "13" or note == "53" then noteData[#noteData+1] = {"",3+add} end
-					if note == "14" or note == "54" then noteData[#noteData+1] = {"",4+add} end
-					if note == "15" or note == "55" then noteData[#noteData+1] = {"",5+add} end
-					if note == "16" or note == "56" then noteData[#noteData+1] = {"",1+(7*(1-add))} end
-					if note == "17" or note == "57" then noteData[#noteData+1] = {"",6+add} end
-					if note == "18" or note == "58" then noteData[#noteData+1] = {"",6+add} end
-					if note == "19" or note == "59" then noteData[#noteData+1] = {"",7+add} end
-					if note == "21" or note == "61" then noteData[#noteData+1] = {"",half+1} end
-					if note == "22" or note == "62" then noteData[#noteData+1] = {"",half+2} end
-					if note == "23" or note == "63" then noteData[#noteData+1] = {"",half+3} end
-					if note == "24" or note == "64" then noteData[#noteData+1] = {"",half+4} end
-					if note == "25" or note == "65" then noteData[#noteData+1] = {"",half+5} end
-					if note == "26" or note == "66" then noteData[#noteData+1] = {"",half+8} end
-					if note == "27" or note == "67" then noteData[#noteData+1] = {"",half} end
-					if note == "28" or note == "68" then noteData[#noteData+1] = {"",half+6} end
-					if note == "29" or note == "69" then noteData[#noteData+1] = {"",half+7} end
+function setCol()
+	noteData = {}
+	local SongOrCourse = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentTrail(player):GetTrailEntry(GAMESTATE:GetLoadingCourseSongIndex()):GetSong() or GAMESTATE:GetCurrentSong()
+	local StepsOrTrail = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentTrail(player):GetTrailEntry(GAMESTATE:GetLoadingCourseSongIndex()):GetSteps() or GAMESTATE:GetCurrentSteps(player)
+	trueFirst = tonumber(LoadFromCache(SongOrCourse,StepsOrTrail,"TrueFirstBeat"))
+	local timingData = StepsOrTrail:GetTimingData()
+	local chartint = 1
+
+	if isOutFox(20200400) then
+		if not isOutFoxV043() then
+			for i,current in pairs( SongOrCourse:GetAllSteps() ) do
+				if current == StepsOrTrail then
+					chartint = i
+					break
 				end
-			else
-				local add = ((notes == 7 and player == PLAYER_2) or notes < 7) and 0 or 1
-				for note in ivalues(firstRow) do
-					if note == "11" or note == "51" then noteData[#noteData+1] = {"",1+add} end
-					if note == "12" or note == "52" then noteData[#noteData+1] = {"",2+add} end
-					if note == "13" or note == "53" then noteData[#noteData+1] = {"",3+add} end
-					if note == "14" or note == "54" then noteData[#noteData+1] = {"",4+add} end
-					if note == "15" or note == "55" then noteData[#noteData+1] = {"",5+add} end
-					if note == "16" or note == "56" then noteData[#noteData+1] = {"",1+(7*(1-add))} end
-					if note == "17" or note == "57" then noteData[#noteData+1] = {"",6+add} end
-					if note == "18" or note == "58" then noteData[#noteData+1] = {"",6+add} end
-					if note == "19" or note == "59" then noteData[#noteData+1] = {"",7+add} end
+			end
+		end
+		noteData = isOutFoxV043() and StepsOrTrail:GetNoteData(trueFirst,trueFirst) or SongOrCourse:GetNoteData(chartint,trueFirst,trueFirst)
+	else
+		local filePath = StepsOrTrail:GetFilename():lower()
+		if filePath:sub(-2):sub(1,1) == 's' then
+			local firstRow = LoadFromCache(SongOrCourse,StepsOrTrail,"FirstRow")
+			local check = {
+				["L"] = true,
+				["1"] = true,
+				["2"] = true,
+				["4"] = true,
+			}
+			for i=1, string.len(firstRow) do
+				if check[firstRow:sub(i,i)] then
+					noteData[#noteData+1] = {"",i}
+					break
 				end
 			end
 		else
-			local add = notes-9
-			for note in ivalues(firstRow) do
-				if note == "11" or note == "51" then noteData[#noteData+1] = {"",1+add} end
-				if note == "12" or note == "52" then noteData[#noteData+1] = {"",2+add} end
-				if note == "13" or note == "53" then noteData[#noteData+1] = {"",3+add} end
-				if note == "14" or note == "54" then noteData[#noteData+1] = {"",4+add} end
-				if note == "15" or note == "55" then noteData[#noteData+1] = {"",5+add} end
-				if note == "22" or note == "62" then noteData[#noteData+1] = {"",6+add} end
-				if note == "23" or note == "63" then noteData[#noteData+1] = {"",7+add} end
-				if note == "24" or note == "64" then noteData[#noteData+1] = {"",8+add} end
-				if note == "25" or note == "65" then noteData[#noteData+1] = {"",9+add} end
+			local firstRow = split("_",LoadFromCache(SongOrCourse,StepsOrTrail,"FirstRow"))
+			local notes = NumColumns
+			if IsGame("be-mu") or IsGame("beat") then 
+				if isDouble() then
+					local add = ((notes == 14 and player == PLAYER_2) or notes < 14) and 0 or 1
+					local half = notes / 2
+					for note in ivalues(firstRow) do
+						if note == "11" or note == "51" then noteData[#noteData+1] = {"",1+add} end
+						if note == "12" or note == "52" then noteData[#noteData+1] = {"",2+add} end
+						if note == "13" or note == "53" then noteData[#noteData+1] = {"",3+add} end
+						if note == "14" or note == "54" then noteData[#noteData+1] = {"",4+add} end
+						if note == "15" or note == "55" then noteData[#noteData+1] = {"",5+add} end
+						if note == "16" or note == "56" then noteData[#noteData+1] = {"",1+(7*(1-add))} end
+						if note == "17" or note == "57" then noteData[#noteData+1] = {"",6+add} end
+						if note == "18" or note == "58" then noteData[#noteData+1] = {"",6+add} end
+						if note == "19" or note == "59" then noteData[#noteData+1] = {"",7+add} end
+						if note == "21" or note == "61" then noteData[#noteData+1] = {"",half+1} end
+						if note == "22" or note == "62" then noteData[#noteData+1] = {"",half+2} end
+						if note == "23" or note == "63" then noteData[#noteData+1] = {"",half+3} end
+						if note == "24" or note == "64" then noteData[#noteData+1] = {"",half+4} end
+						if note == "25" or note == "65" then noteData[#noteData+1] = {"",half+5} end
+						if note == "26" or note == "66" then noteData[#noteData+1] = {"",half+8} end
+						if note == "27" or note == "67" then noteData[#noteData+1] = {"",half} end
+						if note == "28" or note == "68" then noteData[#noteData+1] = {"",half+6} end
+						if note == "29" or note == "69" then noteData[#noteData+1] = {"",half+7} end
+					end
+				else
+					local add = ((notes == 7 and player == PLAYER_2) or notes < 7) and 0 or 1
+					for note in ivalues(firstRow) do
+						if note == "11" or note == "51" then noteData[#noteData+1] = {"",1+add} end
+						if note == "12" or note == "52" then noteData[#noteData+1] = {"",2+add} end
+						if note == "13" or note == "53" then noteData[#noteData+1] = {"",3+add} end
+						if note == "14" or note == "54" then noteData[#noteData+1] = {"",4+add} end
+						if note == "15" or note == "55" then noteData[#noteData+1] = {"",5+add} end
+						if note == "16" or note == "56" then noteData[#noteData+1] = {"",1+(7*(1-add))} end
+						if note == "17" or note == "57" then noteData[#noteData+1] = {"",6+add} end
+						if note == "18" or note == "58" then noteData[#noteData+1] = {"",6+add} end
+						if note == "19" or note == "59" then noteData[#noteData+1] = {"",7+add} end
+					end
+				end
+			else
+				local add = notes-9
+				for note in ivalues(firstRow) do
+					if note == "11" or note == "51" then noteData[#noteData+1] = {"",1+add} end
+					if note == "12" or note == "52" then noteData[#noteData+1] = {"",2+add} end
+					if note == "13" or note == "53" then noteData[#noteData+1] = {"",3+add} end
+					if note == "14" or note == "54" then noteData[#noteData+1] = {"",4+add} end
+					if note == "15" or note == "55" then noteData[#noteData+1] = {"",5+add} end
+					if note == "22" or note == "62" then noteData[#noteData+1] = {"",6+add} end
+					if note == "23" or note == "63" then noteData[#noteData+1] = {"",7+add} end
+					if note == "24" or note == "64" then noteData[#noteData+1] = {"",8+add} end
+					if note == "25" or note == "65" then noteData[#noteData+1] = {"",9+add} end
+				end
 			end
 		end
 	end
@@ -172,6 +176,11 @@ end
 if columns > 0 then
 	local t = Def.ActorFrame{
 		InitCommand=function(self) c = self:GetChildren() end,
+		CurrentSongChangedMessageCommand=function(self)
+			checking,first = true,true
+			setCol()
+			for _,note in pairs( noteData ) do c["Column"..note[2]]:diffuse(Color("White")) end
+		end,
 		OnCommand=function(self)
 			if bits[#bits] then
 				for _,note in pairs( noteData ) do c["Column"..note[2]]:diffuse(Color("White")) end

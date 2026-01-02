@@ -1,6 +1,6 @@
-if isTopScreen("ScreenDemonstration2") or isTopScreen("ScreenDemonstration") then return Def.ActorFrame{} end
 local player = ...
 local t = Def.ActorFrame{}
+if not GAMESTATE:IsHumanPlayer(player) or isTopScreen("ScreenDemonstration2") or isTopScreen("ScreenDemonstration") then return t end
 
 local tilt = GAMESTATE:GetPlayerState(player):GetCurrentPlayerOptions():Tilt()
 local tilt_degrees = scale(tilt,-1,1,30,30) % 360
