@@ -92,6 +92,9 @@ Shows stepchart's Techniques
   - If *both Counters* have been enabled, **both switch between one another** like *BPMDisplay* and *MODDisplay*
 - **ShowTime**
 Shows **Session Time** and **Time Played** per Player
+### [ScreenPlayerOptions]
+- **SplitOptions:**
+Ability to **split** the **PlayerOptions** into categoties
 ### [ScreenGameplay]
 - **AnimatePlayerScore:**
 Have the Player Score animate instead of instantly updating

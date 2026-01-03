@@ -57,7 +57,8 @@ if not isOutFox(20200530) then GAMESTATE:ApplyGameCommand('mod,savescore',player
 if IsGame("po-mu") or IsGame("popn") then
 	judgment = "_pop 1x"
 else
-	judgment = not GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentSteps(player):GetDifficulty() == 'Difficulty_Beginner' and "_beginner 2x" or "_judgments 2x"
+	judgment = getenv("Judgment"..pname(player)) or "_itg3"
+	judgment = judgment .. ((not GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentSteps(player):GetDifficulty() == 'Difficulty_Beginner') and "_beginner 2x" or " 2x")
 end
 
 return Def.ActorFrame{

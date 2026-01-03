@@ -219,53 +219,67 @@ function StepsTypeDouble()
 	return false
 end
 
-function SongMods()
+function SongMods(part)
 	local add,add2 = "",isOutFoxV(20230624) and ",27" or ""
 
 	if not isOni() then add = "20G," end
 
 	local fail = isOutFoxV(20221111) and "FV" or "F"
-	local options = (isEtterna() and "Speed," or "1,") .."2,4,"..fail..","..((isRegular() and VersionDateCheck(20160000)) and (isOpenDDR() and "0DDR" or "0,Flare") or "0")..",3,5"..((isEtterna() or isOldStepMania()) and ",REE,AEE" or ",RE,RE2,AE,AE2,AE3")..(isOutFox() and ",AE4" or "")..",17,9,"
-
-	if isRegular() then
-		if isDouble() then
-			options = addToOutput(options,"23,10,11",",")
-		else
-			options = addToOutput(options,"22,23,10,11",",")
-		end
-	elseif isNonstop() then
-		options = addToOutput(options,"22,23",",")
-	else
-		options = addToOutput(options,"10,11",",")
+	local options = ""
+	
+	if part == nil or part == 1 then
+		options = addToOutput(options,(isEtterna() and "Speed," or "1,") .."2,4,"..fail..","..((isRegular() and VersionDateCheck(20160000)) and (isOpenDDR() and "0DDR" or "0,Flare") or "0")..",3",",")
+		if not (IsGame("pump") or GAMESTATE:IsCourseMode()) then options = addToOutput(options,"31",",") end
+		if not (IsGame("be-mu") or IsGame("beat") or IsGame("po-mu") or IsGame("popn")) then options = addToOutput(options,"32",",") end
+	end
+	if part == nil or part == 2 then
+		options = addToOutput(options,"5"..((isEtterna() or isOldStepMania()) and ",REE,AEE" or ",RE,RE2,AE,AE2,AE3")..(isOutFox() and ",AE4" or "")..",17,9",",")
 	end
 
-	options = addToOutput(options,"12,13,14,7,BGC,M,A,15,19,28,30,S,EB,CC,25",",")
-	if isITGmania(20250327) then add2 = addToOutput(add2,",HLT",",") end
-	if isITGmania(20220612) then add2 = addToOutput(add2,",DTW",",") end
-	if isITGmania(20240307) then add2 = addToOutput(add2,",BB",",") end
+	if isRegular() then
+		if part == nil or part == 3 then
+			if isDouble() then options = addToOutput(options,"23",",") else options = addToOutput(options,"22,23",",") end
+		end
+		if part == nil or part == 2 then options = addToOutput(options,"10,11",",") end
+	elseif isNonstop() then
+		if part == nil or part == 3 then options = addToOutput(options,"22,23",",") end
+	else
+		if part == nil or part == 2 then options = addToOutput(options,"10,11",",") end
+	end
 
-	options = addToOutput(options,"20,"..add.."P,PF,29,21"..add2..",24",",")
+	if part == nil or part == 2 then options = addToOutput(options,"12,13,14,7,BGC,M,A,15",",") end
+	if part == nil or part == 3 then
+		options = addToOutput(options,"19,28,30,S,EB,CC,25",",")
+		if isITGmania(20250327) then add2 = addToOutput(add2,",HLT",",") end
+		if isITGmania(20220612) then add2 = addToOutput(add2,",DTW",",") end
+		if isITGmania(20240307) then add2 = addToOutput(add2,",BB",",") end
+		options = addToOutput(options,"20,"..add.."P,PF,29,21"..add2,",")
+	end
 
 	if GAMESTATE:IsCourseMode() then
-		if (GAMESTATE:GetNumPlayersEnabled() == 1 and not isDouble()) then
-			options = "1,3,22R"
-		else
-			options = "1,3"
+		if part == nil or part == 1 then options = "1,3" end
+		if part == nil or part == 3 then
+			if (GAMESTATE:GetNumPlayersEnabled() == 1 and not isDouble()) then
+				if part == nil then options = addToOutput(options,"22R",",") elseif part == 3 then options = "22R" end
+			end
 		end
 	end
 
 	if isVS() then
-		options = addToOutput(options,"28,21"..add2,",")
+		if part == nil or part == 3 then options = addToOutput(options,"28,21"..add2,",") end
 	elseif GAMESTATE:IsCourseMode() then
-		options = addToOutput(options,"28,S,EB,CC,20,"..add.."P,PF,29,21"..add2,",")
+		if part == nil or part == 3 then options = addToOutput(options,"28,S,EB,CC,20,"..add.."P,PF,29,21"..add2,",") end
 	end
 
-	if not (IsGame("pump") or GAMESTATE:IsCourseMode()) then options = addToOutput(options,"31",",") end
-	if DoesDanceRepoExist() then
+	if DoesDanceRepoExist() and (part == nil or part == 4) then
 		options = addToOutput(options,"SelectDanceStage,OptionRowCharacters,CutInOverVideo,VideoOverStage,BoomSync,DiscoStars,RMStage,CharacterSync,CharaShadow,SNEnv",",")
 	end
 
-	options = addToOutput(options,"16",",")
+	if part == nil or part == 1 then options = addToOutput(options,"SR,24,16",",") end
+	if part == 1 then options = addToOutput(options,"After1",",") end
+	if part == 2 then options = addToOutput(options,"After2",",") end
+	if part == 3 then options = addToOutput(options,"After3",",") end
+	if part == 4 then options = addToOutput(options,"After4",",") end
 	return options
 end
 
@@ -455,6 +469,7 @@ function InitPlayerOptions()
 		setenv("ShowSpeedAssist"..pname(pn),LoadUserPrefB(pn, "ShowSpeedAssist", false))
 		setenv("ShowStopAssist"..pname(pn),LoadUserPrefB(pn, "ShowStopAssist", false))
 		setenv("SongFrame"..pname(pn),LoadUserPref(pn, "SongFrame", "_normal"))
+		setenv("Judgment"..pname(pn),LoadUserPref(pn, "Judgment", "_itg3"))
 	end
 
 end
@@ -1050,31 +1065,107 @@ function OptionOrientationRestricted()
 end
 
 function OptionSongFrame()
+	local values = { "_bunnies", "_disconnect", "_energy", "_hasse", "_love", "_nightmare", "_normal", "_pandy", "_smiley", "_vertex", "_virtual" }
 	local t = {
 		Name = "SongFrame",
 		LayoutType = "ShowAllInRow",
 		SelectType = "SelectOne",
 		OneChoiceForAllPlayers = false,
 		ExportOnChange = false,
-		Values = { "_bunnies", "_disconnect", "_energy", "_hasse", "_love", "_nightmare", "_normal", "_pandy", "_smiley", "_vertex", "_virtual" },
+		Values = values,
 		Choices = { "Bunnies", "Disconnect", "Energy", "Hasse", "Love", "Nightmare", "Normal", "Pandy", "Smiley", "Vertex", "Virtual" },
 		LoadSelections = function(self, list, pn)
-			list[1] = getenv("SongFrame"..pname(pn)) == "_bunnies"
-			list[2] = getenv("SongFrame"..pname(pn)) == "_disconnect"
-			list[3] = getenv("SongFrame"..pname(pn)) == "_energy"
-			list[4] = getenv("SongFrame"..pname(pn)) == "_hasse"
-			list[5] = getenv("SongFrame"..pname(pn)) == "_love"
-			list[6] = getenv("SongFrame"..pname(pn)) == "_nightmare"
-			list[7] = getenv("SongFrame"..pname(pn)) == "_normal"
-			list[8] = getenv("SongFrame"..pname(pn)) == "_pandy"
-			list[9] = getenv("SongFrame"..pname(pn)) == "_smiley"
-			list[10] = getenv("SongFrame"..pname(pn)) == "_vertex"
-			list[11] = getenv("SongFrame"..pname(pn)) == "_virtual"
+			for i=1,#list do
+				list[i] = getenv("SongFrame"..pname(pn)) == values[i]
+			end
 		end,
 		SaveSelections = function(self, list, pn)
 			for i=1,#list do
 				if list[i] then
-					setenv("SongFrame"..pname(pn),SaveUserPref(pn, "SongFrame", self.Values[i]))
+					setenv("SongFrame"..pname(pn),SaveUserPref(pn, "SongFrame", values[i]))
+				end
+			end
+		end
+	}
+	setmetatable(t, t)
+	return t
+end
+
+function OptionJudgment()
+	local t = {
+		Name = "Judgment",
+		LayoutType = "ShowAllInRow",
+		SelectType = "SelectOne",
+		OneChoiceForAllPlayers = false,
+		ExportOnChange = false,
+		Values = { "_itg3", "_itg3_chroma", "_itg2", "_itg2_chroma" },
+		Choices = { "ITG3", "ITG3 Chroma", "ITG2", "ITG2 Chroma" },
+		LoadSelections = function(self, list, pn)
+			for i=1,#list do
+				list[i] = getenv("Judgment"..pname(pn)) == self.Values[i]
+			end
+		end,
+		SaveSelections = function(self, list, pn)
+			for i=1,#list do
+				if list[i] then
+					setenv("Judgment"..pname(pn),SaveUserPref(pn, "Judgment", self.Values[i]))
+				end
+			end
+		end
+	}
+	setmetatable(t, t)
+	return t
+end
+
+function ScreenAfterPlayerOptions(part)
+	local p1 = part==2 or part==3 or part==4
+	local p2 = part==2 or part==3 or part==4
+	local p3 = part==2 or part==3 or part==4
+	local p4 = part==2 or part==3 or part==4
+	local choices = { "Gameplay", "SelectMusic" }
+	local values = {}
+	if part ~= 1 then choices[#choices+1] = "Options1" end
+	if part ~= 2 and not GAMESTATE:IsCourseMode() then choices[#choices+1] = "Options2" end
+	if part ~= 3 then choices[#choices+1] = "Options3" end
+	if part ~= 4 and DoesDanceRepoExist() then choices[#choices+1] = "Options4" end
+
+	local screens = {
+		["Gameplay"] = Branch.BeforeGameplay(),
+		["SelectMusic"] = SelectMusicOrCourse(),
+		["Options1"] = "ScreenPlayerOptions",
+		["Options2"] = "ScreenPlayerOptions2",
+		["Options3"] = "ScreenPlayerOptions3",
+		["Options4"] = "ScreenPlayerOptions4"
+	}
+	local engine = isOutFox() and "OutFox" or isStepMania() and "StepMania" or isITGmania() and "ITGmania" or isEtterna() and "Etterna" or isOpenDDR() and "DDR" or "Engine"
+	local names = {
+		["Gameplay"] = "Gameplay",
+		["SelectMusic"] = "SelectMusic",
+		["Options1"] = "GameOptions" ,
+		["Options2"] = engine.."Options",
+		["Options3"] = "LuaOptions",
+		["Options4"] = "DanceStageOptions"
+	}
+	for i=1,#choices do
+		if choices[i] then
+			values[i] = names[choices[i]]
+		end
+	end
+
+	local t = {
+		Name = "AfterPlayerOptions",
+		LayoutType = "ShowAllInRow",
+		SelectType = "SelectOne",
+		OneChoiceForAllPlayers = true,
+		Choices = values,
+		LoadSelections = function(self, list, pn)
+			list[1] = true
+			setenv("PlayerOptions",screens[choices[1]])
+		end,
+		SaveSelections = function(self, list, pn)
+			for i=1,#list do
+				if list[i] then
+					setenv("PlayerOptions",screens[choices[i]])
 				end
 			end
 		end

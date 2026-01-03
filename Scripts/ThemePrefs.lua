@@ -362,7 +362,13 @@ local Prefs = {
 		Choices = { OptionNameString('Off'), OptionNameString('On') },
 		Values = { false, true }
 	},
-	--{ScreenGameplay}
+	--[ScreenPlayerOptions]
+	SplitOptions = {
+		Default = false,
+		Choices = { OptionNameString('Off'), OptionNameString('On') },
+		Values = { false, true }
+	},
+	--[ScreenGameplay]
 	AnimatePlayerScore = {
 		Default = false,
 		Choices = { OptionNameString('Off'), OptionNameString('On') },
