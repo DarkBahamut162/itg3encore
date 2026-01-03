@@ -468,7 +468,7 @@ function getStepCacheFile(Step)
 	if #filename == 1 and Song then filename = split("/",Song:GetSongDir()) end
 	if #filename == 1 and Song then filename = split("/",Song:GetSongFilePath()) end
 	local groupName = filename[#filename-2] or Song:GetGroupName() or ""
-	local songName = filename[#filename-1] or (isOutFox() and Song:GetSongFolder() or "") or ""
+	local songName = filename[#filename-1] or (isOutFox(20221200) and Song:GetSongFolder() or "") or ""
 	if string.find(groupName,"@") then
 		if not Song then Song = SONGMAN:GetSongFromSteps(Step) end
 		groupName = Song:GetGroupName()
