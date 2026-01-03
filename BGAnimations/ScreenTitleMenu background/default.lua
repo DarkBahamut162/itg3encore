@@ -398,46 +398,6 @@ return Def.ActorFrame{
 		OnCommand=function(self) self:play() end
 	},
 	Def.BitmapText {
-		File = "_v 26px bold black",
-		InitCommand=function(self) self:CenterX():y(isFinal() and SCREEN_BOTTOM-60*WideScreenDiff() or SCREEN_BOTTOM-34*WideScreenDiff()):diffusealpha(0):shadowlength(0):zoom(0.5*WideScreenDiff()) end,
-		OnCommand=function(self) self:sleep(0.5):linear(0.5):diffusealpha(1):playcommand("Refresh") end,
-		OffCommand=function(self) self:accelerate(0.5):addy(100):diffusealpha(0) end,
-		ScreenChangedMessageCommand=function(self) self:playcommand("Refresh") end,
-		RefreshCommand=function(self)
-			if not isTopScreen("ScreenLogo") then
-				if isFinal() then
-					if 1 > GetScreenAspectRatio() then
-						self:settext("ITG3Encore Final?")
-					else
-						self:settext("In The Groove 3 Encore Final?")
-					end
-				else
-					if 1 > GetScreenAspectRatio() then
-						self:settext("ITG3Encore r35?")
-					else
-						self:settext("In The Groove 3 Encore r35?")
-					end
-				end
-			end
-		end
-	},
-	Def.BitmapText {
-		File = "ScreenOptions serial number",
-		InitCommand=function(self) self:x(SCREEN_CENTER_X+110*WideScreenDiff()):y(isFinal() and SCREEN_BOTTOM-50*WideScreenDiff() or SCREEN_BOTTOM-42*WideScreenDiff()):shadowlength(2):horizalign(left):maxwidth(SCREEN_WIDTH/5*3/WideScreenDiff()):zoom(0.5*WideScreenDiff()) end,
-		OnCommand=function(self) self:diffusealpha(0):sleep(0.5):linear(0.5):diffusealpha(1):playcommand("Refresh") end,
-		OffCommand=function(self) self:stoptweening():accelerate(0.5):addy(100) end,
-		ScreenChangedMessageCommand=function(self) self:playcommand("Refresh") end,
-		RefreshCommand=function(self)
-			if not isTopScreen("ScreenLogo") then 
-				if isFinal() then
-					self:settext("ITG-(?/?)-20XX/XX/XX-ITG3-Final-Encore")
-				else
-					self:settext("ITG-(?/?)-20XX/XX/XX-ITG3-r35-Encore")
-				end
-			end
-		end
-	},
-	Def.BitmapText {
 		File = "ScreenOptions serial number",
 		InitCommand=function(self) self:x(SCREEN_LEFT+25*WideScreenDiff()):y(isFinal() and SCREEN_BOTTOM-50*WideScreenDiff() or SCREEN_BOTTOM-42*WideScreenDiff()):shadowlength(2):horizalign(left):maxwidth(SCREEN_WIDTH/5*3/WideScreenDiff()):zoom(0.5*WideScreenDiff()) end,
 		OnCommand=function(self) self:diffusealpha(0):sleep(0.5):linear(0.5):diffusealpha(1):playcommand("Refresh") end,
@@ -475,7 +435,7 @@ return Def.ActorFrame{
 					end
 					self:diffuse(color)
 				end
-				self:settext("ITG3Encore ("..version..")")
+				self:settext("ITG3Encore"..(isFinal() and "|Final" or "").." ("..version..")")
 			end
 		end
 	},
