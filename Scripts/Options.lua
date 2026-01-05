@@ -20,7 +20,7 @@ function ChoiceSingle()
 	elseif IsGame("popn") then
 		return {"popn-five","popn-nine"}
 	elseif IsGame("techno") then
-		if VersionDateCheck(20210300) then
+		if isOutFox(20210300) then
 			return {"single4","single5","single8","single9"}
 		else
 			return {"single4","single5","single8"}
@@ -54,7 +54,7 @@ function ChoiceVersus()
 	elseif IsGame("popn") then
 		return {nil,nil}
 	elseif IsGame("techno") then
-		if VersionDateCheck(20210300) then
+		if isOutFox(20210300) then
 			return {"versus4","versus5","versus8","versus9"}
 		else
 			return {"versus4","versus5","versus8"}
@@ -84,7 +84,7 @@ function ChoiceDouble()
 	elseif IsGame("popn") then
 		return {nil,nil}
 	elseif IsGame("techno") then
-		if VersionDateCheck(20210300) then
+		if isOutFox(20210300) then
 			return {"double4","double5","double8","double9"}
 		else
 			return {"double4","double5","double8"}
@@ -146,7 +146,11 @@ function StyleName()
 	elseif IsGame("popn") then
 		return {"5 Buttons","9 Buttons"}
 	elseif IsGame("techno") then
-		return {"4 Arrows","5 Arrows","8 Arrows","9 Arrows"}
+		if isOutFox(20210300) then
+			return {"4 Arrows","5 Arrows","8 Arrows","9 Arrows"}
+		else
+			return {"4 Arrows","5 Arrows","8 Arrows"}
+		end
 	end
 	return false
 end
