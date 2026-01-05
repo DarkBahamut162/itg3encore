@@ -280,13 +280,22 @@ return Def.ActorFrame{
 					if stepsToCache[curStep] then
 						local cacheTime = GetTimeSinceStart()
 						local filePath = stepsToCache[curStep]:GetFilename():lower()
-						local quickSM = filePath:sub(-2):sub(1,1) == 's'	-- [S]M & S[S]C
-						--local quickBMS = filePath:sub(-3):sub(2,2) == 'm'	-- B[M]S & B[M]E & B[M]L & P[M]S
-						--local quickPMS = filePath:sub(-3) == 'pms'
-						--if not isOutFox(20200404) or (quickSM and isOutFoxV()) then
-						if not isOutFox(20200404) then
-							if quickSM then cacheStepSM(nil,stepsToCache[curStep]) else cacheStepBMS(nil,stepsToCache[curStep]) end
-						else cacheStep(nil,stepsToCache[curStep]) end
+						local checkSM = filePath:sub(-2):sub(1,1) == 's'	-- [S]M & S[S]C
+						local checkDWI = filePath:sub(-3):sub(1,1) == 'd'	-- [D]WI
+						--local checkBMS = filePath:sub(-3):sub(2,2) == 'm'	-- B[M]S & B[M]E & B[M]L & P[M]S
+						local checkPMS = filePath:sub(-3) == 'pms'
+
+						if not isOutFox(20200400) or ((checkSM or checkPMS) and isOutFoxV()) then
+							if checkSM then
+								cacheStepSM(nil,stepsToCache[curStep])
+							elseif checkDWI then
+								cacheStepDWI(nil,stepsToCache[curStep])
+							else
+								cacheStepBMS(nil,stepsToCache[curStep])
+							end
+						else
+							cacheStep(nil,stepsToCache[curStep])
+						end
 						local stepType = split("_",stepsToCache[curStep]:GetStepsType())[2]
 						cachedTimes[stepType] = cachedTimes[stepType] and cachedTimes[stepType] + (GetTimeSinceStart()-cacheTime) or (GetTimeSinceStart()-cacheTime)
 						cachedTypes[stepType] = cachedTypes[stepType] and cachedTypes[stepType] + 1 or 1
