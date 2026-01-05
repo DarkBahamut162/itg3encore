@@ -264,7 +264,7 @@ function SongMods(part)
 		options = addToOutput(options,"SelectDanceStage,OptionRowCharacters,CutInOverVideo,VideoOverStage,BoomSync,DiscoStars,RMStage,CharacterSync,CharaShadow,SNEnv",",")
 	end
 
-	if part == nil or part == 1 then options = addToOutput(options,"SR,24,16",",") end
+	if part == nil or part == 1 then options = addToOutput(options,"24,16",",") end
 	if part == 1 then options = addToOutput(options,"After1",",") end
 	if part == 2 then options = addToOutput(options,"After2",",") end
 	if part == 3 then options = addToOutput(options,"After3",",") end
