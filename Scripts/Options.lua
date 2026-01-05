@@ -232,8 +232,7 @@ function SongMods(part)
 	else
 		if part == nil or part == 2 then options = addToOutput(options,"10,11",",") end
 	end
-
-	if part == nil or part == 2 then options = addToOutput(options,"12,13,14,7,BGC,M,A,15",",") end
+	if part == nil or part == 2 then options = addToOutput(options,"12"..(isITGmania(20240317) and ",12ITG" or "")..",13,14,7,BGC,M,A,15",",") end
 	if part == nil or part == 3 then
 		options = addToOutput(options,"19,28,30,S,EB,CC,25",",")
 		if isITGmania(20250327) then add2 = addToOutput(add2,",HLT",",") end
