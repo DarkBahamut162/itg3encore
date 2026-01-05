@@ -1,18 +1,4 @@
 local pn = ...
-local style = GAMESTATE:GetCurrentStyle():GetStyleType()
-local maskfile = {
-	PLAYER_1 = THEME:GetPathB("ScreenGameplay", "underlay/Cutin/_Mask_down"),
-	PLAYER_2 = THEME:GetPathB("ScreenGameplay", "underlay/Cutin/_Mask_up")
-}
-
-maskfile = maskfile[pn]
-
-local versus_y = {
-	PLAYER_1 = -130,
-	PLAYER_2 = 230
-}
-versus_y = versus_y[pn]
-
 local charComboA   = "/Characters/"..WhichRead(pn).."/Cut-In/comboA.png"
 local charComboB   = "/Characters/"..WhichRead(pn).."/Cut-In/comboB.png"
 local charCombo100 = "/Characters/"..WhichRead(pn).."/Cut-In/combo100.png"
@@ -37,16 +23,6 @@ t[#t+1] = Def.ActorFrame{
 			self:playcommand("Popup", {type='A'})
 		end
 	end,
-	Def.Sprite{
-		InitCommand=function(self)
-			self:clearzbuffer(true):zwrite(true):blend('BlendMode_NoEffect')
-			if style == "StyleType_TwoPlayersTwoSides" or GAMESTATE:GetPlayMode() == 'PlayMode_Rave' then
-				self:Load(maskfile)
-			else
-				self:visible(false)
-			end
-		end
-	},
 	Def.Sprite {
 		Texture = charColor,
 		InitCommand=function(self)
@@ -73,7 +49,6 @@ t[#t+1] = Def.ActorFrame{
 			self:texcoordvelocity(-0.053,0)  
 			self:texcoordvelocity(-0.053,0)  
 			self:texcoordvelocity(-0.2,0)
-			self:MaskDest()
 		end,
 		PopupCommand=function(self)
 			self:finishtweening():linear(0.2):diffusealpha(1):diffusealpha(0.9):sleep(1):linear(0.2):diffusealpha(0)
@@ -81,9 +56,7 @@ t[#t+1] = Def.ActorFrame{
 	},
 	Def.Sprite {
 		InitCommand=function(self)
-			self:MaskDest():diffusealpha(0):scaletoclipped(450,1080)
-			if style == "StyleType_TwoPlayersTwoSides" or GAMESTATE:GetPlayMode() == 'PlayMode_Rave' then self:y(versus_y) end
-			self:Load(charComboA):Load(charComboB):Load(charCombo100)
+			self:diffusealpha(0):scaletoclipped(450,1080):Load(charComboA):Load(charComboB):Load(charCombo100)
 		end,
 		PopupCommand=function(self, params)
 			if params.type == 'A' then
@@ -101,18 +74,13 @@ t[#t+1] = Def.ActorFrame{
 	Def.Sprite {
 		Texture = charLight,
 		InitCommand=function(self)
-			self:MaskDest():diffusealpha(0):blend('BlendMode_Add'):setsize(450,1080)
-			if style == "StyleType_TwoPlayersTwoSides" or GAMESTATE:GetPlayMode() == 'PlayMode_Rave' then self:y(versus_y) end
+			self:diffusealpha(0):blend('BlendMode_Add'):setsize(450,1080)
 		end,
 		PopupCommand=function(self)
 			self:finishtweening():sleep(0):linear(0.2):diffusealpha(0.5):sleep(0.8):linear(0.2):diffusealpha(0)
 		end
 	},
 	Def.ActorFrame {
-		InitCommand=function(self)
-			self:MaskDest()
-			if style == "StyleType_TwoPlayersTwoSides" or GAMESTATE:GetPlayMode() == 'PlayMode_Rave' then self:y(versus_y) end
-		end,
 		Def.Sprite {
 			Texture = charCircles,
 			InitCommand=function(self) self:diffusealpha(0):blend('BlendMode_Add'):vertalign(top) end,

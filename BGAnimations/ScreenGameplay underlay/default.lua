@@ -38,17 +38,13 @@ if DanceStageSelected ~= "OFF" and DoesDanceRepoExist() and not HasLuaCheck() th
 						OnCommand=function(s) s:setsize(450,SCREEN_HEIGHT) end,
 						InitCommand=function(self)
 							self:CenterY()
-							if style == "StyleType_TwoPlayersTwoSides" or GAMESTATE:GetPlayMode() == 'PlayMode_Rave' then
-								self:x(SCREEN_CENTER_X)
+							if getenv("Rotation"..pname(pn)) == 5 or GAMESTATE:GetNumPlayersEnabled() == 2 then
+								self:x(x_table[OtherPlayer[pn]])
 							else
-								if getenv("Rotation"..pname(pn)) == 5 then
-									self:x(x_table[OtherPlayer[pn]])
+								if GAMESTATE:GetNumPlayersEnabled() == 1 and getenv("ShowStatsSize"..pname(pn)) == 1 then
+									self:x(SCREEN_CENTER_X)
 								else
-									if getenv("ShowStatsSize"..pname(pn)) == 1 then
-										self:x(SCREEN_CENTER_X)
-									else
-										self:x(x_table[pn])
-									end
+									self:x(x_table[pn])
 								end
 							end
 						end
