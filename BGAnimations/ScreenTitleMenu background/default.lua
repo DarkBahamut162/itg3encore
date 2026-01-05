@@ -425,7 +425,7 @@ return Def.ActorFrame{
 						local time1 = tonumber(split(" ",ThemeVersion)[2])
 						local add = tonumber(TimeZone)*100
 						local time2 = tonumber(split(" ",CheckVersion)[2])+add
-						if time1 ~= time2 then
+						if math.abs(time1-time2)>50 then
 							color = Color("Yellow")
 						else
 							color = Color("Green")
