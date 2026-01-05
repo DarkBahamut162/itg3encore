@@ -8,9 +8,9 @@ function ChoiceSingle()
 	elseif IsGame("solo") then
 		return {"single"}
 	elseif IsGame("pump") then
-		return {"single"}
+		return {"single",nil}
 	elseif IsGame("smx") then
-		return {"single"}
+		return {"single",nil}
 	elseif IsGame("be-mu") then
 		return {"single5","single6","single7"}
 	elseif IsGame("beat") then
@@ -38,9 +38,9 @@ function ChoiceVersus()
 	elseif IsGame("solo") then
 		return {nil}
 	elseif IsGame("pump") then
-		return {"versus"}
+		return {"versus",nil}
 	elseif IsGame("smx") then
-		return {"versus"}
+		return {"versus",nil}
 	elseif IsGame("be-mu") then
 		return {"versus5","versus6","versus7"}
 	elseif IsGame("beat") then
@@ -72,9 +72,9 @@ function ChoiceDouble()
 	elseif IsGame("solo") then
 		return {nil}
 	elseif IsGame("pump") then
-		return {"double"}
+		return {"double","halfdouble"}
 	elseif IsGame("smx") then
-		return {"double10"}
+		return {"double10","double6"}
 	elseif IsGame("be-mu") then
 		return {"double5","double6","double7"}
 	elseif IsGame("beat") then
@@ -101,41 +101,27 @@ function GameModeEnabled()
 end
 
 function GetStyles()
+	local output = ""
 	if GameModeEnabled() then
-		if IsNetSMOnline() then
-			if ChoiceDouble()[GetUserPrefN("StylePosition")] then
-				return "1,3"
-			else
-				return "1"
-			end
-		else
-			if ChoiceDouble()[GetUserPrefN("StylePosition")] then
-				return isEtterna("0.55") and "1,3" or "1,2,3"
-			else
-				if isEtterna("0.55") then
-					return "1"
-				elseif ChoiceVersus()[GetUserPrefN("StylePosition")] then
-					return "1,2"
-				else
-					return "1"
-				end
-			end
-		end
+		if ChoiceSingle()[GetUserPrefN("StylePosition")] then output = addToOutput(output,"1",",") end
+		if not IsNetSMOnline() and ChoiceVersus()[GetUserPrefN("StylePosition")] then output = addToOutput(output,"2",",") end
+		if ChoiceDouble()[GetUserPrefN("StylePosition")] then output = addToOutput(output,"3",",") end
 	else
 		return "0"
 	end
+	return output
 end
 
 function GetStylesWorkout()
+	local output = ""
 	if GameModeEnabled() then
-		if ChoiceDouble()[GetUserPrefN("StylePosition")] then
-			return "1,2,3"
-		else
-			return "1,2"
-		end
+		if ChoiceSingle()[GetUserPrefN("StylePosition")] then output = addToOutput(output,"1",",") end
+		if ChoiceVersus()[GetUserPrefN("StylePosition")] then output = addToOutput(output,"2",",") end
+		if ChoiceDouble()[GetUserPrefN("StylePosition")] then output = addToOutput(output,"3",",") end
 	else
 		return "0"
 	end
+	return output
 end
 
 function StyleName()
@@ -148,9 +134,9 @@ function StyleName()
 	elseif IsGame("solo") then
 		return {"6 Arrows"}
 	elseif IsGame("pump") then
-		return {"5 Arrows"}
+		return {"5 Arrows","3 Arrows"}
 	elseif IsGame("smx") then
-		return {"5 Arrows"}
+		return {"5 Arrows","3 Arrows"}
 	elseif IsGame("be-mu") then
 		return {"5 Buttons + Turntable","Foot Pedal + 5 Buttons + Turntable","7 Buttons + Turntable"}
 	elseif IsGame("beat") then
@@ -175,9 +161,9 @@ function StepsTypeSingle()
 	elseif IsGame("solo") then
 		return {"StepsType_Dance_Solo"}
 	elseif IsGame("pump") then
-		return {"StepsType_Pump_Single"}
+		return {"StepsType_Pump_Single",nil}
 	elseif IsGame("smx") then
-		return {"StepsType_Smx_Single"}
+		return {"StepsType_Smx_Single",nil}
 	elseif IsGame("be-mu") then
 		return {"StepsType_Bm_Single5","StepsType_Bm_Single6","StepsType_Bm_Single7"}
 	elseif IsGame("beat") then
@@ -202,9 +188,9 @@ function StepsTypeDouble()
 	elseif IsGame("solo") then
 		return {nil}
 	elseif IsGame("pump") then
-		return {"StepsType_Pump_Double"}
+		return {"StepsType_Pump_Double","StepsType_Pump_HalfDouble"}
 	elseif IsGame("smx") then
-		return {"StepsType_Smx_Double10"}
+		return {"StepsType_Smx_Double10","StepsType_Smx_Double6"}
 	elseif IsGame("be-mu") then
 		return {"StepsType_Bm_Double5","StepsType_Bm_Double6","StepsType_Bm_Double7"}
 	elseif IsGame("beat") then

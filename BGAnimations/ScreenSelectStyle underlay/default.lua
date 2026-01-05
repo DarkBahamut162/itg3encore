@@ -1,6 +1,6 @@
 local c
 local selectState = false
-local styles = ChoiceSingle()
+local styles = (IsGame("pump") or IsGame("smx")) and ChoiceDouble() or ChoiceSingle()
 local currentBattleMode = getenv("BattleMode")
 local currentStylePosition = GetUserPrefN("StylePosition")
 local currentStyles = StyleName()
