@@ -1,5 +1,5 @@
 local player = ...
-if not GAMESTATE:IsHumanPlayer(player) then return Def.ActorFrame{} end
+if not GAMESTATE:IsHumanPlayer(player) or isTopScreen("ScreenEdit") then return Def.ActorFrame{} end
 
 local optionslist = GAMESTATE:GetPlayerState(player):GetPlayerOptionsString("ModsLevel_Song")
 local SongOrCourse = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentTrail(player):GetTrailEntry(1):GetSong() or GAMESTATE:GetCurrentSong()
