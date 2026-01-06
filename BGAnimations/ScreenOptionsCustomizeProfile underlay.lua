@@ -514,7 +514,14 @@ for i, item in ipairs(menu_items) do
 	}
 end
 
-local AvI = (isOutFox() and profile_id) and LoadModule("Config.Load.lua")( "AvatarImage", "/Save/LocalProfiles/"..profile_id.."/OutFoxPrefs.ini" ) or false
+local avatar = false
+if (isOutFox() and profile_id) then avatar = LoadModule("Config.Load.lua")( "AvatarImage", "/Save/LocalProfiles/"..profile_id.."/OutFoxPrefs.ini" ) or false end
+if not avatar then
+	local path = ActorUtil.ResolvePath("/Save/LocalProfiles/"..profile_id.."/avatar",1,true) or ActorUtil.ResolvePath("/Save/LocalProfiles/"..profile_id.."/profile picture",1,true)
+	if path and ActorUtil.GetFileType(path) == "FileType_Bitmap" then avatar = path end
+end
+
+local AvI = avatar
 local ProfileImage = AvI and AvI or THEME:GetPathG("UserProfile","generic icon")
 
 args[#args+1] = Def.ActorFrame{
@@ -527,25 +534,25 @@ args[#args+1] = Def.ActorFrame{
 		OffCommand=function(self) self:linear(0.2):diffusealpha(0) end
 	},
     Def.Sprite{
-		Condition=isOutFox(),
+		Condition=avatar,
         InitCommand=function(self) self:Load( ProfileImage ):visible(profile_id ~= nil) end,
         OnCommand=function(self) self:xy( 38, 136 ):halign(0):setsize(96,96) end
     },
 	Def.BitmapText{
 		Font = "Common Normal",
 		Text = (profile_id and "" or "USB ").."Profile: "..profile:GetDisplayName(),
-		OnCommand=function(self) self:xy( (isOutFox() and profile_id) and 150 or 50, 100 ):halign(0):shadowlength(3) end,
+		OnCommand=function(self) self:xy( (avatar and profile_id) and 150 or 50, 100 ):halign(0):shadowlength(3) end,
 		ChangeProfileMessageCommand=function(self) self:settext("Profile: "..profile:GetDisplayName()) end
 	},
 	Def.BitmapText{
 		Font = "Common Normal",
 		Text = "GUID: "..profile:GetGUID(),
-		OnCommand=function(self) self:xy( (isOutFox() and profile_id) and 150 or 50, 136 ):halign(0):shadowlength(3) end
+		OnCommand=function(self) self:xy( (avatar and profile_id) and 150 or 50, 136 ):halign(0):shadowlength(3) end
 	},
 	Def.BitmapText{
 		Font = "Common Normal",
 		Text = Screen.String("TotalTime").. ": "..SecondsToHHMMSS(profile:GetTotalGameplaySeconds()),
-		OnCommand=function(self) self:xy( (isOutFox() and profile_id) and 150 or 50, 172 ):halign(0):shadowlength(3) end
+		OnCommand=function(self) self:xy( (avatar and profile_id) and 150 or 50, 172 ):halign(0):shadowlength(3) end
 	}
 }
 

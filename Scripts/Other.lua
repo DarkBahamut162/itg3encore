@@ -301,12 +301,44 @@ function isOutFoxV043(version)
 	if version then return isOutFoxV(20240000) and VersionDateCheck(version) else return isOutFoxV(20240000) end
 end
 
-function hasAvatar(pn)
+function getAvatar(pn)
+	local avatar = LoadModule("Options.GetProfileData.lua")(pn)["Image"]
 	if isOutFox() then
-		return Basename(LoadModule("Options.GetProfileData.lua")(pn)["Image"]) ~= "UserProfile generic icon.png"
+		if Basename(avatar) ~= "UserProfile generic icon.png" then return avatar else THEME:GetPathG("UserProfile","generic icon") end
 	else
 		return false
 	end
+end
+
+function getSLAvatar(pn)
+	local profile_slot = {
+		[PLAYER_1] = "ProfileSlot_Player1",
+		[PLAYER_2] = "ProfileSlot_Player2"
+	}
+	if not profile_slot[pn] then return nil end
+	local dir  = PROFILEMAN:GetProfileDir(profile_slot[pn])
+	local path = ActorUtil.ResolvePath(dir.."avatar",1,true) or ActorUtil.ResolvePath(dir.."profile picture",1,true)
+	if path and ActorUtil.GetFileType(path) == "FileType_Bitmap" then return path end
+	return false
+end
+
+function hasAvatar(pn)
+	if isOutFox() then
+		if Basename(LoadModule("Options.GetProfileData.lua")(pn)["Image"]) ~= "UserProfile generic icon.png" then return true end
+	end
+	return false
+end
+
+function hasSLAvatar(pn)
+	local profile_slot = {
+		[PLAYER_1] = "ProfileSlot_Player1",
+		[PLAYER_2] = "ProfileSlot_Player2"
+	}
+	if not profile_slot[pn] then return false end
+	local dir  = PROFILEMAN:GetProfileDir(profile_slot[pn])
+	local path = ActorUtil.ResolvePath(dir.."avatar",1,true) or ActorUtil.ResolvePath(dir.."profile picture",1,true)
+	if path and ActorUtil.GetFileType(path) == "FileType_Bitmap" then return true end
+	return false
 end
 
 function isStepMania(version)

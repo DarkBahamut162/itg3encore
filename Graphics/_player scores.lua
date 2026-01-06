@@ -4,7 +4,7 @@ local courseMode = GAMESTATE:IsCourseMode()
 local c
 
 return Def.ActorFrame{
-	InitCommand=function(self) c = self:GetChildren() if IsUsingWideScreen() and hasAvatar(player) then self:x(player == PLAYER_1 and 48 or -48) end end,
+	InitCommand=function(self) c = self:GetChildren() if IsUsingWideScreen() and (hasAvatar(player) or hasSLAvatar(player)) then self:x(player == PLAYER_1 and 48 or -48) end end,
 	OnCommand=function(self) self:addx(player == PLAYER_1 and -SCREEN_WIDTH or SCREEN_WIDTH):decelerate(0.75):addx(player == PLAYER_2 and -SCREEN_WIDTH or SCREEN_WIDTH) end,
 	OffCommand=function(self) self:accelerate(0.75):addx(player == PLAYER_1 and -SCREEN_WIDTH or SCREEN_WIDTH) end,
 	CurrentSongChangedMessageCommand=function(self) if not courseMode then self:queuecommand("Set") end end,
