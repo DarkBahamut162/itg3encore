@@ -161,8 +161,10 @@ function OptionRowCharacters()
 		ExportOnChange = false,
 		Choices = choiceList,
 		LoadSelections = function(self, list, pn)
-			if getenv("SelectCharacter"..pn) == nil or tonumber(getenv("SelectCharacter"..pn)) then
-				setenv("SelectCharacter"..pn,"Random")
+			if ReadPrefFromFile("SelectCharacter"..pn) == nil then
+				if getenv("SelectCharacter"..pn) == nil or tonumber(getenv("SelectCharacter"..pn)) then
+					setenv("SelectCharacter"..pn,"Random")
+				end
 			end
 			local Load=getenv("SelectCharacter"..pn)
 			list[IndexKey(choiceList,Load)]=true
