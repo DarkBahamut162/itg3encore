@@ -245,8 +245,8 @@ function SelectDanceStage()
 		ExportOnChange = false,
 		Choices = choiceListDS,
 		LoadSelections = function(self, list, pn)
-			if getenv("SelectDanceStage") == nil then
-				setenv("SelectDanceStage","DEFAULT")
+			if ReadPrefFromFile("SelectDanceStage") == nil then
+				setenv("SelectDanceStage","OFF")
 			end
 			local DSLoad=getenv("SelectDanceStage")
 			list[IndexKey(choiceListDS,DSLoad)]=true
