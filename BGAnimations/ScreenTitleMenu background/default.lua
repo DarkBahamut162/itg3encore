@@ -423,9 +423,8 @@ return Def.ActorFrame{
 					if CheckVersion == "????????" then CheckThemeVersion() end
 					if split(" ",ThemeVersion)[1]==split(" ",CheckVersion)[1] then
 						local time1 = tonumber(split(" ",ThemeVersion)[2])
-						local add = tonumber(TimeZone)*100
-						local time2 = tonumber(split(" ",CheckVersion)[2])+add
-						if math.abs(time1-time2)>50 then
+						local time2 = tonumber(split(" ",CheckVersion)[2])
+						if time1 ~= time2 then
 							color = Color("Yellow")
 						else
 							color = Color("Green")
