@@ -35,7 +35,7 @@ The **Theme Version** can be displayed in the following colors:<br>
 🔴 The version is outdated by **more than a day**<br>
 ⚪ The version **can't be checked** *(default if not using ITGmania)*
 
-Since this theme is being updated periodically: Clone or download it with **Github Desktop** or similar ways.<br>
+Since this theme is being updated periodically: Clone or download it with **GitHub Desktop** or similar ways.<br>
 If anything broke or isn't working correctly, please report it **ASAP** via GitHub Issues [here](https://github.com/DarkBahamut162/itg3encore/issues) so it can be fixed as soon as possible.
 
 ## Information:
@@ -49,7 +49,7 @@ Enable the Experimental Profile Leveling System
   - **Differentiates** between **GameModes** and **Styles**
   - **EXP** gained through **Cleared Songs**
     - **EXP** is calculated through the Song's **SPS-Level** and the **Player's Percentage Score**
-      - **MusicRate** and **SongLength**  are part of the equation.
+      - **MusicRate** and **SongLength** are part of the equation.
 - **KeyboardEnabled:**
   - **Extra features** requiring special keys like **CTRL** or **SHIFT** might be moved to **SELECT** if disabled
     - Some other **controls** might have **changed** if enabled/disabled!
@@ -81,7 +81,7 @@ Ability to **AutoSelect** the **BattleMode** to skip **ScreenSelectNumPlayers**
 - **MusicWheelStyle:**
 Ability to change **Wheel Behavior** between **ITG** and **IIDX**
 - **ShowBPMDisplayType:**
-Ability to chance the BPMDisplay type
+Ability to change the BPMDisplay type
   - **DisplayBPM** displays the **set BPM** of the **Song** *(including ???s)*
   - **ActualBPM** displays the **minimum & maximum BPMs** of the **Song** *(excluding ???s)*
   - **CalculatedBPM** displays the **true minimum & maximum BPMs** of the **Song** outside of Speed Ups
@@ -93,7 +93,7 @@ Show the calculated Difficulty of the currently selected stepchart.
     - **Y&A** *(RadarValue Calculation)*
     - **SPS (StepCache Only)** *(median steps per second per steps)*
 - **ShowCalcDiffDecimals**
-Change the amount of decimals for the calculated Difficulty
+Change the number of decimals for the calculated Difficulty
 - **DanceDifficultyType *(GameMode Dance Only)*:**
 Switch between **Old DDR/ITG & DDR X-SCALE** difficulty ranges
 - **ShowGraph:**
@@ -103,7 +103,7 @@ Shows if song **has anything lua** related (no matter if BG, FG or both)
 - **ShowMODDisplay:**
 Switches back and forth between the stepchart's BPMs and the player's current mod speed 
 - **ShowOrigin**
-Switches back and forth between the song's Artist and the song's origin *(only if Origin Value has been set)*
+Switches back and forth between the song's Artist and the song's Origin *(only if Origin Value has been set)*
 - **ShowRounds:**
 Shows either **amount of rounds** or **length specification** during song selection
   - Will be adjusted if **TrueRounds** is enabled
@@ -294,7 +294,7 @@ I could have actually forked it but I didn't. My reasoning was that it wasn't go
   - **PlayerStats:** Selectable **Range of Judgment** to be displayed *(highest first)*
     - **IIDX** switches **StatsMode** to a fully functional **IIDX pacemaker** and shows **Player**, **Highscore** *(if available)* and **Pacemaker**
     - Ability to switch between **FullSize** & **MiniSize**
-      - **Mini (Bottom/Top)** decides where the data is being displayed *(NoteGraph is being show on th eopposite end)*
+      - **Mini (Bottom/Top)** decides where the data is being displayed *(NoteGraph is being show on the opposite end)*
   - **PlayerNoteGraph:** Customizable **NoteGraph**
     - **Normal** *Steps per second*
     - **SPS** *Steps per second per Step*
