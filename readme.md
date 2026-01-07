@@ -1,23 +1,45 @@
-# In The Groove 3 Encore X Final Theme
-![In The Groove 3 Encore X Final Theme](https://user-images.githubusercontent.com/83576877/215728137-8d637c6c-af76-46e2-bca3-2b58b0f2f013.png)
+# In The Groove 3 Encore
+![In The Groove 3 Encore](https://repository-images.githubusercontent.com/364060976/dc3b16c2-dfa5-4142-b758-2ffda0cce40b)
 
-The following project has been in-officially taken over by me *(DarkBahamut162)*.
+## About:
+What was once an essentially-finished "beta" release of the official ITG3 theme, originally made for OpenITG by Lightning and ported by AJ Kelly, is now taken over/altered by me *(DarkBahamut162)* to work with **all major SM5 versions/forks** with many new bells and whistles.
 
-It's sources have being displayed down below.
+This theme is blue-based, sleek, and full of neon outlines that glow - probably one of the most visually striking themes available. A true tribute to the best rhythm game Konami killed.
 
-## Warning:
-This Theme has been optimized for **Project OutFox** but also works on **ITGmania**, **StepMania 5** and **Etterna**!<br>
-**ITGmania** might be your second pick since **.mp4** background videos work without much issue on it.<br>
-Videos might not work correctly when used anywhere else!<br>
-This is an Engine Issue I cannot fix! *(unless fixed by newer versions)*<br>
-Since this theme is being updated periodically: If anything broke or isn't working correctly, please report it **ASAP** so I can take a look and fix it.
+Its sources have been displayed further down below.
 
-When using certain versions of OutFox *(from 0.4.17 to 0.4.18.1)*, you might need to switch your **VideoRenderer** to **OpenGL** as **GLAD** breaks the graphics after playing just one round *(depending if they have been fixed yet everywhere)*.
-When the **VideoRenderer** is set to **d3d**, certain animations or options might not be possible.
-Please use 0.4.19 (LTS) or 0.5.042 (V) otherwise! *(0.5.043 seems to be more ChonkFox than OutFox with the longer file loading times)*
+## Supports:
+🟢 **Project OutFox**** *(all)*<br>
+🟢 **ITGmania** *(all)*<br>
+🔴 **StepMania 5*** *(~5.0.4)*<br>
+🟡 **StepMania 5*** *(5.0.5+)*<br>
+🟢 **StepMania 5*** *(5.0.11+)*<br>
+🔴 **Excluding 5.1.0a*** *(aka 5.2)*<br>
+🟡 **Etterna*** *(other)*
+
+🟢 = Fully Functional<br>
+🟡 = Functional *(some critical features missing in engine)*<br>
+🔴 = Not Functional
+
+\* **.mp4** files might not play correctly. This theme utilizes those. Make sure the engine is new enough to display those properly.<br>
+** On version **0.4.17** to **0.4.18.1**, one might need to switch one's **VideoRenderer** to **OpenGL** as **GLAD** breaks the graphics after playing one round.
+
+## Theme Version Check:
+ITGmania is the only engine that enables version checking.<br>
+It requires **HttpAllowHosts** to have "**,api.github.com**" listed inside **Save/Preferences.ini**.<br>
+This needs to be done by hand as the engine forbids automatic addition for security reasons.
+
+The **Theme Version** can be displayed in the following colors:<br>
+🟢 The version is **current**<br>
+🟡 The version has been updated **within the same day**<br>
+🔴 The version is outdated by **more than a day**<br>
+⚪ The version **can't be checked** *(default if not using ITGmania)*
+
+Since this theme is being updated periodically: Clone or download it with **Github Desktop** or similar ways.<br>
+If anything broke or isn't working correctly, please report it **ASAP** via GitHub Issues [here](https://github.com/DarkBahamut162/itg3encore/issues) so it can be fixed as soon as possible.
 
 ## Information:
-Most additional features have been moved to an additional **Theme Options** menu. They are as follows:
+Most additional features have been moved to an additional **Theme Options** menu within **Options**. They are as follows:
 
 ### [Global]
 - **EncoreThemeMode:**
@@ -189,11 +211,12 @@ I could have actually forked it but I didn't. My reasoning was that it wasn't go
 
 **ScreenTitleMenu:**
 * Shows **ProductFamily** & **ProductVersion**
+* Shows **ThemeVersion**
 * Shows **StepCacheVersion** *(when StepCache enabled)*
 * Shows **Current Game Mode** and **Current Style**
   - May also show **AutoPlayMode** and **AutoStyle** and **AutoBattle** depending on Screen & Settings
     - **AutoStyle** overwrites **Current Style**
-* Shows total amount of playable **Single/Double Songs/Courses** in current **GameMode/Style** *(if able)*
+* Shows total amount of playable **Single/Double Songs/Courses** in current **GameMode/Style** *(if supported)*
 
 **ScreenSelectStyle:**
 * Shows **Current Style**
@@ -208,15 +231,20 @@ I could have actually forked it but I didn't. My reasoning was that it wasn't go
 * Shows **StepCounter** *(when StepCounter & StepCache enabled)*
 * Shows **TechCounter** *(when TechCounter enabled | ITGmania only)*
 * Shows **Player Avatar** *(Project OutFox AND WideScreen only)*
-* Shows **Player's Level & EXP** over their Username *(when ExperimentalProfileLevel enabled)*
+* Shows **Player's Level & EXP** over Player's Username *(when ExperimentalProfileLevel enabled)*
 * Shows **Session Time & Player's Time Played** *(when ShowTime enabled)*
   - **Session Time** starts upon first entry of **ScreenSelectMusic**
 * Shows **HighscoreList** by holding CTRL
   - **Left CTRL** for **Player 1** / **Right CTRL** for **Player 2**
 * Shows **Player's MODDisplay** *(when ShowMODDisplay enabled)*
-* Shows **Song's rigin** *(when ShowOrigin enabled & if Song has Origin)*
+  - Switches back and forth between **BPMDisplay** and **MODDisplay**
+  - Press **EffectDown** to **lower current SpeedMod**
+  - Press **EffectUp** to **raise current SpeedMod**
+  - Hold **Select** & press **EffectDown/Up** to **change current SpeedType**
+* Shows **Song's Origin** *(when ShowOrigin enabled & if Song has Origin)*
+  - Switches back and forth between Song's **Artist** and its **Origin**
 * Shows **Player's NoteGraph** *(when ShowGraph enabled)*
-* Shows **CDTitle** next to the banner frame *(VerticalScreen & WideScreen only)*
+* Shows **CDTitle** next to the banner frame *(VerticalScreen/WideScreen only & if Song has CDTitle)*
 * Shows various indications between **Artist** and **BPM** line:
   * **Autogen**
   * **HasLua**
@@ -225,21 +253,36 @@ I could have actually forked it but I didn't. My reasoning was that it wasn't go
   * **HasVideo**
   * **Rounds/Length specification**
 * Updates **BPMs** and **TIMEs** according to **Current Music Rate**
-* Ability to change current **Speed Mod** and **Speed Type** (when enabled)
 
 **ScreenPlayerOptions:**
 * Removed **D-Pad** Modifier since it breaks other Modifiers (like the new SpeedMod)
 * Better and sorted **List of Options**
-  * Including various other mods added for StepMania/ITGmania/OutFox
+  * Including (next to) **all mods** from **OutFox/ITGmania/StepMania** *(depends on engine)*
+  * If **SplitOptions** is enabled, everything will be **categorized**.
 * Shows **Player's MOD** & **BPM range** within **Name Badges**
-* Added ability to switch between **Normal Score**, **Percentage** and **EX Score** via **Player Options**
-  * Added ability to choose between **additive** or **subtractive** style
-* Updates **BPMs** and **TIMEs** according to **Current Music Rate**
+  * Display **adjusts** according to the **current SpeedMod**
 * Added various PlayerOptions:
   - **LifeType:** **LifeLine** *(Battery)* & **Survival** *(Timer)*
   - **FlareLevel:** **Flare 1-10** & **Flare Float**
     - Ability to change between **Old** & **New** score requirement
     - Ability to have it **Accurate** *(uses SN2 scoring)*
+  - **SongFrame:** Ability to change the SongFrame
+    - Bunnies *(Pink Fuzzy Bunnies)*
+    - Disconnect *(Disconnected Hardkore)*
+    - Energy *(Energizer)*
+    - Hasse *(Hasse Mich)*
+    - Love *(Love Eternal)*
+    - Nightmare *(Dream to Nightmare)*
+    - Normal *(Default)*
+    - Pandy *(Pandemonium)*
+    - Smiley *(Summer ~Speedy Mix~)*
+    - Vertex *(Base from VerTex)*
+    - Virtual *(Virtual Emotion)*
+  - **Judgment Fonts:** Ability to switch judgment fonts
+    - ITG3
+    - ITG3 Chroma
+    - ITG2
+    - ITG2 Chroma
   - **Fade:** Enable both **Fade In** & **F.I.Dynamic** to enable simulated **Dynamic Sudden**
     - Same goes for **Fade Out** & **F.O.Dynamic** for simulated **Dynamic Hidden**
   - **MovePlayerfieldStats:** Bring both **Combo & Judgment** either **nearer** towards or **farther** away from the **Receptors**
@@ -263,18 +306,6 @@ I could have actually forked it but I didn't. My reasoning was that it wasn't go
   - **Pacemaker:** Selectable **Grade** to reach during Gameplay
   - **PacemakerOnFail:** What the game does when **Player fails the Pacemaker**
   - **PlayerAssists:** Ability to show **SpeedChanges/Stops** during Gameplay
-  - **SongFrame:** Ability to change the SongFrame
-    - Bunnies *(Pink Fuzzy Bunnies)*
-    - Disconnect *(Disconnected Hardkore)*
-    - Energy *(Energizer)*
-    - Hasse *(Hasse Mich)*
-    - Love *(Love Eternal)*
-    - Nightmare *(Dream to Nightmare)*
-    - Normal *(Default)*
-    - Pandy *(Pandemonium)*
-    - Smiley *(Summer ~Speedy Mix~)*
-    - Vertex *(Base from VerTex)*
-    - Virtual *(Virtual Emotion)*
 
 **ScreenGameplay:**
 * Better **StatsDisplay** going from a range of 1-6 instead of just 3
