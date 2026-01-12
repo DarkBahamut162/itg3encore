@@ -1049,6 +1049,7 @@ function GetProfileToEdit(player)
 end
 
 function Time(time)
+	time = math.max(0,time)
 	return math.floor(time/60)..":"..string.format("%05.2f",time%60)
 end
 
