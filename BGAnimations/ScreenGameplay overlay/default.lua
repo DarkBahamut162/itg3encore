@@ -32,6 +32,12 @@ local InputHandler = function(event)
 				if event.DeviceInput.button == "DeviceButton_r" then
 					setenv("Restart",getenv("Restart")+1)
 					SCREENMAN:GetTopScreen():SetPrevScreenName(Branch.BeforeGameplay()):begin_backing_out()
+				elseif event.DeviceInput.button == "DeviceButton_f" then
+					if SCREENMAN:GetTopScreen():GetChild("Debug") then SCREENMAN:GetTopScreen():GetChild("Debug"):visible(false) end
+					for pn in ivalues(GAMESTATE:GetEnabledPlayers()) do
+						STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):FailPlayer()
+						SCREENMAN:GetTopScreen():GetChild('Player'..pname(pn)):SetLife(0)
+					end
 				end
 			end
 		elseif event.type == "InputEventType_Release" then
@@ -44,6 +50,12 @@ local InputHandler = function(event)
 				if event.GameButton == "Start" then
 					setenv("Restart",getenv("Restart")+1)
 					SCREENMAN:GetTopScreen():SetPrevScreenName(Branch.BeforeGameplay()):begin_backing_out()
+				elseif event.GameButton == "Back" then
+					if SCREENMAN:GetTopScreen():GetChild("Debug") then SCREENMAN:GetTopScreen():GetChild("Debug"):visible(false) end
+					for pn in ivalues(GAMESTATE:GetEnabledPlayers()) do
+						STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):FailPlayer()
+						SCREENMAN:GetTopScreen():GetChild('Player'..pname(pn)):SetLife(0)
+					end
 				end
 			end
 		elseif event.type == "InputEventType_Release" then
