@@ -220,7 +220,7 @@ function SongMods(part)
 	if part == nil or part == 1 then
 		options = addToOutput(options,(isEtterna() and "Speed," or "1,") .."2,4,"..fail..","..((isRegular() and VersionDateCheck(20160000)) and (isOpenDDR() and "0DDR" or "0,Flare") or "0")..",3",",")
 		if not (IsGame("pump") or GAMESTATE:IsCourseMode()) then options = addToOutput(options,"31",",") end
-		if not (IsGame("be-mu") or IsGame("beat") or IsGame("po-mu") or IsGame("popn")) then options = addToOutput(options,"32",",") end
+		if not (IsGame("be-mu") or IsGame("beat") or IsGame("po-mu") or IsGame("popn")) then options = addToOutput(options,"32,32H",",") end
 	end
 	if part == nil or part == 2 then
 		options = addToOutput(options,"5"..((isEtterna() or isOldStepMania()) and ",REE,AEE" or ",RE,RE2,AE,AE2,AE3")..(isOutFox() and ",AE4" or "")..",17,9",",")
@@ -458,6 +458,7 @@ function InitPlayerOptions()
 		setenv("ShowSpeedAssist"..pname(pn),LoadUserPrefB(pn, "ShowSpeedAssist", false))
 		setenv("ShowStopAssist"..pname(pn),LoadUserPrefB(pn, "ShowStopAssist", false))
 		setenv("SongFrame"..pname(pn),LoadUserPref(pn, "SongFrame", "_normal"))
+		setenv("HoldJudgment"..pname(pn),LoadUserPref(pn, "Judgment", "_itg3"))
 		setenv("Judgment"..pname(pn),LoadUserPref(pn, "Judgment", "_itg3"))
 	end
 
@@ -1080,6 +1081,32 @@ function OptionSongFrame()
 	return t
 end
 
+function OptionHoldJudgment()
+	local t = {
+		Name = "HoldJudgment",
+		LayoutType = "ShowAllInRow",
+		SelectType = "SelectOne",
+		OneChoiceForAllPlayers = false,
+		ExportOnChange = false,
+		Values = { "_itg3", "_itg3_chroma", "_itg2", "_itg2_chroma" },
+		Choices = { "ITG3", "ITG3 Chroma", "ITG2", "ITG2 Chroma" },
+		LoadSelections = function(self, list, pn)
+			for i=1,#list do
+				list[i] = getenv("HoldJudgment"..pname(pn)) == self.Values[i]
+			end
+		end,
+		SaveSelections = function(self, list, pn)
+			for i=1,#list do
+				if list[i] then
+					setenv("HoldJudgment"..pname(pn),SaveUserPref(pn, "HoldJudgment", self.Values[i]))
+				end
+			end
+		end
+	}
+	setmetatable(t, t)
+	return t
+end
+
 function OptionJudgment()
 	local t = {
 		Name = "Judgment",
@@ -1087,8 +1114,8 @@ function OptionJudgment()
 		SelectType = "SelectOne",
 		OneChoiceForAllPlayers = false,
 		ExportOnChange = false,
-		Values = { "_itg3", "_itg3_chroma", "_itg2", "_itg2_chroma" },
-		Choices = { "ITG3", "ITG3 Chroma", "ITG2", "ITG2 Chroma" },
+		Values = { "_itg3", "_itg3_chroma", "_itg2", "_itg2_chroma", "_itg1", "_itg1_chroma" },
+		Choices = { "ITG3", "ITG3 Chroma", "ITG2", "ITG2 Chroma", "ITG1", "ITG1 Chroma" },
 		LoadSelections = function(self, list, pn)
 			for i=1,#list do
 				list[i] = getenv("Judgment"..pname(pn)) == self.Values[i]
