@@ -1,4 +1,4 @@
-local cacheVersion = "0.43"
+local cacheVersion = "0.44"
 local stepCache = {}
 local typeList = {"avi","f4v","flv","mkv","mp4","mpeg","mpg","mov","ogv","webm","wmv"}
 Master,P1,P2={},{},{}
@@ -684,6 +684,8 @@ function cacheStep(Song,Step)
 	local IsJudgableAtBeat = false
 	local firstArrow = 0
 	local firstArrowCheck = false
+	local buffered_notes = 0
+	local buffered_sec = 0
 
 	local noteData = isOutFoxV043() and Step:GetNoteData() or Song:GetNoteData(chartint)
 	for _,v in pairs( noteData ) do
@@ -761,8 +763,16 @@ function cacheStep(Song,Step)
 					noteCounter[currentNotes] = noteCounter[currentNotes] + 1
 					currentSec = timingData:GetElapsedTimeFromBeat(v[1])
 					if lastSec > 0 then
-						local currentSPS = 1 / (currentSec - lastSec) * currentNotes
-						if stepsPerSec[currentSPS] then stepsPerSec[currentSPS] = stepsPerSec[currentSPS] + 1 else stepsPerSec[currentSPS] = 1 end
+						local buffered_diff = currentSec - buffered_sec
+						if buffered_diff >= 1/32 then
+							if buffered_notes == 0 then buffered_notes = currentNotes end
+							local currentSPS = (1 / buffered_diff) * buffered_notes
+							if stepsPerSec[currentSPS] then stepsPerSec[currentSPS] = stepsPerSec[currentSPS] + 1 else stepsPerSec[currentSPS] = 1 end
+							buffered_notes = 0
+						else
+							buffered_notes = buffered_notes + currentNotes
+						end
+						buffered_sec = currentSec
 					end
 				end
 			end
@@ -771,7 +781,7 @@ function cacheStep(Song,Step)
 
 	noteData = nil
 
-	local total = calcSPS(stepsPerSec)
+	local total = calcSPS(stepsPerSec) 
 	local total2 = calcSPS(stepsPerSec,total)
 	local file = getStepCacheFile(Step)
 
@@ -846,6 +856,8 @@ function cacheStepSM(Song,Step)
 	local lastBeat = 0
 	local lastSec = 0
 	local currentBPM,checkBPM,checkCount,maxBPM = 0,0,0,0
+	local buffered_notes = 0
+	local buffered_sec = 0
 
 	local stops = timingData:GetStops()
 	local delays = timingData:GetDelays()
@@ -904,8 +916,16 @@ function cacheStepSM(Song,Step)
 						lastBeat = beat
 
 						if lastSec > 0 then
-							local currentSPS = 1 / (currentSec - lastSec) * count
-							if stepsPerSec[currentSPS] then stepsPerSec[currentSPS] = stepsPerSec[currentSPS] + 1 else stepsPerSec[currentSPS] = 1 end
+							local buffered_diff = currentSec - buffered_sec
+							if buffered_diff >= 1/32 then
+								if buffered_notes == 0 then buffered_notes = currentNotes end
+								local currentSPS = (1 / buffered_diff) * buffered_notes
+								if stepsPerSec[currentSPS] then stepsPerSec[currentSPS] = stepsPerSec[currentSPS] + 1 else stepsPerSec[currentSPS] = 1 end
+								buffered_notes = 0
+							else
+								buffered_notes = buffered_notes + currentNotes
+							end
+							buffered_sec = currentSec
 						end
 						lastSec = currentSec
 
@@ -1001,6 +1021,8 @@ function cacheStepDWI(Song,Step)
 	local lastBeat = 0
 	local lastSec = 0
 	local currentBPM,checkBPM,checkCount,maxBPM = 0,0,0,0
+	local buffered_notes = 0
+	local buffered_sec = 0
 
 	local stops = timingData:GetStops()
 	local delays = timingData:GetDelays()
@@ -1057,6 +1079,16 @@ function cacheStepDWI(Song,Step)
 						lastBeat = beat
 
 						if lastSec > 0 then
+							local buffered_diff = currentSec - buffered_sec
+							if buffered_diff >= 1/32 then
+								if buffered_notes == 0 then buffered_notes = count end
+								local currentSPS = (1 / buffered_diff) * buffered_notes
+								if stepsPerSec[currentSPS] then stepsPerSec[currentSPS] = stepsPerSec[currentSPS] + 1 else stepsPerSec[currentSPS] = 1 end
+								buffered_notes = 0
+							else
+								buffered_notes = buffered_notes + count
+							end
+							buffered_sec = currentSec
 							local currentSPS = 1 / (currentSec - lastSec) * count
 							if stepsPerSec[currentSPS] then stepsPerSec[currentSPS] = stepsPerSec[currentSPS] + 1 else stepsPerSec[currentSPS] = 1 end
 						end
@@ -1164,6 +1196,8 @@ function cacheStepBMS(Song,Step)
 	local lastBeat = lastHold or 0
 	local currentBPM,checkBPM,checkCount,maxBPM = 0,0,0,0
 	local lastSec = 0
+	local buffered_notes = 0
+	local buffered_sec = 0
 
 	local stops = timingData:GetStops()
 	local delays = timingData:GetDelays()
@@ -1209,6 +1243,16 @@ function cacheStepBMS(Song,Step)
 				if beat > lastBeat then lastBeat = beat end
 
 				if lastSec > 0 then
+					local buffered_diff = currentSec - buffered_sec
+					if buffered_diff >= 1/32 then
+						if buffered_notes == 0 then buffered_notes = row end
+						local currentSPS = (1 / buffered_diff) * buffered_notes
+						if stepsPerSec[currentSPS] then stepsPerSec[currentSPS] = stepsPerSec[currentSPS] + 1 else stepsPerSec[currentSPS] = 1 end
+						buffered_notes = 0
+					else
+						buffered_notes = buffered_notes + row
+					end
+					buffered_sec = currentSec
 					local currentSPS = 1 / (currentSec - lastSec) * row
 					if stepsPerSec[currentSPS] then stepsPerSec[currentSPS] = stepsPerSec[currentSPS] + 1 else stepsPerSec[currentSPS] = 1 end
 				end
