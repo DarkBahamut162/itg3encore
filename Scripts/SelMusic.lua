@@ -1089,8 +1089,6 @@ function cacheStepDWI(Song,Step)
 								buffered_notes = buffered_notes + count
 							end
 							buffered_sec = currentSec
-							local currentSPS = 1 / (currentSec - lastSec) * count
-							if stepsPerSec[currentSPS] then stepsPerSec[currentSPS] = stepsPerSec[currentSPS] + 1 else stepsPerSec[currentSPS] = 1 end
 						end
 						lastSec = currentSec
 
