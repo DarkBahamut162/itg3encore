@@ -1133,6 +1133,30 @@ function OptionJudgment()
 	return t
 end
 
+function OptionGreenNumber()
+	local t = {
+		Name = "GreenNumber",
+		LayoutType = "ShowAllInRow",
+		SelectType = "SelectOne",
+		OneChoiceForAllPlayers = false,
+		ExportOnChange = false,
+		Choices = { "Off", "On" },
+		LoadSelections = function(self, list, pn)
+			list[1] = getenv("GreenNumber"..pname(pn)) == false
+			list[2] = getenv("GreenNumber"..pname(pn)) == true
+		end,
+		SaveSelections = function(self, list, pn)
+			for i=1,#list do
+				if list[i] then
+					setenv("GreenNumber"..pname(pn),SaveUserPref(pn, "GreenNumber", i==2))
+				end
+			end
+		end
+	}
+	setmetatable(t, t)
+	return t
+end
+
 function ScreenAfterPlayerOptions(part)
 	local p1 = part==2 or part==3 or part==4
 	local p2 = part==2 or part==3 or part==4
