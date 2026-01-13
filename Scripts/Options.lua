@@ -242,7 +242,7 @@ function SongMods(part)
 		if isITGmania(20250327) then add2 = addToOutput(add2,",HLT",",") end
 		if isITGmania(20220612) then add2 = addToOutput(add2,",DTW",",") end
 		if isITGmania(20240307) then add2 = addToOutput(add2,",BB",",") end
-		options = addToOutput(options,"20,"..add.."P,PF,29,21"..add2,",")
+		options = addToOutput(options,"20,"..add.."P,PF,29,21"..add2..",33",",")
 	end
 
 	if GAMESTATE:IsCourseMode() then
@@ -252,12 +252,10 @@ function SongMods(part)
 				if part == nil then options = addToOutput(options,"22R",",") elseif part == 3 then options = "22R" end
 			end
 		end
-	end
-
-	if isVS() then
-		if part == nil or part == 3 then options = addToOutput(options,"28,21"..add2,",") end
-	elseif GAMESTATE:IsCourseMode() then
-		if part == nil or part == 3 then options = addToOutput(options,"28,S,EB,CC,20,"..add.."P,PF,29,21"..add2,",") end
+		if isVS() then
+			if part == nil or part == 3 then options = addToOutput(options,"28,21"..add2..",33",",") end
+		end
+		if part == nil or part == 3 then options = addToOutput(options,"28,S,EB,CC,20,"..add.."P,PF,29,21"..add2..",33",",") end
 	end
 
 	if DoesDanceRepoExist() and (part == nil or part == 4) then
@@ -460,6 +458,7 @@ function InitPlayerOptions()
 		setenv("SongFrame"..pname(pn),LoadUserPref(pn, "SongFrame", "_normal"))
 		setenv("HoldJudgment"..pname(pn),LoadUserPref(pn, "Judgment", "_itg3"))
 		setenv("Judgment"..pname(pn),LoadUserPref(pn, "Judgment", "_itg3"))
+		setenv("GreenNumber"..pname(pn),LoadUserPrefB(pn, "GreenNumber", false))
 	end
 
 end
@@ -1055,24 +1054,23 @@ function OptionOrientationRestricted()
 end
 
 function OptionSongFrame()
-	local values = { "_bunnies", "_disconnect", "_energy", "_hasse", "_love", "_nightmare", "_normal", "_pandy", "_smiley", "_vertex", "_virtual" }
 	local t = {
 		Name = "SongFrame",
 		LayoutType = "ShowAllInRow",
 		SelectType = "SelectOne",
 		OneChoiceForAllPlayers = false,
 		ExportOnChange = false,
-		Values = values,
+		Values = { "_bunnies", "_disconnect", "_energy", "_hasse", "_love", "_nightmare", "_normal", "_pandy", "_smiley", "_vertex", "_virtual" },
 		Choices = { "Bunnies", "Disconnect", "Energy", "Hasse", "Love", "Nightmare", "Normal", "Pandy", "Smiley", "Vertex", "Virtual" },
 		LoadSelections = function(self, list, pn)
 			for i=1,#list do
-				list[i] = getenv("SongFrame"..pname(pn)) == values[i]
+				list[i] = getenv("SongFrame"..pname(pn)) == self.Values[i]
 			end
 		end,
 		SaveSelections = function(self, list, pn)
 			for i=1,#list do
 				if list[i] then
-					setenv("SongFrame"..pname(pn),SaveUserPref(pn, "SongFrame", values[i]))
+					setenv("SongFrame"..pname(pn),SaveUserPref(pn, "SongFrame", self.Values[i]))
 				end
 			end
 		end
