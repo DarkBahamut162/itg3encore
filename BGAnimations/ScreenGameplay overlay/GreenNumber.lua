@@ -71,7 +71,7 @@ local move = isFinal() and WideScaleFixed(20*WideScreenDiff(),35*WideScreenDiff(
 local maxwidth = move*4
 local add = 0
 
-if (isVS() and StepsOrTrail1==StepsOrTrail2) or (isDouble() or getenv("Rotation"..pname(player)) == 5) then
+if (isVS() or StepsOrTrail1==StepsOrTrail2) or (isDouble() or getenv("Rotation"..pname(player)) == 5) then
 	move = player == PLAYER_1 and SCREEN_LEFT+move or SCREEN_RIGHT-move
 	add = 5*WideScreenDiff()
 else
