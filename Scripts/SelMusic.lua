@@ -918,12 +918,12 @@ function cacheStepSM(Song,Step)
 						if lastSec > 0 then
 							local buffered_diff = currentSec - buffered_sec
 							if buffered_diff >= 1/32 then
-								if buffered_notes == 0 then buffered_notes = currentNotes end
+								if buffered_notes == 0 then buffered_notes = count end
 								local currentSPS = (1 / buffered_diff) * buffered_notes
 								if stepsPerSec[currentSPS] then stepsPerSec[currentSPS] = stepsPerSec[currentSPS] + 1 else stepsPerSec[currentSPS] = 1 end
 								buffered_notes = 0
 							else
-								buffered_notes = buffered_notes + currentNotes
+								buffered_notes = buffered_notes + count
 							end
 							buffered_sec = currentSec
 						end
