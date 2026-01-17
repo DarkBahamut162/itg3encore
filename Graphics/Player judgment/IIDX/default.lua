@@ -63,26 +63,25 @@ local judgment = not (getenv("HideJudgment" .. pname(player)) or false)
 local combo = not (getenv("HideCombo" .. pname(player)) or false)
 
 return Def.ActorFrame{
-	InitCommand=function(self) c = self:GetChildren() end,
 	OnCommand=function(self)
 		if GAMESTATE:GetCurrentGame():CountNotesSeparately() then GetTrueJudgment(nil,player) end
 		screen = SCREENMAN:GetTopScreen()
 	end,
 	Def.BitmapText{ Name = "_C1", File = (faplus and "FA" or "Normal").."/_C1.ini" }..{
-		ComboMessageCommand=function(self,params) JudgeCMD(self,params.TapNoteScore) end
+		ComboMessageCommand=function(self,params) if params.Player == player then JudgeCMD(self,params.TapNoteScore) end end
 	},
 	Def.BitmapText{ Name = "_C2", File = (faplus and "FA" or "Normal").."/_C2.ini" }..{
-		ComboMessageCommand=function(self,params) JudgeCMD(self,params.TapNoteScore) end
+		ComboMessageCommand=function(self,params) if params.Player == player then JudgeCMD(self,params.TapNoteScore) end end
 	},
 	Def.BitmapText{ Name = "_C3", File = (faplus and "FA" or "Normal").."/_C3.ini" }..{
-		ComboMessageCommand=function(self,params) JudgeCMD(self,params.TapNoteScore) end
+		ComboMessageCommand=function(self,params) if params.Player == player then JudgeCMD(self,params.TapNoteScore) end end
 	},
 	Def.BitmapText{ Name = "_C4", File = (faplus and "FA" or "Normal").."/_C4.ini" }..{
-		ComboMessageCommand=function(self,params) JudgeCMD(self,params.TapNoteScore) end
+		ComboMessageCommand=function(self,params) if params.Player == player then JudgeCMD(self,params.TapNoteScore) end end
 	},
 	Def.BitmapText{ Name = "_C0", File = (faplus and "FA" or "Normal").."/_C0.ini" }..{
 		InitCommand=function(self) self:blend(Blend.Add):diffuseblink():effectperiod(0.05):effectcolor1(color("1,1,1,0.5")):effectcolor2(color("1,1,1,0")) end,
-		ComboMessageCommand=function(self,params) JudgeCMD(self,params.TapNoteScore) end
+		ComboMessageCommand=function(self,params) if params.Player == player then JudgeCMD(self,params.TapNoteScore) end end
 	},
 	JudgmentMessageCommand=function(self,params)
 		if params.Player ~= player or string.find(params.TapNoteScore,"Checkpoint") or string.find(params.TapNoteScore,"None") or params.TapNoteScore == "TapNoteScore_" then return end
@@ -156,12 +155,12 @@ return Def.ActorFrame{
 			end
 			local curCombo = PSS:GetCurrentCombo()
 			local output = (judgment and JUDGMENT[WX].."x" or "")..((COMBO[WX] and combo) and curCombo or "")
-			c._C0:settext(output)
-			c._C1:visible(current == 1):settext(output)
-			c._C2:visible(current == 2):settext(output)
-			c._C3:visible(current == 3):settext(output)
-			c._C4:visible(current == 4):settext(output)
-			MESSAGEMAN:Broadcast("Combo",{TapNoteScore=(faplus and WX or params.TapNoteScore)})
+			self:GetChild("_C0"):settext(output)
+			self:GetChild("_C1"):visible(current == 1):settext(output)
+			self:GetChild("_C2"):visible(current == 2):settext(output)
+			self:GetChild("_C3"):visible(current == 3):settext(output)
+			self:GetChild("_C4"):visible(current == 4):settext(output)
+			MESSAGEMAN:Broadcast("Combo",{Player=player,TapNoteScore=(faplus and WX or params.TapNoteScore)})
 		end
 	end,
 	OffCommand=function(self)
