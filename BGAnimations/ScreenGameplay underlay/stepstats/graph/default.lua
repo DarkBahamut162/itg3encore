@@ -2,8 +2,6 @@ local pn = ...
 local graphW  = SCREEN_HEIGHT-126.5
 local graphH  = 92
 local height  = (SCREEN_HEIGHT / graphH)
-local bgColor = color('0, 0, 0, 0.66')
-local normalizeAlpha = (1.0 - bgColor[4]) * 0.8
 local playerNoteGraph = getenv("PlayerNoteGraph"..pname(pn))
 local playerNoteGraphType = getenv("PlayerNoteGraphType"..pname(pn))
 local playerNoteGraphRange = getenv("PlayerNoteGraphRange"..pname(pn))
@@ -553,16 +551,15 @@ local function GetVertices(stepsPerSecList)
             nextY = scale(nextY,0,max,0,20)
         end
 
-        local alpha = 0.65 + 0.3 * normalizeAlpha
-        local col = color('1, 0, 0, '..alpha)
+        local col = color('1, 0, 0, 1')
         vertices[#vertices+1] = { {curX, 0, 0}, {col[1], col[2], col[3], col[4]*0.5} }
         local colGB = math.min((math.max(curY, 0) -12) * 0.0833, 1.0)
-        col = color(string.format('%.2f, %.2f, %.2f, %.2f', (1-colGB), colGB, colGB, alpha))
+        col = color(string.format('%.2f, %.2f, %.2f, %.2f', (1-colGB), colGB, colGB, 1))
         vertices[#vertices+1] = { {curX, math.min(curY * height, graphH), 0}, col }
         local colGB = math.min((math.max(nextY, 0) -12) * 0.0833, 1.0)
-        col = color(string.format('%.2f, %.2f, %.2f, %.2f', (1-colGB), colGB, colGB, alpha))
+        col = color(string.format('%.2f, %.2f, %.2f, %.2f', (1-colGB), colGB, colGB, 1))
         vertices[#vertices+1] = { {nextX,math.min(nextY * height, graphH), 0}, col }
-        col = color('1, 0, 0, '..alpha)
+        col = color('1, 0, 0, 1')
         vertices[#vertices+1] = { {nextX, 0, 0}, {col[1], col[2], col[3], col[4]*0.5} }
 
         if curY > 20 or nextY > 20 then
@@ -591,32 +588,31 @@ local function GetVerticesAlt(stepsPerSecList)
     end
 
     for i,value in pairs( stepsList ) do
-        local curX = (i-1) * graphW / last - 0
-        local nextX = (i * graphW / last) - 0
+        local curX = math.floor((i-1) * graphW / last - 0)
+        local nextX = math.ceil((i * graphW / last) - 0)
         local curY = value/2
         local nextY = value
         if adjust then
             curY = scale(curY,0,max,0,20)
             nextY = scale(nextY,0,max,0,20)
         end
-        local alpha = 0.65 + 0.3 * normalizeAlpha
-        local col = color('1, 0, 0, '..alpha)
+        local col = color('1, 0, 0, 1')
         vertices[#vertices+1] = { {curX, 0, 0}, {col[1], col[2], col[3], col[4]*0.5} }
 
         if playerNoteGraph == 3 then
             local colGB = math.min((math.max(nextY, 0) -12) * 0.0833, 1.0)
-            col = color(string.format('%.2f, %.2f, %.2f, %.2f', (1-colGB), colGB, colGB, alpha))
+            col = color(string.format('%.2f, %.2f, %.2f, %.2f', (1-colGB), colGB, colGB, 1))
             vertices[#vertices+1] = { {(curX+nextX)/2,math.min(nextY * height, graphH), 0}, col }
         else
             local colGB = math.min((math.max(curY, 0) -12) * 0.0833, 1.0)
-            col = color(string.format('%.2f, %.2f, %.2f, %.2f', (1-colGB), colGB, colGB, alpha))
+            col = color(string.format('%.2f, %.2f, %.2f, %.2f', (1-colGB), colGB, colGB, 1))
             vertices[#vertices+1] = { {curX, math.min(curY * height, graphH), 0}, col }
             local colGB = math.min((math.max(nextY, 0) -12) * 0.0833, 1.0)
-            col = color(string.format('%.2f, %.2f, %.2f, %.2f', (1-colGB), colGB, colGB, alpha))
+            col = color(string.format('%.2f, %.2f, %.2f, %.2f', (1-colGB), colGB, colGB, 1))
             vertices[#vertices+1] = { {nextX,math.min(nextY * height, graphH), 0}, col }
         end
 
-        col = color('1, 0, 0, '..alpha)
+        col = color('1, 0, 0, 1')
         vertices[#vertices+1] = { {nextX, 0, 0}, {col[1], col[2], col[3], col[4]*0.5} }
 
         if curY > 20 or nextY > 20 then
