@@ -1,5 +1,5 @@
 local player = ...
-local scoreType = (getenv("SetScoreType"..pname(player)) or 2) == 2
+local scoreType = (getenv("SetScoreType"..pname(player)) or 2) == 2 and getenv("SetScoreDirection"..pname(player)) ~= 1
 local scoreDirection = 2
 local animate = ThemePrefs.Get("AnimatePlayerScore")
 local target = THEME:GetMetric("PlayerStageStats", "GradePercentTier" .. string.format("%02d", 18-getenv("SetPacemaker"..pname(player))))*10000

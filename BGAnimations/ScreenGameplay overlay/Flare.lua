@@ -1,6 +1,6 @@
 local pn = ...
 local player = nil
-local scoreType = (getenv("SetScoreType"..pname(pn)) or 2) == 4
+local scoreType = (getenv("SetScoreType"..pname(pn)) or 2) == 4 and getenv("SetScoreDirection"..pname(pn)) ~= 1
 local scoreDirection = 2
 local pnFlare = getenv("Flare"..pname(pn))
 local old = getenv("FlareType"..pname(pn)) == 1
