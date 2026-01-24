@@ -99,7 +99,7 @@ function GetScreenSelectMusicHelpText()
 	if not IsNetSMOnline() then
 		ret = addToOutput(ret,THEME:GetString("ScreenSelectMusic","SelectButtonAvailableHelpTextAppend"),"::")
 		if ThemePrefs.Get("KeyboardEnabled") then ret = addToOutput(ret,THEME:GetString("ScreenSelectMusic","CtrlButtonAvailableHelpTextAppend"),"::") end
-		if DifficultyChangingAvailable() then ret = addToOutput(ret,THEME:GetString("ScreenSelectMusic","DifficultyChangingAvailableHelpTextAppend"),"::") end
+		if DifficultyChangingAvailable() then ret = addToOutput(ret,THEME:GetString("ScreenSelectMusic","DifficultyChangingAvailableHelpTextAppend"..((IsGame("pump") or IsGame("smx") or IsGame("techno") or IsGame("beat") or IsGame("be-mu") or IsGame("popn") or IsGame("po-mu")) and "One" or "Two")),"::") end
 	end
 	if ModeMenuAvailable() then ret = addToOutput(ret,THEME:GetString("ScreenSelectMusic","SortMenuAvailableHelpTextAppend"),"::") end
 	if getenv("Workout") and IsHome() then ret = addToOutput(ret,THEME:GetString("ScreenSelectMusic","WorkoutHelpTextAppend"),"::") end
