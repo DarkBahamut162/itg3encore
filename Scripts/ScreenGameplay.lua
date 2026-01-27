@@ -313,6 +313,12 @@ end
 
 local w1,w2,w3,w4,w5,miss = {},{},{},{},{},{}
 function GetTrueJudgment(params,player)
+	if isOutFoxV() then
+		function ToEnumShortString(value)
+			local output = split("_",value)
+			return output[#output]
+		end
+	end
 	local _w1 = STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetTapNoteScores('TapNoteScore_W1')
 	local _w2 = STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetTapNoteScores('TapNoteScore_W2')
 	local _w3 = STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetTapNoteScores('TapNoteScore_W3')
