@@ -12,6 +12,7 @@ local song = GAMESTATE:GetCurrentSong()
 local steps = GAMESTATE:GetCurrentSteps(pn)
 local diff = steps:GetDifficulty()
 local og = getCalculatedDifficulty(steps)
+if not string.find(og,"OG") then og = "LEVEL "..og end
 
 return Def.ActorFrame{
 	Def.Sprite {
