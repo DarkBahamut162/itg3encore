@@ -1084,8 +1084,8 @@ function OptionSongFrame()
 		SelectType = "SelectOne",
 		OneChoiceForAllPlayers = false,
 		ExportOnChange = false,
-		Values = { "_bunnies", "_disconnect", "_energy", "_hasse", "_love", "_nightmare", "_normal", "_pandy", "_smiley", "_vertex", "_virtual" },
-		Choices = { "Bunnies", "Disconnect", "Energy", "Hasse", "Love", "Nightmare", "Normal", "Pandy", "Smiley", "Vertex", "Virtual" },
+		Values = { "_bunnies", "_disconnect", "_energy", "_hasse", "_love", "_nightmare", "_normal", "_pandy", "_smiley", "_vertex", "_virtual", "_random" },
+		Choices = { "Bunnies", "Disconnect", "Energy", "Hasse", "Love", "Nightmare", "Normal", "Pandy", "Smiley", "Vertex", "Virtual", "Random" },
 		LoadSelections = function(self, list, pn)
 			for i=1,#list do
 				list[i] = getenv("SongFrame"..pname(pn)) == self.Values[i]

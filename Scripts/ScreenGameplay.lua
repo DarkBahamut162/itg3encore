@@ -52,7 +52,12 @@ function GetSongFrame(pn)
 	elseif getenv("SongFrame"..pname(pn and pn or GAMESTATE:GetMasterPlayerNumber())) then
 		frame = getenv("SongFrame"..pname(pn and pn or GAMESTATE:GetMasterPlayerNumber()))
 	else
-		frame = "_normal"
+		frame = "_random"
+	end
+	if frame == "_random" then
+		local rng = GAMESTATE:GetStageSeed()
+		local frames = { "_bunnies", "_disconnect", "_energy", "_hasse", "_love", "_nightmare", "_normal", "_pandy", "_smiley", "_vertex", "_virtual" }
+		return frames[rng%8+1]
 	end
 	return frame
 end
