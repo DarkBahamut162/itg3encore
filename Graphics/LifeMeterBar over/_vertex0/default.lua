@@ -1,4 +1,4 @@
-local pn = ...
+local pn,override = ...
 
 local color1 = color("#00EAFF")
 local color2 = color("FFFFFF00")
@@ -6,9 +6,9 @@ local vertexOn = false
 local song = GAMESTATE:GetCurrentSong()
 local title = song:GetDisplayFullTitle()
 
-if title == "VerTex" then vertexOn = true color1 = color("0,1,0,1") end
-if title == "VerTex²" or title == "VerTex^2" or title == "VerTex2" or title == "VV" then vertexOn = true color1 = color("1,0,0,1") end
-if title == "VerTex³" or title == "VerTex^3" or title == "VerTex3" or title == "VVV" then vertexOn = true color1 = color("1,0,1,1") end
+if title == "VerTex" or override == 1 then vertexOn = true color1 = color("0,1,0,1") end
+if title == "VerTex²" or title == "VerTex^2" or title == "VerTex2" or title == "VV" or override == 2 then vertexOn = true color1 = color("1,0,0,1") end
+if title == "VerTex³" or title == "VerTex^3" or title == "VerTex3" or title == "VVV" or override == 3 then vertexOn = true color1 = color("1,0,1,1") end
 
 return Def.ActorFrame{
 	Def.ActorFrame{

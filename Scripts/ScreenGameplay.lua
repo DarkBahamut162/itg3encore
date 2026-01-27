@@ -30,7 +30,7 @@ function GetSongFrame(pn)
 	if string.find(songDir,"Dance Dance Revolution 8th Mix") or string.find(songDir,"Dance Dance Revolution Extreme") then
 		frame = "_disconnect"
 	elseif string.find(songTitle,"VerTex") then
-		frame = "_vertex"
+		frame = "_vertex0"
 	elseif string.find(songTitle,"Dream to Nightmare") then
 		frame = "_nightmare"
 	elseif string.find(songTitle,"Summer ~Speedy Mix~") then
@@ -56,7 +56,7 @@ function GetSongFrame(pn)
 	end
 	if frame == "_random" then
 		local rng = GAMESTATE:GetStageSeed()
-		local frames = { "_bunnies", "_disconnect", "_energy", "_hasse", "_love", "_nightmare", "_normal", "_pandy", "_smiley", "_vertex", "_virtual" }
+		local frames = { "_bunnies", "_disconnect", "_energy", "_hasse", "_love", "_nightmare", "_normal", "_pandy", "_smiley", "_vertex0", "_vertex1", "_vertex2", "_vertex3", "_virtual" }
 		return frames[rng%8+1]
 	end
 	return frame

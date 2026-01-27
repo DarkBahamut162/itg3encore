@@ -1,3 +1,4 @@
+local override = ...
 local animate = canRender() and ThemePrefs.Get("AnimateSongTitle")
 local TitleSongFade
 
@@ -12,9 +13,9 @@ local vertexColor = color("0,0,0,0")
 local song = GAMESTATE:GetCurrentSong()
 local title = song:GetDisplayFullTitle()
 
-if title == "VerTex" then vertexOn = true vertexColor = color("0,1,0,1") end
-if title == "VerTex²" or title == "VerTex^2" or title == "VerTex2" or title == "VV" then vertexOn = true vertexColor = color("1,0,0,1") end
-if title == "VerTex³" or title == "VerTex^3" or title == "VerTex3" or title == "VVV" then vertexOn = true vertexColor = color("1,0,1,1") end
+if title == "VerTex" or override == 1 then vertexOn = true vertexColor = color("0,1,0,1") end
+if title == "VerTex²" or title == "VerTex^2" or title == "VerTex2" or title == "VV" or override == 2 then vertexOn = true vertexColor = color("1,0,0,1") end
+if title == "VerTex³" or title == "VerTex^3" or title == "VerTex3" or title == "VVV" or override == 3 then vertexOn = true vertexColor = color("1,0,1,1") end
 
 local totalDelta = 0
 local tmpDelta = 0
