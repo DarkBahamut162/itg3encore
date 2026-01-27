@@ -41,7 +41,7 @@ local judgments = {
 	"TapNoteScore_W2",
 	"TapNoteScore_W1"
 }
-
+local time = (IsGame("beat") or IsGame("be-mu")) and 2 or 1
 if isOpenDDR() then table.remove(judgments,2) end
 
 for j=2,#bits do
@@ -473,7 +473,7 @@ local posY = reverse and THEME:GetMetric("Player","ReceptorArrowsYReverse") or T
 local mlevel = GAMESTATE:IsCourseMode() and "ModsLevel_Stage" or "ModsLevel_Preferred"
 local currentMini = 1-math.round(GAMESTATE:GetPlayerState(player):GetPlayerOptions(mlevel):Mini()*50) / 100
 local currentTiny = 1-math.round(GAMESTATE:GetPlayerState(player):GetPlayerOptions(mlevel):Tiny()*50) / 100
-currentMini = currentMini * currentTiny
+--currentMini = currentMini * currentTiny
 
 local totalDelta = 0
 local tmpDelta = 0
@@ -599,14 +599,14 @@ local function Update(self, delta)
 		tmpDelta = totalDelta
 		local YoffsetBeat = ArrowEffects.GetYOffset(GAMESTATE:GetPlayerState(player),1,trueFirst)/64
 		local currentBeat = GAMESTATE:GetSongPosition():GetSongBeatVisible()
-		if YoffsetBeat < 6 and first then
+		if YoffsetBeat < 6*time and first then
 			for note in ivalues( noteData ) do
 				if first then c["Column"..note[2]]:accelerate(0.1):diffuse(0,0,0,0) end
 			end
 			if first then first = false end
 		elseif YoffsetBeat < 0 then
 			checking = false
-		elseif YoffsetBeat >= 6 then
+		elseif YoffsetBeat >= 6*time then
 			for _,note in ipairs( noteData ) do
 				if not first then c["Column"..note[2]]:decelerate(0.1):diffuse(Color("White")) end
 			end
@@ -642,9 +642,9 @@ if columns > 0 then
 			Name="Column"..(isITGmania() and GCM_ITG[ColumnIndex] or ColumnIndex),
 			InitCommand=function(self)
 				self:diffuse(0,0,0,0)
-					:x(info.XOffset)
+					:x(info.XOffset*currentTiny)
 					:y(SCREEN_CENTER_Y+(posY-NoteFieldMiddle)/currentMini):valign(0)
-					:setsize(widthFixed[info.Name] and widthFixed[info.Name] or width/NumColumns, (SCREEN_HEIGHT-math.abs(posY-NoteFieldMiddle))/currentMini)
+					:setsize((widthFixed[info.Name] and widthFixed[info.Name] or width/NumColumns)*currentTiny, (SCREEN_HEIGHT-math.abs(posY-NoteFieldMiddle))/currentMini)
 					:fadebottom(0.333):fadetop(0.333)
 				if reverse then self:rotationz(180) end
 			end,

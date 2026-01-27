@@ -14,13 +14,14 @@ local playField = SCREEN_HEIGHT-actualPos
 if playField < SCREEN_HEIGHT/2 then playField = actualPos end
 local mlevel = GAMESTATE:IsCourseMode() and "ModsLevel_Stage" or "ModsLevel_Preferred"
 local currentMini = 1-math.round(GAMESTATE:GetPlayerState(player):GetPlayerOptions(mlevel):Mini()*50) / 100
-local currentTiny = 1-math.round(GAMESTATE:GetPlayerState(player):GetPlayerOptions(mlevel):Tiny()*50) / 100
-currentMini = currentMini * currentTiny
+--local currentTiny = 1-math.round(GAMESTATE:GetPlayerState(player):GetPlayerOptions(mlevel):Tiny()*50) / 100
+--currentMini = currentMini * currentTiny
 playField = playField / currentMini
 
 local mode = ""
 local speed = 1
 local forced = 0
+local diff = (IsGame("beat") or IsGame("be-mu")) and 30 or 60
 
 local function Update(self)
 	if (GetTimeSinceStart() - time) >= 1/60 then
@@ -30,7 +31,7 @@ local function Update(self)
 		update = false
 	end
 	if update then
-		local bpm = string.format("%03.0f",SCREENMAN:GetTopScreen():GetTrueBPS(player) * 60)
+		local bpm = string.format("%03.0f",SCREENMAN:GetTopScreen():GetTrueBPS(player) * diff)
 		self:GetChild("GreenNumber"..pname(player)):settext(math.floor(playField/(bpm*speed)*1000))
 	end
 end
@@ -86,7 +87,7 @@ return Def.ActorFrame{
 
 			local absoluteBPM = GAMESTATE:GetCurrentSteps(player):GetTimingData():GetActualBPM()
 			self:GetChild("Min"..pname(player)):settext(math.floor(playField/(forced > 0 and forced or absoluteBPM[1]*speed)*1000))
-			local bpm = string.format("%03.0f",SCREENMAN:GetTopScreen():GetTrueBPS(player) * 60)
+			local bpm = string.format("%03.0f",SCREENMAN:GetTopScreen():GetTrueBPS(player) * diff)
 			self:GetChild("GreenNumber"..pname(player)):settext(math.floor(playField/(forced > 0 and forced or bpm*speed)*1000))
 			self:GetChild("Max"..pname(player)):settext(math.floor(playField/(forced > 0 and forced or absoluteBPM[2]*speed)*1000))
 		end
@@ -110,9 +111,12 @@ return Def.ActorFrame{
 			self:GetChild("Min"..pname(player)):visible(false)
 			self:GetChild("Max"..pname(player)):visible(false)
 		end
-		if isGamePlay() then self:SetUpdateFunction(Update) end self:visible(isGamePlay()):y(SCREEN_TOP+91*WideScreenDiff()-162.5+add):accelerate(0.5):y(SCREEN_TOP+91*WideScreenDiff()-100+add):decelerate(0.8):y(SCREEN_TOP+91*WideScreenDiff()+add)
+		if isGamePlay() then self:SetUpdateFunction(Update) end
+		self:visible(isGamePlay())
+		if not IsIIDXFrame(player) then self:y(SCREEN_TOP+91*WideScreenDiff()-162.5+add):accelerate(0.5):y(SCREEN_TOP+91*WideScreenDiff()-100+add):decelerate(0.8) end
+		self:y(SCREEN_TOP+91*WideScreenDiff()+add)
 	end,
-	OffCommand=function(self) stopping = true if not IsGame("pump") then if AnyPlayerFullComboed() then self:sleep(1) end self:accelerate(0.8):addy(-100):decelerate(0.8):addy(-100) end end,
+	OffCommand=function(self) stopping = true if not IsGame("pump") then if AnyPlayerFullComboed() then self:sleep(1) end if not IsIIDXFrame(player) then self:accelerate(0.8):addy(-100):decelerate(0.8):addy(-100) end end end,
 	Def.BitmapText {
 		File = "_r bold numbers",
 		Name="Min"..pname(player),

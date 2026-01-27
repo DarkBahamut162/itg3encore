@@ -56,6 +56,40 @@ function GetSongFrame(pn)
 	return frame
 end
 
+function GetIIDXFrame(pn)
+	if IsGame("beat") or IsGame("be-mu") then
+		local frame = getenv("IIDXFrame"..pname(pn and pn or GAMESTATE:GetMasterPlayerNumber()))
+		if frame == "random" then
+			local rng = GAMESTATE:GetStageSeed()
+			local frames = { "_red", "_happysky", "_distorted", "_gold", "_troopers", "_empress", "_sirius", "_resortanthem" }
+			return frames[rng%8+1]
+		end
+
+		return frame
+	end
+	return nil
+end
+
+function IsIIDXFrame(pn)
+	local frame = GetIIDXFrame(pn)
+	if frame == "_red" or frame == "_happysky" or frame == "_distorted" or frame == "_gold" or frame == "_troopers" or frame == "_empress" or frame == "_sirius" or frame == "_resortanthem" then
+		return true
+	end
+	return false
+end
+
+function AnyIIDXFrame()
+	return GetIIDXFrame(PLAYER_1) or GetIIDXFrame(PLAYER_2)
+end
+
+function IIDXLifeBar(pn)
+	local PO = GAMESTATE:GetPlayerState(pn):GetPlayerOptions('ModsLevel_Song')
+	local drain = PO:DrainSetting()
+	local pass = 0
+	local flare = (getenv("Flare"..pname(pn)) or 0) > 0
+	return flare and "white" or drain ~= "DrainType_Normal" and "gold" or pass == 0 and "0" or pass == 0.6 and "60" or pass == 0.8 and "80" or "blue"
+end
+
 function songfail(bVertex)
 	local curSong = GAMESTATE:GetCurrentSong()
 	if curSong then

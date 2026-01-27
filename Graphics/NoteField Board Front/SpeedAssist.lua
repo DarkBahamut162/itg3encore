@@ -8,7 +8,8 @@ local tilt = GAMESTATE:GetPlayerState(player):GetCurrentPlayerOptions():Tilt()
 local tilt_degrees = scale(tilt,-1,1,30,30) % 360
 if tilt_degrees > 180 then tilt_degrees = tilt_degrees - (tilt_degrees-180) end
 local stretch = 1-(tilt_degrees/180)
-local add = math.abs(SCREEN_HEIGHT-SCREEN_HEIGHT/stretch)
+local height = (IsGame("beat") or IsGame("be-mu")) and SCREEN_HEIGHT*2 or SCREEN_HEIGHT
+local add = math.abs(height-height/stretch)
 
 local mlevel = GAMESTATE:IsCourseMode() and "ModsLevel_Stage" or "ModsLevel_Preferred"
 local currentMini = 1-math.round(GAMESTATE:GetPlayerState(player):GetPlayerOptions(mlevel):Mini()*50) / 100
@@ -24,6 +25,7 @@ else
 end
 
 add = add * 2
+if IsGame("beat") or IsGame("be-mu") then add = add * 2 end
 
 local filterWidth = GetTrueWidth(player)
 local widthZoom = Center1Player() and 1 or WideScreenDiff()
@@ -187,12 +189,12 @@ return Def.ActorFrame{
 			Def.Sprite {
 				Texture = THEME:GetPathG("","lolhi "..(isFinal() and "final" or "normal")),
 				Name="SpeedDownLeft",
-				InitCommand=function(self) self:zoomto((SCREEN_HEIGHT+add)/currentMini,16*widthZoom) end
+				InitCommand=function(self) self:zoomto((height+add)/currentMini,16*widthZoom) end
 			},
 			Def.Sprite {
 				Texture = "SpeedDown",
 				Name="SpeedDownLeft_",
-				InitCommand=function(self) self:diffusealpha(0.5):zoomto((SCREEN_HEIGHT+add)/currentMini,15*widthZoom):customtexturerect(0,0,((SCREEN_HEIGHT+add)/currentMini)/32,1):texcoordvelocity(10/3,0):rotationz(180) end
+				InitCommand=function(self) self:diffusealpha(0.5):zoomto((height+add)/currentMini,15*widthZoom):customtexturerect(0,0,((height+add)/currentMini)/32,1):texcoordvelocity(10/3,0):rotationz(180) end
 			}
 		},
 		Def.ActorFrame{
@@ -201,12 +203,12 @@ return Def.ActorFrame{
 			Def.Sprite {
 				Texture = THEME:GetPathG("","lolhi "..(isFinal() and "final" or "normal")),
 				Name="SpeedDownRight",
-				InitCommand=function(self) self:zoomto((SCREEN_HEIGHT+add)/currentMini,-16*widthZoom) end
+				InitCommand=function(self) self:zoomto((height+add)/currentMini,-16*widthZoom) end
 			},
 			Def.Sprite {
 				Texture = "SpeedDown",
 				Name="SpeedDownRight_",
-				InitCommand=function(self) self:diffusealpha(0.5):zoomto((SCREEN_HEIGHT+add)/currentMini,15*widthZoom):customtexturerect(0,0,((SCREEN_HEIGHT+add)/currentMini)/32,1):texcoordvelocity(10/3,0):rotationz(180) end
+				InitCommand=function(self) self:diffusealpha(0.5):zoomto((height+add)/currentMini,15*widthZoom):customtexturerect(0,0,((height+add)/currentMini)/32,1):texcoordvelocity(10/3,0):rotationz(180) end
 			}
 		}
 	},
@@ -218,12 +220,12 @@ return Def.ActorFrame{
 			Def.Sprite {
 				Texture = THEME:GetPathG("","profile "..(isFinal() and "final" or "normal")),
 				Name="SpeedUpLeft",
-				InitCommand=function(self) self:zoomto((SCREEN_HEIGHT+add)/currentMini,16*widthZoom) end
+				InitCommand=function(self) self:zoomto((height+add)/currentMini,16*widthZoom) end
 			},
 			Def.Sprite {
 				Texture = "SpeedUp",
 				Name="SpeedUpLeft_",
-				InitCommand=function(self) self:diffusealpha(0.5):zoomto((SCREEN_HEIGHT+add)/currentMini,15*widthZoom):customtexturerect(0,0,((SCREEN_HEIGHT+add)/currentMini)/32,1):texcoordvelocity(10/3,0) end
+				InitCommand=function(self) self:diffusealpha(0.5):zoomto((height+add)/currentMini,15*widthZoom):customtexturerect(0,0,((height+add)/currentMini)/32,1):texcoordvelocity(10/3,0) end
 			}
 		},
 		Def.ActorFrame{
@@ -232,12 +234,12 @@ return Def.ActorFrame{
 			Def.Sprite {
 				Texture = THEME:GetPathG("","profile "..(isFinal() and "final" or "normal")),
 				Name="SpeedUpRight",
-				InitCommand=function(self) self:zoomto((SCREEN_HEIGHT+add)/currentMini,-16*widthZoom) end
+				InitCommand=function(self) self:zoomto((height+add)/currentMini,-16*widthZoom) end
 			},
 			Def.Sprite {
 				Texture = "SpeedUp",
 				Name="SpeedUpRight_",
-				InitCommand=function(self) self:diffusealpha(0.5):zoomto((SCREEN_HEIGHT+add)/currentMini,15*widthZoom):customtexturerect(0,0,((SCREEN_HEIGHT+add)/currentMini)/32,1):texcoordvelocity(10/3,0) end
+				InitCommand=function(self) self:diffusealpha(0.5):zoomto((height+add)/currentMini,15*widthZoom):customtexturerect(0,0,((height+add)/currentMini)/32,1):texcoordvelocity(10/3,0) end
 			}
 		}
 	}

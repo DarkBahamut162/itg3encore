@@ -1,8 +1,8 @@
 local c
 local mlevel = GAMESTATE:IsCourseMode() and "ModsLevel_Stage" or "ModsLevel_Preferred"
 local currentMini = 1-math.round(GAMESTATE:GetPlayerState(GAMESTATE:GetMasterPlayerNumber()):GetPlayerOptions(mlevel):Mini()*50) / 100
-local currentTiny = 1-math.round(GAMESTATE:GetPlayerState(GAMESTATE:GetMasterPlayerNumber()):GetPlayerOptions(mlevel):Tiny()*50) / 100
-currentMini = currentMini * currentTiny
+--local currentTiny = 1-math.round(GAMESTATE:GetPlayerState(GAMESTATE:GetMasterPlayerNumber()):GetPlayerOptions(mlevel):Tiny()*50) / 100
+--currentMini = currentMini * currentTiny
 local style = GAMESTATE:GetCurrentStyle()
 local width = GetTrueWidth(GAMESTATE:GetMasterPlayerNumber())
 
@@ -64,6 +64,14 @@ local t = Def.ActorFrame {
 					end
 				end
 				if SCREENMAN:GetTopScreen():GetChild("Player"..pname(pn)) and SCREENMAN:GetTopScreen():GetChild("Player"..pname(pn)):GetChild("NoteField") then
+					if IsGame("beat") or IsGame("be-mu") then
+						local multi = isOutFox(20201130) and 1 or -1
+						local mods = GAMESTATE:GetPlayerState(pn):GetPlayerOptionsString("ModsLevel_Song")
+						if GAMESTATE:GetPlayerState(pn):GetPlayerOptions('ModsLevel_Song'):UsingReverse() then multi = multi * -1 end
+						if string.find(mods,"FlipUpsideDown") then multi = multi * -1 end
+						if isOutFoxV(20231200) then multi = multi * -1 end
+						SCREENMAN:GetTopScreen():GetChild("Player"..pname(pn)):zoom(0.5):addy(SCREEN_CENTER_Y/4*multi)
+					end
 					if isITGmania(20240307) then
 						local bits = NumberToBits(getenv("BeatBars"..pname(pn)) or 0,4)
 						local notefield = SCREENMAN:GetTopScreen():GetChild("Player"..pname(pn)):GetChild("NoteField")

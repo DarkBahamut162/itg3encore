@@ -482,6 +482,10 @@ function JudgmentTransformCommand( self, params )
 		add = add * -1
 	end
 	local zoom = isOutFox() and 1 or (1+math.min(1,NotefieldZoom()))/2
+	if IsGame("beat") or IsGame("be-mu") then
+		if y < 0 then y=y+SCREEN_CENTER_Y/4 else y=y-SCREEN_CENTER_Y/2 end
+		zoom = zoom * 2
+	end
 
 	self:x( 0 )
 	self:y( y*zoom + add )
@@ -510,6 +514,10 @@ function ComboTransformCommand( self, params )
 		add = add * -1
 	end
 	local zoom = isOutFox() and 1 or (1+math.min(1,NotefieldZoom()))/2
+	if IsGame("beat") or IsGame("be-mu") then
+		if y < 0 then y=y+SCREEN_CENTER_Y/4 else y=y-SCREEN_CENTER_Y/2 end
+		zoom = zoom * 2
+	end
 
 	self:x( 0 )
 	self:y( y*zoom + add )

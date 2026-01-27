@@ -177,7 +177,7 @@ return Def.ActorFrame{
 				local plus = pn == PLAYER_1 and 72 or -72
 				self:addx(solo and plus/2*WideScreenDiff_(16/10) or plus*WideScreenDiff_(16/10))
 			end
-			self:zoom(solo and 0.75*WideScreenDiff_(16/10) or 1*WideScreenDiff_(16/10))
+			self:zoom(solo and 0.75*WideScreenDiff_(16/10) or 0.9*WideScreenDiff_(16/10))
 			:addx(pn == PLAYER_1 and SCREEN_WIDTH/2 or -SCREEN_WIDTH/2)
 			:decelerate(1)
 			:addx(pn == PLAYER_1 and -SCREEN_WIDTH/2 or SCREEN_WIDTH/2)

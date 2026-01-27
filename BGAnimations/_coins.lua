@@ -1,6 +1,15 @@
+local iidx = false
+
 return Def.ActorFrame{
-	OnCommand=function(self) self:addy(100):decelerate(0.6):addy(-100) end,
-	OffCommand=function(self) self:accelerate(0.5):addy(100) end,
+	BeginCommand=function(self)
+		if isGamePlay() then 
+			for pn in ivalues(GAMESTATE:GetEnabledPlayers()) do iidx = iidx or IsIIDXFrame(pn) end
+		else
+			iidx = false
+		end
+	end,
+	OnCommand=function(self) if not iidx then self:addy(100):decelerate(0.6):addy(-100) end end,
+	OffCommand=function(self) if not iidx then self:accelerate(0.5):addy(100) end end,
 	Def.BitmapText {
 		File = "_v 26px bold black",
 		InitCommand=function(self) self:CenterX():y(isFinal() and SCREEN_BOTTOM-12*WideScreenDiff() or SCREEN_BOTTOM-16*WideScreenDiff()):diffusealpha(0):shadowlength(0):zoom(0.5*WideScreenDiff()) end,

@@ -31,6 +31,23 @@ function CustomDifficultyToColor( dc )
 	return colors[dc] or color("1,1,1,1")
 end
 
+function CustomIIDXDifficultyToColor( dc )
+	local colors = {
+		["Beginner"]	= color("#09FF10"),
+		["Easy"]		= color("#28C8F8"),
+		["Medium"]		= color("#F38212"),
+		["Hard"]		= color("#EA3548"),
+		["Challenge"]	= color("#161616"),
+		["Edit"]		= color("#AFAFAF"),
+
+		["Freestyle"]	= color("#28C8F8"),
+		["HalfDouble"]	= color("#F3F312"),
+		["Crazy"]		= color("#EA3548"),
+		["Nightmare"]	= color("#161616")
+	}
+	return colors[dc] or isGamePlay() and color("#AFAFAF") or color("1,1,1,1")
+end
+
 function ContrastingDifficultyColor( dc )
 	local colors = {
 		["Beginner"]	= color("#E2ABF5"),

@@ -133,6 +133,7 @@ local SN = {
 return Def.ActorFrame{
 	OnCommand=function(self)
 		if isGamePlay() or isSurvival(player) then self:SetUpdateFunction(UpdateScore) end self:visible(isGamePlay())
+		if IsIIDXFrame(PLAYER_1) then self:visible(false) end
 		if scoreType == 4 or scoreType == 5 then
 			local SongOrCourse = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentCourse() or GAMESTATE:GetCurrentSong()
 			local StepsOrTrail = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentTrail(player) or GAMESTATE:GetCurrentSteps(player)
@@ -329,6 +330,7 @@ return Def.ActorFrame{
 				end
 				self:settextf("%1.2f%%",output) -- WIFE3
 			end
+			MESSAGEMAN:Broadcast("Score",{PLAYER=player,TYPE=(scoreType==2 or scoreType==6) and "Percent" or "Score",SCORE=output})
 		end,
 		OffCommand=function(self)
 			if scoreDirection == 2 then scoreDirection = 1 self:queuecommand("RedrawScore") end

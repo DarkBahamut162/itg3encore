@@ -216,10 +216,11 @@ function SongMods(part)
 
 	local fail = isOutFoxV(20221111) and "FV" or "F"
 	local options = ""
-	
+
 	if part == nil or part == 1 then
 		options = addToOutput(options,(isEtterna() and "Speed," or "1,") .."2,4,"..fail..","..((isRegular() and VersionDateCheck(20160000)) and (isOpenDDR() and "0DDR" or "0,Flare") or "0")..",3",",")
-		if not (IsGame("pump") or GAMESTATE:IsCourseMode()) then options = addToOutput(options,"31",",") end
+		if not (IsGame("pump") or GAMESTATE:IsCourseMode()) then options = addToOutput(options,(IsGame("beat") or IsGame("be-mu")) and "IIDXFrame,IIDXDouble,IIDXJudgment" or "31",",") end
+		if (IsGame("beat") or IsGame("be-mu")) and IIDXcheck() then options = addToOutput(options,"IIDXNote,IIDXNoteLength,IIDXBeam,IIDXBeamLength,IIDXExplosion,IIDXTurntable",",") end
 		if not (IsGame("be-mu") or IsGame("beat") or IsGame("po-mu") or IsGame("popn")) then options = addToOutput(options,"32,32H",",") end
 	end
 	if part == nil or part == 2 then
@@ -459,6 +460,16 @@ function InitPlayerOptions()
 		setenv("HoldJudgment"..pname(pn),LoadUserPref(pn, "Judgment", "_itg3"))
 		setenv("Judgment"..pname(pn),LoadUserPref(pn, "Judgment", "_itg3"))
 		setenv("GreenNumber"..pname(pn),LoadUserPrefB(pn, "GreenNumber", false))
+
+		setenv("IIDXFrame"..pname(pn),LoadUserPref(pn, "IIDXFrame", "_sirius"))
+		setenv("IIDXDouble"..pname(pn),LoadUserPrefB(pn, "IIDXDouble", false))
+		setenv("IIDXJudgment"..pname(pn),LoadUserPref(pn, "IIDXJudgment", "default"))
+		setenv("IIDXNote"..pname(pn),LoadUserPref(pn, "IIDXNote", "default"))
+		setenv("IIDXNoteLength"..pname(pn),LoadUserPref(pn, "IIDXNoteLength", "normal"))
+		setenv("IIDXBeam"..pname(pn),LoadUserPref(pn, "IIDXBeam", "default"))
+		setenv("IIDXBeamLength"..pname(pn),LoadUserPref(pn, "IIDXBeamLength", "normal"))
+		setenv("IIDXTurntable"..pname(pn),LoadUserPref(pn, "IIDXTurntable", "_default"))
+		setenv("IIDXExplosion"..pname(pn),LoadUserPref(pn, "IIDXExplosion", "_default"))
 	end
 
 end
@@ -846,9 +857,14 @@ end
 
 function OptionShowStats()
 	local options = isOpenDDR() and { "Off","W1","W2","W3","W4","Miss","IIDX" } or { "Off","W1","W2","W3","W4","W5","Miss","IIDX" }
-	options[#options+1] = "Full"
-	options[#options+1] = "Mini (Bottom)"
-	options[#options+1] = "Mini (Top)"
+	if not (IsGame("beat") or IsGame("be-mu")) then
+		options[#options+1] = "Full"
+		options[#options+1] = "Mini (Bottom)"
+		options[#options+1] = "Mini (Top)"
+	else
+		options[#options+1] = "Full"
+		options[#options+1] = "Mini"
+	end
 
 	local t = {
 		Name="PlayerStats",
@@ -861,10 +877,14 @@ function OptionShowStats()
 			local showStats = (getenv("ShowStats"..pname(pn)) or 0) + 1
 			local showStatsSize = (getenv("ShowStatsSize"..pname(pn)) or 0) + (getenv("ShowStatsPos"..pname(pn)) or 0)
 			list[showStats] = true
-			if showStatsSize and showStatsSize ~= 0 then
-				list[showStatsSize+#self.Choices-3] = true
+			if not (IsGame("beat") or IsGame("be-mu")) then
+				if showStatsSize and showStatsSize ~= 0 then
+					list[showStatsSize+#self.Choices-3] = true
+				else
+					list[#self.Choices-2] = true
+				end
 			else
-				list[#self.Choices-2] = true
+				list[showStatsSize+#self.Choices-2] = true
 			end
 		end,
 		SaveSelections = function() end,
@@ -872,8 +892,12 @@ function OptionShowStats()
 			if choice <= #self.Choices-3 then
 				setenv("ShowStats"..pname(pn),SaveUserPref(pn, "ShowStats", choice-1))
 			else
-				setenv("ShowStatsSize"..pname(pn),SaveUserPref(pn, "ShowStatsSize", math.min(2,choice-#self.Choices+3)))
-				setenv("ShowStatsPos"..pname(pn),SaveUserPref(pn, "ShowStatsPos", math.max(0,choice-#self.Choices+1)))
+				if not (IsGame("beat") or IsGame("be-mu")) then
+					setenv("ShowStatsSize"..pname(pn),SaveUserPref(pn, "ShowStatsSize", math.min(2,choice-#self.Choices+3)))
+					setenv("ShowStatsPos"..pname(pn),SaveUserPref(pn, "ShowStatsPos", math.max(0,choice-#self.Choices+1)))
+				else
+					setenv("ShowStatsSize"..pname(pn),SaveUserPref(pn, "ShowStatsSize", math.min(2,choice-#self.Choices+2)))
+				end
 			end
 			return true
 		end
@@ -1071,6 +1095,248 @@ function OptionSongFrame()
 			for i=1,#list do
 				if list[i] then
 					setenv("SongFrame"..pname(pn),SaveUserPref(pn, "SongFrame", self.Values[i]))
+				end
+			end
+		end
+	}
+	setmetatable(t, t)
+	return t
+end
+
+function OptionIIDXFrame()
+	local t = {
+		Name = "IIDXFrame",
+		LayoutType = "ShowAllInRow",
+		SelectType = "SelectOne",
+		OneChoiceForAllPlayers = false,
+		ExportOnChange = false,
+		Values = { "_red", "_happysky", "_distorted", "_gold", "_troopers", "_empress", "_sirius", "_resortanthem", "random" },
+		Choices = { "RED", "Happy Sky", "Distorted", "Gold", "DJ Troopers", "Empress", "Sirius", "Resort Anthem", "Random" },
+		LoadSelections = function(self, list, pn)
+			for i=1,#list do
+				list[i] = getenv("IIDXFrame"..pname(pn)) == self.Values[i]
+			end
+		end,
+		SaveSelections = function(self, list, pn)
+			for i=1,#list do
+				if list[i] then
+					setenv("IIDXFrame"..pname(pn),SaveUserPref(pn, "IIDXFrame", self.Values[i]))
+				end
+			end
+		end
+	}
+	setmetatable(t, t)
+	return t
+end
+
+function OptionIIDXDouble()
+	local t = {
+		Name="IIDXDouble",
+		LayoutType = "ShowAllInRow",
+		SelectType = "SelectOne",
+		OneChoiceForAllPlayers = false,
+		ExportOnChange = false,
+		Values = { false, true, },
+		Choices = { "Off", "On" },
+		LoadSelections = function(self, list, pn)
+			list[1] = not getenv("IIDXDouble"..pname(pn))
+			list[2] = getenv("IIDXDouble"..pname(pn))
+		end,
+		SaveSelections = function(self, list, pn)
+			setenv("IIDXDouble"..pname(pn),SaveUserPref(pn, "IIDXDouble", list[2]))
+		end
+	}
+	setmetatable(t, t)
+	return t
+end
+
+function IIDXcheck()
+	local notes = NOTESKIN:GetNoteSkinNames()
+	for i=1,#notes do
+		if notes[i] == "iidx-ac" then return true end
+	end
+	return false
+end
+
+function OptionIIDXJudgment()
+	local t = {
+		Name = "IIDXJudgment",
+		LayoutType = "ShowAllInRow",
+		SelectType = "SelectOne",
+		OneChoiceForAllPlayers = false,
+		ExportOnChange = false,
+		Values = { "default", "digital", "smart", "metallicblue", "techno", "wire", "abyss", "spada", "ancient", "onlyonejudge", "dotmatrix", "sinobuz", "segment", "rootage", "heroicverse", "bistrover", "casthour", "resident", "epolis", "pinkycrush", "random" },
+		Choices = { "Default", "Digital", "Smart", "Metallic Blue", "Techno", "Wire", "Abyss", "Spada", "Ancient", "Only One Judge", "Dot Matrix", "Sinobuz", "Segment", "Rootage", "Heroic Verse", "Bistrover", "CastHour", "Resident", "Epolis", "Pinky Crush", "Random" },
+		LoadSelections = function(self, list, pn)
+			for i=1,#list do
+				list[i] = getenv("IIDXJudgment"..pname(pn)) == self.Values[i]
+			end
+		end,
+		SaveSelections = function(self, list, pn)
+			for i=1,#list do
+				if list[i] then
+					setenv("IIDXJudgment"..pname(pn),SaveUserPref(pn, "IIDXJudgment", self.Values[i]))
+				end
+			end
+		end
+	}
+	setmetatable(t, t)
+	return t
+end
+
+function IIDXNoteskinCheck(player)
+	local noteskin = GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Preferred"):NoteSkin()
+	return noteskin == "iidx-ac"
+end
+
+function OptionIIDXBeam()
+	local t = {
+		Name = "IIDXBeam",
+		LayoutType = "ShowAllInRow",
+		SelectType = "SelectOne",
+		OneChoiceForAllPlayers = false,
+		ExportOnChange = false,
+		Values = { "none", "default", "orange", "pink", "monochrome", "onlyonebeam", "copula", "cannonballers", "heroicverse", "bistrover", "fresnelbeam", "resident", "epolis", "pinkycrush", "random" },
+		Choices = { "None", "Default", "Orange", "Pink", "Monochrome", "Only One Beam", "Copula", "Cannon Ballers", "Heroic Verse", "Bistrover", "Fresnel Beam", "Resident", "Epolis", "Pinky Crush", "Random" },
+		LoadSelections = function(self, list, pn)
+			for i=1,#list do
+				list[i] = getenv("IIDXBeam"..pname(pn)) == self.Values[i]
+			end
+		end,
+		SaveSelections = function(self, list, pn)
+			for i=1,#list do
+				if list[i] then
+					setenv("IIDXBeam"..pname(pn),SaveUserPref(pn, "IIDXBeam", self.Values[i]))
+				end
+			end
+		end
+	}
+	setmetatable(t, t)
+	return t
+end
+
+function OptionIIDXBeamLength()
+	local t = {
+		Name = "IIDXBeamLength",
+		LayoutType = "ShowAllInRow",
+		SelectType = "SelectOne",
+		OneChoiceForAllPlayers = false,
+		ExportOnChange = false,
+		Values = { "long", "normal", "short", "veryshort", "random" },
+		Choices = { "Long", "Normal", "Short", "Very Short", "Random" },
+		LoadSelections = function(self, list, pn)
+			for i=1,#list do
+				list[i] = getenv("IIDXBeamLength"..pname(pn)) == self.Values[i]
+			end
+		end,
+		SaveSelections = function(self, list, pn)
+			for i=1,#list do
+				if list[i] then
+					setenv("IIDXBeamLength"..pname(pn),SaveUserPref(pn, "IIDXBeamLength", self.Values[i]))
+				end
+			end
+		end
+	}
+	setmetatable(t, t)
+	return t
+end
+
+function OptionIIDXNote()
+	local t = {
+		Name = "IIDXNote",
+		LayoutType = "ShowAllInRow",
+		SelectType = "SelectOne",
+		OneChoiceForAllPlayers = false,
+		ExportOnChange = false,
+		Values = { "default", "gorgeous", "aqua", "gyaru", "photon", "pastel", "simplecolor", "light", "tricoro", "bubble", "random" },
+		Choices = { "Default", "Gorgeous", "Aqua", "Gyaru", "Photon", "Pastel", "Simple Color", "Light", "Tricoro", "Bubble", "Random" },
+		LoadSelections = function(self, list, pn)
+			for i=1,#list do
+				list[i] = getenv("IIDXNote"..pname(pn)) == self.Values[i]
+			end
+		end,
+		SaveSelections = function(self, list, pn)
+			for i=1,#list do
+				if list[i] then
+					setenv("IIDXNote"..pname(pn),SaveUserPref(pn, "IIDXNote", self.Values[i]))
+				end
+			end
+		end
+	}
+	setmetatable(t, t)
+	return t
+end
+
+function OptionIIDXNoteLength()
+	local t = {
+		Name = "IIDXNoteLength",
+		LayoutType = "ShowAllInRow",
+		SelectType = "SelectOne",
+		OneChoiceForAllPlayers = false,
+		ExportOnChange = false,
+		Values = { "long", "normal", "short", "veryshort", "random" },
+		Choices = { "Long", "Normal", "Short", "Very Short", "Random" },
+		LoadSelections = function(self, list, pn)
+			for i=1,#list do
+				list[i] = getenv("IIDXNoteLength"..pname(pn)) == self.Values[i]
+			end
+		end,
+		SaveSelections = function(self, list, pn)
+			for i=1,#list do
+				if list[i] then
+					setenv("IIDXNoteLength"..pname(pn),SaveUserPref(pn, "IIDXNoteLength", self.Values[i]))
+				end
+			end
+		end
+	}
+	setmetatable(t, t)
+	return t
+end
+
+function OptionIIDXExplosion()
+	local t = {
+		Name = "IIDXExplosion",
+		LayoutType = "ShowAllInRow",
+		SelectType = "SelectOne",
+		OneChoiceForAllPlayers = false,
+		ExportOnChange = false,
+		Values = { "_default", "_1st", "_9th", "_red", "_happysky", "_distorted", "_gold", "_troopers", "_empress", "_sirius", "_resortanthem", "_lincle", "_tricoro", "_spada", "_onlyonebomb", "_pendual", "_copula", "_sinobuz", "_cannonballers", "_rootage", "_heroicverse", "_bistrover", "_likeflash", "_resident", "_epolis", "_pinkycrush", "_sparkleshower", "random" },
+		Choices = { "Default", "1st", "9th", "Red", "Happy Sky", "Distorted", "Gold", "DJ Troopers", "Empress", "Sirius", "Resort Anthem", "Lincle", "Tricoro", "Spada", "Only One Bomb", "Pendual", "Copula", "Sinobuz", "Cannon Ballers", "Rootage", "Heroic Verse", "Bistrover", "Like Flash", "Resident", "Epolis", "Pinky Crush", "Sparkle Shower", "Random" },
+		LoadSelections = function(self, list, pn)
+			for i=1,#list do
+				list[i] = getenv("IIDXExplosion"..pname(pn)) == self.Values[i]
+			end
+		end,
+		SaveSelections = function(self, list, pn)
+			for i=1,#list do
+				if list[i] then
+					setenv("IIDXExplosion"..pname(pn),SaveUserPref(pn, "IIDXExplosion", self.Values[i]))
+				end
+			end
+		end
+	}
+	setmetatable(t, t)
+	return t
+end
+
+function OptionIIDXTurntable()
+	local t = {
+		Name = "IIDXTurntable",
+		LayoutType = "ShowAllInRow",
+		SelectType = "SelectOne",
+		OneChoiceForAllPlayers = false,
+		ExportOnChange = false,
+		Values = { "_default", "_tran", "_jojo", "_delta", "_orangedisc", "_distorted", "_gold", "_troopers", "_empress", "_sirius", "_resortanthem", "_lincle", "_tricoro", "_spada", "_shakunetsu", "_onlyonerecord", "_pendual", "_copula", "_sinobuz", "_cannonballers", "_rootage", "_heroicverse", "_casthour", "_resident", "_strawberry", "_epolis", "_pinkycrush", "random" },
+		Choices = { "Default", "Tran", "Jojo", "Delta", "Orange Disc", "Distorted", "Gold", "Dj Troopers", "Empress", "Sirius", "Resort Anthem", "Lincle", "Tricoro", "Spada", "Shakunetsu", "Only One Record", "Pendual", "Copula", "Sinobuz", "Cannon Ballers", "Rootage", "Heroic Verse", "CastHour", "Resident", "Strawberry", "Epolis", "Pinky Crush", "Random" },
+		LoadSelections = function(self, list, pn)
+			for i=1,#list do
+				list[i] = getenv("IIDXTurntable"..pname(pn)) == self.Values[i]
+			end
+		end,
+		SaveSelections = function(self, list, pn)
+			for i=1,#list do
+				if list[i] then
+					setenv("IIDXTurntable"..pname(pn),SaveUserPref(pn, "IIDXTurntable", self.Values[i]))
 				end
 			end
 		end
