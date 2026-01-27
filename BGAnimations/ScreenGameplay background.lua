@@ -44,15 +44,17 @@ local t = Def.ActorFrame {
 	end,
 	InitCommand = function(self) c = self:GetChildren() end,
 	OnCommand=function(self)
-		for pn in ivalues(GAMESTATE:GetEnabledPlayers()) do
-			if SCREENMAN:GetTopScreen():GetChild("Player"..pname(pn)) and SCREENMAN:GetTopScreen():GetChild("Player"..pname(pn)):GetChild("NoteField") then
-				if IsGame("beat") or IsGame("be-mu") then
-					local multi = isOutFox(20201130) and 1 or -1
-					local mods = GAMESTATE:GetPlayerState(pn):GetPlayerOptionsString("ModsLevel_Song")
-					if GAMESTATE:GetPlayerState(pn):GetPlayerOptions('ModsLevel_Song'):UsingReverse() then multi = multi * -1 end
-					if string.find(mods,"FlipUpsideDown") then multi = multi * -1 end
-					if isOutFoxV(20231200) then multi = multi * -1 end
-					SCREENMAN:GetTopScreen():GetChild("Player"..pname(pn)):zoom(0.5):addy(SCREEN_CENTER_Y/4*multi)
+		if not isTopScreen("ScreenDemonstration2") then
+			for pn in ivalues(GAMESTATE:GetEnabledPlayers()) do
+				if SCREENMAN:GetTopScreen():GetChild("Player"..pname(pn)) and SCREENMAN:GetTopScreen():GetChild("Player"..pname(pn)):GetChild("NoteField") then
+					if IsGame("beat") or IsGame("be-mu") then
+						local multi = isOutFox(20201130) and 1 or -1
+						local mods = GAMESTATE:GetPlayerState(pn):GetPlayerOptionsString("ModsLevel_Song")
+						if GAMESTATE:GetPlayerState(pn):GetPlayerOptions('ModsLevel_Song'):UsingReverse() then multi = multi * -1 end
+						if string.find(mods,"FlipUpsideDown") then multi = multi * -1 end
+						if isOutFoxV(20231200) then multi = multi * -1 end
+						SCREENMAN:GetTopScreen():GetChild("Player"..pname(pn)):zoom(0.5):addy(SCREEN_CENTER_Y/4*multi)
+					end
 				end
 			end
 		end
