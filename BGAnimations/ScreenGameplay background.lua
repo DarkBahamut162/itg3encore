@@ -44,6 +44,18 @@ local t = Def.ActorFrame {
 	end,
 	InitCommand = function(self) c = self:GetChildren() end,
 	OnCommand=function(self)
+		for pn in ivalues(GAMESTATE:GetEnabledPlayers()) do
+			if SCREENMAN:GetTopScreen():GetChild("Player"..pname(pn)) and SCREENMAN:GetTopScreen():GetChild("Player"..pname(pn)):GetChild("NoteField") then
+				if IsGame("beat") or IsGame("be-mu") then
+					local multi = isOutFox(20201130) and 1 or -1
+					local mods = GAMESTATE:GetPlayerState(pn):GetPlayerOptionsString("ModsLevel_Song")
+					if GAMESTATE:GetPlayerState(pn):GetPlayerOptions('ModsLevel_Song'):UsingReverse() then multi = multi * -1 end
+					if string.find(mods,"FlipUpsideDown") then multi = multi * -1 end
+					if isOutFoxV(20231200) then multi = multi * -1 end
+					SCREENMAN:GetTopScreen():GetChild("Player"..pname(pn)):zoom(0.5):addy(SCREEN_CENTER_Y/4*multi)
+				end
+			end
+		end
 		if not isTopScreen("ScreenDemonstration") and not isTopScreen("ScreenDemonstration2") and not isTopScreen("ScreenJukebox") and not isTopScreen("ScreenCreditsGameplay") then
 			self:playcommand("UpdateDiscordInfo")
 			for pn in ivalues(GAMESTATE:GetEnabledPlayers()) do
@@ -64,14 +76,6 @@ local t = Def.ActorFrame {
 					end
 				end
 				if SCREENMAN:GetTopScreen():GetChild("Player"..pname(pn)) and SCREENMAN:GetTopScreen():GetChild("Player"..pname(pn)):GetChild("NoteField") then
-					if IsGame("beat") or IsGame("be-mu") then
-						local multi = isOutFox(20201130) and 1 or -1
-						local mods = GAMESTATE:GetPlayerState(pn):GetPlayerOptionsString("ModsLevel_Song")
-						if GAMESTATE:GetPlayerState(pn):GetPlayerOptions('ModsLevel_Song'):UsingReverse() then multi = multi * -1 end
-						if string.find(mods,"FlipUpsideDown") then multi = multi * -1 end
-						if isOutFoxV(20231200) then multi = multi * -1 end
-						SCREENMAN:GetTopScreen():GetChild("Player"..pname(pn)):zoom(0.5):addy(SCREEN_CENTER_Y/4*multi)
-					end
 					if isITGmania(20240307) then
 						local bits = NumberToBits(getenv("BeatBars"..pname(pn)) or 0,4)
 						local notefield = SCREENMAN:GetTopScreen():GetChild("Player"..pname(pn)):GetChild("NoteField")

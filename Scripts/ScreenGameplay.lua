@@ -20,6 +20,7 @@ function DifficultyToState(diff)
 end
 
 function GetSongFrame(pn)
+	if IsGame("beat") or IsGame("be-mu") then return GetIIDXFrame(pn) end
 	if IsGame("pump") then return "_piupro" end
 	if GAMESTATE:IsCourseMode() then return "_normal" end
 	local song = GAMESTATE:GetCurrentSong()
@@ -58,7 +59,7 @@ end
 
 function GetIIDXFrame(pn)
 	if IsGame("beat") or IsGame("be-mu") then
-		local frame = getenv("IIDXFrame"..pname(pn and pn or GAMESTATE:GetMasterPlayerNumber()))
+		local frame = getenv("IIDXFrame"..pname(pn and pn or GAMESTATE:GetMasterPlayerNumber())) or "random"
 		if frame == "random" then
 			local rng = GAMESTATE:GetStageSeed()
 			local frames = { "_red", "_happysky", "_distorted", "_gold", "_troopers", "_empress", "_sirius", "_resortanthem" }

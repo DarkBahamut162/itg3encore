@@ -14,8 +14,8 @@ return Def.ActorFrame{
         BeginCommand=function(self) if mask then self:MaskDest() end end
     },
     Def.ActorFrame{
-        Condition=not isVS(),
-        loadfile(THEME:GetPathG("LifeMeterBar","over/"..GetSongFrame(pn)))(pn)..{
+        Condition=not isVS() and not iidx,
+        loadfile(THEME:GetPathG("LifeMeterBar","over/"..(iidx and "_normal" or GetSongFrame(pn))))(pn)..{
             InitCommand=function(self)
                 self:name("Life"..pname(pn))
                 ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen")
