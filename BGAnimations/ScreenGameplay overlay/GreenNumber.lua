@@ -22,6 +22,7 @@ local mode = ""
 local speed = 1
 local forced = 0
 local diff = (IsGame("beat") or IsGame("be-mu")) and 30 or 60
+local multi = (IsGame("beat") or IsGame("be-mu")) and 2 or 1
 
 local function Update(self)
 	if (GetTimeSinceStart() - time) >= 1/60 then
@@ -86,10 +87,10 @@ return Def.ActorFrame{
 			setSpeed()
 
 			local absoluteBPM = GAMESTATE:GetCurrentSteps(player):GetTimingData():GetActualBPM()
-			self:GetChild("Min"..pname(player)):settext(math.floor(playField/(forced > 0 and forced or absoluteBPM[1]*speed)*1000))
+			self:GetChild("Min"..pname(player)):settext(math.floor(playField/(forced > 0 and forced or absoluteBPM[1]*speed)*multi*1000))
 			local bpm = string.format("%03.0f",SCREENMAN:GetTopScreen():GetTrueBPS(player) * diff)
 			self:GetChild("GreenNumber"..pname(player)):settext(math.floor(playField/(forced > 0 and forced or bpm*speed)*1000))
-			self:GetChild("Max"..pname(player)):settext(math.floor(playField/(forced > 0 and forced or absoluteBPM[2]*speed)*1000))
+			self:GetChild("Max"..pname(player)):settext(math.floor(playField/(forced > 0 and forced or absoluteBPM[2]*speed)*multi*1000))
 		end
 	end,
 	OnCommand=function(self)
@@ -105,8 +106,8 @@ return Def.ActorFrame{
 		setSpeed()
 		local absoluteBPM = GAMESTATE:GetCurrentSteps(player):GetTimingData():GetActualBPM()
 		if absoluteBPM[1] ~= absoluteBPM[2] then
-			self:GetChild("Min"..pname(player)):settext(math.floor(playField/(forced > 0 and forced or absoluteBPM[1]*speed)*1000))
-			self:GetChild("Max"..pname(player)):settext(math.floor(playField/(forced > 0 and forced or absoluteBPM[2]*speed)*1000))
+			self:GetChild("Min"..pname(player)):settext(math.floor(playField/(forced > 0 and forced or absoluteBPM[1]*speed)*multi*1000))
+			self:GetChild("Max"..pname(player)):settext(math.floor(playField/(forced > 0 and forced or absoluteBPM[2]*speed)*multi*1000))
 		else
 			self:GetChild("Min"..pname(player)):visible(false)
 			self:GetChild("Max"..pname(player)):visible(false)
