@@ -524,6 +524,7 @@ function GetTrueWidth(player)
 			local info = style:GetColumnInfo(player, ColumnIndex)
 			width = width + widthFixed[info.Name] + 2
 		end
+		if IsGame("be-mu") or IsGame("beat") then width = width * 0.5 end
 	end
 
 	return width
