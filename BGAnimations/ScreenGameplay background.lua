@@ -10,6 +10,7 @@ local function xS() return SCREEN_WIDTH*0.25+width/2*currentMini end
 local function zoomS() return (SCREEN_WIDTH-xS())/SCREEN_WIDTH end
 local function xM() return SCREEN_CENTER_X+width/2*currentMini end
 local function zoomM() return (SCREEN_WIDTH-xM())/SCREEN_WIDTH end
+local iidx = (IsGame("beat") or IsGame("be-mu")) and -15 or 0
 
 local multi = GAMESTATE:GetNumPlayersEnabled() == 1 and not isDouble() and (IsGame("be-mu") or IsGame("beat") or IsGame("po-mu") or IsGame("popn"))
 
@@ -64,15 +65,19 @@ local t = Def.ActorFrame {
 				if multi then
 					if not HasLuaCheck() then
 						if getenv("Rotation"..pname(pn)) == 1 or getenv("Rotation"..pname(pn)) == 4 then
-							SCREENMAN:GetTopScreen():GetChild("SongBackground"):GetChild(""):zoom(zoomS()):xy(pn == PLAYER_1 and xS() or 0,SCREEN_CENTER_Y-SCREEN_CENTER_Y*zoomS())
+							SCREENMAN:GetTopScreen():GetChild("SongBackground"):GetChild(""):zoom(zoomS()):xy(pn == PLAYER_1 and xS() or 0,SCREEN_CENTER_Y-SCREEN_CENTER_Y*zoomS()+iidx)
 						elseif getenv("Rotation"..pname(pn)) == 5 then
-							SCREENMAN:GetTopScreen():GetChild("SongBackground"):GetChild(""):zoom(zoomM())
-							if zoomM() < 1/3 then c.PC2:playcommand("MULTI") end
+							SCREENMAN:GetTopScreen():GetChild("SongBackground"):GetChild("")
 							c.PC3:playcommand("MULTI")
 							c.PC4:playcommand("MULTI")
-							if getenv("ShowStats"..pname(pn)) == 0 then
-								c.PC6:playcommand("MULTI")
-								if zoomM() < 1/3 then c.PC5:playcommand("MULTI") end
+							c.PC6:playcommand("MULTI")
+							if zoomM() < 1/3 then
+								c.PC2:playcommand("MULTI")
+								c.PC5:playcommand("MULTI")
+							else
+								SCREENMAN:GetTopScreen():GetChild("SongBackground"):GetChild(""):zoom(zoomM()):y(SCREEN_CENTER_Y+iidx):vertalign(top)
+								c.PC3:playcommand("MULTI"):addy(-SCREEN_HEIGHT-SCREEN_CENTER_Y*0.38*zoomM()):vertalign(bottom)
+								c.PC6:playcommand("MULTI"):addy(-SCREEN_HEIGHT-SCREEN_CENTER_Y*0.38*zoomM()):vertalign(bottom)
 							end
 						end
 					end
