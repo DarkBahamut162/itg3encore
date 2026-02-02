@@ -196,9 +196,9 @@ return Def.ActorFrame{
 			else
 				if IsGame("pump") then
 					if getenv("Rotation"..pname(player)) == 5 then
-						self:y(SCREEN_TOP+71*WideScreenDiff())
+						self:y(SCREEN_TOP+39*WideScreenDiff())
 					else
-						self:y(SCREEN_TOP+61*WideScreenDiff())
+						self:y(SCREEN_TOP+29*WideScreenDiff())
 					end
 				else
 					self:y(SCREEN_TOP+71*WideScreenDiff())
