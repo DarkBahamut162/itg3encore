@@ -14,6 +14,8 @@ return Def.ActorFrame{
 				elseif param.TYPE == "Percent" then
 					self:settext(string.format("%4.2f%%",param.SCORE)):maxwidth(15*6)
 				end
+			else
+				if GAMESTATE:GetNumPlayersEnabled() == 1 then self:visible(false) end
 			end
 		end
 	},
@@ -28,6 +30,8 @@ return Def.ActorFrame{
 				elseif param.TYPE == "Percent" then
 					self:settext(string.format("%4.2f%%",param.SCORE)):maxwidth(15*6)
 				end
+			else
+				if GAMESTATE:GetNumPlayersEnabled() == 1 then self:visible(false) end
 			end
 		end
 	}
