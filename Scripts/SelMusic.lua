@@ -9,6 +9,13 @@ ThemeVersion = "????????"
 CheckVersion = "????????"
 TimeZone = "+0100"
 local full = isOutFoxV() and "FullRes" or "Full"
+local ENVbackup = {}
+
+if isOutFoxV(20231200) and not isOutFoxV(20240000) then
+	-- HIJACK FUNCTION SINCE OUTFOX SCREWED UP HERE! (042 only)
+	function setenv(name,value) ENVbackup[name] = value end
+	function getenv(name) return ENVbackup[name] end
+end
 
 function GetThemeVersion()
 	if not FILEMAN:DoesFileExist(THEME:GetCurrentThemeDirectory().."/version.txt") then return "????????" end
