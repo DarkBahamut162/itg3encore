@@ -185,7 +185,8 @@ return Def.ActorFrame{
 		OnCommand=function(self)
 			local move = SCREEN_WIDTH/2
             self:x(startX):y(-16):zoom(solo and 0.75 or 0.9)
-			if players == 2 or size == 2 then self:zoomx(0.65):addx(graph and (pn == PLAYER_1 and -32 or 32) or 0) end
+			if players == 2 or size == 2 then self:zoomx(0.65) end
+			if players == 1 and size == 2 then self:addx(graph and (pn == PLAYER_1 and -32 or 32) or 0) end
 			if players == 2 or size == 2 then move = move * -1 end
 			self:addx(pn == PLAYER_1 and move or -move):decelerate(1):addx(pn == PLAYER_1 and -move or move)
 		end,
