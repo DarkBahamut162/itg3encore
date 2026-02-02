@@ -67,7 +67,7 @@ function GetIIDXFrame(pn)
 		local frame = getenv("IIDXFrame"..pname(pn and pn or GAMESTATE:GetMasterPlayerNumber())) or "random"
 		if frame == "random" then
 			local rng = GAMESTATE:GetStageSeed()
-			local frames = { "_red", "_happysky", "_distorted", "_gold", "_troopers", "_empress", "_sirius", "_resortanthem" }
+			local frames = { "_10th", "_red", "_happysky", "_distorted", "_gold", "_troopers", "_empress", "_sirius", "_resortanthem" }
 			return frames[rng%8+1]
 		end
 
@@ -78,7 +78,7 @@ end
 
 function IsIIDXFrame(pn)
 	local frame = GetIIDXFrame(pn)
-	if frame == "_red" or frame == "_happysky" or frame == "_distorted" or frame == "_gold" or frame == "_troopers" or frame == "_empress" or frame == "_sirius" or frame == "_resortanthem" then
+	if frame == "_10th" or frame == "_red" or frame == "_happysky" or frame == "_distorted" or frame == "_gold" or frame == "_troopers" or frame == "_empress" or frame == "_sirius" or frame == "_resortanthem" then
 		return true
 	end
 	return false

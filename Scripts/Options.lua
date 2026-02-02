@@ -1084,8 +1084,8 @@ function OptionSongFrame()
 		SelectType = "SelectOne",
 		OneChoiceForAllPlayers = false,
 		ExportOnChange = false,
-		Values = { "_bunnies", "_disconnect", "_energy", "_hasse", "_love", "_nightmare", "_normal", "_pandy", "_smiley", "_vertex", "_virtual", "_random" },
-		Choices = { "Bunnies", "Disconnect", "Energy", "Hasse", "Love", "Nightmare", "Normal", "Pandy", "Smiley", "Vertex", "Virtual", "Random" },
+		Values = { "_bunnies", "_disconnect", "_energy", "_hasse", "_love", "_nightmare", "_normal", "_pandy", "_smiley", "_vertex0", "_vertex1", "_vertex2", "_vertex3", "_virtual", "_random" },
+		Choices = { "Bunnies", "Disconnect", "Energy", "Hasse", "Love", "Nightmare", "Normal", "Pandy", "Smiley", "Vertex Base", "Vertex¹", "Vertex²", "Vertex³", "Virtual", "Random" },
 		LoadSelections = function(self, list, pn)
 			for i=1,#list do
 				list[i] = getenv("SongFrame"..pname(pn)) == self.Values[i]
@@ -1110,8 +1110,8 @@ function OptionIIDXFrame()
 		SelectType = "SelectOne",
 		OneChoiceForAllPlayers = false,
 		ExportOnChange = false,
-		Values = { "_red", "_happysky", "_distorted", "_gold", "_troopers", "_empress", "_sirius", "_resortanthem", "random" },
-		Choices = { "RED", "Happy Sky", "Distorted", "Gold", "DJ Troopers", "Empress", "Sirius", "Resort Anthem", "Random" },
+		Values = { "_10th", "_red", "_happysky", "_distorted", "_gold", "_troopers", "_empress", "_sirius", "_resortanthem", "random" },
+		Choices = { "10th Style", "Red", "Happy Sky", "Distorted", "Gold", "DJ Troopers", "Empress", "Sirius", "Resort Anthem", "Random" },
 		LoadSelections = function(self, list, pn)
 			for i=1,#list do
 				list[i] = getenv("IIDXFrame"..pname(pn)) == self.Values[i]
