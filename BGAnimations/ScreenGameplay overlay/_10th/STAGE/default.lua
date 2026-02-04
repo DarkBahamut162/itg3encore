@@ -29,5 +29,10 @@ return Def.ActorFrame{
 			InitCommand=function(self) self:maxwidth(70):diffuse(color("#28C8F8")):diffusetopedge(color("#D0F8F8")):diffusealpha(2):zoom(0.9*WideScreenDiff()):queuecommand("Animate") end,
 			AnimateCommand=function(self) self:x(203*WideScreenDiff()):y(480):sleep(2):linear(0.35):cropleft(1):sleep(0):sleep(2.8):cropright(1):cropleft(0):sleep(0.1):linear(0.35):cropright(0):queuecommand("Animate") end
 		}
+	},
+	Def.BitmapText {
+		File=THEME:GetPathF("_iidx/Speed", "White"),
+		InitCommand=function(self) self:x(198*WideScreenDiff()):y(449):maxwidth(85):zoom(0.9*WideScreenDiff()) end,
+		SpeedMessageCommand=function(self,param) if param.PLAYER == PLAYER_1 then self:settext("SPEED\n"..param.SPEED..string.upper(param.MOD)) end end
 	}
 }

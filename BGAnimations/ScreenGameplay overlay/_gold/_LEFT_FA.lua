@@ -5,7 +5,7 @@ return Def.ActorFrame{
 	},
 	Def.BitmapText {
 		File = "_iidx/ScoreDisplayNormal Text Blue",
-		InitCommand=function(self) self:x(20):y(43):horizalign(right) end,
+		InitCommand=function(self) self:x(20):y(39):horizalign(right) end,
 		Text="     0",
 		ScoreMessageCommand=function(self,param)
 			if param.PLAYER == PLAYER_1 then
@@ -21,7 +21,7 @@ return Def.ActorFrame{
 	},
 	Def.BitmapText {
 		File = "_iidx/ScoreDisplayNormal Text White",
-		InitCommand=function(self) self:x(20):y(59):horizalign(right) end,
+		InitCommand=function(self) self:x(20):y(55):horizalign(right) end,
 		Text="     0",
 		FAScoreMessageCommand=function(self,param)
 			if param.PLAYER == PLAYER_1 then

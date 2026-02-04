@@ -2,7 +2,7 @@ local MOD = {}
 local CURRENT = {}
 local PREVIOUS = {}
 local enableOffsets = ThemePrefs.Get("ShowOffset")
-local modify = ThemePrefs.Get("ShowGameplaySpeed")
+local modify = IsGame("beat") or IsGame("be-mu") or ThemePrefs.Get("ShowGameplaySpeed")
 local c
 
 local Overlay = #GAMESTATE:GetHumanPlayers() == 2 and Def.ActorFrame{
@@ -117,15 +117,20 @@ local t = Def.ActorFrame{
 			File = "_eurostile normal",
 			Condition=GAMESTATE:IsPlayerEnabled(PLAYER_1) and modify,
 			Name="MOD1",
-			InitCommand=function(self) self:shadowlength(1):zoom(0.4*WideScreenDiff()):x(THEME:GetMetric("ScreenGameplay","ScoreP1X")):y(THEME:GetMetric("ScreenGameplay","ScoreP1Y")-15*WideScreenDiff()) end,
+			InitCommand=function(self) if IsIIDXFrame(PLAYER_1) and not (GetIIDXFrame(PLAYER_1) == "_red" or GetIIDXFrame(PLAYER_1) == "_happysky" or GetIIDXFrame(PLAYER_1) == "_distorted") then self:visible(false) end self:shadowlength(1):zoom(0.4*WideScreenDiff()):x(THEME:GetMetric("ScreenGameplay","ScoreP1X")):y(THEME:GetMetric("ScreenGameplay","ScoreP1Y")-15*WideScreenDiff()) end,
 			BeginCommand=function(self) if not IsIIDXFrame(PLAYER_1) then self:addy(-100):sleep(0.5):decelerate(0.8):addy(100) end end,
 			OffCommand=function(self) if not IsGame("pump") then if AnyPlayerFullComboed() then self:sleep(1) end if not IsIIDXFrame(PLAYER_1) then self:accelerate(0.8):addy(-100) end end end,
-			OnCommand=function(self) self:settext(CURRENT[PLAYER_1] and "SPEED: " .. (CURRENT[PLAYER_1] / (MOD[PLAYER_1] == "x" and 100 or 1))..MOD[PLAYER_1] or "") if IsGame("pump") then self:addy(33*WideScreenDiff()) end end,
+			OnCommand=function(self)
+				self:settext(CURRENT[PLAYER_1] and "SPEED: " .. (CURRENT[PLAYER_1] / (MOD[PLAYER_1] == "x" and 100 or 1))..MOD[PLAYER_1] or "")
+				if IsIIDXFrame(PLAYER_1) then MESSAGEMAN:Broadcast("Speed",{PLAYER=PLAYER_1,SPEED=(CURRENT[PLAYER_1] / (MOD[PLAYER_1] == "x" and 100 or 1)),MOD=MOD[PLAYER_1]}) end
+				if IsGame("pump") then self:addy(33*WideScreenDiff()) end
+			end,
 			BlockCommand=function(self)
 				self:stoptweening():diffuse(color("1,0,0,1")):diffusealpha(1):settext("This MOD can't be changed while GamePlay"):sleep(1):linear(0.25):diffusealpha(0):queuecommand("TrueChange"):diffuse(color("1,1,1,1"))
 			end,
 			ChangeCommand=function(self)
 				local text = "SPEED CHANGE: " .. (PREVIOUS[PLAYER_1] / (MOD[PLAYER_1] == "x" and 100 or 1))..MOD[PLAYER_1] .. " -> " .. (CURRENT[PLAYER_1] / (MOD[PLAYER_1] == "x" and 100 or 1))..MOD[PLAYER_1]
+				if IsIIDXFrame(PLAYER_1) then MESSAGEMAN:Broadcast("Speed",{PLAYER=PLAYER_1,SPEED=(CURRENT[PLAYER_1] / (MOD[PLAYER_1] == "x" and 100 or 1)),MOD=MOD[PLAYER_1]}) end
 				self:stoptweening():diffusealpha(1):settext(text):sleep(1):linear(0.25):diffusealpha(0):queuecommand("TrueChange")
 			end,
 			TrueChangeCommand=function(self)
@@ -138,15 +143,20 @@ local t = Def.ActorFrame{
 			Condition=GAMESTATE:IsPlayerEnabled(PLAYER_2) and modify,
 			Name="MOD2",
 			Text=CURRENT[PLAYER_2] or "?",
-			InitCommand=function(self) self:shadowlength(1):zoom(0.4*WideScreenDiff()):x(THEME:GetMetric("ScreenGameplay","ScoreP2X")):y(THEME:GetMetric("ScreenGameplay","ScoreP2Y")-15*WideScreenDiff()) end,
+			InitCommand=function(self) if IsIIDXFrame(PLAYER_2) and not (GetIIDXFrame(PLAYER_2) == "_red" or GetIIDXFrame(PLAYER_2) == "_happysky" or GetIIDXFrame(PLAYER_2) == "_distorted") then self:visible(false) end self:shadowlength(1):zoom(0.4*WideScreenDiff()):x(THEME:GetMetric("ScreenGameplay","ScoreP2X")):y(THEME:GetMetric("ScreenGameplay","ScoreP2Y")-15*WideScreenDiff()) end,
 			BeginCommand=function(self) if not IsIIDXFrame(PLAYER_2) then self:addy(-100):sleep(0.5):decelerate(0.8):addy(100) end end,
 			OffCommand=function(self) if not IsGame("pump") then if AnyPlayerFullComboed() then self:sleep(1) end if not IsIIDXFrame(PLAYER_2) then self:accelerate(0.8):addy(-100) end end end,
-			OnCommand=function(self) self:settext(CURRENT[PLAYER_2] and "SPEED: " .. (CURRENT[PLAYER_2] / (MOD[PLAYER_2] == "x" and 100 or 1))..MOD[PLAYER_2] or "") if IsGame("pump") then self:addy(33*WideScreenDiff()) end end,
+			OnCommand=function(self)
+				self:settext(CURRENT[PLAYER_2] and "SPEED: " .. (CURRENT[PLAYER_2] / (MOD[PLAYER_2] == "x" and 100 or 1))..MOD[PLAYER_2] or "")
+				if IsIIDXFrame(PLAYER_2) then MESSAGEMAN:Broadcast("Speed",{PLAYER=PLAYER_2,SPEED=(CURRENT[PLAYER_2] / (MOD[PLAYER_2] == "x" and 100 or 1)),MOD=MOD[PLAYER_2]}) end
+				if IsGame("pump") then self:addy(33*WideScreenDiff()) end
+			end,
 			BlockCommand=function(self)
 				self:stoptweening():diffuse(color("1,0,0,1")):diffusealpha(1):settext("This MOD can't be changed while GamePlay"):sleep(1):linear(0.25):diffusealpha(0):queuecommand("TrueChange"):diffuse(color("1,1,1,1"))
 			end,
 			ChangeCommand=function(self)
 				local text ="SPEED CHANGE: " .. (PREVIOUS[PLAYER_2] / (MOD[PLAYER_2] == "x" and 100 or 1))..MOD[PLAYER_2] .. " -> " .. (CURRENT[PLAYER_2] / (MOD[PLAYER_2] == "x" and 100 or 1))..MOD[PLAYER_2]
+				if IsIIDXFrame(PLAYER_2) then MESSAGEMAN:Broadcast("Speed",{PLAYER=PLAYER_2,SPEED=(CURRENT[PLAYER_2] / (MOD[PLAYER_2] == "x" and 100 or 1)),MOD=MOD[PLAYER_2]}) end
 				self:stoptweening():diffusealpha(1):settext(text):sleep(1):linear(0.25):diffusealpha(0):queuecommand("TrueChange")
 			end,
 			TrueChangeCommand=function(self)
