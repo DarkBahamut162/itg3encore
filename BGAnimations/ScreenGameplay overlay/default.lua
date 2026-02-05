@@ -122,7 +122,7 @@ local t = Def.ActorFrame{
 			OffCommand=function(self) if not IsGame("pump") then if AnyPlayerFullComboed() then self:sleep(1) end if not IsIIDXFrame(PLAYER_1) then self:accelerate(0.8):addy(-100) end end end,
 			OnCommand=function(self)
 				self:settext(CURRENT[PLAYER_1] and "SPEED: " .. (CURRENT[PLAYER_1] / (MOD[PLAYER_1] == "x" and 100 or 1))..MOD[PLAYER_1] or "")
-				if IsIIDXFrame(PLAYER_1) then MESSAGEMAN:Broadcast("Speed",{PLAYER=PLAYER_1,SPEED=(CURRENT[PLAYER_1] / (MOD[PLAYER_1] == "x" and 100 or 1)),MOD=MOD[PLAYER_1]}) end
+				if IsIIDXFrame(PLAYER_1) then self:halign(1) MESSAGEMAN:Broadcast("Speed",{PLAYER=PLAYER_1,SPEED=(CURRENT[PLAYER_1] / (MOD[PLAYER_1] == "x" and 100 or 1)),MOD=MOD[PLAYER_1]}) end
 				if IsGame("pump") then self:addy(33*WideScreenDiff()) end
 			end,
 			BlockCommand=function(self)
@@ -148,7 +148,7 @@ local t = Def.ActorFrame{
 			OffCommand=function(self) if not IsGame("pump") then if AnyPlayerFullComboed() then self:sleep(1) end if not IsIIDXFrame(PLAYER_2) then self:accelerate(0.8):addy(-100) end end end,
 			OnCommand=function(self)
 				self:settext(CURRENT[PLAYER_2] and "SPEED: " .. (CURRENT[PLAYER_2] / (MOD[PLAYER_2] == "x" and 100 or 1))..MOD[PLAYER_2] or "")
-				if IsIIDXFrame(PLAYER_2) then MESSAGEMAN:Broadcast("Speed",{PLAYER=PLAYER_2,SPEED=(CURRENT[PLAYER_2] / (MOD[PLAYER_2] == "x" and 100 or 1)),MOD=MOD[PLAYER_2]}) end
+				if IsIIDXFrame(PLAYER_2) then self:halign(0) MESSAGEMAN:Broadcast("Speed",{PLAYER=PLAYER_2,SPEED=(CURRENT[PLAYER_2] / (MOD[PLAYER_2] == "x" and 100 or 1)),MOD=MOD[PLAYER_2]}) end
 				if IsGame("pump") then self:addy(33*WideScreenDiff()) end
 			end,
 			BlockCommand=function(self)
