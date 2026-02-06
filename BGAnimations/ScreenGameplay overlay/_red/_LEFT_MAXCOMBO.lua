@@ -6,7 +6,7 @@ return Def.ActorFrame{
 	Def.BitmapText {
 		File = "_iidx/ScoreDisplayNormal Text Blue",
 		Text="   0",
-		InitCommand=function(self) self:x(-4):y(46) end,
+		InitCommand=function(self) self:x(-11):y(49) end,
 		ComboChangedMessageCommand=function(self,param)
 			if param.Player == PLAYER_2 then self:visible(true) else self:visible(false) end
 			local pss = param.PlayerStageStats

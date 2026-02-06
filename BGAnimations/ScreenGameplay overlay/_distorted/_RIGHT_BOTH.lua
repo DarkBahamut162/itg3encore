@@ -1,11 +1,11 @@
 return Def.ActorFrame{
 	Def.Sprite {
 		Texture = "RIGHT_BOTH",
-		InitCommand=function(self) self:x(0):y(0) end
+		InitCommand=function(self) self:x(0):y(2) end
 	},
 	Def.BitmapText {
 		File = "_iidx/ScoreDisplayNormal Text Blue",
-		InitCommand=function(self) self:x(70):y(35):horizalign(right) end,
+		InitCommand=function(self) self:x(70):y(34):horizalign(right) end,
 		Text="     0",
 		ScoreMessageCommand=function(self,param)
 			if param.PLAYER == PLAYER_2 then
@@ -22,7 +22,7 @@ return Def.ActorFrame{
 	Def.BitmapText {
 		File = "_iidx/ScoreDisplayNormal Text Blue",
 		Text="   0",
-		InitCommand=function(self) self:x(10):y(52) end,
+		InitCommand=function(self) self:x(10):y(51) end,
 		ComboChangedMessageCommand=function(self,param)
 			if param.Player == PLAYER_2 then
 				local pss = param.PlayerStageStats

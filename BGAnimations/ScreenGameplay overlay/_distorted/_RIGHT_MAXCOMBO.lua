@@ -1,12 +1,12 @@
 return Def.ActorFrame{
 	Def.Sprite {
 		Texture = "RIGHT_MAXCOMBO",
-		InitCommand=function(self) self:x(0):y(0) end
+		InitCommand=function(self) self:x(0):y(2) end
 	},
 	Def.BitmapText {
 		File = "_iidx/ScoreDisplayNormal Text Blue",
 		Text="   0",
-		InitCommand=function(self) self:x(13):y(48) end,
+		InitCommand=function(self) self:x(13):y(47) end,
 		ComboChangedMessageCommand=function(self,param)
 			if param.Player == PLAYER_1 then self:visible(true) else self:visible(false) end
 			local pss = param.PlayerStageStats

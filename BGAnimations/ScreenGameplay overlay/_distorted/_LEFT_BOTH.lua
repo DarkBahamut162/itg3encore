@@ -5,7 +5,7 @@ return Def.ActorFrame{
 	},
 	Def.BitmapText {
 		File = "_iidx/ScoreDisplayNormal Text Blue",
-		InitCommand=function(self) self:x(21):y(35):horizalign(right) end,
+		InitCommand=function(self) self:x(21):y(34):horizalign(right) end,
 		Text="     0",
 		ScoreMessageCommand=function(self,param)
 			if param.PLAYER == PLAYER_1 then
@@ -22,7 +22,7 @@ return Def.ActorFrame{
 	Def.BitmapText {
 		File = "_iidx/ScoreDisplayNormal Text Blue",
 		Text="   0",
-		InitCommand=function(self) self:x(-9):y(52) end,
+		InitCommand=function(self) self:x(-9):y(51) end,
 		ComboChangedMessageCommand=function(self,param)
 			if param.Player == PLAYER_1 then
 				local pss = param.PlayerStageStats

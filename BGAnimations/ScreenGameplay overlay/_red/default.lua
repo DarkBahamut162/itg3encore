@@ -44,7 +44,7 @@ return Def.ActorFrame{
 		InitCommand=function(self) self:x(SCREEN_CENTER_X-336*WideScreenDiff()):y(-20) end
 	},
 	loadfile(THEME:GetPathB("ScreenGameplay","overlay/_red/STAGE"))()..{
-		InitCommand=function(self) self:x(SCREEN_CENTER_X-302*WideScreenDiff()):y(-17) end
+		InitCommand=function(self) self:x(SCREEN_CENTER_X-302*WideScreenDiff()):y(-20) end
 	},
 	loadfile(THEME:GetPathB("ScreenGameplay","overlay/_red/TIME_DISPLAY"))()..{
 		InitCommand=function(self) self:CenterX():y(18*WideScreenDiff()):zoom(WideScreenDiff()) end

@@ -117,7 +117,7 @@ local t = Def.ActorFrame{
 			File = "_eurostile normal",
 			Condition=GAMESTATE:IsPlayerEnabled(PLAYER_1) and modify,
 			Name="MOD1",
-			InitCommand=function(self) if IsIIDXFrame(PLAYER_1) and not (GetIIDXFrame(PLAYER_1) == "_red" or GetIIDXFrame(PLAYER_1) == "_happysky" or GetIIDXFrame(PLAYER_1) == "_distorted") then self:visible(false) end self:shadowlength(1):zoom(0.4*WideScreenDiff()):x(THEME:GetMetric("ScreenGameplay","ScoreP1X")):y(THEME:GetMetric("ScreenGameplay","ScoreP1Y")-15*WideScreenDiff()) end,
+			InitCommand=function(self) if IsIIDXFrame(PLAYER_1) then self:visible(false) end self:shadowlength(1):zoom(0.4*WideScreenDiff()):x(THEME:GetMetric("ScreenGameplay","ScoreP1X")):y(THEME:GetMetric("ScreenGameplay","ScoreP1Y")-15*WideScreenDiff()) end,
 			BeginCommand=function(self) if not IsIIDXFrame(PLAYER_1) then self:addy(-100):sleep(0.5):decelerate(0.8):addy(100) end end,
 			OffCommand=function(self) if not IsGame("pump") then if AnyPlayerFullComboed() then self:sleep(1) end if not IsIIDXFrame(PLAYER_1) then self:accelerate(0.8):addy(-100) end end end,
 			OnCommand=function(self)
@@ -143,7 +143,7 @@ local t = Def.ActorFrame{
 			Condition=GAMESTATE:IsPlayerEnabled(PLAYER_2) and modify,
 			Name="MOD2",
 			Text=CURRENT[PLAYER_2] or "?",
-			InitCommand=function(self) if IsIIDXFrame(PLAYER_2) and not (GetIIDXFrame(PLAYER_2) == "_red" or GetIIDXFrame(PLAYER_2) == "_happysky" or GetIIDXFrame(PLAYER_2) == "_distorted") then self:visible(false) end self:shadowlength(1):zoom(0.4*WideScreenDiff()):x(THEME:GetMetric("ScreenGameplay","ScoreP2X")):y(THEME:GetMetric("ScreenGameplay","ScoreP2Y")-15*WideScreenDiff()) end,
+			InitCommand=function(self) if IsIIDXFrame(PLAYER_2) then self:visible(false) end self:shadowlength(1):zoom(0.4*WideScreenDiff()):x(THEME:GetMetric("ScreenGameplay","ScoreP2X")):y(THEME:GetMetric("ScreenGameplay","ScoreP2Y")-15*WideScreenDiff()) end,
 			BeginCommand=function(self) if not IsIIDXFrame(PLAYER_2) then self:addy(-100):sleep(0.5):decelerate(0.8):addy(100) end end,
 			OffCommand=function(self) if not IsGame("pump") then if AnyPlayerFullComboed() then self:sleep(1) end if not IsIIDXFrame(PLAYER_2) then self:accelerate(0.8):addy(-100) end end end,
 			OnCommand=function(self)

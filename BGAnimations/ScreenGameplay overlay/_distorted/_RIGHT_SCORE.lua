@@ -1,11 +1,11 @@
 return Def.ActorFrame{
 	Def.Sprite {
 		Texture = "RIGHT_SCORE",
-		InitCommand=function(self) self:x(0):y(0) end
+		InitCommand=function(self) self:x(0):y(2) end
 	},
 	Def.BitmapText {
 		File = "_iidx/ScoreDisplayNormal Text Blue",
-		InitCommand=function(self) self:x(70):y(48):horizalign(right) end,
+		InitCommand=function(self) self:x(70):y(47):horizalign(right) end,
 		Text="     0",
 		ScoreMessageCommand=function(self,param)
 			if param.PLAYER == PLAYER_2 then
