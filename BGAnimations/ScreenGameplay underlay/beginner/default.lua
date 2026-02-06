@@ -4,10 +4,12 @@ if GAMESTATE:GetMasterPlayerNumber() == PLAYER_1 and getenv("RotationP1") == 5 t
 elseif GAMESTATE:GetMasterPlayerNumber() == PLAYER_2 and getenv("RotationP2") == 5 then
 	posX = SCREEN_CENTER_X+SCREEN_WIDTH/4/WideScreenSemiDiff()
 end
+local iidx = IsGame("beat") or IsGame("be-mu")
+local graph = (getenv("PlayerNoteGraphP1") or 0) > 1 or (getenv("PlayerNoteGraphP2") or 0) > 1
 
 return Def.ActorFrame{
 	Def.ActorFrame{
-		InitCommand=function(self) self:x(posX):y(SCREEN_CENTER_Y+15):zoom(WideScreenDiff()) end,
+		InitCommand=function(self) self:x(posX):y(SCREEN_CENTER_Y+15):zoomx(((iidx and graph) and 0.5 or 1)*WideScreenDiff()):zoomy(WideScreenDiff()) end,
 		Def.ActorFrame{
 			Def.Sprite {
 				Texture = "light_frame"

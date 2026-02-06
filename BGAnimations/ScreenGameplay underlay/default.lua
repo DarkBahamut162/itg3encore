@@ -58,8 +58,8 @@ end
 local beginnerHelper = PREFSMAN:PreferenceExists("ShowBeginnerHelper") and tobool(PREFSMAN:GetPreference("ShowBeginnerHelper")) or false
 
 t[#t+1] = Def.ActorFrame{
-	loadfile(THEME:GetPathB("ScreenGameplay","underlay/beginner"))()..{ Condition=beginnerHelper and isRegular() and GAMESTATE:GetEasiestStepsDifficulty() == 'Difficulty_Beginner' },
-	loadfile(THEME:GetPathB("ScreenGameplay","underlay/stepstats"))()..{ Condition=stats }
+	loadfile(THEME:GetPathB("ScreenGameplay","underlay/stepstats"))()..{ Condition=stats },
+	loadfile(THEME:GetPathB("ScreenGameplay","underlay/beginner"))()..{ Condition=beginnerHelper and isRegular() and GAMESTATE:GetEasiestStepsDifficulty() == 'Difficulty_Beginner' }
 }
 
 return t

@@ -113,6 +113,8 @@ function GetTotalTaps()
 	return total
 end
 
+local beginner = (GAMESTATE:GetCurrentSteps(PLAYER_1):GetDifficulty() == "Difficulty_Beginner" or GAMESTATE:GetCurrentSteps(PLAYER_2):GetDifficulty() == "Difficulty_Beginner") and 15 or 0
+
 local function TNS(score)
 	return score == "W0" and "TapNoteScore_W1" or "TapNoteScore_W0"
 end
@@ -188,7 +190,7 @@ return Def.ActorFrame{
 			if players == 2 or size == 2 then self:zoomx(0.65*WideScreenDiff_(16/9)*WideScreenDiff_(16/10)) end
 			if players == 1 and size == 2 then self:addx(graph and (pn == PLAYER_1 and -32 or 32) or 0) end
 			if players == 2 or size == 2 then move = move * -1 end
-			self:addx(pn == PLAYER_1 and move or -move):decelerate(1):addx(pn == PLAYER_1 and -move or move)
+			self:addx(pn == PLAYER_1 and move or -move):decelerate(1):addx(pn == PLAYER_1 and -move-beginner or move+beginner)
 		end,
 		OffCommand=function(self)
 			local move = SCREEN_WIDTH/2
@@ -196,7 +198,7 @@ return Def.ActorFrame{
 			if AnyPlayerFullComboed() then self:sleep(1) end
 			self:accelerate(0.8):addx(pn == PLAYER_1 and move or -move)
 		end,
-		loadfile(THEME:GetPathB("ScreenGameplay","underlay/stepstats/graph"))(size == 2 and OtherPlayer[pn] or pn)..{
+		loadfile(THEME:GetPathB("ScreenGameplay","underlay/stepstats/graph"))(players == 1 and OtherPlayer[pn] or pn)..{
 			Condition=graph,
 			InitCommand=function(self)
 				self:x(pn == PLAYER_1 and 2 or -2):y(15):zoomx(0.5)
