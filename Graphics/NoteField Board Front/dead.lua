@@ -20,6 +20,10 @@ else
 end
 
 local width = isDouble() and SCREEN_WIDTH or SCREEN_CENTER_Y
+if IsGame("beat") or IsGame("be-mu") then
+	add = add + SCREEN_HEIGHT
+	width = width * 2
+end
 
 return Def.ActorFrame{
 	Def.ActorFrame{
