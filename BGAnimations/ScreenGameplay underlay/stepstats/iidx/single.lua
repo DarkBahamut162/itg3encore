@@ -113,7 +113,11 @@ function GetTotalTaps()
 	return total
 end
 
-local beginner = (GAMESTATE:GetCurrentSteps(PLAYER_1):GetDifficulty() == "Difficulty_Beginner" or GAMESTATE:GetCurrentSteps(PLAYER_2):GetDifficulty() == "Difficulty_Beginner") and 15 or 0
+local beginner = false
+for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
+	beginner = beginner or GAMESTATE:GetCurrentSteps(pn):GetDifficulty() == "Difficulty_Beginner"
+end
+local beginner = beginner and 15 or 0
 
 local function TNS(score)
 	return score == "W0" and "TapNoteScore_W1" or "TapNoteScore_W0"
