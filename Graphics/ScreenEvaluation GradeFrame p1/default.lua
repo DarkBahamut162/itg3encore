@@ -1,6 +1,8 @@
 local offsetInfo = getenv("OffsetTable")
+local offsetInfoP1 = getenv("OffsetTableP1")
 local columnInfo = getenv("perColJudgeData")
 local showOffset = ThemePrefs.Get("ShowOffset")
+local single = GAMESTATE:GetCurrentGame():CountNotesSeparately()
 local early = {
 	["TapNoteScore_W0"] = 0,
 	["TapNoteScore_W1"] = 0,
@@ -17,8 +19,25 @@ local late = {
 	["TapNoteScore_W4"] = 0,
 	["TapNoteScore_W5"] = 0
 }
+local earlyP1 = {
+	["TapNoteScore_W0"] = 0,
+	["TapNoteScore_W1"] = 0,
+	["TapNoteScore_W2"] = 0,
+	["TapNoteScore_W3"] = 0,
+	["TapNoteScore_W4"] = 0,
+	["TapNoteScore_W5"] = 0
+}
+local lateP1 = {
+	["TapNoteScore_W0"] = 0,
+	["TapNoteScore_W1"] = 0,
+	["TapNoteScore_W2"] = 0,
+	["TapNoteScore_W3"] = 0,
+	["TapNoteScore_W4"] = 0,
+	["TapNoteScore_W5"] = 0
+}
 local column = {}
 local perfect = 0
+local perfectP1 = 0
 
 local counter = 0
 local average = 0
@@ -34,7 +53,8 @@ local maxJudg = 0
 
 if offsetInfo and showOffset then
 	for t in ivalues(offsetInfo[PLAYER_1]) do
-		if t[2] and type(t[2]) == "number" then
+		if t[2] and t[2] ~= "Miss" then
+			t[2] = tonumber(t[2])
 			if t[2] < 0 then
 				early[t[3]] = early[t[3]] + 1
 			elseif t[2] > 0 then
@@ -48,6 +68,18 @@ if offsetInfo and showOffset then
 			t[2] = math.round(t[2],3)
 			if math.abs(t[2]) > maxRange then maxRange = math.abs(t[2]) end
 			errors[t[2]] = errors[t[2]] and errors[t[2]] + 1 or 1
+		end
+	end
+	for t in ivalues(offsetInfoP1) do
+		if t[2] and t[2] ~= "Miss" then
+			t[2] = tonumber(t[2])
+			if t[2] < 0 then
+				earlyP1[t[3]] = earlyP1[t[3]] + 1
+			elseif t[2] > 0 then
+				lateP1[t[3]] = lateP1[t[3]] + 1
+			else
+				perfectP1 = perfectP1 + 1
+			end
 		end
 	end
 
@@ -169,8 +201,8 @@ local InputHandler = function(event)
 				c.JudgeFrames:GetChild("W1"):GetChild("W1JudgmentP1"):settext("FANTASTIC")
 				c.JudgeFrames:GetChild("W2"):GetChild("W2JudgmentP1"):settext("EXCELLENT")
 				c.JudgeFrames:GetChild("W3"):GetChild("W3JudgmentP1"):settext("GREAT")
-				c.JudgeFrames:GetChild("W4"):GetChild("W4JudgmentP1"):settext("DECENT")
-				c.JudgeFrames:GetChild("W5"):GetChild("W5JudgmentP1"):settext("WAY OFF")
+				c.JudgeFrames:GetChild("W4"):GetChild("W4JudgmentP1"):settext(GAMESTATE:GetCurrentSteps(PLAYER_1):GetDifficulty() == 'Difficulty_Beginner' and "TOO EARLY/LATE" or "DECENT")
+				c.JudgeFrames:GetChild("W5"):GetChild("W5JudgmentP1"):settext(isOpenDDR() and "MISS" or GAMESTATE:GetCurrentSteps(PLAYER_1):GetDifficulty() == 'Difficulty_Beginner' and "WAY EARLY/LATE" or "WAY OFF")
 				c.JudgeFrames:GetChild("Miss"):GetChild("MissJudgmentP1"):settext("MISS")
 				if faplus then c.JudgeFrames:GetChild("W0"):GetChild("W0ColumnP1"):diffusealpha(0) end
 				c.JudgeFrames:GetChild("W1"):GetChild("W1ColumnP1"):diffusealpha(0)
@@ -194,6 +226,15 @@ local InputHandler = function(event)
 					screen:GetChild("MissNumberP1"):diffusealpha(1)
 				end
 				switched = false
+			end
+			if showOffset then
+				if GAMESTATE:GetCurrentGame():CountNotesSeparately() then single = not single end
+				if faplus then c.OffsetFrames:GetChild("W0"):RunCommandsOnChildren(function(self) self:playcommand("On") end) end
+				c.OffsetFrames:GetChild("W1"):RunCommandsOnChildren(function(self) self:playcommand("On") end)
+				c.OffsetFrames:GetChild("W2"):RunCommandsOnChildren(function(self) self:playcommand("On") end)
+				c.OffsetFrames:GetChild("W3"):RunCommandsOnChildren(function(self) self:playcommand("On") end)
+				c.OffsetFrames:GetChild("W4"):RunCommandsOnChildren(function(self) self:playcommand("On") end)
+				c.OffsetFrames:GetChild("W5"):RunCommandsOnChildren(function(self) self:playcommand("On") end)
 			end
 		end
 	end
@@ -389,7 +430,7 @@ return Def.ActorFrame{
 			Def.BitmapText {
 				Name="W4Judgment"..PlayerNumberToString(PLAYER_1),
 				File="_v 26px bold shadow",
-				Text=GAMESTATE:GetCurrentSteps(PLAYER_1):GetDifficulty() == 'Difficulty_Beginner' and "TOO EARLY" or "DECENT",
+				Text=GAMESTATE:GetCurrentSteps(PLAYER_1):GetDifficulty() == 'Difficulty_Beginner' and "TOO EARLY/LATE" or "DECENT",
 				InitCommand=function(self) self:x(-150*WideScreenDiff()):horizalign(left):maxwidth(120) end,
 				OnCommand=function(self) self:zoomx(0.8*WideScreenDiff()):zoomy(0.6*WideScreenDiff()):diffusebottomedge(color("#BBB9FB")):cropright(1.3):faderight(0.1):sleep(3.60):linear(0.7):cropright(-0.3) end,
 				OffCommand=function(self) self:linear(0.2):diffusealpha(0) end
@@ -412,7 +453,7 @@ return Def.ActorFrame{
 			Def.BitmapText {
 				Name="W5Judgment"..PlayerNumberToString(PLAYER_1),
 				File="_v 26px bold shadow",
-				Text=isOpenDDR() and "MISS" or GAMESTATE:GetCurrentSteps(PLAYER_1):GetDifficulty() == 'Difficulty_Beginner' and "WAY EARLY" or "WAY OFF",
+				Text=isOpenDDR() and "MISS" or GAMESTATE:GetCurrentSteps(PLAYER_1):GetDifficulty() == 'Difficulty_Beginner' and "WAY EARLY/LATE" or "WAY OFF",
 				InitCommand=function(self) self:x(-150*WideScreenDiff()):horizalign(left):maxwidth(115) end,
 				OnCommand=function(self) self:zoomx(0.8*WideScreenDiff()):zoomy(0.6*WideScreenDiff()):diffusebottomedge(color("#BBB9FB")):cropright(1.3):faderight(0.1):sleep(3.60):linear(0.7):cropright(-0.3) end,
 				OffCommand=function(self) self:linear(0.2):diffusealpha(0) end
@@ -454,28 +495,22 @@ return Def.ActorFrame{
 			Def.BitmapText {
 				File="_ScreenEvaluation numbers",
 				InitCommand=function(self) self:x(-156*WideScreenDiff()):y(-15*WideScreenDiff()):horizalign(right):diffuse(color("#FFFFFF")) end,
-				OnCommand=function(self)
-					self:settextf("%04d",perfect):AddAttribute(0, {Length = math.max(4-string.len(''..perfect), 0),Diffuse = color("#808080")})
-					self:zoom(0.4*WideScreenDiff()):cropleft(1.3):fadeleft(0.1):sleep(3.60):linear(0.7):cropleft(-0.3)
-				end,
+				BeginCommand=function(self) self:zoom(0.4*WideScreenDiff()):cropleft(1.3):fadeleft(0.1):sleep(3.60):linear(0.7):cropleft(-0.3) end,
+				OnCommand=function(self) self:settextf("%04d",single and perfectP1 or perfect):AddAttribute(0, {Length = math.max(4-string.len(''..(single and perfectP1 or perfect)), 0),Diffuse = color("#808080")}) end,
 				OffCommand=function(self) self:linear(0.2):diffusealpha(0) end
 			},
 			Def.BitmapText {
 				File="_ScreenEvaluation numbers",
 				InitCommand=function(self) self:x(-156*WideScreenDiff()):y(-5*WideScreenDiff()):horizalign(right):diffuse(color("#0000FF")) end,
-				OnCommand=function(self)
-					self:settextf("%04d",early["TapNoteScore_W0"]):AddAttribute(0, {Length = math.max(4-string.len(''..early["TapNoteScore_W0"]), 0),Diffuse = color("#000080")})
-					self:zoom(0.4*WideScreenDiff()):cropleft(1.3):fadeleft(0.1):sleep(3.60):linear(0.7):cropleft(-0.3)
-				end,
+				BeginCommand=function(self) self:zoom(0.4*WideScreenDiff()):cropleft(1.3):fadeleft(0.1):sleep(3.60):linear(0.7):cropleft(-0.3) end,
+				OnCommand=function(self) self:settextf("%04d",single and earlyP1["TapNoteScore_W0"] or early["TapNoteScore_W0"]):AddAttribute(0, {Length = math.max(4-string.len(''..(single and earlyP1["TapNoteScore_W0"] or early["TapNoteScore_W0"])), 0),Diffuse = color("#000080")}) end,
 				OffCommand=function(self) self:linear(0.2):diffusealpha(0) end
 			},
 			Def.BitmapText {
 				File="_ScreenEvaluation numbers",
 				InitCommand=function(self) self:x(-156*WideScreenDiff()):y(5*WideScreenDiff()):horizalign(right):diffuse(color("#FF0000")) end,
-				OnCommand=function(self)
-					self:settextf("%04d",late["TapNoteScore_W0"]):AddAttribute(0, {Length = math.max(4-string.len(''..late["TapNoteScore_W0"]), 0),Diffuse = color("#800000")})
-					self:zoom(0.4*WideScreenDiff()):cropleft(1.3):fadeleft(0.1):sleep(3.60):linear(0.7):cropleft(-0.3)
-				end,
+				BeginCommand=function(self) self:zoom(0.4*WideScreenDiff()):cropleft(1.3):fadeleft(0.1):sleep(3.60):linear(0.7):cropleft(-0.3) end,
+				OnCommand=function(self) self:settextf("%04d",single and lateP1["TapNoteScore_W0"] or late["TapNoteScore_W0"]):AddAttribute(0, {Length = math.max(4-string.len(''..(single and lateP1["TapNoteScore_W0"] or late["TapNoteScore_W0"])), 0),Diffuse = color("#800000")}) end,
 				OffCommand=function(self) self:linear(0.2):diffusealpha(0) end
 			}
 		},
@@ -486,28 +521,22 @@ return Def.ActorFrame{
 				Condition=not faplus,
 				File="_ScreenEvaluation numbers",
 				InitCommand=function(self) self:x(-156*WideScreenDiff()):y(-15*WideScreenDiff()):horizalign(right):diffuse(color("#FFFFFF")) end,
-				OnCommand=function(self)
-					self:settextf("%04d",perfect):AddAttribute(0, {Length = math.max(4-string.len(''..perfect), 0),Diffuse = color("#808080")})
-					self:zoom(0.4*WideScreenDiff()):cropleft(1.3):fadeleft(0.1):sleep(3.60):linear(0.7):cropleft(-0.3)
-				end,
+				BeginCommand=function(self) self:zoom(0.4*WideScreenDiff()):cropleft(1.3):fadeleft(0.1):sleep(3.60):linear(0.7):cropleft(-0.3) end,
+				OnCommand=function(self) self:settextf("%04d",single and perfectP1 or perfect):AddAttribute(0, {Length = math.max(4-string.len(''..(single and perfectP1 or perfect)), 0),Diffuse = color("#808080")}) end,
 				OffCommand=function(self) self:linear(0.2):diffusealpha(0) end
 			},
 			Def.BitmapText {
 				File="_ScreenEvaluation numbers",
 				InitCommand=function(self) self:x(-156*WideScreenDiff()):y(-5*WideScreenDiff()):horizalign(right):diffuse(color("#0000FF")) end,
-				OnCommand=function(self)
-					self:settextf("%04d",early["TapNoteScore_W1"]):AddAttribute(0, {Length = math.max(4-string.len(''..early["TapNoteScore_W1"]), 0),Diffuse = color("#000080")})
-					self:zoom(0.4*WideScreenDiff()):cropleft(1.3):fadeleft(0.1):sleep(3.60):linear(0.7):cropleft(-0.3)
-				end,
+				BeginCommand=function(self) self:zoom(0.4*WideScreenDiff()):cropleft(1.3):fadeleft(0.1):sleep(3.60):linear(0.7):cropleft(-0.3) end,
+				OnCommand=function(self) self:settextf("%04d",single and earlyP1["TapNoteScore_W1"] or early["TapNoteScore_W1"]):AddAttribute(0, {Length = math.max(4-string.len(''..(single and earlyP1["TapNoteScore_W1"] or early["TapNoteScore_W1"])), 0),Diffuse = color("#000080")}) end,
 				OffCommand=function(self) self:linear(0.2):diffusealpha(0) end
 			},
 			Def.BitmapText {
 				File="_ScreenEvaluation numbers",
 				InitCommand=function(self) self:x(-156*WideScreenDiff()):y(5*WideScreenDiff()):horizalign(right):diffuse(color("#FF0000")) end,
-				OnCommand=function(self)
-					self:settextf("%04d",late["TapNoteScore_W1"]):AddAttribute(0, {Length = math.max(4-string.len(''..late["TapNoteScore_W1"]), 0),Diffuse = color("#800000")})
-					self:zoom(0.4*WideScreenDiff()):cropleft(1.3):fadeleft(0.1):sleep(3.60):linear(0.7):cropleft(-0.3)
-				end,
+				BeginCommand=function(self) self:zoom(0.4*WideScreenDiff()):cropleft(1.3):fadeleft(0.1):sleep(3.60):linear(0.7):cropleft(-0.3) end,
+				OnCommand=function(self) self:settextf("%04d",single and lateP1["TapNoteScore_W1"] or late["TapNoteScore_W1"]):AddAttribute(0, {Length = math.max(4-string.len(''..(single and lateP1["TapNoteScore_W1"] or late["TapNoteScore_W1"])), 0),Diffuse = color("#800000")}) end,
 				OffCommand=function(self) self:linear(0.2):diffusealpha(0) end
 			}
 		},
@@ -517,19 +546,15 @@ return Def.ActorFrame{
 			Def.BitmapText {
 				File="_ScreenEvaluation numbers",
 				InitCommand=function(self) self:x(-156*WideScreenDiff()):y(-5*WideScreenDiff()):horizalign(right):diffuse(color("#0000FF")) end,
-				OnCommand=function(self)
-					self:settextf("%04d",early["TapNoteScore_W2"]):AddAttribute(0, {Length = math.max(4-string.len(''..early["TapNoteScore_W2"]), 0),Diffuse = color("#000080")})
-					self:zoom(0.4*WideScreenDiff()):cropleft(1.3):fadeleft(0.1):sleep(3.60):linear(0.7):cropleft(-0.3)
-				end,
+				BeginCommand=function(self) self:zoom(0.4*WideScreenDiff()):cropleft(1.3):fadeleft(0.1):sleep(3.60):linear(0.7):cropleft(-0.3) end,
+				OnCommand=function(self) self:settextf("%04d",single and earlyP1["TapNoteScore_W2"] or early["TapNoteScore_W2"]):AddAttribute(0, {Length = math.max(4-string.len(''..(single and earlyP1["TapNoteScore_W2"] or early["TapNoteScore_W2"])), 0),Diffuse = color("#000080")}) end,
 				OffCommand=function(self) self:linear(0.2):diffusealpha(0) end
 			},
 			Def.BitmapText {
 				File="_ScreenEvaluation numbers",
 				InitCommand=function(self) self:x(-156*WideScreenDiff()):y(5*WideScreenDiff()):horizalign(right):diffuse(color("#FF0000")) end,
-				OnCommand=function(self)
-					self:settextf("%04d",late["TapNoteScore_W2"]):AddAttribute(0, {Length = math.max(4-string.len(''..late["TapNoteScore_W2"]), 0),Diffuse = color("#800000")})
-					self:zoom(0.4*WideScreenDiff()):cropleft(1.3):fadeleft(0.1):sleep(3.60):linear(0.7):cropleft(-0.3)
-				end,
+				BeginCommand=function(self) self:zoom(0.4*WideScreenDiff()):cropleft(1.3):fadeleft(0.1):sleep(3.60):linear(0.7):cropleft(-0.3) end,
+				OnCommand=function(self) self:settextf("%04d",single and lateP1["TapNoteScore_W2"] or late["TapNoteScore_W2"]):AddAttribute(0, {Length = math.max(4-string.len(''..(single and lateP1["TapNoteScore_W2"] or late["TapNoteScore_W2"])), 0),Diffuse = color("#800000")}) end,
 				OffCommand=function(self) self:linear(0.2):diffusealpha(0) end
 			}
 		},
@@ -539,19 +564,15 @@ return Def.ActorFrame{
 			Def.BitmapText {
 				File="_ScreenEvaluation numbers",
 				InitCommand=function(self) self:x(-156*WideScreenDiff()):y(-5*WideScreenDiff()):horizalign(right):diffuse(color("#0000FF")) end,
-				OnCommand=function(self)
-					self:settextf("%04d",early["TapNoteScore_W3"]):AddAttribute(0, {Length = math.max(4-string.len(''..early["TapNoteScore_W3"]), 0),Diffuse = color("#000080")})
-					self:zoom(0.4*WideScreenDiff()):cropleft(1.3):fadeleft(0.1):sleep(3.60):linear(0.7):cropleft(-0.3)
-				end,
+				BeginCommand=function(self) self:zoom(0.4*WideScreenDiff()):cropleft(1.3):fadeleft(0.1):sleep(3.60):linear(0.7):cropleft(-0.3) end,
+				OnCommand=function(self) self:settextf("%04d",single and earlyP1["TapNoteScore_W3"] or early["TapNoteScore_W3"]):AddAttribute(0, {Length = math.max(4-string.len(''..(single and earlyP1["TapNoteScore_W3"] or early["TapNoteScore_W3"])), 0),Diffuse = color("#000080")}) end,
 				OffCommand=function(self) self:linear(0.2):diffusealpha(0) end
 			},
 			Def.BitmapText {
 				File="_ScreenEvaluation numbers",
 				InitCommand=function(self) self:x(-156*WideScreenDiff()):y(5*WideScreenDiff()):horizalign(right):diffuse(color("#FF0000")) end,
-				OnCommand=function(self)
-					self:settextf("%04d",late["TapNoteScore_W3"]):AddAttribute(0, {Length = math.max(4-string.len(''..late["TapNoteScore_W3"]), 0),Diffuse = color("#800000")})
-					self:zoom(0.4*WideScreenDiff()):cropleft(1.3):fadeleft(0.1):sleep(3.60):linear(0.7):cropleft(-0.3)
-				end,
+				BeginCommand=function(self) self:zoom(0.4*WideScreenDiff()):cropleft(1.3):fadeleft(0.1):sleep(3.60):linear(0.7):cropleft(-0.3) end,
+				OnCommand=function(self) self:settextf("%04d",single and lateP1["TapNoteScore_W3"] or late["TapNoteScore_W3"]):AddAttribute(0, {Length = math.max(4-string.len(''..(single and lateP1["TapNoteScore_W3"] or late["TapNoteScore_W3"])), 0),Diffuse = color("#800000")}) end,
 				OffCommand=function(self) self:linear(0.2):diffusealpha(0) end
 			}
 		},
@@ -561,19 +582,15 @@ return Def.ActorFrame{
 			Def.BitmapText {
 				File="_ScreenEvaluation numbers",
 				InitCommand=function(self) self:x(-156*WideScreenDiff()):y(-5*WideScreenDiff()):horizalign(right):diffuse(color("#0000FF")) end,
-				OnCommand=function(self)
-					self:settextf("%04d",early["TapNoteScore_W4"]):AddAttribute(0, {Length = math.max(4-string.len(''..early["TapNoteScore_W4"]), 0),Diffuse = color("#000080")})
-					self:zoom(0.4*WideScreenDiff()):cropleft(1.3):fadeleft(0.1):sleep(3.60):linear(0.7):cropleft(-0.3)
-				end,
+				BeginCommand=function(self) self:zoom(0.4*WideScreenDiff()):cropleft(1.3):fadeleft(0.1):sleep(3.60):linear(0.7):cropleft(-0.3) end,
+				OnCommand=function(self) self:settextf("%04d",single and earlyP1["TapNoteScore_W4"] or early["TapNoteScore_W4"]):AddAttribute(0, {Length = math.max(4-string.len(''..(single and earlyP1["TapNoteScore_W4"] or early["TapNoteScore_W4"])), 0),Diffuse = color("#000080")}) end,
 				OffCommand=function(self) self:linear(0.2):diffusealpha(0) end
 			},
 			Def.BitmapText {
 				File="_ScreenEvaluation numbers",
 				InitCommand=function(self) self:x(-156*WideScreenDiff()):y(5*WideScreenDiff()):horizalign(right):diffuse(color("#FF0000")) end,
-				OnCommand=function(self)
-					self:settextf("%04d",late["TapNoteScore_W4"]):AddAttribute(0, {Length = math.max(4-string.len(''..late["TapNoteScore_W4"]), 0),Diffuse = color("#800000")})
-					self:zoom(0.4*WideScreenDiff()):cropleft(1.3):fadeleft(0.1):sleep(3.60):linear(0.7):cropleft(-0.3)
-				end,
+				BeginCommand=function(self) self:zoom(0.4*WideScreenDiff()):cropleft(1.3):fadeleft(0.1):sleep(3.60):linear(0.7):cropleft(-0.3) end,
+				OnCommand=function(self) self:settextf("%04d",single and lateP1["TapNoteScore_W4"] or late["TapNoteScore_W4"]):AddAttribute(0, {Length = math.max(4-string.len(''..(single and lateP1["TapNoteScore_W4"] or late["TapNoteScore_W4"])), 0),Diffuse = color("#800000")}) end,
 				OffCommand=function(self) self:linear(0.2):diffusealpha(0) end
 			}
 		},
@@ -584,19 +601,15 @@ return Def.ActorFrame{
 			Def.BitmapText {
 				File="_ScreenEvaluation numbers",
 				InitCommand=function(self) self:x(-156*WideScreenDiff()):y(-5*WideScreenDiff()):horizalign(right):diffuse(color("#0000FF")) end,
-				OnCommand=function(self)
-					self:settextf("%04d",early["TapNoteScore_W5"]):AddAttribute(0, {Length = math.max(4-string.len(''..early["TapNoteScore_W5"]), 0),Diffuse = color("#000080")})
-					self:zoom(0.4*WideScreenDiff()):cropleft(1.3):fadeleft(0.1):sleep(3.60):linear(0.7):cropleft(-0.3)
-				end,
+				BeginCommand=function(self) self:zoom(0.4*WideScreenDiff()):cropleft(1.3):fadeleft(0.1):sleep(3.60):linear(0.7):cropleft(-0.3) end,
+				OnCommand=function(self) self:settextf("%04d",single and earlyP1["TapNoteScore_W5"] or early["TapNoteScore_W5"]):AddAttribute(0, {Length = math.max(4-string.len(''..(single and earlyP1["TapNoteScore_W5"] or early["TapNoteScore_W5"])), 0),Diffuse = color("#000080")}) end,
 				OffCommand=function(self) self:linear(0.2):diffusealpha(0) end
 			},
 			Def.BitmapText {
 				File="_ScreenEvaluation numbers",
 				InitCommand=function(self) self:x(-156*WideScreenDiff()):y(5*WideScreenDiff()):horizalign(right):diffuse(color("#FF0000")) end,
-				OnCommand=function(self)
-					self:settextf("%04d",late["TapNoteScore_W5"]):AddAttribute(0, {Length = math.max(4-string.len(''..late["TapNoteScore_W5"]), 0),Diffuse = color("#800000")})
-					self:zoom(0.4*WideScreenDiff()):cropleft(1.3):fadeleft(0.1):sleep(3.60):linear(0.7):cropleft(-0.3)
-				end,
+				BeginCommand=function(self) self:zoom(0.4*WideScreenDiff()):cropleft(1.3):fadeleft(0.1):sleep(3.60):linear(0.7):cropleft(-0.3) end,
+				OnCommand=function(self) self:settextf("%04d",single and lateP1["TapNoteScore_W5"] or late["TapNoteScore_W5"]):AddAttribute(0, {Length = math.max(4-string.len(''..(single and lateP1["TapNoteScore_W5"] or late["TapNoteScore_W5"])), 0),Diffuse = color("#800000")}) end,
 				OffCommand=function(self) self:linear(0.2):diffusealpha(0) end
 			}
 		}

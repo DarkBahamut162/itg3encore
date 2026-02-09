@@ -52,6 +52,7 @@ W0 = W0 + Wadd
 local W0Counter = getenv("W0"..pname(player)) or 0
 local W1Counter = getenv("W1"..pname(player)) or 0
 local WXCounter = getenv("WX"..pname(player)) or 0
+local offsetdata = {}
 
 setenv("checkFantastics"..pname(player),true)
 setenv("checkPerfects"..pname(player),true)
@@ -135,6 +136,14 @@ return Def.ActorFrame{
 				MESSAGEMAN:Broadcast("W0",{Player=player,W0=W0Counter,W1=W1Counter,WX=WXCounter})
 			end
 
+			if GAMESTATE:GetCurrentGame():CountNotesSeparately() then
+				local vStats = STATSMAN:GetCurStageStats():GetPlayerStageStats( player )
+				local time = GAMESTATE:IsCourseMode() and vStats:GetAliveSeconds() or GAMESTATE:GetCurMusicSeconds()/GAMESTATE:GetSongOptionsObject("ModsLevel_Song"):MusicRate()
+				local noff = params.TapNoteScore == "TapNoteScore_Miss" and "Miss" or params.TapNoteOffset
+
+				offsetdata[#offsetdata+1] = { time, noff, faplus and WX or params.TapNoteScore }
+			end
+
 			if GAMESTATE:GetPlayerState(player):GetPlayerController() ~= 'PlayerController_Human' and
 			getenv("checkAuto"..pname(player)) then
 				if not isOutFox(20200530) then GAMESTATE:ApplyGameCommand('mod,no savescore',player) end
@@ -171,6 +180,7 @@ return Def.ActorFrame{
 		end
 	end,
 	OffCommand=function(self)
+		if GAMESTATE:GetCurrentGame():CountNotesSeparately() then setenv("OffsetTable"..pname(player),offsetdata) end
 		if getenv("checkFantastics"..pname(player)) then setenv("LastFantastic"..pname(player),isEtterna() and GAMESTATE:GetSongPosition():GetMusicSecondsVisible() or STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetAliveSeconds()) end
 		if getenv("checkPerfects"..pname(player)) then setenv("LastPerfect"..pname(player),isEtterna() and GAMESTATE:GetSongPosition():GetMusicSecondsVisible() or STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetAliveSeconds()) end
 		if getenv("checkGreats"..pname(player)) then setenv("LastGreat"..pname(player),isEtterna() and GAMESTATE:GetSongPosition():GetMusicSecondsVisible() or STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetAliveSeconds()) end
