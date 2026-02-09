@@ -188,10 +188,15 @@ end
 
 function checkBMS()
 	if IsGame("beat") or IsGame("be-mu") or IsGame("popn") or IsGame("po-mu") then
+		local filename = GAMESTATE:GetCurrentSteps(GAMESTATE:GetMasterPlayerNumber()):GetFilename()
+		if not filename or filename == "" then return false end
+		local filetype = filename:match("[^.]+$"):sub(3,3):lower()
+		local bms = filetype == "bms" or filetype == "bme" or filetype == "bml" or filetype == "pms"
+
 		if GAMESTATE:GetNumPlayersEnabled() == 1 then
-			return true
+			return bms or false
 		else
-			return GAMESTATE:GetCurrentSteps(PLAYER_1) == GAMESTATE:GetCurrentSteps(PLAYER_2)
+			return GAMESTATE:GetCurrentSteps(PLAYER_1) == GAMESTATE:GetCurrentSteps(PLAYER_2) and bms or false
 		end
 	end
 	return false
