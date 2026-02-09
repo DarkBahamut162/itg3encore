@@ -97,6 +97,8 @@ local function Update(self, delta)
 	end
 end
 
+local iidx = IsGame("beat") or IsGame("be-mu")
+
 return Def.ActorFrame{
 	InitCommand=function(self) c = self:GetChildren() end,
 	OnCommand=function(self) self:SetUpdateFunction(Update) end,
@@ -110,7 +112,7 @@ return Def.ActorFrame{
 			local reverse = GAMESTATE:GetPlayerState(player):GetPlayerOptions('ModsLevel_Song'):UsingReverse()
 			if mods then reverse = not reverse end
 			local posY = reverse and THEME:GetMetric("Player","ReceptorArrowsYReverse") or THEME:GetMetric("Player","ReceptorArrowsYStandard")
-			self:y(SCREEN_CENTER_Y+posY-NoteFieldMiddle):addy(reverse and -30 or 30):valign(reverse and 1 or 0):zoom(0.5):draworder(999)
+			self:y(SCREEN_CENTER_Y+posY-NoteFieldMiddle):addy(reverse and -30 or 30):valign(reverse and 1 or 0):zoom(iidx and 1 or 0.5):draworder(999)
 		end
 	}
 }

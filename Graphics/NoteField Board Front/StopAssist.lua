@@ -1,6 +1,7 @@
 local c
 local player = ...
 local filterWidth = GetTrueWidth(player)
+if IsGame("beat") or IsGame("be-mu") then filterWidth = filterWidth * 2 end
 local widthZoom = Center1Player() and 1 or WideScreenDiff()
 
 filterWidth = filterWidth * math.min(1,isOutFox(20200600) and NotefieldZoomOutFox() or NotefieldZoom())

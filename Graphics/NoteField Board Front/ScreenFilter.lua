@@ -96,6 +96,7 @@ end
 
 local filterAlpha = tonumber(getenv("ScreenFilter"..pname(player)))
 local filterWidth = GetTrueWidth(player)
+if IsGame("beat") or IsGame("be-mu") then filterWidth = filterWidth * 2 end
 
 t[#t+1] = Def.ActorFrame{
 	getFilter(player,filterWidth,filterAlpha),
