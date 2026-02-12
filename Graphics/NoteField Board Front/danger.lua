@@ -19,7 +19,7 @@ else
 	add = add + math.abs(scale(tilt,0,-1,0,-20)/stretch)
 end
 
-local width = isDouble() and SCREEN_WIDTH or SCREEN_CENTER_Y
+local width = isDouble() and SCREEN_WIDTH or SCREEN_CENTER_X
 if IsGame("beat") or IsGame("be-mu") then
 	add = add + SCREEN_HEIGHT
 	width = width * 2
