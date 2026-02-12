@@ -217,6 +217,11 @@ function GetBMSArtist(steps)
 	end
 end
 
+function GetBMSGenre(steps)
+	local title = GetBMSParameter(steps,"GENRE")
+	return title
+end
+
 function GetSongFolderName(song)
     local folderPath = split('/', song:GetSongDir())
     return folderPath[#folderPath-1]

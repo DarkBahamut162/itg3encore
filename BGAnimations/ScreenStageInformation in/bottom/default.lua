@@ -22,6 +22,10 @@ local Banner = isEtterna("0.65") and Def.Sprite{
 	end
 }
 
+local SongOrSteps = checkBMS() and GAMESTATE:GetCurrentSteps(GAMESTATE:GetMasterPlayerNumber()) or GAMESTATE:GetCurrentSong()
+local genre = ""
+if SongOrSteps then genre = checkBMS() and GetBMSGenre(SongOrSteps) or SongOrSteps:GetGenre() end
+
 return Def.ActorFrame{
 	Def.Sprite {
 		Texture = "_bottom",
@@ -49,8 +53,15 @@ return Def.ActorFrame{
 		OnCommand=function(self) self:linear(0.7):cropright(0) end
 	},
 	Def.BitmapText {
+		Condition=genre~="",
 		File = "_r bold 30px",
-		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+127*WideScreenDiff()):maxwidth(SCREEN_WIDTH/WideScreenDiff()):shadowlength(2):zoom(0.5*WideScreenDiff()):diffusealpha(0) end,
+		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+117*WideScreenDiff()):maxwidth(SCREEN_WIDTH/WideScreenDiff()):shadowlength(2*WideScreenDiff()):zoom(0.4*WideScreenDiff()):diffusealpha(0) end,
+		SetCommand=function(self) self:settext(genre) end,
+		OnCommand=function(self) self:playcommand("Set"):sleep(0.1):linear(0.3):diffusealpha(1) end
+	},
+	Def.BitmapText {
+		File = "_r bold 30px",
+		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+(genre~="" and 137 or 127)*WideScreenDiff()):maxwidth(SCREEN_WIDTH/WideScreenDiff()):shadowlength(2):zoom(0.5*WideScreenDiff()):diffusealpha(0) end,
 		SetCommand=function(self)
 			local SongOrSteps = checkBMS() and GAMESTATE:GetCurrentSteps(GAMESTATE:GetMasterPlayerNumber()) or GAMESTATE:GetCurrentSong()
 			local text = ""
@@ -61,7 +72,7 @@ return Def.ActorFrame{
 	},
 	Def.BitmapText {
 		File = "_r bold 30px",
-		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+147*WideScreenDiff()):maxwidth(SCREEN_WIDTH/WideScreenDiff()):shadowlength(2):zoom(0.4*WideScreenDiff()):diffusealpha(0) end,
+		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+(genre~="" and 157 or 147)*WideScreenDiff()):maxwidth(SCREEN_WIDTH/WideScreenDiff()):shadowlength(2):zoom(0.4*WideScreenDiff()):diffusealpha(0) end,
 		SetCommand=function(self)
 			local SongOrSteps = checkBMS() and GAMESTATE:GetCurrentSteps(GAMESTATE:GetMasterPlayerNumber()) or GAMESTATE:GetCurrentSong()
 			local text = ""

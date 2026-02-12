@@ -64,6 +64,10 @@ local InputHandler = function(event)
 	end
 end
 
+local SongOrSteps = checkBMS() and GAMESTATE:GetCurrentSteps(GAMESTATE:GetMasterPlayerNumber()) or GAMESTATE:GetCurrentSong()
+local genre = ""
+if SongOrSteps then genre = checkBMS() and GetBMSGenre(SongOrSteps) or SongOrSteps:GetGenre() end
+
 local t = Def.ActorFrame{
 	OnCommand=function()
 		SCREENMAN:GetTopScreen():AddInputCallback(InputHandler)
@@ -314,8 +318,15 @@ local t = Def.ActorFrame{
 		}
 	},
 	Def.BitmapText {
+		Condition=genre~="",
 		File = "_r bold 30px",
-		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+127*WideScreenDiff()):maxwidth(SCREEN_WIDTH/WideScreenDiff()):shadowlength(2*WideScreenDiff()):zoom(0.5*WideScreenDiff()):diffusealpha(1) end,
+		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+117*WideScreenDiff()):maxwidth(SCREEN_WIDTH/WideScreenDiff()):shadowlength(2*WideScreenDiff()):zoom(0.4*WideScreenDiff()):diffusealpha(1) end,
+		SetCommand=function(self) self:settext(genre) end,
+		OnCommand=function(self) self:playcommand("Set"):sleep(1.5):linear(1):diffusealpha(0) end
+	},
+	Def.BitmapText {
+		File = "_r bold 30px",
+		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+(genre~="" and 137 or 127)*WideScreenDiff()):maxwidth(SCREEN_WIDTH/WideScreenDiff()):shadowlength(2*WideScreenDiff()):zoom(0.5*WideScreenDiff()):diffusealpha(1) end,
 		SetCommand=function(self)
 			local SongOrSteps = checkBMS() and GAMESTATE:GetCurrentSteps(GAMESTATE:GetMasterPlayerNumber()) or GAMESTATE:GetCurrentSong()
 			local text = ""
@@ -326,7 +337,7 @@ local t = Def.ActorFrame{
 	},
 	Def.BitmapText {
 		File = "_r bold 30px",
-		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+147*WideScreenDiff()):maxwidth(SCREEN_WIDTH/WideScreenDiff()):shadowlength(2*WideScreenDiff()):zoom(0.4*WideScreenDiff()):diffusealpha(1) end,
+		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+(genre~="" and 157 or 147)*WideScreenDiff()):maxwidth(SCREEN_WIDTH/WideScreenDiff()):shadowlength(2*WideScreenDiff()):zoom(0.4*WideScreenDiff()):diffusealpha(1) end,
 		SetCommand=function(self)
 			local SongOrSteps = checkBMS() and GAMESTATE:GetCurrentSteps(GAMESTATE:GetMasterPlayerNumber()) or GAMESTATE:GetCurrentSong()
 			local text = ""
