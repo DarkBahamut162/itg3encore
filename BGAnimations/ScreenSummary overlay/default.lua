@@ -59,83 +59,83 @@ local counted = { [PLAYER_1] = 0,[PLAYER_2] = 0 }
 for i=1,rounds do
 	if ThemePrefs.Get("ShowSummarySummary") then
 		if not Master[rounds+1] then Master[rounds+1] = {} end
-		if Master[i]["EXP"] then Master[rounds+1]["EXP"] = Master[rounds+1]["EXP"] and Master[rounds+1]["EXP"] + Master[i]["EXP"] or Master[i]["EXP"] end
+		if Master[i]["EXP"] then Master[rounds+1]["EXP"] = (Master[rounds+1]["EXP"] or 0) + Master[i]["EXP"] end
 		if version <= 2 and P1[i] and not P1[i]["AutoPlayer"] then
 			counted[PLAYER_1] = counted[PLAYER_1] + 1
 			if not P1[rounds+1] then P1[rounds+1] = {} end
 			P1[rounds+1]["AutoPlayer"] = false
-			P1[rounds+1]["Meter"] = P1[rounds+1]["Meter"] and P1[rounds+1]["Meter"] + P1[i]["Meter"] or P1[i]["Meter"]
-			if showCalcDiff then P1[rounds+1]["CalcedMeter"] = P1[rounds+1]["CalcedMeter"] and P1[rounds+1]["CalcedMeter"] + P1[i]["CalcedMeter"] or P1[i]["CalcedMeter"] end
-			P1[rounds+1]["Score"] = P1[rounds+1]["Score"] and P1[rounds+1]["Score"] + P1[i]["Score"] or P1[i]["Score"]
-			P1[rounds+1]["Grade"] = P1[rounds+1]["Grade"] and P1[rounds+1]["Grade"] + tierToGrade[P1[i]["Grade"]] or tierToGrade[P1[i]["Grade"]]
-			if P1[i]["EXP"] then P1[rounds+1]["EXP"] = P1[rounds+1]["EXP"] and P1[rounds+1]["EXP"] + P1[i]["EXP"] or P1[i]["EXP"] end
+			P1[rounds+1]["Meter"] = (P1[rounds+1]["Meter"] or 0) + P1[i]["Meter"]
+			if showCalcDiff then P1[rounds+1]["CalcedMeter"] = (P1[rounds+1]["CalcedMeter"] or 0) + P1[i]["CalcedMeter"] end
+			P1[rounds+1]["Score"] = (P1[rounds+1]["Score"] or 0) + P1[i]["Score"]
+			P1[rounds+1]["Grade"] = (P1[rounds+1]["Grade"] or 0) + tierToGrade[P1[i]["Grade"]]
+			if P1[i]["EXP"] then P1[rounds+1]["EXP"] = (P1[rounds+1]["EXP"] or 0) + P1[i]["EXP"] end
 			if P1[i]["FA"] then
 				if not summaryFA[PLAYER_1] then summaryFA[PLAYER_1] = true end
-				P1[rounds+1]["ScoreFA"] = P1[rounds+1]["ScoreFA"] and P1[rounds+1]["ScoreFA"] + P1[i]["ScoreFA"] or P1[i]["ScoreFA"]
-				P1[rounds+1]["TapNoteScore_W0"] = P1[rounds+1]["TapNoteScore_W0"] and P1[rounds+1]["TapNoteScore_W0"] + P1[i]["TapNoteScore_W0"] or P1[i]["TapNoteScore_W0"]
+				P1[rounds+1]["ScoreFA"] = (P1[rounds+1]["ScoreFA"] or 0) + P1[i]["ScoreFA"]
+				P1[rounds+1]["TapNoteScore_W0"] = (P1[rounds+1]["TapNoteScore_W0"] or 0) + P1[i]["TapNoteScore_W0"]
 			else
-				P1[rounds+1]["ScoreFA"] = P1[rounds+1]["ScoreFA"] and P1[rounds+1]["ScoreFA"] + P1[i]["Score"] or P1[i]["Score"]
+				P1[rounds+1]["ScoreFA"] = (P1[rounds+1]["ScoreFA"] or 0) + P1[i]["Score"]
 			end
-			P1[rounds+1]["TapNoteScore_W1"] = P1[rounds+1]["TapNoteScore_W1"] and P1[rounds+1]["TapNoteScore_W1"] + P1[i]["TapNoteScore_W1"] or P1[i]["TapNoteScore_W1"]
-			P1[rounds+1]["TapNoteScore_W2"] = P1[rounds+1]["TapNoteScore_W2"] and P1[rounds+1]["TapNoteScore_W2"] + P1[i]["TapNoteScore_W2"] or P1[i]["TapNoteScore_W2"]
-			P1[rounds+1]["TapNoteScore_W3"] = P1[rounds+1]["TapNoteScore_W3"] and P1[rounds+1]["TapNoteScore_W3"] + P1[i]["TapNoteScore_W3"] or P1[i]["TapNoteScore_W3"]
-			P1[rounds+1]["TapNoteScore_W4"] = P1[rounds+1]["TapNoteScore_W4"] and P1[rounds+1]["TapNoteScore_W4"] + P1[i]["TapNoteScore_W4"] or P1[i]["TapNoteScore_W4"]
-			P1[rounds+1]["TapNoteScore_W5"] = P1[rounds+1]["TapNoteScore_W5"] and P1[rounds+1]["TapNoteScore_W5"] + P1[i]["TapNoteScore_W5"] or P1[i]["TapNoteScore_W5"]
-			P1[rounds+1]["TapNoteScore_Miss"] = P1[rounds+1]["TapNoteScore_Miss"] and P1[rounds+1]["TapNoteScore_Miss"] + P1[i]["TapNoteScore_Miss"] or P1[i]["TapNoteScore_Miss"]
+			P1[rounds+1]["TapNoteScore_W1"] = (P1[rounds+1]["TapNoteScore_W1"] or 0) + P1[i]["TapNoteScore_W1"]
+			P1[rounds+1]["TapNoteScore_W2"] = (P1[rounds+1]["TapNoteScore_W2"] or 0) + P1[i]["TapNoteScore_W2"]
+			P1[rounds+1]["TapNoteScore_W3"] = (P1[rounds+1]["TapNoteScore_W3"] or 0) + P1[i]["TapNoteScore_W3"]
+			P1[rounds+1]["TapNoteScore_W4"] = (P1[rounds+1]["TapNoteScore_W4"] or 0) + P1[i]["TapNoteScore_W4"]
+			P1[rounds+1]["TapNoteScore_W5"] = (P1[rounds+1]["TapNoteScore_W5"] or 0) + P1[i]["TapNoteScore_W5"]
+			P1[rounds+1]["TapNoteScore_Miss"] = (P1[rounds+1]["TapNoteScore_Miss"] or 0) + P1[i]["TapNoteScore_Miss"]
 			if showOffset then
 				if P1[i]["FA"] then
-					P1[rounds+1]["TapNoteScore_W0_Early"] = P1[rounds+1]["TapNoteScore_W0_Early"] and P1[rounds+1]["TapNoteScore_W0_Early"] + P1[i]["TapNoteScore_W0_Early"] or P1[i]["TapNoteScore_W0_Early"]
-					P1[rounds+1]["TapNoteScore_W0_Late"] = P1[rounds+1]["TapNoteScore_W0_Late"] and P1[rounds+1]["TapNoteScore_W0_Late"] + P1[i]["TapNoteScore_W0_Late"] or P1[i]["TapNoteScore_W0_Late"]
+					P1[rounds+1]["TapNoteScore_W0_Early"] = (P1[rounds+1]["TapNoteScore_W0_Early"] or 0) + P1[i]["TapNoteScore_W0_Early"]
+					P1[rounds+1]["TapNoteScore_W0_Late"] = (P1[rounds+1]["TapNoteScore_W0_Late"] or 0) + P1[i]["TapNoteScore_W0_Late"]
 				end
-				P1[rounds+1]["TapNoteScore_W1_Early"] = P1[rounds+1]["TapNoteScore_W1_Early"] and P1[rounds+1]["TapNoteScore_W1_Early"] + P1[i]["TapNoteScore_W1_Early"] or P1[i]["TapNoteScore_W1_Early"]
-				P1[rounds+1]["TapNoteScore_W1_Late"] = P1[rounds+1]["TapNoteScore_W1_Late"] and P1[rounds+1]["TapNoteScore_W1_Late"] + P1[i]["TapNoteScore_W1_Late"] or P1[i]["TapNoteScore_W1_Late"]
-				P1[rounds+1]["TapNoteScore_W2_Early"] = P1[rounds+1]["TapNoteScore_W2_Early"] and P1[rounds+1]["TapNoteScore_W2_Early"] + P1[i]["TapNoteScore_W2_Early"] or P1[i]["TapNoteScore_W2_Early"]
-				P1[rounds+1]["TapNoteScore_W2_Late"] = P1[rounds+1]["TapNoteScore_W2_Late"] and P1[rounds+1]["TapNoteScore_W2_Late"] + P1[i]["TapNoteScore_W2_Late"] or P1[i]["TapNoteScore_W2_Late"]
-				P1[rounds+1]["TapNoteScore_W3_Early"] = P1[rounds+1]["TapNoteScore_W3_Early"] and P1[rounds+1]["TapNoteScore_W3_Early"] + P1[i]["TapNoteScore_W3_Early"] or P1[i]["TapNoteScore_W3_Early"]
-				P1[rounds+1]["TapNoteScore_W3_Late"] = P1[rounds+1]["TapNoteScore_W3_Late"] and P1[rounds+1]["TapNoteScore_W3_Late"] + P1[i]["TapNoteScore_W3_Late"] or P1[i]["TapNoteScore_W3_Late"]
-				P1[rounds+1]["TapNoteScore_W4_Early"] = P1[rounds+1]["TapNoteScore_W4_Early"] and P1[rounds+1]["TapNoteScore_W4_Early"] + P1[i]["TapNoteScore_W4_Early"] or P1[i]["TapNoteScore_W4_Early"]
-				P1[rounds+1]["TapNoteScore_W4_Late"] = P1[rounds+1]["TapNoteScore_W4_Late"] and P1[rounds+1]["TapNoteScore_W4_Late"] + P1[i]["TapNoteScore_W4_Late"] or P1[i]["TapNoteScore_W4_Late"]
-				P1[rounds+1]["TapNoteScore_W5_Early"] = P1[rounds+1]["TapNoteScore_W5_Early"] and P1[rounds+1]["TapNoteScore_W5_Early"] + P1[i]["TapNoteScore_W5_Early"] or P1[i]["TapNoteScore_W5_Early"]
-				P1[rounds+1]["TapNoteScore_W5_Late"] = P1[rounds+1]["TapNoteScore_W5_Late"] and P1[rounds+1]["TapNoteScore_W5_Late"] + P1[i]["TapNoteScore_W5_Late"] or P1[i]["TapNoteScore_W5_Late"]
+				P1[rounds+1]["TapNoteScore_W1_Early"] = (P1[rounds+1]["TapNoteScore_W1_Early"] or 0) + P1[i]["TapNoteScore_W1_Early"]
+				P1[rounds+1]["TapNoteScore_W1_Late"] = (P1[rounds+1]["TapNoteScore_W1_Late"] or 0) + P1[i]["TapNoteScore_W1_Late"]
+				P1[rounds+1]["TapNoteScore_W2_Early"] = (P1[rounds+1]["TapNoteScore_W2_Early"] or 0) + P1[i]["TapNoteScore_W2_Early"]
+				P1[rounds+1]["TapNoteScore_W2_Late"] = (P1[rounds+1]["TapNoteScore_W2_Late"] or 0) + P1[i]["TapNoteScore_W2_Late"]
+				P1[rounds+1]["TapNoteScore_W3_Early"] = (P1[rounds+1]["TapNoteScore_W3_Early"] or 0) + P1[i]["TapNoteScore_W3_Early"]
+				P1[rounds+1]["TapNoteScore_W3_Late"] = (P1[rounds+1]["TapNoteScore_W3_Late"] or 0) + P1[i]["TapNoteScore_W3_Late"]
+				P1[rounds+1]["TapNoteScore_W4_Early"] = (P1[rounds+1]["TapNoteScore_W4_Early"] or 0) + P1[i]["TapNoteScore_W4_Early"]
+				P1[rounds+1]["TapNoteScore_W4_Late"] = (P1[rounds+1]["TapNoteScore_W4_Late"] or 0) + P1[i]["TapNoteScore_W4_Late"]
+				P1[rounds+1]["TapNoteScore_W5_Early"] = (P1[rounds+1]["TapNoteScore_W5_Early"] or 0) + P1[i]["TapNoteScore_W5_Early"]
+				P1[rounds+1]["TapNoteScore_W5_Late"] = (P1[rounds+1]["TapNoteScore_W5_Late"] or 0) + P1[i]["TapNoteScore_W5_Late"]
 			end
 		end
 		if version >= 2 and P2[i] and not P2[i]["AutoPlayer"] then
 			counted[PLAYER_2] = counted[PLAYER_2] + 1
 			if not P2[rounds+1] then P2[rounds+1] = {} end
 			P2[rounds+1]["AutoPlayer"] = false
-			P2[rounds+1]["Meter"] = P2[rounds+1]["Meter"] and P2[rounds+1]["Meter"] + P2[i]["Meter"] or P2[i]["Meter"]
-			if showCalcDiff then P2[rounds+1]["CalcedMeter"] = P2[rounds+1]["CalcedMeter"] and P2[rounds+1]["CalcedMeter"] + P2[i]["CalcedMeter"] or P2[i]["CalcedMeter"] end
-			P2[rounds+1]["Score"] = P2[rounds+1]["Score"] and P2[rounds+1]["Score"] + P2[i]["Score"] or P2[i]["Score"]
-			P2[rounds+1]["Grade"] = P2[rounds+1]["Grade"] and P2[rounds+1]["Grade"] + tierToGrade[P2[i]["Grade"]] or tierToGrade[P2[i]["Grade"]]
-			if P2[i]["EXP"] then P2[rounds+1]["EXP"] = P2[rounds+1]["EXP"] and P2[rounds+1]["EXP"] + P2[i]["EXP"] or P2[i]["EXP"] end
+			P2[rounds+1]["Meter"] = (P2[rounds+1]["Meter"] or 0) + P2[i]["Meter"]
+			if showCalcDiff then P2[rounds+1]["CalcedMeter"] = (P2[rounds+1]["CalcedMeter"] or 0) + P2[i]["CalcedMeter"] end
+			P2[rounds+1]["Score"] = (P2[rounds+1]["Score"] or 0) + P2[i]["Score"]
+			P2[rounds+1]["Grade"] = (P2[rounds+1]["Grade"] or 0) + tierToGrade[P2[i]["Grade"]]
+			if P2[i]["EXP"] then P2[rounds+1]["EXP"] = (P2[rounds+1]["EXP"] or 0) + P2[i]["EXP"] end
 			if P2[i]["FA"] then
 				if not summaryFA[PLAYER_2] then summaryFA[PLAYER_2] = true end
-				P2[rounds+1]["ScoreFA"] = P2[rounds+1]["ScoreFA"] and P2[rounds+1]["ScoreFA"] + P2[i]["ScoreFA"] or P2[i]["ScoreFA"]
-				P2[rounds+1]["TapNoteScore_W0"] = P2[rounds+1]["TapNoteScore_W0"] and P2[rounds+1]["TapNoteScore_W0"] + P2[i]["TapNoteScore_W0"] or P2[i]["TapNoteScore_W0"]
+				P2[rounds+1]["ScoreFA"] = (P2[rounds+1]["ScoreFA"] or 0) + P2[i]["ScoreFA"]
+				P2[rounds+1]["TapNoteScore_W0"] = (P2[rounds+1]["TapNoteScore_W0"] or 0) + P2[i]["TapNoteScore_W0"]
 			else
-				P2[rounds+1]["ScoreFA"] = P2[rounds+1]["ScoreFA"] and P2[rounds+1]["ScoreFA"] + P2[i]["Score"] or P2[i]["Score"]
+				P2[rounds+1]["ScoreFA"] = (P2[rounds+1]["ScoreFA"] or 0) + P2[i]["Score"]
 			end
-			P2[rounds+1]["TapNoteScore_W1"] = P2[rounds+1]["TapNoteScore_W1"] and P2[rounds+1]["TapNoteScore_W1"] + P2[i]["TapNoteScore_W1"] or P2[i]["TapNoteScore_W1"]
-			P2[rounds+1]["TapNoteScore_W2"] = P2[rounds+1]["TapNoteScore_W2"] and P2[rounds+1]["TapNoteScore_W2"] + P2[i]["TapNoteScore_W2"] or P2[i]["TapNoteScore_W2"]
-			P2[rounds+1]["TapNoteScore_W3"] = P2[rounds+1]["TapNoteScore_W3"] and P2[rounds+1]["TapNoteScore_W3"] + P2[i]["TapNoteScore_W3"] or P2[i]["TapNoteScore_W3"]
-			P2[rounds+1]["TapNoteScore_W4"] = P2[rounds+1]["TapNoteScore_W4"] and P2[rounds+1]["TapNoteScore_W4"] + P2[i]["TapNoteScore_W4"] or P2[i]["TapNoteScore_W4"]
-			P2[rounds+1]["TapNoteScore_W5"] = P2[rounds+1]["TapNoteScore_W5"] and P2[rounds+1]["TapNoteScore_W5"] + P2[i]["TapNoteScore_W5"] or P2[i]["TapNoteScore_W5"]
-			P2[rounds+1]["TapNoteScore_Miss"] = P2[rounds+1]["TapNoteScore_Miss"] and P2[rounds+1]["TapNoteScore_Miss"] + P2[i]["TapNoteScore_Miss"] or P2[i]["TapNoteScore_Miss"]
+			P2[rounds+1]["TapNoteScore_W1"] = (P2[rounds+1]["TapNoteScore_W1"] or 0) + P2[i]["TapNoteScore_W1"]
+			P2[rounds+1]["TapNoteScore_W2"] = (P2[rounds+1]["TapNoteScore_W2"] or 0) + P2[i]["TapNoteScore_W2"]
+			P2[rounds+1]["TapNoteScore_W3"] = (P2[rounds+1]["TapNoteScore_W3"] or 0) + P2[i]["TapNoteScore_W3"]
+			P2[rounds+1]["TapNoteScore_W4"] = (P2[rounds+1]["TapNoteScore_W4"] or 0) + P2[i]["TapNoteScore_W4"]
+			P2[rounds+1]["TapNoteScore_W5"] = (P2[rounds+1]["TapNoteScore_W5"] or 0) + P2[i]["TapNoteScore_W5"]
+			P2[rounds+1]["TapNoteScore_Miss"] = (P2[rounds+1]["TapNoteScore_Miss"] or 0) + P2[i]["TapNoteScore_Miss"]
 			if showOffset then
 				if P2[i]["FA"] then
-					P2[rounds+1]["TapNoteScore_W0_Early"] = P2[rounds+1]["TapNoteScore_W0_Early"] and P2[rounds+1]["TapNoteScore_W0_Early"] + P2[i]["TapNoteScore_W0_Early"] or P2[i]["TapNoteScore_W0_Early"]
-					P2[rounds+1]["TapNoteScore_W0_Late"] = P2[rounds+1]["TapNoteScore_W0_Late"] and P2[rounds+1]["TapNoteScore_W0_Late"] + P2[i]["TapNoteScore_W0_Late"] or P2[i]["TapNoteScore_W0_Late"]
+					P2[rounds+1]["TapNoteScore_W0_Early"] = (P2[rounds+1]["TapNoteScore_W0_Early"] or 0) + P2[i]["TapNoteScore_W0_Early"]
+					P2[rounds+1]["TapNoteScore_W0_Late"] = (P2[rounds+1]["TapNoteScore_W0_Late"] or 0) + P2[i]["TapNoteScore_W0_Late"]
 				end
-				P2[rounds+1]["TapNoteScore_W1_Early"] = P2[rounds+1]["TapNoteScore_W1_Early"] and P2[rounds+1]["TapNoteScore_W1_Early"] + P2[i]["TapNoteScore_W1_Early"] or P2[i]["TapNoteScore_W1_Early"]
-				P2[rounds+1]["TapNoteScore_W1_Late"] = P2[rounds+1]["TapNoteScore_W1_Late"] and P2[rounds+1]["TapNoteScore_W1_Late"] + P2[i]["TapNoteScore_W1_Late"] or P2[i]["TapNoteScore_W1_Late"]
-				P2[rounds+1]["TapNoteScore_W2_Early"] = P2[rounds+1]["TapNoteScore_W2_Early"] and P2[rounds+1]["TapNoteScore_W2_Early"] + P2[i]["TapNoteScore_W2_Early"] or P2[i]["TapNoteScore_W2_Early"]
-				P2[rounds+1]["TapNoteScore_W2_Late"] = P2[rounds+1]["TapNoteScore_W2_Late"] and P2[rounds+1]["TapNoteScore_W2_Late"] + P2[i]["TapNoteScore_W2_Late"] or P2[i]["TapNoteScore_W2_Late"]
-				P2[rounds+1]["TapNoteScore_W3_Early"] = P2[rounds+1]["TapNoteScore_W3_Early"] and P2[rounds+1]["TapNoteScore_W3_Early"] + P2[i]["TapNoteScore_W3_Early"] or P2[i]["TapNoteScore_W3_Early"]
-				P2[rounds+1]["TapNoteScore_W3_Late"] = P2[rounds+1]["TapNoteScore_W3_Late"] and P2[rounds+1]["TapNoteScore_W3_Late"] + P2[i]["TapNoteScore_W3_Late"] or P2[i]["TapNoteScore_W3_Late"]
-				P2[rounds+1]["TapNoteScore_W4_Early"] = P2[rounds+1]["TapNoteScore_W4_Early"] and P2[rounds+1]["TapNoteScore_W4_Early"] + P2[i]["TapNoteScore_W4_Early"] or P2[i]["TapNoteScore_W4_Early"]
-				P2[rounds+1]["TapNoteScore_W4_Late"] = P2[rounds+1]["TapNoteScore_W4_Late"] and P2[rounds+1]["TapNoteScore_W4_Late"] + P2[i]["TapNoteScore_W4_Late"] or P2[i]["TapNoteScore_W4_Late"]
-				P2[rounds+1]["TapNoteScore_W5_Early"] = P2[rounds+1]["TapNoteScore_W5_Early"] and P2[rounds+1]["TapNoteScore_W5_Early"] + P2[i]["TapNoteScore_W5_Early"] or P2[i]["TapNoteScore_W5_Early"]
-				P2[rounds+1]["TapNoteScore_W5_Late"] = P2[rounds+1]["TapNoteScore_W5_Late"] and P2[rounds+1]["TapNoteScore_W5_Late"] + P2[i]["TapNoteScore_W5_Late"] or P2[i]["TapNoteScore_W5_Late"]
+				P2[rounds+1]["TapNoteScore_W1_Early"] = (P2[rounds+1]["TapNoteScore_W1_Early"] or 0) + P2[i]["TapNoteScore_W1_Early"]
+				P2[rounds+1]["TapNoteScore_W1_Late"] = (P2[rounds+1]["TapNoteScore_W1_Late"] or 0) + P2[i]["TapNoteScore_W1_Late"]
+				P2[rounds+1]["TapNoteScore_W2_Early"] = (P2[rounds+1]["TapNoteScore_W2_Early"] or 0) + P2[i]["TapNoteScore_W2_Early"]
+				P2[rounds+1]["TapNoteScore_W2_Late"] = (P2[rounds+1]["TapNoteScore_W2_Late"] or 0) + P2[i]["TapNoteScore_W2_Late"]
+				P2[rounds+1]["TapNoteScore_W3_Early"] = (P2[rounds+1]["TapNoteScore_W3_Early"] or 0) + P2[i]["TapNoteScore_W3_Early"]
+				P2[rounds+1]["TapNoteScore_W3_Late"] = (P2[rounds+1]["TapNoteScore_W3_Late"] or 0) + P2[i]["TapNoteScore_W3_Late"]
+				P2[rounds+1]["TapNoteScore_W4_Early"] = (P2[rounds+1]["TapNoteScore_W4_Early"] or 0) + P2[i]["TapNoteScore_W4_Early"]
+				P2[rounds+1]["TapNoteScore_W4_Late"] = (P2[rounds+1]["TapNoteScore_W4_Late"] or 0) + P2[i]["TapNoteScore_W4_Late"]
+				P2[rounds+1]["TapNoteScore_W5_Early"] = (P2[rounds+1]["TapNoteScore_W5_Early"] or 0) + P2[i]["TapNoteScore_W5_Early"]
+				P2[rounds+1]["TapNoteScore_W5_Late"] = (P2[rounds+1]["TapNoteScore_W5_Late"] or 0) + P2[i]["TapNoteScore_W5_Late"]
 			end
 		end
 	end

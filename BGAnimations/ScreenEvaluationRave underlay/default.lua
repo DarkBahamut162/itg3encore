@@ -69,7 +69,7 @@ if offsetInfo and enableOffset then
 				table.insert(offset[pn],t[2])
 				t[2] = math.round(t[2],3)
 				if math.abs(t[2]) > maxRange[pn] then maxRange[pn] = math.abs(t[2]) end
-				errors[pn][t[2]] = errors[pn][t[2]] and errors[pn][t[2]] + 1 or 1
+				errors[pn][t[2]] = (errors[pn][t[2]] or 0) + 1
 			end
 		end
 

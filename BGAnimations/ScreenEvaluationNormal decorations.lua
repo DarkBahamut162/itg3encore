@@ -272,7 +272,7 @@ local function GetVerticesOffsetLine(data,pn)
 	for t in ivalues(data) do
 		if t[2] and type(t[2]) == "number" then
 			t[2]=math.round(t[2],3)
-			offset[t[2]] = offset[t[2]] and offset[t[2]] + 1 or 1
+			offset[t[2]] = (offset[t[2]] or 0) + 1
 		end
 	end
 	for check = -maxjudg,maxjudg+0.001,0.001 do

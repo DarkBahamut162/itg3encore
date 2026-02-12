@@ -40,7 +40,7 @@ function TotalPossibleStepSecondsCurrent(player)
 				local song = entries[i]:GetSong()
 				local step = entries[i]:GetSteps()
 				local trueSeconds = tonumber(LoadFromCache(Song,StepsOrTrail,"TrueSeconds"))
-				fSecs = fSecs and fSecs + trueSeconds or trueSeconds
+				fSecs = fSecs + trueSeconds
 			end
 		end
 	else

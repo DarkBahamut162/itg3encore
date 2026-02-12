@@ -112,7 +112,7 @@ return Def.ActorFrame{
 						local stepType = split("_",steps[curStep]:GetStepsType())[2]
 						if cacheStepTypes[stepType] then
 							if not totalTypes[stepType] then types = addToOutput(types,stepType,",") end
-							totalTypes[stepType] = totalTypes[stepType] and totalTypes[stepType] + 1 or 1
+							totalTypes[stepType] = (totalTypes[stepType] or 0) + 1
 						end
 					end
 				end
@@ -297,16 +297,16 @@ return Def.ActorFrame{
 							cacheStep(nil,stepsToCache[curStep])
 						end
 						local stepType = split("_",stepsToCache[curStep]:GetStepsType())[2]
-						cachedTimes[stepType] = cachedTimes[stepType] and cachedTimes[stepType] + (GetTimeSinceStart()-cacheTime) or (GetTimeSinceStart()-cacheTime)
-						cachedTypes[stepType] = cachedTypes[stepType] and cachedTypes[stepType] + 1 or 1
-						cachedTypes["TOTAL"] = cachedTypes["TOTAL"] and cachedTypes["TOTAL"] + 1 or 1
+						cachedTimes[stepType] = (cachedTimes[stepType] or 0) + (GetTimeSinceStart()-cacheTime)
+						cachedTypes[stepType] = (cachedTypes[stepType] or 0) + 1
+						cachedTypes["TOTAL"] = (cachedTypes["TOTAL"] or 0) + 1
 					end
 				end
 				setenv("cacheing",false)
 				local output = ""
 				local total = 0
 				for i=1,#types do
-					total = cachedTimes[types[i]] and total + cachedTimes[types[i]] or total
+					total = total + (cachedTimes[types[i]] or 0)
 					output = addToOutput(output,(cachedTypes[types[i]] or 0).." ("..string.format("%0.3f",cachedTimes[types[i]] or 0).." s)","\n")
 				end
 				c.Cached:settext(output.."\n\n"..cachedTypes["TOTAL"].." ("..string.format("%0.3f",total).." s)")

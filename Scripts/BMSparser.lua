@@ -63,7 +63,7 @@ function BMSParser(steps)
 						if row ~= "00" then
 							beat = actualBeat+(currentRow/#rows*4)*(timing[currentMeasure-1] or 1)
 							if actualBeatData[beat] then actualBeatData[beat][#actualBeatData[beat]+1] = tonumber(measure) % 100 else actualBeatData[beat] = {tonumber(measure) % 100} end
-							beatData[beat] = beatData[beat] and beatData[beat] + 1 or 1
+							beatData[beat] = (beatData[beat] or 0) + 1
 							if filetype ~= "pms" then
 								if tonumber(measure) % 10 == 6 then
 									scratch = scratch + 1
@@ -88,7 +88,7 @@ function BMSParser(steps)
 								lastHold = beat
 							else
 								table.insert(holds, row)
-								beatData[beat] = beatData[beat] and beatData[beat] + 1 or 1
+								beatData[beat] = (beatData[beat] or 0) + 1
 								if filetype ~= "pms" then
 									if tonumber(measure) % 10 == 6 then
 										scratch = scratch + 1
