@@ -31,6 +31,9 @@ return Def.ActorFrame{
 	loadfile(THEME:GetPathB("ScreenGameplay","overlay/_10th/_LIFE_P2"))()..{
 		InitCommand=function(self) self:x(SCREEN_CENTER_X+181*WideScreenDiff()):y(22*WideScreenDiff()):zoom(WideScreenDiff()) end
 	},
+	loadfile(THEME:GetPathB("ScreenGameplay","overlay/iidx_title"))()..{
+		InitCommand=function(self) self:x(0):y(0):zoom(WideScreenDiff()) end
+	},
 	Def.Sprite {
 		Texture = THEME:GetPathB("ScreenGameplay","overlay/_10th/BPM"),
 		InitCommand=function(self) self:x(SCREEN_CENTER_X+1*WideScreenDiff()):y(31*WideScreenDiff()):zoom(WideScreenDiff()) end
