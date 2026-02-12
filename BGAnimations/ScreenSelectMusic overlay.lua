@@ -738,12 +738,12 @@ return Def.ActorFrame{
 		Condition=ThemePrefs.Get("ShowTime"),
 		Def.ActorFrame{
 			Name="Session",
-			InitCommand=function(self) self:x(isFinal() and SCREEN_CENTER_X-175*WideScreenDiff() or 150*WideScreenDiff()+(SCREEN_WIDTH-450*WideScreenDiff())/2):y(SCREEN_TOP+(isFinal() and 40 or 51)*WideScreenDiff()) end,
-			OnCommand=function(self) self:addy(-100):decelerate(0.8):addy(100) end,
-			OffCommand=function(self) self:accelerate(0.5):addy(-100) end,
+			InitCommand=function(self) self:CenterX():y(isFinal() and SCREEN_BOTTOM-70*WideScreenDiff() or SCREEN_BOTTOM-67*WideScreenDiff()) end,
+			OnCommand=function(self) self:addy(100):decelerate(0.6):addy(-100) end,
+			OffCommand=function(self) self:accelerate(0.5):addy(100) end,
 			Def.BitmapText {
 				File = "_v 26px bold black",
-				InitCommand=function(self) self:zoom(0.5*WideScreenDiff()):playcommand("Set"):halign(isFinal() and 1 or 0.5) end,
+				InitCommand=function(self) self:zoom(0.5*WideScreenDiff()):playcommand("Set") end,
 				SetCommand=function(self)
 					local time = GetTimeSinceStart() - getenv("SessionStart")
 					self:settext( string.format('Session Time: %02i:%02i', math.floor(time/60), math.floor(time%60))):sleep(1/6):queuecommand("Set")
