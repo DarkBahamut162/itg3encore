@@ -53,6 +53,7 @@ local W0Counter = getenv("W0"..pname(player)) or 0
 local W1Counter = getenv("W1"..pname(player)) or 0
 local WXCounter = getenv("WX"..pname(player)) or 0
 local offsetdata = {}
+local offsetdataall = {}
 
 setenv("checkFantastics"..pname(player),true)
 setenv("checkPerfects"..pname(player),true)
@@ -109,6 +110,21 @@ return Def.ActorFrame{
 		if GAMESTATE:GetCurrentGame():CountNotesSeparately() then params = GetTrueJudgment(params,player) end
 		local judg = params.TapNoteScore
 		if judg == "TapNoteScore_None" or judg == "" then else
+			for col,tapnote in pairs(params.Notes) do
+				local tnt = ToEnumShortString(tapnote:GetTapNoteType())
+				if tnt == "Tap" or tnt == "HoldHead" or tnt == "LongNoteHead" or tnt == "Lift" then
+					local tns = tapnote:GetTapNoteResult():GetTapNoteScore()
+					local tno = string.format("%0.10f", tapnote:GetTapNoteResult():GetTapNoteOffset())
+					if enableOffsets then
+						local vStats = STATSMAN:GetCurStageStats():GetPlayerStageStats( player )
+						local time = GAMESTATE:IsCourseMode() and vStats:GetAliveSeconds() or GAMESTATE:GetCurMusicSeconds()/GAMESTATE:GetSongOptionsObject("ModsLevel_Song"):MusicRate()
+						local noff = tns == "TapNoteScore_Miss" and "Miss" or tonumber(tno)
+						local WX = tns == "TapNoteScore_W1" and (math.abs(tonumber(tno)) <= W0 and "TapNoteScore_W0" or "TapNoteScore_W1" ) or tns
+
+						offsetdataall[#offsetdataall+1] = { time, noff, faplus and WX or tns }
+					end
+				end
+			end
 			PSS = STATSMAN:GetCurStageStats():GetPlayerStageStats(player)
 
 			if current <= 3 and not PSS:FullComboOfScore('TapNoteScore_W1') and not PSS:FullComboOfScore('TapNoteScore_W2')  and not PSS:FullComboOfScore('TapNoteScore_W3') then
@@ -181,6 +197,7 @@ return Def.ActorFrame{
 	end,
 	OffCommand=function(self)
 		if GAMESTATE:GetCurrentGame():CountNotesSeparately() then setenv("OffsetTable"..pname(player),offsetdata) end
+		if GAMESTATE:GetCurrentGame():CountNotesSeparately() then setenv("OffsetTableAll"..pname(player),offsetdataall) end
 		if getenv("checkFantastics"..pname(player)) then setenv("LastFantastic"..pname(player),isEtterna() and GAMESTATE:GetSongPosition():GetMusicSecondsVisible() or STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetAliveSeconds()) end
 		if getenv("checkPerfects"..pname(player)) then setenv("LastPerfect"..pname(player),isEtterna() and GAMESTATE:GetSongPosition():GetMusicSecondsVisible() or STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetAliveSeconds()) end
 		if getenv("checkGreats"..pname(player)) then setenv("LastGreat"..pname(player),isEtterna() and GAMESTATE:GetSongPosition():GetMusicSecondsVisible() or STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetAliveSeconds()) end

@@ -2,6 +2,7 @@ local offsetInfo = getenv("OffsetTable")
 local offsetInfoP1 = getenv("OffsetTableP1")
 local columnInfo = getenv("perColJudgeData")
 local showOffset = ThemePrefs.Get("ShowOffset")
+local showColumnGrades = ThemePrefs.Get("ShowColumnGrades")
 local single = GAMESTATE:GetCurrentGame():CountNotesSeparately()
 local early = {
 	["TapNoteScore_W0"] = 0,
@@ -67,10 +68,10 @@ if offsetInfo and showOffset then
 			table.insert(offset,t[2])
 			t[2] = math.round(t[2],3)
 			if math.abs(t[2]) > maxRange then maxRange = math.abs(t[2]) end
-			errors[t[2]] = errors[t[2]] and errors[t[2]] + 1 or 1
+			errors[t[2]] = (errors[t[2]] or 0) + 1
 		end
 	end
-	for t in ivalues(offsetInfoP1) do
+	for t in ivalues(offsetInfoP1 or {}) do
 		if t[2] and t[2] ~= "Miss" then
 			t[2] = tonumber(t[2])
 			if t[2] < 0 then
@@ -149,6 +150,73 @@ local function GetJudgmentsOfTNS(tns)
 	return output
 end
 
+local function GetGradeTextPercent(percent)
+	local grades = {
+		{1.00," ★★ "},
+		{0.99," ★☆ "},
+		{0.98," ☆☆ "},
+		{0.96,"  ☆ "},
+		{0.94," S+ "},
+		{0.92,"  S "},
+		{0.89," S- "},
+		{0.86," A+ "},
+		{0.83,"  A "},
+		{0.80," A- "},
+		{0.76," B+ "},
+		{0.72,"  B "},
+		{0.68," B- "},
+		{0.64," C+ "},
+		{0.60,"  C "},
+		{0.55," C- "},
+		{0.50," D+ "},
+		{-999,"  D "},
+	}
+
+	if percent >= grades[1][1] then return grades[g][2] end
+
+	for g=1,#grades-1 do
+		if percent < grades[g][1] and percent >= grades[g+1][1] then return grades[g+1][2] end
+	end
+
+	return " F "
+end
+
+local iidx = IsGame("beat") or IsGame("be-mu") or IsGame("popn") or IsGame("po-mu")
+local iidxSingle = iidx and "IIDX Grade: "..IIDXGrade(IIDX(PLAYER_1)) or ""
+local iidxColumn = ""
+for col = 1,NumColumns do
+	local current = 0
+	local total = 0
+	
+	if iidx then
+		for i,tns in ipairs({"TapNoteScore_W0","TapNoteScore_W1","TapNoteScore_W2","TapNoteScore_W3","TapNoteScore_W4","TapNoteScore_W5","TapNoteScore_Miss"}) do
+			if math.max(0,4-i) > 0 then
+				current = (current or 0) + column[col][tns]*math.max(0,4-i)
+			end
+			total = (total or 0) + column[col][tns]*(faplus and 3 or 2)
+		end
+	else
+		for tns,points in pairs({
+			["TapNoteScore_W0"] = (faplus and 3.5 or 0),
+			["TapNoteScore_W1"] = (faplus and 3 or 5),
+			["TapNoteScore_W2"] = (faplus and 2 or 4),
+			["TapNoteScore_W3"] = (faplus and 1 or 2),
+			["TapNoteScore_W4"] = (faplus and 0 or 0),
+			["TapNoteScore_W5"] = (faplus and 0 or -6),
+			["TapNoteScore_Miss"] = (faplus and 0 or -12)
+		}) do
+			current = (current + 0) + column[col][tns]*points
+			total = (total + 0) + column[col][tns]*(faplus and 3.5 or 5)
+		end
+	end
+
+	if iidx then
+		iidxColumn = addToOutput(iidxColumn,IIDXGrade(current/total)," ")
+	else
+		iidxColumn = addToOutput(iidxColumn,GetGradeTextPercent(current/total,true)," ")
+	end
+end
+
 local InputHandler = function(event)
 	if keyboardEnabled then
 		if event.type == "InputEventType_FirstPress" then
@@ -167,6 +235,7 @@ local InputHandler = function(event)
 	if ctrlHeld and event.type == "InputEventType_FirstPress" then
 		if event.GameButton == "MenuLeft" or event.GameButton == "MenuRight" then
 			if not switched then
+				if showOffset and showColumnGrades then c.Error:GetChild("IIDX"):settext(iidxColumn) end
 				if faplus then c.JudgeFrames:GetChild("W0"):GetChild("W0JudgmentP1"):settext("") end
 				c.JudgeFrames:GetChild("W1"):GetChild("W1JudgmentP1"):settext("")
 				c.JudgeFrames:GetChild("W2"):GetChild("W2JudgmentP1"):settext("")
@@ -197,6 +266,7 @@ local InputHandler = function(event)
 				end
 				switched = true
 			elseif switched then
+				if showOffset and showColumnGrades then c.Error:GetChild("IIDX"):settext(iidxSingle) end
 				if faplus then c.JudgeFrames:GetChild("W0"):GetChild("W0JudgmentP1"):settext("FANTASTIC+") end
 				c.JudgeFrames:GetChild("W1"):GetChild("W1JudgmentP1"):settext("FANTASTIC")
 				c.JudgeFrames:GetChild("W2"):GetChild("W2JudgmentP1"):settext("EXCELLENT")
@@ -290,6 +360,14 @@ return Def.ActorFrame{
 				end
 			end
 		end,
+		Def.BitmapText{
+			Name="IIDX",
+			Condition=showOffset and showColumnGrades,
+			Font= "_z bold 19px",
+			InitCommand=function(self) self:x(-75*(5/6)*WideScreenDiff()*WideScreenDiff()):maxwidth(300*WideScreenSemiDiff()):y(-10*WideScreenDiff()) end,
+			OnCommand=function(self,params) self:settext(iidxSingle):zoomx(0.6*WideScreenDiff()):zoomy(0.4*WideScreenDiff()):diffusealpha(0):sleep(3.60):linear(0.7):diffusealpha(1) end,
+			OffCommand=function(self) self:linear(0.2):diffusealpha(0) end
+		},
 		Def.BitmapText {
 			File="_v 26px bold shadow",
 			Condition=showOffset,

@@ -279,6 +279,34 @@ function NotefieldZoomOutFox()
 	return field_space / style_width
 end
 
+function IIDX(player)
+	local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(player)
+	local current = pss:GetTapNoteScores('TapNoteScore_W1')*2+ pss:GetTapNoteScores('TapNoteScore_W2')
+	local StepsOrTrail = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentTrail(player) or GAMESTATE:GetCurrentSteps(player)
+	local total = StepsOrTrail:GetRadarValues(player):GetValue('RadarCategory_TapsAndHolds')*2
+	return current/total
+end
+
+function IIDXGrade(percent)
+	if percent >= 8/9 then
+		return "AAA"
+	elseif percent >= 7/9 then
+		return "AA "
+	elseif percent >= 6/9 then
+		return " A "
+	elseif percent >= 5/9 then
+		return " B "
+	elseif percent >= 4/9 then
+		return " C "
+	elseif percent >= 3/9 then
+		return " D "
+	elseif percent >= 2/9 then
+		return " E "
+	else
+		return " F "
+	end
+end
+
 function DP(player)
 	local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(player)
 	return math.max(0,isEtterna("0.50") and pss:GetWifeScore() or pss:GetPercentDancePoints())

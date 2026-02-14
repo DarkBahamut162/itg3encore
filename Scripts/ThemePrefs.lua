@@ -390,6 +390,11 @@ local Prefs = {
 		Values = { false, true }
 	},
 	--[ScreenEvaluation]
+	ShowColumnGrades = {
+		Default = false,
+		Choices = { OptionNameString('Off'), OptionNameString('On') },
+		Values = { false, true }
+	},
 	ShowOffset = {
 		Default = false,
 		Choices = { OptionNameString('Off'), OptionNameString('On') },
