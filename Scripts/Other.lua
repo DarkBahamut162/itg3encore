@@ -162,7 +162,7 @@ end
 function GetDisplayNameFromProfileOrMemoryCard(pn)
 	if PROFILEMAN:IsPersistentProfile(pn) then return GAMESTATE:GetPlayerDisplayName(pn) end
 	if MEMCARDMAN:GetCardState(pn) ~= 'MemoryCardState_none' then return MEMCARDMAN:GetName(pn) end
-	return ""
+	return "PLAYER "..(pn == PLAYER_1 and "1" or "2")
 end
 
 function ScreenEndingGetDisplayName(pn)
