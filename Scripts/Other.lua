@@ -359,6 +359,10 @@ function isOldStepMania()
 	return ProductFamily() == "StepMania" and not VersionDateCheck(20180000)
 end
 
+function isNewerStepMania()
+	return ProductFamily() == "StepMania" and VersionDateCheck(20190000)
+end
+
 function isOpenDDR()
 	return ProductFamily() == "OpenDDR"
 end
