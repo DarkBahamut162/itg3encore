@@ -42,6 +42,8 @@ function GetStepChartFacts()
 	local diffNames = {"novice","easy","medium","hard","expert","edit"}
 	local output = ""
 	local songs = SONGMAN:GetAllSongs()
+	local counter = SONGMAN:GetNumSongGroups()
+	local minimum = 12/(12*WideScreenDiff())
 	local currentGroup = ""
 	local currentDifficulty = ""
 	local diffTranslate = {
@@ -55,9 +57,15 @@ function GetStepChartFacts()
 
 	function updateOutput()
 		output = addToOutput(output,currentGroup..":","\n")
+		local insert = false
 		for diff=1,#diffCount do
 			if diffCount[diff] > 0 then
-				output = addToOutput(output,"  "..diffCount[diff].." "..diffNames[diff],"\n")
+				if counter > minimum then
+					output = addToOutput(output,diffCount[diff].." "..diffNames[diff],insert and " | " or "\n")
+				else
+					output = addToOutput(output,diffCount[diff].." "..diffNames[diff],"\n")
+				end
+				insert = true
 			end
 		end
 	end
