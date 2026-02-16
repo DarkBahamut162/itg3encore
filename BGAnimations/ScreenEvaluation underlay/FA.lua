@@ -91,7 +91,7 @@ return Def.ActorFrame{
 				local hd = stats:GetHoldNoteScores('HoldNoteScore_Held')
 				local score = ((W0Count*(4/3) + (W1Count+hd) + w2*(2/3) + w3*(2/15)) * 200000 / stepSize) / (4/3)
 				output = math.floor(score)
-				self:settextf("%06d",output) -- SN SCORE
+				self:settextf("%06d",output) -- IIDX SCORE
 				self:ClearAttributes()
 				self:AddAttribute(0, {
 					Length = math.max(6-string.len(''..output), 0),

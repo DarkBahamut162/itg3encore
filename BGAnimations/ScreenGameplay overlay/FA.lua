@@ -327,7 +327,7 @@ return Def.ActorFrame{
 					local score = ((W0Count*(4/3) + (W1Count+hd) + w2*(2/3) + w3*(2/15)) * 200000 / stepSize) / (4/3)
 					output = animateScore(maxScore-(math.floor(curMaxScore-score)),displayScore)
 				end
-				self:settextf("%06d",output) -- SN SCORE
+				self:settextf("%06d",output) -- IIDX SCORE
 				self:ClearAttributes()
 				self:AddAttribute(0, {
 					Length = math.max(6-string.len(''..output), 0),

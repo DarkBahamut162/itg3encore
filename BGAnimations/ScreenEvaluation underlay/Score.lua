@@ -108,7 +108,7 @@ return Def.ActorFrame{
 				local w3 = pss:GetTapNoteScores('TapNoteScore_W3')
 				local hd = pss:GetHoldNoteScores('HoldNoteScore_Held')
 				local score = math.floor((w1+hd + w2*(2/3) + w3*(2/15)) * 200000 / stepSize)
-				self:settextf("%06d",score) -- SN SCORE
+				self:settextf("%06d",score) -- IIDX SCORE
 				self:ClearAttributes()
 				self:AddAttribute(0, {
 					Length = math.max(6-string.len(''..score), 0),
