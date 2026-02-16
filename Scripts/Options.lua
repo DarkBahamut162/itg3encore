@@ -644,9 +644,9 @@ end
 function OptionSetScoreType()
 	function GetScoreTypes(etterna)
 		if etterna or (not etterna and (isOutFox(20210300) and GAMESTATE:GetCurrentGame():CountNotesSeparately())) then
-			return { "Score","Percent","EX","SN2","IIDX","Additive","Subtractive" }
+			return { "Score","Percent","EX","SN2","IIDX","POPN","Additive","Subtractive" }
 		else
-			return { "Score","Percent","EX","SN2","IIDX","WIFE3","Additive","Subtractive" }
+			return { "Score","Percent","EX","SN2","IIDX","POPN","WIFE3","Additive","Subtractive" }
 		end
 	end
 

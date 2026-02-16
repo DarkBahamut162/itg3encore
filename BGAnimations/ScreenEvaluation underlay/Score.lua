@@ -38,7 +38,7 @@ end
 
 local stepSize = 1
 
-if scoreType == 4 or scoreType == 5 then
+if scoreType == 4 or scoreType == 5 or scoreType == 6 then
 	local SongOrCourse = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentCourse() or GAMESTATE:GetCurrentSong()
 	local StepsOrTrail = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentTrail(player) or GAMESTATE:GetCurrentSteps(player)
 	if StepsOrTrail then
@@ -115,6 +115,18 @@ return Def.ActorFrame{
 					Diffuse = PlayerColorSemi(player),
 				})
 			elseif scoreType == 6 then
+				local w1 = pss:GetTapNoteScores('TapNoteScore_W1')
+				local w2 = pss:GetTapNoteScores('TapNoteScore_W2')
+				local w3 = pss:GetTapNoteScores('TapNoteScore_W3')
+				local hd = pss:GetHoldNoteScores('HoldNoteScore_Held')
+				local score = math.floor((w1+hd + w2*0.7 + w3*0.4) * 100000 / stepSize)
+				self:settextf("%06d",score) -- POPN SCORE
+				self:ClearAttributes()
+				self:AddAttribute(0, {
+					Length = math.max(6-string.len(''..score), 0),
+					Diffuse = PlayerColorSemi(player),
+				})
+			elseif scoreType == 7 then
 				self:settext(FormatPercentScore(math.max(0,getenv("WIFE3"..pname(player)) or 0))) -- WIFE3
 			end
 		end,
