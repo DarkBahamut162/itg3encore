@@ -281,7 +281,7 @@ end
 
 function IIDX(player)
 	local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(player)
-	local current = pss:GetTapNoteScores('TapNoteScore_W1')*2+ pss:GetTapNoteScores('TapNoteScore_W2')
+	local current = pss:GetTapNoteScores('TapNoteScore_W1')*2+pss:GetTapNoteScores('TapNoteScore_W2')
 	local StepsOrTrail = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentTrail(player) or GAMESTATE:GetCurrentSteps(player)
 	local total = StepsOrTrail:GetRadarValues(player):GetValue('RadarCategory_TapsAndHolds')*2
 	return current/total
@@ -304,6 +304,34 @@ function IIDXGrade(percent)
 		return " E "
 	else
 		return " F "
+	end
+end
+
+function POPN(player)
+	local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(player)
+	local current = pss:GetTapNoteScores('TapNoteScore_W1')+pss:GetTapNoteScores('TapNoteScore_W2')*0.7+pss:GetTapNoteScores('TapNoteScore_W3')*0.4
+	local StepsOrTrail = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentTrail(player) or GAMESTATE:GetCurrentSteps(player)
+	local total = getMaxNotes(player)
+	return current/total
+end
+
+function POPNGrade(points)
+	if points >= 0.98 then
+		return " S "
+	elseif points >= 0.95 then
+		return "AAA"
+	elseif points >= 0.9 then
+		return "AA "
+	elseif points >= 0.82 then
+		return " A "
+	elseif points >= 0.72 then
+		return " B "
+	elseif points >= 0.62 then
+		return " C "
+	elseif points >= 0.5 then
+		return " D "
+	else
+		return " E "
 	end
 end
 
