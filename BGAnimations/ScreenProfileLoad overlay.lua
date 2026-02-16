@@ -4,6 +4,7 @@ end
 
 local preload = GAMESTATE:GetCoinMode()=='CoinMode_Home' and IsAutoStyle() or (IsAutoPlayMode(true) and IsAutoStyle())
 SetAllowLateJoin(false)
+DefaultLuaModifiers = IniFile.ReadFile("Save/DefaultLuaModifiers.ini")["LuaOptions"]
 
 return Def.ActorFrame{
 	OffCommand=function()

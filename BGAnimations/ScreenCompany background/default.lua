@@ -34,6 +34,68 @@ end
 
 if isITGmania() then CheckThemeVersion() end
 
+local path = "Save/DefaultLuaModifiers.ini"
+if not FILEMAN:DoesFileExist(path) then
+	local file = {
+		LuaOptions = {
+			Rotation = 1,
+
+			Flare = 0,
+			FlareType = 1,
+			FlareAccurate = false,
+
+			Effect = 0,
+
+			HideScore = false,
+			HideJudgment = false,
+			HideCombo = false,
+			HideLife = false,
+
+			UnderCombo = false,
+			UnderTapJudgments = false,
+			UnderHoldJudgments = false,
+
+			ShowMovePlayerfieldStats = 3,
+			SetScoreType = 2,
+			ErrorBar = 0,
+			ShowColumns = 0,
+			SetScoreDirection = 1,
+			SetScoreFA = false,
+			ScreenFilter = 0,
+
+			ShowStats = 0,
+			ShowStatsSize = 1,
+			ShowStatsPos = 0,
+			PlayerNoteGraph = 1,
+			PlayerNoteGraphType = 2,
+			PlayerNoteGraphRange = 1,
+			PlayerNoteGraphData = false,
+			SetPacemaker = 0,
+			SetPacemakerFail = 0,
+
+			ShowMods = false,
+			ShowSpeedAssist = false,
+			ShowStopAssist = false,
+			SongFrame = "_normal",
+			HoldJudgment = "_itg3",
+			Judgment = "_itg3",
+			GreenNumber = false,
+
+			IIDXFrame = "_random",
+			IIDXDouble = false,
+			IIDXJudgment = "default",
+			IIDXNote = "default",
+			IIDXNoteLength = "normal",
+			IIDXBeam = "default",
+			IIDXBeamLength = "normal",
+			IIDXTurntable = "_default",
+			IIDXExplosion ="_default"
+		}
+	}
+	IniFile.WriteFile(path, file)
+	if FILEMAN.FlushDirCache then FILEMAN:FlushDirCache(path) end
+end
+
 return Def.ActorFrame{
 	Def.Sprite {
 		Texture="roxor video",
