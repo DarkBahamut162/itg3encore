@@ -114,8 +114,10 @@ function GetTotalTaps()
 end
 
 local beginner = false
-for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
-	beginner = beginner or GAMESTATE:GetCurrentSteps(pn):GetDifficulty() == "Difficulty_Beginner"
+if GAMESTATE:GetNumSidesJoined() == 2 then
+	for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
+		beginner = beginner or GAMESTATE:GetCurrentSteps(pn):GetDifficulty() == "Difficulty_Beginner"
+	end
 end
 local beginner = beginner and 15 or 0
 
