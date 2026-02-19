@@ -220,7 +220,7 @@ function SongMods(part)
 	if part == nil or part == 1 then
 		options = addToOutput(options,(isEtterna() and "Speed," or "1,") .."2,4,"..fail..","..((isRegular() and VersionDateCheck(20160000)) and (isOpenDDR() and "0DDR" or "0,Flare") or "0")..",3",",")
 		if not (IsGame("pump") or GAMESTATE:IsCourseMode()) then options = addToOutput(options,(IsGame("beat") or IsGame("be-mu")) and "IIDXFrame,IIDXDouble,IIDXJudgment" or "31",",") end
-		if (IsGame("beat") or IsGame("be-mu")) and IIDXcheck() then options = addToOutput(options,"IIDXNote,IIDXNoteLength,IIDXBeam,IIDXBeamLength,IIDXExplosion,IIDXTurntable",",") end
+		if IIDXcheck() then options = addToOutput(options,"IIDXNote,IIDXNoteLength,IIDXBeam,IIDXBeamLength,IIDXExplosion,IIDXTurntable",",") end
 		if not (IsGame("be-mu") or IsGame("beat") or IsGame("po-mu") or IsGame("popn")) then options = addToOutput(options,"32,32H",",") end
 	end
 	if part == nil or part == 2 then
