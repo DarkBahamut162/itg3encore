@@ -172,7 +172,7 @@ local function GetGradeTextPercent(percent)
 		{0.45,"  D "},
 	}
 
-	if percent >= grades[1][1] then return grades[g][2] end
+	if percent and percent >= grades[1][1] then return grades[1][2] end
 
 	for g=1,#grades-1 do
 		if percent < grades[g][1] and percent >= grades[g+1][1] then return grades[g+1][2] end
