@@ -48,7 +48,7 @@ if ShowStandardDecoration("StepsDisplay") then
 						else
 							level = #float[#float][2]
 						end
-						if level <= getenv("Flare"..pname(pn)) and tonumber(float[#float][2][level]) < 0 then
+						if level <= getenv("Flare"..pname(pn)) and tonumber(float[#float][2][level]) <= 0 then
 							self:diffusealpha(0)
 						else
 							if flareColor[level] == "rainbow" then self:rainbow() else self:stopeffect():diffuse(color(flareColor[level])) end
@@ -72,7 +72,7 @@ if ShowStandardDecoration("StepsDisplay") then
 						else
 							level = #float[#float][2]
 						end
-						if level <= getenv("Flare"..pname(pn)) and tonumber(float[#float][2][level]) < 0 then
+						if level <= getenv("Flare"..pname(pn)) and tonumber(float[#float][2][level]) <= 0 then
 							self:diffusealpha(0)
 						else
 							self:settext("FLARE "..flareName[level])
@@ -495,7 +495,7 @@ local function GraphDisplay(pn)
 
 	if flareLevel > 0 and not GAMESTATE:IsCourseMode() then
 		if PSS:GetFailed() then last = 0 end
-		if last <= flareLevel and tonumber(float[#float][2][flareLevel]) < 0 then last = 0 end
+		if getenv("FlareFloat"..pname(pn)) and last <= flareLevel and tonumber(float[#float][2][flareLevel]) < 0 then last = 0 end
 
 		if flareLevel > 0 and last > 0 then
 			if (isEtterna("0.71") and not STATSMAN:GetCurStageStats():Failed() or STATSMAN:GetCurStageStats():OnePassed()) and GAMESTATE:GetPlayerState(pn):GetPlayerController() == 'PlayerController_Human' then

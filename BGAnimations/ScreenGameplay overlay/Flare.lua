@@ -161,6 +161,7 @@ return Def.ActorFrame{
 						Length = math.max(7-string.len(''..(lifeAccurate[param.Level] or 0)), 0),
 						Diffuse = PlayerColorSemi(nil),
 					})
+					if param.Level == getenv("Flare"..pname(pn)) then self:diffuseshift():effectperiod(0.5):effectcolor1(Color("Red")):effectcolor2(Color("White")) end
 				end
 			end
 		},
