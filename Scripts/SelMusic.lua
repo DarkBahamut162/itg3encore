@@ -7,8 +7,8 @@ bannerForced = false
 KeysChecked = false
 ThemeVersion = "????????"
 CheckVersion = "????????"
-TimeZone = "+0100"
 local full = isOutFoxV() and "FullRes" or "Full"
+DefaultLuaModifiers = {}
 
 function GetThemeVersion()
 	if not FILEMAN:DoesFileExist(THEME:GetCurrentThemeDirectory().."/version.txt") then return "????????" end
