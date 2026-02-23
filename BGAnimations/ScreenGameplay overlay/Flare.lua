@@ -4,8 +4,8 @@ local scoreType = (getenv("SetScoreType"..pname(pn)) or 2) == 4 and getenv("SetS
 local scoreDirection = 2
 local pnFlare = getenv("Flare"..pname(pn))
 local old = getenv("FlareType"..pname(pn)) == 1
-local float = pnFlare == 11
-local level = pnFlare == 11 and 10 or pnFlare
+local float = getenv("FlareFloat"..pname(pn))
+local level = float and 10 or pnFlare
 local life = 10000
 local lifeTotal = {10000,10000,10000,10000,10000,10000,10000,10000,10000,10000}
 local lifeAccurate = {800000,850000,900000,930000,955000,960000,970000,980000,990000,995000}
@@ -290,7 +290,7 @@ return Def.ActorFrame{
 				if lifeCount[noteScore] then lifeCount[noteScore] = lifeCount[noteScore] + 1 end
 				life = life-sub
 				if accurate then life = sub end
-				if float and life <= 0 and level and level > 1 then
+				if float and life <= 0 and level > pnFlare then
 					local sumSub = 0
 					if level > 1 then
 						while level > 1 do
@@ -325,7 +325,7 @@ return Def.ActorFrame{
 						life = 10000 - sumSub
 					end
 				end
-				if life <= 0 and level and level == 1 then
+				if life <= 0 and level <= pnFlare then
 					player:SetLife(0)
 					if float then
 						MESSAGEMAN:Broadcast("ChangeBorder",{

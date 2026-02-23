@@ -38,16 +38,17 @@ if ShowStandardDecoration("StepsDisplay") then
 				InitCommand=function(self) self:zoomy(0.4):zoomx((pn==PLAYER_2) and -0.4 or 0.4):playcommand("ChangeBorder")  end,
 				ChangeBorderCommand=function(self)
 					local level = getenv("Flare"..pname(pn))
+					local float = getenv("FlareFloat"..pname(pn))
 					if level == 0 then
 						self:diffusealpha(0)
-					elseif level == 11 then
+					elseif float then
 						local float = getenv("FlareDisplay"..pname(pn))
 						if type(float[#float][2]) ~= 'table' then
 							level = #split("|",float[#float][2])
 						else
 							level = #float[#float][2]
 						end
-						if level == 1 and tonumber(float[#float][2][1]) < 0 then
+						if level <= getenv("Flare"..pname(pn)) and tonumber(float[#float][2][level]) < 0 then
 							self:diffusealpha(0)
 						else
 							if flareColor[level] == "rainbow" then self:rainbow() else self:stopeffect():diffuse(color(flareColor[level])) end
@@ -61,16 +62,17 @@ if ShowStandardDecoration("StepsDisplay") then
 				InitCommand=function(self) self:zoom(0.33*WideScreenDiff()):addy(-11*WideScreenDiff()):playcommand("ChangeBorder") end,
 				ChangeBorderMessageCommand=function(self)
 					local level = getenv("Flare"..pname(pn))
+					local float = getenv("FlareFloat"..pname(pn))
 					if level == 0 then
 						self:diffusealpha(0)
-					elseif level == 11 then
+					elseif float then
 						local float = getenv("FlareDisplay"..pname(pn))
 						if type(float[#float][2]) ~= 'table' then
 							level = #split("|",float[#float][2])
 						else
 							level = #float[#float][2]
 						end
-						if level == 1 and tonumber(float[#float][2][1]) < 0 then
+						if level <= getenv("Flare"..pname(pn)) and tonumber(float[#float][2][level]) < 0 then
 							self:diffusealpha(0)
 						else
 							self:settext("FLARE "..flareName[level])
@@ -381,7 +383,7 @@ local function GraphDisplay(pn)
 	local last = 1
 	local flareLevel = getenv("Flare"..pname(pn))
 
-	if flareLevel == 11 and not GAMESTATE:IsCourseMode() then
+	if getenv("FlareFloat"..pname(pn)) and not GAMESTATE:IsCourseMode() then
 		if type(float[#float][2]) ~= 'table' then
 			last = #split("|",float[#float][2])
 		else
@@ -493,7 +495,7 @@ local function GraphDisplay(pn)
 
 	if flareLevel > 0 and not GAMESTATE:IsCourseMode() then
 		if PSS:GetFailed() then last = 0 end
-		if last == 1 and tonumber(float[#float][2][1]) < 0 then last = 0 end
+		if last <= flareLevel and tonumber(float[#float][2][flareLevel]) < 0 then last = 0 end
 
 		if flareLevel > 0 and last > 0 then
 			if (isEtterna("0.71") and not STATSMAN:GetCurStageStats():Failed() or STATSMAN:GetCurStageStats():OnePassed()) and GAMESTATE:GetPlayerState(pn):GetPlayerController() == 'PlayerController_Human' then

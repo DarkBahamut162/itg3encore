@@ -481,19 +481,24 @@ function OptionFlare()
 		SelectType = "SelectMultiple",
 		OneChoiceForAllPlayers = false,
 		ExportOnChange = false,
-		Choices = { "Off","F1","F2","F3","F4","F5","F6","F7","F8","F9","FX","FF","Old","New","Accurate" },
+		Choices = { "Off","F1","F2","F3","F4","F5","F6","F7","F8","F9","FX","F+","Old","New","Accurate" },
 		LoadSelections = function(self, list, pn)
 			local flare = getenv("Flare"..pname(pn))
+			local flareFloat = getenv("FlareFloat"..pname(pn))
 			local flareType = getenv("FlareType"..pname(pn))
 			local flareAccurate = getenv("FlareAccurate"..pname(pn))
 			list[flare+1] = true
+			if flareFloat then list[12] = true end
 			list[flareType+12] = true
 			if flareAccurate then list[15] = true end
 		end,
 		SaveSelections = function() end,
 		NotifyOfSelection= function(self, pn, choice)
-			if choice <= 12 then
+			if choice <= 11 then
 				setenv("Flare"..pname(pn),SaveUserPref(pn, "Flare", choice-1))
+			elseif choice == 12 then
+				local flareFloat = (getenv("FlareFloat"..pname(pn)) or false)
+				setenv("FlareFloat"..pname(pn),SaveUserPref(pn, "FlareFloat", not flareFloat))
 			elseif choice <= 14 then
 				setenv("FlareType"..pname(pn),SaveUserPref(pn, "FlareType", choice-12))
 			else

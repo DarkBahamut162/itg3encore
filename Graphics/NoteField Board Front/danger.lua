@@ -1,4 +1,5 @@
 local player = ...
+local flare = getenv("Flare"..pname(player))
 
 local tilt = GAMESTATE:GetPlayerState(player):GetCurrentPlayerOptions():Tilt()
 local tilt_degrees = scale(tilt,-1,1,30,30) % 360
@@ -27,12 +28,13 @@ end
 
 return Def.ActorFrame{
 	Def.ActorFrame{
-		OnCommand=function(self) if getenv("Flare"..pname(player)) == 11 then self:visible(false) end end,
+		OnCommand=function(self) if getenv("FlareFloat"..pname(player)) then self:visible(false) end end,
 		ChangeBorderMessageCommand=function(self,param)
 			if param.Player == player then
-				if param.Level == 1 then self:visible(true) end
+				if param.Level == flare then self:sleep(1/60):queuecommand("Visible") end
 			end
 		end,
+		VisibleCommand=function(self) self:visible(true) end,
 		Def.ActorFrame{
 			HealthStateChangedMessageCommand=function(self, param)
 				if param.PlayerNumber == player then
