@@ -171,7 +171,8 @@ local t = Def.ActorFrame {
 }
 
 local DanceStageSelected = getenv("SelectDanceStage") or "OFF"
-if DanceStageSelected ~= "OFF" and DoesDanceRepoExist() and not HasLuaCheck() then
+local xms = IsGame("beat") or IsGame("be-mu") or IsGame("popn") or IsGame("po-mu")
+if not xms and DanceStageSelected ~= "OFF" and DoesDanceRepoExist() and not HasLuaCheck() then
 	t[#t+1] = loadfile(THEME:GetPathB("", "BGScripts/DanceStages"))()..{
 		OnCommand=function()
 			SCREENMAN:GetTopScreen():GetChild("SongBackground"):visible(false)

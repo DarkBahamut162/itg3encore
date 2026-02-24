@@ -1437,7 +1437,8 @@ function ScreenAfterPlayerOptions(part)
 	if part ~= 1 then choices[#choices+1] = "Options1" end
 	if part ~= 2 and not GAMESTATE:IsCourseMode() then choices[#choices+1] = "Options2" end
 	if part ~= 3 then choices[#choices+1] = "Options3" end
-	if part ~= 4 and DoesDanceRepoExist() then choices[#choices+1] = "Options4" end
+	local xms = IsGame("beat") or IsGame("be-mu") or IsGame("popn") or IsGame("po-mu")
+	if part ~= 4 and not xms and DoesDanceRepoExist() then choices[#choices+1] = "Options4" end
 
 	local screens = {
 		["Gameplay"] = Branch.BeforeGameplay(),

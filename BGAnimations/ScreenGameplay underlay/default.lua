@@ -8,7 +8,8 @@ for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
 end
 
 local DanceStageSelected = getenv("SelectDanceStage") or "OFF"
-if DanceStageSelected ~= "OFF" and DoesDanceRepoExist() and not HasLuaCheck() then
+local xms = IsGame("beat") or IsGame("be-mu") or IsGame("popn") or IsGame("po-mu")
+if not xms and DanceStageSelected ~= "OFF" and DoesDanceRepoExist() and not HasLuaCheck() then
 	local CharaRandom = GetAllCharacterNames()
 	table.remove(CharaRandom,IndexKey(CharaRandom,"Random"))
 	table.remove(CharaRandom,IndexKey(CharaRandom,"None"))
