@@ -106,7 +106,6 @@ else
 		end
 	end
 	if missing then
-		lua.ReportScriptError("MISSING")
 		IniFile.WriteFile(path, loaded)
 		if FILEMAN.FlushDirCache then FILEMAN:FlushDirCache(path) end
 	end
