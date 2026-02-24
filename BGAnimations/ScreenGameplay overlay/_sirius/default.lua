@@ -37,12 +37,12 @@ return Def.ActorFrame{
 	},
 	Def.Sprite {
 		Texture = THEME:GetPathB("ScreenGameplay","overlay/_sirius/BPM"),
-		InitCommand=function(self) self:x(SCREEN_CENTER_X+1*WideScreenDiff()):y(23*WideScreenDiff()):zoom(WideScreenDiff()) end
+		InitCommand=function(self) self:CenterX():y(34*WideScreenDiff()):zoom(WideScreenDiff()) end
 	},
 	Def.BitmapText {
 		File=THEME:GetPathF("_iidx/Gameplay", "BPM White"),
 		Name="BPMDisplay",
-		InitCommand=function(self)  self:x(SCREEN_CENTER_X+2*WideScreenDiff()):y(83*WideScreenDiff()):diffusealpha(1):maxwidth(15*3):zoom(WideScreenDiff()) end
+		InitCommand=function(self)  self:CenterX():y(87*WideScreenDiff()):diffusealpha(1):maxwidth(15*3):zoom(WideScreenDiff()) end
 	},
 	loadfile(THEME:GetPathB("ScreenGameplay","overlay/_sirius/DIFFICULTY"))(GAMESTATE:GetMasterPlayerNumber())..{
 		InitCommand=function(self) self:x(SCREEN_CENTER_X-336*WideScreenDiff()):y(-16/WideScreenDiff()) end
@@ -51,6 +51,6 @@ return Def.ActorFrame{
 		InitCommand=function(self) self:x(SCREEN_CENTER_X-302*WideScreenDiff()):y(-16/WideScreenDiff()) end
 	},
 	loadfile(THEME:GetPathB("ScreenGameplay","overlay/_sirius/TIME_DISPLAY"))()..{
-		InitCommand=function(self) self:CenterX():y(17*WideScreenDiff()):zoom(WideScreenDiff()) end
+		InitCommand=function(self) self:CenterX():y(12*WideScreenDiff()):zoom(WideScreenDiff()) end
 	}
 }

@@ -42,7 +42,7 @@ return Def.ActorFrame{
 	Def.BitmapText {
 		File=THEME:GetPathF("_iidx/Gameplay", "BPM Blue"),
 		Name="BPMDisplay",
-		InitCommand=function(self)  self:x(SCREEN_CENTER_X+2*WideScreenDiff()):y(86*WideScreenDiff()):diffusealpha(1):maxwidth(15*3):zoom(WideScreenDiff()) end
+		InitCommand=function(self)  self:x(SCREEN_CENTER_X+2*WideScreenDiff()):y(94*WideScreenDiff()):diffusealpha(1):maxwidth(15*3):zoom(WideScreenDiff()) end
 	},
 	loadfile(THEME:GetPathB("ScreenGameplay","overlay/_distorted/DIFFICULTY"))(GAMESTATE:GetMasterPlayerNumber())..{
 		InitCommand=function(self) self:x(SCREEN_CENTER_X-336*WideScreenDiff()):y(-16*WideScreenDiff()) end
@@ -51,6 +51,6 @@ return Def.ActorFrame{
 		InitCommand=function(self) self:x(SCREEN_CENTER_X-302*WideScreenDiff()):y(-16*WideScreenDiff()) end
 	},
 	loadfile(THEME:GetPathB("ScreenGameplay","overlay/_distorted/TIME_DISPLAY"))()..{
-		InitCommand=function(self) self:CenterX():y(17*WideScreenDiff()):zoom(WideScreenDiff()) end
+		InitCommand=function(self) self:CenterX():y(20):zoomx(WideScreenDiff()):zoomy(0.8*WideScreenDiff()) end
 	}
 }
