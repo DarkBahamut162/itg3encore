@@ -414,6 +414,7 @@ end
 function InitPlayerOptions()
 	for pn in ivalues(GAMESTATE:GetEnabledPlayers()) do
 		setenv("Flare"..pname(pn),(not isVS() and VersionDateCheck(20160000)) and LoadUserPrefN(pn, "Flare", tonumber(DefaultLuaModifiers["Flare"])) or 0)
+		setenv("FlareFloat"..pname(pn),(not isVS() and VersionDateCheck(20160000)) and LoadUserPrefN(pn, "FlareFloat", tonumber(DefaultLuaModifiers["FlareFloat"])) or 0)
 		setenv("FlareType"..pname(pn),(not isVS() and VersionDateCheck(20160000)) and LoadUserPrefN(pn, "FlareType", tonumber(DefaultLuaModifiers["FlareType"])) or 1)
 		setenv("FlareAccurate"..pname(pn),(not isVS() and VersionDateCheck(20160000)) and LoadUserPrefB(pn, "FlareAccurate", tobool(DefaultLuaModifiers["FlareAccurate"])) or false)
 

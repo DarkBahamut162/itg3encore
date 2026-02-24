@@ -35,65 +35,81 @@ end
 if isITGmania() then CheckThemeVersion() end
 
 local path = "Save/DefaultLuaModifiers.ini"
-if not FILEMAN:DoesFileExist(path) then
-	local file = {
-		LuaOptions = {
-			Rotation = 1,
+local file = {
+	LuaOptions = {
+		Rotation = 1,
 
-			Flare = 0,
-			FlareType = 1,
-			FlareAccurate = false,
+		Flare = 0,
+		FlareFloat = 0,
+		FlareType = 1,
+		FlareAccurate = false,
 
-			Effect = 0,
+		Effect = 0,
 
-			HideScore = false,
-			HideJudgment = false,
-			HideCombo = false,
-			HideLife = false,
+		HideScore = false,
+		HideJudgment = false,
+		HideCombo = false,
+		HideLife = false,
 
-			UnderCombo = false,
-			UnderTapJudgments = false,
-			UnderHoldJudgments = false,
+		UnderCombo = false,
+		UnderTapJudgments = false,
+		UnderHoldJudgments = false,
 
-			ShowMovePlayerfieldStats = 3,
-			SetScoreType = 2,
-			ErrorBar = 0,
-			ShowColumns = 0,
-			SetScoreDirection = 1,
-			SetScoreFA = false,
-			ScreenFilter = 0,
+		ShowMovePlayerfieldStats = 3,
+		SetScoreType = 2,
+		ErrorBar = 0,
+		ShowColumns = 0,
+		SetScoreDirection = 1,
+		SetScoreFA = false,
+		ScreenFilter = 0,
 
-			ShowStats = 0,
-			ShowStatsSize = 1,
-			ShowStatsPos = 0,
-			PlayerNoteGraph = 1,
-			PlayerNoteGraphType = 2,
-			PlayerNoteGraphRange = 1,
-			PlayerNoteGraphData = false,
-			SetPacemaker = 0,
-			SetPacemakerFail = 0,
+		ShowStats = 0,
+		ShowStatsSize = 1,
+		ShowStatsPos = 0,
+		PlayerNoteGraph = 1,
+		PlayerNoteGraphType = 2,
+		PlayerNoteGraphRange = 1,
+		PlayerNoteGraphData = false,
+		SetPacemaker = 0,
+		SetPacemakerFail = 0,
 
-			ShowMods = false,
-			ShowSpeedAssist = false,
-			ShowStopAssist = false,
-			SongFrame = "_normal",
-			HoldJudgment = "_itg3",
-			Judgment = "_itg3",
-			GreenNumber = false,
+		ShowMods = false,
+		ShowSpeedAssist = false,
+		ShowStopAssist = false,
+		SongFrame = "_normal",
+		HoldJudgment = "_itg3",
+		Judgment = "_itg3",
+		GreenNumber = false,
 
-			IIDXFrame = "_random",
-			IIDXDouble = false,
-			IIDXJudgment = "default",
-			IIDXNote = "default",
-			IIDXNoteLength = "normal",
-			IIDXBeam = "default",
-			IIDXBeamLength = "normal",
-			IIDXTurntable = "_default",
-			IIDXExplosion ="_default"
-		}
+		IIDXFrame = "_random",
+		IIDXDouble = false,
+		IIDXJudgment = "default",
+		IIDXNote = "default",
+		IIDXNoteLength = "normal",
+		IIDXBeam = "default",
+		IIDXBeamLength = "normal",
+		IIDXTurntable = "_default",
+		IIDXExplosion ="_default"
 	}
+}
+
+if not FILEMAN:DoesFileExist(path) then
 	IniFile.WriteFile(path, file)
 	if FILEMAN.FlushDirCache then FILEMAN:FlushDirCache(path) end
+else
+	local loaded = IniFile.ReadFile("Save/DefaultLuaModifiers.ini")
+	local missing = false
+	for key,value in pairs(file["LuaOptions"]) do
+		if loaded["LuaOptions"][key] == nil then
+			loaded["LuaOptions"][key] = file["LuaOptions"][key]
+			missing = true
+		end
+	end
+	if missing then
+		lua.ReportScriptError("MISSING")
+		IniFile.WriteFile(path, loaded)
+		if FILEMAN.FlushDirCache then FILEMAN:FlushDirCache(path) end
+	end
 end
 
 return Def.ActorFrame{
