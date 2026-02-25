@@ -432,9 +432,11 @@ function GetTrueJudgment(params,player)
 				lua.ReportScriptError(params.TapNoteScore.." (REGISTERED) ~= "..currentJudgment.." (COUNTED)".." | "..output.." | "..semi.." ("..late..")")
 			end
 		else
-			params.TapNoteScore = output
-			params.TapNoteOffset = string.format("%0.10f",tonumber(semi))
-			params.Early = tonumber(semi) < 0
+			if semi == "" then else
+				params.TapNoteScore = output
+				params.TapNoteOffset = string.format("%0.10f",tonumber(semi))
+				params.Early = tonumber(semi) < 0
+			end
 		end
 
 		if GAMESTATE:GetCurrentGame():CountNotesSeparately() and getenv("SetScoreFA"..pname(player)) then
