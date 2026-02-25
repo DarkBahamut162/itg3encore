@@ -383,7 +383,7 @@ local function GraphDisplay(pn)
 	local last = 1
 	local flareLevel = getenv("Flare"..pname(pn))
 
-	if flareLevel > 1 and getenv("FlareFloat"..pname(pn)) and not GAMESTATE:IsCourseMode() then
+	if flareLevel > 0 and getenv("FlareFloat"..pname(pn)) and not GAMESTATE:IsCourseMode() then
 		if type(float[#float][2]) ~= 'table' then
 			last = #split("|",float[#float][2])
 		else

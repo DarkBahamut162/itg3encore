@@ -40,7 +40,7 @@ local file = {
 		Rotation = 1,
 
 		Flare = 0,
-		FlareFloat = 0,
+		FlareFloat = false,
 		FlareType = 1,
 		FlareAccurate = false,
 
