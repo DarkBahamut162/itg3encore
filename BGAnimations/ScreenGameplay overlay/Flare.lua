@@ -89,12 +89,13 @@ local c
 local SongOrCourse = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentCourse() or GAMESTATE:GetCurrentSong()
 local StepsOrTrail = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentTrail(pn) or GAMESTATE:GetCurrentSteps(pn)
 if StepsOrTrail then
+	local holdlifts = isOutFox(20210400) and GAMESTATE:GetPlayerState(pn):GetPlayerOptions('ModsLevel_Song'):HoldLifts() or false
 	if IsCourseSecret() or not IsCourseFixed() then
 		stepSize = RadarCategory_Trail(StepsOrTrail,pn,"RadarCategory_TapsAndHolds")
-		stepSize = math.max(stepSize + RadarCategory_Trail(StepsOrTrail,pn,"RadarCategory_Holds") + RadarCategory_Trail(StepsOrTrail,pn,"RadarCategory_Rolls"),1)
+		stepSize = math.max(stepSize + (RadarCategory_Trail(StepsOrTrail,pn,"RadarCategory_Holds") + RadarCategory_Trail(StepsOrTrail,pn,"RadarCategory_Rolls")*(holdlifts and 2 or 1)),1)
 	else
 		stepSize = StepsOrTrail:GetRadarValues(pn):GetValue("RadarCategory_TapsAndHolds") or 0
-		stepSize = math.max(stepSize + StepsOrTrail:GetRadarValues(pn):GetValue('RadarCategory_Holds') + StepsOrTrail:GetRadarValues(pn):GetValue('RadarCategory_Rolls'),1)
+		stepSize = math.max(stepSize + (StepsOrTrail:GetRadarValues(pn):GetValue('RadarCategory_Holds') + StepsOrTrail:GetRadarValues(pn):GetValue('RadarCategory_Rolls'))*(holdlifts and 2 or 1),1)
 	end
 end
 
