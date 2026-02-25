@@ -92,39 +92,114 @@ end
 
 function GetRandomModifierNames(n)
 	local mods = {
-		"Xmod","Cmod","Mmod","Amod","CAmod","AVmod",
+		"Xmod","Cmod","Mmod",
 		"Overhead","Hallway","Distant","Incoming","Space",
 		"Reverse","Split","Alternate","Cross","Centered",
 		"Fail Immediate","Fail at 30 Misses","Fail Off",
+		"Normal", "No Recovery", "Sudden Death",
 		"NoteSkins",
 		"Accel","Decel","Wave","Expand","Boomerang","Random",
-		"BeatX","BeatY","BeatZ","Confusion","ConfusionX","ConfusionY",
-		"DrunkX","DrunkZ","Flip","Invert","Tipsy",
-		"AttenuateX","AttenuateY","AttenuateZ","Bounce","BounceZ","BumpyX","BumpyZ",
-		"Digital","DigitalZ","ParabolaX","ParabolaY","ParabolaZ","Sawtooth","SawtoothZ",
-		"Square","SquareZ","TornadoX","TornadoZ","XMode","Zigzag","ZigzagZ",
 		"Dizzy","Twirl","Roll",
-		"Fade Out","Fade In","Blink","Invisible","Vanish",
+		"Fade Out","F.O. Dynamic","Fade In","F.I. Dynamic","Blink","Invisible","Vanish",
 		"Normal Orientation","Left Orientation","Right Orientation","Upside-Down Orientation","Solo-Centered Orientation",
 		"Vibrate","Spin Right","Spin Left","Bob","Pulse","Wag",
 		"Simple","No Jumps","No Hands","No Quads","No Fakes",
 		"No Holds","No Rolls","No Lifts","No Stretch Jumps",
 		"Mirror","Backwards","Left","Right","Shuffle","Super Shuffle","Soft Shuffle",
 		"Big","Quick","Skippy","Echo","Wide","Stomp","BMRize",
-		"Planted","Floored","Twister","Holds To Rolls","Holds To Lift Holds",
+		"Planted","Floored","Twister","Holds To Rolls",
 		"Mini",
 		"Allow BackGroundChanges","No BackGroundChanges","Random BackGroundChanges",
 		"No Mines","Allow Mines","More Mines","Attack Mines",
 		"No Attacks","Allow Attacks","Random Attacks",
-		"Hide Targets","Hide Judgment","Hide Background",
-		"Hide Score","Hide Combo","Hide Lifebar",
+		"Hide Targets","Hide Judgments & Combos","Hide Background",
+		"Hide Score","Hide Judgment","Hide Combo","Hide Lifebar",
 		"Under Combo","Under Tap Judgments","Under Hold Judgments",
-		"Normal Score","Percent Score","EX Score",
+		"PlayerField Near","PlayerField Center","PlayerField Far",
+		"Normal Score","Percent Score","EX Score","SN2 Score","IIDX Score","WIFE3 Score","FA+ Score",
+		"Error Bar",
+		"Column Cues/Flashes",
 		"Screen Filter",
-		"Show Stats",
+		"Player Stats",
+		"Note Graph",
 		"Pacemaker",
+		"Green Number",
 		"Rate"
 	}
+	if isOutFoxV(20221111) then
+		mods[#mods+1] = "80 Percent"
+	end
+	if not isEtterna("0.65") then
+		mods[#mods+1] = "LifeLine"
+		mods[#mods+1] = "Survival"
+	end
+	mods[#mods+1] = "Flare I"
+	mods[#mods+1] = "Flare II"
+	mods[#mods+1] = "Flare III"
+	mods[#mods+1] = "Flare IV"
+	mods[#mods+1] = "Flare V"
+	mods[#mods+1] = "Flare VI"
+	mods[#mods+1] = "Flare VII"
+	mods[#mods+1] = "Flare VIII"
+	mods[#mods+1] = "Flare IX"
+	mods[#mods+1] = "Flare X"
+	mods[#mods+1] = "Floating Flare"
+	mods[#mods+1] = "Old Flare"
+	mods[#mods+1] = "New Flare"
+	mods[#mods+1] = "Accurate Flare"
+	if IsGame("be-mu") or IsGame("beat") then
+		mods[#mods+1] = "IIDX Frames"
+		mods[#mods+1] = "IIDX Double"
+		mods[#mods+1] = "IIDX Judgment Fonts"
+	else
+		mods[#mods+1] = "Song Frames"
+		if IsGame("po-mu") or IsGame("popn") then else
+			mods[#mods+1] = "Judgment Fonts"
+			mods[#mods+1] = "Hold Judgment Fonts"
+		end
+	end
+	if IIDXcheck() then
+		mods[#mods+1] = "IIDX Note"
+		mods[#mods+1] = "IIDX Note Length"
+		mods[#mods+1] = "IIDX Beam"
+		mods[#mods+1] = "IIDX Beam Length"
+		mods[#mods+1] = "IIDX Turntable"
+		mods[#mods+1] = "IIDX Explosion"
+	end
+	if isOutFox(20210200) then mods[#mods+1] = "Amod" end
+	if isOutFox(20220300) then mods[#mods+1] = "CAmod" end
+	if isOutFox(20220900) then mods[#mods+1] = "AVmod" end
+	if not (isEtterna() or isOldStepMania()) then
+		local addMods = {
+			"Beat","Confusion","Drunk","Flip","Invert","Tipsy",
+			"Bumpy","Tornado","XMode"
+		}
+		for i = 1, #addMods do mods[#mods + 1] = addMods[i] end
+	else
+		local addMods = {
+			"BeatX","BeatY","BeatZ","Confusion","ConfusionX","ConfusionY",
+			"DrunkX","DrunkZ","Flip","Invert","Tipsy",
+			"AttenuateX","AttenuateY","AttenuateZ","Bounce","BounceZ","BumpyX","BumpyZ",
+			"Digital","DigitalZ","ParabolaX","ParabolaY","ParabolaZ","Sawtooth","SawtoothZ",
+			"Square","SquareZ","TornadoX","TornadoZ","XMode","Zigzag","ZigzagZ"
+		}
+		for i = 1, #addMods do mods[#mods + 1] = addMods[i] end
+	end
+	if isITGmania(20230317) then mods[#mods + 1] = "Hyper Shuffle" end
+	if isITGmania(20240317) then
+		mods[#mods + 1] = "Left-Right Mirror"
+		mods[#mods + 1] = "Up-Down Mirror"
+	end
+	if isOutFox() then
+		local addMods = {
+			"Asymptote","BumpyY","CubicX","CubicY","CubicZ","DrunkY","SpiralX","SpiralY","SpiralZ"
+		}
+		for i = 1, #addMods do mods[#mods + 1] = addMods[i] end
+		if isOutFox(20210400) then mods[#mods + 1] = "Holds To Lift Holds" end
+		if isOutFox() then mods[#mods + 1] = "Stealth Holds" end
+		mods[#mods + 1] = "Stealth Mines"
+	end
+	
 	mods = tableshuffle( mods )
 	local s = ""
 	for i = 1,math.min(n,table.getn(mods)) do
