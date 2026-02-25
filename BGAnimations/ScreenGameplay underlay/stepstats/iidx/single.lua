@@ -389,7 +389,11 @@ return Def.ActorFrame{
 					self:y(-target*barHeight+barHeight/2):valign(1):zoomx(0.65):zoomy(0.5):fadeleft(0.25):faderight(0.25):diffuse(color("#FF0000")):diffuseramp():effectcolor1(color("#FF000080")):effectcolor2(color("#FF0000FF")):effectperiod(0.5):effect_hold_at_full(0.5):effectclock('beat')
 				end,
 				JudgmentMessageCommand=function(self,param) if param.Player == pn and self:GetDiffuseAlpha() == 1 then self:queuecommand("Update") end end,
-				UpdateCommand=function(self) self:diffusealpha(DPCur(pn) < DPMax(pn)*target and 1 or 0) end
+				UpdateCommand=function(self)
+					local check = DPCur(pn) < DPMax(pn)*target
+					self:diffusealpha(check and 1 or 0)
+					if not check then self:GetParent():GetChild("BarLabels"):GetChild("Target"):queuecommand("FadeOn") end
+				end
 			},
 			Def.Sprite {
 				Texture = THEME:GetPathG("horiz-line","short"),
@@ -399,30 +403,46 @@ return Def.ActorFrame{
 				end,
 				JudgmentMessageCommand=function(self,param) if param.Player == pn and topscore ~= nil and self:GetDiffuseAlpha() == 1 then self:queuecommand("Update") end end,
 				UpdateCommand=function(self)
-					self:diffusealpha(DPCur(pn) < DPMax(pn)*PercentDP(topscore) and 1 or 0)
+					local check = DPCur(pn) < DPMax(pn)*PercentDP(topscore)
+					self:diffusealpha(check and 1 or 0)
+					if not check then self:GetParent():GetChild("BarLabels"):GetChild("Highscore"):queuecommand("FadeOn") end
 				end
 			},
 			Def.ActorFrame{
 				Name="BarLabels",
-				InitCommand=function(self) self:visible(GAMESTATE:GetCurrentStageIndex()==0) end,
 				Def.BitmapText {
 					File = "_v 26px bold black",
 					Text=PROFILEMAN:GetPlayerName(pn),
-					InitCommand=function(self) self:rotationz(-90):addx(barCenter):shadowlength(0):queuecommand("FadeOn") end,
+					InitCommand=function(self) self:visible(GAMESTATE:GetCurrentStageIndex()==0):rotationz(-90):addx(barCenter):shadowlength(0):queuecommand("FadeOn") end,
 					FadeOnCommand=function(self) self:sleep(2):linear(1):diffusealpha(0) end
 				},
 				Def.BitmapText {
 					File = "_v 26px bold black",
 					Condition=topscore ~= nil,
 					Text="Highscore",
-					InitCommand=function(self) self:rotationz(-90):addx(barCenter+(barWidth[bgNum]+barSpace[bgNum])*1):shadowlength(0):queuecommand("FadeOn") end,
+					InitCommand=function(self) self:visible(GAMESTATE:GetCurrentStageIndex()==0):rotationz(-90):addx(barCenter+(barWidth[bgNum]+barSpace[bgNum])*1):shadowlength(0):queuecommand("FadeOn") end,
 					FadeOnCommand=function(self) self:sleep(2.25):linear(1):diffusealpha(0) end
+				},
+				Def.BitmapText {
+					Name="Highscore",
+					File = "_v 26px bold black",
+					Condition=topscore ~= nil,
+					Text="Highscore Passed",
+					InitCommand=function(self) self:rotationz(-90):addx(barCenter+(barWidth[bgNum]+barSpace[bgNum])*1):shadowlength(0):diffusealpha(0) end,
+					FadeOnCommand=function(self) self:sleep(0.5):linear(1):diffusealpha(1):diffuseshift():effectcolor1(color("#FFFFFF00")):effectcolor2(color("#FFFFFF")):effectperiod(4) end
 				},
 				Def.BitmapText {
 					File = "_v 26px bold black",
 					Text="Target",
-					InitCommand=function(self) self:rotationz(-90):addx(barCenter+(barWidth[bgNum]+barSpace[bgNum])*(topscore ~= nil and 2 or 1)):shadowlength(0):queuecommand("FadeOn") end,
+					InitCommand=function(self) self:visible(GAMESTATE:GetCurrentStageIndex()==0):rotationz(-90):addx(barCenter+(barWidth[bgNum]+barSpace[bgNum])*(topscore ~= nil and 2 or 1)):shadowlength(0):queuecommand("FadeOn") end,
 					FadeOnCommand=function(self) self:sleep(2.5):linear(1):diffusealpha(0) end
+				},
+				Def.BitmapText {
+					Name="Target",
+					File = "_v 26px bold black",
+					Text="Target Passed",
+					InitCommand=function(self) self:rotationz(-90):addx(barCenter+(barWidth[bgNum]+barSpace[bgNum])*(topscore ~= nil and 2 or 1)):shadowlength(0):diffusealpha(0) end,
+					FadeOnCommand=function(self) self:sleep(0.5):linear(1):diffusealpha(1):diffuseshift():effectcolor1(color("#FFFFFF00")):effectcolor2(color("#FFFFFF")):effectperiod(4) end
 				}
 			},
 			Def.ActorFrame{

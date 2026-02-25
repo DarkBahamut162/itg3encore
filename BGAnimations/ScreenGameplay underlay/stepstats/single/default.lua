@@ -278,115 +278,15 @@ return Def.ActorFrame{
 			Condition=getenv("ShowStats"..pname(pn)) == (isOpenDDR() and 6 or 7),
 			InitCommand=function(self) self:y(isFinal() and -19 or 0) end,
 			Def.Sprite {
-				Texture = THEME:GetPathG("horiz-line","short"),
-				InitCommand=function(self)
-					self:y(-target*barHeight+barHeight/2):valign(0):zoomx(1.25):zoomy(0.5):diffusealpha(0.5):fadeleft(0.25):faderight(0.25):diffuse(color("#FF0000")):diffuseramp():effectcolor1(color("#FF000080")):effectcolor2(color("#FF0000FF")):effectperiod(0.5):effect_hold_at_full(0.5):effectclock('beat')
-				end,
-				JudgmentMessageCommand=function(self,param) if param.Player == pn and self:GetDiffuseAlpha() == 1 then self:queuecommand("Update") end end,
-				UpdateCommand=function(self) self:diffusealpha(DPCur(pn) < DPMax(pn)*target and 1 or 0) end
-			},
-			Def.Sprite {
-				Texture = THEME:GetPathG("horiz-line","short"),
-				Condition=topscore ~= nil,
-				InitCommand=function(self)
-					self:x(-barWidth[bgNum]/2):y(-PercentDP(topscore)*barHeight+barHeight/2):valign(0):zoomx(1.25/3*2):zoomy(0.5):diffusealpha(0.5):fadeleft(0.25):faderight(0.25):diffuse(color("#00FF00")):diffuseramp():effectcolor1(color("#00FF0080")):effectcolor2(color("#00FF00FF")):effectperiod(0.5):effect_hold_at_full(0.5):effectclock('beat')
-				end,
-				JudgmentMessageCommand=function(self,param) if param.Player == pn and topscore ~= nil and self:GetDiffuseAlpha() == 1 then self:queuecommand("Update") end end,
-				UpdateCommand=function(self)
-					self:diffusealpha(DPCur(pn) < DPMax(pn)*PercentDP(topscore) and 1 or 0)
-				end
-			},
-			Def.Sprite {
 				Texture = "s_glow final",
 				Condition=isFinal(),
 				InitCommand=function(self) self:blend(Blend.Add):y(19):diffuseramp():effectcolor1(color("#FFFFFF00")):effectcolor2(color("#FFFFFF")):effectperiod(0.5):effect_hold_at_full(0.5):effectclock('beat') end
-			},
-			Def.ActorFrame{
-				Name="BarLabels",
-				InitCommand=function(self) self:visible(GAMESTATE:GetCurrentStageIndex()==0) end,
-				Def.BitmapText {
-					File = "_v 26px bold black",
-					Text=PROFILEMAN:GetPlayerName(pn),
-					InitCommand=function(self) self:rotationz(-90):addx(barCenter):shadowlength(0):queuecommand("FadeOn") end,
-					FadeOnCommand=function(self) self:sleep(2):linear(1):diffusealpha(0) end
-				},
-				Def.BitmapText {
-					File = "_v 26px bold black",
-					Condition=topscore ~= nil,
-					Text="Highscore",
-					InitCommand=function(self) self:rotationz(-90):addx(barCenter+(barWidth[bgNum]+barSpace[bgNum])*1):shadowlength(0):queuecommand("FadeOn") end,
-					FadeOnCommand=function(self) self:sleep(2.25):linear(1):diffusealpha(0) end
-				},
-				Def.BitmapText {
-					File = "_v 26px bold black",
-					Text="Target",
-					InitCommand=function(self) self:rotationz(-90):addx(barCenter+(barWidth[bgNum]+barSpace[bgNum])*(topscore ~= nil and 2 or 1)):shadowlength(0):queuecommand("FadeOn") end,
-					FadeOnCommand=function(self) self:sleep(2.5):linear(1):diffusealpha(0) end
-				}
 			},
 			Def.BitmapText {
 				File = "_z bold gray 36px",
 				Name="Pacemaker",
 				Text="Pacemaker",
 				OnCommand=function(self) self:zoom(0.5):shadowlength(0):addy(isFinal() and -154.5 or -145) end
-			},
-			Def.ActorFrame{
-				InitCommand=function(self) self:y(isFinal() and (topscore and -35 or 20) or 0):zoomy(isFinal() and (topscore and 1.33 or 1) or 1) end,
-				Def.BitmapText {
-					File = "ScreenGameplay judgment",
-					Name="PlayerName",
-					Text="Player:",
-					OnCommand=function(self)
-						self:maxwidth(125):horizalign(left):zoom(0.75):shadowlength(0):addy(145):addx(-100):diffuse(TapNoteScoreToColor("TapNoteScore_W1"))
-						if topscore then self:maxheight(15):addy(4) end
-					end
-				},
-				Def.BitmapText {
-					File = "ScreenGameplay judgment",
-					Condition=topscore ~= nil,
-					Name="TargetName",
-					Text="Highscore:",
-					OnCommand=function(self)
-						self:maxwidth(125):horizalign(left):zoom(0.75):shadowlength(0):addy(135):addx(-100):diffuse(TapNoteScoreToColor("TapNoteScore_W3"))
-						if topscore then self:maxheight(15):addy(2) end
-					end
-				},
-				Def.BitmapText {
-					File = "ScreenGameplay judgment",
-					Name="TargetName",
-					Text="Target:",
-					OnCommand=function(self)
-						self:maxwidth(125):horizalign(left):zoom(0.75):shadowlength(0):addy(125):addx(-100):diffuse(TapNoteScoreToColor("TapNoteScore_Miss"))
-						if topscore then self:maxheight(15) end
-					end
-				},
-				Def.BitmapText {
-					File = "_z numbers",
-					Name="PlayerPoints",
-					OnCommand=function(self)
-						self:maxwidth(125):horizalign(right):zoom(0.75):shadowlength(0):addy(145+2.5):addx(100):diffuse(PlayerColor(pn)):settext(DPCur(pn))
-						if topscore then self:maxheight(15):addy(3.5) end
-					end,
-					JudgmentMessageCommand=function(self,param) if param.Player == pn then self:queuecommand("Update") end end,
-					UpdateCommand=function(self) self:settext(math.round(DPCur(pn))) end
-				},
-				Def.BitmapText {
-					File = "_z numbers",
-					Condition=topscore ~= nil,
-					Name="HighscorePoints",
-					OnCommand=function(self)
-						self:maxwidth(125):horizalign(right):zoom(0.75):shadowlength(0):addy(135+2.5):addx(100):diffuse(PlayerColor(pn)):settext(math.ceil(PercentDP(topscore)*StepCounter()))
-						if topscore then self:maxheight(15):addy(1.5) end
-					end
-				},
-				Def.BitmapText {
-					File = "_z numbers",
-					Name="TargetPoints",
-					OnCommand=function(self)
-						self:maxwidth(125):horizalign(right):zoom(0.75):shadowlength(0):addy(125+2.5):addx(100):diffuse(PlayerColor(pn)):settext(math.ceil(target*StepCounter()))
-						if topscore then self:maxheight(15):addy(-0.5) end
-					end
-				},
 			},
 			Def.Sprite {
 				Texture = "../w1",
@@ -492,6 +392,127 @@ return Def.ActorFrame{
 						self:diffuse(color("#800000")):y((barHeight/2-addX+6))
 					end
 				end
+			},
+
+			Def.Sprite {
+				Texture = THEME:GetPathG("horiz-line","short"),
+				InitCommand=function(self)
+					self:y(-target*barHeight+barHeight/2):valign(0):zoomx(1.25):zoomy(0.5):diffusealpha(0.5):fadeleft(0.25):faderight(0.25):diffuse(color("#FF0000")):diffuseramp():effectcolor1(color("#FF000080")):effectcolor2(color("#FF0000FF")):effectperiod(0.5):effect_hold_at_full(0.5):effectclock('beat')
+				end,
+				JudgmentMessageCommand=function(self,param) if param.Player == pn and self:GetDiffuseAlpha() == 1 then self:queuecommand("Update") end end,
+				UpdateCommand=function(self)
+					local check = DPCur(pn) < DPMax(pn)*target
+					self:diffusealpha(check and 1 or 0)
+					if not check then self:GetParent():GetChild("BarLabels"):GetChild("Target"):queuecommand("FadeOn") end
+				end
+			},
+			Def.Sprite {
+				Texture = THEME:GetPathG("horiz-line","short"),
+				Condition=topscore ~= nil,
+				InitCommand=function(self)
+					self:x(-barWidth[bgNum]/2):y(-PercentDP(topscore)*barHeight+barHeight/2):valign(0):zoomx(1.25/3*2):zoomy(0.5):diffusealpha(0.5):fadeleft(0.25):faderight(0.25):diffuse(color("#00FF00")):diffuseramp():effectcolor1(color("#00FF0080")):effectcolor2(color("#00FF00FF")):effectperiod(0.5):effect_hold_at_full(0.5):effectclock('beat')
+				end,
+				JudgmentMessageCommand=function(self,param) if param.Player == pn and topscore ~= nil and self:GetDiffuseAlpha() == 1 then self:queuecommand("Update") end end,
+				UpdateCommand=function(self)
+					local check = DPCur(pn) < DPMax(pn)*PercentDP(topscore)
+					self:diffusealpha(check and 1 or 0)
+					if not check then self:GetParent():GetChild("BarLabels"):GetChild("Highscore"):queuecommand("FadeOn") end
+				end
+			},
+			Def.ActorFrame{
+				Name="BarLabels",
+				Def.BitmapText {
+					File = "_v 26px bold black",
+					Text=PROFILEMAN:GetPlayerName(pn),
+					InitCommand=function(self) self:visible(GAMESTATE:GetCurrentStageIndex()==0):rotationz(-90):addx(barCenter):shadowlength(0):queuecommand("FadeOn") end,
+					FadeOnCommand=function(self) self:sleep(2):linear(1):diffusealpha(0) end
+				},
+				Def.BitmapText {
+					File = "_v 26px bold black",
+					Condition=topscore ~= nil,
+					Text="Highscore",
+					InitCommand=function(self) self:visible(GAMESTATE:GetCurrentStageIndex()==0):rotationz(-90):addx(barCenter+(barWidth[bgNum]+barSpace[bgNum])*1):shadowlength(0):queuecommand("FadeOn") end,
+					FadeOnCommand=function(self) self:sleep(2.25):linear(1):diffusealpha(0) end
+				},
+				Def.BitmapText {
+					Name="Highscore",
+					File = "_v 26px bold black",
+					Condition=topscore ~= nil,
+					Text="Highscore Passed",
+					InitCommand=function(self) self:rotationz(-90):addx(barCenter+(barWidth[bgNum]+barSpace[bgNum])*1):shadowlength(0):diffusealpha(0) end,
+					FadeOnCommand=function(self) self:sleep(0.5):linear(1):diffusealpha(1):diffuseshift():effectcolor1(color("#FFFFFF00")):effectcolor2(color("#FFFFFF")):effectperiod(4) end
+				},
+				Def.BitmapText {
+					File = "_v 26px bold black",
+					Text="Target",
+					InitCommand=function(self) self:visible(GAMESTATE:GetCurrentStageIndex()==0):rotationz(-90):addx(barCenter+(barWidth[bgNum]+barSpace[bgNum])*(topscore ~= nil and 2 or 1)):shadowlength(0):queuecommand("FadeOn") end,
+					FadeOnCommand=function(self) self:sleep(2.5):linear(1):diffusealpha(0) end
+				},
+				Def.BitmapText {
+					Name="Target",
+					File = "_v 26px bold black",
+					Text="Target Passed",
+					InitCommand=function(self) self:rotationz(-90):addx(barCenter+(barWidth[bgNum]+barSpace[bgNum])*(topscore ~= nil and 2 or 1)):shadowlength(0):diffusealpha(0) end,
+					FadeOnCommand=function(self) self:sleep(0.5):linear(1):diffusealpha(1):diffuseshift():effectcolor1(color("#FFFFFF00")):effectcolor2(color("#FFFFFF")):effectperiod(4) end
+				}
+			},
+			Def.ActorFrame{
+				InitCommand=function(self) self:y(isFinal() and (topscore and -35 or 20) or 0):zoomy(isFinal() and (topscore and 1.33 or 1) or 1) end,
+				Def.BitmapText {
+					File = "ScreenGameplay judgment",
+					Name="PlayerName",
+					Text="Player:",
+					OnCommand=function(self)
+						self:maxwidth(125):horizalign(left):zoom(0.75):shadowlength(0):addy(145):addx(-100):diffuse(TapNoteScoreToColor("TapNoteScore_W1"))
+						if topscore then self:maxheight(15):addy(4) end
+					end
+				},
+				Def.BitmapText {
+					File = "ScreenGameplay judgment",
+					Condition=topscore ~= nil,
+					Name="TargetName",
+					Text="Highscore:",
+					OnCommand=function(self)
+						self:maxwidth(125):horizalign(left):zoom(0.75):shadowlength(0):addy(135):addx(-100):diffuse(TapNoteScoreToColor("TapNoteScore_W3"))
+						if topscore then self:maxheight(15):addy(2) end
+					end
+				},
+				Def.BitmapText {
+					File = "ScreenGameplay judgment",
+					Name="TargetName",
+					Text="Target:",
+					OnCommand=function(self)
+						self:maxwidth(125):horizalign(left):zoom(0.75):shadowlength(0):addy(125):addx(-100):diffuse(TapNoteScoreToColor("TapNoteScore_Miss"))
+						if topscore then self:maxheight(15) end
+					end
+				},
+				Def.BitmapText {
+					File = "_z numbers",
+					Name="PlayerPoints",
+					OnCommand=function(self)
+						self:maxwidth(125):horizalign(right):zoom(0.75):shadowlength(0):addy(145+2.5):addx(100):diffuse(PlayerColor(pn)):settext(DPCur(pn))
+						if topscore then self:maxheight(15):addy(3.5) end
+					end,
+					JudgmentMessageCommand=function(self,param) if param.Player == pn then self:queuecommand("Update") end end,
+					UpdateCommand=function(self) self:settext(math.round(DPCur(pn))) end
+				},
+				Def.BitmapText {
+					File = "_z numbers",
+					Condition=topscore ~= nil,
+					Name="HighscorePoints",
+					OnCommand=function(self)
+						self:maxwidth(125):horizalign(right):zoom(0.75):shadowlength(0):addy(135+2.5):addx(100):diffuse(PlayerColor(pn)):settext(math.ceil(PercentDP(topscore)*StepCounter()))
+						if topscore then self:maxheight(15):addy(1.5) end
+					end
+				},
+				Def.BitmapText {
+					File = "_z numbers",
+					Name="TargetPoints",
+					OnCommand=function(self)
+						self:maxwidth(125):horizalign(right):zoom(0.75):shadowlength(0):addy(125+2.5):addx(100):diffuse(PlayerColor(pn)):settext(math.ceil(target*StepCounter()))
+						if topscore then self:maxheight(15):addy(-0.5) end
+					end
+				},
 			},
 		}
 	}
