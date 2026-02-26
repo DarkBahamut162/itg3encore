@@ -170,49 +170,49 @@ return Def.ActorFrame{
 				Condition=faplus[PLAYER_1],
 				File = "_v 26px bold shadow",
 				Text="FANTASTIC+",
-				InitCommand=function(self) self:y(SCREEN_CENTER_Y-108*WideScreenDiff()+(16.5*-1)*WideScreenDiff()):horizalign(left):addx(-EvalTweenDistance()) end,
+				InitCommand=function(self) self:y(SCREEN_CENTER_Y-108*WideScreenDiff()+(16.5*-1)*WideScreenDiff()):horizalign(left):addx(-EvalTweenDistance()) if ThemePrefs.Get("Recolor") then self:diffuse(TapNoteScoreToColor("TapNoteScore_W1")) end end,
 				OnCommand=function(self) self:zoomx(0.65*WideScreenDiff()):zoomy(0.51*WideScreenDiff()):diffusebottomedge(color("#BBB9FB")):sleep(3):decelerate(0.3):addx(EvalTweenDistance()) end,
 				OffCommand=function(self) self:accelerate(0.3):addx(-EvalTweenDistance()) end
 			},
 			Def.BitmapText {
 				File = "_v 26px bold shadow",
 				Text="FANTASTIC",
-				InitCommand=function(self) self:y(SCREEN_CENTER_Y-108*WideScreenDiff()+(16.5*0)*WideScreenDiff()):horizalign(left):addx(-EvalTweenDistance()) end,
+				InitCommand=function(self) self:y(SCREEN_CENTER_Y-108*WideScreenDiff()+(16.5*0)*WideScreenDiff()):horizalign(left):addx(-EvalTweenDistance()) if ThemePrefs.Get("Recolor") then self:diffuse(TapNoteScoreToColor(faplus[PLAYER_1] and "TapNoteScore_W0" or "TapNoteScore_W1")) end  end,
 				OnCommand=function(self) self:zoomx(0.65*WideScreenDiff()):zoomy(0.51*WideScreenDiff()):diffusebottomedge(color("#BBB9FB")):sleep(3):decelerate(0.3):addx(EvalTweenDistance()) end,
 				OffCommand=function(self) self:accelerate(0.3):addx(-EvalTweenDistance()) end
 			},
 			Def.BitmapText {
 				File = "_v 26px bold shadow",
 				Text="EXCELLENT",
-				InitCommand=function(self) self:y(SCREEN_CENTER_Y-108*WideScreenDiff()+(16.5*1)*WideScreenDiff()):horizalign(left):addx(-EvalTweenDistance()) end,
+				InitCommand=function(self) self:y(SCREEN_CENTER_Y-108*WideScreenDiff()+(16.5*1)*WideScreenDiff()):horizalign(left):addx(-EvalTweenDistance()) if ThemePrefs.Get("Recolor") then self:diffuse(TapNoteScoreToColor("TapNoteScore_W2")) end end,
 				OnCommand=function(self) self:zoomx(0.65*WideScreenDiff()):zoomy(0.5*WideScreenDiff()):diffusebottomedge(color("#BBB9FB")):sleep(3):decelerate(0.3):addx(EvalTweenDistance()) end,
 				OffCommand=function(self) self:accelerate(0.3):addx(-EvalTweenDistance()) end
 			},
 			Def.BitmapText {
 				File = "_v 26px bold shadow",
 				Text="GREAT",
-				InitCommand=function(self) self:y(SCREEN_CENTER_Y-108*WideScreenDiff()+(16.5*2)*WideScreenDiff()):horizalign(left):addx(-EvalTweenDistance()) end,
+				InitCommand=function(self) self:y(SCREEN_CENTER_Y-108*WideScreenDiff()+(16.5*2)*WideScreenDiff()):horizalign(left):addx(-EvalTweenDistance()) if ThemePrefs.Get("Recolor") then self:diffuse(TapNoteScoreToColor("TapNoteScore_W3")) end end,
 				OnCommand=function(self) self:zoomx(0.65*WideScreenDiff()):zoomy(0.5*WideScreenDiff()):diffusebottomedge(color("#BBB9FB")):sleep(3):decelerate(0.3):addx(EvalTweenDistance()) end,
 				OffCommand=function(self) self:accelerate(0.3):addx(-EvalTweenDistance()) end
 			},
 			Def.BitmapText {
 				File = "_v 26px bold shadow",
 				Text=GAMESTATE:GetCurrentSteps(PLAYER_1):GetDifficulty() == 'Difficulty_Beginner' and "TOO EARLY/LATE" or "DECENT",
-				InitCommand=function(self) self:y(SCREEN_CENTER_Y-108*WideScreenDiff()+(16.5*3)*WideScreenDiff()):horizalign(left):addx(-EvalTweenDistance()) end,
+				InitCommand=function(self) self:y(SCREEN_CENTER_Y-108*WideScreenDiff()+(16.5*3)*WideScreenDiff()):horizalign(left):addx(-EvalTweenDistance()) if ThemePrefs.Get("Recolor") then self:diffuse(TapNoteScoreToColor("TapNoteScore_W4")) end end,
 				OnCommand=function(self) self:zoomx(0.65*WideScreenDiff()):zoomy(0.5*WideScreenDiff()):diffusebottomedge(color("#BBB9FB")):sleep(3):decelerate(0.3):addx(EvalTweenDistance()) end,
 				OffCommand=function(self) self:accelerate(0.3):addx(-EvalTweenDistance()) end
 			},
 			Def.BitmapText {
 				File = "_v 26px bold shadow",
 				Text=GAMESTATE:GetCurrentSteps(PLAYER_1):GetDifficulty() == 'Difficulty_Beginner' and "WAY EARLY/LATE" or "WAY OFF",
-				InitCommand=function(self) self:y(SCREEN_CENTER_Y-108*WideScreenDiff()+(16.5*4)*WideScreenDiff()):horizalign(left):addx(-EvalTweenDistance()) end,
+				InitCommand=function(self) self:y(SCREEN_CENTER_Y-108*WideScreenDiff()+(16.5*4)*WideScreenDiff()):horizalign(left):addx(-EvalTweenDistance()) if ThemePrefs.Get("Recolor") then self:diffuse(TapNoteScoreToColor("TapNoteScore_W5")) end end,
 				OnCommand=function(self) self:zoomx(0.65*WideScreenDiff()):zoomy(0.5*WideScreenDiff()):diffusebottomedge(color("#BBB9FB")):sleep(3):decelerate(0.3):addx(EvalTweenDistance()) end,
 				OffCommand=function(self) self:accelerate(0.3):addx(-EvalTweenDistance()) end
 			},
 			Def.BitmapText {
 				File = "_v 26px bold shadow",
 				Text="MISS",
-				InitCommand=function(self) self:y(SCREEN_CENTER_Y-108*WideScreenDiff()+(16.5*5)*WideScreenDiff()):horizalign(left):addx(-EvalTweenDistance()) end,
+				InitCommand=function(self) self:y(SCREEN_CENTER_Y-108*WideScreenDiff()+(16.5*5)*WideScreenDiff()):horizalign(left):addx(-EvalTweenDistance()) if ThemePrefs.Get("Recolor") then self:diffuse(TapNoteScoreToColor("TapNoteScore_Miss")) end end,
 				OnCommand=function(self) self:zoomx(0.65*WideScreenDiff()):zoomy(0.5*WideScreenDiff()):diffusebottomedge(color("#BBB9FB")):sleep(3):decelerate(0.3):addx(EvalTweenDistance()) end,
 				OffCommand=function(self) self:accelerate(0.3):addx(-EvalTweenDistance()) end
 			},
@@ -454,49 +454,49 @@ return Def.ActorFrame{
 				Condition=faplus[PLAYER_2],
 				File = "_v 26px bold shadow",
 				Text="FANTASTIC+",
-				InitCommand=function(self) self:y(SCREEN_CENTER_Y-108*WideScreenDiff()+(16.5*-1)*WideScreenDiff()):horizalign(left):addx(EvalTweenDistance()) end,
+				InitCommand=function(self) self:y(SCREEN_CENTER_Y-108*WideScreenDiff()+(16.5*-1)*WideScreenDiff()):horizalign(left):addx(EvalTweenDistance()) if ThemePrefs.Get("Recolor") then self:diffuse(TapNoteScoreToColor("TapNoteScore_W1")) end end,
 				OnCommand=function(self) self:zoomx(0.65*WideScreenDiff()):zoomy(0.51*WideScreenDiff()):diffusebottomedge(color("#BBB9FB")):sleep(3):decelerate(0.3):addx(-EvalTweenDistance()) end,
 				OffCommand=function(self) self:accelerate(0.3):addx(EvalTweenDistance()) end
 			},
 			Def.BitmapText {
 				File = "_v 26px bold shadow",
 				Text="FANTASTIC",
-				InitCommand=function(self) self:y(SCREEN_CENTER_Y-108*WideScreenDiff()+(16.5*0)*WideScreenDiff()):horizalign(left):addx(EvalTweenDistance()) end,
+				InitCommand=function(self) self:y(SCREEN_CENTER_Y-108*WideScreenDiff()+(16.5*0)*WideScreenDiff()):horizalign(left):addx(EvalTweenDistance()) if ThemePrefs.Get("Recolor") then self:diffuse(TapNoteScoreToColor(faplus[PLAYER_2] and "TapNoteScore_W0" or "TapNoteScore_W1")) end  end,
 				OnCommand=function(self) self:zoomx(0.65*WideScreenDiff()):zoomy(0.51*WideScreenDiff()):diffusebottomedge(color("#BBB9FB")):sleep(3):decelerate(0.3):addx(-EvalTweenDistance()) end,
 				OffCommand=function(self) self:accelerate(0.3):addx(EvalTweenDistance()) end
 			},
 			Def.BitmapText {
 				File = "_v 26px bold shadow",
 				Text="EXCELLENT",
-				InitCommand=function(self) self:y(SCREEN_CENTER_Y-108*WideScreenDiff()+(16.5*1)*WideScreenDiff()):horizalign(left):addx(EvalTweenDistance()) end,
+				InitCommand=function(self) self:y(SCREEN_CENTER_Y-108*WideScreenDiff()+(16.5*1)*WideScreenDiff()):horizalign(left):addx(EvalTweenDistance()) if ThemePrefs.Get("Recolor") then self:diffuse(TapNoteScoreToColor("TapNoteScore_W2")) end end,
 				OnCommand=function(self) self:zoomx(0.65*WideScreenDiff()):zoomy(0.5*WideScreenDiff()):diffusebottomedge(color("#BBB9FB")):sleep(3):decelerate(0.3):addx(-EvalTweenDistance()) end,
 				OffCommand=function(self) self:accelerate(0.3):addx(EvalTweenDistance()) end
 			},
 			Def.BitmapText {
 				File = "_v 26px bold shadow",
 				Text="GREAT",
-				InitCommand=function(self) self:y(SCREEN_CENTER_Y-108*WideScreenDiff()+(16.5*2)*WideScreenDiff()):horizalign(left):addx(EvalTweenDistance()) end,
+				InitCommand=function(self) self:y(SCREEN_CENTER_Y-108*WideScreenDiff()+(16.5*2)*WideScreenDiff()):horizalign(left):addx(EvalTweenDistance()) if ThemePrefs.Get("Recolor") then self:diffuse(TapNoteScoreToColor("TapNoteScore_W3")) end end,
 				OnCommand=function(self) self:zoomx(0.65*WideScreenDiff()):zoomy(0.5*WideScreenDiff()):diffusebottomedge(color("#BBB9FB")):sleep(3):decelerate(0.3):addx(-EvalTweenDistance()) end,
 				OffCommand=function(self) self:accelerate(0.3):addx(EvalTweenDistance()) end
 			},
 			Def.BitmapText {
 				File = "_v 26px bold shadow",
 				Text=GAMESTATE:GetCurrentSteps(PLAYER_2):GetDifficulty() == 'Difficulty_Beginner' and "TOO EARLY/LATE" or "DECENT",
-				InitCommand=function(self) self:y(SCREEN_CENTER_Y-108*WideScreenDiff()+(16.5*3)*WideScreenDiff()):horizalign(left):addx(EvalTweenDistance()) end,
+				InitCommand=function(self) self:y(SCREEN_CENTER_Y-108*WideScreenDiff()+(16.5*3)*WideScreenDiff()):horizalign(left):addx(EvalTweenDistance()) if ThemePrefs.Get("Recolor") then self:diffuse(TapNoteScoreToColor("TapNoteScore_W4")) end end,
 				OnCommand=function(self) self:zoomx(0.65*WideScreenDiff()):zoomy(0.5*WideScreenDiff()):diffusebottomedge(color("#BBB9FB")):sleep(3):decelerate(0.3):addx(-EvalTweenDistance()) end,
 				OffCommand=function(self) self:accelerate(0.3):addx(EvalTweenDistance()) end
 			},
 			Def.BitmapText {
 				File = "_v 26px bold shadow",
 				Text=GAMESTATE:GetCurrentSteps(PLAYER_2):GetDifficulty() == 'Difficulty_Beginner' and "WAY EARLY/LATE" or "WAY OFF",
-				InitCommand=function(self) self:y(SCREEN_CENTER_Y-108*WideScreenDiff()+(16.5*4)*WideScreenDiff()):horizalign(left):addx(EvalTweenDistance()) end,
+				InitCommand=function(self) self:y(SCREEN_CENTER_Y-108*WideScreenDiff()+(16.5*4)*WideScreenDiff()):horizalign(left):addx(EvalTweenDistance()) if ThemePrefs.Get("Recolor") then self:diffuse(TapNoteScoreToColor("TapNoteScore_W5")) end end,
 				OnCommand=function(self) self:zoomx(0.65*WideScreenDiff()):zoomy(0.5*WideScreenDiff()):diffusebottomedge(color("#BBB9FB")):sleep(3):decelerate(0.3):addx(-EvalTweenDistance()) end,
 				OffCommand=function(self) self:accelerate(0.3):addx(EvalTweenDistance()) end
 			},
 			Def.BitmapText {
 				File = "_v 26px bold shadow",
 				Text="MISS",
-				InitCommand=function(self) self:y(SCREEN_CENTER_Y-108*WideScreenDiff()+(16.5*5)*WideScreenDiff()):horizalign(left):addx(EvalTweenDistance()) end,
+				InitCommand=function(self) self:y(SCREEN_CENTER_Y-108*WideScreenDiff()+(16.5*5)*WideScreenDiff()):horizalign(left):addx(EvalTweenDistance()) if ThemePrefs.Get("Recolor") then self:diffuse(TapNoteScoreToColor("TapNoteScore_Miss")) end end,
 				OnCommand=function(self) self:zoomx(0.65*WideScreenDiff()):zoomy(0.5*WideScreenDiff()):diffusebottomedge(color("#BBB9FB")):sleep(3):decelerate(0.3):addx(-EvalTweenDistance()) end,
 				OffCommand=function(self) self:accelerate(0.3):addx(EvalTweenDistance()) end
 			},

@@ -390,6 +390,11 @@ local Prefs = {
 		Values = { false, true }
 	},
 	--[ScreenEvaluation]
+	Recolor = {
+		Default = false,
+		Choices = { OptionNameString('Off'), OptionNameString('On') },
+		Values = { false, true }
+	},
 	ShowColumnGrades = {
 		Default = false,
 		Choices = { OptionNameString('Off'), OptionNameString('On') },

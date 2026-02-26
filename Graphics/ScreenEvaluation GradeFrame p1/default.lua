@@ -327,7 +327,22 @@ local InputHandler = function(event)
 end
 
 return Def.ActorFrame{
-	InitCommand=function(self) c = self:GetChildren() end,
+	InitCommand=function(self)
+		c = self:GetChildren()
+		if ThemePrefs.Get("Recolor") then
+			if faplus then
+				c.JudgeFrames:GetChild("W0"):GetChild("W0JudgmentP1"):diffuse(TapNoteScoreToColor("TapNoteScore_W1"))
+				c.JudgeFrames:GetChild("W1"):GetChild("W1JudgmentP1"):diffuse(TapNoteScoreToColor("TapNoteScore_W0"))
+			else
+				c.JudgeFrames:GetChild("W1"):GetChild("W1JudgmentP1"):diffuse(TapNoteScoreToColor("TapNoteScore_W1"))
+			end
+			c.JudgeFrames:GetChild("W2"):GetChild("W2JudgmentP1"):diffuse(TapNoteScoreToColor("TapNoteScore_W2"))
+			c.JudgeFrames:GetChild("W3"):GetChild("W3JudgmentP1"):diffuse(TapNoteScoreToColor("TapNoteScore_W3"))
+			c.JudgeFrames:GetChild("W4"):GetChild("W4JudgmentP1"):diffuse(TapNoteScoreToColor("TapNoteScore_W4"))
+			c.JudgeFrames:GetChild("W5"):GetChild("W5JudgmentP1"):diffuse(TapNoteScoreToColor("TapNoteScore_W5"))
+			c.JudgeFrames:GetChild("Miss"):GetChild("MissJudgmentP1"):diffuse(TapNoteScoreToColor("TapNoteScore_Miss"))
+		end
+	end,
 	Def.ActorFrame{
 		Name="Error",
 		InitCommand=function(self) self:y(-212*WideScreenDiff()) end,
@@ -402,7 +417,7 @@ return Def.ActorFrame{
 			InitCommand=function(self) self:y(-220*WideScreenDiff()) end,
 			Def.Sprite {
 				Texture="_0 "..(isFinal() and "Final" or "Normal"),
-				InitCommand=function(self) self:x(-156*WideScreenDiff()):horizalign(left) end,
+				InitCommand=function(self) self:x(-156*WideScreenDiff()):horizalign(left) if ThemePrefs.Get("Recolor") then self:diffuse(TapNoteScoreToColor("TapNoteScore_W1")) end end,
 				OnCommand=function(self) self:zoom(WideScreenDiff()):addx(-100):diffusealpha(0):sleep(2.9):bounceend(0.4):addx(100):diffusealpha(1) end,
 				OffCommand=function(self) self:sleep(0.05):bouncebegin(0.4):addx(-100):diffusealpha(0) end
 			},
@@ -433,7 +448,7 @@ return Def.ActorFrame{
 			InitCommand=function(self) self:y(-195*WideScreenDiff()) end,
 			Def.Sprite {
 				Texture="_A "..(isFinal() and "Final" or "Normal"),
-				InitCommand=function(self) self:x(-156*WideScreenDiff()):horizalign(left) end,
+				InitCommand=function(self) self:x(-156*WideScreenDiff()):horizalign(left) if ThemePrefs.Get("Recolor") then self:diffuse(TapNoteScoreToColor(faplus and "TapNoteScore_W0" or "TapNoteScore_W1")) end end,
 				OnCommand=function(self) self:zoom(WideScreenDiff()):addx(-100):diffusealpha(0):sleep(3):bounceend(0.4):addx(100):diffusealpha(1) end,
 				OffCommand=function(self) self:sleep(0.05):bouncebegin(0.4):addx(-100):diffusealpha(0) end
 			},
@@ -466,7 +481,7 @@ return Def.ActorFrame{
 			InitCommand=function(self) self:y(-170*WideScreenDiff()) end,
 			Def.Sprite {
 				Texture="_B "..(isFinal() and "Final" or "Normal"),
-				InitCommand=function(self) self:x(-156*WideScreenDiff()):horizalign(left) end,
+				InitCommand=function(self) self:x(-156*WideScreenDiff()):horizalign(left) if ThemePrefs.Get("Recolor") then self:diffuse(TapNoteScoreToColor("TapNoteScore_W2")) end end,
 				OnCommand=function(self) self:zoom(WideScreenDiff()):addx(-100):diffusealpha(0):sleep(3.10):bounceend(0.4):addx(100):diffusealpha(1) end,
 				OffCommand=function(self) self:sleep(0.1):bouncebegin(0.4):addx(-100):diffusealpha(0) end
 			},
@@ -489,7 +504,7 @@ return Def.ActorFrame{
 			InitCommand=function(self) self:y(-145*WideScreenDiff()) end,
 			Def.Sprite {
 				Texture="_C "..(isFinal() and "Final" or "Normal"),
-				InitCommand=function(self) self:x(-156*WideScreenDiff()):horizalign(left) end,
+				InitCommand=function(self) self:x(-156*WideScreenDiff()):horizalign(left) if ThemePrefs.Get("Recolor") then self:diffuse(TapNoteScoreToColor("TapNoteScore_W3")) end end,
 				OnCommand=function(self) self:zoom(WideScreenDiff()):addx(-100):diffusealpha(0):sleep(3.20):bounceend(0.4):addx(100):diffusealpha(1) end,
 				OffCommand=function(self) self:sleep(0.15):bouncebegin(0.4):addx(-100):diffusealpha(0) end
 			},
@@ -512,7 +527,7 @@ return Def.ActorFrame{
 			InitCommand=function(self) self:y(-120*WideScreenDiff()) end,
 			Def.Sprite {
 				Texture="_D "..(isFinal() and "Final" or "Normal"),
-				InitCommand=function(self) self:x(-156*WideScreenDiff()):horizalign(left) end,
+				InitCommand=function(self) self:x(-156*WideScreenDiff()):horizalign(left) if ThemePrefs.Get("Recolor") then self:diffuse(TapNoteScoreToColor("TapNoteScore_W4")) end end,
 				OnCommand=function(self) self:zoom(WideScreenDiff()):addx(-100):diffusealpha(0):sleep(3.30):bounceend(0.4):addx(100):diffusealpha(1) end,
 				OffCommand=function(self) self:sleep(0.2):bouncebegin(0.4):addx(-100):diffusealpha(0) end
 			},
@@ -535,7 +550,7 @@ return Def.ActorFrame{
 			InitCommand=function(self) self:y(-95*WideScreenDiff()) end,
 			Def.Sprite {
 				Texture="_E "..(isFinal() and "Final" or "Normal"),
-				InitCommand=function(self) self:x(-156*WideScreenDiff()):horizalign(left) end,
+				InitCommand=function(self) self:x(-156*WideScreenDiff()):horizalign(left) if ThemePrefs.Get("Recolor") then self:diffuse(TapNoteScoreToColor("TapNoteScore_W5")) end end,
 				OnCommand=function(self) self:zoom(WideScreenDiff()):addx(-100):diffusealpha(0):sleep(3.40):bounceend(0.4):addx(100):diffusealpha(1) end,
 				OffCommand=function(self) self:sleep(0.25):bouncebegin(0.4):addx(-100):diffusealpha(0) end
 			},
@@ -559,7 +574,7 @@ return Def.ActorFrame{
 			InitCommand=function(self) self:y(-70*WideScreenDiff()) end,
 			Def.Sprite {
 				Texture="_F "..(isFinal() and "Final" or "Normal"),
-				InitCommand=function(self) self:x(-156*WideScreenDiff()):horizalign(left) end,
+				InitCommand=function(self) self:x(-156*WideScreenDiff()):horizalign(left) if ThemePrefs.Get("Recolor") then self:diffuse(TapNoteScoreToColor("TapNoteScore_Miss")) end end,
 				OnCommand=function(self) self:zoom(WideScreenDiff()):addx(-100):diffusealpha(0):sleep(3.50):bounceend(0.4):addx(100):diffusealpha(1) end,
 				OffCommand=function(self) self:sleep(0.3):bouncebegin(0.4):addx(-100):diffusealpha(0) end
 			},
