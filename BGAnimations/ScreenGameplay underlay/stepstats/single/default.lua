@@ -67,7 +67,7 @@ end
 if bgNum > 0 then barCenter	= -totalWidth/2+barWidth[bgNum]/2 end
 
 local BarLabelTexts = {"Fantastics","Excellents","Greats","Decents","Way-Offs","Misses"}
-if GAMESTATE:GetCurrentSteps(pn):GetDifficulty() == "Difficulty_Beginner" then
+if not GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentSteps(pn):GetDifficulty() == "Difficulty_Beginner" then
 	BarLabelTexts[4] = "Too Early/Late"
 	BarLabelTexts[5] = "Way Early/Late"
 end
