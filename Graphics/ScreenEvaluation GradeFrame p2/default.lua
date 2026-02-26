@@ -524,7 +524,7 @@ return Def.ActorFrame{
 			Def.BitmapText {
 				Name="W4Judgment"..PlayerNumberToString(PLAYER_2),
 				File="_v 26px bold shadow",
-				Text=GAMESTATE:GetCurrentSteps(PLAYER_2):GetDifficulty() == 'Difficulty_Beginner' and "TOO EARLY" or "DECENT",
+				Text=GAMESTATE:GetCurrentSteps(PLAYER_2):GetDifficulty() == 'Difficulty_Beginner' and "TOO EARLY/LATE" or "DECENT",
 				InitCommand=function(self) self:x(150*WideScreenDiff()):horizalign(right):maxwidth(120) end,
 				OnCommand=function(self) self:zoomx(0.8*WideScreenDiff()):zoomy(0.6*WideScreenDiff()):diffusebottomedge(color("#BBB9FB")):cropright(1.3):faderight(0.1):sleep(3.60):linear(0.7):cropright(-0.3) end,
 				OffCommand=function(self) self:linear(0.2):diffusealpha(0) end
@@ -547,7 +547,7 @@ return Def.ActorFrame{
 			Def.BitmapText {
 				Name="W5Judgment"..PlayerNumberToString(PLAYER_2),
 				File="_v 26px bold shadow",
-				Text=isOpenDDR() and "MISS" or GAMESTATE:GetCurrentSteps(PLAYER_2):GetDifficulty() == 'Difficulty_Beginner' and "WAY EARLY" or "WAY OFF",
+				Text=isOpenDDR() and "MISS" or GAMESTATE:GetCurrentSteps(PLAYER_2):GetDifficulty() == 'Difficulty_Beginner' and "WAY EARLY/LATE" or "WAY OFF",
 				InitCommand=function(self) self:x(150*WideScreenDiff()):horizalign(right):maxwidth(115) end,
 				OnCommand=function(self) self:zoomx(0.8*WideScreenDiff()):zoomy(0.6*WideScreenDiff()):diffusebottomedge(color("#BBB9FB")):cropright(1.3):faderight(0.1):sleep(3.60):linear(0.7):cropright(-0.3) end,
 				OffCommand=function(self) self:linear(0.2):diffusealpha(0) end

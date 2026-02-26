@@ -90,6 +90,10 @@ end
 if bgNum > 0 then barCenter	= -totalWidth/2+barWidth[bgNum]/2 end
 
 local BarLabelTexts = {"Fantastics","Excellents","Greats","Decents","Way-Offs","Misses"}
+if GAMESTATE:GetCurrentSteps(pn):GetDifficulty() == "Difficulty_Beginner" then
+	BarLabelTexts[4] = "Too Early/Late"
+	BarLabelTexts[5] = "Way Early/Late"
+end
 BarLabelTexts[0] = "Fantastics+"
 local Numbers,BarLabels,Bars = Def.ActorFrame{},Def.ActorFrame{},Def.ActorFrame{}
 local judgments = {
