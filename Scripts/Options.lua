@@ -895,7 +895,7 @@ function OptionShowStats()
 		end,
 		SaveSelections = function() end,
 		NotifyOfSelection= function(self, pn, choice)
-			if choice <= #self.Choices-3 then
+			if choice <= #self.Choices-(not (IsGame("beat") or IsGame("be-mu")) and 3 or 2) then
 				setenv("ShowStats"..pname(pn),SaveUserPref(pn, "ShowStats", choice-1))
 			else
 				if not (IsGame("beat") or IsGame("be-mu")) then
