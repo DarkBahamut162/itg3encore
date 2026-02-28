@@ -1,5 +1,5 @@
 local player = ...
-if not GAMESTATE:IsHumanPlayer(player) then return Def.ActorFrame{} end
+if not GAMESTATE:IsHumanPlayer(player) or GAMESTATE:IsCourseMode() then return Def.ActorFrame{} end
 local style = GAMESTATE:GetCurrentStyle()
 local NumColumns = style:ColumnsPerPlayer()
 local width = GetTrueWidth(player)
@@ -470,7 +470,7 @@ local reverse = GAMESTATE:GetPlayerState(player):GetPlayerOptions('ModsLevel_Son
 if mods then reverse = not reverse end
 local posY = reverse and THEME:GetMetric("Player","ReceptorArrowsYReverse") or THEME:GetMetric("Player","ReceptorArrowsYStandard")
 
-local mlevel = GAMESTATE:IsCourseMode() and "ModsLevel_Stage" or "ModsLevel_Preferred"
+local mlevel = "ModsLevel_Preferred"
 local currentMini = 1-math.round(GAMESTATE:GetPlayerState(player):GetPlayerOptions(mlevel):Mini()*50) / 100
 local currentTiny = 1-math.round(GAMESTATE:GetPlayerState(player):GetPlayerOptions(mlevel):Tiny()*50) / 100
 --currentMini = currentMini * currentTiny
@@ -481,16 +481,16 @@ local checking = true
 local first = true
 local c
 local noteData = {}
-local SongOrCourse = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentTrail(player):GetTrailEntry(GAMESTATE:GetLoadingCourseSongIndex()):GetSong() or GAMESTATE:GetCurrentSong()
-local StepsOrTrail = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentTrail(player):GetTrailEntry(GAMESTATE:GetLoadingCourseSongIndex()):GetSteps() or GAMESTATE:GetCurrentSteps(player)
+local SongOrCourse = GAMESTATE:GetCurrentSong()
+local StepsOrTrail = GAMESTATE:GetCurrentSteps(player)
 trueFirst = tonumber(LoadFromCache(SongOrCourse,StepsOrTrail,"TrueFirstBeat"))
 local GCM = GetColumnMapping(player)
 local GCM_ITG = GetColumnMappingITG(player)
 
 function setCol()
 	noteData = {}
-	local SongOrCourse = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentTrail(player):GetTrailEntry(GAMESTATE:GetLoadingCourseSongIndex()):GetSong() or GAMESTATE:GetCurrentSong()
-	local StepsOrTrail = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentTrail(player):GetTrailEntry(GAMESTATE:GetLoadingCourseSongIndex()):GetSteps() or GAMESTATE:GetCurrentSteps(player)
+	local SongOrCourse = GAMESTATE:GetCurrentSong()
+	local StepsOrTrail = GAMESTATE:GetCurrentSteps(player)
 	trueFirst = tonumber(LoadFromCache(SongOrCourse,StepsOrTrail,"TrueFirstBeat"))
 	local timingData = StepsOrTrail:GetTimingData()
 	local chartint = 1
