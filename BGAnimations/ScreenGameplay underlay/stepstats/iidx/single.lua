@@ -218,6 +218,21 @@ return Def.ActorFrame{
 			Condition=(getenv("ShowStats"..pname(pn)) or 0) > 0,
 			Def.Sprite { Texture = GetIIDXFrame(pn) }
 		},
+		Def.BitmapText {
+			Condition=getenv("ShowStats"..pname(pn)) == (isOpenDDR() and 6 or 7),
+			File = "_iidx/Speed White",
+			InitCommand=function(self) self:y(-152):zoomy(2/3):vertspacing(-3) end,
+			ComboChangedMessageCommand=function(self,params)
+				local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn)
+				self:settext(
+				"PGREAT : "..string.format("%04.0f",pss:GetTapNoteScores('TapNoteScore_W1'))..
+				"\n GREAT : "..string.format("%04.0f",pss:GetTapNoteScores('TapNoteScore_W2'))..
+				"\n  GOOD : "..string.format("%04.0f",pss:GetTapNoteScores('TapNoteScore_W3'))..
+				"\n   BAD : "..string.format("%04.0f",pss:GetTapNoteScores('TapNoteScore_W4'))..
+				"\n  VBAD : "..string.format("%04.0f",pss:GetTapNoteScores('TapNoteScore_W5'))..
+				"\n  POOR : "..string.format("%04.0f",pss:GetTapNoteScores('TapNoteScore_Miss')))
+			end
+		},
 		Def.ActorFrame{
 			Condition=(getenv("ShowStats"..pname(pn)) or 0) > 0 and (getenv("ShowStats"..pname(pn)) or 0) < (isOpenDDR() and 6 or 7),
 			Def.ActorFrame{
