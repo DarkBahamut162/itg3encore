@@ -14,7 +14,7 @@ Its sources have been displayed further down below.
 🔴 **StepMania 5*** *(~5.0.4)*<br>
 🟡 **StepMania 5*** *(5.0.5+)*<br>
 🟢 **StepMania 5*** *(5.0.11+)*<br>
-🔴 **Excluding 5.1.0a*** *(aka 5.2)*<br>
+🔴 **StepMania 5.1.0a*** *(aka 5.2)*<br>
 🟡 **Etterna*** *(other)*
 
 🟢 = Fully Functional<br>
@@ -78,7 +78,7 @@ Ability to **enable/disable** certain **options** within **ScreenTitleMenu**
 <details>
   <summary><b>ScreenTitleJoin</b> <i>(click to expand)</i></summary>
 
-- **GetAutoPlayMode:**
+- **AutoPlayMode:**
 Ability to **AutoSelect** the **PlayMode** when in **ScreenTitleJoin**
 </details>
 
@@ -126,7 +126,7 @@ Shows if song **has anything lua** related (no matter if BG, FG or both)
 Switches back and forth between the stepchart's BPMs and the player's current mod speed 
 - **ShowOrigin**
 Switches back and forth between the song's Artist and the song's Origin *(only if Origin Value has been set)*
-- **ShowRounds:**
+- **ShowRounds/Length:**
 Shows either **amount of rounds** or **length specification** during song selection
   - Will be adjusted if **TrueRounds** is enabled
 - **ShowStepCounter (StepCache Only):**
@@ -163,6 +163,10 @@ Ability to show current Speed and Mod during GamePlay. Also enables modifying sa
 <details>
   <summary><b>ScreenEvaluation</b> <i>(click to expand)</i></summary>
 
+- **Recolor:**
+Recolor Judgments & Banner Frame
+- **ShowColumnGrades:**
+Shows Grades per Column
 - **ShowOffset:**
 Shows **earlies** and **lates** of any timing window **during evaluation** excluding misses but including perfects *(0ms)*
   - Ability to **switch** between **multiple Graph Views**
@@ -238,6 +242,7 @@ I could have actually forked it but I didn't. My reasoning was that it wasn't go
 * All **LoadActor()** transformed to **Def.\***
 * Added most **Final Encore Theme** stuff while adding/adjusting a few other things
 * Fixed **Legacy Online Mode** *(I think?)*
+* Fixed **Fitness/Workout**
 * Actually fixed **Battle/Course Mode** (Battle/Rave, Marathon & Survival Mode)
   * Fixed/Better **Song List**
   * Displays **_panes** & **StepArtists** and correctly calculate their difficulty color
@@ -266,8 +271,7 @@ I could have actually forked it but I didn't. My reasoning was that it wasn't go
 <details>
   <summary><b>ScreenSelectStyle</b> <i>(click to expand)</i></summary>
 
-* Shows **Current Style**
-* Shows **Current Battle Mode**
+* Shows **Current Style/BattleMode**
 * Added ability to switch between:
   * **Game Mode Styles** *(hold select and press left/right)*
   * **Rave and Battle Mode** *(hold select and press up/down)*
@@ -284,8 +288,8 @@ I could have actually forked it but I didn't. My reasoning was that it wasn't go
 * Shows **Player's Level & EXP** over Player's Username *(when ExperimentalProfileLevel enabled)*
 * Shows **Session Time & Player's Time Played** *(when ShowTime enabled)*
   - **Session Time** starts upon first entry of **ScreenSelectMusic**
-* Shows **HighscoreList** by holding CTRL
-  - **Left CTRL** for **Player 1** / **Right CTRL** for **Player 2**
+* Shows **HighscoreList** by holding **CTRL** (if KeyboardEnabled | otherwise **SELECT**)
+  - **Left CTRL/SELECT** for **Player 1** / **Right CTRL/SELECT** for **Player 2**
 * Shows **Player's MODDisplay** *(when ShowMODDisplay enabled)*
   - Switches back and forth between **BPMDisplay** and **MODDisplay**
   - Press **EffectDown** to **lower current SpeedMod**
