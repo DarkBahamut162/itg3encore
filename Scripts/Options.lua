@@ -1116,7 +1116,7 @@ function OptionIIDXFrame()
 		SelectType = "SelectOne",
 		OneChoiceForAllPlayers = false,
 		ExportOnChange = false,
-		Values = { "_10th", "_red", "_happysky", "_distorted", "_gold", "_troopers", "_empress", "_sirius", "_resortanthem", "random" },
+		Values = { "_10th", "_red", "_happysky", "_distorted", "_gold", "_troopers", "_empress", "_sirius", "_resortanthem", "_random" },
 		Choices = { "10th Style", "Red", "Happy Sky", "Distorted", "Gold", "DJ Troopers", "Empress", "Sirius", "Resort Anthem", "Random" },
 		LoadSelections = function(self, list, pn)
 			for i=1,#list do
