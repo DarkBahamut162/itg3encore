@@ -41,7 +41,7 @@ else
 	startX = startX + (pn == PLAYER_1 and -45 or 45)
 end
 
-local barHeight,totalWidth,barCenter = 228,202,0
+local barHeight,totalWidth,barCenter = 227,202,0
 barHeight = barHeight * 1.1
 totalWidth = totalWidth * 0.5
 local target = THEME:GetMetric("PlayerStageStats", "GradePercentTier" .. string.format("%02d", 18-(getenv("SetPacemaker"..pname(pn)) or 0)))
@@ -62,7 +62,7 @@ end
 
 local function StepCounter()
 	if isEtterna() then
-		return StepsOrTrail:GetRadarValues(player):GetValue("RadarCategory_Notes")*2
+		return StepsOrTrail:GetRadarValues(pn):GetValue("RadarCategory_Notes")*2
 	else
 		return DPMax(pn)
 	end
@@ -294,8 +294,7 @@ return Def.ActorFrame{
 		},
 		Def.ActorFrame{
 			Condition=getenv("ShowStats"..pname(pn)) == (isOpenDDR() and 6 or 7),
-			InitCommand=function(self) self:y(-2) end,
-			
+			InitCommand=function(self) self:y(-1) end,
 			Def.Sprite {
 				Texture = "../d1",
 				OnCommand=function(self)
@@ -366,9 +365,7 @@ return Def.ActorFrame{
 				OnCommand=function(self) self:diffuse(color("#00FF00")):maxwidth(barWidth[bgNum]*2):zoom(0.5):shadowlength(0):x(barCenter+(barWidth[bgNum]+barSpace[bgNum])*(topscore ~= nil and 1 or 0)):queuecommand("Update") end,
 				JudgmentMessageCommand=function(self,param) if param.Player == pn and topscore ~= nil then self:queuecommand("Update") end end,
 				UpdateCommand=function(self)
-
 					local curHighscoreDP = math.ceil(DPCurMax(pn)*PercentDP(topscore))
-
 					local addX = (curHighscoreDP/DPMax(pn))*barHeight
 					local score = (DPCur(pn)-curHighscoreDP)
 					self:settextf("%+04d",score)
@@ -389,8 +386,6 @@ return Def.ActorFrame{
 				JudgmentMessageCommand=function(self,param) if param.Player == pn then self:queuecommand("Update") end end,
 				UpdateCommand=function(self)
 					local curTargetDP = math.ceil(DPCurMax(pn)*target)
-					
-					
 					local addX = (curTargetDP/DPMax(pn))*barHeight
 					local score = DPCur(pn)-curTargetDP
 					self:settextf("%+04d",score)

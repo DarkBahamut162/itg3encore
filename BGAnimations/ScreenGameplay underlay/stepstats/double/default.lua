@@ -1,7 +1,5 @@
-local player = ...
-local pn = player or GAMESTATE:GetMasterPlayerNumber()
+local pn = ...
 local xPos = pn == PLAYER_1 and (SCREEN_RIGHT-20*WideScreenDiff()-SCREEN_WIDTH/2) or (SCREEN_LEFT+20*WideScreenDiff()-SCREEN_WIDTH/2)
-if player then xPos = player == PLAYER_1 and -20*WideScreenDiff() or 20*WideScreenDiff() end
 local SongOrCourse, StepsOrTrail, scorelist, topscore
 local stats = getenv("ShowStats"..pname(pn))
 local graphPos = getenv("ShowStatsPos"..pname(pn)) == 0
@@ -28,7 +26,7 @@ end
 
 local function StepCounter()
 	if isEtterna() then
-		return StepsOrTrail:GetRadarValues(player):GetValue("RadarCategory_Notes")*2
+		return StepsOrTrail:GetRadarValues(pn):GetValue("RadarCategory_Notes")*2
 	else
 		return DPMax(pn)
 	end

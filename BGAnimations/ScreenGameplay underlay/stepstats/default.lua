@@ -1,7 +1,6 @@
+if isTopScreen('ScreenJukebox') then return Def.ActorFrame{} end
 local numPlayers = GAMESTATE:GetNumPlayersEnabled()
 local statObject = "single"
-
-if isTopScreen('ScreenJukebox') then return Def.ActorFrame{} end
 
 if IsGame("beat") or IsGame("be-mu") then
 	statObject = "iidx"
@@ -17,4 +16,4 @@ elseif numPlayers == 2 then
 	statObject = "versus"
 end
 
-return Def.ActorFrame{ loadfile(THEME:GetPathB("ScreenGameplay","underlay/stepstats/"..statObject))() }
+return Def.ActorFrame{ loadfile(THEME:GetPathB("ScreenGameplay","underlay/stepstats/"..statObject))(GAMESTATE:GetMasterPlayerNumber()) }

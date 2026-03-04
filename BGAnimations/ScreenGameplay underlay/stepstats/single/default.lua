@@ -1,6 +1,6 @@
 if isTopScreen("ScreenDemonstration2") then return Def.ActorFrame{} end
 
-local pn = GAMESTATE:GetMasterPlayerNumber()
+local pn = ...
 local graph = (getenv("PlayerNoteGraph"..pname(pn)) or 0) > 1
 local solo = getenv("Rotation"..pname(pn)) == 5 or getenv("ForceCutin")
 local startX = pn == PLAYER_1 and SCREEN_WIDTH/4 or -SCREEN_WIDTH/4
@@ -38,7 +38,7 @@ end
 
 local function StepCounter()
 	if isEtterna() then
-		return StepsOrTrail:GetRadarValues(player):GetValue("RadarCategory_Notes")*2
+		return StepsOrTrail:GetRadarValues(pn):GetValue("RadarCategory_Notes")*2
 	else
 		return DPMax(pn)
 	end
