@@ -1,5 +1,6 @@
 local pn = ...
 local xPos = pn == PLAYER_1 and (SCREEN_RIGHT-20*WideScreenDiff()-SCREEN_WIDTH/2) or (SCREEN_LEFT+20*WideScreenDiff()-SCREEN_WIDTH/2)
+if GAMESTATE:GetNumSidesJoined() == 2 then xPos = pn == PLAYER_1 and -20*WideScreenDiff() or 20*WideScreenDiff() end
 local SongOrCourse, StepsOrTrail, scorelist, topscore
 local stats = getenv("ShowStats"..pname(pn))
 local graphPos = getenv("ShowStatsPos"..pname(pn)) == 0
