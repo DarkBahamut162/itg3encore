@@ -104,6 +104,22 @@ if version < 3 then
                     end
                 },
                 Def.BitmapText {
+                    Condition=ThemePrefs.Get("ShowTime"),
+                    File = "_v 26px bold black",
+                    Text = P1[index]["PlayedTime"] and Time(P1[index]["PlayedTime"]) or "0:00.00",
+                    InitCommand=function(self)
+                        self:y(-25*WideScreenDiff()):zoom(0.5*WideScreenDiff()):shadowlength(1):maxheight(13)
+                        if version == 2 then
+                            self:x(scale(1/5,0,1,borderLeft,version==1 and borderRight or borderLeftCenter))
+                        else
+                            self:x(scale(1.5/9,0,1,borderLeft,version==1 and borderRight or borderLeftCenter))
+                        end
+                    end,
+                    OnCommand=function(self)
+                        if P1[index]["TotalTime"] and P1[index]["PlayedTime"] and P1[index]["PlayedTime"] < P1[index]["TotalTime"] then self:diffuse(Color("Red")) end
+                    end
+                },
+                Def.BitmapText {
                     Condition=ThemePrefs.Get("ExperimentalProfileLevel"),
                     File = "_v 26px bold black",
                     Text = P1[index]["EXP"] and math.abs(P1[index]["EXP"]).." EXP" or "0 EXP",
@@ -446,6 +462,22 @@ if version > 1 then
                     end
                 },
                 Def.BitmapText {
+                    Condition=ThemePrefs.Get("ShowTime"),
+                    File = "_v 26px bold black",
+                    Text = P2[index]["PlayedTime"] and Time(math.abs(P2[index]["PlayedTime"])) or "0:00.00",
+                    InitCommand=function(self)
+                        self:y(-25*WideScreenDiff()):zoom(0.5*WideScreenDiff()):shadowlength(1):maxheight(13)
+                        if version == 2 then
+                            self:x(scale(1-1/5,0,1,version==3 and borderLeft or borderRightCenter,borderRight))
+                        else
+                            self:x(scale(1-1.5/9,0,1,version==3 and borderLeft or borderRightCenter,borderRight))
+                        end
+                    end,
+                    OnCommand=function(self)
+                        if P2[index]["TotalTime"] and P2[index]["PlayedTime"] and P2[index]["PlayedTime"] < P2[index]["TotalTime"] then self:diffuse(Color("Red")) end
+                    end
+                },
+                Def.BitmapText {
                     Condition=ThemePrefs.Get("ExperimentalProfileLevel"),
                     File = "_v 26px bold black",
                     Text = P2[index]["EXP"] and math.abs(P2[index]["EXP"]).." EXP" or "0 EXP",
@@ -762,6 +794,28 @@ return Def.ActorFrame{
                 if Master[index] and Master[index]["Restart"] and Master[index]["Restart"] > 0 then
                     self:settext(Master[index]["Restart"]..(Master[index]["Restart"] == 1 and " Restart" or " Restarts"))
                 end
+            end
+        },
+        Def.BitmapText {
+            Condition=ThemePrefs.Get("ShowTime"),
+            File = "_v 26px bold black",
+            InitCommand=function(self) self:x(bannerX):y(-25*WideScreenDiff()):zoom(0.5*WideScreenDiff()):shadowlength(1):maxheight(13) end,
+            OnCommand=function(self)
+                local output = ""
+                if Master[index]["TotalTimeP1"] or Master[index]["TotalTimeP2"] then
+                    if version <= 2 then
+                        output = addToOutput(output,Time(Master[index]["TotalTimeP1"])," | ")
+                    elseif version >= 2 then
+                        output = addToOutput(output,Time(Master[index]["TotalTimeP2"])," | ")
+                    end
+                else
+                    if version <= 2 then
+                        output = addToOutput(output,Time(P1[index]["TotalTime"])," | ")
+                    elseif version >= 2 then
+                        output = addToOutput(output,Time(P2[index]["TotalTime"])," | ")
+                    end
+                end
+                self:settext(output)
             end
         },
         Def.BitmapText {

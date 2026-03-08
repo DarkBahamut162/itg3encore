@@ -154,6 +154,14 @@ function prepSummary()
 			calced = split(" ",calced[1])[1]
 			Step["CalcedMeter"] = calced
 		end
+		if ThemePrefs.Get("ShowTime") then
+			local fail = STATSMAN:GetCurStageStats(player):GetPlayerStageStats(player):GetFailed()
+			local alive = STATSMAN:GetCurStageStats(player):GetPlayerStageStats(player):GetAliveSeconds()
+			local first = LoadFromCache(GAMESTATE:GetCurrentSong(),GAMESTATE:GetCurrentSteps(player),"TrueFirstSecond")
+			local last = LoadFromCache(GAMESTATE:GetCurrentSong(),GAMESTATE:GetCurrentSteps(player),"TrueLastSecond")
+			Step["PlayedTime"] = math.min(alive-first,last-first)
+			Step["TotalTime"] = last-first
+		end
 		if player == PLAYER_1 then
 			P1[0] = PROFILEMAN:GetPlayerName(player) == "" and ToEnumShortString(player) or PROFILEMAN:GetPlayerName(player)
 			P1[currentStage] = Step
