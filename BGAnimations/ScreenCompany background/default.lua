@@ -1,3 +1,9 @@
+if isOutFox(20200900) then
+	local beginnerHelper = PREFSMAN:PreferenceExists("ShowBeginnerHelper") and tobool(PREFSMAN:GetPreference("ShowBeginnerHelper")) or false
+	if beginnerHelper then PREFSMAN:SetPreference("ShowBeginnerHelper",false) end
+	SCREENMAN:SystemMessage("ShowBeginnerHelper is bugged! It needs to be turned Off!\nOtherwise, Backgrounds for Songs on Beginner/Novice won't show!")
+end
+
 if isOutFoxV(20231017) and not PREFSMAN:GetPreference("GimmickMode") then
 	PREFSMAN:SetPreference("GimmickMode", 1)
 	GAMEMAN:SetGame(GAMESTATE:GetCurrentGame():GetName(),THEME:GetCurThemeName())
