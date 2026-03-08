@@ -1,4 +1,4 @@
-local cacheVersion = "0.44"
+local cacheVersion = "0.45"
 local stepCache = {}
 local typeList = {"avi","f4v","flv","mkv","mp4","mpeg","mpg","mov","ogv","webm","wmv"}
 Master,P1,P2={},{},{}
@@ -9,6 +9,7 @@ ThemeVersion = "????????"
 CheckVersion = "????????"
 local full = isOutFoxV() and "FullRes" or "Full"
 DefaultLuaModifiers = {}
+local buffer = 24
 
 function GetThemeVersion()
 	if not FILEMAN:DoesFileExist(THEME:GetCurrentThemeDirectory().."/version.txt") then return "????????" end
@@ -662,9 +663,11 @@ function cacheStep(Song,Step)
     local chartint = 1
 	local currentBeat = 0
 	local currentNotes = 0
+	local chordNotes = 0
 	local noteCounter = {}
 	local firstBeat = nil
 	local lastBeat = 0
+	local totalChords = 0
 
 	if not isOutFoxV043() then
 		for i,current in pairs( Song:GetAllSteps() ) do
@@ -705,6 +708,7 @@ function cacheStep(Song,Step)
 			currentBeat = v[1]
 			currentNotes = 0
 			lastSec = currentSec
+			chordNotes = 0
 		end
 		if stops and #stops > 0 then isStop,stops = HasStopAtBeat(v[1],stops) end
 		if delays and #delays > 0 then isDelay,delays = HasDelayAtBeat(v[1],delays) end
@@ -727,16 +731,22 @@ function cacheStep(Song,Step)
 					if #noteCounter == 6 or #noteCounter == 12 then
 						if v[2] == #noteCounter or (#noteCounter > 10 and v[2] == #noteCounter/2) then
 							scratches = scratches + 1
+						else
+							chordNotes = chordNotes + 1
 						end
 					elseif #noteCounter == 7 or #noteCounter == 14 then
 						if v[2] == #noteCounter or (#noteCounter > 10 and v[2] == #noteCounter/2) then
 							foots = foots + 1
 						elseif v[2] == #noteCounter-1 or (#noteCounter > 10 and v[2] == #noteCounter/2-1) then
 							scratches = scratches + 1
+						else
+							chordNotes = chordNotes + 1
 						end
 					elseif #noteCounter == 8 or #noteCounter == 16 then
 						if v[2] == 1 or (#noteCounter > 10 and v[2] == #noteCounter) then
 							scratches = scratches + 1
+						else
+							chordNotes = chordNotes + 1
 						end
 					end
 				end
@@ -754,6 +764,7 @@ function cacheStep(Song,Step)
 
 			if checkBeat then
 				if currentNotes ~= 0 then
+					if chordNotes > 1 then totalChords = totalChords + 1 end
 					currentBPM = math.round(timingData:GetBPMAtBeat(v[1]),3)
 					if currentBPM > maxBPM and not checking and not (isStop or isDelay) then
 						checking = true
@@ -774,7 +785,7 @@ function cacheStep(Song,Step)
 					currentSec = timingData:GetElapsedTimeFromBeat(v[1])
 					if lastSec > 0 then
 						local buffered_diff = currentSec - buffered_sec
-						if buffered_diff >= 1/32 then
+						if buffered_diff >= 1/buffer then
 							if buffered_notes == 0 then buffered_notes = currentNotes end
 							local currentSPS = (1 / buffered_diff) * buffered_notes
 							if stepsPerSec[currentSPS] then stepsPerSec[currentSPS] = stepsPerSec[currentSPS] + 1 else stepsPerSec[currentSPS] = 1 end
@@ -814,6 +825,7 @@ function cacheStep(Song,Step)
 				list["Foots"] = foots
 			end
 			list["Scratches"] = scratches
+			list["Chords"] = totalChords
 		end
 
 		if getenv("cacheing") then
@@ -834,6 +846,7 @@ function cacheStep(Song,Step)
 					LoadModule("Config.Save.lua")("Foots",foots,file)
 				end
 				LoadModule("Config.Save.lua")("Scratches",scratches,file)
+				LoadModule("Config.Save.lua")("Chords",totalChords,file)
 			end
 		end
 		return list
@@ -927,7 +940,7 @@ function cacheStepSM(Song,Step)
 
 						if lastSec > 0 then
 							local buffered_diff = currentSec - buffered_sec
-							if buffered_diff >= 1/32 then
+							if buffered_diff >= 1/buffer then
 								if buffered_notes == 0 then buffered_notes = count end
 								local currentSPS = (1 / buffered_diff) * buffered_notes
 								if stepsPerSec[currentSPS] then stepsPerSec[currentSPS] = stepsPerSec[currentSPS] + 1 else stepsPerSec[currentSPS] = 1 end
@@ -1090,7 +1103,7 @@ function cacheStepDWI(Song,Step)
 
 						if lastSec > 0 then
 							local buffered_diff = currentSec - buffered_sec
-							if buffered_diff >= 1/32 then
+							if buffered_diff >= 1/buffer then
 								if buffered_notes == 0 then buffered_notes = count end
 								local currentSPS = (1 / buffered_diff) * buffered_notes
 								if stepsPerSec[currentSPS] then stepsPerSec[currentSPS] = stepsPerSec[currentSPS] + 1 else stepsPerSec[currentSPS] = 1 end
@@ -1199,7 +1212,7 @@ function cacheStepBMS(Song,Step)
 	local timingData = Step:GetTimingData()
 	local stepsPerSec = {}
 	local noteCounter = {}
-	local rows,lastHold,scratch,foot,data = BMSParser(Step)
+	local rows,lastHold,scratch,foot,data,chords = BMSParser(Step)
 	local firstBeat = nil
 	local lastBeat = lastHold or 0
 	local currentBPM,checkBPM,checkCount,maxBPM = 0,0,0,0
@@ -1218,7 +1231,15 @@ function cacheStepBMS(Song,Step)
 	local beats = {}
 	local chaosCount = 0
 	local maxVoltage = 0
+	local totalChords = 0
 
+	if chords then
+		for beat in ivalues(chords) do
+			if beat > 1 then
+				totalChords = totalChords + 1
+			end
+		end
+	end
 	if rows then
 		local orderedBeats = orderedIndex(rows)
 		for beat in ivalues(orderedBeats) do
@@ -1252,7 +1273,7 @@ function cacheStepBMS(Song,Step)
 
 				if lastSec > 0 then
 					local buffered_diff = currentSec - buffered_sec
-					if buffered_diff >= 1/32 then
+					if buffered_diff >= 1/buffer then
 						if buffered_notes == 0 then buffered_notes = row end
 						local currentSPS = (1 / buffered_diff) * buffered_notes
 						if stepsPerSec[currentSPS] then stepsPerSec[currentSPS] = stepsPerSec[currentSPS] + 1 else stepsPerSec[currentSPS] = 1 end
@@ -1282,57 +1303,65 @@ function cacheStepBMS(Song,Step)
 			end
 		end
 
-		local firstSecond = timingData:GetElapsedTimeFromBeat(firstBeat)
-		local lastSecond = timingData:GetElapsedTimeFromBeat(lastBeat)
-		local total = calcSPS(stepsPerSec)
-		local total2 = calcSPS(stepsPerSec,total)
-		local file = getStepCacheFile(Step)
-		local data_ = orderedIndex(data)
-		local firstRow = table.concat(data[data_[1]],"_")
-		local list = {
-			["Version"] = cacheVersion,
-			["FirstRow"] = firstRow,
-			["StepCounter"] = table.concat(noteCounter,"_"),
-			["StepsPerSecond"] = total2,
-			["TrueFirstBeat"] = firstBeat,
-			["TrueLastBeat"] = lastBeat,
-			["TrueBeats"] = lastBeat-firstBeat,
-			["TrueMaxBPM"] = maxBPM,
-			["TrueFirstSecond"] = firstSecond,
-			["TrueLastSecond"] = lastSecond,
-			["TrueSeconds"] = lastSecond-firstSecond,
-			["Scratches"] = scratch,
-			["Foots"] = foot
-		}
-
-		if isEtterna("0.55") then
-			list["chaosCount"] = chaosCount
-			list["maxVoltage"] = maxVoltage
-		end
-
-		if getenv("cacheing") then
-			LoadModule("Config.SaveAll.lua")(list,file)
+		if not firstBeat then
+			local file = getStepCacheFile(Step)
+			LoadModule("Config.Save.lua")("Version","0",file)
+			return {["Version"]="0"}
 		else
-			LoadModule("Config.Save.lua")("Version",cacheVersion,file)
-			LoadModule("Config.Save.lua")("FirstRow",firstRow,file)
-			LoadModule("Config.Save.lua")("StepCounter",table.concat(noteCounter,"_"),file)
-			LoadModule("Config.Save.lua")("StepsPerSecond",total2,file)
-			LoadModule("Config.Save.lua")("TrueFirstBeat",firstBeat,file)
-			LoadModule("Config.Save.lua")("TrueLastBeat",lastBeat,file)
-			LoadModule("Config.Save.lua")("TrueBeats",lastBeat-firstBeat,file)
-			LoadModule("Config.Save.lua")("TrueMaxBPM",maxBPM,file)
-			LoadModule("Config.Save.lua")("TrueFirstSecond",firstSecond,file)
-			LoadModule("Config.Save.lua")("TrueLastSecond",lastSecond,file)
-			LoadModule("Config.Save.lua")("TrueSeconds",lastSecond-firstSecond,file)
-			LoadModule("Config.Save.lua")("Scratches",scratch,file)
-			LoadModule("Config.Save.lua")("Foots",foot,file)
-			if isEtterna("0.55") then
-				LoadModule("Config.Save.lua")("chaosCount",chaosCount,file)
-				LoadModule("Config.Save.lua")("maxVoltage",maxVoltage,file)
-			end
-		end
+			local firstSecond = timingData:GetElapsedTimeFromBeat(firstBeat)
+			local lastSecond = timingData:GetElapsedTimeFromBeat(lastBeat)
+			local total = calcSPS(stepsPerSec)
+			local total2 = calcSPS(stepsPerSec,total)
+			local file = getStepCacheFile(Step)
+			local data_ = orderedIndex(data)
+			local firstRow = table.concat(data[data_[1]],"_")
+			local list = {
+				["Version"] = cacheVersion,
+				["FirstRow"] = firstRow,
+				["StepCounter"] = table.concat(noteCounter,"_"),
+				["StepsPerSecond"] = total2,
+				["TrueFirstBeat"] = firstBeat,
+				["TrueLastBeat"] = lastBeat,
+				["TrueBeats"] = lastBeat-firstBeat,
+				["TrueMaxBPM"] = maxBPM,
+				["TrueFirstSecond"] = firstSecond,
+				["TrueLastSecond"] = lastSecond,
+				["TrueSeconds"] = lastSecond-firstSecond,
+				["Scratches"] = scratch,
+				["Foots"] = foot,
+				["Chords"] = totalChords
+			}
 
-		return list
+			if isEtterna("0.55") then
+				list["chaosCount"] = chaosCount
+				list["maxVoltage"] = maxVoltage
+			end
+
+			if getenv("cacheing") then
+				LoadModule("Config.SaveAll.lua")(list,file)
+			else
+				LoadModule("Config.Save.lua")("Version",cacheVersion,file)
+				LoadModule("Config.Save.lua")("FirstRow",firstRow,file)
+				LoadModule("Config.Save.lua")("StepCounter",table.concat(noteCounter,"_"),file)
+				LoadModule("Config.Save.lua")("StepsPerSecond",total2,file)
+				LoadModule("Config.Save.lua")("TrueFirstBeat",firstBeat,file)
+				LoadModule("Config.Save.lua")("TrueLastBeat",lastBeat,file)
+				LoadModule("Config.Save.lua")("TrueBeats",lastBeat-firstBeat,file)
+				LoadModule("Config.Save.lua")("TrueMaxBPM",maxBPM,file)
+				LoadModule("Config.Save.lua")("TrueFirstSecond",firstSecond,file)
+				LoadModule("Config.Save.lua")("TrueLastSecond",lastSecond,file)
+				LoadModule("Config.Save.lua")("TrueSeconds",lastSecond-firstSecond,file)
+				LoadModule("Config.Save.lua")("Scratches",scratch,file)
+				LoadModule("Config.Save.lua")("Foots",foot,file)
+				LoadModule("Config.Save.lua")("Chords",totalChords,file)
+				if isEtterna("0.55") then
+					LoadModule("Config.Save.lua")("chaosCount",chaosCount,file)
+					LoadModule("Config.Save.lua")("maxVoltage",maxVoltage,file)
+				end
+			end
+
+			return list
+		end
 	else
 		if isOutFox(20200400) then
 			return cacheStep(Song,Step)
