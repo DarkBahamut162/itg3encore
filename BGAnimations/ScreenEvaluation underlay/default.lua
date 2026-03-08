@@ -3,9 +3,54 @@ local percent = isEtterna("0.50") and STATSMAN:GetCurStageStats():GetPlayerStage
 local grade = GetGradeFromPercent(percent)
 local offsetInfo = getenv("OffsetTable")
 local showOffset = ThemePrefs.Get("ShowOffset")
+local keyboardEnabled = ThemePrefs.Get("KeyboardEnabled")
+local restartEnabled = ThemePrefs.Get("RestartEnabled")
+local ctrlHeld = false
+local effectDown = false
+local effectUp = false
+local restart = false
+local c
+
+local InputHandler = function(event)
+	if keyboardEnabled then
+		if event.type == "InputEventType_FirstPress" then
+			if string.find(event.DeviceInput.button,"ctrl") and not ctrlHeld then ctrlHeld = true end
+			if ctrlHeld then
+				if event.DeviceInput.button == "DeviceButton_r" and not restart then
+					restart = true
+					SOUND:PlayOnce(THEME:GetPathS("LifeMeterTime", "GainLife"), true)
+					SCREENMAN:GetTopScreen():SetNextScreenName(Branch.BeforeGameplay())
+					setenv("Restarting",true)
+					c.Restart:diffusealpha(1)
+				end
+			end
+		elseif event.type == "InputEventType_Release" then
+			if string.find(event.DeviceInput.button,"ctrl") and ctrlHeld then ctrlHeld = false end
+		end
+	else
+		if event.type == "InputEventType_FirstPress" then
+			if event.GameButton == "EffectDown" and not effectDown then effectDown = true end
+			if event.GameButton == "EffectUp" and not effectUp then effectUp = true end
+			if effectDown and effectUp then
+				if event.GameButton == "Select" and not restart then
+					restart = true
+					SOUND:PlayOnce(THEME:GetPathS("LifeMeterTime", "GainLife"), true)
+					SCREENMAN:GetTopScreen():SetNextScreenName(Branch.BeforeGameplay())
+					setenv("Restarting",true)
+					c.Restart:diffusealpha(1)
+				end
+			end
+		elseif event.type == "InputEventType_Release" then
+			if event.GameButton == "EffectDown" and effectDown then effectDown = false end
+			if event.GameButton == "EffectUp" and effectUp then effectUp = false end
+		end
+	end
+end
 
 return Def.ActorFrame{
 	OnCommand = function(self)
+		c = self:GetChildren()
+		if GAMESTATE:IsEventMode() and restartEnabled then SCREENMAN:GetTopScreen():AddInputCallback(InputHandler) end
 		if isOutFox(20200500) then
 			local StepsOrTrail = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentTrail(master) or GAMESTATE:GetCurrentSteps(master)
 			local song = GAMESTATE:GetCurrentSong()
@@ -27,6 +72,7 @@ return Def.ActorFrame{
 			updateDiscordStatus(true)
 		end
 	end,
+	OffCommand = function(self) if GAMESTATE:IsEventMode() and restartEnabled then SCREENMAN:GetTopScreen():RemoveInputCallback(InputHandler) end end,
 	loadfile(THEME:GetPathB("ScreenWithMenuElements","underlay/_sides"))(),
 	loadfile(THEME:GetPathB("ScreenWithMenuElements","underlay/_base"))(),
 	loadfile(THEME:GetPathB("ScreenWithMenuElements","underlay/_expandtop"))(),
@@ -347,4 +393,11 @@ return Def.ActorFrame{
 	loadfile(THEME:GetPathB("ScreenEvaluation","underlay/Score"))(PLAYER_2)..{Condition=GAMESTATE:IsPlayerEnabled(PLAYER_2)},
 	loadfile(THEME:GetPathB("ScreenEvaluation","underlay/FA"))(PLAYER_1)..{Condition=GAMESTATE:IsPlayerEnabled(PLAYER_1) and getenv("SetScoreFA"..pname(PLAYER_1))},
 	loadfile(THEME:GetPathB("ScreenEvaluation","underlay/FA"))(PLAYER_2)..{Condition=GAMESTATE:IsPlayerEnabled(PLAYER_2) and getenv("SetScoreFA"..pname(PLAYER_2))},
+	Def.BitmapText {
+		Name="Restart",
+		File = "_v 26px bold shadow",
+		Text="TO BE RESTARTED",
+		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+95*WideScreenDiff()):zoom(0.5*WideScreenDiff()):diffusealpha(0) end,
+		OffCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(0) end
+	}
 }

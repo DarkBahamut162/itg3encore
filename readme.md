@@ -116,7 +116,7 @@ Show the calculated Difficulty of the currently selected stepchart
     - **SPS (StepCache Only)** *(median steps per second per steps)*
 - **ShowCalcDiffDecimals**
 Change the number of decimals for the calculated Difficulty
-- **DanceDifficultyType *(GameMode Dance Only)*:**
+- **DanceDifficultyType:** *(GameMode Dance Only)*
 Switch between **Old DDR/ITG & DDR X-SCALE** difficulty ranges
 - **ShowGraph:**
 Shows the **graph** of the **currently selected stepchart** *(VerticalScreen & WideScreen only)*
@@ -129,9 +129,9 @@ Switches back and forth between the song's Artist and the song's Origin *(only i
 - **ShowRounds/Length:**
 Shows either **amount of rounds** or **length specification** during song selection
   - Will be adjusted if **TrueRounds** is enabled
-- **ShowStepCounter (StepCache Only):**
+- **ShowStepCounter:** *(StepCache Only)*
 Shows **total step quantification amounts** (might be useful especially for BEMU/POMU, including scratches and foots)
-- **ShowTechCounter (ITGmania Only)**
+- **ShowTechCounter:** *(ITGmania Only)*
 Shows stepchart's Techniques
   - If *both Counters* have been enabled, **both switch between one another** like *BPMDisplay* and *MODDisplay*
 - **ShowTime**
@@ -163,6 +163,10 @@ Ability to show current Speed and Mod during GamePlay. Also enables modifying sa
 <details>
   <summary><b>ScreenEvaluation</b> <i>(click to expand)</i></summary>
 
+- **RestartEnabled:** *(EventMode Only)*
+Ability to restart current song
+  - If **KeyboardEnabled**: Holding CTRL and press **R**
+  - Else: Hold **EffectDown**+**EffectUp** and press **SELECT**
 - **Recolor:**
 Recolor Judgments & Banner Frame
 - **ShowColumnGrades:**
