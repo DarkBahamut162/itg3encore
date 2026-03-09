@@ -112,7 +112,6 @@ Ability to change the BPMDisplay type
 Show the calculated Difficulty of the currently selected stepchart
   - The **highest value** will be displayed alongside the original difficulty *(OG)*
     - **DB9** *(average steps per second)*
-    - **Y&A** *(RadarValue Calculation)*
     - **SPS (StepCache Only)** *(median steps per second per steps)*
 - **ShowCalcDiffDecimals**
 Change the number of decimals for the calculated Difficulty

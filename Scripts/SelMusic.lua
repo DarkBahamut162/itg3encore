@@ -1454,39 +1454,6 @@ function LV100(input)
 	return math.pow(input*(1/15000),2)+(input*0.09)+0.5
 end
 
-function GetConvertDifficulty(Song,Step,songLength)
-	local voltage=Step:GetRadarValues(GAMESTATE:GetMasterPlayerNumber()):GetValue('RadarCategory_Voltage')*Song:MusicLengthSeconds()/songLength
-	local stream=Step:GetRadarValues(GAMESTATE:GetMasterPlayerNumber()):GetValue('RadarCategory_Stream')*Song:MusicLengthSeconds()/songLength
-	local radar_voltage=voltage-0.5
-	local radar_stream=stream-0.5
-	local bpms=Step:GetTimingData():GetActualBPM()
-	local tapspoint=Step:GetRadarValues(GAMESTATE:GetMasterPlayerNumber()):GetValue('RadarCategory_TapsAndHolds')
-	tapspoint=Step:GetRadarValues(GAMESTATE:GetMasterPlayerNumber()):GetValue('RadarCategory_Jumps')/1.05+tapspoint
-	tapspoint=((radar_stream>=0) and radar_stream*66 or radar_stream*50)+tapspoint
-	tapspoint=((radar_voltage>=0) and radar_voltage*80 or radar_voltage*50)+tapspoint
-	tapspoint=math.max(tapspoint-666,0)*1.05+tapspoint
-	tapspoint=Step:GetRadarValues(GAMESTATE:GetMasterPlayerNumber()):GetValue('RadarCategory_Mines')/8+tapspoint
-	tapspoint=Step:GetRadarValues(GAMESTATE:GetMasterPlayerNumber()):GetValue('RadarCategory_Holds')/8+tapspoint
-	tapspoint=Step:GetRadarValues(GAMESTATE:GetMasterPlayerNumber()):GetValue('RadarCategory_Rolls')+tapspoint
-	tapspoint=Step:GetRadarValues(GAMESTATE:GetMasterPlayerNumber()):GetValue('RadarCategory_Chaos')*10+tapspoint
-	tapspoint=25+tapspoint
-	tapspoint=math.max(130-bpms[1],0)+tapspoint
-	tapspoint=math.max(math.min(bpms[2],400)-160,0)/5+tapspoint
-	tapspoint=math.round(tapspoint*52/songLength/5)
-	tapspoint=tapspoint*1.2
-	if songLength>300 then
-		tapspoint=tapspoint*1.14
-	elseif songLength>150 then
-		tapspoint=tapspoint*1.09
-	elseif songLength>120 then
-		tapspoint=tapspoint*1.05
-	elseif songLength>100 then
-		tapspoint=tapspoint*1.02
-	end
-	--if songLength>60 then tapspoint=tapspoint*(1+((songLength-60)/30)*0.025) end
-	return LV100(tapspoint)
-end
-
 function getTrueBPMsCalculated(song,steps)
 	local timingdata = steps:GetTimingData()
 	local bpms = steps:GetDisplayBpms()
@@ -1646,24 +1613,19 @@ function getCalculatedDifficulty(Step)
 	end
 
 	local DB9 = stepSum * ddrtype
-	local YA  = 0
 	local SPS = 0
 
 	if IsGame("be-mu") or IsGame("beat") then
-		if not isEtterna("0.55") then YA = GetConvertDifficulty(Song,Step,totalSeconds) / 2 end
 		if usesStepCache then SPS = tonumber(LoadFromCache(Song,Step,"StepsPerSecond")) / 2 end
 	else
-		if not IsGame("pump") and not isEtterna("0.55") then YA = GetConvertDifficulty(Song,Step,totalSeconds) * (getColumnsPerPlayer(stepType[2],stepType[3],true) / 4) * ddrtype end
 		if usesStepCache then SPS = tonumber(LoadFromCache(Song,Step,"StepsPerSecond")) * (getColumnsPerPlayer(stepType[2],stepType[3],true) / 4) * ddrtype end
 	end
 
 	local output = {}
 	local decimals = ThemePrefs.Get("ShowCalcDiffDecimals")
-	if DB9 > YA and DB9 > SPS then
+	if DB9 > SPS then
 		output = {math.round(DB9,decimals),"DB9"}
-	elseif YA > DB9 and YA > SPS then
-		output = {math.round(YA,decimals),"Y&A"}
-	elseif SPS > DB9 and SPS > YA then
+	elseif SPS > DB9 then
 		output = {math.round(SPS,decimals),"SPS"}
 	end
 	if output[1] and output[1] ~= OG then
