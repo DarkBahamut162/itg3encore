@@ -21,6 +21,40 @@ local W4 = (isOpenDDR() and 0.1420 or PREFSMAN:GetPreference("TimingWindowSecond
 local W5 = (isOpenDDR() and 0.0000 or PREFSMAN:GetPreference("TimingWindowSecondsW5"))*timingChange[timing]
 local Wadd = (isOpenDDR() or isEtterna("0.72")) and 0.0000 or PREFSMAN:GetPreference("TimingWindowAdd")
 
+local highscore = { [PLAYER_1] = (getenv("HighscoreTableP1") or {}), [PLAYER_2] = (getenv("HighscoreTableP2") or {}) }
+local target = { [PLAYER_1] = (getenv("TargetTableP1") or {}), [PLAYER_2] = (getenv("TargetTableP2") or {}) }
+local Hmax = { [PLAYER_1] = 0, [PLAYER_2] = 0 }
+local Hmul = { [PLAYER_1] = 1, [PLAYER_2] = 1 }
+local Tmax = { [PLAYER_1] = 0, [PLAYER_2] = 0 }
+local Tmul = { [PLAYER_1] = 1, [PLAYER_2] = 1 }
+
+for pn in ivalues(GAMESTATE:GetEnabledPlayers()) do
+	if #highscore[pn] > 0 then
+		for score in ivalues(highscore[pn]) do
+			Hmax[pn] = math.max(Hmax[pn],math.abs(score[2]))
+		end
+		while Hmul[pn]*4 <= Hmax[pn]*1.1 do
+			if Hmul[pn] < 5 then
+				Hmul[pn] = Hmul[pn] + 1
+			else
+				Hmul[pn] = Hmul[pn] + 5
+			end
+		end
+	end
+	if #target[pn] > 0 then
+		for score in ivalues(target[pn]) do
+			Tmax[pn] = math.max(Tmax[pn],math.abs(score[2]))
+		end
+		while Tmul[pn]*4 <= Tmax[pn]*1.1 do
+			if Tmul[pn] < 5 then
+				Tmul[pn] = Tmul[pn] + 1
+			else
+				Tmul[pn] = Tmul[pn] + 5
+			end
+		end
+	end
+end
+
 if ShowStandardDecoration("StepsDisplay") then
 	for pn in ivalues(GAMESTATE:GetEnabledPlayers()) do
 		local t2 = Def.ActorFrame{
@@ -190,11 +224,29 @@ local function GetVerticesOutFox(lives,pn)
     return vertices
 end
 
+local function GetVerticesBackground()
+	local graphH = 68
+	local graphW = 192
+    local vertices = {}
+
+	vertices[#vertices+1] = { {0, -graphH*0.0, 0}, color("#80000080") }
+	vertices[#vertices+1] = { {0, -graphH*0.5, 0}, color("#80000080") }
+	vertices[#vertices+1] = { {graphW, -graphH*0.5, 0}, color("#80000080") }
+	vertices[#vertices+1] = { {graphW, -graphH*0.0, 0}, color("#80000080") }
+	vertices[#vertices+1] = { {0, -graphH*1.0, 0}, color("#00008080") }
+	vertices[#vertices+1] = { {0, -graphH*0.5, 0}, color("#00008080") }
+	vertices[#vertices+1] = { {graphW, -graphH*0.5, 0}, color("#00008080") }
+	vertices[#vertices+1] = { {graphW, -graphH*1.0, 0}, color("#00008080") }
+
+	return vertices
+end
+
 local function GetVerticesOffsetDot(offset,pn)
 	local graphH = 68/2
 	local graphW = 192
     local vertices = {}
 	local max = TotalPossibleStepSeconds()
+	local min = CalcMinusStepSeconds(pn)
 	local JudgeScale = isOutFoxV(20230624) and GAMESTATE:GetPlayerState(pn):GetPlayerOptions("ModsLevel_Preferred"):JudgeScale() or 1
 	local jugd = getenv("SetScoreFA"..pname(pn)) and {{W0*JudgeScale+Wadd,color("#7BE8FF")},{W1*JudgeScale+Wadd,color("#FFFFFF")}} or {{W1*JudgeScale+Wadd,color("#7BE8FF")}}
 	jugd[#jugd+1]={W2*JudgeScale+Wadd,color("#FFA959")}
@@ -202,17 +254,11 @@ local function GetVerticesOffsetDot(offset,pn)
 	jugd[#jugd+1]={W4*JudgeScale+Wadd,color("#D366FF")}
 	if not isOpenDDR() then jugd[#jugd+1]={W5*JudgeScale+Wadd,color("#FF7149")} end
 	local maxjudg = math.round(jugd[judges[pn]][1],3)
-
-	vertices[#vertices+1] = { {math.min(1,0)*graphW, (-1-0.01)*graphH, 0}, color("#000080") }
-	vertices[#vertices+1] = { {math.min(1,0)*graphW, (-1+0.01)*graphH, 0}, color("#800000") }
-	vertices[#vertices+1] = { {math.min(1,max)*graphW, (-1+0.01)*graphH, 0}, color("#800000") }
-	vertices[#vertices+1] = { {math.min(1,max)*graphW, (-1-0.01)*graphH, 0}, color("#000080") }
-
     local lines = isOutFox(20201100)
 
     for off=1, #offset do
-		local curX = offset[off][1]-CalcMinusStepSeconds(pn)
-		local nextX = offset[off][1]-CalcMinusStepSeconds(pn)
+		local curX = offset[off][1]-min
+		local nextX = offset[off][1]-min
 		local curY = offset[off][2]
 		local nextY = offset[off][2]
 		for j=1, judges[pn] do
@@ -246,6 +292,36 @@ local function GetVerticesOffsetDot(offset,pn)
 					end
 				end
 			end
+		end
+    end
+    return vertices
+end
+
+local function GetVerticesPacemakerDot(PMT,pn)
+	local graphH = 68/2
+	local graphW = 192
+    local vertices = {}
+	local max = TotalPossibleStepSeconds()
+	local min = CalcMinusStepSeconds(pn)
+	local offset = PMT and target[pn] or highscore[pn]
+	local PMmax = PMT and Tmul[pn] or Hmul[pn]
+	PMmax = PMmax * 4
+
+    local lines = isOutFox(20201100)
+
+    for off=2, #offset do
+		local currentX = offset[off][1]-min
+		local currentY = offset[off][2]*-1
+		local color = currentY > 0 and color("#FF0000") or color("#00FF00")
+		currentY = currentY / PMmax - 1
+		if lines then
+			vertices[#vertices+1] = { {math.min(1,currentX/max)*graphW, (currentY-0.01)*graphH, 0}, color }
+			vertices[#vertices+1] = { {math.min(1,currentX/max)*graphW, (currentY+0.01)*graphH, 0}, color  }
+		else
+			vertices[#vertices+1] = { {math.min(1,currentX/max-0.0015)*graphW, (currentY-0.01)*graphH, 0}, color }
+			vertices[#vertices+1] = { {math.min(1,currentX/max-0.0015)*graphW, (currentY+0.01)*graphH, 0}, color }
+			vertices[#vertices+1] = { {math.min(1,currentX/max+0.0015)*graphW, (currentY+0.01)*graphH, 0}, color }
+			vertices[#vertices+1] = { {math.min(1,currentX/max+0.0015)*graphW, (currentY-0.01)*graphH, 0}, color }
 		end
     end
     return vertices
@@ -304,11 +380,22 @@ local function GetVerticesOffsetLine(data,pn)
     return vertices
 end
 
+local names = {
+	"Life Graph",
+	"Judgment (Time)",
+	"Judgment (Total)",
+	"Pacemaker (Highscore)",
+	"Pacemaker (Target)"
+}
+
 local function SwitchView(pn)
-	local check = view[pn] % 3
+	local check = view[pn] % 5
 	c[pn]["Graph"..pname(pn)]:diffusealpha(check == 0 and 1 or 0)
 	c[pn]["Dot"..pname(pn)]:diffusealpha(check == 1 and 1 or 0)
 	c[pn]["Line"..pname(pn)]:diffusealpha(check == 2 and 1 or 0)
+	c[pn]["Highscore"..pname(pn)]:diffusealpha(check == 3 and 1 or 0)
+	c[pn]["Target"..pname(pn)]:diffusealpha(check == 4 and 1 or 0)
+	c[pn]["Name"..pname(pn)]:settext(names[check+1])
 	tChild["StageAward"..pname(pn)]:diffusealpha(check == 0 and 1 or 0)
 	tChild["PeakComboAward"..pname(pn)]:diffusealpha(check == 0 and 1 or 0)
 end
@@ -338,8 +425,20 @@ local InputHandler = function(event)
 		if event.GameButton == "MenuLeft" or event.GameButton == "MenuRight" then
 			if event.GameButton == "MenuLeft" then
 				view[event.PlayerNumber] = view[event.PlayerNumber] - 1
+				if view[event.PlayerNumber] % 5 == 4 and #target[event.PlayerNumber] == 0 then
+					view[event.PlayerNumber] = view[event.PlayerNumber] + 1
+				end
+				if view[event.PlayerNumber] % 5 == 3 and #highscore[event.PlayerNumber] == 0 then
+					view[event.PlayerNumber] = view[event.PlayerNumber] - 1
+				end
 			elseif event.GameButton == "MenuRight" then
 				view[event.PlayerNumber] = view[event.PlayerNumber] + 1
+				if view[event.PlayerNumber] % 5 == 3 and #highscore[event.PlayerNumber] == 0 then
+					view[event.PlayerNumber] = view[event.PlayerNumber] + 1
+				end
+				if view[event.PlayerNumber] % 5 == 4 and #target[event.PlayerNumber] == 0 then
+					view[event.PlayerNumber] = view[event.PlayerNumber] + 1
+				end
 			end
 			SwitchView(event.PlayerNumber)
 		elseif event.GameButton == "MenuUp" or event.GameButton == "MenuDown" then
@@ -361,9 +460,10 @@ end
 
 local function GraphDisplay(pn)
 	local length = TotalPossibleStepSeconds()
-	local lastMarvelousSecond = getenv("LastFantastic"..pname(pn)) - CalcMinusStepSeconds(pn)
-	local lastPerfectSecond = getenv("LastPerfect"..pname(pn)) - CalcMinusStepSeconds(pn)
-	local lastGreatSecond = getenv("LastGreat"..pname(pn)) - CalcMinusStepSeconds(pn)
+	local min = CalcMinusStepSeconds(pn)
+	local lastMarvelousSecond = getenv("LastFantastic"..pname(pn)) - min
+	local lastPerfectSecond = getenv("LastPerfect"..pname(pn)) - min
+	local lastGreatSecond = getenv("LastGreat"..pname(pn)) - min
 
 	local PSS = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn)
 	local combo = PSS:GetComboList()
@@ -378,6 +478,12 @@ local function GraphDisplay(pn)
 		InitCommand=function(self) c[pn] = self:GetChildren() end,
 		OnCommand=function() if enableOffsets and not isVS() then SCREENMAN:GetTopScreen():AddInputCallback(InputHandler) end end,
 		OffCommand=function() if enableOffsets and not isVS() then SCREENMAN:GetTopScreen():RemoveInputCallback(InputHandler) end end,
+		Def.BitmapText {
+			Name = "Name"..pname(pn),
+			File = "_v 26px bold white",
+			Text = names[1],
+			InitCommand=function(self) self:zoom(0.33*WideScreenDiff()):x(pn == PLAYER_1 and 104 or -104):rotationz(pn == PLAYER_1 and 90 or -90) end
+		}
 	}
 	local float = getenv("FlareDisplay"..pname(pn))
 	local last = 1
@@ -469,16 +575,29 @@ local function GraphDisplay(pn)
 		end
 	end
 	if enableOffsets and offsetInfo and offsetInfo[pn] and #offsetInfo[pn] > 0 and getenv("EvalCombo"..pname(pn)) then
-		display[#display+1] = Def.ActorMultiVertex{
+		display[#display+1] = Def.ActorFrame {
 			Name="Dot"..pname(pn),
-			InitCommand=function(self) self:diffusealpha(0):playcommand("Draw") end,
-			DrawCommand=function(self)
-				local vertices = GetVerticesOffsetDot(offsetInfo[pn],pn)
-                self:SetDrawState(isOutFox(20201100) and {Mode = 'DrawMode_Lines'} or {Mode = 'DrawMode_Quads'})
-				self:SetVertices(1, vertices)
-				self:SetNumVertices(#vertices)
-				self:x(-96):y(34)
-			end
+			InitCommand=function(self) self:diffusealpha(0) end,
+			Def.ActorMultiVertex{
+				InitCommand=function(self) self:playcommand("Draw") end,
+				DrawCommand=function(self)
+					local vertices = GetVerticesBackground()
+					self:SetDrawState({Mode = 'DrawMode_Quads'})
+					self:SetVertices(1, vertices)
+					self:SetNumVertices(#vertices)
+					self:x(-96):y(34)
+				end
+			},
+			Def.ActorMultiVertex{
+				InitCommand=function(self) self:playcommand("Draw") end,
+				DrawCommand=function(self)
+					local vertices = GetVerticesOffsetDot(offsetInfo[pn],pn)
+					self:SetDrawState(isOutFox(20201100) and {Mode = 'DrawMode_Lines'} or {Mode = 'DrawMode_Quads'})
+					self:SetVertices(1, vertices)
+					self:SetNumVertices(#vertices)
+					self:x(-96):y(34)
+				end
+			}
 		}
 		display[#display+1] = Def.ActorMultiVertex{
 			Name="Line"..pname(pn),
@@ -490,6 +609,144 @@ local function GraphDisplay(pn)
 				self:SetNumVertices(#vertices)
 				self:x(-96):y(34)
 			end
+		}
+		display[#display+1] = Def.ActorFrame {
+			Name="Highscore"..pname(pn),
+			InitCommand=function(self) self:diffusealpha(0) end,
+			Def.BitmapText {
+				File = "_v 26px bold white",
+				Text = "  +"..(Hmul[pn]*4).."  ",
+				InitCommand=function(self) self:zoom(0.33*WideScreenDiff()):x(pn == PLAYER_1 and -96 or 96):y(-34):halign(pn == PLAYER_1 and 1 or 0) end
+			},
+			Def.BitmapText {
+				File = "_v 26px bold white",
+				Text = "  +"..(Hmul[pn]*3).."  ",
+				InitCommand=function(self) self:zoom(0.33*WideScreenDiff()):x(pn == PLAYER_1 and -96 or 96):y(-25.5):halign(pn == PLAYER_1 and 1 or 0) end
+			},
+			Def.BitmapText {
+				File = "_v 26px bold white",
+				Text = "  +"..(Hmul[pn]*2).."  ",
+				InitCommand=function(self) self:zoom(0.33*WideScreenDiff()):x(pn == PLAYER_1 and -96 or 96):y(-17):halign(pn == PLAYER_1 and 1 or 0) end
+			},
+			Def.BitmapText {
+				File = "_v 26px bold white",
+				Text = "  +"..(Hmul[pn]*1).."  ",
+				InitCommand=function(self) self:zoom(0.33*WideScreenDiff()):x(pn == PLAYER_1 and -96 or 96):y(-8.5):halign(pn == PLAYER_1 and 1 or 0) end
+			},
+			Def.BitmapText {
+				File = "_v 26px bold white",
+				Text = "  0  ",
+				InitCommand=function(self) self:zoom(0.33*WideScreenDiff()):x(pn == PLAYER_1 and -96 or 96):halign(pn == PLAYER_1 and 1 or 0) end
+			},
+			Def.BitmapText {
+				File = "_v 26px bold white",
+				Text = "  -"..(Hmul[pn]*1).."  ",
+				InitCommand=function(self) self:zoom(0.33*WideScreenDiff()):x(pn == PLAYER_1 and -96 or 96):y(8.5):halign(pn == PLAYER_1 and 1 or 0) end
+			},
+			Def.BitmapText {
+				File = "_v 26px bold white",
+				Text = "  -"..(Hmul[pn]*2).."  ",
+				InitCommand=function(self) self:zoom(0.33*WideScreenDiff()):x(pn == PLAYER_1 and -96 or 96):y(17):halign(pn == PLAYER_1 and 1 or 0) end
+			},
+			Def.BitmapText {
+				File = "_v 26px bold white",
+				Text = "  -"..(Hmul[pn]*3).."  ",
+				InitCommand=function(self) self:zoom(0.33*WideScreenDiff()):x(pn == PLAYER_1 and -96 or 96):y(25.5):halign(pn == PLAYER_1 and 1 or 0) end
+			},
+			Def.BitmapText {
+				File = "_v 26px bold white",
+				Text = "  -"..(Hmul[pn]*4).."  ",
+				InitCommand=function(self) self:zoom(0.33*WideScreenDiff()):x(pn == PLAYER_1 and -96 or 96):y(34):halign(pn == PLAYER_1 and 1 or 0) end
+			},
+			Def.ActorMultiVertex{
+				InitCommand=function(self) self:playcommand("Draw") end,
+				DrawCommand=function(self)
+					local vertices = GetVerticesBackground()
+					self:SetDrawState({Mode = 'DrawMode_Quads'})
+					self:SetVertices(1, vertices)
+					self:SetNumVertices(#vertices)
+					self:x(-96):y(34)
+				end
+			},
+			Def.ActorMultiVertex{
+				InitCommand=function(self) self:playcommand("Draw") end,
+				DrawCommand=function(self)
+					local vertices = GetVerticesPacemakerDot(false,pn)
+					self:SetDrawState(isOutFox(20201100) and {Mode = 'DrawMode_Lines'} or {Mode = 'DrawMode_Quads'})
+					self:SetVertices(1, vertices)
+					self:SetNumVertices(#vertices)
+					self:x(-96):y(34)
+				end
+			}
+		}
+		display[#display+1] = Def.ActorFrame {
+			Name="Target"..pname(pn),
+			InitCommand=function(self) self:diffusealpha(0) end,
+			Def.BitmapText {
+				File = "_v 26px bold white",
+				Text = "  +"..(Tmul[pn]*4).."  ",
+				InitCommand=function(self) self:zoom(0.33*WideScreenDiff()):x(pn == PLAYER_1 and -96 or 96):y(-34):halign(pn == PLAYER_1 and 1 or 0) end
+			},
+			Def.BitmapText {
+				File = "_v 26px bold white",
+				Text = "  +"..(Tmul[pn]*3).."  ",
+				InitCommand=function(self) self:zoom(0.33*WideScreenDiff()):x(pn == PLAYER_1 and -96 or 96):y(-25.5):halign(pn == PLAYER_1 and 1 or 0) end
+			},
+			Def.BitmapText {
+				File = "_v 26px bold white",
+				Text = "  +"..(Tmul[pn]*2).."  ",
+				InitCommand=function(self) self:zoom(0.33*WideScreenDiff()):x(pn == PLAYER_1 and -96 or 96):y(-17):halign(pn == PLAYER_1 and 1 or 0) end
+			},
+			Def.BitmapText {
+				File = "_v 26px bold white",
+				Text = "  +"..(Tmul[pn]*1).."  ",
+				InitCommand=function(self) self:zoom(0.33*WideScreenDiff()):x(pn == PLAYER_1 and -96 or 96):y(-8.5):halign(pn == PLAYER_1 and 1 or 0) end
+			},
+			Def.BitmapText {
+				File = "_v 26px bold white",
+				Text = "  0  ",
+				InitCommand=function(self) self:zoom(0.33*WideScreenDiff()):x(pn == PLAYER_1 and -96 or 96):halign(pn == PLAYER_1 and 1 or 0) end
+			},
+			Def.BitmapText {
+				File = "_v 26px bold white",
+				Text = "  -"..(Tmul[pn]*1).."  ",
+				InitCommand=function(self) self:zoom(0.33*WideScreenDiff()):x(pn == PLAYER_1 and -96 or 96):y(8.5):halign(pn == PLAYER_1 and 1 or 0) end
+			},
+			Def.BitmapText {
+				File = "_v 26px bold white",
+				Text = "  -"..(Tmul[pn]*2).."  ",
+				InitCommand=function(self) self:zoom(0.33*WideScreenDiff()):x(pn == PLAYER_1 and -96 or 96):y(17):halign(pn == PLAYER_1 and 1 or 0) end
+			},
+			Def.BitmapText {
+				File = "_v 26px bold white",
+				Text = "  -"..(Tmul[pn]*3).."  ",
+				InitCommand=function(self) self:zoom(0.33*WideScreenDiff()):x(pn == PLAYER_1 and -96 or 96):y(25.5):halign(pn == PLAYER_1 and 1 or 0) end
+			},
+			Def.BitmapText {
+				File = "_v 26px bold white",
+				Text = "  -"..(Tmul[pn]*4).."  ",
+				InitCommand=function(self) self:zoom(0.33*WideScreenDiff()):x(pn == PLAYER_1 and -96 or 96):y(34):halign(pn == PLAYER_1 and 1 or 0) end
+			},
+			Def.ActorMultiVertex{
+				InitCommand=function(self) self:playcommand("Draw") end,
+				DrawCommand=function(self)
+					local vertices = GetVerticesBackground()
+					self:SetDrawState({Mode = 'DrawMode_Quads'})
+					self:SetVertices(1, vertices)
+					self:SetNumVertices(#vertices)
+					self:x(-96):y(34)
+				end
+			},
+			Def.ActorMultiVertex{
+				InitCommand=function(self) self:playcommand("Draw") end,
+				DrawCommand=function(self)
+					local vertices = GetVerticesPacemakerDot(true,pn)
+					self:SetDrawState(isOutFox(20201100) and {Mode = 'DrawMode_Lines'} or {Mode = 'DrawMode_Quads'})
+					self:SetVertices(1, vertices)
+					self:SetNumVertices(#vertices)
+					self:x(-96):y(34)
+				end
+			}
 		}
 	end
 

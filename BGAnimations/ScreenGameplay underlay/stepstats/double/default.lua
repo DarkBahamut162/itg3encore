@@ -12,6 +12,8 @@ local barCenter		= 0
 local target = THEME:GetMetric("PlayerStageStats", "GradePercentTier" .. string.format("%02d", 18-getenv("SetPacemaker"..pname(pn))))
 local TotalSteps = 0
 local faplus = getenv("SetScoreFA"..pname(pn))
+local highscoredata = {}
+local targetdata = {}
 
 if GAMESTATE:IsCourseMode() then SongOrCourse,StepsOrTrail = GAMESTATE:GetCurrentCourse(),GAMESTATE:GetCurrentTrail(pn) else SongOrCourse,StepsOrTrail = GAMESTATE:GetCurrentSong(),GAMESTATE:GetCurrentSteps(pn) end
 if not isEtterna("0.55") and not scorelist then scorelist = PROFILEMAN:GetMachineProfile():GetHighScoreList(SongOrCourse,StepsOrTrail) end
@@ -114,6 +116,10 @@ end
 
 return Def.ActorFrame{
 	OnCommand=function(self) self:Center() end,
+	OffCommand=function()
+		setenv("HighscoreTable"..pname(pn),highscoredata)
+		setenv("TargetTable"..pname(pn),targetdata)
+	end,
 	Def.ActorFrame{
 		Condition=stats > 0,
 		Name="Player",
@@ -319,7 +325,12 @@ return Def.ActorFrame{
 						JudgmentMessageCommand=function(self,param) if param.Player == pn and topscore ~= nil then self:queuecommand("Update") end end,
 						UpdateCommand=function(self)
 							local curHighscoreDP = math.ceil(DPCurMax(pn)*PercentDP(topscore))
-							self:settextf("%+04d",(DPCur(pn)-curHighscoreDP))
+							local curDP = DPCur(pn)
+							local time = GAMESTATE:IsCourseMode() and vStats:GetAliveSeconds() or GAMESTATE:GetCurMusicSeconds()/GAMESTATE:GetSongOptionsObject("ModsLevel_Song"):MusicRate()
+							highscoredata[#highscoredata+1] = { time, curDP-curHighscoreDP }
+
+							local score = (curDP-curHighscoreDP)
+							self:settextf("%+04d",score)
 						end
 					},
 					Def.BitmapText {
@@ -331,7 +342,12 @@ return Def.ActorFrame{
 						JudgmentMessageCommand=function(self,param) if param.Player == pn then self:queuecommand("Update") end end,
 						UpdateCommand=function(self)
 							local curTargetDP = math.ceil(DPCurMax(pn)*target)
-							self:settextf("%+04d",(DPCur(pn)-curTargetDP))
+							local curDP = DPCur(pn)
+							local time = GAMESTATE:IsCourseMode() and vStats:GetAliveSeconds() or GAMESTATE:GetCurMusicSeconds()/GAMESTATE:GetSongOptionsObject("ModsLevel_Song"):MusicRate()
+							targetdata[#targetdata+1] = { time, curDP-curTargetDP }
+
+							local score = curDP-curTargetDP
+							self:settextf("%+04d",score)
 						end
 					}
 				}

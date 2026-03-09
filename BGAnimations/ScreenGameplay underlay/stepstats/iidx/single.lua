@@ -9,6 +9,8 @@ local SongOrCourse,StepsOrTrail,scorelist,topscore
 local mines,holds,rolls,holdsAndRolls = 0,0,0,0
 local bgNum = getenv("ShowStats"..pname(pn)) or 0
 local size = getenv("ShowStatsSize"..pname(pn)) or 0
+local highscoredata = {}
+local targetdata = {}
 
 local barWidth		= {202,	92,	57,	36,	26,	20,     16}
 local barSpace		= {0,	18,	16,	20,	18,	16+1/3, 15}
@@ -191,6 +193,10 @@ end
 
 return Def.ActorFrame{
 	InitCommand=function(self) self:CenterY() end,
+	OffCommand=function()
+		setenv("HighscoreTable"..pname(pn),highscoredata)
+		setenv("TargetTable"..pname(pn),targetdata)
+	end,
 	Def.ActorFrame{
 		Name="JudgePane",
 		BeginCommand=function(self) self:visible(GAMESTATE:IsHumanPlayer(pn)) end,
@@ -366,8 +372,12 @@ return Def.ActorFrame{
 				JudgmentMessageCommand=function(self,param) if param.Player == pn and topscore ~= nil then self:queuecommand("Update") end end,
 				UpdateCommand=function(self)
 					local curHighscoreDP = math.ceil(DPCurMax(pn)*PercentDP(topscore))
+					local curDP = DPCur(pn)
+					local time = GAMESTATE:IsCourseMode() and vStats:GetAliveSeconds() or GAMESTATE:GetCurMusicSeconds()/GAMESTATE:GetSongOptionsObject("ModsLevel_Song"):MusicRate()
+					highscoredata[#highscoredata+1] = { time, curDP-curHighscoreDP }
+
 					local addX = (curHighscoreDP/DPMax(pn))*barHeight
-					local score = (DPCur(pn)-curHighscoreDP)
+					local score = (curDP-curHighscoreDP)
 					self:settextf("%+04d",score)
 					if score >= 0 then 
 						self:diffuse(color("#00FF00")):y((barHeight/2-addX-6))
@@ -386,8 +396,12 @@ return Def.ActorFrame{
 				JudgmentMessageCommand=function(self,param) if param.Player == pn then self:queuecommand("Update") end end,
 				UpdateCommand=function(self)
 					local curTargetDP = math.ceil(DPCurMax(pn)*target)
+					local curDP = DPCur(pn)
+					local time = GAMESTATE:IsCourseMode() and vStats:GetAliveSeconds() or GAMESTATE:GetCurMusicSeconds()/GAMESTATE:GetSongOptionsObject("ModsLevel_Song"):MusicRate()
+					targetdata[#targetdata+1] = { time, curDP-curTargetDP }
+
 					local addX = (curTargetDP/DPMax(pn))*barHeight
-					local score = DPCur(pn)-curTargetDP
+					local score = curDP-curTargetDP
 					self:settextf("%+04d",score)
 					if score >= 0 then 
 						self:diffuse(color("#FF0000")):y((barHeight/2-addX-6))
