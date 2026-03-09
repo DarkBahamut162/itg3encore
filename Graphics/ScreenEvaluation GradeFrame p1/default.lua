@@ -233,6 +233,7 @@ for col = 1,NumColumns do
 	end
 end
 
+local label = (IsGame("beat") or IsGame("be-mu")) and IIDXJudgments() or (IsGame("popn") or IsGame("po-mu")) and POPNJudgments() or ITGJudgments(GAMESTATE:GetCurrentSteps(PLAYER_1):GetDifficulty() == 'Difficulty_Beginner')
 local InputHandler = function(event)
 	if keyboardEnabled then
 		if event.type == "InputEventType_FirstPress" then
@@ -283,13 +284,13 @@ local InputHandler = function(event)
 				switched = true
 			elseif switched then
 				if showOffset and showColumnGrades then c.Error:GetChild("IIDX"):settext(Single) end
-				if faplus then c.JudgeFrames:GetChild("W0"):GetChild("W0JudgmentP1"):settext("FANTASTIC+") end
-				c.JudgeFrames:GetChild("W1"):GetChild("W1JudgmentP1"):settext("FANTASTIC")
-				c.JudgeFrames:GetChild("W2"):GetChild("W2JudgmentP1"):settext("EXCELLENT")
-				c.JudgeFrames:GetChild("W3"):GetChild("W3JudgmentP1"):settext("GREAT")
-				c.JudgeFrames:GetChild("W4"):GetChild("W4JudgmentP1"):settext(GAMESTATE:GetCurrentSteps(PLAYER_1):GetDifficulty() == 'Difficulty_Beginner' and "TOO EARLY/LATE" or "DECENT")
-				c.JudgeFrames:GetChild("W5"):GetChild("W5JudgmentP1"):settext(isOpenDDR() and "MISS" or GAMESTATE:GetCurrentSteps(PLAYER_1):GetDifficulty() == 'Difficulty_Beginner' and "WAY EARLY/LATE" or "WAY OFF")
-				c.JudgeFrames:GetChild("Miss"):GetChild("MissJudgmentP1"):settext("MISS")
+				if faplus then c.JudgeFrames:GetChild("W0"):GetChild("W0JudgmentP1"):settext(string.upper(label["TapNoteScore_W0"])) end
+				c.JudgeFrames:GetChild("W1"):GetChild("W1JudgmentP1"):settext(string.upper(label["TapNoteScore_W1"]))
+				c.JudgeFrames:GetChild("W2"):GetChild("W2JudgmentP1"):settext(string.upper(label["TapNoteScore_W2"]))
+				c.JudgeFrames:GetChild("W3"):GetChild("W3JudgmentP1"):settext(string.upper(label["TapNoteScore_W3"]))
+				c.JudgeFrames:GetChild("W4"):GetChild("W4JudgmentP1"):settext(string.upper(label["TapNoteScore_W4"]))
+				c.JudgeFrames:GetChild("W5"):GetChild("W5JudgmentP1"):settext(isOpenDDR() and string.upper(label["TapNoteScore_Miss"]) or string.upper(label["TapNoteScore_W5"]))
+				c.JudgeFrames:GetChild("Miss"):GetChild("MissJudgmentP1"):settext(string.upper(label["TapNoteScore_Miss"]))
 				if faplus then c.JudgeFrames:GetChild("W0"):GetChild("W0ColumnP1"):diffusealpha(0) end
 				c.JudgeFrames:GetChild("W1"):GetChild("W1ColumnP1"):diffusealpha(0)
 				c.JudgeFrames:GetChild("W2"):GetChild("W2ColumnP1"):diffusealpha(0)
@@ -424,7 +425,7 @@ return Def.ActorFrame{
 			Def.BitmapText {
 				Name="W0Judgment"..PlayerNumberToString(PLAYER_1),
 				File="_v 26px bold shadow",
-				Text="FANTASTIC+",
+				Text=string.upper(label["TapNoteScore_W0"]),
 				InitCommand=function(self) self:x(-150*WideScreenDiff()):horizalign(left) end,
 				OnCommand=function(self) self:zoomx(0.8*WideScreenDiff()):zoomy(0.6*WideScreenDiff()):diffusebottomedge(color("#BBB9FB")):cropright(1.3):faderight(0.1):sleep(3.60):linear(0.7):cropright(-0.3) end,
 				OffCommand=function(self) self:linear(0.2):diffusealpha(0) end
@@ -455,7 +456,7 @@ return Def.ActorFrame{
 			Def.BitmapText {
 				Name="W1Judgment"..PlayerNumberToString(PLAYER_1),
 				File="_v 26px bold shadow",
-				Text="FANTASTIC",
+				Text=string.upper(label["TapNoteScore_W1"]),
 				InitCommand=function(self) self:x(-150*WideScreenDiff()):horizalign(left) end,
 				OnCommand=function(self) self:zoomx(0.8*WideScreenDiff()):zoomy(0.6*WideScreenDiff()):diffusebottomedge(color("#BBB9FB")):cropright(1.3):faderight(0.1):sleep(3.60):linear(0.7):cropright(-0.3) end,
 				OffCommand=function(self) self:linear(0.2):diffusealpha(0) end
@@ -493,7 +494,7 @@ return Def.ActorFrame{
 			Def.BitmapText {
 				Name="W2Judgment"..PlayerNumberToString(PLAYER_1),
 				File="_v 26px bold shadow",
-				Text="EXCELLENT",
+				Text=string.upper(label["TapNoteScore_W2"]),
 				InitCommand=function(self) self:x(-150*WideScreenDiff()):horizalign(left) end,
 				OnCommand=function(self) self:zoomx(0.75*WideScreenDiff()):zoomy(0.6*WideScreenDiff()):diffusebottomedge(color("#BBB9FB")):cropright(1.3):faderight(0.1):sleep(3.60):linear(0.7):cropright(-0.3) end,
 				OffCommand=function(self) self:linear(0.2):diffusealpha(0) end
@@ -516,7 +517,7 @@ return Def.ActorFrame{
 			Def.BitmapText {
 				Name="W3Judgment"..PlayerNumberToString(PLAYER_1),
 				File="_v 26px bold shadow",
-				Text="GREAT",
+				Text=string.upper(label["TapNoteScore_W3"]),
 				InitCommand=function(self) self:x(-150*WideScreenDiff()):horizalign(left) end,
 				OnCommand=function(self) self:zoomx(0.8*WideScreenDiff()):zoomy(0.6*WideScreenDiff()):diffusebottomedge(color("#BBB9FB")):cropright(1.3):faderight(0.1):sleep(3.60):linear(0.7):cropright(-0.3) end,
 				OffCommand=function(self) self:linear(0.2):diffusealpha(0) end
@@ -539,7 +540,7 @@ return Def.ActorFrame{
 			Def.BitmapText {
 				Name="W4Judgment"..PlayerNumberToString(PLAYER_1),
 				File="_v 26px bold shadow",
-				Text=GAMESTATE:GetCurrentSteps(PLAYER_1):GetDifficulty() == 'Difficulty_Beginner' and "TOO EARLY/LATE" or "DECENT",
+				Text=string.upper(label["TapNoteScore_W4"]),
 				InitCommand=function(self) self:x(-150*WideScreenDiff()):horizalign(left):maxwidth(120) end,
 				OnCommand=function(self) self:zoomx(0.8*WideScreenDiff()):zoomy(0.6*WideScreenDiff()):diffusebottomedge(color("#BBB9FB")):cropright(1.3):faderight(0.1):sleep(3.60):linear(0.7):cropright(-0.3) end,
 				OffCommand=function(self) self:linear(0.2):diffusealpha(0) end
@@ -562,7 +563,7 @@ return Def.ActorFrame{
 			Def.BitmapText {
 				Name="W5Judgment"..PlayerNumberToString(PLAYER_1),
 				File="_v 26px bold shadow",
-				Text=isOpenDDR() and "MISS" or GAMESTATE:GetCurrentSteps(PLAYER_1):GetDifficulty() == 'Difficulty_Beginner' and "WAY EARLY/LATE" or "WAY OFF",
+				Text=isOpenDDR() and string.upper(label["TapNoteScore_Miss"]) or string.upper(label["TapNoteScore_W5"]),
 				InitCommand=function(self) self:x(-150*WideScreenDiff()):horizalign(left):maxwidth(115) end,
 				OnCommand=function(self) self:zoomx(0.8*WideScreenDiff()):zoomy(0.6*WideScreenDiff()):diffusebottomedge(color("#BBB9FB")):cropright(1.3):faderight(0.1):sleep(3.60):linear(0.7):cropright(-0.3) end,
 				OffCommand=function(self) self:linear(0.2):diffusealpha(0) end
@@ -586,7 +587,7 @@ return Def.ActorFrame{
 			Def.BitmapText {
 				Name="MissJudgment"..PlayerNumberToString(PLAYER_1),
 				File="_v 26px bold shadow",
-				Text="MISS",
+				Text=string.upper(label["TapNoteScore_Miss"]),
 				InitCommand=function(self) self:x(-150*WideScreenDiff()):horizalign(left) end,
 				OnCommand=function(self) self:zoomx(0.8*WideScreenDiff()):zoomy(0.6*WideScreenDiff()):diffusebottomedge(color("#BBB9FB")):cropright(1.3):faderight(0.1):sleep(3.60):linear(0.7):cropright(-0.3) end,
 				OffCommand=function(self) self:linear(0.2):diffusealpha(0) end

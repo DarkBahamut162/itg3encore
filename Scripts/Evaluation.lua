@@ -188,3 +188,39 @@ function prepSummary()
 		end
 	end
 end
+
+function ITGJudgments(beginner)
+	return {
+		TapNoteScore_W0 = "Fantastic+",
+		TapNoteScore_W1 = "Fantastic",
+		TapNoteScore_W2 = "Excellent",
+		TapNoteScore_W3 = "Great",
+		TapNoteScore_W4 = (beginner and "Too Early/Late" or "Decent"),
+		TapNoteScore_W5 = (beginner and "Way Early/Late" or "Way Off"),
+		TapNoteScore_Miss = "Miss",
+	}
+end
+
+function IIDXJudgments()
+	return {
+		TapNoteScore_W0 = "Great+",
+		TapNoteScore_W1 = "Great",
+		TapNoteScore_W2 = "Great",
+		TapNoteScore_W3 = "Good",
+		TapNoteScore_W4 = "Bad",
+		TapNoteScore_W5 = "Bad",
+		TapNoteScore_Miss = "Poor",
+	}
+end
+
+function POPNJudgments()
+	return {
+		TapNoteScore_W0 = "Cool+",
+		TapNoteScore_W1 = "Cool",
+		TapNoteScore_W2 = "Great",
+		TapNoteScore_W3 = "Good",
+		TapNoteScore_W4 = "Bad",
+		TapNoteScore_W5 = "Bad",
+		TapNoteScore_Miss = "Poor",
+	}
+end
