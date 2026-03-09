@@ -54,7 +54,7 @@ function GetSongFrame(pn)
 	else
 		frame = "_random"
 	end
-	if frame == "_random" then
+	if frame == "_random" or frame == "random" then
 		local rng = GAMESTATE:GetStageSeed()
 		local frames = { "_bunnies", "_disconnect", "_energy", "_hasse", "_love", "_nightmare", "_normal", "_pandy", "_smiley", "_vertex0", "_vertex1", "_vertex2", "_vertex3", "_virtual" }
 		return frames[rng%8+1]
@@ -65,7 +65,7 @@ end
 function GetIIDXFrame(pn)
 	if IsGame("beat") or IsGame("be-mu") then
 		local frame = getenv("IIDXFrame"..pname(pn and pn or GAMESTATE:GetMasterPlayerNumber())) or "_random"
-		if frame == "_random" then
+		if frame == "_random" or frame == "random" then
 			local rng = GAMESTATE:GetStageSeed()
 			local frames = { "_10th", "_red", "_happysky", "_distorted", "_gold", "_troopers", "_empress", "_sirius", "_resortanthem" }
 			return frames[rng%8+1]
