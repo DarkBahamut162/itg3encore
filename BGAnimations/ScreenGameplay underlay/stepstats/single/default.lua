@@ -465,7 +465,7 @@ return Def.ActorFrame{
 				Def.BitmapText {
 					Name="Target",
 					File = "_v 26px bold black",
-					Text="Target Passed",
+					Text="Target Met",
 					InitCommand=function(self) self:rotationz(-90):addx(barCenter+(barWidth[bgNum]+barSpace[bgNum])*(topscore ~= nil and 2 or 1)):shadowlength(0):diffusealpha(0) end,
 					FadeOnCommand=function(self) self:sleep(0.5):linear(1):diffusealpha(1):diffuseshift():effectcolor1(color("#FFFFFF00")):effectcolor2(color("#FFFFFF")):effectperiod(4) end
 				}
