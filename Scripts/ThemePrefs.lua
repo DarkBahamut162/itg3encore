@@ -342,6 +342,11 @@ local Prefs = {
 		Choices = { OptionNameString('Off'), OptionNameString('On') },
 		Values = { false, true }
 	},
+	ShowPackClears = {
+		Default = false,
+		Choices = { OptionNameString('Off'), OptionNameString('On') },
+		Values = { false, true }
+	},
 	ShowRounds = {
 		Default = false,
 		Choices = { OptionNameString('Off'), OptionNameString('On') },

@@ -1450,10 +1450,6 @@ function GetMinSecondsToStep()
 	return math.max(firstSec, isEtterna() and 2 or 1)
 end
 
-function LV100(input)
-	return math.pow(input*(1/15000),2)+(input*0.09)+0.5
-end
-
 function getTrueBPMsCalculated(song,steps)
 	local timingdata = steps:GetTimingData()
 	local bpms = steps:GetDisplayBpms()

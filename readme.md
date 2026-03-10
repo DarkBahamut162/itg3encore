@@ -125,6 +125,8 @@ Shows if song **has anything lua** related (no matter if BG, FG or both)
 Switches back and forth between the stepchart's BPMs and the player's current mod speed 
 - **ShowOrigin**
 Switches back and forth between the song's Artist and the song's Origin *(only if Origin Value has been set)*
+- **ShowPackClears:**
+Displays amount of clears for songs/steps when selecting a song pack
 - **ShowRounds/Length:**
 Shows either **amount of rounds** or **length specification** during song selection
   - Will be adjusted if **TrueRounds** is enabled
@@ -300,6 +302,8 @@ I could have actually forked it but I didn't. My reasoning was that it wasn't go
   - Hold **Select** & press **EffectDown/Up** to **change current SpeedType**
 * Shows **Song's Origin** *(when ShowOrigin enabled & if Song has Origin)*
   - Switches back and forth between Song's **Artist** and its **Origin**
+* Show **Pack Clears**
+  - Displays amount of clears for songs/steps when selecting a song pack
 * Shows **Player's NoteGraph** *(when ShowGraph enabled)*
 * Shows **CDTitle** next to the banner frame *(VerticalScreen/WideScreen only & if Song has CDTitle)*
 * Shows various indications between **Artist** and **BPM** line:
