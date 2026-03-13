@@ -46,7 +46,27 @@ end
 local barHeight,totalWidth,barCenter = 227,202,0
 barHeight = barHeight * 1.1
 totalWidth = totalWidth * 0.5
-local target = THEME:GetMetric("PlayerStageStats", "GradePercentTier" .. string.format("%02d", 18-(getenv("SetPacemaker"..pname(pn)) or 0)))
+local target = 0.5
+local tmax = 0
+if getenv("SetPacemaker"..pname(pn)) == 18 then
+	local sps = 0
+	local song = GAMESTATE:GetCurrentSong()
+	local steps = GAMESTATE:GetCurrentSteps(pn)
+	if IsGame("be-mu") or IsGame("beat") then
+		sps = tonumber(LoadFromCache(song,steps,"StepsPerSecond")) / 2
+	else
+		sps = tonumber(LoadFromCache(song,steps,"StepsPerSecond")) * (getColumnsPerPlayer(stepType[2],stepType[3],true) / 4)
+	end
+	sps = math.floor(sps)
+	local min = 1
+	for pms in ivalues(PaceMaker[pn][math.floor(sps)] or {}) do
+		min = math.min(min,math.max(0.5,pms))
+		tmax = math.max(tmax,pms)
+	end
+	target = math.max(0.5,min)
+else
+	target = THEME:GetMetric("PlayerStageStats", "GradePercentTier" .. string.format("%02d", 18-(getenv("SetPacemaker"..pname(pn)) or 0)))
+end
 local TotalSteps = 0
 local faplus = getenv("SetScoreFA"..pname(pn))
 
@@ -412,6 +432,19 @@ return Def.ActorFrame{
 			},
 
 			Def.Sprite {
+				Condition=tmax>0,
+				Texture = THEME:GetPathG("horiz-line","short"),
+				InitCommand=function(self)
+					self:y(-tmax*barHeight+barHeight/2):valign(1):zoomx(0.65):zoomy(0.5):fadeleft(0.25):faderight(0.25):diffuse(color("#FF0000")):diffuseramp():effectcolor1(color("#FF000080")):effectcolor2(color("#FF0000FF")):effectperiod(0.5):effect_hold_at_full(0.5):effectclock('beat')
+				end,
+				JudgmentMessageCommand=function(self,param) if param.Player == pn and self:GetDiffuseAlpha() == 1 then self:queuecommand("Update") end end,
+				UpdateCommand=function(self)
+					local check = DPCur(pn) < DPMax(pn)*tmax
+					self:diffusealpha(check and 1 or 0)
+					if not check then self:GetParent():GetChild("BarLabels"):GetChild("Target"):queuecommand(getenv("SetPacemaker"..pname(pn)) == 18 and "Exceeded" or "FadeOn") end
+				end
+			},
+			Def.Sprite {
 				Texture = THEME:GetPathG("horiz-line","short"),
 				InitCommand=function(self)
 					self:y(-target*barHeight+barHeight/2):valign(1):zoomx(0.65):zoomy(0.5):fadeleft(0.25):faderight(0.25):diffuse(color("#FF0000")):diffuseramp():effectcolor1(color("#FF000080")):effectcolor2(color("#FF0000FF")):effectperiod(0.5):effect_hold_at_full(0.5):effectclock('beat')
@@ -420,7 +453,7 @@ return Def.ActorFrame{
 				UpdateCommand=function(self)
 					local check = DPCur(pn) < DPMax(pn)*target
 					self:diffusealpha(check and 1 or 0)
-					if not check then self:GetParent():GetChild("BarLabels"):GetChild("Target"):queuecommand("FadeOn") end
+					if not check then self:GetParent():GetChild("BarLabels"):GetChild("Target"):queuecommand(getenv("SetPacemaker"..pname(pn)) == 18 and "Reached" or "FadeOn") end
 				end
 			},
 			Def.Sprite {
@@ -470,7 +503,9 @@ return Def.ActorFrame{
 					File = "_v 26px bold black",
 					Text="Target Met",
 					InitCommand=function(self) self:rotationz(-90):addx(barCenter+(barWidth[bgNum]+barSpace[bgNum])*(topscore ~= nil and 2 or 1)):shadowlength(0):diffusealpha(0) end,
-					FadeOnCommand=function(self) self:sleep(0.5):linear(1):diffusealpha(1):diffuseshift():effectcolor1(color("#FFFFFF00")):effectcolor2(color("#FFFFFF")):effectperiod(4) end
+					FadeOnCommand=function(self) self:sleep(0.5):linear(1):diffusealpha(1):diffuseshift():effectcolor1(color("#FFFFFF00")):effectcolor2(color("#FFFFFF")):effectperiod(4) end,
+					ReachedCommand=function(self) self:settext("Target Reached"):queuecommand("FadeOn") end,
+					ExceededCommand=function(self) self:settext("Target Exceeded"):queuecommand("FadeOn") end
 				}
 			},
 			Def.ActorFrame{

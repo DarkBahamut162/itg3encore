@@ -5,6 +5,9 @@ end
 local preload = GAMESTATE:GetCoinMode()=='CoinMode_Home' and IsAutoStyle() or (IsAutoPlayMode(true) and IsAutoStyle())
 SetAllowLateJoin(false)
 DefaultLuaModifiers = IniFile.ReadFile("Save/DefaultLuaModifiers.ini")["LuaOptions"]
+local songs = SONGMAN:GetAllSongs()
+local stepsType = StepsTypeSingle()[GetUserPrefN("StylePosition")]
+local stepType = split("_",stepsType)
 
 return Def.ActorFrame{
 	OffCommand=function()
@@ -13,6 +16,31 @@ return Def.ActorFrame{
 		for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
 			if ThemePrefs.Get("ExperimentalProfileLevel") then LoadData(pn) MESSAGEMAN:Broadcast("EnablePlayerStats",{PLAYER=pn}) end
 			LoadFlare(pn)
+			for s=1,#songs do
+				if songs[s]:HasStepsType(stepsType) then
+					local steps = songs[s]:GetStepsByStepsType(stepsType)
+					for ss=1,#steps do
+						local profile = PROFILEMAN:GetProfile(pn):GetHighScoreList(songs[s],steps[ss]):GetHighScores()
+						if #profile > 0 then
+							for _,highscore in pairs(profile) do
+								if highscore:GetGrade()~="Grade_Failed" then
+									local sps = 0
+									if IsGame("be-mu") or IsGame("beat") then
+										sps = tonumber(LoadFromCache(songs[s],steps[ss],"StepsPerSecond")) / 2
+									else
+										sps = tonumber(LoadFromCache(songs[s],steps[ss],"StepsPerSecond")) * (getColumnsPerPlayer(stepType[2],stepType[3],true) / 4)
+									end
+									sps = math.floor(sps)
+									PaceMaker[pn][math.floor(sps)]=PaceMaker[pn][math.floor(sps)] or {}
+									if highscore:GetPercentDP() > 0.5 then
+										PaceMaker[pn][math.floor(sps)][#PaceMaker[pn][math.floor(sps)]+1] = highscore:GetPercentDP()
+									end
+								end
+							end
+						end
+					end
+				end
+			end
 		end
 		InitRotationOptions()
 		InitPlayerOptions()

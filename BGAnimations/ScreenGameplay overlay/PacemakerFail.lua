@@ -2,7 +2,27 @@ local player = ...
 local scoreType = (getenv("SetScoreType"..pname(player)) or 2) == 2 and getenv("SetScoreDirection"..pname(player)) ~= 1
 local scoreDirection = 2
 local animate = ThemePrefs.Get("AnimatePlayerScore")
-local target = THEME:GetMetric("PlayerStageStats", "GradePercentTier" .. string.format("%02d", 18-getenv("SetPacemaker"..pname(player))))*10000
+local target = 0.5
+local stepsType = StepsTypeSingle()[GetUserPrefN("StylePosition")]
+local stepType = split("_",stepsType)
+if getenv("SetPacemaker"..pname(player)) == 18 then
+	local sps = 0
+	local song = GAMESTATE:GetCurrentSong()
+	local steps = GAMESTATE:GetCurrentSteps(player)
+	if IsGame("be-mu") or IsGame("beat") then
+		sps = tonumber(LoadFromCache(song,steps,"StepsPerSecond")) / 2
+	else
+		sps = tonumber(LoadFromCache(song,steps,"StepsPerSecond")) * (getColumnsPerPlayer(stepType[2],stepType[3],true) / 4)
+	end
+	sps = math.floor(sps)
+	local min = 1
+	for pms in ivalues(PaceMaker[player][math.floor(sps)] or {}) do
+		min = math.min(min,math.max(0.5,pms))
+	end
+	target = math.max(0.5,min)
+else
+	target = THEME:GetMetric("PlayerStageStats", "GradePercentTier" .. string.format("%02d", 18-(getenv("SetPacemaker"..pname(player)) or 0)))
+end
 local failType = getenv("SetPacemakerFail"..pname(player))
 local warning = target+math.min(500,math.max(100,math.round((10000-target)/500)*100))
 local displayScore = 10000

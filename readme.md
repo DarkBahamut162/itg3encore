@@ -363,7 +363,7 @@ I could have actually forked it but I didn't. My reasoning was that it wasn't go
     - WIFE3 *(from Etterna)* can't be selected if the GameMode is on **CountNotesSeperately** because of a judgment bug in the engine
   - **ErrorBar:** Selectable **Range of Judgment** to be displayed *(lowest first)*
   - **PlayerStats:** Selectable **Range of Judgment** to be displayed *(highest first)*
-    - **IIDX** switches **StatsMode** to a fully functional **IIDX pacemaker** and shows **Player**, **Highscore** *(if available)* and **Pacemaker**
+    - **IIDX** switches **StatsMode** to a fully functional **IIDX pacemaker** and shows **Player**, **Highscore** *(if available)* and **Target**
     - Ability to switch between **FullSize** & **MiniSize**
       - **Mini (Bottom/Top)** decides where the data is being displayed *(NoteGraph is being show on the opposite end)*
   - **PlayerNoteGraph:** Customizable **NoteGraph**
@@ -375,6 +375,10 @@ I could have actually forked it but I didn't. My reasoning was that it wasn't go
     - **Adjusted** *Adjust NoteGraph to use the full height*
     - **ShowData** Shows **average & maximum NPS** next to **NoteGraph**
   - **Pacemaker:** Selectable **Grade** to reach during Gameplay
+    - **±** sets the **Target** to a min-max-range of similar difficulties
+      - Uses **StepCache** and **SPS** values to identify the song's actual difficulty
+      - Uses **All Highscore Clears** over 50% of said difficulty
+        - Falls back to 50% if no clears available to set range
   - **PacemakerOnFail:** What the game does when **Player fails the Pacemaker**
   - **PlayerAssists:** Ability to show **SpeedChanges/Stops** during Gameplay
 </details>
@@ -384,7 +388,6 @@ I could have actually forked it but I didn't. My reasoning was that it wasn't go
 
 * Better **StatsDisplay** going from a range of 1-6 instead of just 3
   * Added option for a fully functional **IIDX pacemaker** with selectable target meter
-    * For 2 Player: <u>both players need to choose IIDX</u>
   * Added **NoteGraph** *(red: 0-20 | black: 20-100)*
 * Fixed **Rounds/Songs Display**
 * Added back **Rotation** to **Judgments** & **Holds**

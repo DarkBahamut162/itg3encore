@@ -9,6 +9,7 @@ ThemeVersion = "????????"
 CheckVersion = "????????"
 local full = isOutFoxV() and "FullRes" or "Full"
 DefaultLuaModifiers = {}
+PaceMaker = {[PLAYER_1]={},[PLAYER_2]={}}
 local buffer = 24
 
 function GetThemeVersion()

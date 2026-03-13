@@ -9,7 +9,27 @@ local barWidth		= {14,7,4+2/3,3+2/3,2.8,2+1/3,2}
 local barHeight		= 268
 local totalWidth	= 14
 local barCenter		= 0
-local target = THEME:GetMetric("PlayerStageStats", "GradePercentTier" .. string.format("%02d", 18-getenv("SetPacemaker"..pname(pn))))
+local target = 0.5
+local stepsType = StepsTypeSingle()[GetUserPrefN("StylePosition")]
+local stepType = split("_",stepsType)
+if getenv("SetPacemaker"..pname(pn)) == 18 then
+	local sps = 0
+	local song = GAMESTATE:GetCurrentSong()
+	local steps = GAMESTATE:GetCurrentSteps(pn)
+	if IsGame("be-mu") or IsGame("beat") then
+		sps = tonumber(LoadFromCache(song,steps,"StepsPerSecond")) / 2
+	else
+		sps = tonumber(LoadFromCache(song,steps,"StepsPerSecond")) * (getColumnsPerPlayer(stepType[2],stepType[3],true) / 4)
+	end
+	sps = math.floor(sps)
+	local min = 1
+	for pms in ivalues(PaceMaker[pn][math.floor(sps)] or {}) do
+		min = math.min(min,math.max(0.5,pms))
+	end
+	target = math.max(0.5,min)
+else
+	target = THEME:GetMetric("PlayerStageStats", "GradePercentTier" .. string.format("%02d", 18-(getenv("SetPacemaker"..pname(pn)) or 0)))
+end
 local TotalSteps = 0
 local faplus = getenv("SetScoreFA"..pname(pn))
 local highscoredata = {}

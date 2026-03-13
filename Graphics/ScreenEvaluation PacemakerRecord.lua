@@ -8,10 +8,33 @@ if getenv("EvalCombo"..pname(player)) then
 	if (total == 1 and (getenv("ShowStatsP1") == (isOpenDDR() and 6 or 7) or getenv("ShowStatsP2") == (isOpenDDR() and 6 or 7))) or (total == 2 and (getenv("ShowStatsP1") == (isOpenDDR() and 6 or 7) and getenv("ShowStatsP2") == (isOpenDDR() and 6 or 7))) then
 		local SongOrCourse,StepsOrTrail,scorelist,topscore
 		local DPCurrent = isEtterna() and DP(player) or DPCur(player)
-		local target = THEME:GetMetric("PlayerStageStats","GradePercentTier"..string.format("%02d",18-getenv("SetPacemaker"..pname(player))))
+		local target = 0.5
+		local tmax = 0
+		local stepsType = StepsTypeSingle()[GetUserPrefN("StylePosition")]
+		local stepType = split("_",stepsType)
+		if getenv("SetPacemaker"..pname(player)) == 18 then
+			local sps = 0
+			local song = GAMESTATE:GetCurrentSong()
+			local steps = GAMESTATE:GetCurrentSteps(player)
+			if IsGame("be-mu") or IsGame("beat") then
+				sps = tonumber(LoadFromCache(song,steps,"StepsPerSecond")) / 2
+			else
+				sps = tonumber(LoadFromCache(song,steps,"StepsPerSecond")) * (getColumnsPerPlayer(stepType[2],stepType[3],true) / 4)
+			end
+			sps = math.floor(sps)
+			local min = 1
+			for pms in ivalues(PaceMaker[player][math.floor(sps)] or {}) do
+				min = math.min(min,math.max(0.5,pms))
+				tmax = math.max(tmax,pms)
+			end
+			target = math.max(0.5,min)
+		else
+			target = THEME:GetMetric("PlayerStageStats", "GradePercentTier" .. string.format("%02d", 18-(getenv("SetPacemaker"..pname(player)) or 0)))
+		end
 		local HighScore = 0
 		local Max = isEtterna() and 1 or STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetPossibleDancePoints()
 		local Target = target*Max
+		local TargetMax = tmax*Max
 
 		if GAMESTATE:IsCourseMode() then SongOrCourse,StepsOrTrail = GAMESTATE:GetCurrentCourse(),GAMESTATE:GetCurrentTrail(player) else SongOrCourse,StepsOrTrail = GAMESTATE:GetCurrentSong(),GAMESTATE:GetCurrentSteps(player) end
 		if not isEtterna("0.55") and not scorelist then scorelist = PROFILEMAN:GetMachineProfile():GetHighScoreList(SongOrCourse,StepsOrTrail) end
@@ -31,20 +54,19 @@ if getenv("EvalCombo"..pname(player)) then
 
 		if topscore and hasHighscoreCheck then HighScore = PercentDP(topscore[1])*Max end
 
-		if DPCurrent >= HighScore and hasHighscoreCheck and DPCurrent >= Target then
+		if DPCurrent >= HighScore and hasHighscoreCheck then
 			HighscoreRecord = "HIGHSCORE\nPASSED"
-			TargetRecord = "TARGET\nMET"
-		elseif DPCurrent < HighScore and hasHighscoreCheck and DPCurrent >= Target then
+		elseif DPCurrent < HighScore and hasHighscoreCheck then
 			HighscoreRecord = "HIGHSCORE\nFAILED"
-			TargetRecord = "TARGET\nMET"
-		elseif DPCurrent >= HighScore and hasHighscoreCheck and DPCurrent < Target then
-			HighscoreRecord = "HIGHSCORE\nPASSED"
-			TargetRecord = "TARGET\nMISSED"
-		elseif DPCurrent < HighScore and hasHighscoreCheck and DPCurrent < Target then
-			HighscoreRecord = "HIGHSCORE\nFAILED"
-			TargetRecord = "TARGET\nMISSED"
-		elseif DPCurrent >= Target then
-			TargetRecord = "TARGET\nMET"
+		end
+		if DPCurrent >= Target then
+			if tmax > 0 and DPCurrent >= TargetMax then
+				TargetRecord = "TARGET\nEXCEEDED"
+			elseif tmax > 0 and DPCurrent < TargetMax then
+				TargetRecord = "TARGET\nREACHED"
+			else
+				TargetRecord = "TARGET\nMET"
+			end
 		elseif DPCurrent < Target then
 			TargetRecord = "TARGET\nMISSED"
 		end

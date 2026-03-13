@@ -962,13 +962,15 @@ function OptionPlayerNoteGraph()
 end
 
 function OptionSetPacemaker()
+	local selection = {'D+','C-','C','C+','B-','B','B+','A-','A','A+','S-','S','S+','★','★★','★★★','★★★★'}
+	if ThemePrefs.Get("UseStepCache") then selection[#selection+1] = "±" end
 	local t = {
 		Name="SetPacemaker",
 		LayoutType = "ShowAllInRow",
 		SelectType = "SelectOne",
 		OneChoiceForAllPlayers = false,
 		ExportOnChange = false,
-		Choices = {'D+','C-','C','C+','B-','B','B+','A-','A','A+','S-','S','S+','★','★★','★★★','★★★★'},
+		Choices = selection,
 		LoadSelections = function(self, list, pn)
 			local selected = getenv("SetPacemaker"..pname(pn))
 			if selected and selected ~= 0 then

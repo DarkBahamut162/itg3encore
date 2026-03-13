@@ -3,8 +3,29 @@ local SongOrCourse,StepsOrTrail,scorelist,topscore
 local stats = getenv("ShowStats"..pname(pn))
 local barWidth		= {14,7,4+2/3,3+2/3,2.8,2+1/3}
 local bgNum = stats
-local target = THEME:GetMetric("PlayerStageStats", "GradePercentTier" .. string.format("%02d", 18-getenv("SetPacemaker"..pname(pn))))
-
+local target = 0.5
+local tmax = 0
+local stepsType = StepsTypeSingle()[GetUserPrefN("StylePosition")]
+local stepType = split("_",stepsType)
+if getenv("SetPacemaker"..pname(pn)) == 18 then
+	local sps = 0
+	local song = GAMESTATE:GetCurrentSong()
+	local steps = GAMESTATE:GetCurrentSteps(pn)
+	if IsGame("be-mu") or IsGame("beat") then
+		sps = tonumber(LoadFromCache(song,steps,"StepsPerSecond")) / 2
+	else
+		sps = tonumber(LoadFromCache(song,steps,"StepsPerSecond")) * (getColumnsPerPlayer(stepType[2],stepType[3],true) / 4)
+	end
+	sps = math.floor(sps)
+	local min = 1
+	for pms in ivalues(PaceMaker[pn][math.floor(sps)] or {}) do
+		min = math.min(min,math.max(0.5,pms))
+		tmax = math.max(tmax,pms)
+	end
+	target = math.min(0.5,min)
+else
+	target = THEME:GetMetric("PlayerStageStats", "GradePercentTier" .. string.format("%02d", 18-(getenv("SetPacemaker"..pname(pn)) or 0)))
+end
 if GAMESTATE:IsCourseMode() then SongOrCourse,StepsOrTrail = GAMESTATE:GetCurrentCourse(),GAMESTATE:GetCurrentTrail(pn) else SongOrCourse,StepsOrTrail = GAMESTATE:GetCurrentSong(),GAMESTATE:GetCurrentSteps(pn) end
 if not isEtterna("0.55") and not scorelist then scorelist = PROFILEMAN:GetMachineProfile():GetHighScoreList(SongOrCourse,StepsOrTrail) end
 if not isEtterna("0.55") and not scorelist then scorelist = PROFILEMAN:GetProfile(pn):GetHighScoreList(SongOrCourse,StepsOrTrail) end
@@ -25,6 +46,14 @@ return Def.ActorFrame{
 	},
 	Def.ActorFrame{
 		Condition=stats == 7,
+		Def.Sprite {
+			Texture = THEME:GetPathG("horiz-line","short"),
+			InitCommand=function(self)
+				self:y(-tmax*268+164):valign(0):zoomx(0.08):zoomy(0.5):diffusealpha(1):fadeleft(0.25):faderight(0.25):diffuse(color("#FF0000")):diffuseramp():effectcolor1(color("#FF000080")):effectcolor2(color("#FF0000FF")):effectperiod(0.5):effect_hold_at_full(0.5):effectclock('beat')
+			end,
+			JudgmentMessageCommand=function(self,param) if param.Player == pn and self:GetDiffuseAlpha() == 1 then self:queuecommand("Update") end end,
+			UpdateCommand=function(self) self:diffusealpha(DPCur(pn) < DPMax(pn)*tmax and 1 or 0) end
+		},
 		Def.Sprite {
 			Texture = THEME:GetPathG("horiz-line","short"),
 			InitCommand=function(self)
