@@ -473,7 +473,7 @@ local posY = reverse and THEME:GetMetric("Player","ReceptorArrowsYReverse") or T
 local mlevel = "ModsLevel_Preferred"
 local currentMini = 1-math.round(GAMESTATE:GetPlayerState(player):GetPlayerOptions(mlevel):Mini()*50) / 100
 local currentTiny = 1-math.round(GAMESTATE:GetPlayerState(player):GetPlayerOptions(mlevel):Tiny()*50) / 100
---currentMini = currentMini * currentTiny
+if IsGame("beat") or IsGame("be-mu") then currentMini = currentMini * 0.5 end
 
 local totalDelta = 0
 local tmpDelta = 0
