@@ -4,6 +4,7 @@ local screen
 local glifemeter = 100
 local faplus = getenv("SetScoreFA"..pname(player)) or false
 local adjust = 0.8
+local brightness = tonumber(getenv("IIDXJudgmentBrightness"..pname(player))) or 1.0
 
 local JUDGMENT = {
 	["TapNoteScore_W0"]		= "A",
@@ -26,17 +27,17 @@ local COMBO = {
 
 local function JudgeCMD(self,TNS)
 	if TNS == "TapNoteScore_W0" or TNS == "TapNoteScore_W1" then
-		self:stoptweening():diffusealpha(1):zoomx(1.3*adjust):zoomy(1.7*adjust):decelerate(0.1):zoom(1*adjust):sleep(0.85):accelerate(0.1):diffusealpha(0):zoomx(1.5*adjust):zoomy(0)
+		self:stoptweening():diffusealpha(brightness):zoomx(1.3*adjust):zoomy(1.7*adjust):decelerate(0.1):zoom(1*adjust):sleep(0.85):accelerate(0.1):diffusealpha(0):zoomx(1.5*adjust):zoomy(0)
 	elseif TNS == "TapNoteScore_W2" then
-		self:stoptweening():diffusealpha(1):zoomx(1.3*adjust):zoomy(1.7*adjust):decelerate(0.1):zoom(1*adjust):sleep(0.85):accelerate(0.1):diffusealpha(0):zoomx(1.5*adjust):zoom(0)
+		self:stoptweening():diffusealpha(brightness):zoomx(1.3*adjust):zoomy(1.7*adjust):decelerate(0.1):zoom(1*adjust):sleep(0.85):accelerate(0.1):diffusealpha(0):zoomx(1.5*adjust):zoom(0)
 	elseif TNS == "TapNoteScore_W3" then
-		self:stoptweening():diffusealpha(1):zoomx(1.3*adjust):zoomy(1.7*adjust):decelerate(0.1):zoom(1*adjust):sleep(0.85):accelerate(0.1):diffusealpha(0):zoomx(1.5*adjust):zoom(0)
+		self:stoptweening():diffusealpha(brightness):zoomx(1.3*adjust):zoomy(1.7*adjust):decelerate(0.1):zoom(1*adjust):sleep(0.85):accelerate(0.1):diffusealpha(0):zoomx(1.5*adjust):zoom(0)
 	elseif TNS == "TapNoteScore_W4" then
-		self:stoptweening():diffusealpha(1):zoomx(1.3*adjust):zoomy(1.7*adjust):decelerate(0.1):zoom(1*adjust):sleep(0.85):accelerate(0.1):zoom(0)
+		self:stoptweening():diffusealpha(brightness):zoomx(1.3*adjust):zoomy(1.7*adjust):decelerate(0.1):zoom(1*adjust):sleep(0.85):accelerate(0.1):zoom(0)
 	elseif TNS == "TapNoteScore_W5" then
-		self:stoptweening():diffusealpha(1):zoomx(1.3*adjust):zoomy(1.7*adjust):decelerate(0.1):zoom(1*adjust):sleep(0.85):accelerate(0.1):zoom(0)
+		self:stoptweening():diffusealpha(brightness):zoomx(1.3*adjust):zoomy(1.7*adjust):decelerate(0.1):zoom(1*adjust):sleep(0.85):accelerate(0.1):zoom(0)
 	elseif TNS == "TapNoteScore_Miss" then
-		self:stoptweening():diffusealpha(1):zoomx(1.3*adjust):zoomy(1.7*adjust):decelerate(0.1):zoom(1*adjust):sleep(0.85):accelerate(0.1):zoom(0)
+		self:stoptweening():diffusealpha(brightness):zoomx(1.3*adjust):zoomy(1.7*adjust):decelerate(0.1):zoom(1*adjust):sleep(0.85):accelerate(0.1):zoom(0)
 	end
 end
 

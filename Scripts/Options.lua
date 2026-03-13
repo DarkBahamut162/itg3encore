@@ -219,8 +219,8 @@ function SongMods(part)
 
 	if part == nil or part == 1 then
 		options = addToOutput(options,(isEtterna() and "Speed," or "1,") .."2,4,"..fail..","..((isRegular() and VersionDateCheck(20160000)) and (isOpenDDR() and "0DDR" or "0,Flare") or "0")..",3",",")
-		if not (IsGame("pump") or GAMESTATE:IsCourseMode()) then options = addToOutput(options,(IsGame("beat") or IsGame("be-mu")) and "IIDXFrame,IIDXDouble,IIDXJudgment" or "31",",") end
-		if IIDXcheck() then options = addToOutput(options,"IIDXNote,IIDXNoteLength,IIDXBeam,IIDXBeamLength,IIDXExplosion,IIDXTurntable",",") end
+		if not (IsGame("pump") or GAMESTATE:IsCourseMode()) then options = addToOutput(options,(IsGame("beat") or IsGame("be-mu")) and "IIDXFrame,IIDXDouble,IIDXJudgment,IIDXJudgmentBrightness" or "31",",") end
+		if IIDXcheck() then options = addToOutput(options,"IIDXNote,IIDXNoteBrightness,IIDXNoteLength,IIDXBeam,IIDXBeamBrightness,IIDXBeamLength,IIDXExplosion,IIDXExplosionBrightness,IIDXTurntable",",") end
 		if not (IsGame("be-mu") or IsGame("beat") or IsGame("po-mu") or IsGame("popn")) then options = addToOutput(options,"32,32H",",") end
 	end
 	if part == nil or part == 2 then
@@ -465,12 +465,16 @@ function InitPlayerOptions()
 		setenv("IIDXFrame"..pname(pn),LoadUserPref(pn, "IIDXFrame", DefaultLuaModifiers["IIDXFrame"]) or "_random")
 		setenv("IIDXDouble"..pname(pn),LoadUserPrefB(pn, "IIDXDouble", tobool(DefaultLuaModifiers["IIDXDouble"])) or false)
 		setenv("IIDXJudgment"..pname(pn),LoadUserPref(pn, "IIDXJudgment", DefaultLuaModifiers["IIDXJudgment"]) or "default")
+		setenv("IIDXJudgmentBrightness"..pname(pn),LoadUserPrefN(pn, "IIDXJudgmentBrightness", tonumber(DefaultLuaModifiers["IIDXJudgmentBrightness"])) or 1.0)
 		setenv("IIDXNote"..pname(pn),LoadUserPref(pn, "IIDXNote", DefaultLuaModifiers["IIDXNote"]) or "default")
+		setenv("IIDXNoteBrightness"..pname(pn),LoadUserPrefN(pn, "IIDXNoteBrightness", tonumber(DefaultLuaModifiers["IIDXNoteBrightness"])) or 1.0)
 		setenv("IIDXNoteLength"..pname(pn),LoadUserPref(pn, "IIDXNoteLength", DefaultLuaModifiers["IIDXNoteLength"]) or "normal")
 		setenv("IIDXBeam"..pname(pn),LoadUserPref(pn, "IIDXBeam", DefaultLuaModifiers["IIDXBeam"]) or "default")
+		setenv("IIDXBeamBrightness"..pname(pn),LoadUserPrefN(pn, "IIDXBeamBrightness", tonumber(DefaultLuaModifiers["IIDXBeamBrightness"])) or 1.0)
 		setenv("IIDXBeamLength"..pname(pn),LoadUserPref(pn, "IIDXBeamLength", DefaultLuaModifiers["IIDXBeamLength"]) or "normal")
 		setenv("IIDXTurntable"..pname(pn),LoadUserPref(pn, "IIDXTurntable", DefaultLuaModifiers["IIDXTurntable"]) or "_default")
 		setenv("IIDXExplosion"..pname(pn),LoadUserPref(pn, "IIDXExplosion", DefaultLuaModifiers["IIDXExplosion"]) or "_default")
+		setenv("IIDXExplosionBrightness"..pname(pn),LoadUserPrefN(pn, "IIDXExplosionBrightness", tonumber(DefaultLuaModifiers["IIDXExplosionBrightness"])) or 1.0)
 	end
 
 end
@@ -1192,6 +1196,32 @@ function OptionIIDXJudgment()
 	return t
 end
 
+function OptionIIDXJudgmentBrightness()
+	local t = {
+		Name = "IIDXJudgmentBrightness",
+		LayoutType = "ShowAllInRow",
+		SelectType = "SelectOne",
+		OneChoiceForAllPlayers = false,
+		ExportOnChange = false,
+		Values = { 0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0 },
+		Choices = { "0.0", "0.1", "0.2", "0.3", "0.4", "0.5", "0.6", "0.7", "0.8", "0.9", "1.0" },
+		LoadSelections = function(self, list, pn)
+			for i=1,#list do
+				list[i] = getenv("IIDXJudgmentBrightness"..pname(pn)) == self.Values[i]
+			end
+		end,
+		SaveSelections = function(self, list, pn)
+			for i=1,#list do
+				if list[i] then
+					setenv("IIDXJudgmentBrightness"..pname(pn),SaveUserPref(pn, "IIDXJudgmentBrightness", self.Values[i]))
+				end
+			end
+		end
+	}
+	setmetatable(t, t)
+	return t
+end
+
 function IIDXNoteskinCheck(player)
 	local noteskin = GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Preferred"):NoteSkin()
 	return noteskin == "iidx-ac"
@@ -1215,6 +1245,32 @@ function OptionIIDXBeam()
 			for i=1,#list do
 				if list[i] then
 					setenv("IIDXBeam"..pname(pn),SaveUserPref(pn, "IIDXBeam", self.Values[i]))
+				end
+			end
+		end
+	}
+	setmetatable(t, t)
+	return t
+end
+
+function OptionIIDXBeamBrightness()
+	local t = {
+		Name = "IIDXBeamBrightness",
+		LayoutType = "ShowAllInRow",
+		SelectType = "SelectOne",
+		OneChoiceForAllPlayers = false,
+		ExportOnChange = false,
+		Values = { 0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0 },
+		Choices = { "0.0", "0.1", "0.2", "0.3", "0.4", "0.5", "0.6", "0.7", "0.8", "0.9", "1.0" },
+		LoadSelections = function(self, list, pn)
+			for i=1,#list do
+				list[i] = getenv("IIDXBeamBrightness"..pname(pn)) == self.Values[i]
+			end
+		end,
+		SaveSelections = function(self, list, pn)
+			for i=1,#list do
+				if list[i] then
+					setenv("IIDXBeamBrightness"..pname(pn),SaveUserPref(pn, "IIDXBeamBrightness", self.Values[i]))
 				end
 			end
 		end
@@ -1275,6 +1331,32 @@ function OptionIIDXNote()
 	return t
 end
 
+function OptionIIDXNoteBrightness()
+	local t = {
+		Name = "IIDXNoteBrightness",
+		LayoutType = "ShowAllInRow",
+		SelectType = "SelectOne",
+		OneChoiceForAllPlayers = false,
+		ExportOnChange = false,
+		Values = { 0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0 },
+		Choices = { "0.0", "0.1", "0.2", "0.3", "0.4", "0.5", "0.6", "0.7", "0.8", "0.9", "1.0" },
+		LoadSelections = function(self, list, pn)
+			for i=1,#list do
+				list[i] = getenv("IIDXNoteBrightness"..pname(pn)) == self.Values[i]
+			end
+		end,
+		SaveSelections = function(self, list, pn)
+			for i=1,#list do
+				if list[i] then
+					setenv("IIDXNoteBrightness"..pname(pn),SaveUserPref(pn, "IIDXNoteBrightness", self.Values[i]))
+				end
+			end
+		end
+	}
+	setmetatable(t, t)
+	return t
+end
+
 function OptionIIDXNoteLength()
 	local t = {
 		Name = "IIDXNoteLength",
@@ -1319,6 +1401,32 @@ function OptionIIDXExplosion()
 			for i=1,#list do
 				if list[i] then
 					setenv("IIDXExplosion"..pname(pn),SaveUserPref(pn, "IIDXExplosion", self.Values[i]))
+				end
+			end
+		end
+	}
+	setmetatable(t, t)
+	return t
+end
+
+function OptionIIDXExplosionBrightness()
+	local t = {
+		Name = "IIDXExplosionBrightness",
+		LayoutType = "ShowAllInRow",
+		SelectType = "SelectOne",
+		OneChoiceForAllPlayers = false,
+		ExportOnChange = false,
+		Values = { 0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0 },
+		Choices = { "0.0", "0.1", "0.2", "0.3", "0.4", "0.5", "0.6", "0.7", "0.8", "0.9", "1.0" },
+		LoadSelections = function(self, list, pn)
+			for i=1,#list do
+				list[i] = getenv("IIDXExplosionBrightness"..pname(pn)) == self.Values[i]
+			end
+		end,
+		SaveSelections = function(self, list, pn)
+			for i=1,#list do
+				if list[i] then
+					setenv("IIDXExplosionBrightness"..pname(pn),SaveUserPref(pn, "IIDXExplosionBrightness", self.Values[i]))
 				end
 			end
 		end
