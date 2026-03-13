@@ -24,16 +24,18 @@ return Def.ActorFrame{
 						if #profile > 0 then
 							for _,highscore in pairs(profile) do
 								if highscore:GetGrade()~="Grade_Failed" then
-									local sps = 0
-									if IsGame("be-mu") or IsGame("beat") then
-										sps = tonumber(LoadFromCache(songs[s],steps[ss],"StepsPerSecond")) / 2
-									else
-										sps = tonumber(LoadFromCache(songs[s],steps[ss],"StepsPerSecond")) * (getColumnsPerPlayer(stepType[2],stepType[3],true) / 4)
-									end
-									sps = math.floor(sps)
-									PaceMaker[pn][math.floor(sps)]=PaceMaker[pn][math.floor(sps)] or {}
-									if highscore:GetPercentDP() > 0.5 then
-										PaceMaker[pn][math.floor(sps)][#PaceMaker[pn][math.floor(sps)]+1] = highscore:GetPercentDP()
+									local sps = LoadFromCache(songs[s],steps[ss],"StepsPerSecond")
+									if sps then
+										if IsGame("be-mu") or IsGame("beat") then
+											sps = tonumber(sps) / 2
+										else
+											sps = tonumber(sps) * (getColumnsPerPlayer(stepType[2],stepType[3],true) / 4)
+										end
+										sps = math.floor(sps)
+										PaceMaker[pn][math.floor(sps)]=PaceMaker[pn][math.floor(sps)] or {}
+										if highscore:GetPercentDP() > 0.5 then
+											PaceMaker[pn][math.floor(sps)][#PaceMaker[pn][math.floor(sps)]+1] = highscore:GetPercentDP()
+										end
 									end
 								end
 							end
