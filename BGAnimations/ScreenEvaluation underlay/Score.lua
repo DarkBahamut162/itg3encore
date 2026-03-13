@@ -165,7 +165,7 @@ return Def.ActorFrame{
 				local DP = DP(player)
 				if DP > 0.5 then
 					PaceMaker[player][math.floor(sps)]=PaceMaker[player][math.floor(sps)] or {}
-					PaceMaker[player][math.floor(sps)][#PaceMaker[player][math.floor(sps)]+1] = DP(player)
+					PaceMaker[player][math.floor(sps)][#PaceMaker[player][math.floor(sps)]+1] = DP
 				end
 				if Data then if UpdateData(player,{["LV"]=CALC_LV,["EXP"]=Data["EXP"]+EXP_STEPS}) then SaveData(player) end end
 			end
