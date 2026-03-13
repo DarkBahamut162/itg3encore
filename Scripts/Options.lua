@@ -219,7 +219,7 @@ function SongMods(part)
 
 	if part == nil or part == 1 then
 		options = addToOutput(options,(isEtterna() and "Speed," or "1,") .."2,4,"..fail..","..((isRegular() and VersionDateCheck(20160000)) and (isOpenDDR() and "0DDR" or "0,Flare") or "0")..",3",",")
-		if not (IsGame("pump") or GAMESTATE:IsCourseMode()) then options = addToOutput(options,(IsGame("beat") or IsGame("be-mu")) and "IIDXFrame,IIDXDouble,IIDXJudgment,IIDXJudgmentBrightness" or "31",",") end
+		if not (IsGame("pump") or GAMESTATE:IsCourseMode()) then options = addToOutput(options,(IsGame("beat") or IsGame("be-mu")) and "IIDXFrame,IIDXDouble,IIDXJudgment,IIDXJudgmentBrightness,IIDXVisibility" or "31",",") end
 		if IIDXcheck() then options = addToOutput(options,"IIDXNote,IIDXNoteBrightness,IIDXNoteLength,IIDXBeam,IIDXBeamBrightness,IIDXBeamLength,IIDXExplosion,IIDXExplosionBrightness,IIDXTurntable",",") end
 		if not (IsGame("be-mu") or IsGame("beat") or IsGame("po-mu") or IsGame("popn")) then options = addToOutput(options,"32,32H",",") end
 	end
@@ -460,9 +460,11 @@ function InitPlayerOptions()
 		setenv("SongFrame"..pname(pn),LoadUserPref(pn, "SongFrame", DefaultLuaModifiers["SongFrame"]) or "_normal")
 		setenv("HoldJudgment"..pname(pn),LoadUserPref(pn, "HoldJudgment", DefaultLuaModifiers["HoldJudgment"]) or "_itg3")
 		setenv("Judgment"..pname(pn),LoadUserPref(pn, "Judgment", DefaultLuaModifiers["Judgment"]) or "_itg3")
-		setenv("GreenNumber"..pname(pn),LoadUserPrefB(pn, "GreenNumber", tobool(DefaultLuaModifiers["Effect"])) or false)
+		setenv("GreenNumber"..pname(pn),LoadUserPrefB(pn, "GreenNumber", tobool(DefaultLuaModifiers["GreenNumber"])) or false)
 
 		setenv("IIDXFrame"..pname(pn),LoadUserPref(pn, "IIDXFrame", DefaultLuaModifiers["IIDXFrame"]) or "_random")
+		setenv("IIDXLife"..pname(pn),LoadUserPrefB(pn, "IIDXLife", tobool(DefaultLuaModifiers["IIDXLife"])) or true)
+		setenv("IIDXPercent"..pname(pn),LoadUserPrefB(pn, "IIDXPercent", tobool(DefaultLuaModifiers["IIDXPercent"])) or true)
 		setenv("IIDXDouble"..pname(pn),LoadUserPrefB(pn, "IIDXDouble", tobool(DefaultLuaModifiers["IIDXDouble"])) or false)
 		setenv("IIDXJudgment"..pname(pn),LoadUserPref(pn, "IIDXJudgment", DefaultLuaModifiers["IIDXJudgment"]) or "default")
 		setenv("IIDXJudgmentBrightness"..pname(pn),LoadUserPrefN(pn, "IIDXJudgmentBrightness", tonumber(DefaultLuaModifiers["IIDXJudgmentBrightness"])) or 1.0)
@@ -1135,6 +1137,34 @@ function OptionIIDXFrame()
 					setenv("IIDXFrame"..pname(pn),SaveUserPref(pn, "IIDXFrame", self.Values[i]))
 				end
 			end
+		end
+	}
+	setmetatable(t, t)
+	return t
+end
+
+function OptionIIDXVisibility()
+	local t = {
+		Name="IIDXVisibility",
+		LayoutType = "ShowAllInRow",
+		SelectType = "SelectMultiple",
+		OneChoiceForAllPlayers = false,
+		ExportOnChange = false,
+		Choices = { "Life", "Percent" },
+		LoadSelections = function(self, list, pn)
+			list[1] = (getenv("IIDXLife"..pname(pn)) or false)
+			list[2] = (getenv("IIDXPercent"..pname(pn)) or false)
+		end,
+		SaveSelections = function() end,
+		NotifyOfSelection= function(self, pn, choice)
+			if choice == 1 then
+				local life = (getenv("IIDXLife"..pname(pn)) or false)
+				setenv("IIDXLife"..pname(pn),SaveUserPref(pn, "IIDXLife", not life))
+			else
+				local percent = (getenv("IIDXPercent"..pname(pn)) or false)
+				setenv("IIDXPercent"..pname(pn),SaveUserPref(pn, "IIDXPercent", not percent))
+			end
+			return true
 		end
 	}
 	setmetatable(t, t)

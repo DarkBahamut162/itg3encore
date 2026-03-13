@@ -89,14 +89,20 @@ local file = {
 		GreenNumber = false,
 
 		IIDXFrame = "_random",
+		IIDXLife = true,
+		IIDXPercent = true,
 		IIDXDouble = false,
 		IIDXJudgment = "default",
+		IIDXJudgmentBrightness = 1.0,
 		IIDXNote = "default",
+		IIDXNoteBrightness = 1.0,
 		IIDXNoteLength = "normal",
 		IIDXBeam = "default",
+		IIDXBeamBrightness = 1.0,
 		IIDXBeamLength = "normal",
 		IIDXTurntable = "_default",
-		IIDXExplosion ="_default"
+		IIDXExplosion ="_default",
+		IIDXExplosionBrightness = 1.0
 	}
 }
 
