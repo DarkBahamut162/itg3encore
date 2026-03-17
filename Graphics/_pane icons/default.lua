@@ -3,6 +3,7 @@ assert(player,"[Graphics/_pane icons] player required")
 
 local bpm,stop,delay,warp,scroll,speed,fake,attack,jump,hold,mine,hand,roll = false,false,false,false,false,false,false,false,false,false,false,false,false
 local stream,voltage,air,freeze,chaos = 0,0,0,0,0
+local notes,peak,scratch,charge,chord,soflan = 0,0,0,0,0,0
 local courseMode = GAMESTATE:IsCourseMode()
 
 return Def.ActorFrame{
@@ -18,6 +19,7 @@ return Def.ActorFrame{
 		local SongOrCourse = courseMode and GAMESTATE:GetCurrentCourse() or GAMESTATE:GetCurrentSong()
 		bpm,stop,delay,warp,scroll,speed,fake,attack,jump,hold,mine,hand,roll = false,false,false,false,false,false,false,false,false,false,false,false,false
 		stream,voltage,air,freeze,chaos = 0,0,0,0,0
+		notes,peak,scratch,charge,chord,soflan = 0,0,0,0,0,0
 		if not courseMode and SongOrCourse then
 			local step = GAMESTATE:GetCurrentSteps(player)
 			if step then
@@ -37,7 +39,11 @@ return Def.ActorFrame{
 				mine = rv:GetValue('RadarCategory_Mines') > 0
 				hand = rv:GetValue('RadarCategory_Hands') > 0
 				roll = rv:GetValue('RadarCategory_Rolls') > 0
-				stream,voltage,air,freeze,chaos = grooveRadar(SongOrCourse,step,rv)
+				if IsGame("beat") or IsGame("be-mu") then
+					notes,peak,scratch,charge,chord,soflan = IIDXGrooveRadar(SongOrCourse,step,rv)
+				else
+					stream,voltage,air,freeze,chaos = grooveRadar(SongOrCourse,step,rv)
+				end
 			end
 		elseif courseMode and SongOrCourse then
 			local trail = GAMESTATE:GetCurrentTrail(player)
@@ -162,6 +168,7 @@ return Def.ActorFrame{
 		}
 	},
 	Def.ActorFrame{
+		Condition=not (IsGame("beat") or IsGame("be-mu")) or courseMode,
 		Def.Sprite {
 			Texture = "_long "..(isFinal() and "final" or "normal"),
 			InitCommand=function(self) self:x(-39+25*0):y(114):shadowlength(1):halign(0) end,
@@ -291,6 +298,167 @@ return Def.ActorFrame{
 			File = "_z bold gray 36px",
 			InitCommand=function(self) self:x(-27+25*4):y(113):shadowlength(1):zoom(0.2):diffusealpha(0):maxwidth(120) end,
 			SetCommand=function(self) self:settextf("%.0f%%",chaos*100) end,
+			SelectMenuOpenedMessageCommand=function(self) self:stoptweening():playcommand("Set"):linear(0.2):diffusealpha(1) end,
+			SelectMenuClosedMessageCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(0) end,
+		}
+	},
+	Def.ActorFrame{
+		Condition=(IsGame("beat") or IsGame("be-mu")) and not courseMode,
+		Def.Sprite {
+			Texture = "_long "..(isFinal() and "final" or "normal"),
+			InitCommand=function(self) self:x(-39+20.83*0):y(114):zoomx(5/6):shadowlength(1):halign(0) end,
+			SetCommand=function(self) if notes > 0 then self:diffuse(color("#FFFFFF")) else self:diffuse(color("#808080")) end end
+		},
+		Def.Sprite {
+			Texture = "_long "..(isFinal() and "final" or "normal"),
+			InitCommand=function(self) self:x(-39+20.83*1):y(114):zoomx(5/6):shadowlength(1):halign(0) end,
+			SetCommand=function(self) if peak > 0 then self:diffuse(color("#FFFFFF")) else self:diffuse(color("#808080")) end end
+		},
+		Def.Sprite {
+			Texture = "_long "..(isFinal() and "final" or "normal"),
+			InitCommand=function(self) self:x(-39+20.83*2):y(114):zoomx(5/6):shadowlength(1):halign(0) end,
+			SetCommand=function(self) if scratch > 0 then self:diffuse(color("#FFFFFF")) else self:diffuse(color("#808080")) end end
+		},
+		Def.Sprite {
+			Texture = "_long "..(isFinal() and "final" or "normal"),
+			InitCommand=function(self) self:x(-39+20.83*3):y(114):zoomx(5/6):shadowlength(1):halign(0) end,
+			SetCommand=function(self) if charge > 0 then self:diffuse(color("#FFFFFF")) else self:diffuse(color("#808080")) end end
+		},
+		Def.Sprite {
+			Texture = "_long "..(isFinal() and "final" or "normal"),
+			InitCommand=function(self) self:x(-39+20.83*4):y(114):zoomx(5/6):shadowlength(1):halign(0) end,
+			SetCommand=function(self) if chord > 0 then self:diffuse(color("#FFFFFF")) else self:diffuse(color("#808080")) end end
+		},
+		Def.Sprite {
+			Texture = "_long "..(isFinal() and "final" or "normal"),
+			InitCommand=function(self) self:x(-39+20.83*5):y(114):zoomx(5/6):shadowlength(1):halign(0) end,
+			SetCommand=function(self) if soflan > 0 then self:diffuse(color("#FFFFFF")) else self:diffuse(color("#808080")) end end
+		},
+		Def.ActorFrame{
+			Def.Quad{
+				Name="NOTES",
+				InitCommand=function(self) self:x(-37+20.83*0):y(114):halign(0):zoomto(16.6,4):diffuse(color("#FF00FF")):blend(Blend.Add) end,
+				SetCommand=function(self)
+					self:stoptweening():decelerate(0.1):zoomx(math.min(notes,1)*16.6)
+					if notes > 1 and peak > 1 and scratch > 1 and charge > 1 and chord > 1 and soflan > 1 then
+						self:stopeffect():rainbow():effectclock('beat')
+					elseif notes > 1 then
+						self:stopeffect():diffuseramp():effectcolor1(color("#800080")):effectcolor2(color("#FF00FF")):effectperiod(0.5):effect_hold_at_full(0.5):effectclock('beat')
+					else
+						self:stopeffect()
+					end
+				end
+			},
+			Def.Quad{
+				Name="PEAK",
+				InitCommand=function(self) self:x(-37+20.83*1):y(114):halign(0):zoomto(16.6,4):diffuse(color("#FFFF00")):blend(Blend.Add) end,
+				SetCommand=function(self)
+					self:stoptweening():decelerate(0.1):zoomx(math.min(peak,1)*16.6)
+					if notes > 1 and peak > 1 and scratch > 1 and charge > 1 and chord > 1 and soflan > 1 then
+						self:stopeffect():rainbow():effectclock('beat')
+					elseif peak > 1 then
+						self:stopeffect():diffuseramp():effectcolor1(color("#808000")):effectcolor2(color("#FFFF00")):effectperiod(0.5):effect_hold_at_full(0.5):effectclock('beat')
+					else
+						self:stopeffect()
+					end
+				end
+			},
+			Def.Quad{
+				Name="SCRATCH",
+				InitCommand=function(self) self:x(-37+20.83*2):y(114):halign(0):zoomto(16.6,4):diffuse(color("#FF0000")):blend(Blend.Add) end,
+				SetCommand=function(self)
+					self:stoptweening():decelerate(0.1):zoomx(math.min(scratch,1)*16.6)
+					if notes > 1 and peak > 1 and scratch > 1 and charge > 1 and chord > 1 and soflan > 1 then
+						self:stopeffect():rainbow():effectclock('beat')
+					elseif scratch > 1 then
+						self:stopeffect():diffuseramp():effectcolor1(color("#800000")):effectcolor2(color("#FF0000")):effectperiod(0.5):effect_hold_at_full(0.5):effectclock('beat')
+					else
+						self:stopeffect()
+					end
+				end
+			},
+			Def.Quad{
+				Name="CHARGE",
+				InitCommand=function(self) self:x(-37+20.83*3):y(114):halign(0):zoomto(16.6,4):diffuse(color("#800080")):blend(Blend.Add) end,
+				SetCommand=function(self)
+					self:stoptweening():decelerate(0.1):zoomx(math.min(charge,1)*16.6)
+					if notes > 1 and peak > 1 and scratch > 1 and charge > 1 and chord > 1 and soflan > 1 then
+						self:stopeffect():rainbow():effectclock('beat')
+					elseif charge > 1 then
+						self:stopeffect():diffuseramp():effectcolor1(color("#400040")):effectcolor2(color("#800080")):effectperiod(0.5):effect_hold_at_full(0.5):effectclock('beat')
+					else
+						self:stopeffect()
+					end
+				end
+			},
+			Def.Quad{
+				Name="CHORD",
+				InitCommand=function(self) self:x(-37+20.83*4):y(114):halign(0):zoomto(16.6,4):diffuse(color("#00FF00")):blend(Blend.Add) end,
+				SetCommand=function(self)
+					self:stoptweening():decelerate(0.1):zoomx(math.min(chord,1)*16.6)
+					if notes > 1 and peak > 1 and scratch > 1 and charge > 1 and chord > 1 and soflan > 1 then
+						self:stopeffect():rainbow():effectclock('beat')
+					elseif chord > 1 then
+						self:stopeffect():diffuseramp():effectcolor1(color("#008000")):effectcolor2(color("#00FF00")):effectperiod(0.5):effect_hold_at_full(0.5):effectclock('beat')
+					else
+						self:stopeffect()
+					end
+				end
+			},
+			Def.Quad{
+				Name="SOFLAN",
+				InitCommand=function(self) self:x(-37+20.83*5):y(114):halign(0):zoomto(16.6,4):diffuse(color("#00FFFF")):blend(Blend.Add) end,
+				SetCommand=function(self)
+					self:stoptweening():decelerate(0.1):zoomx(math.min(soflan,1)*16.6)
+					if notes > 1 and peak > 1 and scratch > 1 and charge > 1 and chord > 1 and soflan > 1 then
+						self:stopeffect():rainbow():effectclock('beat')
+					elseif soflan > 1 then
+						self:stopeffect():diffuseramp():effectcolor1(color("#008080")):effectcolor2(color("#00FFFF")):effectperiod(0.5):effect_hold_at_full(0.5):effectclock('beat')
+					else
+						self:stopeffect()
+					end
+				end
+			}
+		},
+		Def.BitmapText {
+			File = "_z bold gray 36px",
+			InitCommand=function(self) self:x(-27+20.83*0):y(113):shadowlength(1):zoom(0.2):diffusealpha(0):maxwidth(100) end,
+			SetCommand=function(self) self:settextf("%.0f%%",notes*100) end,
+			SelectMenuOpenedMessageCommand=function(self) self:stoptweening():playcommand("Set"):linear(0.2):diffusealpha(1) end,
+			SelectMenuClosedMessageCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(0) end,
+		},
+		Def.BitmapText {
+			File = "_z bold gray 36px",
+			InitCommand=function(self) self:x(-27+20.83*1):y(113):shadowlength(1):zoom(0.2):diffusealpha(0):maxwidth(100) end,
+			SetCommand=function(self) self:settextf("%.0f%%",peak*100) end,
+			SelectMenuOpenedMessageCommand=function(self) self:stoptweening():playcommand("Set"):linear(0.2):diffusealpha(1) end,
+			SelectMenuClosedMessageCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(0) end,
+		},
+		Def.BitmapText {
+			File = "_z bold gray 36px",
+			InitCommand=function(self) self:x(-27+20.83*2):y(113):shadowlength(1):zoom(0.2):diffusealpha(0):maxwidth(100) end,
+			SetCommand=function(self) self:settextf("%.0f%%",scratch*100) end,
+			SelectMenuOpenedMessageCommand=function(self) self:stoptweening():playcommand("Set"):linear(0.2):diffusealpha(1) end,
+			SelectMenuClosedMessageCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(0) end,
+		},
+		Def.BitmapText {
+			File = "_z bold gray 36px",
+			InitCommand=function(self) self:x(-27+20.83*3):y(113):shadowlength(1):zoom(0.2):diffusealpha(0):maxwidth(100) end,
+			SetCommand=function(self) self:settextf("%.0f%%",charge*100) end,
+			SelectMenuOpenedMessageCommand=function(self) self:stoptweening():playcommand("Set"):linear(0.2):diffusealpha(1) end,
+			SelectMenuClosedMessageCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(0) end,
+		},
+		Def.BitmapText {
+			File = "_z bold gray 36px",
+			InitCommand=function(self) self:x(-27+20.83*4):y(113):shadowlength(1):zoom(0.2):diffusealpha(0):maxwidth(100) end,
+			SetCommand=function(self) self:settextf("%.0f%%",chord*100) end,
+			SelectMenuOpenedMessageCommand=function(self) self:stoptweening():playcommand("Set"):linear(0.2):diffusealpha(1) end,
+			SelectMenuClosedMessageCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(0) end,
+		},
+		Def.BitmapText {
+			File = "_z bold gray 36px",
+			InitCommand=function(self) self:x(-27+20.83*5):y(113):shadowlength(1):zoom(0.2):diffusealpha(0):maxwidth(100) end,
+			SetCommand=function(self) self:settextf("%.0f%%",soflan*100) end,
 			SelectMenuOpenedMessageCommand=function(self) self:stoptweening():playcommand("Set"):linear(0.2):diffusealpha(1) end,
 			SelectMenuClosedMessageCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(0) end,
 		}
