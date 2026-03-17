@@ -1634,6 +1634,56 @@ function getCalculatedDifficulty(Step)
 	end
 end
 
+function IIDXGrooveRadar(song,steps,RadarValues)
+	local notes,peak,scratch,charge,chord,soflan = 0,0,0,0,0,0
+	local timingData = steps:GetTimingData()
+	if not isEtterna(20160826) then
+		notes = RadarValues:GetValue('RadarCategory_Stream')
+		peak = RadarValues:GetValue('RadarCategory_Voltage')
+	else
+		local maxVoltage = tonumber(LoadFromCache(song,steps,"maxVoltage"))
+		local chaosCount = tonumber(LoadFromCache(song,steps,"chaosCount"))
+
+		local total = 0
+		if not VersionDateCheck(20150500) then
+			total = RadarCategory_Notes(song,steps)
+		else
+			total = RadarValues:GetValue('RadarCategory_Notes') or 0
+		end
+		notes = (total/song:MusicLengthSeconds())/7
+		peak = ((maxVoltage/8)*(song:GetLastBeat()/song:MusicLengthSeconds()))/10
+	end
+	scratches = tonumber(LoadFromCache(song,steps,"Scratches")) or 0
+	scratches = scratches/song:MusicLengthSeconds()
+	charge = RadarValues:GetValue('RadarCategory_Holds')+RadarValues:GetValue('RadarCategory_Rolls')
+	charge = charge/song:MusicLengthSeconds()
+	chord = tonumber(LoadFromCache(song,steps,"Chords")) or 0
+	chord = chord/song:MusicLengthSeconds()
+	soflan = #timingData:GetBPMsAndTimes() + #timingData:GetStops() -1
+	soflan = soflan/song:MusicLengthSeconds()
+
+	local usesStepCache = ThemePrefs.Get("UseStepCache")
+	local totalSeconds = usesStepCache and tonumber(LoadFromCache(song,steps,"TrueSeconds")) or song:GetLastSecond() - song:GetFirstSecond()
+	local totalBeats = usesStepCache and tonumber(LoadFromCache(song,steps,"TrueBeats")) or song:GetLastBeat() - song:GetFirstBeat()
+	local avg_bps_OLD = song:GetLastBeat() / song:MusicLengthSeconds()
+	local avg_bps_NEW = totalBeats / totalSeconds
+
+	if totalSeconds < 0 and totalBeats < 0 then
+		totalSeconds = song:GetLastSecond() - song:GetFirstSecond()
+		totalBeats = song:GetLastBeat() - song:GetFirstBeat()
+		avg_bps_NEW = totalBeats / totalSeconds
+	end
+
+	notes = notes * song:MusicLengthSeconds() / totalSeconds
+	peak = peak / avg_bps_OLD * avg_bps_NEW
+	scratches = scratches * song:MusicLengthSeconds() / totalSeconds
+	charge = charge * song:MusicLengthSeconds() / totalSeconds
+	chord = chord * song:MusicLengthSeconds() / totalSeconds
+	soflan = soflan * song:MusicLengthSeconds() / totalSeconds
+
+	return math.max(0,notes),math.max(0,peak),math.max(scratch),math.max(0,charge),math.max(0,chord),math.max(0,soflan)
+end
+
 function grooveRadar(song,steps,RadarValues)
 	local stream,voltage,air,freeze,chaos = 0,0,0,0,0
 
