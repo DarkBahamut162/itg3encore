@@ -15,6 +15,7 @@ local function GetPosition(pn)
 end
 
 return Def.ActorFrame{
+	InitCommand=function(self) if (IsGame("beat") or IsGame("be-mu")) then self:visible(false) end end,
 	Def.Sprite {
 		Texture = "bluebeam",
 		InitCommand=function(self) self:blend(Blend.Add):x(GetPosition(pn)):y(SCREEN_CENTER_Y-SCREEN_HEIGHT/9+15):diffusealpha(0):zoom(0.3):cropleft(0.5):cropright(0.5) end,

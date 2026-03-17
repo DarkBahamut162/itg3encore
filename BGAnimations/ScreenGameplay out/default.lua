@@ -4,7 +4,12 @@ return Def.ActorFrame{
 		Def.Quad{
 			InitCommand=function(self) self:FullScreen():diffuse(color("#00000000")) end,
 			StartTransitioningCommand=function(self) self:playcommand("Check"):diffusealpha(0):linear(0.3):diffusealpha(1):sleep(1) end,
-			CheckCommand=function(self) if AnyPlayerFullComboed() then SOUND:PlayOnce( THEME:GetPathS( '', "FullComboSplash" ) ) if isEtterna("0.65") then self:sleep(3) else self:hibernate(3) end end end
+			CheckCommand=function(self)
+				if AnyPlayerFullComboed() then
+					if not (IsGame("beat") or IsGame("be-mu")) then SOUND:PlayOnce( THEME:GetPathS( '', "FullComboSplash" ) ) end
+					if isEtterna("0.65") then self:sleep(3) else self:hibernate(3) end
+				end
+			end
 		},
 		Def.ActorFrame{
 			InitCommand=function(self) self:visible(true) end,
