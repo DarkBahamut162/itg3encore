@@ -83,6 +83,10 @@ return Def.ActorFrame{
 								output = addToOutput(output,"NULL MEASURE ("..nulls..")"," & ")
 								self:diffuse(Color("Red"))
 							end
+							if HasExtendedKeysounds(steps) then
+								output = addToOutput(output,"EXTENDED KEYSOUNDS"," & ")
+								self:diffuse(Color("Red"))
+							end
 						end
 						if steps and HasVideoBMS(steps,"BMP..") then
 							output = addToOutput(output,"VIDEO"," & ")

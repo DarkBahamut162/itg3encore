@@ -589,6 +589,33 @@ function HasKeysounds(Step)
 	return ret
 end
 
+function HasExtendedKeysounds(Step)
+    local filePath = Step:GetFilename():lower()
+	local check = filePath:sub(-3):sub(2,2) == "m" and filePath:sub(-3):sub(1,1) ~= "s"
+	if check then else return false end
+    local hasLowercase = false
+    local file = RageFileUtil:CreateRageFile()
+	if file:Open(filePath,1) then
+		file:Seek(0)
+		while true do
+			if file then
+				local key = file:GetLine():match("^#WAV([%w][%w])%s")
+				if key then
+					if key:match("[a-z]") then
+						hasLowercase = true
+						break
+					end
+				elseif file:AtEOF() then
+					break
+				end
+			end
+		end
+	end
+    file:Close()
+    file:destroy()
+    return hasLowercase
+end
+
 function CheckNullMeasure(Step)
 	if not Step then return false end
 	local filePath = Step:GetFilename():lower()
