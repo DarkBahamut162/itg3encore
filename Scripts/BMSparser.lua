@@ -56,15 +56,41 @@ function BMSParser(steps)
 					actualBeat = actualBeat + 4*(timing[currentMeasure-1] or 1)
 					previousMeasure = currentMeasure
 				end
-				if tonumber(measure) < 100 then
-					if tonumber(measure) % 100 > 10 and tonumber(measure) % 100 < 30 then
-						local currentRow = -1
-						rows = splitByChunk(rows,2)
-						for row in ivalues(rows) do
-							currentRow = currentRow + 1
-							if row ~= "00" then
-								beat = actualBeat+(currentRow/#rows*4)*(timing[currentMeasure-1] or 1)
-								if actualBeatData[beat] then actualBeatData[beat][#actualBeatData[beat]+1] = tonumber(measure) % 100 else actualBeatData[beat] = {tonumber(measure) % 100} end
+				if tonumber(measure) % 100 > 10 and tonumber(measure) % 100 < 30 then
+					local currentRow = -1
+					rows = splitByChunk(rows,2)
+					for row in ivalues(rows) do
+						currentRow = currentRow + 1
+						if row ~= "00" then
+							beat = actualBeat+(currentRow/#rows*4)*(timing[currentMeasure-1] or 1)
+							if actualBeatData[beat] then actualBeatData[beat][#actualBeatData[beat]+1] = tonumber(measure) % 100 else actualBeatData[beat] = {tonumber(measure) % 100} end
+							beatData[beat] = (beatData[beat] or 0) + 1
+							if filetype ~= "pms" then
+								if tonumber(measure) % 10 == 6 then
+									scratch = scratch + 1
+								elseif tonumber(measure) % 10 == 7 then
+									foot = foot + 1
+								else
+									chords[beat] = (chords[beat] or 0) + 1
+								end
+							end
+						end
+					end
+				end
+				if tonumber(measure) % 100 > 50 and tonumber(measure) % 100 < 70 then
+					local currentRow = -1
+					rows = splitByChunk(rows,2)
+					for row in ivalues(rows) do
+						currentRow = currentRow + 1
+						if row ~= "00" then
+							beat = actualBeat+(currentRow/#rows*4)*(timing[currentMeasure] or 1)
+							if actualBeatData[beat] then actualBeatData[beat][#actualBeatData[beat]+1] = tonumber(measure) % 100 else actualBeatData[beat] = {tonumber(measure) % 100} end
+							local index = FindInTable(row, holds)
+							if index then
+								table.remove(holds, index)
+								lastHold = beat
+							else
+								table.insert(holds, row)
 								beatData[beat] = (beatData[beat] or 0) + 1
 								if filetype ~= "pms" then
 									if tonumber(measure) % 10 == 6 then
@@ -73,34 +99,6 @@ function BMSParser(steps)
 										foot = foot + 1
 									else
 										chords[beat] = (chords[beat] or 0) + 1
-									end
-								end
-							end
-						end
-					end
-					if tonumber(measure) % 100 > 50 and tonumber(measure) % 100 < 70 then
-						local currentRow = -1
-						rows = splitByChunk(rows,2)
-						for row in ivalues(rows) do
-							currentRow = currentRow + 1
-							if row ~= "00" then
-								beat = actualBeat+(currentRow/#rows*4)*(timing[currentMeasure] or 1)
-								if actualBeatData[beat] then actualBeatData[beat][#actualBeatData[beat]+1] = tonumber(measure) % 100 else actualBeatData[beat] = {tonumber(measure) % 100} end
-								local index = FindInTable(row, holds)
-								if index then
-									table.remove(holds, index)
-									lastHold = beat
-								else
-									table.insert(holds, row)
-									beatData[beat] = (beatData[beat] or 0) + 1
-									if filetype ~= "pms" then
-										if tonumber(measure) % 10 == 6 then
-											scratch = scratch + 1
-										elseif tonumber(measure) % 10 == 7 then
-											foot = foot + 1
-										else
-											chords[beat] = (chords[beat] or 0) + 1
-										end
 									end
 								end
 							end
