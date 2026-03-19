@@ -7,8 +7,8 @@ local unableToBeCachedTotal = 0
 local cachedWrongVersionTotal = 0
 local errorTotal = 0
 
-local s = 10
-local ss = 100
+local s = 5
+local ss = 50
 local ani = false
 
 local cur = 0
@@ -28,6 +28,11 @@ local types = ""
 local totalTypes = {}
 local cachedTypes = {}
 local cachedTimes = {}
+
+local currentCacheVersion = getCacheVersion()
+local cacheIndex = 1
+local checkIndex = 1
+local startTime = 0
 
 local InputHandler = function(event)
 	if not event.PlayerNumber or not event.button then return false end
@@ -52,14 +57,14 @@ local InputHandler = function(event)
 			if checked then
 				if updated then
 					SCREENMAN:GetTopScreen():StartTransitioningScreen("SM_GoToNextScreen")
-					SOUND:PlayOnce(THEME:GetPathS("Common", "Start"), true)
+					SOUND:PlayOnce(THEME:GetPathS("Common","Start"),true)
 				else
 					if cur%2 == 1 then
 						SCREENMAN:GetTopScreen():StartTransitioningScreen("SM_GoToNextScreen")
-						SOUND:PlayOnce(THEME:GetPathS("Common", "Start"), true)
+						SOUND:PlayOnce(THEME:GetPathS("Common","Start"),true)
 					else
 						checked = false
-						s,ss = 10,100
+						s,ss = 5,50
 						cs.Seconds:playcommand("Update")
 						cs.DeciSeconds:playcommand("Update")
 						c.Cursor:diffusealpha(0)
@@ -94,9 +99,15 @@ return Def.ActorFrame{
 	},
 	Def.BitmapText {
 		File = "_z 36px shadowx",
-		Name="Checked",
+		Name="CheckTime",
 		Text="",
-		InitCommand=function(self) self:x(SCREEN_LEFT+25*WideScreenDiff()*WideScreenDiff()+SCREEN_WIDTH/6*1/WideScreenDiff()):y(isFinal() and SCREEN_BOTTOM-74*WideScreenDiff() or SCREEN_BOTTOM-66*WideScreenDiff()):shadowlength(2):vertalign(bottom):vertspacing(-9):maxwidth(SCREEN_WIDTH/3*2/WideScreenDiff()):zoom(0.333*WideScreenDiff()):diffusealpha(0) end,
+		InitCommand=function(self) self:x(SCREEN_LEFT+25*WideScreenDiff()*WideScreenDiff()+SCREEN_WIDTH/6*1/WideScreenDiff()):y(isFinal() and SCREEN_BOTTOM-74*WideScreenDiff() or SCREEN_BOTTOM-66*WideScreenDiff()):shadowlength(2):vertalign(bottom):vertspacing(-9):maxwidth(SCREEN_WIDTH/WideScreenDiff()):zoom(0.333*WideScreenDiff()):diffusealpha(0) end,
+	},
+	Def.BitmapText {
+		File = "_z 36px shadowx",
+		Name="CacheTime",
+		Text="",
+		InitCommand=function(self) self:x(SCREEN_LEFT+25*WideScreenDiff()*WideScreenDiff()+SCREEN_WIDTH/6*1/WideScreenDiff()):y(isFinal() and SCREEN_BOTTOM-74*WideScreenDiff() or SCREEN_BOTTOM-66*WideScreenDiff()):shadowlength(2):vertalign(bottom):vertspacing(-9):maxwidth(SCREEN_WIDTH/WideScreenDiff()):zoom(0.333*WideScreenDiff()):diffusealpha(0) end,
 	},
 	Def.BitmapText {
 		File = "_z 36px shadowx",
@@ -194,41 +205,52 @@ return Def.ActorFrame{
 	Def.BitmapText {
 		File = "_z 36px shadowx",
 		Name="Cache",
-		Text="The StepCache will be checked in 10 seconds.\nThis might take a little while...",
+		Text="The StepCache will be checked in 5 seconds.\nThis might take a little while...",
 		InitCommand=function(self) self:Center():zoom(0.6*WideScreenDiff()):shadowlength(2):cropleft(0.5):cropright(0.5):maxwidth(SCREEN_WIDTH/0.7/WideScreenDiff()) end,
 		OnCommand=function(self) self:decelerate(0.5):cropleft(0):cropright(0):sleep(s-0.1):queuecommand("Checking") end,
-		CheckingCommand=function(self) self:settext("Checking..."):sleep(0.1):queuecommand("Check") end,
-		UpdatingCommand=function(self) self:settext("Updating..."):sleep(0.1):queuecommand("Update") end,
+		CheckingCommand=function(self) self:settext("Checking StepCache..."):sleep(0.1):queuecommand("Check") end,
+		UpdatingCommand=function(self) self:settext("Updating StepCache..."):sleep(0.1):queuecommand("Update") end,
 		CheckCommand=function(self)
+			if cancel then self:queuecommand("Checked") return end
+
 			local songs = SONGMAN:GetAllSongs()
-			local currentCacheVersion = getCacheVersion()
-			if not cancel then
-				local start = GetTimeSinceStart()
-				for curSong=1,#songs do
-					local steps = songs[curSong]:GetAllSteps()
-					for curStep=1,#steps do
-						if steps[curStep] and not (not isEtterna("0.55") and steps[curStep]:IsAutogen()) then
-							local stepType = split("_",steps[curStep]:GetStepsType())[2]
+			if not songs or #songs == 0 then checked = true self:queuecommand("Checked") return end
+
+			startTime = GetTimeSinceStart()
+
+			self:queuecommand("CheckBatch")
+		end,
+		CheckBatchCommand=function(self)
+			if cancel then self:queuecommand("Checked") return end
+
+			local songs = SONGMAN:GetAllSongs()
+			for curSong = checkIndex, math.min(checkIndex,#songs) do
+				local song = songs[curSong]
+				if song then
+					local steps = song:GetAllSteps()
+					for curStep = 1, #steps do
+						local step = steps[curStep]
+						if step and not (not isEtterna("0.55") and step:IsAutogen()) then
+							local stepType = split("_",step:GetStepsType())[2]
 							if cacheStepTypes[stepType] then
-								local filename = split("/",steps[curStep]:GetFilename())
+								local filename = split("/",step:GetFilename())
 								if #filename >= 4 then
-									local cacheFile = getStepCacheFile(steps[curStep])
+									local cacheFile = getStepCacheFile(step)
 									if not FILEMAN:DoesFileExist(cacheFile) then
-										stepsToCache[#stepsToCache+1] = steps[curStep]
+										stepsToCache[#stepsToCache+1] = step
 										toBeCachedTotal = toBeCachedTotal + 1
 									else
 										local version = LoadModule("Config.Load.lua")("Version",cacheFile)
 										if version == "0" then
 											unableToBeCachedTotal = unableToBeCachedTotal + 1
 										elseif not version or version ~= currentCacheVersion then
-											stepsToCache[#stepsToCache+1] = steps[curStep]
+											stepsToCache[#stepsToCache+1] = step
 											alreadyCachedTotal = alreadyCachedTotal + 1
 											cachedWrongVersionTotal = cachedWrongVersionTotal + 1
 										else
 											alreadyCachedTotal = alreadyCachedTotal + 1
 										end
 									end
-									cacheFile = nil
 								else
 									errorTotal = errorTotal + 1
 								end
@@ -237,17 +259,23 @@ return Def.ActorFrame{
 					end
 					steps = nil
 				end
-				local checkDuration = GetTimeSinceStart()-start
-				c.Checked:settext("CHECK TIME "..string.format("%0.3f",checkDuration).." s ("..string.format("%0.3f",checkDuration/totalTypes["TOTAL"]*1000 or 0).." ms)"):addy(-(#types+2)*10):diffusealpha(0.75)
+			end
+			local percent = math.floor(checkIndex / #songs * 100)
+			self:settext(string.format("Checking StepCache...\n\n%d%%\n(%d/%d)\n\n%s seconds left",percent,checkIndex,#songs,math.max(0,math.floor((#songs-checkIndex)*((GetTimeSinceStart()-startTime)/checkIndex)+0.5))))
+			checkIndex = checkIndex + 1
+			if checkIndex > #songs then
+				local checkDuration = GetTimeSinceStart()-startTime
+				c.CheckTime:settext("CHECK TIME "..string.format("%0.3f",checkDuration).." s ("..string.format("%0.3f",checkDuration/totalTypes["TOTAL"]*1000 or 0).." ms)"):addy(-(#types+2)*10):diffusealpha(0.75)
 				checked = true
 				songs = nil
 				if toBeCachedTotal == 0 and cachedWrongVersionTotal == 0 then updated = true end
 				self:queuecommand("Checked")
+			else
+				self:sleep(1/600):queuecommand("CheckBatch")
 			end
 		end,
 		CheckedCommand=function(self)
 			local typ = ""
-			local add = ""
 
 			if toBeCachedTotal > 0 and cachedWrongVersionTotal == 0 then
 				typ = "cache"
@@ -260,7 +288,7 @@ return Def.ActorFrame{
 			end
 
 			if not updated then
-				add = "Would you like to\n"..typ.."\n the remaining steps?"
+				local add = "Would you like to\n"..typ.."\n the remaining steps?"
 				c.Cursor:queuecommand("Yes"):diffusealpha(1)
 				c.YES:diffusealpha(1)
 				c.NO:diffusealpha(1)
@@ -274,47 +302,67 @@ return Def.ActorFrame{
 			end
 		end,
 		UpdateCommand=function(self)
-			if not cancel then
-				setenv("cacheing",true)
-				for curStep=1,#stepsToCache do
-					if stepsToCache[curStep] then
-						local cacheTime = GetTimeSinceStart()
-						local filePath = stepsToCache[curStep]:GetFilename():lower()
-						local checkSM = filePath:sub(-2):sub(1,1) == 's'	-- [S]M & S[S]C
-						local checkDWI = filePath:sub(-3):sub(1,1) == 'd'	-- [D]WI
-						--local checkBMS = filePath:sub(-3):sub(2,2) == 'm'	-- B[M]S & B[M]E & B[M]L & P[M]S
-						local checkPMS = filePath:sub(-3) == 'pms'
+			if cancel or not stepsToCache or #stepsToCache == 0 then updated = true self:queuecommand("Updated") return end
+			setenv("cacheing",true)
+			startTime = GetTimeSinceStart()
+			self:settext("Updating StepCache...\n\n0%\n(0/"..#stepsToCache..")"):queuecommand("CacheBatch")
+		end,
+		CacheBatchCommand=function(self)
+			if cancel then self:queuecommand("Updated") return end
 
-						if not isOutFox(20200400) or ((checkSM or checkPMS) and isOutFoxV()) then
-							if checkSM then
-								cacheStepSM(nil,stepsToCache[curStep])
-							elseif checkDWI then
-								cacheStepDWI(nil,stepsToCache[curStep])
-							else
-								cacheStepBMS(nil,stepsToCache[curStep])
-							end
+			local cacheTime, cachedTime
+			for i = cacheIndex, math.min(cacheIndex,#stepsToCache) do
+				local step = stepsToCache[i]
+				if step then
+					cacheTime = GetTimeSinceStart()
+					local filePath = step:GetFilename():lower()
+					local checkSM  = filePath:sub(-2):sub(1,1) == 's'	-- [S]M & S[S]C
+					local checkDWI = filePath:sub(-3):sub(1,1) == 'd'	-- [D]WI
+					--local checkBMS = filePath:sub(-3):sub(2,2) == 'm'	-- B[M]S & B[M]E & B[M]L & P[M]S
+					local checkPMS = filePath:sub(-3) == 'pms'
+
+					if not isOutFox(20200400) or ((checkSM or checkPMS) and isOutFoxV()) then
+						if checkSM then
+							cacheStepSM(nil,step)
+						elseif checkDWI then
+							cacheStepDWI(nil,step)
 						else
-							cacheStep(nil,stepsToCache[curStep])
+							cacheStepBMS(nil,step)
 						end
-						local stepType = split("_",stepsToCache[curStep]:GetStepsType())[2]
-						cachedTimes[stepType] = (cachedTimes[stepType] or 0) + (GetTimeSinceStart()-cacheTime)
-						cachedTypes[stepType] = (cachedTypes[stepType] or 0) + 1
-						cachedTypes["TOTAL"] = (cachedTypes["TOTAL"] or 0) + 1
+					else
+						cacheStep(nil,step)
 					end
+					local stepType = split("_",step:GetStepsType())[2]
+					cachedTime = GetTimeSinceStart()-cacheTime
+					cachedTimes[stepType] = (cachedTimes[stepType] or 0) + cachedTime
+					cachedTypes[stepType] = (cachedTypes[stepType] or 0) + 1
+					cachedTypes["TOTAL"] = (cachedTypes["TOTAL"] or 0) + 1
 				end
-				setenv("cacheing",false)
-				local output = ""
-				local total = 0
-				for i=1,#types do
-					total = total + (cachedTimes[types[i]] or 0)
-					output = addToOutput(output,(cachedTypes[types[i]] or 0).." ("..string.format("%0.3f",cachedTimes[types[i]] or 0).." s)","\n")
-				end
-				c.Cached:settext(output.."\n\n"..cachedTypes["TOTAL"].." ("..string.format("%0.3f",total).." s)")
-				stepsToCache = nil
-				checked = true
-				updated = true
-				self:queuecommand("Updated")
 			end
+			local percent = math.floor( (cacheIndex-1) / #stepsToCache * 100 )
+			self:settext( string.format("Updating StepCache...\n\n%d%%\n(%d/%d)\n\n%d seconds left...",percent,cacheIndex,#stepsToCache,math.max(0,math.floor((#stepsToCache-cacheIndex)*((GetTimeSinceStart()-startTime)/cacheIndex)+0.5))))
+			cacheIndex = cacheIndex + 1
+			if cacheIndex > #stepsToCache then
+				local cacheDuration = GetTimeSinceStart()-startTime
+				c.CacheTime:settext("Cache TIME "..string.format("%0.3f",cacheDuration).." s ("..string.format("%0.3f",cacheDuration/totalTypes["TOTAL"]*1000 or 0).." ms)"):addy(-(#types+3)*10):diffusealpha(0.75)
+				setenv("cacheing",false)
+				stepsToCache = nil
+				self:queuecommand("FinishUpdate")
+			else
+				self:sleep(1/60):queuecommand("CacheBatch")
+			end
+		end,
+		FinishUpdateCommand=function(self)
+			local output = ""
+			local total = 0
+			for i=1,#types do
+				total = total + (cachedTimes[types[i]] or 0)
+				output = addToOutput(output,(cachedTypes[types[i]] or 0).." ("..string.format("%0.3f",cachedTimes[types[i]] or 0).." s)","\n")
+			end
+			c.Cached:settext(output.."\n\n"..cachedTypes["TOTAL"].." ("..string.format("%0.3f",total).." s)")
+			checked = true
+			updated = true
+			self:queuecommand("Updated")
 		end,
 		UpdatedCommand=function(self)
 			if FILEMAN.FlushDirCache then FILEMAN:FlushDirCache("/Cache/Steps/") end
