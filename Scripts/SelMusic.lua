@@ -7,6 +7,7 @@ bannerForced = false
 KeysChecked = false
 ThemeVersion = "????????"
 CheckVersion = "????????"
+EngineVersion = "?.?.?"
 local full = isOutFoxV() and "FullRes" or "Full"
 DefaultLuaModifiers = {}
 PaceMaker = {[PLAYER_1]={},[PLAYER_2]={}}

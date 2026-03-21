@@ -1171,9 +1171,10 @@ function Base64Decode(data)
 end
 
 function CheckThemeVersion()
-	if string.find(PREFSMAN:GetPreference("HttpAllowHosts"),"api.github.com") and CheckVersion=="????????" then
+	local url = "https://api.github.com/repos/DarkBahamut162/itg3encore/contents/version.txt?ref=master"
+	if NETWORK:IsUrlAllowed(url) and CheckVersion=="????????" then
 		NETWORK:HttpRequest{
-			url="https://api.github.com/repos/DarkBahamut162/itg3encore/contents/version.txt?ref=master",
+			url=url,
 			headers=headers,
 			connectTimeout=3,
 			transferTimeout=10,
