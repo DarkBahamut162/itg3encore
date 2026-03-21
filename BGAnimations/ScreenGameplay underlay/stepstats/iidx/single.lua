@@ -393,7 +393,7 @@ return Def.ActorFrame{
 				UpdateCommand=function(self)
 					local curHighscoreDP = math.ceil(DPCurMax(pn)*PercentDP(topscore))
 					local curDP = DPCur(pn)
-					local time = GAMESTATE:IsCourseMode() and vStats:GetAliveSeconds() or GAMESTATE:GetCurMusicSeconds()/GAMESTATE:GetSongOptionsObject("ModsLevel_Song"):MusicRate()
+					local time = GAMESTATE:IsCourseMode() and STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):GetAliveSeconds() or GAMESTATE:GetCurMusicSeconds()/GAMESTATE:GetSongOptionsObject("ModsLevel_Song"):MusicRate()
 					highscoredata[#highscoredata+1] = { time, curDP-curHighscoreDP }
 
 					local addX = (curHighscoreDP/DPMax(pn))*barHeight
@@ -417,7 +417,7 @@ return Def.ActorFrame{
 				UpdateCommand=function(self)
 					local curTargetDP = math.ceil(DPCurMax(pn)*target)
 					local curDP = DPCur(pn)
-					local time = GAMESTATE:IsCourseMode() and vStats:GetAliveSeconds() or GAMESTATE:GetCurMusicSeconds()/GAMESTATE:GetSongOptionsObject("ModsLevel_Song"):MusicRate()
+					local time = GAMESTATE:IsCourseMode() and STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):GetAliveSeconds() or GAMESTATE:GetCurMusicSeconds()/GAMESTATE:GetSongOptionsObject("ModsLevel_Song"):MusicRate()
 					targetdata[#targetdata+1] = { time, curDP-curTargetDP }
 
 					local addX = (curTargetDP/DPMax(pn))*barHeight
