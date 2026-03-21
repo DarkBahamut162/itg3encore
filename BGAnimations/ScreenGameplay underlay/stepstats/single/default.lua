@@ -28,20 +28,32 @@ local stepsType = StepsTypeSingle()[GetUserPrefN("StylePosition")]
 local stepType = split("_",stepsType)
 if getenv("SetPacemaker"..pname(pn)) == 18 then
 	local sps = 0
-	local song = GAMESTATE:GetCurrentSong()
-	local steps = GAMESTATE:GetCurrentSteps(pn)
-	if IsGame("be-mu") or IsGame("beat") then
-		sps = tonumber(LoadFromCache(song,steps,"StepsPerSecond")) / 2
+	local song = {}
+	local steps = {}
+	if GAMESTATE:IsCourseMode() then
+		local entries = GAMESTATE:GetCurrentTrail(pn):GetTrailEntries()
+		for i=1,#entries do
+			song[#song+1] = entries[i]:GetSong()
+			steps[#steps+1] = entries[i]:GetSteps()
+		end
 	else
-		sps = tonumber(LoadFromCache(song,steps,"StepsPerSecond")) * (getColumnsPerPlayer(stepType[2],stepType[3],true) / 4)
+		song = {GAMESTATE:GetCurrentSong()}
+		steps = {GAMESTATE:GetCurrentSteps(pn)}
 	end
-	sps = math.floor(sps)
-	local min = (PaceMaker[pn] and PaceMaker[pn][math.floor(sps)]) and 1 or 0.5
-	for pms in ivalues(PaceMaker[pn][math.floor(sps)] or {}) do
-		min = math.min(min,math.max(0.5,pms))
-		tmax = math.max(tmax,pms)
+	for i=1,#song do
+		if IsGame("be-mu") or IsGame("beat") then
+			sps = tonumber(LoadFromCache(song[1],steps[1],"StepsPerSecond")) / 2
+		else
+			sps = tonumber(LoadFromCache(song[1],steps[1],"StepsPerSecond")) * (getColumnsPerPlayer(stepType[2],stepType[3],true) / 4)
+		end
+		sps = math.floor(sps)
+		local min = (PaceMaker[pn] and PaceMaker[pn][math.floor(sps)]) and 1 or 0.5
+		for pms in ivalues(PaceMaker[pn][math.floor(sps)] or {}) do
+			min = math.min(min,math.max(0.5,pms))
+			tmax = math.max(tmax,pms)
+			target = math.max(0.5,min)
+		end
 	end
-	target = math.max(0.5,min)
 else
 	target = THEME:GetMetric("PlayerStageStats", "GradePercentTier" .. string.format("%02d", 18-(getenv("SetPacemaker"..pname(pn)) or 0)))
 end
