@@ -81,9 +81,9 @@ else
 	align = player == PLAYER_1 and 1 or 0
 end
 
-local XMS = IsGame("beat") or IsGame("be-mu") or IsGame("popn") or IsGame("po-mu")
+local BMS = IsGame("beat") or IsGame("be-mu")
 
-if XMS then move = THEME:GetMetric(Var "LoadingScreen","Player"..pname(player).."OnePlayerOneSideX") end
+if BMS then move = THEME:GetMetric(Var "LoadingScreen","Player"..pname(player).."OnePlayerOneSideX") end
 
 return Def.ActorFrame{
 	CodeMessageCommand = function(self, params)
@@ -118,7 +118,7 @@ return Def.ActorFrame{
 		end
 		if isGamePlay() then self:SetUpdateFunction(Update) end
 		self:visible(isGamePlay())
-		if not XMS then
+		if not BMS then
 			self:y(SCREEN_TOP+91*WideScreenDiff()-162.5+add):accelerate(0.5):y(SCREEN_TOP+91*WideScreenDiff()-100+add):decelerate(0.8):y(SCREEN_TOP+91*WideScreenDiff()+add)
 		else
 			self:y(SCREEN_TOP+41*WideScreenDiff())
@@ -130,7 +130,7 @@ return Def.ActorFrame{
 		Name="Min"..pname(player),
 		Text="000",
 		InitCommand=function(self)
-			self:visible(getenv("GreenNumber"..pname(player))):diffuse(PlayerColor(player)):x(move):zoom(0.4*WideScreenDiff()):diffuse(color("#00ff00")):shadowlength(1):addx(XMS and -maxwidth*0.4*WideScreenDiff() or 0):y(XMS and 0 or -10):halign(align):maxwidth(maxwidth)
+			self:visible(getenv("GreenNumber"..pname(player))):diffuse(PlayerColor(player)):x(move):zoom(0.4*WideScreenDiff()):diffuse(color("#00ff00")):shadowlength(1):addx(BMS and -maxwidth*0.4*WideScreenDiff() or 0):y(BMS and 0 or -10):halign(align):maxwidth(maxwidth)
 		end,
 	},
 	Def.BitmapText {
@@ -146,7 +146,7 @@ return Def.ActorFrame{
 		Name="Max"..pname(player),
 		Text="000",
 		InitCommand=function(self)
-			self:visible(getenv("GreenNumber"..pname(player))):diffuse(PlayerColor(player)):x(move):zoom(0.4*WideScreenDiff()):diffuse(color("#00ff00")):shadowlength(1):addx(XMS and maxwidth*0.4*WideScreenDiff() or 0):y(XMS and 0 or 10):halign(align):maxwidth(maxwidth)
+			self:visible(getenv("GreenNumber"..pname(player))):diffuse(PlayerColor(player)):x(move):zoom(0.4*WideScreenDiff()):diffuse(color("#00ff00")):shadowlength(1):addx(BMS and maxwidth*0.4*WideScreenDiff() or 0):y(BMS and 0 or 10):halign(align):maxwidth(maxwidth)
 		end,
 	}
 }
