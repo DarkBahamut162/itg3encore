@@ -1188,7 +1188,7 @@ end
 
 function CheckEngineVersion()
 	local url = "https://www.itgmania.com/api/versions.json"
-	if NETWORK:IsUrlAllowed(url) and CheckVersion=="?.?.?" then
+	if NETWORK:IsUrlAllowed(url) and EngineVersion=="?.?.?" then
 		NETWORK:HttpRequest{
 			url=url,
 			onResponse=function(response)
