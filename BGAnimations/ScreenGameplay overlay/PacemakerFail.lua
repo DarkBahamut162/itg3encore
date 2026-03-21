@@ -15,7 +15,7 @@ if getenv("SetPacemaker"..pname(player)) == 18 then
 		sps = tonumber(LoadFromCache(song,steps,"StepsPerSecond")) * (getColumnsPerPlayer(stepType[2],stepType[3],true) / 4)
 	end
 	sps = math.floor(sps)
-	local min = 1
+	local min = (PaceMaker[pn] and PaceMaker[pn][math.floor(sps)]) and 1 or 0.5
 	for pms in ivalues(PaceMaker[player][math.floor(sps)] or {}) do
 		min = math.min(min,math.max(0.5,pms))
 	end
