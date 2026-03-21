@@ -39,20 +39,7 @@ if isOutFox(20220900) and not isOutFox(20230400) then
 	end
 end
 
-if isITGmania() then CheckThemeVersion() end
-
-local url = "https://www.itgmania.com/api/versions.json"
-if isITGmania() and NETWORK:IsUrlAllowed(url) then
-	NETWORK:HttpRequest{
-		url=url,
-		onResponse=function(response)
-			if response.statusCode == 200 then
-				local body = string.gsub(response["body"],"['\"{}\r\t\f\v\n ]+","")
-				EngineVersion = split(":",split(",",body)[1])[2]
-			end
-		end
-	}
-end
+if isITGmania() then CheckThemeVersion() CheckEngineVersion() end
 
 local path = "Save/DefaultLuaModifiers.ini"
 local file = {
