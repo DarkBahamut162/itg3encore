@@ -461,6 +461,7 @@ function InitPlayerOptions()
 		setenv("HoldJudgment"..pname(pn),LoadUserPref(pn, "HoldJudgment", DefaultLuaModifiers["HoldJudgment"]) or "_itg3")
 		setenv("Judgment"..pname(pn),LoadUserPref(pn, "Judgment", DefaultLuaModifiers["Judgment"]) or "_itg3")
 		setenv("GreenNumber"..pname(pn),LoadUserPrefB(pn, "GreenNumber", tobool(DefaultLuaModifiers["GreenNumber"])) or false)
+		setenv("GreenNumber2"..pname(pn),LoadUserPrefB(pn, "GreenNumber2", tobool(DefaultLuaModifiers["GreenNumber2"])) or false)
 
 		setenv("IIDXFrame"..pname(pn),LoadUserPref(pn, "IIDXFrame", DefaultLuaModifiers["IIDXFrame"]) or "_random")
 		setenv("IIDXLife"..pname(pn),LoadUserPrefB(pn, "IIDXLife", tobool(DefaultLuaModifiers["IIDXLife"])) or true)
@@ -1547,20 +1548,27 @@ function OptionGreenNumber()
 	local t = {
 		Name = "GreenNumber",
 		LayoutType = "ShowAllInRow",
-		SelectType = "SelectOne",
+		SelectType = "SelectMultiple",
 		OneChoiceForAllPlayers = false,
 		ExportOnChange = false,
-		Choices = { "Off", "On" },
+		Choices = { "Off", "On", "Min/Max" },
 		LoadSelections = function(self, list, pn)
-			list[1] = getenv("GreenNumber"..pname(pn)) == false
-			list[2] = getenv("GreenNumber"..pname(pn)) == true
+			local GN = getenv("GreenNumber"..pname(pn))
+			list[1] = GN == false
+			list[2] = GN == true
+			list[3] = getenv("GreenNumber2"..pname(pn)) == true
 		end,
-		SaveSelections = function(self, list, pn)
-			for i=1,#list do
-				if list[i] then
-					setenv("GreenNumber"..pname(pn),SaveUserPref(pn, "GreenNumber", i==2))
-				end
+		SaveSelections = function() end,
+		NotifyOfSelection= function(self, pn, choice)
+			if choice == 1 then
+				setenv("GreenNumber"..pname(pn),SaveUserPref(pn, "GreenNumber", false))
+			elseif choice == 2 then
+				setenv("GreenNumber"..pname(pn),SaveUserPref(pn, "GreenNumber", true))
+			else
+				local GN2 = (getenv("GreenNumber2"..pname(pn)) or false)
+				setenv("GreenNumber2"..pname(pn),SaveUserPref(pn, "GreenNumber2", not GN2))
 			end
+			return true
 		end
 	}
 	setmetatable(t, t)

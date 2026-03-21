@@ -87,6 +87,7 @@ local file = {
 		HoldJudgment = "_itg3",
 		Judgment = "_itg3",
 		GreenNumber = false,
+		GreenNumber2 = false,
 
 		IIDXFrame = "_random",
 		IIDXLife = true,

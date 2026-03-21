@@ -130,7 +130,7 @@ return Def.ActorFrame{
 		Name="Min"..pname(player),
 		Text="000",
 		InitCommand=function(self)
-			self:visible(getenv("GreenNumber"..pname(player))):diffuse(PlayerColor(player)):x(move):zoom(0.4*WideScreenDiff()):diffuse(color("#00ff00")):shadowlength(1):addx(BMS and -maxwidth*0.4*WideScreenDiff() or 0):y(BMS and 0 or -10):halign(align):maxwidth(maxwidth)
+			self:visible(getenv("GreenNumber"..pname(player)) and getenv("GreenNumber2"..pname(player))):diffuse(PlayerColor(player)):x(move):zoom(0.4*WideScreenDiff()):diffuse(color("#00ff00")):shadowlength(1):addx(BMS and -maxwidth*0.4*WideScreenDiff() or 0):y(BMS and 0 or -10):halign(align):maxwidth(maxwidth)
 		end,
 	},
 	Def.BitmapText {
@@ -146,7 +146,7 @@ return Def.ActorFrame{
 		Name="Max"..pname(player),
 		Text="000",
 		InitCommand=function(self)
-			self:visible(getenv("GreenNumber"..pname(player))):diffuse(PlayerColor(player)):x(move):zoom(0.4*WideScreenDiff()):diffuse(color("#00ff00")):shadowlength(1):addx(BMS and maxwidth*0.4*WideScreenDiff() or 0):y(BMS and 0 or 10):halign(align):maxwidth(maxwidth)
+			self:visible(getenv("GreenNumber"..pname(player)) and getenv("GreenNumber2"..pname(player))):diffuse(PlayerColor(player)):x(move):zoom(0.4*WideScreenDiff()):diffuse(color("#00ff00")):shadowlength(1):addx(BMS and maxwidth*0.4*WideScreenDiff() or 0):y(BMS and 0 or 10):halign(align):maxwidth(maxwidth)
 		end,
 	}
 }
