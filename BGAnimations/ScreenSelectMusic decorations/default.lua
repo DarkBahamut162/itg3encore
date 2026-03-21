@@ -321,127 +321,121 @@ t[#t+1] = Def.BitmapText {
 	end
 }
 
-if ThemePrefs.Get("ShowPackClears") then
+if ThemePrefs.Get("ShowPackClears") and not courseMode then
 	t[#t+1] = Def.ActorFrame {
 		InitCommand=function(self) self:x(SCREEN_CENTER_X+132*WideScreenDiff()):y(SCREEN_CENTER_Y+12*WideScreenDiff()):zoom(0.5*WideScreenDiff()) end,
 		OnCommand=function(self) self:addx(SCREEN_WIDTH):decelerate(0.75):addx(-SCREEN_WIDTH) end,
 		OffCommand=function(self) self:accelerate(0.75):addx(SCREEN_WIDTH) end,
-		CurrentSongChangedMessageCommand=function(self)
-			if not courseMode then
-				self:visible(GAMESTATE:GetCurrentSong() == nil)
-			end
-		end,
+		CurrentSongChangedMessageCommand=function(self) self:visible(GAMESTATE:GetCurrentSong() == nil) end,
 		Def.BitmapText {
 			File = "_v 26px bold shadow",
 			InitCommand=function(self) self:valign(0) end,
 			CurrentSongChangedMessageCommand=function(self)
-				if not courseMode then
-					local visible = GAMESTATE:GetCurrentSong() == nil
-					self:visible(visible)
-					if visible then
-						local songs = SONGMAN:GetSongsInGroup(SCREENMAN:GetTopScreen():GetMusicWheel():GetSelectedSection())
-						local stepsType = StepsTypeSingle()[GetUserPrefN("StylePosition")]
-						local songsTotal = 0
-						local songsCleared = {}
-						local stepsTotal = 0
-						local stepsCleared = {}
-						local grades = {[PLAYER_1]={},[PLAYER_2]={}}
-						for s=1,#songs do
-							local currentSongCleared = {}
-							local currentSongClearedCheck = {}
-							if songs[s]:HasStepsType(stepsType) then
-								songsTotal = songsTotal + 1
-								local steps = songs[s]:GetStepsByStepsType(stepsType)
-								for ss=1,#steps do
-									stepsTotal = stepsTotal + 1
-									for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
-										local profile = PROFILEMAN:GetProfile(pn):GetHighScoreList(songs[s],steps[ss]):GetHighScores()
-										if #profile > 0 then
-											for place,highscore in pairs(profile) do
-												grades[pn][highscore:GetGrade()] = (grades[pn][highscore:GetGrade()] or 0) + 1
-												currentSongClearedCheck[pn]=currentSongClearedCheck[pn] or highscore:GetGrade()~="Grade_Failed"
-												break
-											end
-											if currentSongClearedCheck[pn] then
-												currentSongCleared[pn] = (currentSongCleared[pn] or 0) + 1
-												stepsCleared[pn] = (stepsCleared[pn] or 0) + 1
-											end
+				local visible = GAMESTATE:GetCurrentSong() == nil
+				self:visible(visible)
+				if visible then
+					local songs = SONGMAN:GetSongsInGroup(SCREENMAN:GetTopScreen():GetMusicWheel():GetSelectedSection())
+					local stepsType = StepsTypeSingle()[GetUserPrefN("StylePosition")]
+					local songsTotal = 0
+					local songsCleared = {}
+					local stepsTotal = 0
+					local stepsCleared = {}
+					local grades = {[PLAYER_1]={},[PLAYER_2]={}}
+					for s=1,#songs do
+						local currentSongCleared = {}
+						local currentSongClearedCheck = {}
+						if songs[s]:HasStepsType(stepsType) then
+							songsTotal = songsTotal + 1
+							local steps = songs[s]:GetStepsByStepsType(stepsType)
+							for ss=1,#steps do
+								stepsTotal = stepsTotal + 1
+								for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
+									local profile = PROFILEMAN:GetProfile(pn):GetHighScoreList(songs[s],steps[ss]):GetHighScores()
+									if #profile > 0 then
+										for place,highscore in pairs(profile) do
+											grades[pn][highscore:GetGrade()] = (grades[pn][highscore:GetGrade()] or 0) + 1
+											currentSongClearedCheck[pn]=currentSongClearedCheck[pn] or highscore:GetGrade()~="Grade_Failed"
+											break
+										end
+										if currentSongClearedCheck[pn] then
+											currentSongCleared[pn] = (currentSongCleared[pn] or 0) + 1
+											stepsCleared[pn] = (stepsCleared[pn] or 0) + 1
 										end
 									end
 								end
 							end
-							for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
-								if (currentSongCleared[pn] or 0) > 0 then songsCleared[pn] = (songsCleared[pn] or 0) + 1 end
-							end
 						end
-						if songsTotal == 0 then self:settext("") else
-							local attributes = {}
-							local text = "Cleared Songs: "
-							for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
-								attributes[#attributes+1]={FIRST=string.len(''..text),LENGTH=string.len(''..(songsCleared[pn] or 0)),COLOR=PlayerColor(pn)}
-								text = text..(songsCleared[pn] or 0)..((#GAMESTATE:GetHumanPlayers() == 2 and pn == PLAYER_1) and "|" or "")
-							end
-							text = text.."/"..songsTotal.." ("
-							for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
-								attributes[#attributes+1]={FIRST=string.len(''..text),LENGTH=string.len(''..string.format("%03.2f%%",(songsCleared[pn] or 0)/songsTotal*100)),COLOR=PlayerColor(pn)}
-								text = text..string.format("%03.2f%%",(songsCleared[pn] or 0)/songsTotal*100)..((#GAMESTATE:GetHumanPlayers() == 2 and pn == PLAYER_1) and "|" or "")
-							end
-							text = text..")\nCleared Steps: "
-							for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
-								attributes[#attributes+1]={FIRST=string.len(''..text),LENGTH=string.len(''..(stepsCleared[pn] or 0)),COLOR=PlayerColor(pn)}
-								text = text..(stepsCleared[pn] or 0)..((#GAMESTATE:GetHumanPlayers() == 2 and pn == PLAYER_1) and "|" or "")
-							end
-							text = text.."/"..stepsTotal.." ("
-							for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
-								attributes[#attributes+1]={FIRST=string.len(''..text),LENGTH=string.len(''..string.format("%03.2f%%",(stepsCleared[pn] or 0)/stepsTotal*100)),COLOR=PlayerColor(pn)}
-								text = text..string.format("%03.2f%%",(stepsCleared[pn] or 0)/stepsTotal*100)..((#GAMESTATE:GetHumanPlayers() == 2 and pn == PLAYER_1) and "|" or "")
-							end
-							text = text..")"
-							self:settext(text)
-							
-							for attribute in ivalues(attributes) do
-								self:AddAttribute(attribute.FIRST,{
-									Length = attribute.LENGTH,
-									Diffuse = attribute.COLOR
-								})
-							end
-							
+						for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
+							if (currentSongCleared[pn] or 0) > 0 then songsCleared[pn] = (songsCleared[pn] or 0) + 1 end
 						end
-						for grade in ivalues({
-							"Grade_Tier01",
-							"Grade_Tier02",
-							"Grade_Tier03",
-							"Grade_Tier04",
-							"Grade_Tier05",
-							"Grade_Tier06",
-							"Grade_Tier07",
-							"Grade_Tier08",
-							"Grade_Tier09",
-							"Grade_Tier10",
-							"Grade_Tier11",
-							"Grade_Tier12",
-							"Grade_Tier13",
-							"Grade_Tier14",
-							"Grade_Tier15",
-							"Grade_Tier16",
-							"Grade_Tier17",
-							"Grade_Tier18",
-							"Grade_Failed"
-						}) do
-							self:GetParent():GetChild("Grades"):diffusealpha(songsTotal == 0 and 0 or 1)
-							local text = ""
-							local attributes = {}
-							for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
-								attributes[#attributes+1]={FIRST=string.len(''..text),LENGTH=string.len(''..(grades[pn][grade] or 0)),COLOR=PlayerColor(pn)}
-								text = text..(grades[pn][grade] or 0).."|"
-							end
-							self:GetParent():GetChild("Grades"):GetChild(grade):settext(text)
-							for attribute in ivalues(attributes) do
-								self:GetParent():GetChild("Grades"):GetChild(grade):AddAttribute(attribute.FIRST,{
-									Length = attribute.LENGTH,
-									Diffuse = attribute.COLOR
-								})
-							end
+					end
+					if songsTotal == 0 then self:settext("") else
+						local attributes = {}
+						local text = "Cleared Songs: "
+						for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
+							attributes[#attributes+1]={FIRST=string.len(''..text),LENGTH=string.len(''..(songsCleared[pn] or 0)),COLOR=PlayerColor(pn)}
+							text = text..(songsCleared[pn] or 0)..((#GAMESTATE:GetHumanPlayers() == 2 and pn == PLAYER_1) and "|" or "")
+						end
+						text = text.."/"..songsTotal.." ("
+						for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
+							attributes[#attributes+1]={FIRST=string.len(''..text),LENGTH=string.len(''..string.format("%03.2f%%",(songsCleared[pn] or 0)/songsTotal*100)),COLOR=PlayerColor(pn)}
+							text = text..string.format("%03.2f%%",(songsCleared[pn] or 0)/songsTotal*100)..((#GAMESTATE:GetHumanPlayers() == 2 and pn == PLAYER_1) and "|" or "")
+						end
+						text = text..")\nCleared Steps: "
+						for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
+							attributes[#attributes+1]={FIRST=string.len(''..text),LENGTH=string.len(''..(stepsCleared[pn] or 0)),COLOR=PlayerColor(pn)}
+							text = text..(stepsCleared[pn] or 0)..((#GAMESTATE:GetHumanPlayers() == 2 and pn == PLAYER_1) and "|" or "")
+						end
+						text = text.."/"..stepsTotal.." ("
+						for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
+							attributes[#attributes+1]={FIRST=string.len(''..text),LENGTH=string.len(''..string.format("%03.2f%%",(stepsCleared[pn] or 0)/stepsTotal*100)),COLOR=PlayerColor(pn)}
+							text = text..string.format("%03.2f%%",(stepsCleared[pn] or 0)/stepsTotal*100)..((#GAMESTATE:GetHumanPlayers() == 2 and pn == PLAYER_1) and "|" or "")
+						end
+						text = text..")"
+						self:settext(text)
+						
+						for attribute in ivalues(attributes) do
+							self:AddAttribute(attribute.FIRST,{
+								Length = attribute.LENGTH,
+								Diffuse = attribute.COLOR
+							})
+						end
+						
+					end
+					for grade in ivalues({
+						"Grade_Tier01",
+						"Grade_Tier02",
+						"Grade_Tier03",
+						"Grade_Tier04",
+						"Grade_Tier05",
+						"Grade_Tier06",
+						"Grade_Tier07",
+						"Grade_Tier08",
+						"Grade_Tier09",
+						"Grade_Tier10",
+						"Grade_Tier11",
+						"Grade_Tier12",
+						"Grade_Tier13",
+						"Grade_Tier14",
+						"Grade_Tier15",
+						"Grade_Tier16",
+						"Grade_Tier17",
+						"Grade_Tier18",
+						"Grade_Failed"
+					}) do
+						self:GetParent():GetChild("Grades"):diffusealpha(songsTotal == 0 and 0 or 1)
+						local text = ""
+						local attributes = {}
+						for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
+							attributes[#attributes+1]={FIRST=string.len(''..text),LENGTH=string.len(''..(grades[pn][grade] or 0)),COLOR=PlayerColor(pn)}
+							text = text..(grades[pn][grade] or 0).."|"
+						end
+						self:GetParent():GetChild("Grades"):GetChild(grade):settext(text)
+						for attribute in ivalues(attributes) do
+							self:GetParent():GetChild("Grades"):GetChild(grade):AddAttribute(attribute.FIRST,{
+								Length = attribute.LENGTH,
+								Diffuse = attribute.COLOR
+							})
 						end
 					end
 				end
