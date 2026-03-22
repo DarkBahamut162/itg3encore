@@ -164,10 +164,6 @@ Ability to show current Speed and Mod during GamePlay. Also enables modifying sa
 <details>
   <summary><b>ScreenEvaluation</b> <i>(click to expand)</i></summary>
 
-- **RestartEnabled:** *(EventMode Only)*
-Ability to restart current song
-  - If **KeyboardEnabled**: Holding CTRL and press **R**
-  - Else: Hold **EffectDown**+**EffectUp** and press **SELECT**
 - **Recolor:**
 Recolor Judgments & Banner Frame
 - **ShowColumnGrades:**
@@ -400,6 +396,12 @@ I could have actually forked it but I didn't. My reasoning was that it wasn't go
   <summary><b>ScreenEvaluation</b> <i>(click to expand)</i></summary>
 
 * Re-added **marvelous/perfect/great color bar** on top of the **LifeGraph**
+* Added ability to restart current song
+  * If **KeyboardEnabled**: Holding CTRL and press **R**
+  * Else: Hold **EffectDown** and press **SELECT**
+* Added ability to go to practice current song
+  * If **KeyboardEnabled**: Holding CTRL and press **P**
+  * Else: Hold **EffectUp** and press **SELECT**
 </details>
 
 <details>

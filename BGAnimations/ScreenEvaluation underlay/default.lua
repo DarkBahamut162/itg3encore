@@ -4,11 +4,11 @@ local grade = GetGradeFromPercent(percent)
 local offsetInfo = getenv("OffsetTable")
 local showOffset = ThemePrefs.Get("ShowOffset")
 local keyboardEnabled = ThemePrefs.Get("KeyboardEnabled")
-local restartEnabled = ThemePrefs.Get("RestartEnabled")
 local ctrlHeld = false
 local effectDown = false
 local effectUp = false
 local restart = false
+local practice = false
 local c
 
 local InputHandler = function(event)
@@ -16,12 +16,20 @@ local InputHandler = function(event)
 		if event.type == "InputEventType_FirstPress" then
 			if string.find(event.DeviceInput.button,"ctrl") and not ctrlHeld then ctrlHeld = true end
 			if ctrlHeld then
-				if event.DeviceInput.button == "DeviceButton_r" and not restart then
-					restart = true
-					SOUND:PlayOnce(THEME:GetPathS("LifeMeterTime", "GainLife"), true)
-					SCREENMAN:GetTopScreen():SetNextScreenName(Branch.BeforeGameplay())
-					setenv("Restarting",true)
-					c.Restart:diffusealpha(1)
+				if not restart and not practice then
+					if event.DeviceInput.button == "DeviceButton_r" then
+						restart = true
+						SOUND:PlayOnce(THEME:GetPathS("LifeMeterTime", "GainLife"), true)
+						SCREENMAN:GetTopScreen():SetNextScreenName(Branch.BeforeGameplay())
+						setenv("Restarting",true)
+						c.Restart:diffusealpha(1)
+					elseif event.DeviceInput.button == "DeviceButton_p" then
+						practice = true
+						SOUND:PlayOnce(THEME:GetPathS("LifeMeterTime", "GainLife"), true)
+						SCREENMAN:GetTopScreen():SetNextScreenName("ScreenPractice")
+						setenv("Practicing",true)
+						c.Practice:diffusealpha(1)
+					end
 				end
 			end
 		elseif event.type == "InputEventType_Release" then
@@ -31,13 +39,22 @@ local InputHandler = function(event)
 		if event.type == "InputEventType_FirstPress" then
 			if event.GameButton == "EffectDown" and not effectDown then effectDown = true end
 			if event.GameButton == "EffectUp" and not effectUp then effectUp = true end
-			if effectDown and effectUp then
+			if effectDown then
 				if event.GameButton == "Select" and not restart then
 					restart = true
 					SOUND:PlayOnce(THEME:GetPathS("LifeMeterTime", "GainLife"), true)
 					SCREENMAN:GetTopScreen():SetNextScreenName(Branch.BeforeGameplay())
 					setenv("Restarting",true)
 					c.Restart:diffusealpha(1)
+				end
+			end
+			if effectUp then
+				if event.GameButton == "Select" and not practice then
+					practice = true
+					SOUND:PlayOnce(THEME:GetPathS("LifeMeterTime", "GainLife"), true)
+					SCREENMAN:GetTopScreen():SetNextScreenName("ScreenPractice")
+					setenv("Practicing",true)
+					c.Practice:diffusealpha(1)
 				end
 			end
 		elseif event.type == "InputEventType_Release" then
@@ -50,7 +67,7 @@ end
 return Def.ActorFrame{
 	OnCommand = function(self)
 		c = self:GetChildren()
-		if GAMESTATE:IsEventMode() and restartEnabled then SCREENMAN:GetTopScreen():AddInputCallback(InputHandler) end
+		if GAMESTATE:IsEventMode() then SCREENMAN:GetTopScreen():AddInputCallback(InputHandler) end
 		if isOutFox(20200500) then
 			local StepsOrTrail = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentTrail(master) or GAMESTATE:GetCurrentSteps(master)
 			local song = GAMESTATE:GetCurrentSong()
@@ -72,7 +89,7 @@ return Def.ActorFrame{
 			updateDiscordStatus(true)
 		end
 	end,
-	OffCommand = function(self) if GAMESTATE:IsEventMode() and restartEnabled then SCREENMAN:GetTopScreen():RemoveInputCallback(InputHandler) end end,
+	OffCommand = function(self) if GAMESTATE:IsEventMode() then SCREENMAN:GetTopScreen():RemoveInputCallback(InputHandler) end end,
 	loadfile(THEME:GetPathB("ScreenWithMenuElements","underlay/_sides"))(),
 	loadfile(THEME:GetPathB("ScreenWithMenuElements","underlay/_base"))(),
 	loadfile(THEME:GetPathB("ScreenWithMenuElements","underlay/_expandtop"))(),
@@ -397,6 +414,13 @@ return Def.ActorFrame{
 		Name="Restart",
 		File = "_v 26px bold shadow",
 		Text="TO BE RESTARTED",
+		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+95*WideScreenDiff()):zoom(0.5*WideScreenDiff()):diffusealpha(0) end,
+		OffCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(0) end
+	},
+	Def.BitmapText {
+		Name="Practice",
+		File = "_v 26px bold shadow",
+		Text="TO BE PRACTICED",
 		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+95*WideScreenDiff()):zoom(0.5*WideScreenDiff()):diffusealpha(0) end,
 		OffCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(0) end
 	}

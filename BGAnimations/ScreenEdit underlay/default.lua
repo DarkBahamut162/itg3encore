@@ -71,5 +71,10 @@ return Def.ActorFrame{
 		File = "_r bold 30px",
 		Text="Press F1\nfor commands.\n\nPress Start\nfor the Edit Menu",
 		InitCommand=function(self) self:shadowlength(2):zoom(0.6*WideScreenDiff()):x(SCREEN_LEFT+74*WideScreenDiff()):y(SCREEN_BOTTOM-90*WideScreenDiff()) end
+	},
+	Def.Quad{
+		Condition=getenv("Practicing"),
+		InitCommand=function(self) self:FullScreen():diffuse(color("0,0,0,1")) end,
+		OnCommand=function(self) self:linear(0.3):diffusealpha(0) setenv("Practicing",false) end
 	}
 }

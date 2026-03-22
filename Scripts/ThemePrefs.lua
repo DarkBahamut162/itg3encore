@@ -395,11 +395,6 @@ local Prefs = {
 		Values = { false, true }
 	},
 	--[ScreenEvaluation]
-	RestartEnabled = {
-		Default = false,
-		Choices = { OptionNameString('Off'), OptionNameString('On') },
-		Values = { false, true }
-	},
 	Recolor = {
 		Default = false,
 		Choices = { OptionNameString('Off'), OptionNameString('On') },
