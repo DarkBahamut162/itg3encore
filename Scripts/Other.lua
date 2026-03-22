@@ -15,10 +15,6 @@ function Get2PlayerJoinMessage()
 	return s
 end
 
-function GetCreditType()
-	return "INSERT COIN"
-end
-
 function GetRandomSongNames(n)
 	local s = ""
 	for i = 1,n do
