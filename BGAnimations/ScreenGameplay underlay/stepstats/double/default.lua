@@ -10,6 +10,7 @@ local barHeight		= 268
 local totalWidth	= 14
 local barCenter		= 0
 local target = 0.5
+local tmax = 0
 local stepsType = StepsTypeSingle()[GetUserPrefN("StylePosition")]
 local stepType = split("_",stepsType)
 if getenv("SetPacemaker"..pname(pn)) == 18 then
@@ -376,7 +377,7 @@ return Def.ActorFrame{
 						UpdateCommand=function(self)
 							local curTargetDP = math.ceil(DPCurMax(pn)*target)
 							local curDP = DPCur(pn)
-							local time = GAMESTATE:IsCourseMode() and vStaSTATSMAN:GetCurStageStats():GetPlayerStageStats(pn)ts:GetAliveSeconds() or GAMESTATE:GetCurMusicSeconds()/GAMESTATE:GetSongOptionsObject("ModsLevel_Song"):MusicRate()
+							local time = GAMESTATE:IsCourseMode() and STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):GetAliveSeconds() or GAMESTATE:GetCurMusicSeconds()/GAMESTATE:GetSongOptionsObject("ModsLevel_Song"):MusicRate()
 							targetdata[#targetdata+1] = { time, curDP-curTargetDP }
 
 							local score = curDP-curTargetDP
