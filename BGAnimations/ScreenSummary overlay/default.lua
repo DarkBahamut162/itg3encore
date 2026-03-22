@@ -199,6 +199,8 @@ if ThemePrefs.Get("ExperimentalProfileLevel") then
 	for pn in ivalues(GAMESTATE:GetHumanPlayers()) do MESSAGEMAN:Broadcast("DisablePlayerStats",{PLAYER=pn}) end
 end
 
+if GAMESTATE:IsEventMode() then SummaryBackupClear() end
+
 return Def.ActorFrame{
 	BeginCommand=function() SCREENMAN:GetTopScreen():PostScreenMessage( 'SM_MenuTimer', (4/3 * (rounds + math.ceil(6/WideScreenDiff()) + ((ThemePrefs.Get("ShowSummarySummary") and rounds > 1) and 2 or 0)) )) end,
 	Def.Sprite {
@@ -294,7 +296,7 @@ return Def.ActorFrame{
 		Def.BitmapText {
 			File = "_z bold 19px",
 			Condition=version < 3,
-			Text = P1[0],
+			Text = P1[0] and P1[0]["Name"] or "",
 			InitCommand=function(self) self:x(scale(0.5,0,1,version == 2 and borderLeft or borderRight,version == 2 and borderLeftCenter or borderLeftCenter)):y(SCREEN_TOP+56*WideScreenDiff()):zoom(0.7*WideScreenDiff()):diffusealpha(0):maxwidth(version == 2 and 250 or 600) end,
 			OnCommand=function(self) self:diffusealpha(0):linear(0.5):diffusealpha(1) end,
 			OffCommand=function(self) self:linear(0.5):diffusealpha(0) end
@@ -302,7 +304,7 @@ return Def.ActorFrame{
 		Def.BitmapText {
 			File = "_z bold 19px",
 			Condition=version > 1,
-			Text = P2[0],
+			Text = P2[0] and P2[0]["Name"] or "",
 			InitCommand=function(self) self:x(scale(0.5,0,1,version == 2 and borderRightCenter or borderLeft,version == 2 and borderRight or borderRightCenter)):y(SCREEN_TOP+56*WideScreenDiff()):zoom(0.7*WideScreenDiff()):diffusealpha(0):maxwidth(version == 2 and 250 or 600) end,
 			OnCommand=function(self) self:diffusealpha(0):linear(0.5):diffusealpha(1) end,
 			OffCommand=function(self) self:linear(0.5):diffusealpha(0) end

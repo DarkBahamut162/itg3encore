@@ -1,4 +1,5 @@
 return Def.ActorFrame{
+	OnCommand=function() if GAMESTATE:GetCurrentStageIndex() > 0 and GAMESTATE:IsEventMode() then SummaryBackup() end end,
 	Def.Sprite {
 		Texture = isFinal() and "CJ126 Final" or "CJ126 Normal",
 		InitCommand=function(self) self:FullScreen() end,

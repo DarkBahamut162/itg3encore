@@ -1,4 +1,5 @@
 return Def.ActorFrame{
+	OnCommand=function() if GAMESTATE:IsEventMode() then SummaryBackup() end end,
 	Def.ActorFrame{
 		Def.Sprite{
 			Name="SongBackground",

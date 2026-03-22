@@ -2,6 +2,7 @@ local cacheVersion = "0.45"
 local stepCache = {}
 local typeList = {"avi","f4v","flv","mkv","mp4","mpeg","mpg","mov","ogv","webm","wmv"}
 Master,P1,P2={},{},{}
+SummaryAdjust = 0
 AllowLateJoin = true
 bannerForced = false
 KeysChecked = false

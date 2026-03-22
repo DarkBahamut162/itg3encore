@@ -76,7 +76,7 @@ function TotalPossibleStepSeconds(player)
 end
 
 function prepSummary()
-	local currentStage = GAMESTATE:GetCurrentStageIndex()
+	local currentStage = GAMESTATE:GetCurrentStageIndex()+SummaryAdjust
 	local offsetInfo = getenv("OffsetTable")
 	local scores = isOpenDDR() and {
 		"TapNoteScore_W1",
@@ -163,10 +163,10 @@ function prepSummary()
 			Step["TotalTime"] = last-first
 		end
 		if player == PLAYER_1 then
-			P1[0] = PROFILEMAN:GetPlayerName(player) == "" and ToEnumShortString(player) or PROFILEMAN:GetPlayerName(player)
+			P1[0] = {["Name"]=PROFILEMAN:GetPlayerName(player) == "" and ToEnumShortString(player) or PROFILEMAN:GetPlayerName(player)}
 			P1[currentStage] = Step
 		else
-			P2[0] = PROFILEMAN:GetPlayerName(player) == "" and ToEnumShortString(player) or PROFILEMAN:GetPlayerName(player)
+			P2[0] = {["Name"]=PROFILEMAN:GetPlayerName(player) == "" and ToEnumShortString(player) or PROFILEMAN:GetPlayerName(player)}
 			P2[currentStage] = Step
 		end
 	end
@@ -186,6 +186,58 @@ function prepSummary()
 			Master[currentStage]["Subtitle"] = GetBMSTitle(steps,2)
 			Master[currentStage]["Artist"] = GetBMSArtist(steps)
 		end
+	end
+end
+
+function SummaryBackup()
+	local path = "Save/SummaryBackup"
+
+	if #Master > 0 then
+		IniFile.WriteFile(path.."Master.ini",Master)
+		if FILEMAN.FlushDirCache then FILEMAN:FlushDirCache(path.."Master.ini") end
+	end
+	if P1 and #P1 > 0 then
+		IniFile.WriteFile(path.."P1.ini",P1)
+		if FILEMAN.FlushDirCache then FILEMAN:FlushDirCache(path.."P1.ini") end
+	end
+	if P2 and #P2 > 0 then
+		IniFile.WriteFile(path.."P2.ini",P2)
+		if FILEMAN.FlushDirCache then FILEMAN:FlushDirCache(path.."P2") end
+	end
+end
+
+function SummaryBackupClear()
+	local path = "Save/SummaryBackup"
+	if FILEMAN:DoesFileExist(path.."Master.ini") then
+		IniFile.WriteFile(path.."Master.ini", { [""] = {} })
+		if FILEMAN.FlushDirCache then FILEMAN:FlushDirCache(path.."Master.ini") end
+	end
+	if FILEMAN:DoesFileExist(path.."P1.ini") then
+		IniFile.WriteFile(path.."P1.ini", { [""] = {} })
+		if FILEMAN.FlushDirCache then FILEMAN:FlushDirCache(path.."P1.ini") end
+	end
+	if FILEMAN:DoesFileExist(path.."P2.ini") then
+		IniFile.WriteFile(path.."P2.ini", { [""] = {} })
+		if FILEMAN.FlushDirCache then FILEMAN:FlushDirCache(path.."P2") end
+	end
+end
+
+function SummaryBackupCheck()
+	local path = "Save/SummaryBackup"
+	if FILEMAN:DoesFileExist(path.."Master.ini") then
+		local loaded = IniFile.ReadFile(path.."Master.ini")
+		for _,value in pairs(loaded) do
+			Master[tonumber(_)] = value
+			SummaryAdjust = tonumber(_)
+		end
+	end
+	if FILEMAN:DoesFileExist(path.."P1.ini") then
+		local loaded = IniFile.ReadFile(path.."P1.ini")
+		for _,value in pairs(loaded) do P1[tonumber(_)] = value end
+	end
+	if FILEMAN:DoesFileExist(path.."P2.ini") then
+		local loaded = IniFile.ReadFile(path.."P2.ini")
+		for _,value in pairs(loaded) do P2[tonumber(_)] = value end
 	end
 end
 

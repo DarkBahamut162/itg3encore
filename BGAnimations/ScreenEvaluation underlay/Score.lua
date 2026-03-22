@@ -143,7 +143,7 @@ return Def.ActorFrame{
 		OnCommand=function(self)
 			self:addx(player == PLAYER_1 and -EvalTweenDistance() or EvalTweenDistance()):sleep(3):decelerate(0.3):addx(player == PLAYER_1 and EvalTweenDistance() or -EvalTweenDistance())
 			if ThemePrefs.Get("ShowSummary") and not isEtterna("0.55") then
-				local currentStage = GAMESTATE:GetCurrentStageIndex()
+				local currentStage = GAMESTATE:GetCurrentStageIndex()+SummaryAdjust
 				Master[currentStage]["EXP"] = EXP_MAX
 				if player == PLAYER_1 then P1[currentStage]["EXP"] = EXP_STEPS else P2[currentStage]["EXP"] = EXP_STEPS end
 			end

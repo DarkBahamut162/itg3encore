@@ -15,6 +15,7 @@ return Def.ActorFrame{
 		SetCategory(category)
 		for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
 			if ThemePrefs.Get("ExperimentalProfileLevel") then LoadData(pn) MESSAGEMAN:Broadcast("EnablePlayerStats",{PLAYER=pn}) end
+			if ThemePrefs.Get("ShowSummary") and GAMESTATE:IsEventMode() then SummaryBackupCheck() end
 			LoadFlare(pn)
 			for s=1,#songs do
 				if songs[s]:HasStepsType(stepsType) then
