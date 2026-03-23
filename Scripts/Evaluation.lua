@@ -15,7 +15,7 @@ function isOni()
 end
 
 function isVS()
-	return isPlayMode("PlayMode_Rave") or isPlayMode("PlayMode_Battle")
+	return isPlayMode("PlayMode_Rave") or isPlayMode("PlayMode_Battle") or false
 end
 
 function isLifeline(player)
