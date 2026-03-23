@@ -33,10 +33,12 @@ function GetRandomCourseNames(n)
 	return s
 end
 
+StepChartFacts = ""
 function GetStepChartFacts()
+	if StepChartFacts ~= "" then return StepChartFacts end
 	local diffCount = {0,0,0,0,0,0}
 	local diffNames = {"novice","easy","medium","hard","expert","edit"}
-	local output = ""
+	local StepChartFacts = ""
 	local songs = SONGMAN:GetAllSongs()
 	local counter = SONGMAN:GetNumSongGroups()
 	local minimum = 12/(12*WideScreenDiff())
@@ -52,14 +54,14 @@ function GetStepChartFacts()
 	}
 
 	function updateOutput()
-		output = addToOutput(output,currentGroup..":","\n")
+		StepChartFacts = addToOutput(StepChartFacts,currentGroup..":","\n")
 		local insert = false
 		for diff=1,#diffCount do
 			if diffCount[diff] > 0 then
 				if counter > minimum then
-					output = addToOutput(output,diffCount[diff].." "..diffNames[diff],insert and " | " or "\n")
+					StepChartFacts = addToOutput(StepChartFacts,diffCount[diff].." "..diffNames[diff],insert and " | " or "\n")
 				else
-					output = addToOutput(output,diffCount[diff].." "..diffNames[diff],"\n")
+					StepChartFacts = addToOutput(StepChartFacts,diffCount[diff].." "..diffNames[diff],"\n")
 				end
 				insert = true
 			end
@@ -83,7 +85,7 @@ function GetStepChartFacts()
 
 	updateOutput()
 
-	return output
+	return StepChartFacts
 end
 
 function GetRandomModifierNames(n)
