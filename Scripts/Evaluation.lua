@@ -202,12 +202,13 @@ function SummaryBackup()
 	end
 	if P2 and #P2 > 0 then
 		IniFile.WriteFile(path.."P2.ini",P2)
-		if FILEMAN.FlushDirCache then FILEMAN:FlushDirCache(path.."P2") end
+		if FILEMAN.FlushDirCache then FILEMAN:FlushDirCache(path.."P2.ini") end
 	end
 end
 
 function SummaryBackupClear()
 	local path = "Save/SummaryBackup"
+	SummaryAdjust = 0
 	if FILEMAN:DoesFileExist(path.."Master.ini") then
 		IniFile.WriteFile(path.."Master.ini", { [""] = {} })
 		if FILEMAN.FlushDirCache then FILEMAN:FlushDirCache(path.."Master.ini") end
@@ -218,7 +219,7 @@ function SummaryBackupClear()
 	end
 	if FILEMAN:DoesFileExist(path.."P2.ini") then
 		IniFile.WriteFile(path.."P2.ini", { [""] = {} })
-		if FILEMAN.FlushDirCache then FILEMAN:FlushDirCache(path.."P2") end
+		if FILEMAN.FlushDirCache then FILEMAN:FlushDirCache(path.."P2.ini") end
 	end
 end
 
