@@ -240,6 +240,7 @@ function SummaryBackupCheck()
 		local loaded = IniFile.ReadFile(path.."P2.ini")
 		for _,value in pairs(loaded) do P2[tonumber(_)] = value end
 	end
+	if SummaryAdjust > 0 then return true else return false end
 end
 
 function ITGJudgments(beginner)
