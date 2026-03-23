@@ -22,7 +22,7 @@ if getenv("EvalCombo"..pname(player)) then
 				sps = tonumber(LoadFromCache(song,steps,"StepsPerSecond")) * (getColumnsPerPlayer(stepType[2],stepType[3],true) / 4)
 			end
 			sps = math.floor(sps)
-			local min = 1
+			local min = (PaceMaker[player] and PaceMaker[player][math.floor(sps)]) and 1 or 0.5
 			for pms in ivalues(PaceMaker[player][math.floor(sps)] or {}) do
 				min = math.min(min,math.max(0.5,pms))
 				tmax = math.max(tmax,pms)
