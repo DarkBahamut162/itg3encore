@@ -96,7 +96,7 @@ return Def.ActorFrame{
 		if GAMESTATE:GetCurrentGame():CountNotesSeparately() then param = GetTrueJudgment(param,player) end
 		local tns = param.TapNoteScore
 		if tns == "TapNoteScore_None" or tns == "" then return end
-		for col,tapnote in pairs(param.Notes) do
+		for col,tapnote in pairs(param.Notes or {}) do
 			local tnt = ToEnumShortString(tapnote:GetTapNoteType())
 			if tnt == "Tap" or tnt == "HoldHead" or tnt == "LongNoteHead" or tnt == "Lift" then
 				local tns = tapnote:GetTapNoteResult():GetTapNoteScore()
