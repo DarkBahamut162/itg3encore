@@ -123,12 +123,12 @@ function GetSMParameter(song,parameter)
 	local filePath = song:GetSongFilePath():lower()
 	if filePath:sub(-2) ~= 'sm' and filePath:sub(-3) ~= 'ssc' then return "" end
 	local file = RageFileUtil.CreateRageFile()
-	file:Open(filePath,1)
-	file:Seek(0)
-	local gLine = ""
-	local line
-	while true do
-		if file then
+	local tmp = {}
+	if file:Open(filePath,1) then
+		file:Seek(0)
+		local gLine = ""
+		local line
+		while true do
 			line = file:GetLine()
 			if string.find(line,"#NOTES:") or string.find(line,"#NOTEDATA:") or file:AtEOF() then break
 			elseif string.find(line,"#"..parameter..":") or gLine ~= "" then
@@ -136,22 +136,21 @@ function GetSMParameter(song,parameter)
 				if string.find(line,";") then break end
 			end
 		end
-	end
-	local tmp = {}
-	if gLine == "" then
-		tmp = {""}
-	else
-		tmp = split(":",gLine)
-		if tmp[2] == ";" then
-			tmp[1] = ""
+		if gLine == "" then
+			tmp = {""}
 		else
-			if #tmp > 2 then
-				tmp[1] = tmp[2]
-				for i = 3, #tmp do
-					tmp[1] = tmp[1]..":"..split(";",tmp[i])[1]
-				end
+			tmp = split(":",gLine)
+			if tmp[2] == ";" then
+				tmp[1] = ""
 			else
-				tmp[1] = split(";",tmp[2])[1]
+				if #tmp > 2 then
+					tmp[1] = tmp[2]
+					for i = 3, #tmp do
+						tmp[1] = tmp[1]..":"..split(";",tmp[i])[1]
+					end
+				else
+					tmp[1] = split(";",tmp[2])[1]
+				end
 			end
 		end
 	end
@@ -164,12 +163,11 @@ function GetBMSParameter(steps,parameter)
 	local filePath = steps:GetFilename():lower()
 	if filePath:sub(-3):sub(2,2) ~= 'm' then return "" end
 	local file = RageFileUtil.CreateRageFile()
-	file:Open(filePath,1)
-	file:Seek(0)
 	local gLine = ""
-	local line
-	while true do
-		if file then
+	if file:Open(filePath,1) then
+		file:Seek(0)
+		local line
+		while true do
 			line = file:GetLine()
 			if file:AtEOF() then break
 			elseif string.find(line,"#"..parameter.." ") then
@@ -506,7 +504,7 @@ function HasStopAtBeat(beat,stops)
 			table.remove(stops,1)
 		end
 	end
-	return false, stop
+	return false, stops
 end
 
 function HasDelayAtBeat(beat,delays)
@@ -574,15 +572,13 @@ function HasKeysounds(Step)
 	if file:Open(filePath,1) then
 		file:Seek(0)
 		while true do
-			if file then
-				if count >= 2 then
-					ret = true
-					break
-				elseif string.find(file:GetLine(),"#WAV[0-9A-Z]+") then
-					count = count + 1
-				elseif file:AtEOF() then
-					break
-				end
+			if count >= 2 then
+				ret = true
+				break
+			elseif string.find(file:GetLine(),"#WAV[0-9A-Z]+") then
+				count = count + 1
+			elseif file:AtEOF() then
+				break
 			end
 		end
 	end
@@ -600,16 +596,14 @@ function HasExtendedKeysounds(Step)
 	if file:Open(filePath,1) then
 		file:Seek(0)
 		while true do
-			if file then
-				local key = file:GetLine():match("^#WAV([%w][%w])%s")
-				if key then
-					if key:match("[a-z]") then
-						hasLowercase = true
-						break
-					end
-				elseif file:AtEOF() then
+			local key = file:GetLine():match("^#WAV([%w][%w])%s")
+			if key then
+				if key:match("[a-z]") then
+					hasLowercase = true
 					break
 				end
+			elseif file:AtEOF() then
+				break
 			end
 		end
 	end
@@ -1438,7 +1432,7 @@ function LoadFromCache(Song,Step,key)
 		local version = LoadModule("Config.Load.lua")("Version",file)
 
 		if version == "0" then
-			stepCache[file] = {{"Version"} == "0"}
+			stepCache[file] = {["Version"] = "0"}
 			return nil
 		elseif not version or version ~= cacheVersion then
 			stepCache[file] = cacheStepX(Song,Step)
