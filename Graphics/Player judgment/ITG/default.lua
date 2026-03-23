@@ -75,7 +75,7 @@ return Def.ActorFrame{
 	OnCommand=function(self)
 		if GAMESTATE:GetCurrentGame():CountNotesSeparately() then GetTrueJudgment(nil,player) end
 		screen = SCREENMAN:GetTopScreen()
-		self:zoom(judgment == "_pop 1x" and 8/9 or 1):visible(not (getenv("HideJudgment" .. pname(player)) or false))
+		self:zoom(judgment == "_pop 1x" and 7/9 or 1):visible(not (getenv("HideJudgment" .. pname(player)) or false))
 	end,
 	JudgmentMessageCommand=function(self, param)
 		if param.Player ~= player then return end
