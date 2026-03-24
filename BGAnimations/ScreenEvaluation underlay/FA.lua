@@ -8,7 +8,7 @@ local W0Total = getMaxNotes(player)
 local W0Percent = scale(W0Total/(W0Total+(WXCount-W0Count)),0.5,1.0,0.9,1.0)
 local stepSize = 1
 
-if scoreType == 4 or scoreType == 5 or scoreType == 6 then
+if scoreType == 4 or scoreType == 5 or scoreType == 6 or scoreType == 7 then
 	local SongOrCourse = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentCourse() or GAMESTATE:GetCurrentSong()
 	local StepsOrTrail = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentTrail(player) or GAMESTATE:GetCurrentSteps(player)
 	if StepsOrTrail then
@@ -80,6 +80,23 @@ return Def.ActorFrame{
 				local w1 = stats:GetTapNoteScores('TapNoteScore_W1')
 				local w2 = stats:GetTapNoteScores('TapNoteScore_W2')
 				local w3 = stats:GetTapNoteScores('TapNoteScore_W3')
+				local w4 = stats:GetTapNoteScores('TapNoteScore_W4')
+				local hd = stats:GetHoldNoteScores('HoldNoteScore_Held')
+				local score = (w1 + w2 + w3 + w4 + hd) * 100000 / stepSize
+				local sub = (w3*0.4 + w4*0.8) * 100000 / stepSize
+				output = (math.floor((score-sub)) - ((w1 - W0Count) + w2 + w3 + w4))*10
+				self:settextf("%07d",output) -- A SCORE
+				self:ClearAttributes()
+				self:AddAttribute(0, {
+					Length = math.max(7-string.len(''..output), 0),
+					Diffuse = PlayerColorSemi(nil),
+				})
+			elseif scoreType == 6 then
+				local score = 0
+                local stats = STATSMAN:GetCurStageStats():GetPlayerStageStats(player)
+				local w1 = stats:GetTapNoteScores('TapNoteScore_W1')
+				local w2 = stats:GetTapNoteScores('TapNoteScore_W2')
+				local w3 = stats:GetTapNoteScores('TapNoteScore_W3')
 				local hd = stats:GetHoldNoteScores('HoldNoteScore_Held')
 				local score = ((W0Count*(4/3) + (W1Count+hd) + w2*(2/3) + w3*(2/15)) * 200000 / stepSize) / (4/3)
 				output = math.floor(score)
@@ -89,7 +106,7 @@ return Def.ActorFrame{
 					Length = math.max(6-string.len(''..output), 0),
 					Diffuse = PlayerColorSemi(nil),
 				})
-			elseif scoreType == 6 then
+			elseif scoreType == 7 then
 				local score = 0
                 local stats = STATSMAN:GetCurStageStats():GetPlayerStageStats(player)
 				local w1 = stats:GetTapNoteScores('TapNoteScore_W1')
@@ -104,7 +121,7 @@ return Def.ActorFrame{
 					Length = math.max(6-string.len(''..output), 0),
 					Diffuse = PlayerColorSemi(nil),
 				})
-			elseif scoreType == 7 then
+			elseif scoreType == 8 then
 				self:settext(FormatPercentScore(math.max(0,getenv("WIFE3FA"..pname(player))))) -- WIFE3
 			end
 		end,

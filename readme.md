@@ -353,7 +353,7 @@ I could have actually forked it but I didn't. My reasoning was that it wasn't go
   - **Fade:** Enable both **Fade In** & **F.I.Dynamic** to enable simulated **Dynamic Sudden**
     - Same goes for **Fade Out** & **F.O.Dynamic** for simulated **Dynamic Hidden**
   - **MovePlayerfieldStats:** Bring both **Combo & Judgment** either **nearer** towards or **farther** away from the **Receptors**
-  - **ScoreTypes:** **Score**, **Percent**, **EX**, **SN2**, **IIDX**, **WIFE3***
+  - **ScoreTypes:** **Score**, **Percent**, **EX**, **SN2**, **A**, **IIDX**, **WIFE3***
     - Have the selected ScoreTypes **Additive** or **Subtractive**
     - Enable an additional FA+ Scoring to the selected ScoreType
     - WIFE3 *(from Etterna)* can't be selected if the GameMode is on **CountNotesSeperately** because of a judgment bug in the engine
