@@ -17,6 +17,9 @@ local InputHandler = function(event)
 			SCREENMAN:GetTopScreen():Cancel()
 		elseif event.GameButton == "Start" then
 			if cur%2 == 1 then
+				if isOutFoxOnline() then
+					SCREENMAN:GetTopScreen():SetNextScreenName("ScreenOutFoxOnlineLogin")
+				end
 				SCREENMAN:GetTopScreen():StartTransitioningScreen("SM_GoToNextScreen")
 				SummaryBackupClear()
 				SummaryAdjust = 0
