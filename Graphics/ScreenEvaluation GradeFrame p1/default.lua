@@ -736,8 +736,17 @@ return Def.ActorFrame{
 		InitCommand=function(self)
 			local fail = STATSMAN:GetCurStageStats(PLAYER_1):GetPlayerStageStats(PLAYER_1):GetFailed()
 			local alive = STATSMAN:GetCurStageStats(PLAYER_1):GetPlayerStageStats(PLAYER_1):GetAliveSeconds()
-			local first = LoadFromCache(GAMESTATE:GetCurrentSong(),GAMESTATE:GetCurrentSteps(PLAYER_1),"TrueFirstSecond")
-			local last = LoadFromCache(GAMESTATE:GetCurrentSong(),GAMESTATE:GetCurrentSteps(PLAYER_1),"TrueLastSecond")
+			local first = 0
+			local last = 0
+
+			if ThemePrefs.Get("UseStepCache") then
+				first = LoadFromCache(GAMESTATE:GetCurrentSong(),GAMESTATE:GetCurrentSteps(PLAYER_1),"TrueFirstSecond")
+				last = LoadFromCache(GAMESTATE:GetCurrentSong(),GAMESTATE:GetCurrentSteps(PLAYER_1),"TrueLastSecond")
+			else
+				first = GAMESTATE:GetCurrentSong():GetFirstSecond()
+				last = GAMESTATE:GetCurrentSong():GetLastSecond()
+			end
+
 			self:x(-52*WideScreenDiff()):y(118*WideScreenDiff()):settext(fail and Time(alive-first).." - "..Time(last-first) or Time(last-first)):zoomx(0.5*WideScreenDiff()):zoomy(0.4*WideScreenDiff()):addx(-EvalTweenDistance())
 			if fail then self:diffuseshift():effectcolor1(color("#FFFFFF")):effectcolor2(color("#FF0000")):effectclock("timerglobal") end
 		end,

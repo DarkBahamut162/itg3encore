@@ -1,7 +1,14 @@
 local player = ...
 local SongOrCourse = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentTrail(player):GetTrailEntry(1):GetSong() or GAMESTATE:GetCurrentSong()
 local StepsOrTrail = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentTrail(player):GetTrailEntry(1):GetSteps() or GAMESTATE:GetCurrentSteps(player)
-local first = tonumber(LoadFromCache(SongOrCourse,StepsOrTrail,"TrueFirstSecond"))
+local first = 0
+
+if ThemePrefs.Get("UseStepCache") then
+	first = tonumber(LoadFromCache(SongOrCourse,StepsOrTrail,"TrueFirstSecond"))
+else
+	first = SongOrCourse:GetFirstSecond()
+end
+
 local sleep = math.max(0.001,first-1.55)
 local duration = math.min(1,first)
 

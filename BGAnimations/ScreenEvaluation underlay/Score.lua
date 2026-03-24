@@ -6,7 +6,7 @@ local EXP_STEPS = 0
 local EXP_MAX = 0
 local CALC_LV = 1
 local allowed = getenv("EvalCombo"..pname(player))
-local sps = 0
+local SPS = 0
 
 local cleared = false
 if isEtterna("0.71") then cleared = not STATSMAN:GetCurStageStats():Failed() else cleared = STATSMAN:GetCurStageStats():OnePassed() end
@@ -17,18 +17,22 @@ if PROFILEMAN:IsPersistentProfile(player) and enableEPL then
 
 	local Song = GAMESTATE:GetCurrentSong()
 	local Steps = GAMESTATE:GetCurrentSteps(player)
-	local SPS = tonumber(LoadFromCache(Song,Steps,"StepsPerSecond"))
-	local trueSeconds = tonumber(LoadFromCache(Song,Steps,"TrueSeconds"))
+	local trueSeconds = 0
+
+	if ThemePrefs.Get("UseStepCache") then
+		SPS = tonumber(LoadFromCache(Song,Steps,"StepsPerSecond"))
+		trueSeconds = tonumber(LoadFromCache(Song,Steps,"TrueSeconds"))
+	else
+		trueSeconds = Song:GetLastSecond()-Song:GetFirstSecond()
+		if not VersionDateCheck(20150500) then
+			SPS = RadarCategory_Notes(Song,Steps)/trueSeconds
+		else
+			SPS = Steps:GetRadarValues(player):GetValue("RadarCategory_Notes")/trueSeconds
+		end
+	end
+
 	EXP_STEPS = math.floor(DP(player)*SPS*100*(trueSeconds/120))
 	EXP_MAX = math.floor(SPS*100*(trueSeconds/120))
-	local stepsType = StepsTypeSingle()[GetUserPrefN("StylePosition")]
-	local stepType = split("_",stepsType)
-	if IsGame("be-mu") or IsGame("beat") then
-		sps = tonumber(LoadFromCache(Song,Steps,"StepsPerSecond")) / 2
-	else
-		sps = tonumber(LoadFromCache(Song,Steps,"StepsPerSecond")) * (getColumnsPerPlayer(stepType[2],stepType[3],true) / 4)
-	end
-	sps = math.floor(sps)
 
 	Data = GetData(player)
 	local CALC_EXP = 0
@@ -164,8 +168,8 @@ return Def.ActorFrame{
 			if GAMESTATE:IsHumanPlayer(player) and allowed then
 				local DP = DP(player)
 				if DP > 0.5 then
-					PaceMaker[player][math.floor(sps)]=PaceMaker[player][math.floor(sps)] or {}
-					PaceMaker[player][math.floor(sps)][#PaceMaker[player][math.floor(sps)]+1] = DP
+					PaceMaker[player][math.floor(SPS)]=PaceMaker[player][math.floor(SPS)] or {}
+					PaceMaker[player][math.floor(SPS)][#PaceMaker[player][math.floor(SPS)]+1] = DP
 				end
 				if Data then if UpdateData(player,{["LV"]=CALC_LV,["EXP"]=Data["EXP"]+EXP_STEPS}) then SaveData(player) end end
 			end

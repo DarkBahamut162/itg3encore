@@ -10,20 +10,34 @@ if getenv("EvalCombo"..pname(player)) then
 		local DPCurrent = isEtterna() and DP(player) or DPCur(player)
 		local target = 0.5
 		local tmax = 0
-		local stepsType = StepsTypeSingle()[GetUserPrefN("StylePosition")]
-		local stepType = split("_",stepsType)
+
 		if getenv("SetPacemaker"..pname(player)) == 18 then
-			local sps = 0
+			local stepsType = StepsTypeSingle()[GetUserPrefN("StylePosition")]
+			local stepType = split("_",stepsType)
+			local SPS = 0
 			local song = GAMESTATE:GetCurrentSong()
 			local steps = GAMESTATE:GetCurrentSteps(player)
-			if IsGame("be-mu") or IsGame("beat") then
-				sps = tonumber(LoadFromCache(song,steps,"StepsPerSecond")) / 2
+
+			if ThemePrefs.Get("UseStepCache") then
+				SPS = tonumber(LoadFromCache(song,steps,"StepsPerSecond"))
 			else
-				sps = tonumber(LoadFromCache(song,steps,"StepsPerSecond")) * (getColumnsPerPlayer(stepType[2],stepType[3],true) / 4)
+				local trueSeconds = song:GetLastSecond()-song:GetFirstSecond()
+				if not VersionDateCheck(20150500) then
+					SPS = RadarCategory_Notes(song,steps)/trueSeconds
+				else
+					SPS = steps:GetRadarValues(player):GetValue("RadarCategory_Notes")/trueSeconds
+				end
 			end
-			sps = math.floor(sps)
-			local min = (PaceMaker[player] and PaceMaker[player][math.floor(sps)]) and 1 or 0.5
-			for pms in ivalues(PaceMaker[player][math.floor(sps)] or {}) do
+
+			if IsGame("be-mu") or IsGame("beat") then
+				SPS = SPS / 2
+			else
+				SPS = SPS * (getColumnsPerPlayer(stepType[2],stepType[3],true) / 4)
+			end
+
+			SPS = math.floor(SPS)
+			local min = (PaceMaker[player] and PaceMaker[player][math.floor(SPS)]) and 1 or 0.5
+			for pms in ivalues(PaceMaker[player][math.floor(SPS)] or {}) do
 				min = math.min(min,math.max(0.5,pms))
 				tmax = math.max(tmax,pms)
 			end

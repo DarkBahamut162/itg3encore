@@ -1599,7 +1599,7 @@ function getCalculatedDifficulty(Step)
 
 	local Song = SONGMAN:GetSongFromSteps(Step)
 	local usesStepCache = ThemePrefs.Get("UseStepCache")
-	local version = usesStepCache and LoadFromCache(Song,Step,"Version") or false
+	local version = usesStepCache and LoadFromCache(Song,Step,"Version") or ThemePrefs.Get("ShowCalcDiff")
 	if not version or version == "0" then
 		repeatCheck[value] = OG
 		return OG
@@ -1634,15 +1634,16 @@ function getCalculatedDifficulty(Step)
 
 	local DB9 = stepSum * ddrtype
 	local SPS = 0
-
-	if IsGame("be-mu") or IsGame("beat") then
-		if usesStepCache then SPS = tonumber(LoadFromCache(Song,Step,"StepsPerSecond")) / 2 end
-	else
-		if usesStepCache then SPS = tonumber(LoadFromCache(Song,Step,"StepsPerSecond")) * (getColumnsPerPlayer(stepType[2],stepType[3],true) / 4) * ddrtype end
+	if usesStepCache then
+		if IsGame("be-mu") or IsGame("beat") then
+			SPS = tonumber(LoadFromCache(Song,Step,"StepsPerSecond")) / 2
+		else
+			SPS = tonumber(LoadFromCache(Song,Step,"StepsPerSecond")) * (getColumnsPerPlayer(stepType[2],stepType[3],true) / 4) * ddrtype
+		end
 	end
 
 	local output = {}
-	local decimals = ThemePrefs.Get("ShowCalcDiffDecimals")
+	local decimals = tonumber(ThemePrefs.Get("ShowCalcDiffDecimals"))
 	if DB9 > SPS then
 		output = {math.round(DB9,decimals),"DB9"}
 	elseif SPS > DB9 then
@@ -1658,6 +1659,7 @@ function getCalculatedDifficulty(Step)
 end
 
 function IIDXGrooveRadar(song,steps,RadarValues)
+	local usesStepCache = ThemePrefs.Get("UseStepCache")
 	local notes,peak,scratch,charge,chord,soflan = 0,0,0,0,0,0
 	local timingData = steps:GetTimingData()
 	if not isEtterna(20160826) then
@@ -1676,16 +1678,15 @@ function IIDXGrooveRadar(song,steps,RadarValues)
 		notes = (total/song:MusicLengthSeconds())/7
 		peak = ((maxVoltage/8)*(song:GetLastBeat()/song:MusicLengthSeconds()))/10
 	end
-	scratches = tonumber(LoadFromCache(song,steps,"Scratches")) or 0
+	scratches = usesStepCache and tonumber(LoadFromCache(song,steps,"Scratches")) or -1
 	scratches = scratches/song:MusicLengthSeconds()
 	charge = RadarValues:GetValue('RadarCategory_Holds')+RadarValues:GetValue('RadarCategory_Rolls')
 	charge = charge/song:MusicLengthSeconds()
-	chord = tonumber(LoadFromCache(song,steps,"Chords")) or 0
+	chord = usesStepCache and tonumber(LoadFromCache(song,steps,"Chords")) or (RadarValues:GetValue('RadarCategory_Jumps')+RadarValues:GetValue('RadarCategory_Hands'))/song:MusicLengthSeconds()
 	chord = chord/song:MusicLengthSeconds()
 	soflan = #timingData:GetBPMsAndTimes() + #timingData:GetStops() -1
 	soflan = soflan/song:MusicLengthSeconds()
 
-	local usesStepCache = ThemePrefs.Get("UseStepCache")
 	local totalSeconds = usesStepCache and tonumber(LoadFromCache(song,steps,"TrueSeconds")) or song:GetLastSecond() - song:GetFirstSecond()
 	local totalBeats = usesStepCache and tonumber(LoadFromCache(song,steps,"TrueBeats")) or song:GetLastBeat() - song:GetFirstBeat()
 	local avg_bps_OLD = song:GetLastBeat() / song:MusicLengthSeconds()

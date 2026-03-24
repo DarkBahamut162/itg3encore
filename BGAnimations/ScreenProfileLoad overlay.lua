@@ -29,17 +29,31 @@ return Def.ActorFrame{
 						if #profile > 0 then
 							for _,highscore in pairs(profile) do
 								if highscore:GetGrade()~="Grade_Failed" then
-									local sps = LoadFromCache(songs[s],steps[ss],"StepsPerSecond")
-									if sps then
-										if IsGame("be-mu") or IsGame("beat") then
-											sps = tonumber(sps) / 2
+									local SPS = 0
+
+									if ThemePrefs.Get("UseStepCache") then
+										SPS = tonumber(LoadFromCache(songs[s],steps[ss],"StepsPerSecond"))
+									else
+										local trueSeconds = songs[s]:GetLastSecond()-songs[s]:GetFirstSecond()
+										if not VersionDateCheck(20150500) then
+											SPS = RadarCategory_Notes(songs[s],steps[ss])/trueSeconds
 										else
-											sps = tonumber(sps) * (getColumnsPerPlayer(stepType[2],stepType[3],true) / 4)
+											SPS = steps[ss]:GetRadarValues(player):GetValue("RadarCategory_Notes")/trueSeconds
 										end
-										sps = math.floor(sps)
-										PaceMaker[pn][math.floor(sps)]=PaceMaker[pn][math.floor(sps)] or {}
+									end
+
+									if SPS then
+										if IsGame("be-mu") or IsGame("beat") then
+											SPS = SPS / 2
+										else
+											SPS = SPS * (getColumnsPerPlayer(stepType[2],stepType[3],true) / 4)
+										end
+
+										SPS = math.floor(SPS)
+										PaceMaker[pn][math.floor(SPS)]=PaceMaker[pn][math.floor(SPS)] or {}
+
 										if highscore:GetPercentDP() > 0.5 then
-											PaceMaker[pn][math.floor(sps)][#PaceMaker[pn][math.floor(sps)]+1] = highscore:GetPercentDP()
+											PaceMaker[pn][math.floor(SPS)][#PaceMaker[pn][math.floor(SPS)]+1] = highscore:GetPercentDP()
 										end
 									end
 								end

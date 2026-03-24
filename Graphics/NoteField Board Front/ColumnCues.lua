@@ -483,14 +483,22 @@ local c
 local noteData = {}
 local SongOrCourse = GAMESTATE:GetCurrentSong()
 local StepsOrTrail = GAMESTATE:GetCurrentSteps(player)
-trueFirst = tonumber(LoadFromCache(SongOrCourse,StepsOrTrail,"TrueFirstBeat"))
+local trueFirst = tonumber(LoadFromCache(SongOrCourse,StepsOrTrail,"TrueFirstBeat"))
 local GCM = GetColumnMapping(player)
 local GCM_ITG = GetColumnMappingITG(player)
 
 function setCol()
 	noteData = {}
-	local SongOrCourse = GAMESTATE:GetCurrentSong()
-	local StepsOrTrail = GAMESTATE:GetCurrentSteps(player)
+	local SongOrCourse,StepsOrTrail
+	if GAMESTATE:IsCourseMode() then
+		local songIndex = GAMESTATE:GetCourseSongIndex() + 1
+		local trail = GAMESTATE:GetCurrentTrail(player):GetTrailEntries()[songIndex]
+		SongOrCourse = trail:GetSong()
+		StepsOrTrail = trail:GetSteps()
+	else
+		SongOrCourse = GAMESTATE:GetCurrentSong()
+		StepsOrTrail = GAMESTATE:GetCurrentSteps(player)
+	end
 	trueFirst = tonumber(LoadFromCache(SongOrCourse,StepsOrTrail,"TrueFirstBeat"))
 	local timingData = StepsOrTrail:GetTimingData()
 	local chartint = 1

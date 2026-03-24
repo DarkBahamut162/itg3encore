@@ -18,7 +18,7 @@ for pn in ivalues(player) do
 		loadfile(THEME:GetPathG("NoteField","Board Front/ScreenFilter"))(pn),
 		loadfile(THEME:GetPathG("NoteField","Board Front/danger"))(pn)..{ Condition=not isOni() and PREFSMAN:GetPreference("ShowDanger") },
 		loadfile(THEME:GetPathG("NoteField","Board Front/dead"))(pn),
-		loadfile(THEME:GetPathG("NoteField","Board Front/ColumnCues"))(pn),
+		loadfile(THEME:GetPathG("NoteField","Board Front/ColumnCues"))(pn)..{ Condition=ThemePrefs.Get("UseStepCache") },
 		loadfile(THEME:GetPathG("NoteField","Board Front/FullCombo"))(pn)..{ Condition=IsGame("beat") or IsGame("be-mu") },
 		loadfile(THEME:GetPathG("NoteField","Board Front/GetReady"))(pn)..{ Condition=IsGame("beat") or IsGame("be-mu") },
 		loadfile(THEME:GetPathG("NoteField","Board Front/NullMeasure"))(pn,NMs)..{ Condition=NMcheck and not isOutFoxV043() },

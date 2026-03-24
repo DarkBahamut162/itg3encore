@@ -39,13 +39,22 @@ function TotalPossibleStepSecondsCurrent(player)
 			for i=1, #entries do
 				local song = entries[i]:GetSong()
 				local step = entries[i]:GetSteps()
-				local trueSeconds = tonumber(LoadFromCache(Song,StepsOrTrail,"TrueSeconds"))
+				local trueSeconds = 0
+				if ThemePrefs.Get("UseStepCache") then
+					trueSeconds = tonumber(LoadFromCache(song,step,"TrueSeconds"))
+				else
+					trueSeconds = song:GetFirstSecond() > song:GetLastSecond() and 0 or song:GetLastSecond()-song:GetFirstSecond()
+				end
 				fSecs = fSecs + trueSeconds
 			end
 		end
 	else
 		local Song = GAMESTATE:GetCurrentSong()
-		fSecs = tonumber(LoadFromCache(Song,StepsOrTrail,"TrueSeconds"))
+		if ThemePrefs.Get("UseStepCache") then
+			fSecs = tonumber(LoadFromCache(Song,StepsOrTrail,"TrueSeconds"))
+		else
+			fSecs = Song:GetFirstSecond() > Song:GetLastSecond() and 0 or Song:GetLastSecond()-Song:GetFirstSecond()
+		end
 	end
 
     local songoptions = GAMESTATE:GetSongOptionsObject("ModsLevel_Song")
@@ -62,7 +71,12 @@ function TotalPossibleStepSeconds(player)
 		if player then
 			local Song = s:GetPossibleSongs()[a]
 			local Steps = s:GetPlayerStageStats(player):GetPossibleSteps()[a]
-			local trueSeconds = tonumber(LoadFromCache(Song,Steps,"TrueSeconds"))
+			local trueSeconds = 0
+			if ThemePrefs.Get("UseStepCache") then
+				trueSeconds = tonumber(LoadFromCache(Song,Steps,"TrueSeconds"))
+			else
+				trueSeconds = Song:GetFirstSecond() > Song:GetLastSecond() and 0 or Song:GetLastSecond()-Song:GetFirstSecond()
+			end
 			fSecs = fSecs + trueSeconds
 		else
 			fSecs = fSecs + s:GetPossibleSongs()[a]:GetStepsSeconds()
@@ -157,8 +171,15 @@ function prepSummary()
 		if ThemePrefs.Get("ShowTime") then
 			local fail = STATSMAN:GetCurStageStats(player):GetPlayerStageStats(player):GetFailed()
 			local alive = STATSMAN:GetCurStageStats(player):GetPlayerStageStats(player):GetAliveSeconds()
-			local first = LoadFromCache(GAMESTATE:GetCurrentSong(),GAMESTATE:GetCurrentSteps(player),"TrueFirstSecond")
-			local last = LoadFromCache(GAMESTATE:GetCurrentSong(),GAMESTATE:GetCurrentSteps(player),"TrueLastSecond")
+			local first = 0
+			local last = 0
+			if ThemePrefs.Get("UseStepCache") then
+				first = LoadFromCache(GAMESTATE:GetCurrentSong(),GAMESTATE:GetCurrentSteps(player),"TrueFirstSecond")
+				last = LoadFromCache(GAMESTATE:GetCurrentSong(),GAMESTATE:GetCurrentSteps(player),"TrueLastSecond")
+			else
+				first = GAMESTATE:GetCurrentSong():GetFirstSecond()
+				last = GAMESTATE:GetCurrentSong():GetLastSecond()
+			end
 			Step["PlayedTime"] = math.min(alive-first,last-first)
 			Step["TotalTime"] = last-first
 		end

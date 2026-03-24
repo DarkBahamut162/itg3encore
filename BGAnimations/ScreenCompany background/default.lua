@@ -37,6 +37,8 @@ if isOutFox(20220900) and not isOutFox(20230400) then
 	if "glad" == string.lower(split(',',PREFSMAN:GetPreference('VideoRenderers'))[1]) then
 		SCREENMAN:SystemMessage("Please switch your VideoRenderer!\nGLAD is bugged in this version of OutFox!")
 	end
+elseif isOutFoxV043() and ThemePrefs.Get("UseStepCache") then
+	SCREENMAN:SystemMessage("WARNING!\nThis OutFox Version might cause Frame Crashes when trying to use the StepCache!\nTurn off StepCache until further notice!\nAnd please report to OutFox...")
 end
 
 if isITGmania() then CheckThemeVersion() CheckEngineVersion() end
