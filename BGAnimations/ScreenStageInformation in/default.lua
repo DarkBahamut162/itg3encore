@@ -20,7 +20,7 @@ if GAMESTATE:IsEventMode() then curStage = 'Stage_Event' else
 		end
 	end
 end
-if IsNetSMOnline() then curStage = 'Stage_Online' end
+if IsNetSMOnline() or isOutFoxOnline() then curStage = 'Stage_Online' end
 
 if not isEtterna("0.69") and (isOni() or GAMESTATE:IsAnExtraStage()) then
 	for pn in ivalues(GAMESTATE:GetHumanPlayers()) do

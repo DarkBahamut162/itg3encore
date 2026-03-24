@@ -29,7 +29,7 @@ return Def.ActorFrame{
 						end
 					end
 				end
-				if IsNetSMOnline() then curStage = 'Stage_Online' end
+				if IsNetSMOnline() or isOutFoxOnline() then curStage = 'Stage_Online' end
 
 				self:Load(THEME:GetPathG("_gameplay","stage "..ToEnumShortString(curStage)))
 			end

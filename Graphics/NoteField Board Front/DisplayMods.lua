@@ -5,7 +5,13 @@ local optionslist = GAMESTATE:GetPlayerState(player):GetPlayerOptionsString("Mod
 local SongOrCourse = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentTrail(player):GetTrailEntry(1):GetSong() or GAMESTATE:GetCurrentSong()
 local StepsOrTrail = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentTrail(player):GetTrailEntry(1):GetSteps() or GAMESTATE:GetCurrentSteps(player)
 
-local sleep = math.max(1,tonumber(LoadFromCache(SongOrCourse,StepsOrTrail,"TrueFirstSecond"))-1.55)
+local sleep = 0
+
+if ThemePrefs.Get("UseStepCache") then
+	sleep = math.max(1,tonumber(LoadFromCache(SongOrCourse,StepsOrTrail,"TrueFirstSecond"))-1.55)
+else
+	sleep = math.max(1,SongOrCourse:GetFirstSecond()-1.55)
+end
 
 return Def.ActorFrame{
 	OnCommand=function(self) self:sleep(sleep):decelerate(0.5):diffusealpha(0) end,

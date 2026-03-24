@@ -34,7 +34,7 @@ return Def.ActorFrame{
 					end
 				end
 			end
-			if IsNetSMOnline() then curStage = 'Stage_Online' end
+			if IsNetSMOnline() or isOutFoxOnline() then curStage = 'Stage_Online' end
 			self:settext(THEME:GetString("Stages",ToEnumShortString(curStage))):maxwidth(240)
 		end
 	}

@@ -114,7 +114,7 @@ function GetRandomModifierNames(n)
 		"Hide Score","Hide Judgment","Hide Combo","Hide Lifebar",
 		"Under Combo","Under Tap Judgments","Under Hold Judgments",
 		"PlayerField Near","PlayerField Center","PlayerField Far",
-		"Normal Score","Percent Score","EX Score","SN2 Score","IIDX Score","WIFE3 Score","FA+ Score",
+		"Normal Score","Percent Score","EX Score","SN2 Score","A Score","IIDX Score","WIFE3 Score","FA+ Score",
 		"Error Bar",
 		"Column Cues/Flashes",
 		"Screen Filter",
@@ -342,6 +342,10 @@ end
 function isOutFox(version)
 	local productCheck = ProductFamily() == "OutFox" or (isStepMania() and tonumber(split("-",ProductVersion())[1]) == 5.3)
 	if version then return productCheck and VersionDateCheck(version) else return productCheck end
+end
+
+function isOutFoxOnline()
+	return NETMAN and NETMAN:IsConnectionEstablished() or false
 end
 
 function isEtterna(version)
