@@ -84,12 +84,12 @@ if getenv("SetPacemaker"..pname(pn)) == 18 then
 		end
 
 		SPS = math.floor(SPS)
-		local min = (PaceMaker[pn] and PaceMaker[pn][math.floor(SPS)]) and 1 or 0.5
+		local min = 1
 		for pms in ivalues(PaceMaker[pn][math.floor(SPS)] or {}) do
 			min = math.min(min,math.max(0.5,pms))
 			tmax = math.max(tmax,pms)
-			target = math.max(0.5,min)
 		end
+		if min == 1 and tmax == 0 then target = 0.5 else target = math.max(0.5,min) end
 	end
 else
 	target = THEME:GetMetric("PlayerStageStats", "GradePercentTier" .. string.format("%02d", 18-(getenv("SetPacemaker"..pname(pn)) or 0)))
@@ -446,6 +446,7 @@ return Def.ActorFrame{
 					local curDP = DPCur(pn)
 					local time = GAMESTATE:IsCourseMode() and STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):GetAliveSeconds() or GAMESTATE:GetCurMusicSeconds()/GAMESTATE:GetSongOptionsObject("ModsLevel_Song"):MusicRate()
 					targetdata[#targetdata+1] = { time, curDP-curTargetDP }
+					if tmax > 0 and tmax ~= target then targetdata[#targetdata+1] = { time, curDP-math.ceil(DPCurMax(pn)*tmax) } end
 
 					local addX = (curTargetDP/DPMax(pn))*barHeight
 					local score = curDP-curTargetDP
