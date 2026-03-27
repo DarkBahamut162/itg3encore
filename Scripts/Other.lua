@@ -382,6 +382,10 @@ function EtternaVersionCheck(version)
 	return curV >= checkV
 end
 
+function isOutFoxV042(version)
+	if version then return isOutFoxV(20230600) and VersionDateCheck(version) else return isOutFoxV(20230600) end
+end
+
 function isOutFoxV043(version)
 	if version then return isOutFoxV(20240000) and VersionDateCheck(version) else return isOutFoxV(20240000) end
 end

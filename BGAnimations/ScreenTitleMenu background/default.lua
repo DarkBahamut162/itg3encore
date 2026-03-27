@@ -71,7 +71,58 @@ local function sortArray(array)
 	return output
 end
 
+local c
+--[[
+local GrooveStats = isITGmania() and RequestResponseActor()..{
+	SendRequestCommand=function(self)
+		if GS.IsConnected then MESSAGEMAN:Broadcast("GrooveStatsUpdate") return end
+		if ThemePrefs.Get("EnableGrooveStats") then
+			GS.GetScores = false
+			GS.Leaderboard = false
+			GS.AutoSubmit = false
+			self:playcommand("MakeGrooveStatsRequest", {
+				endpoint="?action=newSession&chartHashVersion=3",
+				method="GET",
+				timeout=10,
+				callback=NewSessionRequestProcessor
+			})
+		end
+	end
+} or Def.ActorFrame{
+	RequestResponseActor_SM("PingLauncher", 5)..{
+		InitCommand=function(self)
+			if ThemePrefs.Get("EnableGrooveStats") and not isITGmania() then
+				GS.Launcher = false
+				MESSAGEMAN:Broadcast("PingLauncher", {
+					data={action="ping", protocol=1},
+					callback=function(res)
+						if res == nil then return end
+						GS.Launcher = true
+						MESSAGEMAN:Broadcast("NewSessionRequest")
+					end
+				})
+			end
+		end
+	},
+	RequestResponseActor_SM("NewSession", 10)..{
+		NewSessionRequestMessageCommand=function(self)
+			if GS.IsConnected then MESSAGEMAN:Broadcast("GrooveStatsUpdate") return end
+			if ThemePrefs.Get("EnableGrooveStats") and GS.Launcher then
+				GS.GetScores = false
+				GS.Leaderboard = false
+				GS.AutoSubmit = false
+				MESSAGEMAN:Broadcast("NewSession", {
+					data={action="groovestats/new-session", ChartHashVersion=3},
+					callback=NewSessionRequestProcessor_SM
+				})
+			end
+		end
+	}
+}
+]]
+
 return Def.ActorFrame{
+	InitCommand=function(self) c = self:GetChildren() end,
 	OnCommand=function(self)
 		if isOutFox(20200500) then
 			GAMESTATE:UpdateDiscordGameMode(GAMESTATE:GetCurrentGame():GetName())
@@ -474,6 +525,7 @@ return Def.ActorFrame{
 		end
 	},
 	Def.BitmapText {
+		Name = "GameInfo",
 		File = "_r bold 30px",
 		InitCommand=function(self) self:x(isFinal() and SCREEN_CENTER_X+5*WideScreenDiff() or SCREEN_LEFT+5):y(isFinal() and SCREEN_TOP+50*WideScreenDiff() or SCREEN_TOP+40*WideScreenDiff()):shadowlength(2):valign(0):halign(isFinal() and 0.5 or 0):maxwidth(isFinal() and SCREEN_WIDTH/4*3/WideScreenDiff_(16/9) or SCREEN_WIDTH/WideScreenDiff()):zoom(0.6*WideScreenDiff()) end,
 		OnCommand=function(self) self:diffusealpha(0):sleep(0.5):linear(0.5):diffusealpha(1):playcommand("Refresh") end,
@@ -618,6 +670,103 @@ return Def.ActorFrame{
 				end
 			end
 		end
+	},
+	Def.ActorFrame{
+		Condition=(ThemePrefs.Get("EnableGrooveStats") or isOutFoxOnline()),
+		Name="OnlineInfo",
+		OnCommand=function(self)
+			self:zoom(0.5):x(10)
+			if isFinal() then self:y(72) else self:y(c.GameInfo:GetHeight()+8) end
+			self:queuecommand("SendRequest"):diffusealpha(0):sleep(0.5):linear(0.5):diffusealpha(1)
+		end,
+		SendRequestCommand=function(self)
+			if isOutFoxOnline() then
+				local online = self:GetChild("Online")
+				local outfox = self:GetChild("OutFox")
+				if isOutFoxV042() and not isOutFoxV043() then
+					online:diffuse(Color("Yellow")):settext("   OutFox Online\nNo Score Submissions"):valign(0.2):halign(0)
+					outfox:diffuse(Color("Yellow"))
+				else
+					online:diffuse(Color("Green")):settext("   OutFox Online")
+					outfox:diffuse(Color("Green"))
+				end
+			end	
+		end,
+		ResponseMachineLoginMessageCommand=function(self,params)
+			tryingConnection = false
+			if isOutFoxOnline() then
+				local online = params.Response ~= nil
+				local color = online and "Green" or "Red"
+				local online = self:GetChild("Online"):diffuse(Color(color)):settext("   OutFox Online"..(params.Reason and " "..params.Reason or ""))
+				local outfox = self:GetChild("OutFox"):diffuse(Color(color))
+			end
+		end,
+		OffCommand=function(self) self:accelerate(0.5):addy(isFinal() and -500 or -100) end,
+		GrooveStatsUpdateMessageCommand=function(self)
+			local online = self:GetChild("Online")
+			local logo = self:GetChild("Logo")
+			local service1 = self:GetChild("Service1")
+			local service2 = self:GetChild("Service2")
+			local service3 = self:GetChild("Service3")
+			if GS and GS.IsConnected then
+				online:settext(GS.Launcher and "   GrooveStats (Launcher)" or "   GrooveStats")
+				if GS.GetScores and GS.Leaderboard and GS.AutoSubmit then
+					online:diffuse(Color("Green"))
+					logo:diffuse(Color("Green"))
+				elseif not GS.GetScores and not GS.Leaderboard and not GS.AutoSubmit then
+					online:diffuse(Color("Red"))
+					logo:diffuse(Color("Red"))
+				else
+					online:diffuse(Color("Yellow"))
+					logo:diffuse(Color("Yellow"))
+				end
+				if GS.GetScores then service1:diffuse(Color("Green")) else service1:diffuse(Color("Red")) end
+				if GS.Leaderboard then service2:diffuse(Color("Green")) else service2:diffuse(Color("Red")) end
+				if GS.AutoSubmit then service3:diffuse(Color("Green")) else service3:diffuse(Color("Red")) end
+			else
+				online:settext("   GrooveStats"):diffuse(Color("Red"))
+				logo:diffuse(Color("Red"))
+				service1:diffuse(color("#ff000000"))
+				service2:diffuse(color("#ff000000"))
+				service3:diffuse(color("#ff000000"))
+			end
+		end,
+		Def.Sprite{
+			Name="Logo",
+			Texture=THEME:GetPathG("GS","White"),
+			InitCommand=function(self) self:addx(10):diffuse(color("#ff000000")):setsize(32,32) end
+		},
+		Def.Sprite{
+			Name="OutFox",
+			Texture=THEME:GetPathG("OF","Online"),
+			InitCommand=function(self) self:addx(10):diffuse(color("#ff000000")):setsize(32,32) end
+		},
+		Def.BitmapText {
+			File = "Common Normal",
+			Name="Online",
+			Text="   GrooveStats",
+			InitCommand=function(self) self:horizalign(left):diffuse(color("#ff000000")):shadowlength(2) end
+		},
+		Def.BitmapText {
+			File = "Common Normal",
+			Name="Service1",
+			Text="playerScores",
+			InitCommand=function(self) self:addy(30):horizalign(left):diffuse(color("#ff000000")):shadowlength(2) end
+		},
+		Def.BitmapText {
+			File = "Common Normal",
+			Name="Service2",
+			Text="playerLeaderboards",
+			InitCommand=function(self) self:addy(60):horizalign(left):diffuse(color("#ff000000")):shadowlength(2) end
+		},
+		Def.BitmapText {
+			File = "Common Normal",
+			Name="Service3",
+			Text="scoreSubmit",
+			InitCommand=function(self) self:addy(90):horizalign(left):diffuse(color("#ff000000")):shadowlength(2) end
+		},
+
+		--GrooveStats
 	},
 	Def.ActorFrame{
 		Condition=ThemePrefs.Get("ShowClock"),

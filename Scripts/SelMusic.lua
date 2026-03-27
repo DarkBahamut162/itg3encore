@@ -116,6 +116,9 @@ function GetScreenEvaluationHelpText()
 	if ThemePrefs.Get("ShowOffset") and not isVS() then
 		ret = addToOutput(ret,ThemePrefs.Get("KeyboardEnabled") and THEME:GetString("ScreenEvaluation", "HelpTextViewKeyboard") or THEME:GetString("ScreenEvaluation","HelpTextView"),"::")
 	end
+	if isOutFoxOnline() and ThemePrefs.Get("KeyboardEnabled") then
+		ret = addToOutput(ret,THEME:GetString("ScreenEvaluation", "HelpTextHighscoreKeyboard"),"::")
+	end
 	return ret
 end
 

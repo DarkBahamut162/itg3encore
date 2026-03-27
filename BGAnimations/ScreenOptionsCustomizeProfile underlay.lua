@@ -13,7 +13,8 @@
 -- 4.1  The L/R indicators
 -- 5.  The Menu Fader
 
-local profile,master,profile_id
+local profile,master,profile_id,OF
+local inputTypes = {"Keyboard Player","Pad Player","Controller Player"}
 
 if getenv("EditUSBProfile") then
 	GAMESTATE:LoadProfiles()
@@ -21,9 +22,25 @@ if getenv("EditUSBProfile") then
 	profile = PROFILEMAN:GetProfile(master)
 	profile_id = nil
 else
+	if ThemePrefs.Get("EnableGrooveStats") or isOutFoxOnline() then GAMESTATE:LoadProfiles() end
 	profile = GAMESTATE:GetEditLocalProfile()
 	master = GAMESTATE:GetMasterPlayerNumber()
 	profile_id = GAMESTATE:GetEditLocalProfileID()
+end
+
+if ThemePrefs.Get("EnableGrooveStats") then
+	LoadGrooveStatsIni(master)
+elseif isOutFoxOnline() then
+	local ProfileSlot = {
+		[PLAYER_1] = "ProfileSlot_Player1",
+		[PLAYER_2] = "ProfileSlot_Player2"
+	}
+	if ProfileSlot[master] then
+		local path = PROFILEMAN:GetProfileDir(ProfileSlot[master]).."Type.ini"
+		if FILEMAN:DoesFileExist(path) then
+			OF = IniFile.ReadFile(path)
+		end
+	end
 end
 
 -- 1.  The Numpad
@@ -553,6 +570,50 @@ args[#args+1] = Def.ActorFrame{
 		Font = "Common Normal",
 		Text = Screen.String("TotalTime").. ": "..SecondsToHHMMSS(profile:GetTotalGameplaySeconds()),
 		OnCommand=function(self) self:xy( (avatar and profile_id) and 150 or 50, 172 ):halign(0):shadowlength(3) end
+	},
+	Def.ActorFrame{
+		Condition=ThemePrefs.Get("EnableGrooveStats"),
+		Def.Sprite{
+			InitCommand=function(self) self:Load( THEME:GetPathG("GS","OG") ):visible(profile_id ~= nil) end,
+			OnCommand=function(self) self:xy( SCREEN_WIDTH-50, 136 ):blend(Blend.Add):halign(1):setsize(128,128) end
+		},
+		Def.BitmapText{
+			Font = "Common Normal",
+			Text = GS[master] and GS[master].Username or "--empty--",
+			OnCommand=function(self) self:xy( SCREEN_WIDTH-50, 100 ):halign(1):shadowlength(3):diffuse(color("#37AAB6")) end
+		},
+		Def.BitmapText{
+			Font = "Common Normal",
+			Text = (GS[master] and GS[master].IsPadPlayer) and "Pad Player" or "Keyboard Player",
+			OnCommand=function(self) self:xy( SCREEN_WIDTH-50, 136 ):halign(1):shadowlength(3):diffuse(color("#37AAB6")) end
+		},
+		Def.BitmapText{
+			Font = "Common Normal",
+			Text = (GS[master] and GS[master].ApiKey ~= "") and GS[master].ApiKey:sub(1,6).."..."..GS[master].ApiKey:sub(-6) or "--empty--",
+			OnCommand=function(self) self:xy( SCREEN_WIDTH-50, 172 ):halign(1):shadowlength(3):diffuse(color("#37AAB6")) end
+		}
+	},
+	Def.ActorFrame{
+		Condition=isOutFoxOnline(),
+		Def.Sprite{
+			InitCommand=function(self) self:Load( THEME:GetPathG("OF","Online") ):visible(profile_id ~= nil) end,
+			OnCommand=function(self) self:xy( SCREEN_WIDTH-50, 136 ):blend(Blend.Add):halign(1):setsize(128,128) end
+		},
+		Def.BitmapText{
+			Font = "Common Normal",
+			Text = (OF.Online and OF.Online.InputType) and inputTypes[OF.Online.InputType+1] or "",
+			OnCommand=function(self) self:xy( SCREEN_WIDTH-50, 100 ):halign(1):shadowlength(3):diffuse(color("#AACCFF")) end
+		},
+		Def.BitmapText{
+			Font = "Common Normal",
+			Text = (OF.Online and OF.Online.Registered) and "Registered" or "Not Registered",
+			OnCommand=function(self) self:xy( SCREEN_WIDTH-50, (OF.Online and OF.Online.InputType) and 136 or 118 ):halign(1):shadowlength(3):diffuse(color("#AACCFF")) end
+		},
+		Def.BitmapText{
+			Font = "Common Normal",
+			Text = (OF.Online and OF.Online.Token ~= "") and OF.Online.Token:sub(1,6).."..."..OF.Online.Token:sub(-6) or "--empty--",
+			OnCommand=function(self) self:xy( SCREEN_WIDTH-50, (OF.Online and OF.Online.InputType) and 172 or 154 ):halign(1):shadowlength(3):diffuse(color("#AACCFF")) end
+		}
 	}
 }
 
