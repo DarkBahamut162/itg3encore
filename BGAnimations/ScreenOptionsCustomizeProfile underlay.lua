@@ -601,17 +601,17 @@ args[#args+1] = Def.ActorFrame{
 		},
 		Def.BitmapText{
 			Font = "Common Normal",
-			Text = (OF.Online and OF.Online.InputType) and inputTypes[OF.Online.InputType+1] or "",
+			Text = (OF and OF.Online and OF.Online.InputType) and inputTypes[OF.Online.InputType+1] or "",
 			OnCommand=function(self) self:xy( SCREEN_WIDTH-50, 100 ):halign(1):shadowlength(3):diffuse(color("#AACCFF")) end
 		},
 		Def.BitmapText{
 			Font = "Common Normal",
-			Text = (OF.Online and OF.Online.Registered) and "Registered" or "Not Registered",
+			Text = (OF and OF.Online and OF.Online.Registered) and "Registered" or "Not Registered",
 			OnCommand=function(self) self:xy( SCREEN_WIDTH-50, (OF.Online and OF.Online.InputType) and 136 or 118 ):halign(1):shadowlength(3):diffuse(color("#AACCFF")) end
 		},
 		Def.BitmapText{
 			Font = "Common Normal",
-			Text = (OF.Online and OF.Online.Token ~= "") and OF.Online.Token:sub(1,6).."..."..OF.Online.Token:sub(-6) or "--empty--",
+			Text = (OF and OF.Online and OF.Online.Token ~= "") and OF.Online.Token:sub(1,6).."..."..OF.Online.Token:sub(-6) or "--empty--",
 			OnCommand=function(self) self:xy( SCREEN_WIDTH-50, (OF.Online and OF.Online.InputType) and 172 or 154 ):halign(1):shadowlength(3):diffuse(color("#AACCFF")) end
 		}
 	}
