@@ -432,136 +432,6 @@ local Leaderboard = isITGmania() and RequestResponseActor()..{
 }
 ]]--
 
-local LEADERBOARD = Def.ActorFrame{}
-
-if isOutFoxOnline() then
-	for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
-		LEADERBOARD[#LEADERBOARD+1] = Def.ActorFrame{
-			Condition=not isEtterna("0.55"),
-			Name="Leaderboard"..pname(pn),
-			InitCommand=function(self) self:x(pn == PLAYER_1 and SCREEN_LEFT or SCREEN_RIGHT):y(SCREEN_BOTTOM-100*WideScreenDiff()):addx(pn == PLAYER_1 and -SCREEN_WIDTH or SCREEN_WIDTH):player(pn):draworder(-3) end,
-			OnCommand=function(self) self:decelerate(0.75):addx(pn == PLAYER_1 and SCREEN_WIDTH or -SCREEN_WIDTH) end,
-			OffCommand=function(self) self:accelerate(0.75):addx(pn == PLAYER_1 and -SCREEN_WIDTH or SCREEN_WIDTH) end,
-			ShowCommand=function(self)
-				local _,lines = string.gsub(self:GetChild("Text"):GetText(),"\n","")
-				self:stoptweening():decelerate(0.3):y(SCREEN_BOTTOM-(127+15*lines)*WideScreenDiff()):playcommand("Update")
-			end,
-			HideCommand=function(self) self:stoptweening():decelerate(0.3):y(SCREEN_BOTTOM-100*WideScreenDiff()) end,
-			["ShiftMenuOpened"..pname(pn).."MessageCommand"]=function(self) shiftHeld[pn] = true self:playcommand((courseMode and GAMESTATE:GetCurrentCourse() or GAMESTATE:GetCurrentSong()) and "Show" or "Hide") end,
-			["ShiftMenuClosed"..pname(pn).."MessageCommand"]=function(self) shiftHeld[pn] = false self:playcommand("Hide") end,
-			CurrentSongChangedMessageCommand=function(self) if not courseMode and shiftHeld[pn] then if not GAMESTATE:GetCurrentSong() then self:playcommand("Hide") else self:playcommand("Show") end end end,
-			CurrentCourseChangedMessageCommand=function(self) if courseMode and shiftHeld[pn] then if not GAMESTATE:GetCurrentCourse() then self:playcommand("Hide") else self:playcommand("Show") end end end,
-			Def.Sprite {
-				Texture = THEME:GetPathB("ScreenEditMenu","underlay/main"),
-				InitCommand=function(self) self:horizalign(pn == PLAYER_1 and right or left):vertalign(top):xy(pn == PLAYER_1 and 300*WideScreenDiff() or -300*WideScreenDiff(),-18*WideScreenDiff()):zoom(WideScreenDiff()):diffuse(Color("Red")) end
-			},
-			Def.BitmapText {
-				Name = "Header",
-				File = "_v 26px bold shadow",
-				Text = "GS:",
-				InitCommand=function(self) self:maxwidth(500):horizalign(pn == PLAYER_1 and left or right):vertalign(bottom):x(pn == PLAYER_1 and 20*WideScreenDiff() or -20*WideScreenDiff()):y(-12*WideScreenDiff()):shadowlength(0.5):zoom(0.5*WideScreenDiff()):diffusealpha(0) end,
-				ShowCommand=function(self) self:stoptweening():decelerate(0.3):diffusealpha(1) end,
-				HideCommand=function(self) self:stoptweening():accelerate(0.3):diffusealpha(0) end,
-				UpdateCommand=function(self)
-					local output = ""
-					if isOutFoxOnline() then
-						if getenv("SetScoreFA"..pname(pn)) then output = "EX:" else output = "OF:" end
-					else
-						if leaderboard[pn] == 1 then output = "GS:" elseif leaderboard[pn] == 2 then output = "EX:" elseif leaderboard[pn] == 3 then output = "RPG:" elseif leaderboard[pn] == 4 then output = "ITL:" end
-					end
-					self:settext(output)
-				end,
-				["Update"..pname(pn).."MessageCommand"]=function(self,param)
-					leaderboard[pn] = param and param.pos or 1
-					self:queuecommand("Update")
-				end
-			},
-			Def.BitmapText {
-				Name = "Text",
-				File = "_v 26px bold white",
-				InitCommand=function(self) self:maxwidth(500):horizalign(left):vertalign(top):x(20*WideScreenDiff()):y(-4*WideScreenDiff()):shadowlength(0.5):zoom(0.5*WideScreenDiff()) end,
-				["CurrentSteps"..pname(pn).."ChangedMessageCommand"]=function(self) if not courseMode then self:playcommand("Update") end end,
-				CurrentStepsChangedMessageCommand=function(self) if not courseMode then self:playcommand("Update") end end,
-				["CurrentTrail"..pname(pn).."ChangedMessageCommand"]=function(self) if courseMode then self:playcommand("Update") end end,
-				UpdateCommand=function(self)
-					if courseMode then
-						if isOutFoxOnline() then
-							output = "NO OUTFOX ONLINE IN COURSE MODE"
-						else
-							output = "NO GROOVESTATS IN COURSE MODE"
-						end
-					else
-						local output = "LOADING..."
-						local coloring = {}
-						if shiftHeld[pn] then
-							local song = GAMESTATE:GetCurrentSong()
-							if song then
-								local steps = GAMESTATE:GetCurrentSteps(pn)
-								if steps then
-									local GrooveStatsHash,cache
-									if isOutFoxOnline() then
-										local chartKey = steps:GetChartKey()
-										GSH[pn] = chartKey
-										if getenv("SetScoreFA"..pname(pn)) then cache = EXCache[chartKey] else cache = OFCache[chartKey] end
-									elseif ThemePrefs.Get("EnableGrooveStats") then
-										GrooveStatsHash = LoadFromCache(song,steps,"GrooveStatsHash")
-										GSH[pn] = GrooveStatsHash
-										if leaderboard[pn] == 1 then
-											cache = GSCache[GrooveStatsHash]
-										elseif leaderboard[pn] == 2 then
-											cache = EXCache[GrooveStatsHash]
-										elseif leaderboard[pn] == 3 then
-											cache = RPGCache[GrooveStatsHash]
-										elseif leaderboard[pn] == 4 then
-											cache = ITLCache[GrooveStatsHash]
-										end
-									end
-									if cache then
-										output = ""
-										for i=1,#cache do
-											local begin = string.len(output)
-											output = addToOutput(output,"#"..cache[i]["rank"].." | "..string.format("%03.2f%%",cache[i]["score"]/100).." | "..GetMachineTag(cache[i]).." | x"..string.format("%1.1f",cache[i]["rate"]).." | "..cache[i]["date"],"\n")
-											if cache[i]["isFail"] or cache[i]["isRival"] or cache[i]["isSelf"] then
-												coloring[#coloring+1] = {FIRST = begin, LAST = string.len(output)-begin, COLOR = cache[i]["isFail"] and color("#FF0000") or cache[i]["isRival"] and color("#AA00AA") or cache[i]["isSelf"] and color("#00FF00") or color("#FFFFFF")}
-											end
-										end
-										if output == "" then output = "NO SCORES" end
-									elseif ThemePrefs.Get("EnableGrooveStats") or isOutFoxOnline() then
-										if GS and GS.IsConnected and not GSCaching[GrooveStatsHash] then
-											MESSAGEMAN:Broadcast("SendLeaderboardRequest")
-										elseif isOutFoxOnline() and (not OFCaching[steps:GetChartKey()] or not EXCaching[steps:GetChartKey()]) then
-											if getenv("SetScoreFA"..pname(pn)) then MESSAGEMAN:Broadcast("SendOFEXLeaderboardRequest",{pn=pn}) else MESSAGEMAN:Broadcast("SendOFLeaderboardRequest",{pn=pn}) end
-										else
-											if isOutFoxOnline() then else
-												leaderboard[pn] = leaderboard[pn] < 4 and leaderboard[pn] + 1 or 1
-												self:playcommand("Update")
-											end
-										end
-									end
-								end
-							end
-							local _,lines = string.gsub(output,"\n","")
-							self:GetParent():stoptweening():decelerate(0.3):y(SCREEN_BOTTOM-(127+15.5*lines)*WideScreenDiff())
-						end
-						change[pn] = output ~= "LOADING..."
-						self:settext(output)
-						for i,pair in pairs(coloring) do
-							self:AddAttribute(pair.FIRST, {
-								Length = pair.LAST,
-								Diffuse = pair.COLOR
-							})
-						end
-					end
-				end,
-				["Update"..pname(pn).."MessageCommand"]=function(self,param)
-					leaderboard[pn] = param and param.pos or 1
-					self:queuecommand("Update")
-				end
-			}
-		}
-	end
-end
-
 return Def.ActorFrame{
 	OnCommand=function(self)
 		if getenv("SessionStart") == 0 then setenv("SessionStart",GetTimeSinceStart()) end
@@ -770,7 +640,7 @@ return Def.ActorFrame{
 				local output = ""
 				if isOutFoxOnline() then
 					if getenv("SetScoreFA"..pname(PLAYER_1)) then output = "EX:" else output = "OF:" end
-				else
+				elseif ThemePrefs.Get("EnableGrooveStats") then
 					if leaderboard[PLAYER_1] == 1 then output = "GS:" elseif leaderboard[PLAYER_1] == 2 then output = "EX:" elseif leaderboard[PLAYER_1] == 3 then output = "RPG:" elseif leaderboard[PLAYER_1] == 4 then output = "ITL:" end
 				end
 				self:settext(output)
@@ -791,7 +661,7 @@ return Def.ActorFrame{
 				if courseMode then
 					if isOutFoxOnline() then
 						output = "NO OUTFOX ONLINE IN COURSE MODE"
-					else
+					elseif ThemePrefs.Get("EnableGrooveStats") then
 						output = "NO GROOVESTATS IN COURSE MODE"
 					end
 				else
@@ -836,7 +706,8 @@ return Def.ActorFrame{
 									elseif isOutFoxOnline() and (not OFCaching[steps:GetChartKey()] or not EXCaching[steps:GetChartKey()]) then
 										if getenv("SetScoreFA"..pname(PLAYER_1)) then MESSAGEMAN:Broadcast("SendOFEXLeaderboardRequest",{pn=PLAYER_1}) else MESSAGEMAN:Broadcast("SendOFLeaderboardRequest",{pn=PLAYER_1}) end
 									else
-										if isOutFoxOnline() then else
+										if isOutFoxOnline() then
+										elseif ThemePrefs.Get("EnableGrooveStats") then
 											leaderboard[PLAYER_1] = leaderboard[PLAYER_1] < 4 and leaderboard[PLAYER_1] + 1 or 1
 											self:playcommand("Update")
 										end
@@ -894,7 +765,7 @@ return Def.ActorFrame{
 				local output = ""
 				if isOutFoxOnline() then
 					if getenv("SetScoreFA"..pname(PLAYER_2)) then output = "EX:" else output = "OF:" end
-				else
+				elseif ThemePrefs.Get("EnableGrooveStats") then
 					if leaderboard[PLAYER_2] == 1 then output = "GS:" elseif leaderboard[PLAYER_2] == 2 then output = "EX:" elseif leaderboard[PLAYER_2] == 3 then output = "RPG:" elseif leaderboard[PLAYER_2] == 4 then output = "ITL:" end
 				end
 				self:settext(output)
@@ -915,7 +786,7 @@ return Def.ActorFrame{
 				if courseMode then
 					if isOutFoxOnline() then
 						output = "NO OUTFOX ONLINE IN COURSE MODE"
-					else
+					elseif ThemePrefs.Get("EnableGrooveStats") then
 						output = "NO GROOVESTATS IN COURSE MODE"
 					end
 				else
@@ -960,7 +831,8 @@ return Def.ActorFrame{
 									elseif isOutFoxOnline() and (not OFCaching[steps:GetChartKey()] or not EXCaching[steps:GetChartKey()]) then
 										if getenv("SetScoreFA"..pname(PLAYER_2)) then MESSAGEMAN:Broadcast("SendOFEXLeaderboardRequest",{pn=PLAYER_2}) else MESSAGEMAN:Broadcast("SendOFLeaderboardRequest",{pn=PLAYER_2}) end
 									else
-										if isOutFoxOnline() then else
+										if isOutFoxOnline() then
+										elseif ThemePrefs.Get("EnableGrooveStats") then
 											leaderboard[PLAYER_2] = leaderboard[PLAYER_2] < 4 and leaderboard[PLAYER_2] + 1 or 1
 											self:playcommand("Update")
 										end
@@ -1457,6 +1329,5 @@ return Def.ActorFrame{
 			}
 		}
 	},
-	LEADERBOARD,
 	Leaderboard
 }
