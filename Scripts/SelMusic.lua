@@ -1636,6 +1636,7 @@ function getCalculatedDifficulty(Step)
 	end
 
 	local DB9 = stepSum * ddrtype
+	if math.abs(DB9) == math.huge then DB9 = 0 end
 	local SPS = 0
 	if usesStepCache then
 		if IsGame("be-mu") or IsGame("beat") then
