@@ -16,6 +16,8 @@ local function CreditsText(pn)
 				local data = nil
 				if str == "" then str = "PLAYER "..(pn == PLAYER_1 and "1" or "2") end
 				if showData[pn] then data = GetData(pn) self:settext("LV"..data["LV"].." | EXP "..data["EXP"].."\n"..str):vertspacing(-8) else self:settext(str) end
+			else
+				self:settext(str)
 			end
 		end,
 		EnablePlayerStatsMessageCommand=function(self,param)
