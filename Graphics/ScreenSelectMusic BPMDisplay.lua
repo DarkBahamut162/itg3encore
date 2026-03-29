@@ -82,7 +82,7 @@ return Def.ActorFrame{
 				if temp[PLAYER_1] == temp[PLAYER_2] then
 					self:settext(temp[PLAYER_1])
 				else
-					self:settext(temp[PLAYER_1].."\n"..temp[PLAYER_2]):diffuse(PlayerColor(PLAYER_2)):AddAttribute(0, {
+					self:settext(temp[PLAYER_1].."\n"..temp[PLAYER_2]):diffuse(PlayerColor(PLAYER_2)):ClearAttributes():AddAttribute(0, {
 						Length = string.len(temp[PLAYER_1]),
 						Diffuse = PlayerColor(PLAYER_1),
 					})
