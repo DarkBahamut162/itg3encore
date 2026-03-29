@@ -86,7 +86,7 @@ local function Update(self, delta)
 			resetDisplay,NullMeasures = CheckMeasure(currentMeasure,NullMeasures)
 			if resetDisplay then SetMeasures(NullMeasures) end
 			if #NullMeasures == 0 then c.NullMeasure:linear(1):diffusealpha(0) end
-			c.NullMeasure:settext(measures.."Measure "..currentMeasure)
+			c.NullMeasure:settext(measures.."Measure "..currentMeasure):ClearAttributes()
 			for i,pair in pairs(coloring) do
 				c.NullMeasure:AddAttribute(pair.FIRST, {
 					Length = pair.LAST,

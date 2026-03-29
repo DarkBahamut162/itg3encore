@@ -719,7 +719,7 @@ return Def.ActorFrame{
 						self:GetParent():stoptweening():decelerate(0.3):y(SCREEN_BOTTOM-(127+15.5*lines)*WideScreenDiff())
 					end
 					change[PLAYER_1] = output ~= "LOADING..."
-					self:settext(output)
+					self:settext(output):ClearAttributes()
 					for i,pair in pairs(coloring) do
 						self:AddAttribute(pair.FIRST, {
 							Length = pair.LAST,
@@ -844,7 +844,7 @@ return Def.ActorFrame{
 						self:GetParent():stoptweening():decelerate(0.3):y(SCREEN_BOTTOM-(127+15.5*lines)*WideScreenDiff())
 					end
 					change[PLAYER_2] = output ~= "LOADING..."
-					self:settext(output)
+					self:settext(output):ClearAttributes()
 					for i,pair in pairs(coloring) do
 						self:AddAttribute(pair.FIRST, {
 							Length = pair.LAST,

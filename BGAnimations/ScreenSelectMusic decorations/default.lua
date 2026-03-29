@@ -392,7 +392,7 @@ if ThemePrefs.Get("ShowPackClears") and not courseMode then
 							text = text..string.format("%03.2f%%",(stepsCleared[pn] or 0)/stepsTotal*100)..((#GAMESTATE:GetHumanPlayers() == 2 and pn == PLAYER_1) and "|" or "")
 						end
 						text = text..")"
-						self:settext(text)
+						self:settext(text):ClearAttributes()
 						
 						for attribute in ivalues(attributes) do
 							self:AddAttribute(attribute.FIRST,{
@@ -430,7 +430,7 @@ if ThemePrefs.Get("ShowPackClears") and not courseMode then
 							attributes[#attributes+1]={FIRST=string.len(''..text),LENGTH=string.len(''..(grades[pn][grade] or 0)),COLOR=PlayerColor(pn)}
 							text = text..(grades[pn][grade] or 0).."|"
 						end
-						self:GetParent():GetChild("Grades"):GetChild(grade):settext(text)
+						self:GetParent():GetChild("Grades"):GetChild(grade):settext(text):ClearAttributes()
 						for attribute in ivalues(attributes) do
 							self:GetParent():GetChild("Grades"):GetChild(grade):AddAttribute(attribute.FIRST,{
 								Length = attribute.LENGTH,

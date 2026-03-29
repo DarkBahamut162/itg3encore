@@ -457,7 +457,7 @@ if isOutFoxOnline() then
 								output = addToOutput(output,"#"..(i+1).." | ??.??% | ???? | x?.? | ????-??-?? ??:??:??","\n")
 							end
 						end
-						self:settext(output):xy(-325*0.375,-325*0.375):valign(0):halign(0)
+						self:settext(output):xy(-325*0.375,-325*0.375):valign(0):halign(0):ClearAttributes()
 						for i,pair in pairs(coloring) do
 							self:AddAttribute(pair.FIRST, {
 								Length = math.max(pair.LAST, 0),
