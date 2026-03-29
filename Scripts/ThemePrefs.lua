@@ -52,7 +52,7 @@ function GetAutoPlayMode()
 			return "name,Fitness;style,"..split(",",GetAutoStyle())[1]..";difficulty,medium;screen,ScreenProfileLoad;setenv,Workout,true"
 		end
 	else
-		return "screen,"..Branch.StartGame()
+		return "screen,"..Branch.BeforeStartGame()
 	end
 end
 
@@ -231,6 +231,11 @@ local Prefs = {
 	},
 	AllowRecords = {
 		Default = true,
+		Choices = { OptionNameString('Off'), OptionNameString('On') },
+		Values = { false, true }
+	},
+	AllowSelectProfile = {
+		Default = false,
 		Choices = { OptionNameString('Off'), OptionNameString('On') },
 		Values = { false, true }
 	},

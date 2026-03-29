@@ -42,6 +42,8 @@ local groups = SONGMAN:GetSongGroupNames()
 local ITG3ADDONS, ITG3UNLOCKS, REBIRTH, REBIRTHPLUS, REBIRTHTWO = false, false, false, false, false
 setenv("RotationCheck",false)
 setenv("USBCheck",false)
+setenv("isVS",false)
+setenv("Workout",false)
 
 for group in ivalues(groups) do
 	if string.find(group,"In The Groove 3 Unlocks") then

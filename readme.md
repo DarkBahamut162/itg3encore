@@ -73,6 +73,8 @@ Activate StepCache to use the chart's data for more accurate values or enable ot
 
 - **Allow Battle/Marathon/Survival/Fitness/Jukebox/Edit/Share/Records:**
 Ability to **enable/disable** certain **options** within **ScreenTitleMenu**
+- **AllowSelectProfile:**
+Ability to add **ScreenSelectProfile** after **GameMode Selection**
 </details>
 
 <details>

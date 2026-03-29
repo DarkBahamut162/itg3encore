@@ -1156,6 +1156,11 @@ function Time(time)
 	return math.floor(time/60)..":"..string.format("%05.2f",time%60)
 end
 
+function TotalTime(time)
+	time = math.max(0,time)
+	return string.format("%02.0f",math.floor(time/3600))..":"..string.format("%02.0f",math.floor(time/60%60))..":"..string.format("%02.0f",time%60)
+end
+
 function DoesDanceRepoExist()
 	return FILEMAN:DoesFileExist("Characters/DanceRepo/DRoutines.lua")
 end

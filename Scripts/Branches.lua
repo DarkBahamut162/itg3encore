@@ -17,11 +17,18 @@ Branch.TitleScreen = function()
 	return IsAprilFools() and "ScreenTitleAlt" or "ScreenTitleJoin"
 end
 
+Branch.BeforeStartGame = function()
+	if GAMESTATE:GetCoinMode() ~= 'CoinMode_Home' then
+		if PREFSMAN:GetPreference("ShowCaution") then return "ScreenWarning" end
+	end
+	return "ScreenSelectProfile"
+end
+
 Branch.StartGame = function()
 	if GAMESTATE:GetCoinMode() == 'CoinMode_Home' then
-		if isVS() then return "ScreenSelectNumPlayers" end
+		if isVS() or getenv("isVS") then return "ScreenSelectNumPlayers" end
 	else
-		if PREFSMAN:GetPreference("ShowCaution") then return "ScreenWarning" end
+		--if PREFSMAN:GetPreference("ShowCaution") then return "ScreenWarning" end
 		return "ScreenSelectPlayMode"
 	end
 	return "ScreenSelectStyle"
