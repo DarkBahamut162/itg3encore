@@ -16,7 +16,7 @@ return Def.ActorFrame{
 	OnCommand=function(self) self:addx(player == PLAYER_1 and -SCREEN_WIDTH or SCREEN_WIDTH):decelerate(0.75):addx(player == PLAYER_2 and -SCREEN_WIDTH or SCREEN_WIDTH) end,
 	OffCommand=function(self) self:accelerate(0.75):addx(player == PLAYER_1 and -SCREEN_WIDTH or SCREEN_WIDTH) end,
 	Def.Sprite{
-		InitCommand=function(self) self:xy(player == PLAYER_1 and -96 or 96,110):CropTo(58,58):Load(avatar) end
+		InitCommand=function(self) self:xy(player == PLAYER_1 and -96 or 96,110):Load(avatar):setsize(58,58) end
 	},
 	Def.ActorFrame{
 		Def.Sprite {
