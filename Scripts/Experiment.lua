@@ -18,13 +18,23 @@ function GetData(player)
     return DATA[player][category]
 end
 
+function ResetData()
+    for pn in ivalues({PLAYER_1,PLAYER_2}) do
+        DATA[pn] = {}
+    end
+end
+
 local function GetDataPath(player)
     return PROFILEMAN:GetProfileDir(ProfileSlot[player]) .. "DATA.ini"
 end
 
 function LoadData(player)
     local path = GetDataPath(player)
-    if path and FILEMAN:DoesFileExist(path) then DATA[player] = IniFile.ReadFile(path) end
+    if path and FILEMAN:DoesFileExist(path) then
+        DATA[player] = IniFile.ReadFile(path)
+    else
+        DATA[player] = {}
+    end
 end
 
 function UpdateData(player,data)

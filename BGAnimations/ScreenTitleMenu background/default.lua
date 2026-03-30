@@ -44,6 +44,7 @@ setenv("RotationCheck",false)
 setenv("USBCheck",false)
 setenv("isVS",false)
 setenv("Workout",false)
+ResetData()
 
 for group in ivalues(groups) do
 	if string.find(group,"In The Groove 3 Unlocks") then
