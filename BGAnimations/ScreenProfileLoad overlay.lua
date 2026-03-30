@@ -21,39 +21,41 @@ return Def.ActorFrame{
 				end
 			end
 			LoadFlare(pn)
-			for s=1,#songs do
-				if songs[s]:HasStepsType(stepsType) then
-					local steps = songs[s]:GetStepsByStepsType(stepsType)
-					for ss=1,#steps do
-						local profile = PROFILEMAN:GetProfile(pn):GetHighScoreList(songs[s],steps[ss]):GetHighScores()
-						if #profile > 0 then
-							for _,highscore in pairs(profile) do
-								if highscore:GetGrade()~="Grade_Failed" then
-									local SPS = 0
+			if ThemePrefs.Get("UseStepCache") and #PaceMaker[pn] == 0 then
+				for s=1,#songs do
+					if songs[s]:HasStepsType(category) then
+						local steps = songs[s]:GetStepsByStepsType(category)
+						for ss=1,#steps do
+							local profile = PROFILEMAN:GetProfile(pn):GetHighScoreList(songs[s],steps[ss]):GetHighScores()
+							if #profile > 0 then
+								for _,highscore in pairs(profile) do
+									if highscore:GetGrade()~="Grade_Failed" then
+										local SPS = 0
 
-									if ThemePrefs.Get("UseStepCache") then
-										SPS = tonumber(LoadFromCache(songs[s],steps[ss],"StepsPerSecond"))
-									else
-										local trueSeconds = songs[s]:GetLastSecond()-songs[s]:GetFirstSecond()
-										if not VersionDateCheck(20150500) then
-											SPS = RadarCategory_Notes(songs[s],steps[ss])/trueSeconds
+										if ThemePrefs.Get("UseStepCache") then
+											SPS = tonumber(LoadFromCache(songs[s],steps[ss],"StepsPerSecond"))
 										else
-											SPS = steps[ss]:GetRadarValues(player):GetValue("RadarCategory_Notes")/trueSeconds
-										end
-									end
-
-									if SPS then
-										if IsGame("be-mu") or IsGame("beat") then
-											SPS = SPS / 2
-										else
-											SPS = SPS * (getColumnsPerPlayer(stepType[2],stepType[3],true) / 4)
+											local trueSeconds = songs[s]:GetLastSecond()-songs[s]:GetFirstSecond()
+											if not VersionDateCheck(20150500) then
+												SPS = RadarCategory_Notes(songs[s],steps[ss])/trueSeconds
+											else
+												SPS = steps[ss]:GetRadarValues(player):GetValue("RadarCategory_Notes")/trueSeconds
+											end
 										end
 
-										SPS = math.floor(SPS)
-										PaceMaker[pn][math.floor(SPS)]=PaceMaker[pn][math.floor(SPS)] or {}
+										if SPS then
+											if IsGame("be-mu") or IsGame("beat") then
+												SPS = SPS / 2
+											else
+												SPS = SPS * (getColumnsPerPlayer(stepType[2],stepType[3],true) / 4)
+											end
 
-										if highscore:GetPercentDP() > 0.5 then
-											PaceMaker[pn][math.floor(SPS)][#PaceMaker[pn][math.floor(SPS)]+1] = highscore:GetPercentDP()
+											SPS = math.floor(SPS)
+											PaceMaker[pn][math.floor(SPS)]=PaceMaker[pn][math.floor(SPS)] or {}
+
+											if highscore:GetPercentDP() > 0.5 then
+												PaceMaker[pn][math.floor(SPS)][#PaceMaker[pn][math.floor(SPS)]+1] = highscore:GetPercentDP()
+											end
 										end
 									end
 								end
