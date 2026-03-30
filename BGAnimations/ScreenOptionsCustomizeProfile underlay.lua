@@ -534,8 +534,10 @@ end
 local avatar = false
 if (isOutFox() and profile_id) then avatar = LoadModule("Config.Load.lua")( "AvatarImage", "/Save/LocalProfiles/"..profile_id.."/OutFoxPrefs.ini" ) or false end
 if not avatar then
-	local path = ActorUtil.ResolvePath("/Save/LocalProfiles/"..profile_id.."/avatar",1,true) or ActorUtil.ResolvePath("/Save/LocalProfiles/"..profile_id.."/profile picture",1,true)
-	if path and ActorUtil.GetFileType(path) == "FileType_Bitmap" then avatar = path end
+	if profile_id then
+		local path = ActorUtil.ResolvePath("/Save/LocalProfiles/"..profile_id.."/avatar",1,true) or ActorUtil.ResolvePath("/Save/LocalProfiles/"..profile_id.."/profile picture",1,true)
+		if path and ActorUtil.GetFileType(path) == "FileType_Bitmap" then avatar = path end
+	end
 end
 
 local AvI = avatar
