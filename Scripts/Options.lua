@@ -435,7 +435,7 @@ function InitPlayerOptions()
 		setenv("ShowColumns"..pname(pn),LoadUserPrefN(pn, "ShowColumns", tonumber(DefaultLuaModifiers["ShowColumns"])) or 0)
 		if isITGmania(20240307) then setenv("BeatBars"..pname(pn),LoadUserPrefN(pn, "BeatBars", tonumber(DefaultLuaModifiers["BeatBars"])) or 0) end
 		if (isOutFox(20210300) or isEtterna("0.50")) and GAMESTATE:GetCurrentGame():CountNotesSeparately() then
-			if getenv("SetScoreType"..pname(pn)) == 7 then
+			if getenv("SetScoreType"..pname(pn)) == 8 then
 				SCREENMAN:SystemMessage("WIFE3 is bugged if notes are counted separately! "..pname(pn).."'s ScoreType has been reset to Percent!")
 				setenv("SetScoreType"..pname(pn),SaveUserPref(pn, "SetScoreType", 2) or 2)
 			end
