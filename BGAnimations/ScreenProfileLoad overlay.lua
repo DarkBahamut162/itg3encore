@@ -2,7 +2,7 @@ function MemoryCheck()
 	if isEtterna("0.55") then return false else return GAMESTATE:IsAnyHumanPlayerUsingMemoryCard() end
 end
 
-local preload = GAMESTATE:GetCoinMode()=='CoinMode_Home' and IsAutoStyle() or (IsAutoPlayMode(true) and IsAutoStyle())
+local preload = GAMESTATE:GetCoinMode()=='CoinMode_Home' and IsAutoStyle() or (IsAutoPlayMode(true) and IsAutoStyle()) or MemoryCheck()
 SetAllowLateJoin(false)
 DefaultLuaModifiers = IniFile.ReadFile("Save/DefaultLuaModifiers.ini")["LuaOptions"]
 local songs = SONGMAN:GetAllSongs()
@@ -21,41 +21,40 @@ return Def.ActorFrame{
 				end
 			end
 			LoadFlare(pn)
-			if ThemePrefs.Get("UseStepCache") and #PaceMaker[pn] == 0 then
+			if #PaceMaker[pn] == 0 then
 				for s=1,#songs do
 					if songs[s]:HasStepsType(category) then
 						local steps = songs[s]:GetStepsByStepsType(category)
 						for ss=1,#steps do
-							local profile = PROFILEMAN:GetProfile(pn):GetHighScoreList(songs[s],steps[ss]):GetHighScores()
-							if #profile > 0 then
-								for _,highscore in pairs(profile) do
-									if highscore:GetGrade()~="Grade_Failed" then
-										local SPS = 0
+							local highscores = PROFILEMAN:GetProfile(pn):GetHighScoreList(songs[s],steps[ss]):GetHighScores()
+							if #highscores > 0 then
+								local highscore = highscores[1]
+								if highscore:GetGrade()~="Grade_Failed" then
+									local SPS = 0
 
-										if ThemePrefs.Get("UseStepCache") then
-											SPS = tonumber(LoadFromCache(songs[s],steps[ss],"StepsPerSecond"))
+									if ThemePrefs.Get("UseStepCache") then
+										SPS = tonumber(LoadFromCache(songs[s],steps[ss],"StepsPerSecond"))
+									else
+										local trueSeconds = songs[s]:GetLastSecond()-songs[s]:GetFirstSecond()
+										if not VersionDateCheck(20150500) then
+											SPS = RadarCategory_Notes(songs[s],steps[ss])/trueSeconds
 										else
-											local trueSeconds = songs[s]:GetLastSecond()-songs[s]:GetFirstSecond()
-											if not VersionDateCheck(20150500) then
-												SPS = RadarCategory_Notes(songs[s],steps[ss])/trueSeconds
-											else
-												SPS = steps[ss]:GetRadarValues(player):GetValue("RadarCategory_Notes")/trueSeconds
-											end
+											SPS = steps[ss]:GetRadarValues(player):GetValue("RadarCategory_Notes")/trueSeconds
+										end
+									end
+
+									if SPS then
+										if IsGame("be-mu") or IsGame("beat") then
+											SPS = SPS / 2
+										else
+											SPS = SPS * (getColumnsPerPlayer(stepType[2],stepType[3],true) / 4)
 										end
 
-										if SPS then
-											if IsGame("be-mu") or IsGame("beat") then
-												SPS = SPS / 2
-											else
-												SPS = SPS * (getColumnsPerPlayer(stepType[2],stepType[3],true) / 4)
-											end
+										SPS = math.floor(SPS)
+										PaceMaker[pn][math.floor(SPS)]=PaceMaker[pn][math.floor(SPS)] or {}
 
-											SPS = math.floor(SPS)
-											PaceMaker[pn][math.floor(SPS)]=PaceMaker[pn][math.floor(SPS)] or {}
-
-											if highscore:GetPercentDP() > 0.5 then
-												PaceMaker[pn][math.floor(SPS)][#PaceMaker[pn][math.floor(SPS)]+1] = highscore:GetPercentDP()
-											end
+										if highscore:GetPercentDP() > 0.5 then
+											PaceMaker[pn][math.floor(SPS)][#PaceMaker[pn][math.floor(SPS)]+1] = highscore:GetPercentDP()
 										end
 									end
 								end
