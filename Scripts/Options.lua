@@ -243,6 +243,7 @@ function SongMods(part)
 		if isITGmania(20250327) then add2 = addToOutput(add2,",HLT",",") end
 		if isITGmania(20220612) then add2 = addToOutput(add2,",DTW",",") end
 		if isITGmania(20240307) then add2 = addToOutput(add2,",BB",",") end
+		if isOutFox(20211200) then add2 = addToOutput(add2,",BBO",",") end
 		options = addToOutput(options,"20,"..add.."P,PF,29,21"..add2..",33",",")
 	end
 
@@ -434,6 +435,7 @@ function InitPlayerOptions()
 		setenv("ErrorBar"..pname(pn),LoadUserPrefN(pn, "ErrorBar", tonumber(DefaultLuaModifiers["ErrorBar"])) or 0)
 		setenv("ShowColumns"..pname(pn),LoadUserPrefN(pn, "ShowColumns", tonumber(DefaultLuaModifiers["ShowColumns"])) or 0)
 		if isITGmania(20240307) then setenv("BeatBars"..pname(pn),LoadUserPrefN(pn, "BeatBars", tonumber(DefaultLuaModifiers["BeatBars"])) or 0) end
+		if isOutFox(20211200) then setenv("BeatBarsOutFox"..pname(pn),LoadUserPrefN(pn, "BeatBarsOutFox", tonumber(DefaultLuaModifiers["BeatBarsOutFox"])) or 0) end
 		if (isOutFox(20210300) or isEtterna("0.50")) and GAMESTATE:GetCurrentGame():CountNotesSeparately() then
 			if getenv("SetScoreType"..pname(pn)) == 8 then
 				SCREENMAN:SystemMessage("WIFE3 is bugged if notes are counted separately! "..pname(pn).."'s ScoreType has been reset to Percent!")
@@ -827,6 +829,28 @@ function OptionBeatBars()
 			local total = 0
 			for i=1,#list do if list[i] then total = total + math.pow(2,i-1) end end
 			setenv("BeatBars"..pname(pn),SaveUserPref(pn, "BeatBars", total))
+		end
+	}
+	setmetatable(t, t)
+	return t
+end
+
+function OptionBeatBarsOutFox()
+	local t = {
+		Name="BeatBarsOutFox",
+		LayoutType = "ShowAllInRow",
+		SelectType = "SelectMultiple",
+		OneChoiceForAllPlayers = false,
+		ExportOnChange = false,
+		Choices = { "Beat","Stop","BPM" },
+		LoadSelections = function(self, list, pn)
+			local bits = NumberToBits(getenv("BeatBarsOutFox"..pname(pn)) or 0,3)
+			for i=1,#list do list[i] = bits[5-i] end
+		end,
+		SaveSelections = function(self, list, pn)
+			local total = 0
+			for i=1,#list do if list[i] then total = total + math.pow(2,i-1) end end
+			setenv("BeatBarsOutFox"..pname(pn),SaveUserPref(pn, "BeatBarsOutFox", total))
 		end
 	}
 	setmetatable(t, t)

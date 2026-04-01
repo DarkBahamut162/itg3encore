@@ -88,6 +88,12 @@ local t = Def.ActorFrame {
 						local notefield = SCREENMAN:GetTopScreen():GetChild("Player"..pname(pn)):GetChild("NoteField")
 						notefield:SetBeatBars(bits[1] or bits[2] or bits[3] or bits[4])
 						notefield:SetBeatBarsAlpha((bits[4] or bits[3]) and 1 or 0,bits[3] and 0.75 or 0,bits[2] and 0.5 or 0,bits[1] and 0.25 or 0)
+					elseif isOutFox(20211200) then
+						local bits = NumberToBits(getenv("BeatBarsOutFox"..pname(pn)) or 0,3)
+						local notefield = SCREENMAN:GetTopScreen():GetChild("Player"..pname(pn)):GetChild("NoteField")
+						notefield:set_beat_bars(bits[1] or bits[2] or bits[3])
+						notefield:set_stop_bars(bits[2])
+						notefield:set_bpm_bars(bits[3])
 					end
 					local rotationZ = 0
 					local posX = SCREEN_CENTER_X
