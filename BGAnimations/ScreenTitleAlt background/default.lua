@@ -221,6 +221,21 @@ return Def.ActorFrame{
 		ScreenChangedMessageCommand=function(self) self:playcommand("Refresh") end,
 		RefreshCommand=function(self)
 			if not isTopScreen("ScreenLogo") then
+				if isITGmania() then
+					self:diffuse(Color("Green"))
+					local newest = split("%.",EngineVersion)
+					local current = split("%.",ProductVersion())
+					for i=1,#newest do
+						if tonumber(newest[i]) and tonumber(current[i]) then
+							if tonumber(newest[i]) > tonumber(current[i]) then
+								if i <= 2 then self:diffuse(Color("Red")) else self:diffuse(Color("Yellow")) end
+								break
+							end
+						else
+							self:diffuse(Color("Red"))
+						end
+					end
+				end
 				self:settext(ProductFamily() .. " " .. ProductVersion() .. (not isEtterna(20191216) and " (" .. VersionDate() .. ")" or ""))
 			end
 		end
