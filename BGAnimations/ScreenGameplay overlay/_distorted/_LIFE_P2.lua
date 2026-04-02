@@ -1,7 +1,7 @@
 return Def.ActorFrame{
 	InitCommand=function(self) self:x(0):y(-15) end,
 	Def.ActorFrame{
-		InitCommand=function(self) self:x(isDouble() and 0 or -77):y(34):visible(GAMESTATE:IsPlayerEnabled(PLAYER_2) and getenv("IIDXPercent"..pname(PLAYER_2))) end,
+		InitCommand=function(self) self:x(isDouble() and 0 or -77):y(34):visible(GAMESTATE:IsPlayerEnabled(PLAYER_2) and (getenv("IIDXPercent"..pname(PLAYER_2)) or false)) end,
 		Def.Sprite {
 			Texture = "../percent/"..GetIIDXFrame(PLAYER_2)
 		},
@@ -27,7 +27,7 @@ return Def.ActorFrame{
 			InitCommand=function(self) self:rotationz(180):diffuse(.3,.3,.3,1):x(8):y(-2):visible((GAMESTATE:IsPlayerEnabled(PLAYER_2))) end
 		},
 		Def.ActorFrame{
-			Condition=getenv("IIDXLife"..pname(PLAYER_2)),
+			Condition=getenv("IIDXLife"..pname(PLAYER_2)) or isTopScreen("ScreenDemonstration"),
 			Def.Sprite {
 				Texture = "../life/"..IIDXLifeBar(PLAYER_2),
 				InitCommand=function(self) self:rotationz(180):x(8):y(-2):visible((GAMESTATE:IsPlayerEnabled(PLAYER_2))) end,
