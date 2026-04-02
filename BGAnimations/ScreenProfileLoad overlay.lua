@@ -21,7 +21,7 @@ return Def.ActorFrame{
 				end
 			end
 			LoadFlare(pn)
-			if #PaceMaker[pn] == 0 then
+			if not (PaceMaker[pn] and PaceMaker[pn][category] and #PaceMaker[pn][category] > 0) and not PacemakerLoad(pn) then
 				for s=1,#songs do
 					if songs[s]:HasStepsType(category) then
 						local steps = songs[s]:GetStepsByStepsType(category)
@@ -51,10 +51,12 @@ return Def.ActorFrame{
 										end
 
 										SPS = math.floor(SPS)
-										PaceMaker[pn][math.floor(SPS)]=PaceMaker[pn][math.floor(SPS)] or {}
+										if not PaceMaker[pn] then PaceMaker[pn] = {} end
+										if not PaceMaker[pn][category] then PaceMaker[pn][category] = {} end
+										PaceMaker[pn][category][math.floor(SPS)]=PaceMaker[pn][category][math.floor(SPS)] or {}
 
 										if highscore:GetPercentDP() > 0.5 then
-											PaceMaker[pn][math.floor(SPS)][#PaceMaker[pn][math.floor(SPS)]+1] = highscore:GetPercentDP()
+											PaceMaker[pn][category][math.floor(SPS)][#PaceMaker[pn][category][math.floor(SPS)]+1] = highscore:GetPercentDP()
 										end
 									end
 								end
@@ -62,6 +64,7 @@ return Def.ActorFrame{
 						end
 					end
 				end
+				PacemakerSave(pn)
 			end
 		end
 		InitRotationOptions()

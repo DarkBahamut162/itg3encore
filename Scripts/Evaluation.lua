@@ -231,15 +231,15 @@ function SummaryBackupClear()
 	local path = "Save/SummaryBackup"
 	SummaryAdjust = 0
 	if FILEMAN:DoesFileExist(path.."Master.ini") then
-		IniFile.WriteFile(path.."Master.ini", { [""] = {} })
+		IniFile.WriteFile(path.."Master.ini",{[""]={}})
 		if FILEMAN.FlushDirCache then FILEMAN:FlushDirCache(path.."Master.ini") end
 	end
 	if FILEMAN:DoesFileExist(path.."P1.ini") then
-		IniFile.WriteFile(path.."P1.ini", { [""] = {} })
+		IniFile.WriteFile(path.."P1.ini",{[""]={}})
 		if FILEMAN.FlushDirCache then FILEMAN:FlushDirCache(path.."P1.ini") end
 	end
 	if FILEMAN:DoesFileExist(path.."P2.ini") then
-		IniFile.WriteFile(path.."P2.ini", { [""] = {} })
+		IniFile.WriteFile(path.."P2.ini",{[""]={}})
 		if FILEMAN.FlushDirCache then FILEMAN:FlushDirCache(path.."P2.ini") end
 	end
 end
@@ -262,6 +262,51 @@ function SummaryBackupCheck()
 		for _,value in pairs(loaded) do P2[tonumber(_)] = value end
 	end
 	if SummaryAdjust > 0 then return true else return false end
+end
+
+function PacemakerLoad(player)
+	local ProfileSlot = {
+		[PLAYER_1] = "ProfileSlot_Player1",
+		[PLAYER_2] = "ProfileSlot_Player2"
+	}
+	if not player then return false end
+	if not ProfileSlot[player] then return false end
+	local dir = PROFILEMAN:GetProfileDir(ProfileSlot[player])
+	if not dir or #dir == 0 then return false end
+	local category = isDouble() and StepsTypeDouble()[GetUserPrefN("StylePosition")] or StepsTypeSingle()[GetUserPrefN("StylePosition")]
+	local path = dir.."Pacemaker/"..category..".ini"
+
+	if FILEMAN:DoesFileExist(path) then
+		if not PaceMaker[player] then PaceMaker[player] = {} end
+		local PM = {}
+		PaceMaker[player][category] = IniFile.ReadFile(path)
+		for k1,v1 in pairs(PaceMaker[player][category]) do
+			PM[tonumber(k1)] = {}
+			for k2,v2 in pairs(v1) do
+				PM[tonumber(k1)][tonumber(k2)] = v2
+			end
+		end
+		PaceMaker[player][category] = PM
+		return true
+	end
+
+	return false
+end
+
+function PacemakerSave(player)
+	local ProfileSlot = {
+		[PLAYER_1] = "ProfileSlot_Player1",
+		[PLAYER_2] = "ProfileSlot_Player2"
+	}
+	if not player then return end
+	if not ProfileSlot[player] then return end
+	local dir = PROFILEMAN:GetProfileDir(ProfileSlot[player])
+	local category = isDouble() and StepsTypeDouble()[GetUserPrefN("StylePosition")] or StepsTypeSingle()[GetUserPrefN("StylePosition")]
+	local path = dir.."Pacemaker/"..category..".ini"
+
+	if PaceMaker[player] and PaceMaker[player][category] then
+		IniFile.WriteFile(path,PaceMaker[player][category])
+	end
 end
 
 function ITGJudgments(beginner)

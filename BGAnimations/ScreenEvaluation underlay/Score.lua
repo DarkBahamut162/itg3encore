@@ -181,11 +181,6 @@ return Def.ActorFrame{
 			local total = getenv("TimePlayed"..pname(player))
 			setenv("TimePlayed"..pname(player),total+seconds)
 			if GAMESTATE:IsHumanPlayer(player) and allowed then
-				local DP = DP(player)
-				if DP > 0.5 then
-					PaceMaker[player][math.floor(SPS)]=PaceMaker[player][math.floor(SPS)] or {}
-					PaceMaker[player][math.floor(SPS)][#PaceMaker[player][math.floor(SPS)]+1] = DP
-				end
 				if Data then if UpdateData(player,{["LV"]=CALC_LV,["EXP"]=Data["EXP"]+EXP_STEPS}) then SaveData(player) end end
 			end
 		end
