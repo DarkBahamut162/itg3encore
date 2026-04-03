@@ -1,3 +1,5 @@
+if isTopScreen('ScreenGameplaySyncMachine') then return Def.ActorFrame{} end
+
 local MOD = {}
 local CURRENT = {}
 local PREVIOUS = {}

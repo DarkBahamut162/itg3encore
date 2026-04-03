@@ -1,3 +1,5 @@
+if isTopScreen('ScreenGameplaySyncMachine') then return Def.ActorFrame{} end
+
 local numPlayers = GAMESTATE:GetNumPlayersEnabled()
 local player = numPlayers == 1 and {GAMESTATE:GetMasterPlayerNumber()} or GAMESTATE:GetEnabledPlayers()
 local tChild
