@@ -405,10 +405,10 @@ local t = Def.ActorFrame{
 				local life = getenv("PercentageClearThreshold"..pname(pn)) or 0
 				local lifeMeter = math.round(SCREENMAN:GetTopScreen():GetLifeMeter(pn):GetLife(),2)
 				local index = {0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1}
-				if lifeMeter < index[life+1] then 
-					lua.ReportScriptError("lifeMeter "..lifeMeter)
+				if lifeMeter < index[life+1] then
 					STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):FailPlayer()
 					SCREENMAN:GetTopScreen():GetChild('Player'..pname(pn)):SetLife(0)
+					if not isOutFox(20200530) then GAMESTATE:ApplyGameCommand('mod,no savescore',pn) end
 					fail = true
 					failCounter = failCounter + 1
 				end
