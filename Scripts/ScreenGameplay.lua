@@ -94,9 +94,9 @@ function IIDXLifeBar(pn)
 	local pass = PO:FailSetting() == "FailType_80Percent" and 0.8 or 0
 	local flare = (getenv("Flare"..pname(pn)) or 0) > 0
 	local life = (getenv("PercentageClearThreshold"..pname(pn)) or 0) + 1
-	local index = {"red","10","20","30","40","50","60","70","80","90","blue"}
+	local index = {"red","09","19","29","39","49","59","69","79","89","99"}
 
-	return flare and "white" or drain ~= "DrainType_Normal" and "gold" or pass == 0.8 and "80" or index[life]
+	return flare and "white" or drain ~= "DrainType_Normal" and "gold" or pass == 0.8 and "79" or index[life]
 end
 
 function songfail(bVertex)
