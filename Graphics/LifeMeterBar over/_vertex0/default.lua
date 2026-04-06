@@ -10,6 +10,8 @@ if title == "VerTex" or override == 1 then vertexOn = true color1 = color("0,1,0
 if title == "VerTex²" or title == "VerTex^2" or title == "VerTex2" or title == "VV" or override == 2 then vertexOn = true color1 = color("1,0,0,1") end
 if title == "VerTex³" or title == "VerTex^3" or title == "VerTex3" or title == "VVV" or override == 3 then vertexOn = true color1 = color("1,0,1,1") end
 
+local percent = (getenv("PercentageClearThreshold"..pname(pn)) or 0) > 0 and loadfile(THEME:GetPathG("LifeMeterBar","over/life"))(pn) or Def.ActorFrame{}
+
 return Def.ActorFrame{
 	Def.ActorFrame{
 		Name="VertexLights",
@@ -24,6 +26,7 @@ return Def.ActorFrame{
 			OnCommand=function(self) self:sleep(2.5):accelerate(0.3):diffusealpha(1):diffuseshift():effectcolor1(color1):effectcolor2(color2):effectclock('beat'):effectperiod(4) end
 		}
 	},
+	percent,
 
 	Def.Sprite {
 		Texture = "base "..(isFinal() and "final" or "normal"),

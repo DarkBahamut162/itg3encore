@@ -214,11 +214,10 @@ function SongMods(part)
 
 	if not isOni() then add = "20G," end
 
-	local fail = isOutFoxV(20221111) and "FV" or "F"
 	local options = ""
 
 	if part == nil or part == 1 then
-		options = addToOutput(options,(isEtterna() and "Speed," or "1,") .."2,4,"..fail..","..((isRegular() and VersionDateCheck(20160000)) and (isOpenDDR() and "0DDR" or "0,Flare") or "0")..",3",",")
+		options = addToOutput(options,(isEtterna() and "Speed," or "1,") .."2,4,F,PCT,"..((isRegular() and VersionDateCheck(20160000)) and (isOpenDDR() and "0DDR" or "0,Flare") or "0")..",3",",")
 		if not (IsGame("pump") or GAMESTATE:IsCourseMode()) then options = addToOutput(options,(IsGame("beat") or IsGame("be-mu")) and "IIDXFrame,IIDXDouble,IIDXJudgment,IIDXJudgmentBrightness,IIDXVisibility" or "31",",") end
 		if IIDXcheck() then options = addToOutput(options,"IIDXNote,IIDXNoteBrightness,IIDXNoteLength,IIDXBeam,IIDXBeamBrightness,IIDXBeamLength,IIDXExplosion,IIDXExplosionBrightness,IIDXTurntable",",") end
 		if not (IsGame("be-mu") or IsGame("beat") or IsGame("po-mu") or IsGame("popn")) then options = addToOutput(options,"32,32H",",") end
@@ -414,6 +413,8 @@ end
 
 function InitPlayerOptions()
 	for pn in ivalues(GAMESTATE:GetEnabledPlayers()) do
+		setenv("PercentageClearThreshold"..pname(pn),(not isVS() and VersionDateCheck(20160000)) and LoadUserPrefN(pn, "PercentageClearThreshold", tonumber(DefaultLuaModifiers["PercentageClearThreshold"])) or 0)
+
 		setenv("Flare"..pname(pn),(not isVS() and VersionDateCheck(20160000)) and LoadUserPrefN(pn, "Flare", tonumber(DefaultLuaModifiers["Flare"])) or 0)
 		setenv("FlareFloat"..pname(pn),(not isVS() and VersionDateCheck(20160000)) and LoadUserPrefN(pn, "FlareFloat", tobool(DefaultLuaModifiers["FlareFloat"])) or false)
 		setenv("FlareType"..pname(pn),(not isVS() and VersionDateCheck(20160000)) and LoadUserPrefN(pn, "FlareType", tonumber(DefaultLuaModifiers["FlareType"])) or 1)
@@ -481,7 +482,35 @@ function InitPlayerOptions()
 		setenv("IIDXExplosion"..pname(pn),LoadUserPref(pn, "IIDXExplosion", DefaultLuaModifiers["IIDXExplosion"]) or "_default")
 		setenv("IIDXExplosionBrightness"..pname(pn),LoadUserPrefN(pn, "IIDXExplosionBrightness", tonumber(DefaultLuaModifiers["IIDXExplosionBrightness"])) or 1.0)
 	end
+end
 
+function OptionPercentageClearThreshold()
+	local t = {
+		Name="PercentageClearThreshold",
+		LayoutType = "ShowAllInRow",
+		SelectType = "SelectOne",
+		OneChoiceForAllPlayers = false,
+		ExportOnChange = false,
+		Choices = { "0%","10%","20%","30%","40%","50%","60%","70%","80%","90%","100%" },
+		LoadSelections = function(self, list, pn)
+			local selected = (getenv("PercentageClearThreshold"..pname(pn)) or 0) + 1
+			if selected and selected ~= 0 then
+				list[selected] = true
+			else
+				list[1] = true
+			end
+		end,
+		SaveSelections = function(self, list, pn)
+			for i=1,#list do
+				if list[i] then
+					setenv("PercentageClearThreshold"..pname(pn),SaveUserPref(pn, "PercentageClearThreshold", i-1))
+					break
+				end
+			end
+		end
+	}
+	setmetatable(t, t)
+	return t
 end
 
 function OptionFlare()

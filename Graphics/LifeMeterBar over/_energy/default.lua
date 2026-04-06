@@ -1,11 +1,14 @@
 local pn = ...
 
+local percent = (getenv("PercentageClearThreshold"..pname(pn)) or 0) > 0 and loadfile(THEME:GetPathG("LifeMeterBar","over/life"))(pn) or Def.ActorFrame{}
+
 return Def.ActorFrame{
 	Def.Sprite {
 		Texture = "light "..(isFinal() and "final" or "normal"),
 		InitCommand=function(self) self:blend(Blend.Add):addx(-146):diffusealpha(0) end,
 		OnCommand=function(self) self:sleep(2.5):accelerate(0.3):diffusealpha(1):diffuseshift():effectcolor1(color("#FFFFFF")):effectcolor2(color("#FFFFFF00")):effectclock('beat'):effectperiod(4) end
 	},
+	percent,
 	Def.Sprite {
 		Texture = "base "..(isFinal() and "final" or "normal"),
 		InitCommand=function(self) self:addx(-5) end

@@ -398,8 +398,24 @@ local t = Def.ActorFrame{
 	OffCommand=function(self)
 		SCREENMAN:GetTopScreen():RemoveInputCallback(InputHandler)
 		setenv( "perColJudgeData", judgments )
-		if enableOffsets then setenv( "OffsetTable", offsetdata ) end
 		local fail = false
+		local failCounter = 0
+		for pn in ivalues(GAMESTATE:GetEnabledPlayers()) do
+			local life = getenv("PercentageClearThreshold"..pname(pn)) or 0
+			if life > 0 then
+				local lifeMeter = math.round(SCREENMAN:GetTopScreen():GetLifeMeter(pn):GetLife(),2)
+				local index = {0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1}
+				if lifeMeter < index[life+1] then 
+					lua.ReportScriptError("lifeMeter "..lifeMeter)
+					STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):FailPlayer()
+					SCREENMAN:GetTopScreen():GetChild('Player'..pname(pn)):SetLife(0)
+					fail = true
+					failCounter = failCounter + 1
+				end
+			end
+		end
+		if failCounter == GAMESTATE:GetNumPlayersEnabled() then MESSAGEMAN:Broadcast("ForceFail") end
+		if enableOffsets then setenv( "OffsetTable", offsetdata ) end
 		if isStepMania() or isEtterna() or (isOutFox() and not isOutFox(20220200)) then
 			local failCounter = 0
 			for pn in ivalues(GAMESTATE:GetEnabledPlayers()) do

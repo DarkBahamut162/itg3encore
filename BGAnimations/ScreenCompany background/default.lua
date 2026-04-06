@@ -47,6 +47,7 @@ local path = "Save/DefaultLuaModifiers.ini"
 local file = {
 	LuaOptions = {
 		Rotation = 1,
+		PercentageClearThreshold = 0,
 
 		Flare = 0,
 		FlareFloat = false,
