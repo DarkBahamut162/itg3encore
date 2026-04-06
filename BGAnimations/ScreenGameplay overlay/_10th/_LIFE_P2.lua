@@ -46,24 +46,24 @@ return Def.ActorFrame{
 				end
 			},
 			Def.Sprite {
-				Texture = "tip",
-				InitCommand=function(self) self:rotationz(180):diffuseblink():effectperiod(0.16):effectcolor1(color("1,1,1,1")):effectcolor2(color("1,1,1,0")):x(16):y(-2):visible((GAMESTATE:IsPlayerEnabled(PLAYER_2))) end,
+				Texture = "../life/"..IIDXLifeBar(PLAYER_2),
+				InitCommand=function(self) self:rotationz(180):diffuseblink():effectperiod(0.16):effectcolor1(color("1,1,1,1")):effectcolor2(color(".3,.3,.3,1")):x(8):y(-2):visible((GAMESTATE:IsPlayerEnabled(PLAYER_2))) end,
 				LifeChangedMessageCommand=function(self,param)
 					if param.Player == PLAYER_2 then
 						local life = param.LifeMeter:GetLife()
 						life = math.round(life/2,2)*2
-						self:cropright(1 - life):cropleft(life - 0.02)
+						self:cropright(1 - life + 0.02):cropleft(life - 0.04)
 					end
 				end
 			},
 			Def.Sprite {
-				Texture = "tip",
-				InitCommand=function(self) self:rotationz(180):diffuseblink():effectperiod(0.1):effectcolor1(color("1,1,1,1")):effectcolor2(color("1,1,1,0")):x(12):y(-2):visible((GAMESTATE:IsPlayerEnabled(PLAYER_2))) end,
+				Texture = "../life/"..IIDXLifeBar(PLAYER_2),
+				InitCommand=function(self) self:rotationz(180):diffuseblink():effectperiod(0.1):effectcolor1(color("1,1,1,1")):effectcolor2(color(".3,.3,.3,1")):x(12):y(-2):visible((GAMESTATE:IsPlayerEnabled(PLAYER_2))) end,
 				LifeChangedMessageCommand=function(self,param)
 					if param.Player == PLAYER_2 then
 						local life = param.LifeMeter:GetLife()
 						life = math.round(life/2,2)*2
-						self:cropright(1 - life):cropleft(life - 0.02)
+						self:cropright(1 - life + 0.04):cropleft(life - 0.06)
 					end
 				end
 			}
