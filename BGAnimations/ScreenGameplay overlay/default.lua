@@ -400,9 +400,9 @@ local t = Def.ActorFrame{
 		setenv( "perColJudgeData", judgments )
 		local fail = false
 		local failCounter = 0
-		for pn in ivalues(GAMESTATE:GetEnabledPlayers()) do
-			local life = getenv("PercentageClearThreshold"..pname(pn)) or 0
-			if life > 0 then
+		if PercentageCheck() then
+			for pn in ivalues(GAMESTATE:GetEnabledPlayers()) do
+				local life = getenv("PercentageClearThreshold"..pname(pn)) or 0
 				local lifeMeter = math.round(SCREENMAN:GetTopScreen():GetLifeMeter(pn):GetLife(),2)
 				local index = {0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1}
 				if lifeMeter < index[life+1] then 

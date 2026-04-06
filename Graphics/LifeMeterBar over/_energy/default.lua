@@ -1,6 +1,6 @@
 local pn = ...
 
-local percent = (getenv("PercentageClearThreshold"..pname(pn)) or 0) > 0 and loadfile(THEME:GetPathG("LifeMeterBar","over/life"))(pn) or Def.ActorFrame{}
+local percent = PercentageCheck() and loadfile(THEME:GetPathG("LifeMeterBar","over/life"))(pn) or Def.ActorFrame{}
 
 return Def.ActorFrame{
 	Def.Sprite {
