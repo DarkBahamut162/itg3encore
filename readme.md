@@ -119,10 +119,14 @@ Show the calculated Difficulty of the currently selected stepchart
 Change the number of decimals for the calculated Difficulty
 - **DanceDifficultyType:** *(GameMode Dance Only)*
 Switch between **Old DDR/ITG & DDR X-SCALE** difficulty ranges
+- **ShowGrade:**
+Shows the **grade** of the **currently selected stepchart**
 - **ShowGraph:**
 Shows the **graph** of the **currently selected stepchart** *(VerticalScreen & WideScreen only)*
 - **ShowHasLua:**
 Shows if song **has anything lua** related (no matter if BG, FG or both)
+- **ShowLamps:**
+Shows the **Clear Lamp** of the **currently selected Steps**.
 - **ShowMODDisplay:**
 Switches back and forth between the stepchart's BPMs and the player's current mod speed 
 - **ShowOrigin**
@@ -325,6 +329,7 @@ I could have actually forked it but I didn't. My reasoning was that it wasn't go
   * Display **adjusts** according to the **current SpeedMod**
 * Added various PlayerOptions:
   - **LifeType:** **LifeLine** *(Battery)* & **Survival** *(Timer)*
+  - **PercentageClearThreshold:** **0%-100%** *(IIDX/Pop'n-like & more)*
   - **FlareLevel:** **Flare 1-10** & **Flare Float**
     - Ability to change between **Old** & **New** score requirement
     - Ability to have it **Accurate** *(uses SN2 scoring)*
