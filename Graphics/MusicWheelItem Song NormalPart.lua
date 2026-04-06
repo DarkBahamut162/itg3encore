@@ -120,7 +120,8 @@ local GradesP1 = ThemePrefs.Get("ShowGrade") and Def.BitmapText{
 				local highscores = PROFILEMAN:GetProfile(PLAYER_1):GetHighScoreListIfExists(params.Song,steps)
 				if highscores then highscores = highscores:GetHighScores() end
 				if highscores and #highscores > 0 then
-					if highscores[1]:GetGrade() == "Grade_Failed" then self:settext("F") else output = GetGradeFromPercent(highscores[1]:GetPercentDP()) end
+					lua.ReportScriptError("highscores[1]:GetGrade() "..highscores[1]:GetGrade())
+					if highscores[1]:GetGrade() == "Grade_Failed" then output = "F" else output = GetGradeFromPercent(highscores[1]:GetPercentDP()) end
 				end
 			end
 		end
@@ -199,7 +200,7 @@ local GradesP2 = ThemePrefs.Get("ShowGrade") and Def.BitmapText{
 				local highscores = PROFILEMAN:GetProfile(PLAYER_2):GetHighScoreListIfExists(params.Song,steps)
 				if highscores then highscores = highscores:GetHighScores() end
 				if highscores and #highscores > 0 then
-					if highscores[1]:GetGrade() == "Grade_Failed" then self:settext("F") else output = GetGradeFromPercent(highscores[1]:GetPercentDP()) end
+					if highscores[1]:GetGrade() == "Grade_Failed" then output = "F" else output = GetGradeFromPercent(highscores[1]:GetPercentDP()) end
 				end
 			end
 		end
