@@ -83,7 +83,6 @@ local t = Def.ActorFrame{
 			if playeroptions:CMod() then MOD[pn] = "c" CURRENT[pn] = playeroptions:CMod() end
 		end
 	end,
-	OffCommand=function() SCREENMAN:GetTopScreen():RemoveInputCallback(InputHandler) end,
 	CodeMessageCommand = function(self, params)
 		if params.Name == 'SpeedUp' or params.Name == 'SpeedDown' then
 			if MOD[params.PlayerNumber] == "a" or MOD[params.PlayerNumber] == "ca" or MOD[params.PlayerNumber] == "av" then
@@ -132,12 +131,12 @@ local t = Def.ActorFrame{
 				if IsGame("pump") then self:addy(33*WideScreenDiff()) end
 			end,
 			BlockCommand=function(self)
-				self:stoptweening():diffuse(color("1,0,0,1")):diffusealpha(1):settext("This MOD can't be changed while GamePlay"):sleep(1):linear(0.25):diffusealpha(0):queuecommand("TrueChange"):diffuse(color("1,1,1,1"))
+				self:diffuse(color("1,0,0,1")):diffusealpha(1):settext("This MOD can't be changed while GamePlay"):sleep(1):linear(0.25):diffusealpha(0):queuecommand("TrueChange"):diffuse(color("1,1,1,1"))
 			end,
 			ChangeCommand=function(self)
 				local text = "SPEED CHANGE: " .. (PREVIOUS[PLAYER_1] / (MOD[PLAYER_1] == "x" and 100 or 1))..MOD[PLAYER_1] .. " -> " .. (CURRENT[PLAYER_1] / (MOD[PLAYER_1] == "x" and 100 or 1))..MOD[PLAYER_1]
 				if IsIIDXFrame(PLAYER_1) then MESSAGEMAN:Broadcast("Speed",{PLAYER=PLAYER_1,SPEED=(CURRENT[PLAYER_1] / (MOD[PLAYER_1] == "x" and 100 or 1)),MOD=MOD[PLAYER_1]}) end
-				self:stoptweening():diffusealpha(1):settext(text):sleep(1):linear(0.25):diffusealpha(0):queuecommand("TrueChange")
+				self:diffusealpha(1):settext(text):sleep(1):linear(0.25):diffusealpha(0):queuecommand("TrueChange")
 			end,
 			TrueChangeCommand=function(self)
 				local text = "SPEED: " .. (CURRENT[PLAYER_1] / (MOD[PLAYER_1] == "x" and 100 or 1))..MOD[PLAYER_1]
@@ -158,12 +157,12 @@ local t = Def.ActorFrame{
 				if IsGame("pump") then self:addy(33*WideScreenDiff()) end
 			end,
 			BlockCommand=function(self)
-				self:stoptweening():diffuse(color("1,0,0,1")):diffusealpha(1):settext("This MOD can't be changed while GamePlay"):sleep(1):linear(0.25):diffusealpha(0):queuecommand("TrueChange"):diffuse(color("1,1,1,1"))
+				self:diffuse(color("1,0,0,1")):diffusealpha(1):settext("This MOD can't be changed while GamePlay"):sleep(1):linear(0.25):diffusealpha(0):queuecommand("TrueChange"):diffuse(color("1,1,1,1"))
 			end,
 			ChangeCommand=function(self)
 				local text ="SPEED CHANGE: " .. (PREVIOUS[PLAYER_2] / (MOD[PLAYER_2] == "x" and 100 or 1))..MOD[PLAYER_2] .. " -> " .. (CURRENT[PLAYER_2] / (MOD[PLAYER_2] == "x" and 100 or 1))..MOD[PLAYER_2]
 				if IsIIDXFrame(PLAYER_2) then MESSAGEMAN:Broadcast("Speed",{PLAYER=PLAYER_2,SPEED=(CURRENT[PLAYER_2] / (MOD[PLAYER_2] == "x" and 100 or 1)),MOD=MOD[PLAYER_2]}) end
-				self:stoptweening():diffusealpha(1):settext(text):sleep(1):linear(0.25):diffusealpha(0):queuecommand("TrueChange")
+				self:diffusealpha(1):settext(text):sleep(1):linear(0.25):diffusealpha(0):queuecommand("TrueChange")
 			end,
 			TrueChangeCommand=function(self)
 				local text = "SPEED: " .. (CURRENT[PLAYER_2] / (MOD[PLAYER_2] == "x" and 100 or 1))..MOD[PLAYER_2]
@@ -397,6 +396,7 @@ local t = Def.ActorFrame{
 		end
 	end,
 	OffCommand=function(self)
+		SCREENMAN:GetTopScreen():RemoveInputCallback(InputHandler)
 		setenv( "perColJudgeData", judgments )
 		if enableOffsets then setenv( "OffsetTable", offsetdata ) end
 		local fail = false
