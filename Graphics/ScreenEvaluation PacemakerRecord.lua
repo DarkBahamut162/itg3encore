@@ -43,8 +43,7 @@ if getenv("EvalCombo"..pname(player)) then
 				tmax = math.max(tmax,pms)
 				target = math.max(0.5,min)
 			end
-			if min == 1 and tmax == 0 then target = 0.5 else target = math.max(0.5,min) end
-			if target == tmax then tmax = 0 end
+			if min == 1 and tmax == 0 then target = 0.5 end
 			if #(PaceMaker[player][category] and PaceMaker[player][category][math.floor(SPS)] or {}) <= 1 then target = 0.5 end
 		else
 			target = THEME:GetMetric("PlayerStageStats", "GradePercentTier" .. string.format("%02d", 18-(getenv("SetPacemaker"..pname(player)) or 0)))

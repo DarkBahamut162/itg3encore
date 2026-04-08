@@ -48,8 +48,7 @@ if getenv("SetPacemaker"..pname(pn)) == 18 then
 			tmax = math.max(tmax,pms)
 			target = math.max(0.5,min)
 		end
-		if min == 1 and tmax == 0 then target = 0.5 else target = math.max(0.5,min) end
-		if target == tmax then tmax = 0 end
+		if min == 1 and tmax == 0 then target = 0.5 end
 		if #(PaceMaker[pn][category] and PaceMaker[pn][category][math.floor(SPS)] or {}) <= 1 then target = 0.5 end
 	end
 else

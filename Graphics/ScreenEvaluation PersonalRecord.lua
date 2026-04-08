@@ -31,9 +31,10 @@ if getenv("EvalCombo"..pname(player)) then
 	end
 	if record == 0 then
 		local category = isDouble() and StepsTypeDouble()[GetUserPrefN("StylePosition")] or StepsTypeSingle()[GetUserPrefN("StylePosition")]
-		PaceMaker[player][category][math.floor(SPS)]=PaceMaker[player][category] and PaceMaker[player][category][math.floor(SPS)] or {}
 		local DP = STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetPercentDancePoints()
 		if DP > 0.5 then
+			if not PaceMaker[player][category] then PaceMaker[player][category] = {} end
+			if not PaceMaker[player][category][math.floor(SPS)] then PaceMaker[player][category][math.floor(SPS)] = {} end
 			PaceMaker[player][category][math.floor(SPS)][#PaceMaker[player][category][math.floor(SPS)]+1] = DP
 			local highscores = PROFILEMAN:GetProfile(player):GetHighScoreList(song,steps):GetHighScores()
 			if #highscores > 1 then
