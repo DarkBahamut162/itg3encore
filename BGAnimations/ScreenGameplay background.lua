@@ -87,7 +87,7 @@ local t = Def.ActorFrame {
 						local bits = NumberToBits(getenv("BeatBars"..pname(pn)) or 0,4)
 						local notefield = SCREENMAN:GetTopScreen():GetChild("Player"..pname(pn)):GetChild("NoteField")
 						notefield:SetBeatBars(bits[1] or bits[2] or bits[3] or bits[4])
-						notefield:SetBeatBarsAlpha((bits[4] or bits[3]) and 1 or 0,bits[3] and 0.75 or 0,bits[2] and 0.5 or 0,bits[1] and 0.25 or 0)
+						notefield:SetBeatBarsAlpha((bits[4] or bits[3]) and 1 or 0,bits[3] and 0.5 or 0,bits[2] and 0.25 or 0,bits[1] and 0.125 or 0)
 					elseif isOutFox(20211200) then
 						local bits = NumberToBits(getenv("BeatBarsOutFox"..pname(pn)) or 0,3)
 						local notefield = SCREENMAN:GetTopScreen():GetChild("Player"..pname(pn)):GetChild("NoteField")
