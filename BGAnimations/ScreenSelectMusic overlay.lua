@@ -1289,7 +1289,7 @@ return Def.ActorFrame{
 				File = "_v 26px bold black",
 				InitCommand=function(self) self:zoom(0.5*WideScreenDiff()):playcommand("Set") end,
 				SetCommand=function(self)
-					local time = GetTimeSinceStart() - getenv("SessionStart")
+					local time = GetTimeSinceStart() - getenv("SessionStart") + SessionTimeAdjust
 					self:settext( string.format('Session Time: %02i:%02i', math.floor(time/60), math.floor(time%60))):sleep(1/6):queuecommand("Set")
 				end
 			}
@@ -1306,7 +1306,7 @@ return Def.ActorFrame{
 			Def.BitmapText {
 				File = "_v 26px bold black",
 				OnCommand=function(self)
-					local time = getenv("TimePlayedP1")
+					local time = getenv("TimePlayedP1")+TimePlayerP1Adjust
 					self:settext( string.format('Time Played\n%02i:%02i', math.floor(time/60), math.floor(time%60))):zoom(0.5*WideScreenDiff()):diffuse(PlayerColor(PLAYER_1)):shadowlength(0):halign(1):valign(1):vertspacing(-8)
 				end
 			}
@@ -1323,7 +1323,7 @@ return Def.ActorFrame{
 			Def.BitmapText {
 				File = "_v 26px bold black",
 				OnCommand=function(self)
-					local time = getenv("TimePlayedP2")
+					local time = getenv("TimePlayedP2")+TimePlayerP2Adjust
 					self:settext( string.format('Time Played\n%02i:%02i', math.floor(time/60), math.floor(time%60))):zoom(0.5*WideScreenDiff()):diffuse(PlayerColor(PLAYER_2)):shadowlength(0):halign(0):valign(1):vertspacing(-8)
 				end
 			}

@@ -183,14 +183,34 @@ function prepSummary()
 			Step["PlayedTime"] = math.min(alive-first,last-first)
 			Step["TotalTime"] = last-first
 		end
+
+		local Song = GAMESTATE:GetCurrentSong()
+		local seconds = 0
+		if ThemePrefs.Get("UseStepCache") then
+			local Steps = GAMESTATE:GetCurrentSteps(player)
+			seconds = tonumber(LoadFromCache(Song,Steps,"TrueSeconds"))
+		else
+			seconds = Song:GetLastSecond()-Song:GetFirstSecond()
+		end
+		seconds = seconds / GAMESTATE:GetSongOptionsObject("ModsLevel_Preferred"):MusicRate()
+		local total = getenv("TimePlayed"..pname(player))
+		setenv("TimePlayed"..pname(player),total+seconds)
+
 		if player == PLAYER_1 then
-			P1[0] = {["Name"]=PROFILEMAN:GetPlayerName(player) == "" and ToEnumShortString(player) or PROFILEMAN:GetPlayerName(player)}
+			P1[0] = {
+				["Name"]=PROFILEMAN:GetPlayerName(player) == "" and ToEnumShortString(player) or PROFILEMAN:GetPlayerName(player),
+				["TimePlayed"]=getenv("TimePlayedP1")+TimePlayerP1Adjust
+			}
 			P1[currentStage] = Step
 		else
-			P2[0] = {["Name"]=PROFILEMAN:GetPlayerName(player) == "" and ToEnumShortString(player) or PROFILEMAN:GetPlayerName(player)}
+			P2[0] = {
+				["Name"]=PROFILEMAN:GetPlayerName(player) == "" and ToEnumShortString(player) or PROFILEMAN:GetPlayerName(player),
+				["TimePlayed"]=getenv("TimePlayedP2")+TimePlayerP2Adjust
+			}
 			P2[currentStage] = Step
 		end
 	end
+	Master[0] = { ["SessionTime"]=GetTimeSinceStart() - getenv("SessionStart") }
 
 	if ThemePrefs.Get("ShowSummary") then
 		for pn in ivalues(GAMESTATE:GetEnabledPlayers()) do playerData(pn) end
@@ -211,7 +231,8 @@ function prepSummary()
 end
 
 function SummaryBackup()
-	local path = "Save/SummaryBackup"
+	local category = isDouble() and StepsTypeDouble()[GetUserPrefN("StylePosition")] or StepsTypeSingle()[GetUserPrefN("StylePosition")]
+	local path = "Save/SummaryBackup/"..category.."_"
 
 	if #Master > 0 then
 		IniFile.WriteFile(path.."Master.ini",Master)
@@ -228,8 +249,12 @@ function SummaryBackup()
 end
 
 function SummaryBackupClear()
-	local path = "Save/SummaryBackup"
+	local category = isDouble() and StepsTypeDouble()[GetUserPrefN("StylePosition")] or StepsTypeSingle()[GetUserPrefN("StylePosition")]
+	local path = "Save/SummaryBackup/"..category.."_"
 	SummaryAdjust = 0
+	TimePlayerP1Adjust = 0
+	TimePlayerP2Adjust = 0
+	SessionTimeAdjust = 0
 	if FILEMAN:DoesFileExist(path.."Master.ini") then
 		IniFile.WriteFile(path.."Master.ini",{[""]={}})
 		if FILEMAN.FlushDirCache then FILEMAN:FlushDirCache(path.."Master.ini") end
@@ -245,21 +270,25 @@ function SummaryBackupClear()
 end
 
 function SummaryBackupCheck()
-	local path = "Save/SummaryBackup"
+	local category = isDouble() and StepsTypeDouble()[GetUserPrefN("StylePosition")] or StepsTypeSingle()[GetUserPrefN("StylePosition")]
+	local path = "Save/SummaryBackup/"..category.."_"
 	if FILEMAN:DoesFileExist(path.."Master.ini") then
 		local loaded = IniFile.ReadFile(path.."Master.ini")
 		for _,value in pairs(loaded) do
 			Master[tonumber(_)] = value
 			SummaryAdjust = tonumber(_)
 		end
+		if Master[0] and Master[0]["SessionTime"] then SessionTimeAdjust = Master[0]["SessionTime"] end
 	end
 	if FILEMAN:DoesFileExist(path.."P1.ini") then
 		local loaded = IniFile.ReadFile(path.."P1.ini")
 		for _,value in pairs(loaded) do P1[tonumber(_)] = value end
+		if P1[0] and P1[0]["TimePlayed"] then TimePlayerP1Adjust = P1[0]["TimePlayed"] end
 	end
 	if FILEMAN:DoesFileExist(path.."P2.ini") then
 		local loaded = IniFile.ReadFile(path.."P2.ini")
 		for _,value in pairs(loaded) do P2[tonumber(_)] = value end
+		if P2[0] and P2[0]["TimePlayed"] then TimePlayerP2Adjust = P2[0]["TimePlayed"] end
 	end
 	if SummaryAdjust > 0 then return true else return false end
 end

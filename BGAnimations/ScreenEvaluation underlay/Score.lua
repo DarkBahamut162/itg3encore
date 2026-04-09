@@ -169,17 +169,6 @@ return Def.ActorFrame{
 		end,
 		OffCommand=function(self)
 			self:accelerate(0.3):addx(player == PLAYER_1 and -EvalTweenDistance() or EvalTweenDistance())
-			local Song = GAMESTATE:GetCurrentSong()
-			local seconds = 0
-            if ThemePrefs.Get("UseStepCache") then
-                local Steps = GAMESTATE:GetCurrentSteps(player)
-                seconds = tonumber(LoadFromCache(Song,Steps,"TrueSeconds"))
-            else
-                seconds = Song:GetLastSecond()-Song:GetFirstSecond()
-            end
-			seconds = seconds / GAMESTATE:GetSongOptionsObject("ModsLevel_Preferred"):MusicRate()
-			local total = getenv("TimePlayed"..pname(player))
-			setenv("TimePlayed"..pname(player),total+seconds)
 			if GAMESTATE:IsHumanPlayer(player) and allowed then
 				if Data then if UpdateData(player,{["LV"]=CALC_LV,["EXP"]=Data["EXP"]+EXP_STEPS}) then SaveData(player) end end
 			end

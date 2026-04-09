@@ -23,6 +23,9 @@ local InputHandler = function(event)
 				SCREENMAN:GetTopScreen():StartTransitioningScreen("SM_GoToNextScreen")
 				SummaryBackupClear()
 				SummaryAdjust = 0
+				TimePlayerP1Adjust = 0
+				TimePlayerP2Adjust = 0
+				SessionTimeAdjust = 0
 				Master = {}
 				P1 = {}
 				P2 = {}
