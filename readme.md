@@ -328,62 +328,77 @@ I could have actually forked it but I didn't. My reasoning was that it wasn't go
 * Shows **Player's MOD** & **BPM range** within **Name Badges**
   * Display **adjusts** according to the **current SpeedMod**
 * Added various PlayerOptions:
-  - **LifeType:** **LifeLine** *(Battery)* & **Survival** *(Timer)*
-  - **PercentageClearThreshold:** **0%-100%** *(IIDX/Pop'n-like & more)*
-  - **FlareLevel:** **Flare 1-10** & **Flare Float**
-    - Ability to change between **Old** & **New** score requirement
-    - Ability to have it **Accurate** *(uses SN2 scoring)*
-  - **SongFrame:** Ability to change the SongFrame
-    - Bunnies *(Pink Fuzzy Bunnies)*
-    - Disconnect *(Disconnected Hardkore)*
-    - Energy *(Energizer)*
-    - Hasse *(Hasse Mich)*
-    - Love *(Love Eternal)*
-    - Nightmare *(Dream to Nightmare)*
-    - Normal *(Default)*
-    - Pandy *(Pandemonium)*
-    - Smiley *(Summer ~Speedy Mix~)*
-    - Vertex *(Base from VerTex)*
-    - Virtual *(Virtual Emotion)*
-  - **Judgment Fonts:** Ability to switch judgment fonts
-    - ITG3
-    - ITG3 Chroma
-    - ITG2
-    - ITG2 Chroma
-    - ITG1
-    - ITG1 Chroma
-  - **Hold Judgment Fonts:** Ability to switch hold judgment fonts
-    - ITG3
-    - ITG3 Chroma
-    - ITG2
-    - ITG2 Chroma
-  - **Fade:** Enable both **Fade In** & **F.I.Dynamic** to enable simulated **Dynamic Sudden**
-    - Same goes for **Fade Out** & **F.O.Dynamic** for simulated **Dynamic Hidden**
-  - **MovePlayerfieldStats:** Bring both **Combo & Judgment** either **nearer** towards or **farther** away from the **Receptors**
-  - **ScoreTypes:** **Score**, **Percent**, **EX**, **SN2**, **A**, **IIDX**, **WIFE3***
-    - Have the selected ScoreTypes **Additive** or **Subtractive**
-    - Enable an additional FA+ Scoring to the selected ScoreType
-    - WIFE3 *(from Etterna)* can't be selected if the GameMode is on **CountNotesSeperately** because of a judgment bug in the engine
-  - **ErrorBar:** Selectable **Range of Judgment** to be displayed *(lowest first)*
-  - **PlayerStats:** Selectable **Range of Judgment** to be displayed *(highest first)*
-    - **IIDX** switches **StatsMode** to a fully functional **IIDX pacemaker** and shows **Player**, **Highscore** *(if available)* and **Target**
-    - Ability to switch between **FullSize** & **MiniSize**
-      - **Mini (Bottom/Top)** decides where the data is being displayed *(NoteGraph is being show on the opposite end)*
-  - **PlayerNoteGraph:** Customizable **NoteGraph**
-    - **Normal** *Steps per second*
-    - **SPS** *Steps per second per Step*
-    - **One** *Row of notes count as one*
-    - **All** *Row counts all notes within*
-    - **Fixed** *Display NoteGraph in a fixed rate: Red = 0-20 NPS | Black = 20-100 NPS*
-    - **Adjusted** *Adjust NoteGraph to use the full height*
-    - **ShowData** Shows **average & maximum NPS** next to **NoteGraph**
-  - **Pacemaker:** Selectable **Grade** to reach during Gameplay
-    - **±** sets the **Target** to a min-max-range of similar difficulties
-      - Uses **StepCache** and **SPS** values to identify the song's actual difficulty
-      - Uses **All Highscore Clears** over 50% of said difficulty
-        - Falls back to 50% if no clears available to set range
-  - **PacemakerOnFail:** What the game does when **Player fails the Pacemaker**
-  - **PlayerAssists:** Ability to show **SpeedChanges/Stops** during Gameplay
+  - **GameOptions:**
+    - **FailType:** **Fail At 30 Misses** *originally ImmediateContinue but fails after 30 Misses*
+    - **PercentageClearThreshold:** **0%-100%** *(IIDX/Pop'n-like & more)*
+    - **LifeType:** **LifeLine** *(MGD|Battery)* & **Survival** *(Timer)*
+    - **FlareLevel:** **Flare 1-10** & **Flare Float**
+      - Ability to change between **Old** & **New** score requirement
+      - Ability to have it **Accurate** *(uses SN2 scoring)*
+    - **SongFrame:** Ability to change the SongFrame
+      - Bunnies *(Pink Fuzzy Bunnies)*
+      - Disconnect *(Disconnected Hardkore)*
+      - Energy *(Energizer)*
+      - Hasse *(Hasse Mich)*
+      - Love *(Love Eternal)*
+      - Nightmare *(Dream to Nightmare)*
+      - Normal *(Default)*
+      - Pandy *(Pandemonium)*
+      - Smiley *(Summer ~Speedy Mix~)*
+      - Vertex *(Base from VerTex)*
+      - Virtual *(Virtual Emotion)*
+    - **Judgment Fonts:** Ability to switch judgment fonts
+      - ITG3
+      - ITG3 Chroma
+      - ITG2
+      - ITG2 Chroma
+      - ITG1
+      - ITG1 Chroma
+    - **Hold Judgment Fonts:** Ability to switch hold judgment fonts
+      - ITG3
+      - ITG3 Chroma
+      - ITG2
+      - ITG2 Chroma
+  - **EngineOptions:**
+    - **Fade:** Enable both **Fade In** & **F.I.Dynamic** to enable simulated **Dynamic Sudden**
+      - Same goes for **Fade Out** & **F.O.Dynamic** for simulated **Dynamic Hidden**
+  - **LuaOptions:**
+    - **MovePlayerfieldStats:** Bring both **Combo & Judgment** either **nearer** towards or **farther** away from the **Receptors**
+    - **ScoreTypes:** **Score**, **Percent**, **EX**, **SN2**, **A**, **IIDX**, **WIFE3***
+      - Have the selected ScoreTypes **Additive** or **Subtractive**
+      - Enable an additional FA+ Scoring to the selected ScoreType
+      - WIFE3 *(from Etterna)* can't be selected if the GameMode is on **CountNotesSeperately** because of a judgment bug in the engine
+    - **ErrorBar:** Selectable **Range of Judgment** to be displayed *(lowest first)*
+    - **Column Cues/Flashes:**
+      - Shows where the **First Notes** are
+      - Selectable **Range of Judgment** to be displayed *(lowest first)*
+    - **PlayerStats:** Selectable **Range of Judgment** to be displayed *(highest first)*
+      - **IIDX** switches **StatsMode** to a fully functional **IIDX pacemaker** and shows **Player**, **Highscore** *(if available)* and **Target**
+      - Ability to switch between **FullSize** & **MiniSize**
+        - **Mini (Bottom/Top)** decides where the data is being displayed *(NoteGraph is being show on the opposite end)*
+    - **PlayerNoteGraph:** Customizable **NoteGraph**
+      - **Normal** *Steps per second*
+      - **SPS** *Steps per second per Step*
+      - **One** *Row of notes count as one*
+      - **All** *Row counts all notes within*
+      - **Fixed** *Display NoteGraph in a fixed rate: Red = 0-20 NPS | Black = 20-100 NPS*
+      - **Adjusted** *Adjust NoteGraph to use the full height*
+      - **ShowData** Shows **average & maximum NPS** next to **NoteGraph**
+    - **Pacemaker:** Selectable **Grade** to reach during Gameplay
+      - **±** sets the **Target** to a min-max-range of similar difficulties
+        - Uses **StepCache** and **SPS** values to identify the song's actual difficulty
+        - Uses **All Highscore Clears** over 50% of said difficulty
+          - Falls back to 50% if no clears available to set range
+    - **PacemakerOnFail:** What the game does when **Player fails the Pacemaker**
+    - **PlayerAssists:** Ability to show **SpeedChanges/Stops** during Gameplay
+    - **BeatBars:** *(ITGmania Only | since 0.8.0)*
+      - Choose what to show: **Measure, Quarter, Eighth, Sixteenth**
+    - **BeatBarsOutFox:** *(OutFox Only | since 4.11.0)*
+      - Choose what to show: **Beats, Stops, BPMs**
+    - **GreenNumber:**
+      - Shows either **current** or also **min/max** amount of the song.
+      - Show how many **ms** is needed for a note to approach the receptors.
+        - Takes **current speed mod** into account
 </details>
 
 <details>
@@ -397,12 +412,24 @@ I could have actually forked it but I didn't. My reasoning was that it wasn't go
 * Ability to change SpeedMod by 25/0.25
   * Disabled on OutFox-specific ones ***(Amod/CAmod/AVmod)***
 * Shows **Current Speed & Mod**
+* Added ability to restart current song
+  * If **KeyboardEnabled**: Holding CTRL and press **R**
+  * Else: Hold **EffectDown** and press **SELECT**
+* Added ability to go to practice current song
+  * If **KeyboardEnabled**: Holding CTRL and press **P**
+  * Else: Hold **EffectUp** and press **SELECT**
 </details>
 
 <details>
   <summary><b>ScreenEvaluation</b> <i>(click to expand)</i></summary>
 
 * Re-added **marvelous/perfect/great color bar** on top of the **LifeGraph**
+* Added more **Graphs** *(press left/right to switch graphs)*
+  * **LifeGraph**
+  * **JudgmentGraph** *over time*
+  * **JudgmentGraph** *in total*
+  * **PaceMaker** *Highscore* *(only if PlayerStats is in **IIDX** mode)*
+  * **PaceMaker** *Target* *(only if PlayerStats is in **IIDX** mode)*
 * Added ability to restart current song
   * If **KeyboardEnabled**: Holding CTRL and press **R**
   * Else: Hold **EffectDown** and press **SELECT**
