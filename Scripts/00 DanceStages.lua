@@ -4,7 +4,7 @@
 --Author: Enciso0720
 --Last Update: 20230813
 function HasAnyCharacters(pn)
-	return GAMESTATE:IsPlayerEnabled(pn) and GAMESTATE:GetCharacter(pn):GetDisplayName() ~= "default"
+	return GAMESTATE:IsPlayerEnabled(pn) and getenv("SelectCharacter"..pn) ~= "default"
 end
 
 function AnyoneHasChar()

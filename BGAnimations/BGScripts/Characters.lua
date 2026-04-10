@@ -28,6 +28,7 @@ end
 
 local t = Def.ActorFrame{}
 
+--[[
 for pn in ivalues(GAMESTATE:GetEnabledPlayers()) do
 	if not GAMESTATE:IsDemonstration() then
 		if getenv("SelectCharacter"..pn) == "Random" then
@@ -42,16 +43,17 @@ for pn in ivalues(GAMESTATE:GetEnabledPlayers()) do
 		GAMESTATE:SetCharacter(pn,DemoChara[math.random(#DemoChara)])
 	end
 end
+]]
 
 if GAMESTATE:IsDemonstration() then
 	Listed = {
-		GAMESTATE:GetCharacter(PLAYER_1):GetDisplayName(),
-		GAMESTATE:GetCharacter(PLAYER_2):GetDisplayName()
+		getenv("SelectCharacter"..PLAYER_1),
+		getenv("SelectCharacter"..PLAYER_2)
 	}
 else
 	Listed = {
-		GAMESTATE:GetCharacter(PLAYER_1):GetDisplayName(),
-		GAMESTATE:GetCharacter(PLAYER_2):GetDisplayName(),
+		getenv("SelectCharacter"..PLAYER_1),
+		getenv("SelectCharacter"..PLAYER_2),
 		getenv("Mate1"),
 		getenv("Mate2"),
 		getenv("Mate3"),
