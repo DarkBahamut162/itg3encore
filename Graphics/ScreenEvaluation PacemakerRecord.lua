@@ -68,6 +68,8 @@ if getenv("EvalCombo"..pname(player)) then
 		local second = topscore and #topscore > 1 or false
 		local hasHighscore = STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetPercentDancePoints() > 0
 		local hasHighscoreCheck = second or (first and not hasHighscore)
+		local percentADD = ""
+		local differenceADD = ""
 
 		if topscore and hasHighscoreCheck then HighScore = PercentDP(topscore[1])*Max end
 
@@ -84,6 +86,10 @@ if getenv("EvalCombo"..pname(player)) then
 			else
 				TargetRecord = "TARGET\nMET"
 			end
+			if tmax > 0 then
+				percentADD = "|"..FormatPercentScore(tmax)
+				differenceADD = "|"..string.format("%+.2f%%",math.floor((DPCurrent/Max-tmax)*10000)/100)
+			end
 		elseif DPCurrent < Target then
 			TargetRecord = "TARGET\nMISSED"
 		end
@@ -92,7 +98,7 @@ if getenv("EvalCombo"..pname(player)) then
 
 		if topscore and hasHighscoreCheck and DPCurrent >= HighScore then HighScore = PercentDP(topscore[index])*Max end
 		if HighScore > 0 then HighscoreRecord = HighscoreRecord.."::"..FormatPercentScore(PercentDP(topscore[index])).."\n"..string.format("%+.2f%%",math.floor((DPCurrent-HighScore)/Max*10000)/100) end
-		TargetRecord = TargetRecord.."::"..FormatPercentScore(target).."\n"..string.format("%+.2f%%",math.floor((DPCurrent/Max-target)*10000)/100)
+		TargetRecord = TargetRecord.."::"..FormatPercentScore(target)..percentADD.."\n"..string.format("%+.2f%%",math.floor((DPCurrent/Max-target)*10000)/100)..differenceADD
 	end
 end
 
@@ -157,7 +163,7 @@ local HelpDisplay = isEtterna("0.65") and Def.ActorFrame{
 		InitCommand=function(self)
 			self:SetSecsBetweenSwitches(THEME:GetMetric("HelpDisplay","TipSwitchTime"))
 			self:SetTipsColonSeparated(HighscoreRecord)
-			self:x(-40):zoomx(0.6):zoomy(0.5):shadowlength(1):cropright(1):maxwidth(333):vertspacing(-10):hibernate(3)
+			self:x(-40):zoomx(0.6):zoomy(0.5):shadowlength(1):cropright(1):maxwidth(166):vertspacing(-10):hibernate(3)
 		end,
 		OnCommand=function(self) self:linear(0.3):cropright(0):diffuseshift():effectcolor1(color("#00FF00")) end
 	},
@@ -166,7 +172,7 @@ local HelpDisplay = isEtterna("0.65") and Def.ActorFrame{
 		InitCommand=function(self)
 			self:SetSecsBetweenSwitches(THEME:GetMetric("HelpDisplay","TipSwitchTime"))
 			self:SetTipsColonSeparated(TargetRecord)
-			self:x(HighscoreRecord == "" and 0 or 40):zoomx(0.6):zoomy(0.5):shadowlength(1):cropright(1):maxwidth(333):vertspacing(-10):hibernate(3)
+			self:x(HighscoreRecord == "" and 0 or 40):zoomx(0.6):zoomy(0.5):shadowlength(1):cropright(1):maxwidth(HighscoreRecord == "" and 333 or 166):vertspacing(-10):hibernate(3)
 		end,
 		OnCommand=function(self) self:linear(0.3):cropright(0):diffuseshift():effectcolor1(color("#FF0000")) end
 	}
