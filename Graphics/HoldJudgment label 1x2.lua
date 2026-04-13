@@ -2,7 +2,7 @@ return Def.Sprite{
 	BeginCommand=function(self)
 		if SCREENMAN:GetTopScreen():GetName():match("ScreenEdit") then
 			if IsGame("po-mu") or IsGame("popn") then
-				self:Load(THEME:GetPathG("HoldJudgment/_pop","1x2")):zoom(7/9)
+				self:Load(THEME:GetPathG("HoldJudgment/_pop","1x2")):basezoom(7/9)
 			elseif IsGame("be-mu") or IsGame("beat") then
 				self:Load(THEME:GetPathG("HoldJudgment/_iidx","1x2"))
 			else
@@ -10,7 +10,7 @@ return Def.Sprite{
 			end
 		elseif self:GetParent() and self:GetParent():GetParent() then
 			if IsGame("po-mu") or IsGame("popn") then
-				self:Load(THEME:GetPathG("HoldJudgment/_pop","1x2")):zoom(7/9)
+				self:Load(THEME:GetPathG("HoldJudgment/_pop","1x2")):basezoom(7/9)
 			elseif IsGame("be-mu") or IsGame("beat") then
 				self:Load(THEME:GetPathG("HoldJudgment/_iidx","1x2"))
 			else
