@@ -11,7 +11,7 @@ return Def.ActorFrame{
             OnCommand=function(self) self:x(SCREEN_CENTER_X-246):y(SCREEN_CENTER_Y+100):zoom(0.7):shadowlength(2):diffuse(PlayerColor(PLAYER_1)) end
         },
         loadfile(THEME:GetPathG('ScreenEnding', 'card p1'))()..{
-            Condition=HumanAndProfile(PLAYER_1),
+            Condition=HumanAndUSBReady(PLAYER_1),
             InitCommand=function(self) self:x(SCREEN_CENTER_X-248):y(SCREEN_CENTER_Y+162) end
         }
     },
@@ -27,7 +27,7 @@ return Def.ActorFrame{
             OnCommand=function(self) self:x(SCREEN_CENTER_X+246):y(SCREEN_CENTER_Y+100):zoom(0.7):shadowlength(2):diffuse(PlayerColor(PLAYER_2)) end
         },
         loadfile(THEME:GetPathG('ScreenEnding', 'card p2'))()..{
-            Condition=HumanAndProfile(PLAYER_2),
+            Condition=HumanAndUSBReady(PLAYER_2),
             InitCommand=function(self) self:x(SCREEN_CENTER_X+248):y(SCREEN_CENTER_Y+162) end
         }
     }

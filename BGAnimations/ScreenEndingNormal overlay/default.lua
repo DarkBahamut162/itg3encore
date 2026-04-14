@@ -12,7 +12,7 @@ return Def.ActorFrame{
             OnCommand=function(self) self:zoom(0.7*WideScreenDiff()):shadowlength(2):diffuse(PlayerColor(PLAYER_1)) end
         },
         Def.ActorFrame{
-            Condition=HumanAndProfile(PLAYER_1),
+            Condition=HumanAndUSBReady(PLAYER_1),
             loadfile(THEME:GetPathG('ScreenEnding', 'card p1'))()..{
                 InitCommand=function(self) self:x(SCREEN_CENTER_X-248*WideScreenDiff()):y(SCREEN_CENTER_Y+162*WideScreenDiff()):zoom(WideScreenDiff()) end
             },
@@ -162,7 +162,7 @@ return Def.ActorFrame{
             OnCommand=function(self) self:zoom(0.7*WideScreenDiff()):shadowlength(2):diffuse(PlayerColor(PLAYER_2)) end
         },
         Def.ActorFrame{
-            Condition=HumanAndProfile(PLAYER_2),
+            Condition=HumanAndUSBReady(PLAYER_2),
             loadfile(THEME:GetPathG('ScreenEnding', 'card p2'))()..{
                 InitCommand=function(self) self:x(SCREEN_CENTER_X+248*WideScreenDiff()):y(SCREEN_CENTER_Y+162*WideScreenDiff()):zoom(WideScreenDiff()) end
             },

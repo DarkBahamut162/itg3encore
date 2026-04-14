@@ -1,6 +1,6 @@
 return Def.ActorFrame{
     Def.ActorFrame{
-        Condition=EnabledAndProfile(PLAYER_1),
+        Condition=EnabledAndUSBReady(PLAYER_1),
 		Def.Sprite {
 			Texture = THEME:GetPathB("","_overlay/cardstats"),
             InitCommand=function(self) self:x(SCREEN_LEFT+120*WideScreenDiff()):y(SCREEN_CENTER_Y+155*WideScreenDiff()):zoom(WideScreenDiff()) end,
@@ -63,7 +63,7 @@ return Def.ActorFrame{
 		}
     },
     Def.ActorFrame{
-        Condition=EnabledAndProfile(PLAYER_2),
+        Condition=EnabledAndUSBReady(PLAYER_2),
 		Def.Sprite {
 			Texture = THEME:GetPathB("","_overlay/cardstats"),
             InitCommand=function(self) self:x(SCREEN_RIGHT-120*WideScreenDiff()):y(SCREEN_CENTER_Y+155*WideScreenDiff()):zoom(WideScreenDiff()) end,

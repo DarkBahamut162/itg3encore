@@ -214,19 +214,19 @@ function GetScreenNameEntryTraditionalHelpText()
 end
 
 function HumanAndProfile(pn)
-	return GAMESTATE:IsHumanPlayer(pn) and (not isEtterna("0.65") and MEMCARDMAN:GetCardState(pn) ~= 'MemoryCardState_none' or false)
+	return GAMESTATE:IsHumanPlayer(pn) and (not isEtterna("0.65") and not PROFILEMAN:ProfileWasLoadedFromMemoryCard(pn) or false)
 end
 
 function EnabledAndProfile(pn)
-	return GAMESTATE:IsPlayerEnabled(pn) and (not isEtterna("0.65") and MEMCARDMAN:GetCardState(pn) ~= 'MemoryCardState_none' or false)
+	return GAMESTATE:IsPlayerEnabled(pn) and (not isEtterna("0.65") and not PROFILEMAN:ProfileWasLoadedFromMemoryCard(pn) or false)
 end
 
 function HumanAndUSBReady(pn)
-	return GAMESTATE:IsHumanPlayer(pn) and (not isEtterna("0.65") and MEMCARDMAN:GetCardState(pn) == 'MemoryCardState_ready' or false)
+	return GAMESTATE:IsHumanPlayer(pn) and (not isEtterna("0.65") and PROFILEMAN:ProfileWasLoadedFromMemoryCard(pn) or false)
 end
 
 function EnabledAndUSBReady(pn)
-	return GAMESTATE:IsPlayerEnabled(pn) and (not isEtterna("0.65") and MEMCARDMAN:GetCardState(pn) == 'MemoryCardState_ready' or false)
+	return GAMESTATE:IsPlayerEnabled(pn) and (not isEtterna("0.65") and PROFILEMAN:ProfileWasLoadedFromMemoryCard(pn) or false)
 end
 
 function USBReady(pn)
@@ -240,14 +240,26 @@ function AnyUSBReady()
 	return false
 end
 
+function MemoryCheck()
+	if isEtterna("0.55") then
+		return false
+	else
+		local ret = false
+		for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
+			ret = ret or PROFILEMAN:ProfileWasLoadedFromMemoryCard(pn)
+		end
+		return ret
+	end
+end
+
 function GetDisplayNameFromProfileOrMemoryCard(pn)
 	if PROFILEMAN:IsPersistentProfile(pn) then return GAMESTATE:GetPlayerDisplayName(pn) end
-	if MEMCARDMAN:GetCardState(pn) ~= 'MemoryCardState_none' then return MEMCARDMAN:GetName(pn) end
+	if PROFILEMAN:ProfileWasLoadedFromMemoryCard(pn) then return MEMCARDMAN:GetName(pn) end
 	return "PLAYER "..(pn == PLAYER_1 and "1" or "2")
 end
 
 function ScreenEndingGetDisplayName(pn)
-	if MEMCARDMAN:GetCardState(pn) ~= 'MemoryCardState_none' then return MEMCARDMAN:GetName(pn) end
+	if PROFILEMAN:ProfileWasLoadedFromMemoryCard(pn) then return MEMCARDMAN:GetName(pn) end
 	return "No Card"
 end
 

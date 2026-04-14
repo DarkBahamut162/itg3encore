@@ -1,7 +1,3 @@
-function MemoryCheck()
-	if isEtterna("0.55") then return false else return GAMESTATE:IsAnyHumanPlayerUsingMemoryCard() end
-end
-
 return Def.ActorFrame{
 	loadfile(THEME:GetPathB("_selectmusic","menu in add"))(),
 	Def.Actor{

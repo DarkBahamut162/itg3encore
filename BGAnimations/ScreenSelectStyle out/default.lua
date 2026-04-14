@@ -1,7 +1,3 @@
-function MemoryCheck()
-	if isEtterna("0.55") then return false else return GAMESTATE:IsAnyHumanPlayerUsingMemoryCard() end
-end
-
 return Def.ActorFrame{
 	Def.Quad{
 		InitCommand=function(self) self:Center():diffuse(color("0,0,0,1")):valign(0):zoomto(SCREEN_WIDTH,SCREEN_HEIGHT):diffusealpha(0) end,

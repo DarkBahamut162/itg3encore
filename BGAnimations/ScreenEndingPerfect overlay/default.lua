@@ -17,11 +17,11 @@ return Def.ActorFrame{
         OnCommand=function(self) self:CenterX():y(SCREEN_BOTTOM-100):zoom(0.6*WideScreenSemiDiff()):diffusealpha(0):sleep(91.5):linear(0.8):diffusealpha(1) end
     },
     loadfile(THEME:GetPathG('ScreenEnding', 'card p1'))()..{
-        Condition=HumanAndProfile(PLAYER_1),
+        Condition=HumanAndUSBReady(PLAYER_1),
         InitCommand=function(self) self:x(SCREEN_CENTER_X-248*WideScreenDiff()):y(SCREEN_CENTER_Y+162*WideScreenDiff()):zoom(WideScreenDiff()) end
     },
     loadfile(THEME:GetPathG('ScreenEnding', 'card p2'))()..{
-        Condition=HumanAndProfile(PLAYER_2),
+        Condition=HumanAndUSBReady(PLAYER_2),
         InitCommand=function(self) self:x(SCREEN_CENTER_X+248*WideScreenDiff()):y(SCREEN_CENTER_Y+162*WideScreenDiff()):zoom(WideScreenDiff()) end
     }
 }

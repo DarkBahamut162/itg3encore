@@ -1,9 +1,5 @@
 local check = USBCheck()
 
-function MemoryCheck()
-	if isEtterna("0.55") then return false else return GAMESTATE:IsAnyHumanPlayerUsingMemoryCard() end
-end
-
 return Def.ActorFrame{
 	Def.Quad{
 		InitCommand=function(self) self:FullScreen():diffuse(color("0,0,0,1")) end,

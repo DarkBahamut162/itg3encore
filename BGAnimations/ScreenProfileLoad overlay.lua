@@ -1,7 +1,3 @@
-function MemoryCheck()
-	if isEtterna("0.55") then return false else return GAMESTATE:IsAnyHumanPlayerUsingMemoryCard() end
-end
-
 local preload = GAMESTATE:GetCoinMode()=='CoinMode_Home' and IsAutoStyle() or (IsAutoPlayMode(true) and IsAutoStyle()) or MemoryCheck()
 SetAllowLateJoin(false)
 DefaultLuaModifiers = IniFile.ReadFile("Save/DefaultLuaModifiers.ini")["LuaOptions"]
