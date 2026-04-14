@@ -1,34 +1,8 @@
-local selected = -1
+local selected
 local playerReady
 
-function GetLocalProfiles()
-	local t = {}
-
-	function GetSongsPlayedString(numSongs)
-		return numSongs == 1 and Screen.String("SingularSongPlayed") or Screen.String("SeveralSongsPlayed")
-	end
-
-	for p = 0,PROFILEMAN:GetNumLocalProfiles()-1 do
-		local profile=PROFILEMAN:GetLocalProfileFromIndex(p)
-		local ProfileCard = Def.ActorFrame {
-			Def.BitmapText {
-				File = "Common Normal",
-				Text=profile:GetDisplayName(),
-				InitCommand=function(self) self:shadowlength(1):y(-10):zoom(1):ztest(true) end
-			},
-			Def.BitmapText {
-				File = "Common Normal",
-				InitCommand=function(self) self:shadowlength(1):y(8):zoom(0.5):vertspacing(-8):ztest(true) end,
-				BeginCommand=function(self)
-					local numSongsPlayed = profile:GetNumTotalSongsPlayed()
-					self:settext( string.format( GetSongsPlayedString( numSongsPlayed ),numSongsPlayed ) )
-				end
-			}
-		}
-		t[#t+1]=ProfileCard
-	end
-
-	return t
+if GAMESTATE:IsAnyHumanPlayerUsingMemoryCard() then
+	GAMESTATE:LoadProfiles()
 end
 
 function LoadCard(cColor)
@@ -38,6 +12,22 @@ function LoadCard(cColor)
 			InitCommand=function(self) self:diffuse(cColor):zoomy(0.5) end
 		}
 	}
+end
+
+local XML = { [PLAYER_1] = nil, [PLAYER_2] = nil }
+
+function LoadProfile(Player,path)
+	local xml = LoadXML(path)
+	xml = split("\n",xml)
+	for i=1,#xml do
+		if xml[i]:match("^<") and xml[i]:match("</%w+>$") then
+			local key, value = xml[i]:match("<(%w+)>(.-)</%w+>")
+			if key and value then
+				if not XML[Player] then XML[Player] = {} end
+				XML[Player][key] = value
+			end
+		end
+	end
 end
 
 function LoadPlayerStuff(Player)
@@ -96,11 +86,26 @@ function LoadPlayerStuff(Player)
 							local avatar = LoadModule("Config.Load.lua")("AvatarImage",outfox)
 							if avatar then
 								self:Load(avatar):setsize(72,72)
-							elseif hasSLAvatar(Player) then
-								self:Load(getSLAvatar(Player)):setsize(72,72)
 							else
-								self:Load(THEME:GetPathG("UserProfile","generic icon")):setsize(72,72)
+								local dir = "/Save/LocalProfiles/"..id
+								local path = ActorUtil.ResolvePath(dir.."/avatar",1,true) or ActorUtil.ResolvePath(dir.."/profile picture",1,true)
+								if path and ActorUtil.GetFileType(path) == "FileType_Bitmap" then
+									self:Load(path):setsize(72,72)
+								else
+									self:Load(THEME:GetPathG("UserProfile","generic icon")):setsize(72,72)
+								end
 							end
+						elseif index == 0 then
+								local add = PREFSMAN:GetPreference("MemoryCardProfileSubdir")
+								local dir = "@mc"..(Player == PLAYER_1 and "1" or "2").."/"..add
+								local path = ActorUtil.ResolvePath(dir.."/avatar",1,true) or ActorUtil.ResolvePath(dir.."/profile picture",1,true)
+								if path and ActorUtil.GetFileType(path) == "FileType_Bitmap" then
+									self:Load(path):setsize(72,72)
+								else
+									self:Load(THEME:GetPathG("UserProfile","generic icon")):setsize(72,72)
+								end
+						else
+							self:Load(THEME:GetPathG("UserProfile","generic icon")):setsize(72,72)
 						end
 					end
 				},
@@ -143,6 +148,38 @@ function LoadPlayerStuff(Player)
 						num = profile:GetTotalMines()
 						values = addToOutput(values,"Mine"..(num==1 and "" or "s").." Caught","\n")
 						numbers = addToOutput(numbers,num,"\n")
+					elseif index == 0 then
+						local add = PREFSMAN:GetPreference("MemoryCardProfileSubdir")
+						if not XML[Player] then
+							local path = "@mc"..(Player == PLAYER_1 and "1" or "2").."/"..add.."/Stats.xml"
+							if FILEMAN:DoesFileExist(path) then
+								LoadProfile(Player,path)
+							end
+						end
+						local num = tonumber(XML[Player] and XML[Player].NumTotalSongsPlayed or 0)
+						values = addToOutput(values,"Song"..(num==1 and "" or "s").." Played","\n")
+						numbers = addToOutput(numbers,num,"\n")
+						num = tonumber(XML[Player] and XML[Player].TotalTapsAndHolds or 0)
+						values = addToOutput(values,"Tap"..(num==1 and "" or "s").." Performed","\n")
+						numbers = addToOutput(numbers,num,"\n")
+						num = tonumber(XML[Player] and XML[Player].TotalJumps or 0)
+						values = addToOutput(values,"Jump"..(num==1 and "" or "s").." Performed","\n")
+						numbers = addToOutput(numbers,num,"\n")
+						num = tonumber(XML[Player] and XML[Player].TotalHands or 0)
+						values = addToOutput(values,"Hand"..(num==1 and "" or "s").." Performed","\n")
+						numbers = addToOutput(numbers,num,"\n")
+						num = tonumber(XML[Player] and XML[Player].TotalHolds or 0)
+						values = addToOutput(values,"Hold"..(num==1 and "" or "s").." Performed","\n")
+						numbers = addToOutput(numbers,num,"\n")
+						num = tonumber(XML[Player] and XML[Player].TotalRolls or 0)
+						values = addToOutput(values,"Roll"..(num==1 and "" or "s").." Performed","\n")
+						numbers = addToOutput(numbers,num,"\n")
+						num = tonumber(XML[Player] and XML[Player].TotalLifts or 0)
+						values = addToOutput(values,"Lift"..(num==1 and "" or "s").." Performed","\n")
+						numbers = addToOutput(numbers,num,"\n")
+						num = tonumber(XML[Player] and XML[Player].TotalMines or 0)
+						values = addToOutput(values,"Mine"..(num==1 and "" or "s").." Caught","\n")
+						numbers = addToOutput(numbers,num,"\n")
 					end
 					self:GetChild("Values"):settext(values)
 					self:GetChild("Numbers"):settext(numbers)
@@ -175,6 +212,20 @@ function LoadPlayerStuff(Player)
 						output = addToOutput(output,TotalTime(num).." (Gameplay)","\n")
 						num = profile:GetTotalSessionSeconds()
 						output = addToOutput(output,TotalTime(num).." (Session)","\n")
+					elseif index == 0 then
+						local add = PREFSMAN:GetPreference("MemoryCardProfileSubdir")
+						if not XML[Player] then
+							local path = "@mc"..(Player == PLAYER_1 and "1" or "2").."/"..add.."/Stats.xml"
+							if FILEMAN:DoesFileExist(path) then
+								LoadProfile(Player,path)
+							end
+						end
+						local num = tonumber(XML[Player] and XML[Player].TotalSessions or 0)
+						output = addToOutput(output,num.." Session"..(num==1 and "" or "s").." Played","\n")
+						num = tonumber(XML[Player] and XML[Player].TotalGameplaySeconds or 0)
+						output = addToOutput(output,TotalTime(num).." (Gameplay)","\n")
+						num = tonumber(XML[Player] and XML[Player].TotalSessionSeconds or 0)
+						output = addToOutput(output,TotalTime(num).." (Session)","\n")
 					end
 					self:settext(output)
 				end
@@ -187,12 +238,15 @@ function LoadPlayerStuff(Player)
 				["Right"..pname(Player).."MessageCommand"]=function(self) self:queuecommand("Update") end,
 				UpdateCommand=function(self)
 					local selection = ""
-					for i=1,PROFILEMAN:GetNumLocalProfiles() do selection = addToOutput(selection,"•","") end
+					local memoryCheck = MEMCARDMAN:GetCardState(Player) == 'MemoryCardState_none' and 1 or 0
+					for i=memoryCheck,PROFILEMAN:GetNumLocalProfiles() do
+						selection = addToOutput(selection,i == 0 and "·" or "•","")
+					end
 					self:settext(selection):ClearAttributes()
 
 					local index = SCREENMAN:GetTopScreen():GetProfileIndex(Player)
-					if index > 0 then
-						self:AddAttribute(index-1, {
+					if index >= 0 then
+						self:AddAttribute(index-memoryCheck, {
 							Length = 1,
 							Diffuse = PlayerColor(Player)
 						})
@@ -217,25 +271,30 @@ function UpdateInternal3(self,Player)
 
 	if GAMESTATE:IsHumanPlayer(Player) then
 		frame:visible(true)
-		if MEMCARDMAN:GetCardState(Player) == 'MemoryCardState_none' then
-			joinframe:visible(false)
-			bigframe:visible(true)
-			seltext:visible(true)
-			local ind = SCREENMAN:GetTopScreen():GetProfileIndex(Player)
-			if ind > 0 then
-				seltext:settext(PROFILEMAN:GetLocalProfileFromIndex(ind-1):GetDisplayName())
-			else
-				if SCREENMAN:GetTopScreen():SetProfileIndex(Player,1) then
-					self:queuecommand('UpdateInternal2')
-				else
-					joinframe:visible(true)
-					bigframe:visible(false)
-					seltext:settext('No profile')
-				end
+		joinframe:visible(false)
+		bigframe:visible(true)
+		seltext:visible(true):y(0)
+		local ind = SCREENMAN:GetTopScreen():GetProfileIndex(Player)
+		if ind > 0 then
+			seltext:settext(PROFILEMAN:GetLocalProfileFromIndex(ind-1):GetDisplayName())
+		elseif ind == 0 then
+			local name = ""
+			local add = PREFSMAN:GetPreference("MemoryCardProfileSubdir")
+			local path = "@mc"..(Player == PLAYER_1 and "1" or "2").."/"..add.."/Editable.ini"
+			if FILEMAN:DoesFileExist(path) then
+				local file = IniFile.ReadFile(path)
+				if file.Editable.DisplayName then name = file.Editable.DisplayName end
 			end
+			if name == "" then name = "NoName" end
+			seltext:settext(name)
 		else
-			seltext:settext('CARD')
-			SCREENMAN:GetTopScreen():SetProfileIndex(Player,0)
+			if SCREENMAN:GetTopScreen():SetProfileIndex(Player,1) then
+				self:queuecommand('UpdateInternal2')
+			else
+				joinframe:visible(true)
+				bigframe:visible(false)
+				seltext:settext('No profile'):y(32)
+			end
 		end
 	else
 		joinframe:visible(true)
@@ -251,7 +310,8 @@ local InputHandler =function(event)
 			if event.GameButton == "MenuLeft" or event.GameButton == "MenuUp" or event.GameButton == "Left" or event.GameButton == "Up" or event.GameButton == "UpLeft" or event.GameButton == "DownLeft" then
 				if playerReady and playerReady == event.PlayerNumber then return end
 				local ind = SCREENMAN:GetTopScreen():GetProfileIndex(event.PlayerNumber)
-				if ind > 1 then
+				local memoryCheck = MEMCARDMAN:GetCardState(event.PlayerNumber) ~= 'MemoryCardState_none'
+				if ind > (memoryCheck and 0 or 1) then
 					if SCREENMAN:GetTopScreen():SetProfileIndex(event.PlayerNumber,ind-1) then
 						MESSAGEMAN:Broadcast("DirectionButton")
 						MESSAGEMAN:Broadcast("Left"..pname(event.PlayerNumber))
@@ -260,18 +320,19 @@ local InputHandler =function(event)
 			elseif event.GameButton == "MenuRight" or event.GameButton == "MenuDown" or event.GameButton == "Right" or event.GameButton == "Down" or event.GameButton == "UpRight" or event.GameButton == "DownRight" then
 				if playerReady and playerReady == event.PlayerNumber then return end
 				local ind = SCREENMAN:GetTopScreen():GetProfileIndex(event.PlayerNumber)
-				if ind > 0 then
+				local memoryCheck = MEMCARDMAN:GetCardState(event.PlayerNumber) ~= 'MemoryCardState_none'
+				if ind >= 0 or memoryCheck then
 					if SCREENMAN:GetTopScreen():SetProfileIndex(event.PlayerNumber,ind+1) then
 						MESSAGEMAN:Broadcast("DirectionButton")
 						MESSAGEMAN:Broadcast("Right"..pname(event.PlayerNumber))
 					end
 				end
 			elseif event.GameButton == "Start" or event.GameButton == "Center" then
-				if selected == -1 then
+				if not selected then
 					MESSAGEMAN:Broadcast("Selected"..pname(event.PlayerNumber))
 					selected = SCREENMAN:GetTopScreen():GetProfileIndex(event.PlayerNumber)
 					playerReady = event.PlayerNumber
-				elseif selected == SCREENMAN:GetTopScreen():GetProfileIndex(event.PlayerNumber) then
+				elseif selected and selected == SCREENMAN:GetTopScreen():GetProfileIndex(event.PlayerNumber) then
 					if playerReady and playerReady == event.PlayerNumber then
 						if GAMESTATE:GetNumPlayersEnabled()==2 then return end
 					else
@@ -285,7 +346,7 @@ local InputHandler =function(event)
 				if playerReady and playerReady == event.PlayerNumber then
 					MESSAGEMAN:Broadcast("Unselected"..pname(event.PlayerNumber))
 					playerReady = nil
-					selected = -1
+					selected = nil
 				end
 				MESSAGEMAN:Broadcast("BackButton")
 				SCREENMAN:GetTopScreen():SetProfileIndex(event.PlayerNumber,-2)
