@@ -432,6 +432,16 @@ local Leaderboard = isITGmania() and RequestResponseActor()..{
 }
 ]]--
 
+local states = {
+	["StageAward_FullComboW3"]		= color("#67FF19"),
+	["StageAward_SingleDigitW3"]	= color("#67FF19"),
+	["StageAward_OneW3"]			= color("#67FF19"),
+	["StageAward_FullComboW2"]		= color("#FFA959"),
+	["StageAward_SingleDigitW2"]	= color("#FFA959"),
+	["StageAward_OneW2"]			= color("#FFA959"),
+	["StageAward_FullComboW1"]		= color("#7BE8FF")
+}
+
 return Def.ActorFrame{
 	OnCommand=function(self)
 		if getenv("SessionStart") == 0 then setenv("SessionStart",GetTimeSinceStart()) end
@@ -497,6 +507,7 @@ return Def.ActorFrame{
 			UpdateCommand=function(self)
 				local song = GAMESTATE:GetCurrentSong()
 				local output = ""
+				local coloring = {}
 				local add = keyboardEnabled and 0 or 1.1
 				if song then
 					local steps = GAMESTATE:GetCurrentSteps(PLAYER_1)
@@ -508,8 +519,12 @@ return Def.ActorFrame{
 							highscores[PLAYER_1] = highscores[PLAYER_1] + add / 1.1
 							output = "NO HIGHSCORES"
 						else
+							local adjust = 0
 							for place,highscore in pairs(profile) do
-								output = addToOutput(output,"#"..place..": "..string.format("%03.2f%%",highscore:GetPercentDP()*100).." | "..highscore:GetName().." | "..highscore:GetDate(),"\n")
+								local begin = string.len(output:gsub("☆","X"):gsub(not isITGmania(20240600) and "\n" or "",""))
+								output = addToOutput(output,"#"..place..": "..string.format("%03.2f%%",highscore:GetPercentDP()*100).." | "..GetGradeNameFromGradeTier(highscore:GetGrade()).." | "..highscore:GetDate(),"\n")
+								local stageAward = highscore:GetStageAward()
+								if stageAward then coloring[#coloring+1] = {FIRST = begin+adjust, LAST = string.len(output:gsub("☆","X"):gsub(not isITGmania(20240600) and "\n" or "",""))-begin, COLOR = states[stageAward]} else adjust = place-(isITGmania(20240600) and 1 or 0) end
 							end
 						end
 						if ctrlHeld[PLAYER_1] then self:GetParent():stoptweening():decelerate(0.3):y(SCREEN_BOTTOM-(127+15*math.max(0,math.min(highscores[PLAYER_1]-1,9)))*WideScreenDiff()) end
@@ -525,8 +540,12 @@ return Def.ActorFrame{
 							if #profile == 0 then
 								output = "NO HIGHSCORES"
 							else
+								local adjust = 0
 								for place,highscore in pairs(profile) do
-									output = addToOutput(output,"#"..place..": "..string.format("%03.2f%%",highscore:GetPercentDP()*100).." | "..highscore:GetName().." | "..highscore:GetDate(),"\n")
+									local begin = string.len(output)
+									output = addToOutput(output,"#"..place..": "..string.format("%03.2f%%",highscore:GetPercentDP()*100).." | "..GetGradeNameFromGradeTier(highscore:GetGrade()).." | "..highscore:GetDate(),"\n")
+									local stageAward = highscore:GetStageAward()
+									if stageAward then coloring[#coloring+1] = {FIRST = begin, LAST = string.len(output)-begin, COLOR = states[stageAward]} else adjust = place-(isITGmania(20240600) and 1 or 0) end
 								end
 							end
 							if ctrlHeld[PLAYER_1] then self:GetParent():stoptweening():decelerate(0.3):y(SCREEN_BOTTOM-(127+15*math.max(0,math.min(highscores[PLAYER_1]-1,9)))*WideScreenDiff()) end
@@ -536,7 +555,13 @@ return Def.ActorFrame{
 					self:playcommand("ControlMenuClosedP1Message")
 				end
 
-				self:settext(output)
+				self:settext(output):ClearAttributes()
+				for i,pair in pairs(coloring) do
+					self:AddAttribute(pair.FIRST, {
+						Length = pair.LAST,
+						Diffuse = pair.COLOR
+					})
+				end
 			end
 		}
 	},
@@ -566,6 +591,7 @@ return Def.ActorFrame{
 			UpdateCommand=function(self)
 				local song = GAMESTATE:GetCurrentSong()
 				local output = ""
+				local coloring = {}
 				local add = keyboardEnabled and 0 or 1.1
 				if song then
 					local steps = GAMESTATE:GetCurrentSteps(PLAYER_2)
@@ -577,8 +603,12 @@ return Def.ActorFrame{
 							highscores[PLAYER_2] = highscores[PLAYER_2] + add / 1.1
 							output = "NO HIGHSCORES"
 						else
+							local adjust = 0
 							for place,highscore in pairs(profile) do
-								output = addToOutput(output,"#"..place..": "..string.format("%03.2f%%",highscore:GetPercentDP()*100).." | "..highscore:GetName().." | "..highscore:GetDate(),"\n")
+								local begin = string.len(output)
+								output = addToOutput(output,"#"..place..": "..string.format("%03.2f%%",highscore:GetPercentDP()*100).." | "..GetGradeNameFromGradeTier(highscore:GetGrade()).." | "..highscore:GetDate(),"\n")
+								local stageAward = highscore:GetStageAward()
+								if stageAward then coloring[#coloring+1] = {FIRST = begin, LAST = string.len(output)-begin, COLOR = states[stageAward]} else adjust = place-(isITGmania(20240600) and 1 or 0) end
 							end
 						end
 						if ctrlHeld[PLAYER_2] then self:GetParent():stoptweening():decelerate(0.3):y(SCREEN_BOTTOM-(127+15*math.max(0,math.min(highscores[PLAYER_2]-1,9)))*WideScreenDiff()) end
@@ -594,8 +624,12 @@ return Def.ActorFrame{
 							if #profile == 0 then
 								output = "NO HIGHSCORES"
 							else
+								local adjust = 0
 								for place,highscore in pairs(profile) do
-									output = addToOutput(output,"#"..place..": "..string.format("%03.2f%%",highscore:GetPercentDP()*100).." | "..highscore:GetName().." | "..highscore:GetDate(),"\n")
+									local begin = string.len(output)
+									output = addToOutput(output,"#"..place..": "..string.format("%03.2f%%",highscore:GetPercentDP()*100).." | "..GetGradeNameFromGradeTier(highscore:GetGrade()).." | "..highscore:GetDate(),"\n")
+									local stageAward = highscore:GetStageAward()
+									if stageAward then coloring[#coloring+1] = {FIRST = begin, LAST = string.len(output)-begin, COLOR = states[stageAward]} else adjust = place-(isITGmania(20240600) and 1 or 0) end
 								end
 							end
 							if ctrlHeld[PLAYER_2] then self:GetParent():stoptweening():decelerate(0.3):y(SCREEN_BOTTOM-(127+15*math.max(0,math.min(highscores[PLAYER_2]-1,9)))*WideScreenDiff()) end
@@ -605,7 +639,13 @@ return Def.ActorFrame{
 					self:playcommand("ControlMenuClosedP2Message")
 				end
 
-				self:settext(output)
+				self:settext(output):ClearAttributes()
+				for i,pair in pairs(coloring) do
+					self:AddAttribute(pair.FIRST, {
+						Length = pair.LAST,
+						Diffuse = pair.COLOR
+					})
+				end
 			end
 		}
 	},

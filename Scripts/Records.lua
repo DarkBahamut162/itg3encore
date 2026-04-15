@@ -84,6 +84,31 @@ function GetPercentFromGradeWife(grade)
 	return percent[grade] and percent[grade] or 0
 end
 
+function GetGradeNameFromGradeTier(tier)
+	local grades = {
+		["Grade_Tier01"] = "☆☆☆☆",
+		["Grade_Tier02"] = "☆☆☆",
+		["Grade_Tier03"] = "☆☆",
+		["Grade_Tier04"] = "☆",
+		["Grade_Tier05"] = "S+",
+		["Grade_Tier06"] = "S",
+		["Grade_Tier07"] = "S-",
+		["Grade_Tier08"] = "A+",
+		["Grade_Tier09"] = "A",
+		["Grade_Tier10"] = "A-",
+		["Grade_Tier11"] = "B+",
+		["Grade_Tier12"] = "B",
+		["Grade_Tier13"] = "B-",
+		["Grade_Tier14"] = "C+",
+		["Grade_Tier15"] = "C",
+		["Grade_Tier16"] = "C-",
+		["Grade_Tier17"] = "D+",
+		["Grade_Tier18"] = "D",
+		["Grade_Failed"] = "F"
+	}
+	return grades[tier]
+end
+
 XMLdata = {}
 
 function LoadXML(file)
