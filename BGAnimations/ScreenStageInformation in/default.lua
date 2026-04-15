@@ -29,6 +29,21 @@ if not isEtterna("0.69") and (isOni() or GAMESTATE:IsAnExtraStage()) then
 	end
 end
 
+local style = GAMESTATE:GetCurrentStyle():GetName()
+local mlevel = GAMESTATE:IsCourseMode() and "ModsLevel_Stage" or "ModsLevel_Preferred"
+if (style == "single8" or style == "single9") and GAMESTATE:GetNumPlayersEnabled() == 1 then
+	local change = getenv("Rotation"..pname(GAMESTATE:GetMasterPlayerNumber())) == 5 and 0 or (isFinal() and 0.7 or 0.6)
+	for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
+		GAMESTATE:GetPlayerState(GAMESTATE:GetMasterPlayerNumber()):GetPlayerOptions(mlevel):Tiny(change)
+	end
+else
+	for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
+		if GAMESTATE:GetPlayerState(GAMESTATE:GetMasterPlayerNumber()):GetPlayerOptions(mlevel):Tiny() ~= 0 then
+			GAMESTATE:GetPlayerState(GAMESTATE:GetMasterPlayerNumber()):GetPlayerOptions(mlevel):Tiny(0)
+		end
+	end
+end
+
 for pn in ivalues(GAMESTATE:GetEnabledPlayers()) do
 	if getenv("Flare"..pname(pn)) and getenv("Flare"..pname(pn)) > 0 then
 		if isSurvival(pn) then GAMESTATE:ApplyGameCommand('mod,no lifetime,bar,normal-drain',pn) end

@@ -64,6 +64,11 @@ local InputHandler = function(event)
 	end
 end
 
+local mlevel = GAMESTATE:IsCourseMode() and "ModsLevel_Stage" or "ModsLevel_Preferred"
+if GAMESTATE:GetPlayerState(GAMESTATE:GetMasterPlayerNumber()):GetPlayerOptions(mlevel):Tiny() ~= 0 then
+	GAMESTATE:GetPlayerState(GAMESTATE:GetMasterPlayerNumber()):GetPlayerOptions(mlevel):Tiny(0)
+end
+
 return Def.ActorFrame{
 	OnCommand = function(self)
 		c = self:GetChildren()
