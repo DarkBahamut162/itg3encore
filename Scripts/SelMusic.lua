@@ -114,6 +114,18 @@ function GetScreenSelectMusicHelpText()
 		if DifficultyChangingAvailable() then ret = addToOutput(ret,THEME:GetString("ScreenSelectMusic","DifficultyChangingAvailableHelpTextAppend"..((IsGame("pump") or IsGame("smx") or IsGame("techno") or IsGame("beat") or IsGame("be-mu") or IsGame("popn") or IsGame("po-mu")) and "One" or "Two")),"::") end
 		if ModeMenuAvailable() then ret = addToOutput(ret,THEME:GetString("ScreenSelectMusic","SortMenuAvailableHelpTextAppend"),"::") end
 	end
+	if ThemePrefs.Get("KeyboardEnabled") then
+		ret = addToOutput(ret,THEME:GetString("ScreenSelectMusic","SearchHelpTextAppend"),"::")
+		if GAMESTATE:GetNumPlayersEnabled()==1 then
+			local single = ChoiceSingle()[GetUserPrefN("StylePosition")]
+			local double = ChoiceDouble()[GetUserPrefN("StylePosition")]
+			if single and GAMESTATE:GetCurrentStyle():GetName() == single then
+				ret = addToOutput(ret,THEME:GetString("ScreenSelectMusic","DoubleHelpTextAppend"),"::")
+			elseif double and GAMESTATE:GetCurrentStyle():GetName() == double then
+				ret = addToOutput(ret,THEME:GetString("ScreenSelectMusic","SingleHelpTextAppend"),"::")
+			end
+		end
+	end
 	if getenv("Workout") and IsHome() then ret = addToOutput(ret,THEME:GetString("ScreenSelectMusic","WorkoutHelpTextAppend"),"::") end
 
 	return ret
