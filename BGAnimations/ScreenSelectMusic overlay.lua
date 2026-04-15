@@ -2,6 +2,8 @@ local t = Def.ActorFrame{}
 local tOnline = Def.ActorFrame{}
 setenv("Restart",0)
 
+for pn in ivalues(GAMESTATE:GetHumanPlayers()) do SCREENMAN:set_input_redirected(pn,false) end
+
 if ShowStandardDecoration("StyleIcon") then
 	t[#t+1] = loadfile(THEME:GetPathG(Var "LoadingScreen", "StyleIcon"))() .. {
 		InitCommand=function(self)
@@ -101,9 +103,17 @@ local HelpDisplay = isEtterna("0.65") and Def.BitmapText {
 	SelectMenuClosedMessageCommand=function(self) self:stoptweening():linear(0.2):diffusealpha(0):zoomx(0.3*WideScreenDiff()) end
 }
 
+local single = ChoiceSingle()[GetUserPrefN("StylePosition")]
+local double = ChoiceDouble()[GetUserPrefN("StylePosition")]
+local category = isDouble() and StepsTypeDouble()[GetUserPrefN("StylePosition")] or StepsTypeSingle()[GetUserPrefN("StylePosition")]
+
 local keyboardEnabled = ThemePrefs.Get("KeyboardEnabled")
 local ctrlHeld = { PLAYER_1 = false, PLAYER_2 = false }
 local shiftHeld = { PLAYER_1 = false, PLAYER_2 = false }
+local specialHeld = { PLAYER_1 = false, PLAYER_2 = false }
+local searching = false
+local selection = {}
+local selected = 0
 local leaderboard = { [PLAYER_1] = 1, [PLAYER_2] = 1 }
 local change = { PLAYER_1 = false, PLAYER_2 = false }
 local highscores = { PLAYER_1 = 0, PLAYER_2 = 0 }
@@ -111,6 +121,43 @@ local GSH = { [PLAYER_1] = nil, [PLAYER_2] = nil }
 local c
 
 local InputHandler = function(event)
+	if searching then
+		if event.type == "InputEventType_FirstPress" or event.type == "InputEventType_Repeat" then
+			if event.GameButton == "MenuLeft" or event.GameButton == "MenuUp" then
+				SOUND:PlayOnce( THEME:GetPathS("ScreenOptions","next") )
+				selected = selected - 1
+				MESSAGEMAN:Broadcast("Change")
+			elseif event.GameButton == "MenuRight" or event.GameButton == "MenuDown" then
+				SOUND:PlayOnce( THEME:GetPathS("ScreenOptions","next") )
+				selected = selected + 1
+				MESSAGEMAN:Broadcast("Change")
+			elseif event.GameButton == "Back" then
+				MESSAGEMAN:Broadcast("BackgroundOff")
+				selected = 0
+				searching = false
+				specialHeld[event.PlayerNumber] = false
+				MESSAGEMAN:Broadcast("Return")
+				SOUND:StopMusic()
+			elseif event.GameButton == "Start" then
+				local current = (selected % #selection)+1
+				GAMESTATE:SetCurrentSong(selection[current])
+				GAMESTATE:SetPreferredSong(selection[current])
+				SOUND:StopMusic()
+				SCREENMAN:PlayStartSound()
+				local screen = SCREENMAN:GetTopScreen()
+
+				if GAMESTATE:GetSortOrder() == "SortOrder_Preferred" then screen:GetMusicWheel():ChangeSort("SortOrder_Group") end
+
+				screen:SetNextScreenName(SelectMusicOrCourse())
+				screen:StartTransitioningScreen("SM_GoToNextScreen")
+				MESSAGEMAN:Broadcast("BackgroundOff")
+				selected = 0
+				searching = false
+				specialHeld[event.PlayerNumber] = false
+			end
+		end
+		return
+	end
 	if (ThemePrefs.Get("EnableGrooveStats") or isOutFoxOnline()) and string.find(event.DeviceInput.button,"shift") then
 		local pn = string.find(event.DeviceInput.button,"left") and PLAYER_1 or PLAYER_2
 		if GAMESTATE:IsHumanPlayer(pn) and ((GS and GS.IsConnected) or isOutFoxOnline()) then
@@ -165,6 +212,79 @@ local InputHandler = function(event)
 				end
 			else
 				SOUND:PlayOnce( THEME:GetPathS( 'Common', "invalid" ) )
+			end
+		elseif string.find(event.DeviceInput.button,"shift") then
+			local pn = string.find(event.DeviceInput.button,"left") and PLAYER_1 or PLAYER_2
+			if event.type == "InputEventType_FirstPress" then
+				if not specialHeld[pn] then specialHeld[pn] = true end
+			elseif event.type == "InputEventType_Release" then
+				if specialHeld[pn] then ctrlHeld[pn] = false end
+			end
+		else
+			if event.type == "InputEventType_FirstPress" then
+				if event.DeviceInput.button == "DeviceButton_s" or event.DeviceInput.button == "DeviceButton_f" then
+					local check = false
+					for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
+						check = check or specialHeld[pn]
+					end
+					if not check then return end 
+					SCREENMAN:PlayStartSound()
+					SCREENMAN:AddNewScreenToTop("ScreenTextEntry")
+					selection = {}
+					local question = {
+						Question = "What should be searched?",
+						MaxInputLength = 255,
+						OnOK = function(answer)
+							for song in ivalues(SONGMAN:GetAllSongs()) do
+								if song:HasStepsType(category) then
+									local title = song:GetDisplayFullTitle()
+									local artist = song:GetDisplayArtist()
+									if string.find(string.lower(title),answer) or string.find(string.lower(artist),answer) then
+										table.insert(selection,song)
+									end
+								end
+							end
+							if #selection == 0 then
+								output = "No Songs Found"
+								SCREENMAN:SystemMessage("No Songs Found!")
+								MESSAGEMAN:Broadcast("Return")
+								SCREENMAN:PlayCancelSound()
+							else
+								table.sort(selection, function(a, b)
+									return a:GetDisplayFullTitle():lower() < b:GetDisplayFullTitle():lower()
+								end)
+								searching = true
+								MESSAGEMAN:Broadcast("BackgroundOn")
+							end
+						end,
+						Validate = function(answer,errorOut)
+							if answer == "" then return false, "Must Contain Text!" else return true, "" end
+						end,
+						OnCancel = function()
+							MESSAGEMAN:Broadcast("Return")
+							SCREENMAN:PlayCancelSound()
+							SOUND:StopMusic()
+						end
+					}
+					SCREENMAN:GetTopScreen():Load(question)
+					SOUND:PlayMusicPart(THEME:GetPathS("ScreenStepCache","music"),0,-1,0,0,true,false)
+				elseif event.DeviceInput.button == "DeviceButton_1" then
+					if GAMESTATE:GetNumPlayersEnabled()==2 then return end
+					if GAMESTATE:GetCurrentStyle():GetName() == double then
+						GAMESTATE:SetCurrentStyle(single)
+						SCREENMAN:GetTopScreen():SetNextScreenName(SelectMusicOrCourse())
+						SCREENMAN:GetTopScreen():StartTransitioningScreen("SM_GoToNextScreen")
+						SCREENMAN:PlayStartSound()
+					end
+				elseif event.DeviceInput.button == "DeviceButton_2" then
+					if GAMESTATE:GetNumPlayersEnabled()==2 then return end
+					if GAMESTATE:GetCurrentStyle():GetName() == single then
+						GAMESTATE:SetCurrentStyle(double)
+						SCREENMAN:GetTopScreen():SetNextScreenName(SelectMusicOrCourse())
+						SCREENMAN:GetTopScreen():StartTransitioningScreen("SM_GoToNextScreen")
+						SCREENMAN:PlayStartSound()
+					end
+				end
 			end
 		end
 	else
@@ -1369,5 +1489,219 @@ return Def.ActorFrame{
 			}
 		}
 	},
-	Leaderboard
+	Leaderboard,
+	Def.ActorFrame{
+		Name="Slots",
+		InitCommand=function(self) self:diffusealpha(0) end,
+		ReturnMessageCommand=function(self) self:queuecommand("Check") end,
+		CheckCommand=function(self)
+			if SCREENMAN:GetTopScreen():GetName() ~= SelectMusicOrCourse() then
+				self:sleep(1/6):queuecommand("Check")
+			else
+				local screen = SCREENMAN:GetTopScreen()
+				screen:GetMusicWheel():Move(1)
+				screen:GetMusicWheel():Move(-1)
+				screen:GetMusicWheel():Move(0)
+			end
+		end,
+		BackgroundOnMessageCommand=function(self)
+			for pn in ivalues(GAMESTATE:GetHumanPlayers()) do SCREENMAN:set_input_redirected(pn,true) end
+			MESSAGEMAN:Broadcast("Change")
+			self:diffusealpha(1)
+		end,
+		BackgroundOffMessageCommand=function(self)
+			for pn in ivalues(GAMESTATE:GetHumanPlayers()) do SCREENMAN:set_input_redirected(pn,false) end
+			self:diffusealpha(0)
+		end,
+		ChangeMessageCommand=function(self)
+			for i=1,9 do
+				local current = ((i-4+selected-1) % #selection)+1
+				self:GetChild("Slots"):GetChild("Slot"..i):settext(selection[current]:GetDisplayMainTitle())
+			end
+
+			local display = (selected % #selection)+1
+			local bnpath = selection[display]:GetBannerPath()
+			if not bnpath or bnpath == "" then bnpath = THEME:GetPathG("Common", "fallback banner") end
+			local BPMs = selection[display]:GetDisplayBpms()
+
+			self:GetChild("Slots"):GetChild("Banner"):LoadBackground(bnpath)
+			self:GetChild("Slots"):GetChild("Title"):settext(selection[display]:GetDisplayMainTitle() or "")
+			self:GetChild("Slots"):GetChild("Subtitle"):settext(selection[display]:GetDisplaySubTitle() or "")
+			self:GetChild("Slots"):GetChild("Artist"):settext(selection[display]:GetDisplayArtist() or "")
+			self:GetChild("Slots"):GetChild("BPMs"):settext(BPMs[1] == BPMs[2] and math.round(BPMs[1]) or math.round(BPMs[1]).."-"..math.round(BPMs[2]))
+			self:GetChild("Slots"):GetChild("Pack"):settext(selection[display]:GetGroupName() or "")
+
+			local difficulties = ""
+			local difficulty = {
+				["Difficulty_Beginner"]="",["Difficulty_Easy"]="",["Difficulty_Medium"]="",["Difficulty_Hard"]="",["Difficulty_Challenge"]="",["Difficulty_Edit"]="",
+				["Difficulty_D1"]="",["Difficulty_D2"]="",["Difficulty_D3"]="",["Difficulty_D4"]="",["Difficulty_D5"]="",
+				["Difficulty_D6"]="",["Difficulty_D7"]="",["Difficulty_D8"]="",["Difficulty_D9"]="",["Difficulty_D10"]="",
+				["Difficulty_D11"]="",["Difficulty_D12"]="",["Difficulty_D13"]="",["Difficulty_D14"]="",["Difficulty_D15"]=""
+			}
+			local difficultyList = {
+				"Difficulty_Beginner","Difficulty_Easy","Difficulty_Medium","Difficulty_Hard","Difficulty_Challenge","Difficulty_Edit",
+				"Difficulty_D1","Difficulty_D2","Difficulty_D3","Difficulty_D4","Difficulty_D5",
+				"Difficulty_D6","Difficulty_D7","Difficulty_D8","Difficulty_D9","Difficulty_D10",
+				"Difficulty_D11","Difficulty_D12","Difficulty_D13","Difficulty_D14","Difficulty_D15"
+			}
+			for steps in ivalues(selection[display]:GetStepsByStepsType(category)) do
+				difficulty[steps:GetDifficulty()]=addToOutput(difficulty[steps:GetDifficulty()],steps:GetMeter(),"|")
+			end
+			local coloring = {}
+			for diff in ivalues(difficultyList) do
+				if difficulty[diff] ~= "" then
+					local begin = string.len(difficulties)
+					if begin > 0 then begin = begin + 1 end
+					difficulties=addToOutput(difficulties,difficulty[diff],"|")
+					coloring[#coloring+1] = {FIRST = begin, LAST = string.len(difficulties)-begin, COLOR = DifficultyToColor(diff)}
+				end
+			end
+
+			self:GetChild("Slots"):GetChild("Difficulties"):settext(difficulties):ClearAttributes()
+			for i,pair in pairs(coloring) do
+				self:GetChild("Slots"):GetChild("Difficulties"):AddAttribute(pair.FIRST, {
+					Length = pair.LAST,
+					Diffuse = pair.COLOR
+				})
+			end
+		end,
+		Def.Quad{
+			InitCommand=function(self) self:FullScreen():diffuse(color("0,0,0,0.5")) end,
+		},
+		Def.Sprite {
+			Texture = THEME:GetPathG("ScreenOptions","page/search page"),
+			InitCommand=function(self) self:Center():zoom(WideScreenDiff()) end
+		},
+		Def.Sprite {
+			Texture = THEME:GetPathB("ScreenOptions","overlay/_frame"),
+			InitCommand=function(self) self:Center():zoom(WideScreenDiff()) end
+		},
+		Def.Sprite {
+			Texture = THEME:GetPathG("ScreenSelectMusic","Triangle/glow"),
+			InitCommand=function(self) self:xy(SCREEN_CENTER_X-272,SCREEN_CENTER_Y-7):zoomx(-1):halign(0) end
+		},
+		Def.ActorFrame{
+			Name="Slots",
+			Def.Sprite {
+				Texture = THEME:GetPathB("ScreenEvaluation","underlay/evaluation banner mask"),
+				InitCommand=function(self) self:xy(SCREEN_CENTER_X+147.5,SCREEN_CENTER_Y-84):zbuffer(true):blend(Blend.NoEffect):zwrite(true):ztest(false) end,
+			},
+			Def.Sprite {
+				Name = "Banner",
+				InitCommand=function(self)
+					self:xy(SCREEN_CENTER_X+147.5,SCREEN_CENTER_Y-84):scaletoclipped(isFinal() and 170 or 174,isFinal() and 64 or 68):ztest(true):zbuffer(true):zwrite(false)
+				end,
+			},
+			Def.Sprite {
+				Texture = THEME:GetPathG("ScreenEvaluation","_BannerFrame"..(isFinal() and "Final" or "Normal")),
+				InitCommand=function(self) self:xy(SCREEN_CENTER_X+147.5,SCREEN_CENTER_Y-84):ztest(false) end,
+			},
+			Def.BitmapText {
+				File = "_v 26px bold white",
+				Text="Title:",
+				InitCommand=function(self) self:xy(SCREEN_CENTER_X+7.5,SCREEN_CENTER_Y-60+25*1):zoom(2/3):maxwidth(100):valign(0):halign(0):shadowlength(0):vertspacing(-3) end
+			},
+			Def.BitmapText {
+				Name="Title",
+				File = "_v 26px bold white",
+				InitCommand=function(self) self:xy(SCREEN_CENTER_X+77.5,SCREEN_CENTER_Y-60+25*1):zoom(2/3):maxwidth(310):valign(0):halign(0):shadowlength(0):vertspacing(-3) end
+			},
+			Def.BitmapText {
+				File = "_v 26px bold white",
+				Text="Subtitle:",
+				InitCommand=function(self) self:xy(SCREEN_CENTER_X+7.5,SCREEN_CENTER_Y-60+25*2):zoom(2/3):maxwidth(100):valign(0):halign(0):shadowlength(0):vertspacing(-3) end
+			},
+			Def.BitmapText {
+				Name="Subtitle",
+				File = "_v 26px bold white",
+				InitCommand=function(self) self:xy(SCREEN_CENTER_X+77.5,SCREEN_CENTER_Y-60+25*2):zoom(2/3):maxwidth(310):valign(0):halign(0):shadowlength(0):vertspacing(-3) end
+			},
+			Def.BitmapText {
+				File = "_v 26px bold white",
+				Text="Artist:",
+				InitCommand=function(self) self:xy(SCREEN_CENTER_X+7.5,SCREEN_CENTER_Y-60+25*3):zoom(2/3):maxwidth(100):valign(0):halign(0):shadowlength(0):vertspacing(-3) end
+			},
+			Def.BitmapText {
+				Name="Artist",
+				File = "_v 26px bold white",
+				InitCommand=function(self) self:xy(SCREEN_CENTER_X+77.5,SCREEN_CENTER_Y-60+25*3):zoom(2/3):maxwidth(310):valign(0):halign(0):shadowlength(0):vertspacing(-3) end
+			},
+			Def.BitmapText {
+				File = "_v 26px bold white",
+				Text="BPMs:",
+				InitCommand=function(self) self:xy(SCREEN_CENTER_X+7.5,SCREEN_CENTER_Y-60+25*4):zoom(2/3):maxwidth(100):valign(0):halign(0):shadowlength(0):vertspacing(-3) end
+			},
+			Def.BitmapText {
+				Name="BPMs",
+				File = "_v 26px bold white",
+				InitCommand=function(self) self:xy(SCREEN_CENTER_X+77.5,SCREEN_CENTER_Y-60+25*4):zoom(2/3):maxwidth(310):valign(0):halign(0):shadowlength(0):vertspacing(-3) end
+			},
+			Def.BitmapText {
+				File = "_v 26px bold white",
+				Text="Pack:",
+				InitCommand=function(self) self:xy(SCREEN_CENTER_X+7.5,SCREEN_CENTER_Y-60+25*5):zoom(2/3):maxwidth(100):valign(0):halign(0):shadowlength(0):vertspacing(-3) end
+			},
+			Def.BitmapText {
+				Name="Pack",
+				File = "_v 26px bold white",
+				InitCommand=function(self) self:xy(SCREEN_CENTER_X+77.5,SCREEN_CENTER_Y-60+25*5):zoom(2/3):maxwidth(310):valign(0):halign(0):shadowlength(0):vertspacing(-3) end
+			},
+			Def.BitmapText {
+				File = "_v 26px bold white",
+				Text="Difficulties:",
+				InitCommand=function(self) self:xy(SCREEN_CENTER_X+7.5,SCREEN_CENTER_Y-60+25*6):zoom(2/3):maxwidth(100):valign(0):halign(0):shadowlength(0):vertspacing(-3) end
+			},
+			Def.BitmapText {
+				Name="Difficulties",
+				File = "_v 26px bold white",
+				InitCommand=function(self) self:xy(SCREEN_CENTER_X+77.5,SCREEN_CENTER_Y-60+25*6):zoom(2/3):maxwidth(310):valign(0):halign(0):shadowlength(0):vertspacing(-3) end
+			},
+			Def.BitmapText {
+				Name="Slot1",
+				File = "_v 26px bold white",
+				InitCommand=function(self) self:xy(SCREEN_CENTER_X-272,SCREEN_CENTER_Y-7-28*4):maxwidth(265):halign(0):shadowlength(0):vertspacing(-3):diffuse(color(".5,.5,.5,1")) end
+			},
+			Def.BitmapText {
+				Name="Slot2",
+				File = "_v 26px bold white",
+				InitCommand=function(self) self:xy(SCREEN_CENTER_X-272,SCREEN_CENTER_Y-7-28*3):maxwidth(265):halign(0):shadowlength(0):vertspacing(-3):diffuse(color(".5,.5,.5,1")) end
+			},
+			Def.BitmapText {
+				Name="Slot3",
+				File = "_v 26px bold white",
+				InitCommand=function(self) self:xy(SCREEN_CENTER_X-272,SCREEN_CENTER_Y-7-28*2):maxwidth(265):halign(0):shadowlength(0):vertspacing(-3):diffuse(color(".5,.5,.5,1")) end
+			},
+			Def.BitmapText {
+				Name="Slot4",
+				File = "_v 26px bold white",
+				InitCommand=function(self) self:xy(SCREEN_CENTER_X-272,SCREEN_CENTER_Y-7-28*1):maxwidth(265):halign(0):shadowlength(0):vertspacing(-3):diffuse(color(".5,.5,.5,1")) end
+			},
+			Def.BitmapText {
+				Name="Slot5",
+				File = "_v 26px bold white",
+				InitCommand=function(self) self:xy(SCREEN_CENTER_X-272,SCREEN_CENTER_Y-7):maxwidth(265):halign(0):shadowlength(0):vertspacing(-3) end,
+				OnCommand=function(self) self:diffuseshift():effectcolor1(color("#FFFFFF")):effectcolor2(color("#808080")) end
+			},
+			Def.BitmapText {
+				Name="Slot6",
+				File = "_v 26px bold white",
+				InitCommand=function(self) self:xy(SCREEN_CENTER_X-272,SCREEN_CENTER_Y-7+28*1):maxwidth(265):halign(0):shadowlength(0):vertspacing(-3):diffuse(color(".5,.5,.5,1")) end
+			},
+			Def.BitmapText {
+				Name="Slot7",
+				File = "_v 26px bold white",
+				InitCommand=function(self) self:xy(SCREEN_CENTER_X-272,SCREEN_CENTER_Y-7+28*2):maxwidth(265):halign(0):shadowlength(0):vertspacing(-3):diffuse(color(".5,.5,.5,1")) end
+			},
+			Def.BitmapText {
+				Name="Slot8",
+				File = "_v 26px bold white",
+				InitCommand=function(self) self:xy(SCREEN_CENTER_X-272,SCREEN_CENTER_Y-7+28*3):maxwidth(265):halign(0):shadowlength(0):vertspacing(-3):diffuse(color(".5,.5,.5,1")) end
+			},
+			Def.BitmapText {
+				Name="Slot9",
+				File = "_v 26px bold white",
+				InitCommand=function(self) self:xy(SCREEN_CENTER_X-272,SCREEN_CENTER_Y-7+28*4):maxwidth(265):halign(0):shadowlength(0):vertspacing(-3):diffuse(color(".5,.5,.5,1")) end
+			}
+		}
+	}
 }

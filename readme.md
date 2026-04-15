@@ -316,6 +316,10 @@ I could have actually forked it but I didn't. My reasoning was that it wasn't go
   * **HasVideo**
   * **Rounds/Length specification**
 * Updates **BPMs** and **TIMEs** according to **Current Music Rate**
+* Add ability to switch between **Single** and **Double** *(1 Player Only)*
+  * Hold **SHIFT** and press **1** or **2** *(only if KeyboardEnabled)*
+* Add ability to **search/find** songs
+  * Hold **SHIFT** and press **S *(search)*** or **F *(find)*** *(only if KeyboardEnabled)*
 </details>
 
 <details>
