@@ -99,16 +99,17 @@ local file = {
 		IIDXPercent = true,
 		IIDXDouble = false,
 		IIDXJudgment = "default",
-		IIDXJudgmentBrightness = 1.0,
+		IIDXJudgmentBrightness = 1,
 		IIDXNote = "default",
-		IIDXNoteBrightness = 1.0,
+		IIDXNoteBackgroundBrightness = 0,
+		IIDXNoteBrightness = 1,
 		IIDXNoteLength = "normal",
 		IIDXBeam = "default",
-		IIDXBeamBrightness = 1.0,
+		IIDXBeamBrightness = 1,
 		IIDXBeamLength = "normal",
 		IIDXTurntable = "_default",
 		IIDXExplosion ="_default",
-		IIDXExplosionBrightness = 1.0
+		IIDXExplosionBrightness = 1
 	}
 }
 
