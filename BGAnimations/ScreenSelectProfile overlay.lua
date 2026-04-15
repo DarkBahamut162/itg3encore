@@ -96,14 +96,14 @@ function LoadPlayerStuff(Player)
 								end
 							end
 						elseif index == 0 then
-								local add = PREFSMAN:GetPreference("MemoryCardProfileSubdir")
-								local dir = "@mc"..(Player == PLAYER_1 and "1" or "2").."/"..add
-								local path = ActorUtil.ResolvePath(dir.."/avatar",1,true) or ActorUtil.ResolvePath(dir.."/profile picture",1,true)
-								if path and ActorUtil.GetFileType(path) == "FileType_Bitmap" then
-									self:Load(path):setsize(72,72)
-								else
-									self:Load(THEME:GetPathG("UserProfile","generic icon")):setsize(72,72)
-								end
+							local add = PREFSMAN:GetPreference("MemoryCardProfileSubdir")
+							local dir = "@mc"..(Player == PLAYER_1 and "1" or "2").."/"..add
+							local path = ActorUtil.ResolvePath(dir.."/avatar",1,true) or ActorUtil.ResolvePath(dir.."/profile picture",1,true)
+							if path and ActorUtil.GetFileType(path) == "FileType_Bitmap" then
+								self:Load(path):setsize(72,72)
+							else
+								self:Load(THEME:GetPathG("UserProfile","generic icon")):setsize(72,72)
+							end
 						else
 							self:Load(THEME:GetPathG("UserProfile","generic icon")):setsize(72,72)
 						end

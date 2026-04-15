@@ -412,6 +412,12 @@ function getAvatar(pn)
 end
 
 function getSLAvatar(pn)
+	if HumanAndUSBReady(pn) then
+		local add = PREFSMAN:GetPreference("MemoryCardProfileSubdir")
+		local dir = "@mc"..(pn == PLAYER_1 and "1" or "2").."/"..add
+		local path = ActorUtil.ResolvePath(dir.."/avatar",1,true) or ActorUtil.ResolvePath(dir.."/profile picture",1,true)
+		if path and ActorUtil.GetFileType(path) == "FileType_Bitmap" then return path else return false end
+	end
 	local profile_slot = {
 		[PLAYER_1] = "ProfileSlot_Player1",
 		[PLAYER_2] = "ProfileSlot_Player2"
@@ -431,6 +437,12 @@ function hasAvatar(pn)
 end
 
 function hasSLAvatar(pn)
+	if HumanAndUSBReady(pn) then
+		local add = PREFSMAN:GetPreference("MemoryCardProfileSubdir")
+		local dir = "@mc"..(pn == PLAYER_1 and "1" or "2").."/"..add
+		local path = ActorUtil.ResolvePath(dir.."/avatar",1,true) or ActorUtil.ResolvePath(dir.."/profile picture",1,true)
+		if path and ActorUtil.GetFileType(path) == "FileType_Bitmap" then return true else return false end
+	end
 	local profile_slot = {
 		[PLAYER_1] = "ProfileSlot_Player1",
 		[PLAYER_2] = "ProfileSlot_Player2"
