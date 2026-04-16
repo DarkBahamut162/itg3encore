@@ -8,7 +8,6 @@ local trialFirstSecond = {}
 local courseMode = GAMESTATE:IsCourseMode()
 local totalDelta = 0
 local tmpDelta = 0
-local c
 
 local iidx = false
 for pn in ivalues(GAMESTATE:GetEnabledPlayers()) do iidx = iidx or IsIIDXFrame(pn) end
@@ -53,12 +52,11 @@ local function Update(self, delta)
 	if totalDelta - tmpDelta > 1/60 then
 		tmpDelta = totalDelta
         local currentSecond = GAMESTATE:GetPlayerState(master):GetSongPosition():GetMusicSeconds()-firstSeconds
-        c.Time:settext(SecondsToMMSS(math.min((math.max(0,currentSecond)+previousSeconds),courseMode and trialSeconds[GAMESTATE:GetCourseSongIndex()+1] or totalSeconds)/rate).."-"..SecondsToMMSS(totalSeconds/rate))
-    end
+        self:GetChild("Time"):settext(Time(math.min((math.max(0,currentSecond)+previousSeconds),courseMode and trialSeconds[GAMESTATE:GetCourseSongIndex()+1] or totalSeconds)/rate,false).."-"..Time(totalSeconds/rate,false))    end
 end
 
 return Def.ActorFrame{
-    InitCommand=function(self) self:SetUpdateFunction(Update) c = self:GetChildren() end,
+    InitCommand=function(self) self:SetUpdateFunction(Update) end,
     OnCommand=function(self) if not iidx then self:addy(-100):sleep(IsGame("pump") and 1 or 0.5):queuecommand("TweenOn") end end,
     OffCommand=function(self) totalDelta = 0 if not IsGame("pump") then if not iidx then self:queuecommand("TweenOff") end end end,
     TweenOnCommand=function(self) self:decelerate(IsGame("pump") and 0.4 or 0.8):addy(IsGame("pump") and 140 or 100) end,

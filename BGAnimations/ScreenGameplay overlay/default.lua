@@ -5,8 +5,6 @@ local CURRENT = {}
 local PREVIOUS = {}
 local enableOffsets = ThemePrefs.Get("ShowOffset")
 local modify = IsGame("beat") or IsGame("be-mu") or ThemePrefs.Get("ShowGameplaySpeed")
-local c
-
 local Overlay = #GAMESTATE:GetHumanPlayers() == 2 and Def.ActorFrame{
 	loadfile(THEME:GetPathB("ScreenGameplay","overlay/Overlay"))(PLAYER_1),
 	loadfile(THEME:GetPathB("ScreenGameplay","overlay/Overlay"))(PLAYER_2)
@@ -86,7 +84,7 @@ local t = Def.ActorFrame{
 	CodeMessageCommand = function(self, params)
 		if params.Name == 'SpeedUp' or params.Name == 'SpeedDown' then
 			if MOD[params.PlayerNumber] == "a" or MOD[params.PlayerNumber] == "ca" or MOD[params.PlayerNumber] == "av" then
-				c["MOD"..(params.PlayerNumber == PLAYER_1 and "1" or "2")]:playcommand("Block")
+				self:GetChild("MODS"):GetChild("MOD"..(params.PlayerNumber == PLAYER_1 and "1" or "2")):playcommand("Block")
 			else
 				PREVIOUS[params.PlayerNumber] = CURRENT[params.PlayerNumber]
 				if params.Name == 'SpeedUp' then
@@ -110,14 +108,14 @@ local t = Def.ActorFrame{
 				end
 
 				if PREVIOUS[params.PlayerNumber] ~= CURRENT[params.PlayerNumber] then
-					c["MOD"..(params.PlayerNumber == PLAYER_1 and "1" or "2")]:playcommand("Change")
+					self:GetChild("MODS"):GetChild("MOD"..(params.PlayerNumber == PLAYER_1 and "1" or "2")):playcommand("Change")
 				end
 			end
 		end
 	end,
 	Def.ActorFrame{
+		Name="MODS",
 		Condition=not getenv("Workout"),
-		InitCommand = function(self) c = self:GetChildren() end,
 		Def.BitmapText {
 			File = "_eurostile normal",
 			Condition=GAMESTATE:IsPlayerEnabled(PLAYER_1) and modify,
