@@ -74,7 +74,6 @@ local function sortArray(array)
 	return output
 end
 
-local c
 --[[
 local GrooveStats = isITGmania() and RequestResponseActor()..{
 	SendRequestCommand=function(self)
@@ -125,7 +124,6 @@ local GrooveStats = isITGmania() and RequestResponseActor()..{
 ]]
 
 return Def.ActorFrame{
-	InitCommand=function(self) c = self:GetChildren() end,
 	OnCommand=function(self)
 		if isOutFox(20200500) then
 			GAMESTATE:UpdateDiscordGameMode(GAMESTATE:GetCurrentGame():GetName())
@@ -679,7 +677,7 @@ return Def.ActorFrame{
 		Name="OnlineInfo",
 		OnCommand=function(self)
 			self:zoom(0.5):x(10)
-			if isFinal() then self:y(72) else self:y(c.GameInfo:GetHeight()+8) end
+			if isFinal() then self:y(72) else self:y(self:GetParent():GetChild("GameInfo"):GetHeight()*0.6+(isFinal() and 50*WideScreenDiff() or 40*WideScreenDiff())+8) end
 			self:queuecommand("SendRequest"):diffusealpha(0):sleep(0.5):linear(0.5):diffusealpha(1)
 		end,
 		SendRequestCommand=function(self)
