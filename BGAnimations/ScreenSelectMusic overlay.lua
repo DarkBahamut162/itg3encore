@@ -227,6 +227,7 @@ local InputHandler = function(event)
 					local check = false
 					for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
 						check = check or specialHeld[pn]
+						specialHeld[pn] = false
 					end
 					if not check then return end 
 					SCREENMAN:PlayStartSound()
