@@ -1,4 +1,3 @@
-local c
 local stepsType = StepsTypeSingle()[GetUserPrefN("StylePosition")]
 local course = GAMESTATE:IsCourseMode()
 local players = GAMESTATE:GetHumanPlayers()
@@ -7,7 +6,6 @@ local EC = " "
 local usesStepCache = ThemePrefs.Get("UseStepCache")
 
 return Def.ActorFrame{
-	BeginCommand = function(self) c = self:GetChildren() end,
 	Def.BitmapText {
 		File = "titlemenu",
 		Name="Time",
@@ -67,9 +65,7 @@ return Def.ActorFrame{
 				length[i] = length[i] / MusicRate
 			end
 			MESSAGEMAN:Broadcast('SetTime')
-			if c then
-				if length[1] >= 6000 then c.Time:x(-103-(math.floor(math.log10(length[1]/6000)+1)*28)) else c.Time:x(-103) end
-			end
+			if length[1] >= 6000 then self:GetParent():GetChild("Time"):x(-103-(math.floor(math.log10(length[1]/6000)+1)*28)) else self:GetParent():GetChild("Time"):x(-103) end
 			self:settext( SecondsToMMSSMsMs(length[1]) )
 		end,
 		RateChangedMessageCommand=function(self) self:playcommand("Set") end,

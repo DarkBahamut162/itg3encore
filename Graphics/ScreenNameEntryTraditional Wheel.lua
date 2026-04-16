@@ -11,33 +11,32 @@ local function MakeHighScoreWheelItem(index)
 		Def.ActorFrame{
 			UpdateWheelItemMessageCommand=function(self,param)
 				if param.Index == index and param.Player == Player then
-					local c = self:GetChildren()
 					local hs = param.HighScore
 
 					if hs then
 						local scoreName = hs:GetName()
 						if string.len(scoreName)<1 then scoreName = THEME:GetMetric("HighScore","EmptyName") end
-						c.Name:settext(scoreName)
-						c.Score:settext(FormatPercentScore(hs:GetPercentDP()))
+						self:GetChild("Name"):settext(scoreName)
+						self:GetChild("Score"):settext(FormatPercentScore(hs:GetPercentDP()))
 						local dateText = tostring(hs:GetDate())
 						dateText = string.gsub(string.sub(dateText,1,10),"-","/")
-						c.Date:settext(dateText)
+						self:GetChild("Date"):settext(dateText)
 					else
-						c.Name:settext("????")
-						c.Score:settext(FormatPercentScore(0))
-						c.Date:settext("----/--/--")
+						self:GetChild("Name"):settext("????")
+						self:GetChild("Score"):settext(FormatPercentScore(0))
+						self:GetChild("Date"):settext("----/--/--")
 					end
 
 					if param.Focus == index then
-						c.Rank:queuecommand("Focus")
-						c.Name:queuecommand("Focus")
-						c.Score:queuecommand("Focus")
-						c.Date:queuecommand("Focus")
+						self:GetChild("Rank"):queuecommand("Focus")
+						self:GetChild("Name"):queuecommand("Focus")
+						self:GetChild("Score"):queuecommand("Focus")
+						self:GetChild("Date"):queuecommand("Focus")
 					else
-						c.Rank:stopeffect()
-						c.Name:stopeffect()
-						c.Score:stopeffect()
-						c.Date:stopeffect()
+						self:GetChild("Rank"):stopeffect()
+						self:GetChild("Name"):stopeffect()
+						self:GetChild("Score"):stopeffect()
+						self:GetChild("Date"):stopeffect()
 					end
 				end
 			end,

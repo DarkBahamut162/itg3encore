@@ -479,7 +479,7 @@ local totalDelta = 0
 local tmpDelta = 0
 local checking = true
 local first = true
-local c
+
 local noteData = {}
 local SongOrCourse = GAMESTATE:GetCurrentSong()
 local StepsOrTrail = GAMESTATE:GetCurrentSteps(player)
@@ -609,14 +609,14 @@ local function Update(self, delta)
 		local currentBeat = GAMESTATE:GetSongPosition():GetSongBeatVisible()
 		if YoffsetBeat < 6*time and first then
 			for note in ivalues( noteData ) do
-				if first then c["Column"..note[2]]:accelerate(0.1):diffuse(0,0,0,0) end
+				if first then self:GetChild("Column"..note[2]):accelerate(0.1):diffuse(0,0,0,0) end
 			end
 			if first then first = false end
 		elseif YoffsetBeat < 0 then
 			checking = false
 		elseif YoffsetBeat >= 6*time then
 			for _,note in ipairs( noteData ) do
-				if not first then c["Column"..note[2]]:decelerate(0.1):diffuse(Color("White")) end
+				if not first then self:GetChild("Column"..note[2]):decelerate(0.1):diffuse(Color("White")) end
 			end
 			if not first then first = true end
 		end
@@ -625,18 +625,17 @@ end
 
 if columns > 0 then
 	local t = Def.ActorFrame{
-		InitCommand=function(self) c = self:GetChildren() end,
 		CurrentSongChangedMessageCommand=function(self)
 			if bits[#bits] then
 				checking,first = true,true
 				setCol()
-				for _,note in pairs( noteData ) do c["Column"..note[2]]:diffuse(Color("White")) end
+				for _,note in pairs( noteData ) do self:GetChild("Column"..note[2]):diffuse(Color("White")) end
 			end
 		end,
 		OnCommand=function(self)
 			if bits[#bits] then
 				setCol()
-				for _,note in pairs( noteData ) do c["Column"..note[2]]:diffuse(Color("White")) end
+				for _,note in pairs( noteData ) do self:GetChild("Column"..note[2]):diffuse(Color("White")) end
 				self:SetUpdateFunction(Update)
 			end
 		end

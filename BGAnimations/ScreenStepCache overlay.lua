@@ -138,7 +138,7 @@ return Def.ActorFrame{
 				output = addToOutput(output,types[i].." "..totalTypes[types[i]],"\n")
 			end
 			totalTypes["TOTAL"] = total
-			c.Loaded:settext(output.."\n\n".."TOTAL "..total)
+			self:GetParent():GetChild("Loaded"):settext(output.."\n\n".."TOTAL "..total)
 			songs = nil
 			self:decelerate(0.5):cropleft(0):cropright(0):settext("To be cached: "..total.." Steps")
 		end
@@ -173,16 +173,16 @@ return Def.ActorFrame{
 						if s <= 4 then
 							if not ani then
 								ani = true
-								c.Timer:diffuseshift():effectperiod(0.5):effectcolor1(color("1,0,0,1")):effectcolor2(color("1,0,0,0"))
+								self:GetParent():diffuseshift():effectperiod(0.5):effectcolor1(color("1,0,0,1")):effectcolor2(color("1,0,0,0"))
 							end
-							c.Timer:zoom(1.3*WideScreenDiff()):linear(0.2):zoom(1*WideScreenDiff())
+							self:GetParent():zoom(1.3*WideScreenDiff()):linear(0.2):zoom(1*WideScreenDiff())
 							SOUND:PlayOnce(THEME:GetPathS('MenuTimer',"tick"))
 						end
 						self:settext(s.."."):sleep(1):queuecommand("Update")
 					end
 				else
 					ani = false
-					c.Timer:stoptweening():stopeffect()
+					self:GetParent():stoptweening():stopeffect()
 				end
 			end
 		},
@@ -265,7 +265,7 @@ return Def.ActorFrame{
 			checkIndex = checkIndex + 1
 			if checkIndex > #songs then
 				local checkDuration = GetTimeSinceStart()-startTime
-				c.CheckTime:settext("CHECK TIME "..string.format("%0.3f",checkDuration).." s ("..string.format("%0.3f",checkDuration/totalTypes["TOTAL"]*1000 or 0).." ms)"):addy(-(#types+2)*10):diffusealpha(0.75)
+				self:GetParent():GetChild("CheckTime"):settext("CHECK TIME "..string.format("%0.3f",checkDuration).." s ("..string.format("%0.3f",checkDuration/totalTypes["TOTAL"]*1000 or 0).." ms)"):addy(-(#types+2)*10):diffusealpha(0.75)
 				checked = true
 				songs = nil
 				if toBeCachedTotal == 0 and cachedWrongVersionTotal == 0 then updated = true end
@@ -289,15 +289,15 @@ return Def.ActorFrame{
 
 			if not updated then
 				local add = "Would you like to\n"..typ.."\n the remaining steps?"
-				c.Cursor:queuecommand("Yes"):diffusealpha(1)
-				c.YES:diffusealpha(1)
-				c.NO:diffusealpha(1)
+				self:GetParent():GetChild("Cursor"):queuecommand("Yes"):diffusealpha(1)
+				self:GetParent():GetChild("YES"):diffusealpha(1)
+				self:GetParent():GetChild("NO"):diffusealpha(1)
 				self:settext("There are "..toBeCachedTotal.." steps needing to be cached...\n"..
 				"There are "..alreadyCachedTotal.." steps already cached...\n"..
 				"There are "..cachedWrongVersionTotal.." steps on outdated versions...\n\n"..add.."\n\n\n\n\n")
 			else
-				c.Cursor:diffusealpha(1)
-				c.OK:diffusealpha(1)
+				self:GetParent():GetChild("Cursor"):diffusealpha(1)
+				self:GetParent():GetChild("OK"):diffusealpha(1)
 				self:settext("The StepCache is up-to-date!")
 			end
 		end,
@@ -344,7 +344,7 @@ return Def.ActorFrame{
 			cacheIndex = cacheIndex + 1
 			if cacheIndex > #stepsToCache then
 				local cacheDuration = GetTimeSinceStart()-startTime
-				c.CacheTime:settext("Cache TIME "..string.format("%0.3f",cacheDuration).." s ("..string.format("%0.3f",cacheDuration/totalTypes["TOTAL"]*1000 or 0).." ms)"):addy(-(#types+3)*10):diffusealpha(0.75)
+				self:GetParent():GetChild("CacheTime"):settext("Cache TIME "..string.format("%0.3f",cacheDuration).." s ("..string.format("%0.3f",cacheDuration/totalTypes["TOTAL"]*1000 or 0).." ms)"):addy(-(#types+3)*10):diffusealpha(0.75)
 				setenv("cacheing",false)
 				stepsToCache = nil
 				self:queuecommand("FinishUpdate")
@@ -359,15 +359,15 @@ return Def.ActorFrame{
 				total = total + (cachedTimes[types[i]] or 0)
 				output = addToOutput(output,(cachedTypes[types[i]] or 0).." ("..string.format("%0.3f",cachedTimes[types[i]] or 0).." s)","\n")
 			end
-			c.Cached:settext(output.."\n\n"..cachedTypes["TOTAL"].." ("..string.format("%0.3f",total).." s)")
+			self:GetParent():GetChild("Cached"):settext(output.."\n\n"..cachedTypes["TOTAL"].." ("..string.format("%0.3f",total).." s)")
 			checked = true
 			updated = true
 			self:queuecommand("Updated")
 		end,
 		UpdatedCommand=function(self)
 			if FILEMAN.FlushDirCache then FILEMAN:FlushDirCache("/Cache/Steps/") end
-			c.Cursor:queuecommand("Ok"):diffusealpha(1)
-			c.OK:diffusealpha(1)
+			self:GetParent():GetChild("Cursor"):queuecommand("Ok"):diffusealpha(1)
+			self:GetParent():GetChild("OK"):diffusealpha(1)
 			self:settext("The StepCache has been updated!")
 		end
 	},

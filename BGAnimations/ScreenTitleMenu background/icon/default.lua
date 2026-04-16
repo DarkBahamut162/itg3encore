@@ -69,11 +69,8 @@ return Def.ActorFrame{
 			Def.ActorFrame{
 				Name="Real",
 				OnCommand=function(self)
-					local c = self:GetChildren()
 					local currentDiff = GetLifeDifficulty()
-					for i = 1,7 do
-						c["Diff"..i]:visible( i <= currentDiff )
-					end
+					for i = 1,7 do self:GetChild("Diff"..i):visible( i <= currentDiff ) end
 				end,
 				Def.Quad{
 					Name="Diff1",
@@ -173,11 +170,8 @@ return Def.ActorFrame{
 			Def.ActorFrame{
 				Name="Real",
 				OnCommand=function(self)
-					local c = self:GetChildren()
 					local currentTiming = GetTimingDifficulty()
-					for i = 1,9 do
-						c["Timing"..i]:visible( i <= currentTiming )
-					end
+					for i = 1,9 do self:GetChild("Timing"..i):visible( i <= currentTiming ) end
 				end,
 				Def.Quad{
 					Name="Timing1",

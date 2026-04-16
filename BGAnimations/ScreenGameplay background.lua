@@ -1,4 +1,3 @@
-local c
 local mlevel = GAMESTATE:IsCourseMode() and "ModsLevel_Stage" or "ModsLevel_Preferred"
 local currentMini = 1-math.round(GAMESTATE:GetPlayerState(GAMESTATE:GetMasterPlayerNumber()):GetPlayerOptions(mlevel):Mini()*50) / 100
 --local currentTiny = 1-math.round(GAMESTATE:GetPlayerState(GAMESTATE:GetMasterPlayerNumber()):GetPlayerOptions(mlevel):Tiny()*50) / 100
@@ -43,7 +42,6 @@ local t = Def.ActorFrame {
 			updateDiscordStatus(false)
 		end
 	end,
-	InitCommand = function(self) c = self:GetChildren() end,
 	OnCommand=function(self)
 		if not isTopScreen("ScreenDemonstration2") then
 			for pn in ivalues(GAMESTATE:GetEnabledPlayers()) do
@@ -68,16 +66,16 @@ local t = Def.ActorFrame {
 							SCREENMAN:GetTopScreen():GetChild("SongBackground"):GetChild(""):zoom(zoomS()):xy(pn == PLAYER_1 and xS() or 0,SCREEN_CENTER_Y-SCREEN_CENTER_Y*zoomS()+iidx)
 						elseif getenv("Rotation"..pname(pn)) == 5 then
 							SCREENMAN:GetTopScreen():GetChild("SongBackground"):GetChild("")
-							c.PC3:playcommand("MULTI")
-							c.PC4:playcommand("MULTI")
-							c.PC6:playcommand("MULTI")
+							self:GetChild("PC3"):playcommand("MULTI")
+							self:GetChild("PC4"):playcommand("MULTI")
+							self:GetChild("PC6"):playcommand("MULTI")
 							if zoomM() < 1/3 then
-								c.PC2:playcommand("MULTI")
-								c.PC5:playcommand("MULTI")
+								self:GetChild("PC2"):playcommand("MULTI")
+								self:GetChild("PC5"):playcommand("MULTI")
 							else
 								SCREENMAN:GetTopScreen():GetChild("SongBackground"):GetChild(""):zoom(zoomM()):y(SCREEN_CENTER_Y+iidx):vertalign(top)
-								c.PC3:playcommand("MULTI"):addy(-SCREEN_HEIGHT-SCREEN_CENTER_Y*0.38*zoomM()):vertalign(bottom)
-								c.PC6:playcommand("MULTI"):addy(-SCREEN_HEIGHT-SCREEN_CENTER_Y*0.38*zoomM()):vertalign(bottom)
+								self:GetChild("PC3"):playcommand("MULTI"):addy(-SCREEN_HEIGHT-SCREEN_CENTER_Y*0.38*zoomM()):vertalign(bottom)
+								self:GetChild("PC6"):playcommand("MULTI"):addy(-SCREEN_HEIGHT-SCREEN_CENTER_Y*0.38*zoomM()):vertalign(bottom)
 							end
 						end
 					end

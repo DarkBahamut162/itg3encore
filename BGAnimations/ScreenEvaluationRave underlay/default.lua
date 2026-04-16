@@ -51,7 +51,6 @@ local maxRange = { [PLAYER_1] = -1, [PLAYER_2] = -1 }
 local showOffset = { [PLAYER_1] = false, [PLAYER_2] = false }
 
 local faplus = { [PLAYER_1] = getenv("SetScoreFAP1"), [PLAYER_2] = getenv("SetScoreFAP2") }
-local c
 
 if offsetInfo and enableOffset then
 	for pn in ivalues(GAMESTATE:GetEnabledPlayers()) do
@@ -96,12 +95,11 @@ if offsetInfo and enableOffset then
 end
 
 return Def.ActorFrame{
-	InitCommand=function(self) c = self:GetChildren() end,
 	OnCommand=function(self)
 		local screen = SCREENMAN:GetTopScreen()
 		if screen and faplus[PLAYER_1] then
-			c.P1:GetChild("Judgments"):addy(7)
-			 if enableOffset then c.P1:GetChild("Offsets"):addy(7) end
+			self:GetChild("P1"):GetChild("Judgments"):addy(7)
+			if enableOffset then self:GetChild("P1"):GetChild("Offsets"):addy(7) end
 			screen:GetChild("W1NumberP1"):addy(7)
 			screen:GetChild("W2NumberP1"):addy(7)
 			screen:GetChild("W3NumberP1"):addy(7)
@@ -116,8 +114,8 @@ return Def.ActorFrame{
 			screen:GetChild("MaxComboNumberP1"):addy(7)
 		end
 		if screen and faplus[PLAYER_2] then
-			c.P2:GetChild("Judgments"):addy(7)
-			if enableOffset then c.P2:GetChild("Offsets"):addy(7) end
+			self:GetChild("P2"):GetChild("Judgments"):addy(7)
+			if enableOffset then self:GetChild("P2"):GetChild("Offsets"):addy(7) end
 			screen:GetChild("W1NumberP2"):addy(7)
 			screen:GetChild("W2NumberP2"):addy(7)
 			screen:GetChild("W3NumberP2"):addy(7)

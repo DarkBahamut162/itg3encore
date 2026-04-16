@@ -262,13 +262,12 @@ return Def.ActorFrame{
 					InitCommand=function(self)
 						self:y(-150)
 						if faplus then
-							local c = self:GetChildren()
-							c.NumbersW1:addy(18):addy(4)
-							c.NumbersW2:addy(15):addy(4)
-							c.NumbersW3:addy(12):addy(4)
-							c.NumbersW4:addy(09):addy(4)
-							c.NumbersW5:addy(06):addy(4)
-							c.NumbersMiss:addy(03):addy(4)
+							self:GetChild("NumbersW1"):addy(18):addy(4)
+							self:GetChild("NumbersW2"):addy(15):addy(4)
+							self:GetChild("NumbersW3"):addy(12):addy(4)
+							self:GetChild("NumbersW4"):addy(09):addy(4)
+							self:GetChild("NumbersW5"):addy(06):addy(4)
+							self:GetChild("NumbersMiss"):addy(03):addy(4)
 						end
 					end,
 					Def.BitmapText {

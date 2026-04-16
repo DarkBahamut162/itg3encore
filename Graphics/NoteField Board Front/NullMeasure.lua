@@ -4,7 +4,6 @@ assert( player )
 
 local totalDelta = 0
 local tmpDelta = 0
-local c
 local steps = GAMESTATE:GetCurrentSteps(player)
 local timingData = steps:GetTimingData()
 NullMeasures = condenseNullMeasures(NullMeasures)
@@ -85,10 +84,10 @@ local function Update(self, delta)
 			totalBeats = totalBeats + add
 			resetDisplay,NullMeasures = CheckMeasure(currentMeasure,NullMeasures)
 			if resetDisplay then SetMeasures(NullMeasures) end
-			if #NullMeasures == 0 then c.NullMeasure:linear(1):diffusealpha(0) end
-			c.NullMeasure:settext(measures.."Measure "..currentMeasure):ClearAttributes()
+			if #NullMeasures == 0 then self:GetChild("NullMeasure"):linear(1):diffusealpha(0) end
+			self:GetChild("NullMeasure"):settext(measures.."Measure "..currentMeasure):ClearAttributes()
 			for i,pair in pairs(coloring) do
-				c.NullMeasure:AddAttribute(pair.FIRST, {
+				self:GetChild("NullMeasure"):AddAttribute(pair.FIRST, {
 					Length = pair.LAST,
 					Diffuse = pair.COLOR
 				})
@@ -100,13 +99,11 @@ end
 local iidx = IsGame("beat") or IsGame("be-mu")
 
 return Def.ActorFrame{
-	InitCommand=function(self) c = self:GetChildren() end,
 	OnCommand=function(self) self:SetUpdateFunction(Update) end,
 	Def.BitmapText {
 		File = "_r bold 30px",
 		Name="NullMeasure",
 		InitCommand=function(self)
-			c = self
 			local NoteFieldMiddle = (THEME:GetMetric("Player","ReceptorArrowsYStandard")+THEME:GetMetric("Player","ReceptorArrowsYReverse"))/2
 			local mods = string.find(GAMESTATE:GetPlayerState(player):GetPlayerOptionsString("ModsLevel_Song"),"FlipUpsideDown")
 			local reverse = GAMESTATE:GetPlayerState(player):GetPlayerOptions('ModsLevel_Song'):UsingReverse()

@@ -1,6 +1,5 @@
 local player = ...
 assert(player,"[Graphics/_pane fill] player required")
-local c
 
 local stats = {
 	{0,	25,	50,	100,200,300},
@@ -43,7 +42,7 @@ local function RadarFillColor(self,stat,StepsOrTrail,RadarCategory)
 end
 
 return Def.ActorFrame{
-	InitCommand=function(self) self:y(-1) if IsUsingWideScreen() and (hasAvatar(player) or hasSLAvatar(player)) then self:x(player == PLAYER_1 and 48 or -48) end c = self:GetChildren() end,
+	InitCommand=function(self) self:y(-1) if IsUsingWideScreen() and (hasAvatar(player) or hasSLAvatar(player)) then self:x(player == PLAYER_1 and 48 or -48) end end,
 	OnCommand=function(self) self:addx(player == PLAYER_1 and -SCREEN_WIDTH or SCREEN_WIDTH):decelerate(0.75):addx(player == PLAYER_2 and -SCREEN_WIDTH or SCREEN_WIDTH) end,
 	OffCommand=function(self) self:accelerate(0.75):addx(player == PLAYER_1 and -SCREEN_WIDTH or SCREEN_WIDTH) end,
 	CurrentSongChangedMessageCommand=function(self) if not courseMode then self:RunCommandsRecursively( function(self) self:stoptweening() end ):playcommand("Set") end end,
@@ -58,11 +57,11 @@ return Def.ActorFrame{
 			StepsOrTrail = courseMode and GAMESTATE:GetCurrentTrail(player) or GAMESTATE:GetCurrentSteps(player)
 		end
 
-		RadarFillColor(c.Jumps,1,StepsOrTrail,"RadarCategory_Jumps")
-		RadarFillColor(c.Holds,2,StepsOrTrail,"RadarCategory_Holds")
-		RadarFillColor(c.Mines,3,StepsOrTrail,"RadarCategory_Mines")
-		RadarFillColor(c.Hands,4,StepsOrTrail,"RadarCategory_Hands")
-		RadarFillColor(c.Rolls,5,StepsOrTrail,"RadarCategory_Rolls")
+		RadarFillColor(self:GetChild("Jumps"),1,StepsOrTrail,"RadarCategory_Jumps")
+		RadarFillColor(self:GetChild("Holds"),2,StepsOrTrail,"RadarCategory_Holds")
+		RadarFillColor(self:GetChild("Mines"),3,StepsOrTrail,"RadarCategory_Mines")
+		RadarFillColor(self:GetChild("Hands"),4,StepsOrTrail,"RadarCategory_Hands")
+		RadarFillColor(self:GetChild("Rolls"),5,StepsOrTrail,"RadarCategory_Rolls")
 	end,
 	Def.Quad{ Name="Jumps", InitCommand=function(self) self:x(-127+100):y(125+17):valign(1):zoomto(24,0):diffusealpha(0.5):blend(Blend.Add) end },
 	Def.Quad{ Name="Holds", InitCommand=function(self) self:x(-102+100):y(125+17):valign(1):zoomto(24,0):diffusealpha(0.5):blend(Blend.Add) end },

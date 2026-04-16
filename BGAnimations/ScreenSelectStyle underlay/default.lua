@@ -91,11 +91,11 @@ end
 return Def.ActorFrame{
 	BeginCommand = function(self)
 		c = self:GetChildren()
-		c.Left:addx((-c.Center:GetWidth()/4-4)*WideScreenDiff())
-		c.Right:addx((c.Center:GetWidth()/4+4)*WideScreenDiff())
+		self:GetChild("Left"):addx((-self:GetChild("Center"):GetWidth()/4-4)*WideScreenDiff())
+		self:GetChild("Right"):addx((self:GetChild("Center"):GetWidth()/4+4)*WideScreenDiff())
 		if enableUD then
-			c.Up:addx((-c.BattleMode:GetWidth()/4-4)*WideScreenDiff())
-			c.Down:addx((c.BattleMode:GetWidth()/4+4)*WideScreenDiff())
+			self:GetChild("Up"):addx((-self:GetChild("BattleMode"):GetWidth()/4-4)*WideScreenDiff())
+			self:GetChild("Down"):addx((self:GetChild("BattleMode"):GetWidth()/4+4)*WideScreenDiff())
 		end
 	end,
 	OnCommand=function()

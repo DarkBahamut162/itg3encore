@@ -1,4 +1,3 @@
-local c
 local player = ...
 local filterWidth = GetTrueWidth(player)
 if IsGame("beat") or IsGame("be-mu") then filterWidth = filterWidth * 2 end
@@ -41,7 +40,7 @@ local function Update(self, delta)
 				if isOutFox(20210200) and playeroptions:AMod() then speedMod = ((bpm1+bpm2)*0.5)/playeroptions:AMod()*Stops[Si]["BPM"] end
 				if isOutFox(20220300) and playeroptions:CAMod() then speedMod = ((bpm1+bpm2)*0.5)/playeroptions:CAMod()*Stops[Si]["BPM"] end
 				if isOutFox(20220900) and playeroptions:AVMod() then speedMod = ((bpm1+bpm2)*0.5)/playeroptions:AVMod()*Stops[Si]["BPM"] end
-				c.Stop:stoptweening():diffusealpha(1):zoomtoheight(Stops[Si]["Length"]*speedMod):linear(Stops[Si]["Length"]):zoomtoheight(0):linear(0.1):diffusealpha(0)
+				self:GetChild("Stop"):stoptweening():diffusealpha(1):zoomtoheight(Stops[Si]["Length"]*speedMod):linear(Stops[Si]["Length"]):zoomtoheight(0):linear(0.1):diffusealpha(0)
 				Si = Si + 1
 			end
 		end
@@ -60,7 +59,6 @@ local currentTiny = 1-math.round(GAMESTATE:GetPlayerState(player):GetPlayerOptio
 currentMini = currentMini * currentTiny
 
 return Def.ActorFrame{
-	InitCommand=function(self) c = self:GetChildren() end,
 	OnCommand = function(self)
 		if GAMESTATE:IsCourseMode() then
 			setStops(GAMESTATE:GetCurrentTrail(player):GetTrailEntry(STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetSongsPassed()):GetSteps())

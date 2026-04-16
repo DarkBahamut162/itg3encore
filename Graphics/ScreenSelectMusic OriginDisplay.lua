@@ -1,7 +1,6 @@
 local courseMode = GAMESTATE:IsCourseMode()
 
 return Def.ActorFrame{
-	InitCommand = function(self) c = self:GetChildren() end,
 	Def.BitmapText {
 		File = "_v 26px bold white",
 		Name="FROM",
@@ -39,9 +38,9 @@ return Def.ActorFrame{
 				else
 					if SongOrCourse then output = SongOrCourse:GetDisplayArtist() end
 				end
-				c.FROM:settext("ARTIST:")
+				self:GetParent():GetChild("FROM"):settext("ARTIST:")
 			else
-				c.FROM:settext("FROM:")
+				self:GetParent():GetChild("FROM"):settext("FROM:")
 			end
 			self:settext(output)
 		end

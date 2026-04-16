@@ -1,6 +1,5 @@
 local player = ...
 assert(player,"[Graphics/ScreenSelectMusic PaneNumbers] player required")
-local c
 
 local stats = {
 	{0,	25,	50,	100,200,300},
@@ -44,7 +43,7 @@ local function RadarPaneNumber(self,stat,StepsOrTrail,RadarCategory)
 end
 
 return Def.ActorFrame{
-	InitCommand=function(self) self:y(-1) if IsUsingWideScreen() and (hasAvatar(player) or hasSLAvatar(player)) then self:x(player == PLAYER_1 and 48 or -48) end  c = self:GetChildren() end,
+	InitCommand=function(self) self:y(-1) if IsUsingWideScreen() and (hasAvatar(player) or hasSLAvatar(player)) then self:x(player == PLAYER_1 and 48 or -48) end end,
 	OnCommand=function(self) self:addx(player == PLAYER_1 and -SCREEN_WIDTH or SCREEN_WIDTH):decelerate(0.75):addx(player == PLAYER_2 and -SCREEN_WIDTH or SCREEN_WIDTH) end,
 	OffCommand=function(self) self:accelerate(0.75):addx(player == PLAYER_1 and -SCREEN_WIDTH or SCREEN_WIDTH) end,
 	CurrentSongChangedMessageCommand=function(self) if not courseMode then self:RunCommandsRecursively( function(self) self:stoptweening() end ):playcommand("Set") end end,
@@ -59,11 +58,11 @@ return Def.ActorFrame{
 			StepsOrTrail = courseMode and GAMESTATE:GetCurrentTrail(player) or GAMESTATE:GetCurrentSteps(player)
 		end
 
-		RadarPaneNumber(c.Jumps,1,StepsOrTrail,"RadarCategory_Jumps")
-		RadarPaneNumber(c.Holds,2,StepsOrTrail,"RadarCategory_Holds")
-		RadarPaneNumber(c.Mines,3,StepsOrTrail,"RadarCategory_Mines")
-		RadarPaneNumber(c.Hands,4,StepsOrTrail,"RadarCategory_Hands")
-		RadarPaneNumber(c.Rolls,5,StepsOrTrail,"RadarCategory_Rolls")
+		RadarPaneNumber(self:GetChild("Jumps"),1,StepsOrTrail,"RadarCategory_Jumps")
+		RadarPaneNumber(self:GetChild("Holds"),2,StepsOrTrail,"RadarCategory_Holds")
+		RadarPaneNumber(self:GetChild("Mines"),3,StepsOrTrail,"RadarCategory_Mines")
+		RadarPaneNumber(self:GetChild("Hands"),4,StepsOrTrail,"RadarCategory_Hands")
+		RadarPaneNumber(self:GetChild("Rolls"),5,StepsOrTrail,"RadarCategory_Rolls")
 	end,
 	Def.BitmapText {
 		File = "smallnumbers",

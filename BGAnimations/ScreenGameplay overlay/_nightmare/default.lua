@@ -9,7 +9,7 @@ end
 
 local totalDelta = 0
 local tmpDelta = 0
-local c, ani
+local ani
 local P1,P2
 local screen
 
@@ -22,10 +22,10 @@ local function Update(self, delta)
 			P2 = string.format("%03.0f",screen:GetTrueBPS(PLAYER_2)*60)
 			if P1 ~= P2 and not ani then
 				ani = true
-				c.BPMFrame:linear(0.125):zoomx(2):x(-SCREEN_CENTER_X)
+				self:GetChild("Frames"):GetChild("BPMFrame"):linear(0.125):zoomx(2)
 			elseif P1 == P2 and ani then
 				ani = false
-				c.BPMFrame:linear(0.125):zoomx(1):x(0)
+				self:GetChild("Frames"):GetChild("BPMFrame"):linear(0.125):zoomx(1)
 			end
 		end
 	end
@@ -69,7 +69,7 @@ return Def.ActorFrame{
 		}
 	},
 	Def.ActorFrame{
-		InitCommand=function(self) c = self:GetChildren() end,
+		Name="Frames",
 		OnCommand=function(self) self:addy(-100):sleep(0.5):queuecommand("TweenOn") end,
 		OffCommand=function(self) self:queuecommand("TweenOff") end,
 		TweenOnCommand=function(self) self:decelerate(0.8):addy(100) end,
