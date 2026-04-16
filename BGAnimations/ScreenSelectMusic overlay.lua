@@ -114,6 +114,7 @@ local specialHeld = { PLAYER_1 = false, PLAYER_2 = false }
 local searching = false
 local selection = {}
 local selected = 0
+local search = ""
 local leaderboard = { [PLAYER_1] = 1, [PLAYER_2] = 1 }
 local change = { PLAYER_1 = false, PLAYER_2 = false }
 local highscores = { PLAYER_1 = 0, PLAYER_2 = 0 }
@@ -218,7 +219,7 @@ local InputHandler = function(event)
 			if event.type == "InputEventType_FirstPress" then
 				if not specialHeld[pn] then specialHeld[pn] = true end
 			elseif event.type == "InputEventType_Release" then
-				if specialHeld[pn] then ctrlHeld[pn] = false end
+				if specialHeld[pn] then specialHeld[pn] = false end
 			end
 		else
 			if event.type == "InputEventType_FirstPress" then
@@ -235,6 +236,7 @@ local InputHandler = function(event)
 						Question = "What should be searched?",
 						MaxInputLength = 255,
 						OnOK = function(answer)
+							search = answer
 							for song in ivalues(SONGMAN:GetAllSongs()) do
 								if song:HasStepsType(category) then
 									local title = song:GetDisplayFullTitle()
@@ -1525,6 +1527,8 @@ return Def.ActorFrame{
 			local BPMs = selection[display]:GetDisplayBpms()
 
 			self:GetChild("Slots"):GetChild("Banner"):LoadBackground(bnpath)
+			self:GetChild("Slots"):GetChild("Search"):settext(search)
+			self:GetChild("Slots"):GetChild("Result"):settext(display.."/"..#selection)
 			self:GetChild("Slots"):GetChild("Title"):settext(selection[display]:GetDisplayMainTitle() or "")
 			self:GetChild("Slots"):GetChild("Subtitle"):settext(selection[display]:GetDisplaySubTitle() or "")
 			self:GetChild("Slots"):GetChild("Artist"):settext(selection[display]:GetDisplayArtist() or "")
@@ -1582,79 +1586,99 @@ return Def.ActorFrame{
 		},
 		Def.ActorFrame{
 			Name="Slots",
+			Def.BitmapText {
+				File = "_v 26px bold white",
+				Text="Search:",
+				InitCommand=function(self) self:xy(SCREEN_CENTER_X+7.5,SCREEN_CENTER_Y-20+20*-5.5):zoom(2/3):maxwidth(100):valign(0):halign(0):shadowlength(0):vertspacing(-3) end
+			},
+			Def.BitmapText {
+				Name="Search",
+				File = "_v 26px bold white",
+				InitCommand=function(self) self:xy(SCREEN_CENTER_X+77.5,SCREEN_CENTER_Y-20+20*-5.5):zoom(2/3):maxwidth(310):valign(0):halign(0):shadowlength(0):vertspacing(-3) end
+			},
+			Def.BitmapText {
+				File = "_v 26px bold white",
+				Text="Result:",
+				InitCommand=function(self) self:xy(SCREEN_CENTER_X+7.5,SCREEN_CENTER_Y-20+20*-4.5):zoom(2/3):maxwidth(100):valign(0):halign(0):shadowlength(0):vertspacing(-3) end
+			},
+			Def.BitmapText {
+				Name="Result",
+				File = "_v 26px bold white",
+				InitCommand=function(self) self:xy(SCREEN_CENTER_X+77.5,SCREEN_CENTER_Y-20+20*-4.5):zoom(2/3):maxwidth(310):valign(0):halign(0):shadowlength(0):vertspacing(-3) end
+			},
 			Def.Sprite {
 				Texture = THEME:GetPathB("ScreenEvaluation","underlay/evaluation banner mask"),
-				InitCommand=function(self) self:xy(SCREEN_CENTER_X+147.5,SCREEN_CENTER_Y-84):zbuffer(true):blend(Blend.NoEffect):zwrite(true):ztest(false) end,
+				InitCommand=function(self) self:xy(SCREEN_CENTER_X+147.5,SCREEN_CENTER_Y-50):zbuffer(true):blend(Blend.NoEffect):zwrite(true):ztest(false) end,
 			},
 			Def.Sprite {
 				Name = "Banner",
 				InitCommand=function(self)
-					self:xy(SCREEN_CENTER_X+147.5,SCREEN_CENTER_Y-84):scaletoclipped(isFinal() and 170 or 174,isFinal() and 64 or 68):ztest(true):zbuffer(true):zwrite(false)
+					self:xy(SCREEN_CENTER_X+147.5,SCREEN_CENTER_Y-50):scaletoclipped(isFinal() and 170 or 174,isFinal() and 64 or 68):ztest(true):zbuffer(true):zwrite(false)
 				end,
 			},
 			Def.Sprite {
 				Texture = THEME:GetPathG("ScreenEvaluation","_BannerFrame"..(isFinal() and "Final" or "Normal")),
-				InitCommand=function(self) self:xy(SCREEN_CENTER_X+147.5,SCREEN_CENTER_Y-84):ztest(false) end,
+				InitCommand=function(self) self:xy(SCREEN_CENTER_X+147.5,SCREEN_CENTER_Y-50):ztest(false) end,
 			},
 			Def.BitmapText {
 				File = "_v 26px bold white",
 				Text="Title:",
-				InitCommand=function(self) self:xy(SCREEN_CENTER_X+7.5,SCREEN_CENTER_Y-60+25*1):zoom(2/3):maxwidth(100):valign(0):halign(0):shadowlength(0):vertspacing(-3) end
+				InitCommand=function(self) self:xy(SCREEN_CENTER_X+7.5,SCREEN_CENTER_Y-20+20*1):zoom(2/3):maxwidth(100):valign(0):halign(0):shadowlength(0):vertspacing(-3) end
 			},
 			Def.BitmapText {
 				Name="Title",
 				File = "_v 26px bold white",
-				InitCommand=function(self) self:xy(SCREEN_CENTER_X+77.5,SCREEN_CENTER_Y-60+25*1):zoom(2/3):maxwidth(310):valign(0):halign(0):shadowlength(0):vertspacing(-3) end
+				InitCommand=function(self) self:xy(SCREEN_CENTER_X+77.5,SCREEN_CENTER_Y-20+20*1):zoom(2/3):maxwidth(310):valign(0):halign(0):shadowlength(0):vertspacing(-3) end
 			},
 			Def.BitmapText {
 				File = "_v 26px bold white",
 				Text="Subtitle:",
-				InitCommand=function(self) self:xy(SCREEN_CENTER_X+7.5,SCREEN_CENTER_Y-60+25*2):zoom(2/3):maxwidth(100):valign(0):halign(0):shadowlength(0):vertspacing(-3) end
+				InitCommand=function(self) self:xy(SCREEN_CENTER_X+7.5,SCREEN_CENTER_Y-20+20*2):zoom(2/3):maxwidth(100):valign(0):halign(0):shadowlength(0):vertspacing(-3) end
 			},
 			Def.BitmapText {
 				Name="Subtitle",
 				File = "_v 26px bold white",
-				InitCommand=function(self) self:xy(SCREEN_CENTER_X+77.5,SCREEN_CENTER_Y-60+25*2):zoom(2/3):maxwidth(310):valign(0):halign(0):shadowlength(0):vertspacing(-3) end
+				InitCommand=function(self) self:xy(SCREEN_CENTER_X+77.5,SCREEN_CENTER_Y-20+20*2):zoom(2/3):maxwidth(310):valign(0):halign(0):shadowlength(0):vertspacing(-3) end
 			},
 			Def.BitmapText {
 				File = "_v 26px bold white",
 				Text="Artist:",
-				InitCommand=function(self) self:xy(SCREEN_CENTER_X+7.5,SCREEN_CENTER_Y-60+25*3):zoom(2/3):maxwidth(100):valign(0):halign(0):shadowlength(0):vertspacing(-3) end
+				InitCommand=function(self) self:xy(SCREEN_CENTER_X+7.5,SCREEN_CENTER_Y-20+20*3):zoom(2/3):maxwidth(100):valign(0):halign(0):shadowlength(0):vertspacing(-3) end
 			},
 			Def.BitmapText {
 				Name="Artist",
 				File = "_v 26px bold white",
-				InitCommand=function(self) self:xy(SCREEN_CENTER_X+77.5,SCREEN_CENTER_Y-60+25*3):zoom(2/3):maxwidth(310):valign(0):halign(0):shadowlength(0):vertspacing(-3) end
+				InitCommand=function(self) self:xy(SCREEN_CENTER_X+77.5,SCREEN_CENTER_Y-20+20*3):zoom(2/3):maxwidth(310):valign(0):halign(0):shadowlength(0):vertspacing(-3) end
 			},
 			Def.BitmapText {
 				File = "_v 26px bold white",
 				Text="BPMs:",
-				InitCommand=function(self) self:xy(SCREEN_CENTER_X+7.5,SCREEN_CENTER_Y-60+25*4):zoom(2/3):maxwidth(100):valign(0):halign(0):shadowlength(0):vertspacing(-3) end
+				InitCommand=function(self) self:xy(SCREEN_CENTER_X+7.5,SCREEN_CENTER_Y-20+20*4):zoom(2/3):maxwidth(100):valign(0):halign(0):shadowlength(0):vertspacing(-3) end
 			},
 			Def.BitmapText {
 				Name="BPMs",
 				File = "_v 26px bold white",
-				InitCommand=function(self) self:xy(SCREEN_CENTER_X+77.5,SCREEN_CENTER_Y-60+25*4):zoom(2/3):maxwidth(310):valign(0):halign(0):shadowlength(0):vertspacing(-3) end
+				InitCommand=function(self) self:xy(SCREEN_CENTER_X+77.5,SCREEN_CENTER_Y-20+20*4):zoom(2/3):maxwidth(310):valign(0):halign(0):shadowlength(0):vertspacing(-3) end
 			},
 			Def.BitmapText {
 				File = "_v 26px bold white",
 				Text="Pack:",
-				InitCommand=function(self) self:xy(SCREEN_CENTER_X+7.5,SCREEN_CENTER_Y-60+25*5):zoom(2/3):maxwidth(100):valign(0):halign(0):shadowlength(0):vertspacing(-3) end
+				InitCommand=function(self) self:xy(SCREEN_CENTER_X+7.5,SCREEN_CENTER_Y-20+20*5):zoom(2/3):maxwidth(100):valign(0):halign(0):shadowlength(0):vertspacing(-3) end
 			},
 			Def.BitmapText {
 				Name="Pack",
 				File = "_v 26px bold white",
-				InitCommand=function(self) self:xy(SCREEN_CENTER_X+77.5,SCREEN_CENTER_Y-60+25*5):zoom(2/3):maxwidth(310):valign(0):halign(0):shadowlength(0):vertspacing(-3) end
+				InitCommand=function(self) self:xy(SCREEN_CENTER_X+77.5,SCREEN_CENTER_Y-20+20*5):zoom(2/3):maxwidth(310):valign(0):halign(0):shadowlength(0):vertspacing(-3) end
 			},
 			Def.BitmapText {
 				File = "_v 26px bold white",
 				Text="Difficulties:",
-				InitCommand=function(self) self:xy(SCREEN_CENTER_X+7.5,SCREEN_CENTER_Y-60+25*6):zoom(2/3):maxwidth(100):valign(0):halign(0):shadowlength(0):vertspacing(-3) end
+				InitCommand=function(self) self:xy(SCREEN_CENTER_X+7.5,SCREEN_CENTER_Y-20+20*6):zoom(2/3):maxwidth(100):valign(0):halign(0):shadowlength(0):vertspacing(-3) end
 			},
 			Def.BitmapText {
 				Name="Difficulties",
 				File = "_v 26px bold white",
-				InitCommand=function(self) self:xy(SCREEN_CENTER_X+77.5,SCREEN_CENTER_Y-60+25*6):zoom(2/3):maxwidth(310):valign(0):halign(0):shadowlength(0):vertspacing(-3) end
+				InitCommand=function(self) self:xy(SCREEN_CENTER_X+77.5,SCREEN_CENTER_Y-20+20*6):zoom(2/3):maxwidth(310):valign(0):halign(0):shadowlength(0):vertspacing(-3) end
 			},
 			Def.BitmapText {
 				Name="Slot1",
