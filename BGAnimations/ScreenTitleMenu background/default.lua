@@ -455,9 +455,10 @@ return Def.ActorFrame{
 		OnCommand=function(self) self:diffusealpha(0):sleep(0.5):linear(0.5):diffusealpha(1):playcommand("Refresh") end,
 		OffCommand=function(self) self:stoptweening():accelerate(0.5):addy(100) end,
 		ScreenChangedMessageCommand=function(self) self:playcommand("Refresh") end,
+		EngineVersionMessageCommand=function(self) self:playcommand("Refresh") end,
 		RefreshCommand=function(self)
 			if not isTopScreen("ScreenLogo") then
-				if isITGmania() then
+				if isITGmania() and tobool(PREFSMAN:GetPreference("HttpEnabled")) and string.find(PREFSMAN:GetPreference("HttpAllowHosts"),"*.itgmania.com") then
 					self:diffuse(Color("Green"))
 					local newest = split("%.",EngineVersion)
 					local current = split("%.",ProductVersion())
@@ -482,6 +483,7 @@ return Def.ActorFrame{
 		OnCommand=function(self) self:diffusealpha(0):sleep(0.5):linear(0.5):diffusealpha(1):playcommand("Refresh") end,
 		OffCommand=function(self) self:stoptweening():accelerate(0.5):addy(100) end,
 		ScreenChangedMessageCommand=function(self) self:playcommand("Refresh") end,
+		CheckVersionMessageCommand=function(self) self:playcommand("Refresh") end,
 		RefreshCommand=function(self)
 			if not isTopScreen("ScreenLogo") then
 				local version = GetThemeVersion()

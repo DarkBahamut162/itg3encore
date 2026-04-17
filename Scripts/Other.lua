@@ -1210,12 +1210,12 @@ function CheckThemeVersion()
 	if NETWORK:IsUrlAllowed(url) and CheckVersion=="????????" then
 		NETWORK:HttpRequest{
 			url=url,
-			headers=headers,
 			connectTimeout=3,
 			transferTimeout=10,
 			onResponse=function(response)
 				local json = JsonDecode(response.body)
 				CheckVersion = split("\n",Base64Decode(split("\n",json.content)[1]))[1]:gsub('[-:]+','')
+				MESSAGEMAN:Broadcast("CheckVersion")
 			end
 		}
 	end
@@ -1226,10 +1226,13 @@ function CheckEngineVersion()
 	if NETWORK:IsUrlAllowed(url) and EngineVersion=="?.?.?" then
 		NETWORK:HttpRequest{
 			url=url,
+			connectTimeout=3,
+			transferTimeout=10,
 			onResponse=function(response)
 				if response.statusCode == 200 then
 					local body = string.gsub(response["body"],"['\"{}\r\t\f\v\n ]+","")
 					EngineVersion = split(":",split(",",body)[1])[2]
+					MESSAGEMAN:Broadcast("EngineVersion")
 				end
 			end
 		}
