@@ -16,6 +16,8 @@ local full = isOutFoxV() and "FullRes" or "Full"
 DefaultLuaModifiers = {}
 PaceMaker = {[PLAYER_1]={},[PLAYER_2]={}}
 local buffer = 24
+PackListHeader = {}
+PackList = {}
 
 function GetThemeVersion()
 	if not FILEMAN:DoesFileExist(THEME:GetCurrentThemeDirectory().."/version.txt") then return "????????" end

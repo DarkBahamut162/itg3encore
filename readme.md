@@ -31,6 +31,15 @@ The **Theme/Engine Version** can be displayed in the following colors:<br>
 🔴 The version is outdated by **more than a day / at least one minor version**<br>
 ⚪ The version **can't be checked** *(default if not using ITGmania)*
 
+## ScreenDownload
+Another **ITGmania Only** Feature.<br>
+This needs **two prerequisites** to enable:
+  - **KeyboardEnabled** needs to be turned on.
+  - "**,stepmaniaonline.net**" needs to be in **HttpAllowHosts** inside **Save/Preferences.ini**.<br>
+
+This screen can be accessed through **ScreenTitleMenu** as an additional option to select.<br>
+Within this screen, one can then search/select/download packs from **Stepmania Online**.
+
 ## Other:
 Since this theme is being updated periodically: Clone or download it with **GitHub Desktop** or similar ways.<br>
 If anything broke or isn't working correctly, please report it **ASAP** via GitHub Issues [here](https://github.com/DarkBahamut162/itg3encore/issues) so it can be fixed as soon as possible.

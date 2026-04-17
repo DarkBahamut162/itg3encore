@@ -324,6 +324,7 @@ function TitleMenu()
 		if ThemePrefs.Get("AllowFitness") then output = addToOutput(output,"05",",") end
 		if ThemePrefs.Get("AllowEdit") then output = addToOutput(output,"07",",") end
 	end
+	if isITGmania() and ThemePrefs.Get("KeyboardEnabled") and NETWORK:IsUrlAllowed("https://stepmaniaonline.net/api/packs") then output = addToOutput(output,"99",",") end
 	output = addToOutput(output,"09,11",",")
 	return output
 end
