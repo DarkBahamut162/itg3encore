@@ -25,7 +25,7 @@ ITGmania is the only engine that enables version checking.<br>
 The **Theme Version Check** requires **HttpAllowHosts** to have "**,api.github.com**" listed inside **Save/Preferences.ini**.<br>
 This needs to be done by hand as the engine forbids automatic addition for security reasons.
 
-The **Theme Version** can be displayed in the following colors:<br>
+The **Theme/Engine Version** can be displayed in the following colors:<br>
 🟢 The version is **current**<br>
 🟡 The version has been updated **within the same day / within the same minor version**<br>
 🔴 The version is outdated by **more than a day / at least one minor version**<br>
