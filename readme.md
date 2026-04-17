@@ -8,37 +8,34 @@ This theme is blue-based, sleek, and full of neon outlines that glow - probably 
 
 Its sources have been displayed further down below.
 
-## Supports:
-🟢 **Project OutFox**** *(all)*<br>
-🟢 **ITGmania** *(all)*<br>
-🔴 **StepMania 5*** *(~5.0.4)*<br>
-🟡 **StepMania 5*** *(5.0.5+)*<br>
-🟢 **StepMania 5*** *(5.0.11+)*<br>
-🔴 **StepMania 5.1.0a*** *(aka 5.2)*<br>
-🟡 **Etterna*** *(other)*
-
-🟢 = Fully Functional<br>
-🟡 = Functional *(some critical features missing in engine)*<br>
-🔴 = Not Functional
+## Supported Engine Versions:
+<span title="Fully Functional">🟢</span> **Project OutFox**** *(all)*<br>
+<span title="Fully Functional">🟢</span> **ITGmania** *(all)*<br>
+<span title="Not Functional">🔴</span> **StepMania 5*** *(~5.0.4)*<br>
+<span title="Functional (some critical features missing in engine)">🟡</span> **StepMania 5*** *(5.0.5+)*<br>
+<span title="Fully Functional">🟢</span> **StepMania 5*** *(5.0.11+)*<br>
+<span title="Not Functional">🔴</span> **StepMania 5.1.0a*** *(aka 5.2)*<br>
+<span title="Functional (some critical features missing in engine)">🟡</span> **Etterna*** *(other)*
 
 \* **.mp4** files might not play correctly. This theme utilizes those. Make sure the engine is new enough to display those properly.<br>
 ** On version **0.4.17** to **0.4.18.1**, one might need to switch one's **VideoRenderer** to **OpenGL** as **GLAD** breaks the graphics after playing one round.
 
-## Theme Version Check:
+## Theme & Engine Version Check:
 ITGmania is the only engine that enables version checking.<br>
-It requires **HttpAllowHosts** to have "**,api.github.com**" listed inside **Save/Preferences.ini**.<br>
+The **Theme Version Check** requires **HttpAllowHosts** to have "**,api.github.com**" listed inside **Save/Preferences.ini**.<br>
 This needs to be done by hand as the engine forbids automatic addition for security reasons.
 
 The **Theme Version** can be displayed in the following colors:<br>
 🟢 The version is **current**<br>
-🟡 The version has been updated **within the same day**<br>
-🔴 The version is outdated by **more than a day**<br>
+🟡 The version has been updated **within the same day / within the same minor version**<br>
+🔴 The version is outdated by **more than a day / at least one minor version**<br>
 ⚪ The version **can't be checked** *(default if not using ITGmania)*
 
+## Other:
 Since this theme is being updated periodically: Clone or download it with **GitHub Desktop** or similar ways.<br>
 If anything broke or isn't working correctly, please report it **ASAP** via GitHub Issues [here](https://github.com/DarkBahamut162/itg3encore/issues) so it can be fixed as soon as possible.
 
-## Information:
+## Theme Additions:
 Most additional features have been moved to an additional **Theme Options** menu within **Options**. They are as follows:
 
 <details><summary><b>Global</b> <i>(click to expand)</i></summary>
@@ -122,7 +119,7 @@ Switch between **Old DDR/ITG & DDR X-SCALE** difficulty ranges
 - **ShowGrade:**
 Shows the **grade** of the **currently selected stepchart**
 - **ShowGraph:**
-Shows the **graph** of the **currently selected stepchart** *(VerticalScreen & WideScreen only)*
+Shows the **graph** of the **currently selected stepchart** *(VerticalScreen & WideScreen Only)*
 - **ShowHasLua:**
 Shows if song **has anything lua** related (no matter if BG, FG or both)
 - **ShowLamps:**
@@ -180,6 +177,8 @@ Shows **earlies** and **lates** of any timing window **during evaluation** exclu
     - Life/Flare Graph
     - Judgment Dotted *(Added)*
     - Judgment Lined *(Added)*
+- **ShowOffsetGraphics:**
+Shows **Error & Judgment** Graphics close to the shown **earlies** and **lates**
 - **ShowSurvivedTime:**
 Shows **Survived Time** out of **Total Time** if failed between **LifeGraph** and **ComboGraph**
   - If cleared, only shows **Total Time** instead
@@ -290,8 +289,8 @@ I could have actually forked it but I didn't. My reasoning was that it wasn't go
 * Shows **TimingData** and **"GrooveRadar"**
 * Shows **TOTAL** and **STEPS** NoteCounter of currently selected Song's Difficulty
 * Shows **StepCounter** *(when StepCounter & StepCache enabled)*
-* Shows **TechCounter** *(when TechCounter enabled | ITGmania only)*
-* Shows **Player Avatar** *(Project OutFox AND WideScreen only)*
+* Shows **TechCounter** *(when TechCounter enabled | ITGmania Only)*
+* Shows **Player Avatar** *(Project OutFox AND WideScreen Only)*
 * Shows **Player's Level & EXP** over Player's Username *(when ExperimentalProfileLevel enabled)*
 * Shows **Session Time & Player's Time Played** *(when ShowTime enabled)*
   - **Session Time** starts upon first entry of **ScreenSelectMusic**
@@ -307,12 +306,12 @@ I could have actually forked it but I didn't. My reasoning was that it wasn't go
 * Show **Pack Clears**
   - Displays amount of clears for songs/steps when selecting a song pack
 * Shows **Player's NoteGraph** *(when ShowGraph enabled)*
-* Shows **CDTitle** next to the banner frame *(VerticalScreen/WideScreen only & if Song has CDTitle)*
+* Shows **CDTitle** next to the banner frame *(VerticalScreen/WideScreen Only & if Song has CDTitle)*
 * Shows various indications between **Artist** and **BPM** line:
   * **Autogen**
   * **HasLua**
   * **HasLyric**
-  * **HasNoKeysounds** & **ContainsNullMeasure** *(BE-MU / PO-MU Mode only)*
+  * **HasNoKeysounds** & **ContainsNullMeasure** *(BE-MU / PO-MU Mode Only)*
   * **HasVideo**
   * **Rounds/Length specification**
 * Updates **BPMs** and **TIMEs** according to **Current Music Rate**
@@ -457,8 +456,8 @@ I could have actually forked it but I didn't. My reasoning was that it wasn't go
   - TrueFirstSecond *(Second of First Real Note)*
   - TrueLastSecond *(Second of Last Real Note)*
   - TrueSeconds *(Real Duration of Stepchart in Seconds)*
-  - chaosCount *(Etterna only)*
-  - maxVoltage *(Etterna only)*
+  - chaosCount *(Etterna Only)*
+  - maxVoltage *(Etterna Only)*
 </details>
 
 ---
@@ -469,7 +468,7 @@ The following has been re-introduced from **OpenITG's ITG3Encore Theme**:
 * **CustomMods** and **ScreenFilter**
 * **Encore "Folders"**
 * **OptionsList** *(Mostly functional)*
-* **Fitness/Workout Mode** *(1 Player only)*
+* **Fitness/Workout Mode** *(1 Player Only)*
 * **USB Profile Stats**
 
 Stuff might still need to get fixed, even if the fixed and re-introduced list/code are quite long/big.
