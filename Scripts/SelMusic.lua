@@ -146,7 +146,7 @@ end
 
 function GetSMParameter(song,parameter)
 	local filePath = song:GetSongFilePath():lower()
-	if filePath:sub(-2) ~= 'sm' and filePath:sub(-3) ~= 'ssc' then return "" end
+	if filePath:sub(-2) ~= 'sm' and filePath:sub(-3) ~= 'ssc' and filePath:sub(-3) ~= 'dwi' then return "" end
 	local file = RageFileUtil.CreateRageFile()
 	local tmp = {}
 	if file:Open(filePath,1) then
@@ -155,7 +155,9 @@ function GetSMParameter(song,parameter)
 		local line
 		while true do
 			line = file:GetLine()
-			if string.find(line,"#NOTES:") or string.find(line,"#NOTEDATA:") or file:AtEOF() then break
+			if string.find(line,"#NOTES:") or string.find(line,"#NOTEDATA:")
+				or string.find(line,"#SINGLE:") or string.find(line,"#DOUBLE:") or string.find(line,"#COUPLE:") or string.find(line,"#SOLO:")
+				or file:AtEOF() then break
 			elseif string.find(line,"#"..parameter..":") or gLine ~= "" then
 				gLine = gLine..""..split("//",line)[1]
 				if string.find(line,";") then break end
@@ -1472,22 +1474,30 @@ function GetMinSecondsToStep()
 	local firstSec, firstBeat = 1, 0
 	local firstBpm, smOffset = 60, 0
 	if not song then return 1 end
-	local BPMS = GetSMParameter(song,"BPMS")
-	if BPMS ~= "" then firstBpm = split('=', split(',', BPMS)[1])[2] end
+	if song:GetSongFilePath():sub(-3) == "dwi" then
+		local BPM = GetSMParameter(song,"BPM")
+		firstBpm = BPM ~= "" and tonumber(BPM) or 60
 
-	local OFFSET = GetSMParameter(song,"OFFSET")
-	if OFFSET ~= "" then smOffset = OFFSET end
+		local GAP = GetSMParameter(song,"GAP")
+		smOffset = GAP ~= "" and -0.001*tonumber(GAP) or 0
+	else
+		local BPMS = GetSMParameter(song,"BPMS")
+		if BPMS ~= "" then firstBpm = split('=', split(',', BPMS)[1])[2] end
 
-	local BGCHANGES = GetSMParameter(song,"BGCHANGES")
-	if BGCHANGES ~= "" then
-		BGCHANGES = split(',',BGCHANGES)
-		for BGC in ivalues(BGCHANGES) do
-			line = split('=',BGC)
-			line[1] = tonumber(line[1])
-			firstFile = line[2]
-			if line[1] >= 0 then break elseif line[1] < 0 and line[1] > -20 * firstBpm / 60 then
-				for typ in ivalues(typeList) do
-					if string.find(line[2], typ) then firstBeat = line[1] break end
+		local OFFSET = GetSMParameter(song,"OFFSET")
+		if OFFSET ~= "" then smOffset = OFFSET end
+
+		local BGCHANGES = GetSMParameter(song,"BGCHANGES")
+		if BGCHANGES ~= "" then
+			BGCHANGES = split(',',BGCHANGES)
+			for BGC in ivalues(BGCHANGES) do
+				line = split('=',BGC)
+				line[1] = tonumber(line[1])
+				firstFile = line[2]
+				if line[1] >= 0 then break elseif line[1] < 0 and line[1] > -20 * firstBpm / 60 then
+					for typ in ivalues(typeList) do
+						if string.find(line[2], typ) then firstBeat = line[1] break end
+					end
 				end
 			end
 		end
