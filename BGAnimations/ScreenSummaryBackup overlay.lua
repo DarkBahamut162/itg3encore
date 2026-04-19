@@ -1,4 +1,5 @@
 local cur = 0
+local c
 
 local InputHandler = function(event)
 	if not event.PlayerNumber or not event.button then return false end

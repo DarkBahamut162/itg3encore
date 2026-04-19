@@ -404,7 +404,7 @@ local Leaderboard = isOutFoxOnline() and Def.ActorFrame{
 						end,
 						OnFail = function(data)
 							lua.ReportScriptError("OnFail")
-							lua.ReportScriptError(rin_inspect(data))
+							--lua.ReportScriptError(rin_inspect(data))
 						end
 					}
 				end
@@ -481,7 +481,7 @@ local Leaderboard = isOutFoxOnline() and Def.ActorFrame{
 						end,
 						OnFail = function(data)
 							lua.ReportScriptError("OnFail")
-							lua.ReportScriptError(rin_inspect(data))
+							--lua.ReportScriptError(rin_inspect(data))
 						end
 					}
 				end

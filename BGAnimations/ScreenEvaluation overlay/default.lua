@@ -576,7 +576,7 @@ if isOutFoxOnline() then
 											submitted[pn] = true
 										end,
 										OnFail = function(data)
-											lua.ReportScriptError(rin_inspect(data))
+											--lua.ReportScriptError(rin_inspect(data))
 											lua.ReportScriptError("OnFail")
 										end
 									}
