@@ -1792,3 +1792,19 @@ function grooveRadar(song,steps,RadarValues)
 
 	return math.max(0,stream),math.max(0,voltage),math.max(0,air),math.max(0,freeze),math.max(0,chaos)
 end
+
+function GetExtraColorThreshold()
+	lua.ReportScriptError(rin_inspect(ThemePrefs.Get("DanceDifficultyType")))
+	local Modes = {
+		["dance"] = (ThemePrefs.Get("DanceDifficultyType") or false) and 15 or 10,
+		["groove"] = (ThemePrefs.Get("DanceDifficultyType") or false) and 15 or 10,
+		["pump"] = 21,
+        ["smx"] = 26,
+		["be-mu"] = 12,
+		["beat"] = 12,
+		["po-mu"] = 42,
+		["popn"] = 42,
+		["techno"] = 10
+	}
+	return Modes[GAMESTATE:GetCurrentGame():GetName()] or 10
+end
