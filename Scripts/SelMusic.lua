@@ -1794,7 +1794,6 @@ function grooveRadar(song,steps,RadarValues)
 end
 
 function GetExtraColorThreshold()
-	lua.ReportScriptError(rin_inspect(ThemePrefs.Get("DanceDifficultyType")))
 	local Modes = {
 		["dance"] = (ThemePrefs.Get("DanceDifficultyType") or false) and 15 or 10,
 		["groove"] = (ThemePrefs.Get("DanceDifficultyType") or false) and 15 or 10,
