@@ -106,7 +106,7 @@ if version < 3 then
                 Def.BitmapText {
                     Condition=ThemePrefs.Get("ShowTime"),
                     File = "_v 26px bold black",
-                    Text = P1[index]["PlayedTime"] and Time(P1[index]["PlayedTime"]) or "0:00.00",
+                    Text = P1[index]["PlayedTime"] and Time(P1[index]["PlayedTime"],true) or "0:00.00",
                     InitCommand=function(self)
                         self:y(-25*WideScreenDiff()):zoom(0.5*WideScreenDiff()):shadowlength(1):maxheight(13)
                         if version == 2 then
@@ -464,7 +464,7 @@ if version > 1 then
                 Def.BitmapText {
                     Condition=ThemePrefs.Get("ShowTime"),
                     File = "_v 26px bold black",
-                    Text = P2[index]["PlayedTime"] and Time(math.abs(P2[index]["PlayedTime"])) or "0:00.00",
+                    Text = P2[index]["PlayedTime"] and Time(math.abs(P2[index]["PlayedTime"]),true) or "0:00.00",
                     InitCommand=function(self)
                         self:y(-25*WideScreenDiff()):zoom(0.5*WideScreenDiff()):shadowlength(1):maxheight(13)
                         if version == 2 then
@@ -804,15 +804,15 @@ return Def.ActorFrame{
                 local output = ""
                 if Master[index]["TotalTimeP1"] or Master[index]["TotalTimeP2"] then
                     if version <= 2 then
-                        output = addToOutput(output,Time(Master[index]["TotalTimeP1"])," | ")
+                        output = addToOutput(output,Time(Master[index]["TotalTimeP1"],true)," | ")
                     elseif version >= 2 then
-                        output = addToOutput(output,Time(Master[index]["TotalTimeP2"])," | ")
+                        output = addToOutput(output,Time(Master[index]["TotalTimeP2"],true)," | ")
                     end
                 else
                     if version <= 2 then
-                        output = addToOutput(output,Time(P1[index]["TotalTime"])," | ")
+                        output = addToOutput(output,Time(P1[index]["TotalTime"],true)," | ")
                     elseif version >= 2 then
-                        output = addToOutput(output,Time(P2[index]["TotalTime"])," | ")
+                        output = addToOutput(output,Time(P2[index]["TotalTime"],true)," | ")
                     end
                 end
                 self:settext(output)

@@ -52,7 +52,7 @@ local function Update(self, delta)
 	if totalDelta - tmpDelta > 1/60 then
 		tmpDelta = totalDelta
         local currentSecond = GAMESTATE:GetPlayerState(master):GetSongPosition():GetMusicSeconds()-firstSeconds
-        self:GetChild("Time"):settext(SecondsToMMSS(math.min((math.max(0,currentSecond)+previousSeconds),courseMode and trialSeconds[GAMESTATE:GetCourseSongIndex()+1] or totalSeconds)/rate).."-"..SecondsToMMSS(totalSeconds/rate))
+        self:GetChild("Time"):settext(Time(math.min((math.max(0,currentSecond)+previousSeconds),courseMode and trialSeconds[GAMESTATE:GetCourseSongIndex()+1] or totalSeconds)/rate,false).."-"..Time(totalSeconds/rate,false))
     end
 end
 

@@ -747,7 +747,7 @@ return Def.ActorFrame{
 				last = GAMESTATE:GetCurrentSong():GetLastSecond()
 			end
 
-			self:x(-52*WideScreenDiff()):y(118*WideScreenDiff()):settext(fail and Time(alive-first).." - "..Time(last-first) or Time(last-first)):zoomx(0.5*WideScreenDiff()):zoomy(0.4*WideScreenDiff()):addx(-EvalTweenDistance())
+			self:x(-52*WideScreenDiff()):y(118*WideScreenDiff()):settext(fail and Time(math.min(alive-first,last-first),true).." - "..Time(last-first,true) or Time(last-first,true)):zoomx(0.5*WideScreenDiff()):zoomy(0.4*WideScreenDiff()):addx(-EvalTweenDistance())
 			if fail then self:diffuseshift():effectcolor1(color("#FFFFFF")):effectcolor2(color("#FF0000")):effectclock("timerglobal") end
 		end,
 		OnCommand=function(self) self:sleep(3):decelerate(0.3):addx(EvalTweenDistance()) end,

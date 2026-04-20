@@ -890,7 +890,7 @@ function CustomSongsMaxSeconds()
 		OneChoiceForAllPlayers = true,
 		ExportOnChange = false,
 		LoadSelections = function(self, list, pn)
-			local time = SecondsToMMSS(PREFSMAN:GetPreference("CustomSongsMaxSeconds")):gsub("^0*", "")
+			local time = Time(PREFSMAN:GetPreference("CustomSongsMaxSeconds")):gsub("^0*", "")
 			local i = FindInTable(time, choices) or 1
 			list[i] = true
 		end,
@@ -1175,9 +1175,11 @@ function GetProfileToEdit(player)
 	return ret
 end
 
-function Time(time)
-	time = math.max(0,time)
-	return math.floor(time/60)..":"..string.format("%05.2f",time%60)
+function Time(time,ms,min)
+	if not ms then time = math.round(time,2) end
+	local minus = time < 0
+	if min then time = math.abs(time) end
+	return ((minus and min) and "-" or "")..math.floor(time/60)..":"..string.format(ms and "%05.2f" or "%02.0f",time%60)
 end
 
 function TotalTime(time)
