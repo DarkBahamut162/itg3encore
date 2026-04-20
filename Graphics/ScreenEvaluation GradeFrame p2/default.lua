@@ -730,6 +730,87 @@ return Def.ActorFrame{
 		OnCommand=function(self) self:sleep(3):decelerate(0.3):addx(-EvalTweenDistance()) end,
 		OffCommand=function(self) self:accelerate(0.3):addx(EvalTweenDistance()) end
 	},
+	Def.ActorFrame{
+		Condition=showOffset and ThemePrefs.Get("ShowOffsetGraphics"),
+		InitCommand=function(self) if WideScreenDiff_(1.4) < 1 and showOffset then self:zoomx(5/6-0.01) end self:diffusealpha(0) end,
+		OnCommand=function(self) self:diffusealpha(0):sleep(3.60):linear(0.7):diffusealpha(1) end,
+		OffCommand=function(self) self:linear(0.2):diffusealpha(0) end,
+		Def.Quad{
+			InitCommand=function(self) self:x(191*WideScreenDiff()):y(-85*WideScreenDiff()):zoom(WideScreenDiff()):valign(1):diffuse(color("#800000")):zoomto(2,120) end
+		},
+		Def.Quad{
+			InitCommand=function(self)
+				self:x(191*WideScreenDiff()):y(-85*WideScreenDiff()):zoom(WideScreenDiff()):valign(1):diffuse(color("#FF0000"))
+				local cur,max,size = 0,perfect,120
+				for _,e in pairs(early) do max = max + e end
+				for _,l in pairs(late) do
+					cur = cur + l
+					max = max + l
+				end
+				self:zoomto(2,cur/max*size)
+			end
+		},
+		Def.Quad{
+			InitCommand=function(self) self:x(193*WideScreenDiff()):y(-205*WideScreenDiff()):zoom(WideScreenDiff()):valign(0):diffuse(color("#404040")):zoomto(2,120) end
+		},
+		Def.Quad{
+			InitCommand=function(self)
+				self:x(193*WideScreenDiff()):zoom(WideScreenDiff()):valign(0):diffuse(color("#FFFFFF"))
+				local move,max,size = 0,perfect,120
+				for _,l in pairs(late) do max = max + l end
+				for _,e in pairs(early) do
+					move = move + e
+					max = max + e
+				end
+				self:y((-205+(move/max*size))*WideScreenDiff()):zoomto(2,perfect/max*size)
+			end
+		},
+		Def.Quad{
+			InitCommand=function(self) self:x(195*WideScreenDiff()):y(-205*WideScreenDiff()):zoom(WideScreenDiff()):valign(0):diffuse(color("#000080")):zoomto(2,120) end
+		},
+		Def.Quad{
+			InitCommand=function(self)
+				self:x(195*WideScreenDiff()):y(-205*WideScreenDiff()):zoom(WideScreenDiff()):valign(0):diffuse(color("#1E90FF")):
+				local cur,max,size = 0,perfect,120
+				for _,l in pairs(late) do max = max + l end
+				for _,e in pairs(early) do
+					cur = cur + e
+					max = max + e
+				end
+				self:zoomto(2,cur/max*size)
+			end
+		},
+		Def.ActorMultiVertex{
+			InitCommand=function(self)
+				self:x(-172*WideScreenDiff()):y(-70*WideScreenDiff()):zoom(WideScreenDiff()):valign(0)
+                local stats = STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_2)
+				local W0Count = getenv("W0"..pname(PLAYER_2)) or 0
+				local w1 = stats:GetTapNoteScores('TapNoteScore_W1')
+				local w2 = stats:GetTapNoteScores('TapNoteScore_W2')
+				local w3 = stats:GetTapNoteScores('TapNoteScore_W3')
+				local w4 = stats:GetTapNoteScores('TapNoteScore_W4')
+				local w5 = stats:GetTapNoteScores('TapNoteScore_W5')
+				local miss = stats:GetTapNoteScores('TapNoteScore_Miss')
+				local judgments = {}
+				local max = getMaxNotes(PLAYER_2)
+
+				if getenv("SetScoreFA"..pname(PLAYER_2)) then
+					judgments[#judgments+1]=(w1-W0Count)/max*100
+					judgments[#judgments+1]=W0Count/max*100
+				else
+					judgments[#judgments+1]=w1/max*100
+				end
+				judgments[#judgments+1]=w2/max*100
+				judgments[#judgments+1]=w3/max*100
+				judgments[#judgments+1]=w4/max*100
+				judgments[#judgments+1]=w5/max*100
+				judgments[#judgments+1]=miss/max*100
+
+				local vertices = JudgmentCircle(16,judgments)
+				self:SetDrawState({Mode = 'DrawMode_Triangles'}):SetVertices(1, vertices):SetNumVertices(#vertices):rotationz(-90)
+			end
+		}
+	},
 	Def.BitmapText {
 		Condition=ThemePrefs.Get("ShowSurvivedTime"),
 		File="_v 26px bold shadow",

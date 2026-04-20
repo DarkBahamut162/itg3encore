@@ -425,6 +425,11 @@ local Prefs = {
 		Choices = { OptionNameString('Off'), OptionNameString('On') },
 		Values = { false, true }
 	},
+	ShowOffsetGraphics = {
+		Default = false,
+		Choices = { OptionNameString('Off'), OptionNameString('On') },
+		Values = { false, true }
+	},
 	ShowSurvivedTime = {
 		Default = false,
 		Choices = { OptionNameString('Off'), OptionNameString('On') },
