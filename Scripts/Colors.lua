@@ -94,3 +94,39 @@ function TapNoteScoreToColor( tns )
 	}
 	return colors[tns] or color("1,1,1,1")
 end
+
+function JudgmentCircle(radius,percents)
+    local numPoints = 360
+    local angleIncrement = (2 * math.pi) / numPoints
+	local vertices = {}
+
+	local colors = {color("#7BE8FF"),color("#FFA959"),color("#67FF19"),color("#D366FF"),color("#FF7149"),color("#FF0808"),color("#404040")}
+	local colorsFA = {color("#7BE8FF"),color("#F7F7F7"),color("#FFA959"),color("#67FF19"),color("#D366FF"),color("#FF7149"),color("#FF0808"),color("#404040")}
+	local currentPoint = 0
+	local currentPercent = percents[1]
+	local position = 1
+	local prevX = 0
+	local prevY = 0
+
+	for i = 0, numPoints do
+		local angle = i * angleIncrement
+		local pointX = radius * math.cos(angle)
+		local pointY = radius * math.sin(angle)
+		currentPoint = i / 3.6
+		if currentPoint >= currentPercent then
+			while currentPoint >= currentPercent do
+				position = position + 1
+				currentPercent = currentPercent + (percents[position] or 100)
+			end
+		end
+
+		vertices[#vertices+1] = { {0, 0, 0}, #percents == 7 and colorsFA[position] or colors[position] }
+		vertices[#vertices+1] = { {prevX, prevY, 0}, #percents == 7 and colorsFA[position] or colors[position] }
+		vertices[#vertices+1] = { {pointX, pointY, 0}, #percents == 7 and colorsFA[position] or colors[position] }
+
+		prevX = pointX
+		prevY = pointY
+	end
+
+	return vertices
+end
