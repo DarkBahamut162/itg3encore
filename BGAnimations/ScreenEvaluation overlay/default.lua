@@ -401,6 +401,7 @@ if isOutFoxOnline() then
 					File="Common Normal",
 					Name="OnlineLeaderboard",
 					InitCommand=function(self) self:zoom(0.75):vertspacing(-1):maxwidth(325):maxheight(325) end,
+					["Submit"..pname(pn).."MessageCommand"]=function(self,param) self:visible(false) end,
 					["OnlineOpened"..pname(pn).."MessageCommand"]=function(self) if submitted[pn] then self:playcommand("On") end self:visible(submitted[pn]) end,
 					OnCommand=function(self)
 						local output = ""
@@ -571,11 +572,12 @@ if isOutFoxOnline() then
 												OFCaching[key] = false
 											end
 											for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
-												MESSAGEMAN:Broadcast("OnlineOpened"..pname(pn),{pos=getenv("SetScoreFA"..pname(pn)) and 2 or 1})
+												MESSAGEMAN:Broadcast("Submit"..pname(pn),{Message = "Submit Successful!\nHold "..(pn == PLAYER_1 and "Left" or "Right").." Shift for Leaderboard"})
 											end
 											submitted[pn] = true
 										end,
 										OnFail = function(data)
+											MESSAGEMAN:Broadcast("Submit"..pname(pn),{Message = "Submit Failed!"})
 											--lua.ReportScriptError(rin_inspect(data))
 											lua.ReportScriptError("OnFail")
 										end
