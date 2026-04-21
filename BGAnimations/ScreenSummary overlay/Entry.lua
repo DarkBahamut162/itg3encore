@@ -789,7 +789,7 @@ return Def.ActorFrame{
         },
         Def.BitmapText {
             File = "_v 26px bold black",
-            InitCommand=function(self) self:x(bannerX):y(-25*WideScreenDiff()):zoom(0.4*WideScreenDiff()):shadowlength(1) end,
+            InitCommand=function(self) self:x(bannerX):y(-32*WideScreenDiff()):zoomx(0.4*WideScreenDiff()):zoomy(0.3*WideScreenDiff()):shadowlength(1) end,
             OnCommand=function(self)
                 if Master[index] and Master[index]["Restart"] and Master[index]["Restart"] > 0 then
                     self:settext(Master[index]["Restart"]..(Master[index]["Restart"] == 1 and " Restart" or " Restarts"))
