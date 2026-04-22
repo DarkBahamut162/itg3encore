@@ -27,6 +27,17 @@ local Hmax = { [PLAYER_1] = 0, [PLAYER_2] = 0 }
 local Hmul = { [PLAYER_1] = 1, [PLAYER_2] = 1 }
 local Tmax = { [PLAYER_1] = 0, [PLAYER_2] = 0 }
 local Tmul = { [PLAYER_1] = 1, [PLAYER_2] = 1 }
+local maxView = { [PLAYER_1] = 3, [PLAYER_2] = 3 }
+
+for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
+	if target[pn] ~= {} then
+		if highscore[pn] ~= {} then
+			maxView[pn] = 5
+		else
+			maxView[pn] = 4
+		end
+	end
+end
 
 for pn in ivalues(GAMESTATE:GetEnabledPlayers()) do
 	if #highscore[pn] > 0 then
@@ -389,7 +400,7 @@ local names = {
 }
 
 local function SwitchView(pn)
-	local check = view[pn] % 5
+	local check = view[pn] % maxView[pn]
 	c[pn]["Graph"..pname(pn)]:diffusealpha(check == 0 and 1 or 0)
 	c[pn]["Dot"..pname(pn)]:diffusealpha(check == 1 and 1 or 0)
 	c[pn]["Line"..pname(pn)]:diffusealpha(check == 2 and 1 or 0)
@@ -425,18 +436,18 @@ local InputHandler = function(event)
 		if event.GameButton == "MenuLeft" or event.GameButton == "MenuRight" then
 			if event.GameButton == "MenuLeft" then
 				view[event.PlayerNumber] = view[event.PlayerNumber] - 1
-				if view[event.PlayerNumber] % 5 == 4 and #target[event.PlayerNumber] == 0 then
-					view[event.PlayerNumber] = view[event.PlayerNumber] + 1
+				if view[event.PlayerNumber] % maxView[event.PlayerNumber] == 4 and #target[event.PlayerNumber] == 0 then
+					view[event.PlayerNumber] = view[event.PlayerNumber] - 1
 				end
-				if view[event.PlayerNumber] % 5 == 3 and #highscore[event.PlayerNumber] == 0 then
+				if view[event.PlayerNumber] % maxView[event.PlayerNumber] == 3 and #highscore[event.PlayerNumber] == 0 then
 					view[event.PlayerNumber] = view[event.PlayerNumber] - 1
 				end
 			elseif event.GameButton == "MenuRight" then
 				view[event.PlayerNumber] = view[event.PlayerNumber] + 1
-				if view[event.PlayerNumber] % 5 == 3 and #highscore[event.PlayerNumber] == 0 then
+				if view[event.PlayerNumber] % maxView[event.PlayerNumber] == 3 and #highscore[event.PlayerNumber] == 0 then
 					view[event.PlayerNumber] = view[event.PlayerNumber] + 1
 				end
-				if view[event.PlayerNumber] % 5 == 4 and #target[event.PlayerNumber] == 0 then
+				if view[event.PlayerNumber] % maxView[event.PlayerNumber] == 4 and #target[event.PlayerNumber] == 0 then
 					view[event.PlayerNumber] = view[event.PlayerNumber] + 1
 				end
 			end
