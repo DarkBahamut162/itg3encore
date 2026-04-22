@@ -579,7 +579,6 @@ if isOutFoxOnline() then
 										OnFail = function(data)
 											MESSAGEMAN:Broadcast("Submit"..pname(pn),{Message = "Submit Failed!"})
 											--lua.ReportScriptError(rin_inspect(data))
-											lua.ReportScriptError("OnFail")
 										end
 									}
 								else
