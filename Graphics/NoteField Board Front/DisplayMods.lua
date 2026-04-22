@@ -15,7 +15,8 @@ end
 
 return Def.ActorFrame{
 	OnCommand=function(self) self:sleep(sleep):decelerate(0.5):diffusealpha(0) end,
-	LoadFont("Common Normal")..{
+	Def.BitmapText{
+		Font = "Common Normal",
 		Text=optionslist:gsub(", ","\n"),
 		InitCommand=function(self)
 			local NoteFieldMiddle = (THEME:GetMetric("Player","ReceptorArrowsYStandard")+THEME:GetMetric("Player","ReceptorArrowsYReverse"))/2
