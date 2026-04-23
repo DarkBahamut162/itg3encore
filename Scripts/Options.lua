@@ -104,7 +104,7 @@ function GetStyles()
 	local output = ""
 	if GameModeEnabled() then
 		if ChoiceSingle()[GetUserPrefN("StylePosition")] then output = addToOutput(output,"1",",") end
-		if not IsNetSMOnline() and ChoiceVersus()[GetUserPrefN("StylePosition")] then output = addToOutput(output,"2",",") end
+		if not isEtterna("0.55") and not IsNetSMOnline() and ChoiceVersus()[GetUserPrefN("StylePosition")] then output = addToOutput(output,"2",",") end
 		if ChoiceDouble()[GetUserPrefN("StylePosition")] then output = addToOutput(output,"3",",") end
 	else
 		return "0"
