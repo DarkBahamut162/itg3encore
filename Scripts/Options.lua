@@ -1025,7 +1025,7 @@ end
 
 function OptionSetPacemaker()
 	local selection = {'D+','C-','C','C+','B-','B','B+','A-','A','A+','S-','S','S+','★','★★','★★★','★★★★'}
-	if ThemePrefs.Get("UseStepCache") then selection[#selection+1] = "±" end
+	if not isEtterna("0.55") and ThemePrefs.Get("UseStepCache") then selection[#selection+1] = "±" end
 	local t = {
 		Name="SetPacemaker",
 		LayoutType = "ShowAllInRow",

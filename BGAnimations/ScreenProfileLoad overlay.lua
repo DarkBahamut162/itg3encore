@@ -17,7 +17,7 @@ return Def.ActorFrame{
 				end
 			end
 			LoadFlare(pn)
-			if not (PaceMaker[pn] and PaceMaker[pn][category] and #PaceMaker[pn][category] > 0) and not PacemakerLoad(pn) then
+			if not isEtterna("0.55") and not (PaceMaker[pn] and PaceMaker[pn][category] and #PaceMaker[pn][category] > 0) and not PacemakerLoad(pn) then
 				for s=1,#songs do
 					if songs[s]:HasStepsType(category) then
 						local steps = songs[s]:GetStepsByStepsType(category)
