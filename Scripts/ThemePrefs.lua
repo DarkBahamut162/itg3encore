@@ -136,12 +136,14 @@ function AutoStyle(value)
 			Choices[#Choices+1]=upper
 		end
 	end
-	for choice in ivalues(ChoiceVersus()) do
-		if choice then
-			local upper = ""
-			for word in ivalues(split("-",choice)) do upper = upper .. string.gsub(" "..word, "%W%l", string.upper):sub(2) end
-			Values[#Choices+1]=choice
-			Choices[#Choices+1]=upper
+	if not isEtterna("0.55") then
+		for choice in ivalues(ChoiceVersus()) do
+			if choice then
+				local upper = ""
+				for word in ivalues(split("-",choice)) do upper = upper .. string.gsub(" "..word, "%W%l", string.upper):sub(2) end
+				Values[#Choices+1]=choice
+				Choices[#Choices+1]=upper
+			end
 		end
 	end
 	for choice in ivalues(ChoiceDouble()) do
