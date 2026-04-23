@@ -1,7 +1,7 @@
 local selected
 local playerReady
 
-if GAMESTATE:IsAnyHumanPlayerUsingMemoryCard() then
+if not isEtterna("0.55") and GAMESTATE:IsAnyHumanPlayerUsingMemoryCard() then
 	GAMESTATE:LoadProfiles()
 end
 
@@ -238,7 +238,7 @@ function LoadPlayerStuff(Player)
 				["Right"..pname(Player).."MessageCommand"]=function(self) self:queuecommand("Update") end,
 				UpdateCommand=function(self)
 					local selection = ""
-					local memoryCheck = MEMCARDMAN:GetCardState(Player) == 'MemoryCardState_none' and 1 or 0
+					local memoryCheck = (isEtterna("0.55") or MEMCARDMAN:GetCardState(Player) == 'MemoryCardState_none') and 1 or 0
 					for i=memoryCheck,PROFILEMAN:GetNumLocalProfiles() do
 						selection = addToOutput(selection,i == 0 and "·" or "•","")
 					end
@@ -310,7 +310,7 @@ local InputHandler =function(event)
 			if event.GameButton == "MenuLeft" or event.GameButton == "MenuUp" or event.GameButton == "Left" or event.GameButton == "Up" or event.GameButton == "UpLeft" or event.GameButton == "DownLeft" then
 				if playerReady and playerReady == event.PlayerNumber then return end
 				local ind = SCREENMAN:GetTopScreen():GetProfileIndex(event.PlayerNumber)
-				local memoryCheck = MEMCARDMAN:GetCardState(event.PlayerNumber) ~= 'MemoryCardState_none'
+				local memoryCheck = not isEtterna("0.55") and MEMCARDMAN:GetCardState(event.PlayerNumber) ~= 'MemoryCardState_none' or false
 				if ind > (memoryCheck and 0 or 1) then
 					if SCREENMAN:GetTopScreen():SetProfileIndex(event.PlayerNumber,ind-1) then
 						MESSAGEMAN:Broadcast("DirectionButton")
@@ -320,7 +320,7 @@ local InputHandler =function(event)
 			elseif event.GameButton == "MenuRight" or event.GameButton == "MenuDown" or event.GameButton == "Right" or event.GameButton == "Down" or event.GameButton == "UpRight" or event.GameButton == "DownRight" then
 				if playerReady and playerReady == event.PlayerNumber then return end
 				local ind = SCREENMAN:GetTopScreen():GetProfileIndex(event.PlayerNumber)
-				local memoryCheck = MEMCARDMAN:GetCardState(event.PlayerNumber) ~= 'MemoryCardState_none'
+				local memoryCheck = not isEtterna("0.55") and MEMCARDMAN:GetCardState(event.PlayerNumber) ~= 'MemoryCardState_none' or false
 				if ind >= 0 or memoryCheck then
 					if SCREENMAN:GetTopScreen():SetProfileIndex(event.PlayerNumber,ind+1) then
 						MESSAGEMAN:Broadcast("DirectionButton")
