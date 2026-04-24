@@ -67,7 +67,7 @@ return Def.ActorFrame{
 				local hd = stats:GetHoldNoteScores('HoldNoteScore_Held')
 				local score = (w1 + w2 + w3 + hd) * 100000 / stepSize
 				local sub = (w3*0.5) * 100000 / stepSize
-				output = (math.floor((score-sub)) - ((w1 - W0Count) + w2 + w3))*10
+				output = (math.floor(score-sub) - (w2 + w3))*10 - (w1 - W0Count)
 				self:settextf("%07d",output) -- SN SCORE
 				self:ClearAttributes()
 				self:AddAttribute(0, {
@@ -84,7 +84,7 @@ return Def.ActorFrame{
 				local hd = stats:GetHoldNoteScores('HoldNoteScore_Held')
 				local score = (w1 + w2 + w3 + w4 + hd) * 100000 / stepSize
 				local sub = (w3*0.4 + w4*0.8) * 100000 / stepSize
-				output = (math.floor((score-sub)) - ((w1 - W0Count) + w2 + w3 + w4))*10
+				output = (math.floor(score-sub) - (w2 + w3 + w4))*10 - (w1 - W0Count)
 				self:settextf("%07d",output) -- A SCORE
 				self:ClearAttributes()
 				self:AddAttribute(0, {
@@ -113,7 +113,7 @@ return Def.ActorFrame{
 				local w2 = stats:GetTapNoteScores('TapNoteScore_W2')
 				local w3 = stats:GetTapNoteScores('TapNoteScore_W3')
 				local hd = stats:GetHoldNoteScores('HoldNoteScore_Held')
-				local score = ((W0Count*1.3 + (W1Count+hd) + w2*0.7 + w3*0.4) * 100000 / stepSize) / (4/3)
+				local score = ((W0Count*1.3 + (W1Count+hd) + w2*0.7 + w3*0.4) * 100000 / stepSize) / 1.3
 				output = math.floor(score)
 				self:settextf("%06d",output) -- POPN SCORE
 				self:ClearAttributes()

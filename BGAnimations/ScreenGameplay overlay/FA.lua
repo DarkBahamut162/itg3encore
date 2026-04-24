@@ -292,7 +292,7 @@ return Def.ActorFrame{
 				if scoreDirection == 1 then
 					local score = (w1 + w2 + w3 + hd) * 100000 / stepSize
 					local sub = (w3*0.5) * 100000 / stepSize
-					score = (math.floor((score-sub)) - ((w1 - W0Count) + w2 + w3))*10
+					score = (math.floor(score-sub) - (w2 + w3))*10 - (w1 - W0Count)
 					output = animateScore(score,displayScore)
 				else
 					local w4 = stats:GetTapNoteScores('TapNoteScore_W4')
@@ -303,7 +303,7 @@ return Def.ActorFrame{
 					local curMaxScore = (w1+w2+w3+w4+w5+ms+hd+lg+mh) * 100000 / stepSize
 					local subScore = (w3*0.5) * 100000 / stepSize
 					score = (w1 + w2 + w3 + hd) * 100000 / stepSize
-					output = animateScore(maxScore-(math.ceil((curMaxScore-score+subScore))+(w1-W0Count)+w2+w3)*10,displayScore)
+					output = animateScore(maxScore-((math.ceil(curMaxScore-score+subScore)+w2+w3)*10+(w1-W0Count)),displayScore)
 				end
 				self:settextf("%07d",output) -- SN SCORE
 				self:ClearAttributes()
@@ -322,7 +322,7 @@ return Def.ActorFrame{
 				if scoreDirection == 1 then
 					local score = (w1 + w2 + w3 + w4 + hd) * 100000 / stepSize
 					local sub = (w3*0.4 + w4*0.8) * 100000 / stepSize
-					score = (math.floor((score-sub)) - ((w1 - W0Count) + w2 + w3 + w4))*10
+					score = (math.floor(score-sub) - (w2 + w3 + w4))*10 - (w1 - W0Count)
 					output = animateScore(score,displayScore)
 				else
 					local w5 = stats:GetTapNoteScores('TapNoteScore_W5')
@@ -332,7 +332,7 @@ return Def.ActorFrame{
 					local curMaxScore = (w1+w2+w3+w4+w5+ms+hd+lg+mh) * 100000 / stepSize
 					local subScore = (w3*0.4 + w4*0.8) * 100000 / stepSize
 					score = (w1 + w2 + w3 + w4 + hd) * 100000 / stepSize
-					output = animateScore(maxScore-(math.ceil((curMaxScore-score+subScore))+(w1-W0Count)+w2+w3+w4)*10,displayScore)
+					output = animateScore(maxScore-((math.ceil(curMaxScore-score+subScore)+w2+w3+w4)*10+(w1-W0Count)),displayScore)
 				end
 				self:settextf("%07d",output) -- SN SCORE
 				self:ClearAttributes()
@@ -374,7 +374,7 @@ return Def.ActorFrame{
 				local w3 = stats:GetTapNoteScores('TapNoteScore_W3')
 				local hd = stats:GetHoldNoteScores('HoldNoteScore_Held')
 				if scoreDirection == 1 then
-					local score = ((W0Count*(4/3) + (W1Count+hd) + w2*(2/3) + w3*(2/15)) * 200000 / stepSize) / (4/3)
+					local score = ((W0Count*1.3 + (W1Count+hd) + w2*0.7 + w3*0.4) * 100000 / stepSize) / 1.3
 					output = animateScore(math.floor(score),displayScore)
 				else
 					local w4 = stats:GetTapNoteScores('TapNoteScore_W4')
@@ -382,8 +382,9 @@ return Def.ActorFrame{
 					local ms = stats:GetTapNoteScores('TapNoteScore_Miss')
 					local lg = stats:GetHoldNoteScores('HoldNoteScore_LetGo')
 					local mh = stats:GetHoldNoteScores('HoldNoteScore_MissedHold')
-					local curMaxScore = (w1+w2+w3+w4+w5+ms+hd+lg+mh) * 200000 / stepSize
-					local score = ((W0Count*(4/3) + (W1Count+hd) + w2*(2/3) + w3*(2/15)) * 200000 / stepSize) / (4/3)
+					local curMaxScore = (w1+w2+w3+w4+w5+ms+hd+lg+mh) * 100000 / stepSize
+				if scoreDirection == 1 then
+					local score = ((W0Count*1.3 + (W1Count+hd) + w2*0.7 + w3*0.4) * 100000 / stepSize) / 1.3
 					output = animateScore(maxScore-(math.floor(curMaxScore-score)),displayScore)
 				end
 				self:settextf("%06d",output) -- POPN SCORE
