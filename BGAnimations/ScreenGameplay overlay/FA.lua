@@ -383,7 +383,6 @@ return Def.ActorFrame{
 					local lg = stats:GetHoldNoteScores('HoldNoteScore_LetGo')
 					local mh = stats:GetHoldNoteScores('HoldNoteScore_MissedHold')
 					local curMaxScore = (w1+w2+w3+w4+w5+ms+hd+lg+mh) * 100000 / stepSize
-				if scoreDirection == 1 then
 					local score = ((W0Count*1.3 + (W1Count+hd) + w2*0.7 + w3*0.4) * 100000 / stepSize) / 1.3
 					output = animateScore(maxScore-(math.floor(curMaxScore-score)),displayScore)
 				end
