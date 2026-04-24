@@ -581,17 +581,17 @@ args[#args+1] = Def.ActorFrame{
 		},
 		Def.BitmapText{
 			Font = "Common Normal",
-			Text = GS[master] and GS[master].Username or "--empty--",
+			Text = GS and GS[master] and GS[master].Username or "--empty--",
 			OnCommand=function(self) self:xy( SCREEN_WIDTH-50, 100 ):halign(1):shadowlength(3):diffuse(color("#37AAB6")) end
 		},
 		Def.BitmapText{
 			Font = "Common Normal",
-			Text = (GS[master] and GS[master].IsPadPlayer) and "Pad Player" or "Keyboard Player",
+			Text = (GS and GS[master] and GS[master].IsPadPlayer) and "Pad Player" or "Keyboard Player",
 			OnCommand=function(self) self:xy( SCREEN_WIDTH-50, 136 ):halign(1):shadowlength(3):diffuse(color("#37AAB6")) end
 		},
 		Def.BitmapText{
 			Font = "Common Normal",
-			Text = (GS[master] and GS[master].ApiKey ~= "") and GS[master].ApiKey:sub(1,6).."..."..GS[master].ApiKey:sub(-6) or "--empty--",
+			Text = (GS and GS[master] and GS[master].ApiKey ~= "") and GS[master].ApiKey:sub(1,6).."..."..GS[master].ApiKey:sub(-6) or "--empty--",
 			OnCommand=function(self) self:xy( SCREEN_WIDTH-50, 172 ):halign(1):shadowlength(3):diffuse(color("#37AAB6")) end
 		}
 	},
