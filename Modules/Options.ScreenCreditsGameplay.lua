@@ -36,8 +36,6 @@ return function()
 				GAMESTATE:SetCurrentSteps(PLAYER_2,chosen)
 				return "ScreenCreditsGameplay;name,"..name
 			end
-		else
-			return "ScreenCredits;name,"..name
 		end
 	end
 	return "ScreenCredits;name,"..name
