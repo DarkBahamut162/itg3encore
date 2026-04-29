@@ -748,9 +748,9 @@ return Def.ActorFrame{
             InitCommand=function(self)
                 self:diffuseramp():effectcolor1(PlayerColor(pn)):effectcolor2(color("#FFFFFF")):effectperiod(0.5):effect_hold_at_full(0.5):effectclock('beat'):vertspacing(-10)
                 if screenCheck and GetScreenAspectRatio() > 1 then
-                    self:x(pn == PLAYER_1 and -graphH*1.525 or graphH*1.525):y(graphH*2.1):zoomx(pn == PLAYER_1 and -1 or 1):maxwidth(graphH):halign(0):valign(0)
+                    self:x(pn == PLAYER_1 and -graphH*1.525 or graphH*1.525):y(graphH*2.1):zoomx((pn == PLAYER_1 and not IsNetSMOnline()) and -1 or 1):maxwidth(graphH):halign(IsNetSMOnline() and 1 or 0):valign(0)
                 else
-                    self:x(pn == PLAYER_1 and -graphH*2.55 or graphH*2.55):rotationz(pn == PLAYER_2 and 90 or -90):maxwidth(ShowStatsSize == 1 and graphW*0.9 or graphW):valign(1)
+                    self:x(pn == PLAYER_1 and -graphH*2.55 or graphH*2.55):rotationz(pn == PLAYER_2 and 90 or -90):maxwidth(ShowStatsSize == 1 and graphW or graphW):valign(1)
                     if screenCheck then self:valign(0) if pn == PLAYER_2 then self:zoom(-1) else self:zoomy(-1) end end
                 end
                 self:queuecommand("Draw")
