@@ -574,7 +574,7 @@ args[#args+1] = Def.ActorFrame{
 		OnCommand=function(self) self:xy( (avatar and profile_id) and 150 or 50, 172 ):halign(0):shadowlength(3) end
 	},
 	Def.ActorFrame{
-		Condition=ThemePrefs.Get("EnableGrooveStats"),
+		Condition=ThemePrefs.Get("EnableGrooveStats") and GS,
 		Def.Sprite{
 			InitCommand=function(self) self:Load( THEME:GetPathG("GS","OG") ):visible(profile_id ~= nil) end,
 			OnCommand=function(self) self:xy( SCREEN_WIDTH-50, 136 ):blend(Blend.Add):halign(1):setsize(128,128) end

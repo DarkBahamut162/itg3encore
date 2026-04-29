@@ -44,7 +44,7 @@ local InputHandler = function(event)
 			local pn = string.find(event.DeviceInput.button,"left") and PLAYER_1 or PLAYER_2
 			if GAMESTATE:IsHumanPlayer(pn) and ((GS and GS.IsConnected) or isOutFoxOnline()) then
 				if event.type == "InputEventType_FirstPress" then
-					if isOutFoxOnline() or (GS[pn] and GS[pn].ApiKey ~= "") then
+					if isOutFoxOnline() or (GS and GS[pn] and GS[pn].ApiKey ~= "") then
 						if not shiftHeld[pn] then MESSAGEMAN:Broadcast("OnlineOpened"..pname(pn)) end
 						shiftHeld[pn] = true
 					else
