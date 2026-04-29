@@ -10,7 +10,7 @@ elseif numPlayers == 1 then
 	(GAMESTATE:GetMasterPlayerNumber() == PLAYER_2 and (getenv("RotationP2") == 2 or (getenv("ShowStatsSizeP2") == 2 and getenv("ShowStatsP2") > 0))) then
 		statObject = "double"
 	else
-		statObject = "single"
+		statObject = IsNetSMOnline() and "double" or "single"
 	end
 elseif numPlayers == 2 then
 	statObject = "versus"
