@@ -18,6 +18,7 @@ local screenCheck = screenMusicCheck or screenNetMusicCheck
 local cropValue = screenNetMusicCheck and 0.64 or screenMusicCheck and 0.6 or 0.5
 local max = 0
 local average = 0
+local median = 0
 local counter = 0
 
 local allowednotes = {
@@ -533,13 +534,22 @@ local function GetVertices(stepsPerSecList)
     local addx = graphW / #stepsList
     local vertices = {}
 
-    average,counter,max = 0,0,0
-
+    average,median,counter,max = 0,0,0,0
+    local medians = {}
     for _=1, #stepsList do
         average = average + (stepsList[_] or 0)
+        medians[#medians+1] = (stepsList[_] or 0)
         counter = counter + 1
         max = math.max(max,stepsList[_] or 0)
     end
+	if #medians > 0 then
+        table.sort(medians)
+		if #medians % 2 == 1 then
+			median = medians[math.ceil(#medians/2)]
+		else
+			median = (medians[#medians/2] + medians[#medians/2+1])/2
+		end
+	end
 
     for i=1, #stepsList + 1 do
         local curX = (i > 1) and ((i-1) * graphW / #stepsList+1 - addx) or 0
@@ -578,14 +588,31 @@ local function GetVerticesAlt(stepsPerSecList)
     local vertices = {}
     local last = 0
 
-    average,counter,max = 0,0,0
+    average,median,counter,max = 0,0,0,0
+    local medians = {}
+    for _=1, #stepsList do
+        average = average + (stepsList[_] or 0)
+        medians[#medians+1] = (stepsList[_] or 0)
+        counter = counter + 1
+        max = math.max(max,stepsList[_] or 0)
+    end
 
     for _i,_ in pairs( stepsList ) do
         max = math.max(max,_)
         average = average + _
+        medians[#medians+1] = _
         counter = counter + 1
         if _i > last then last = _i end
     end
+
+	if #medians > 0 then
+        table.sort(medians)
+		if #medians % 2 == 1 then
+			median = medians[math.ceil(#medians/2)]
+		else
+			median = (medians[#medians/2] + medians[#medians/2+1])/2
+		end
+	end
 
     for i,value in pairs( stepsList ) do
         local curX = math.floor((i-1) * graphW / last - 0)
@@ -736,9 +763,9 @@ return Def.ActorFrame{
             CurrentTrailP2ChangedMessageCommand=function(self) if courseMode and pn == PLAYER_2 then self:sleep(1/30):queuecommand("Draw") end end,
             DrawCommand=function(self)
                 if screenCheck and GetScreenAspectRatio() > 1 then
-                    self:settext("AVG: "..math.round(average/counter).."\nMAX: "..math.round(max))
+                    self:settext("AVG: "..math.round(average/counter).."\nMED: "..math.round(median).."\nMAX: "..math.round(max))
                 else
-                    self:settext("Average NPS: "..math.round(average/counter,1).." | Max NPS: "..math.round(max,1))
+                    self:settext("Average NPS: "..math.round(average/counter,1).." | Median NPS: "..math.round(median,1).." | Max NPS: "..math.round(max,1))
                 end
             end
         }

@@ -155,7 +155,7 @@ end
 local graphs = showGraph and (#GAMESTATE:GetHumanPlayers() == 1 and loadfile(THEME:GetPathB("ScreenGameplay","underlay/stepstats/graph"))(GAMESTATE:GetMasterPlayerNumber())..{
 		InitCommand=function(self) self:zoomx(GAMESTATE:GetMasterPlayerNumber() == PLAYER_1 and -1/3*WideScreenDiff() or 1/3*WideScreenDiff()):zoomy(1/3*WideScreenDiff())
 			if IsUsingWideScreen() then
-				self:x(SCREEN_CENTER_X+256):addy(SCREEN_CENTER_Y*1.15)
+				self:x(SCREEN_CENTER_X+256):addy(SCREEN_CENTER_Y*1.13)
 			elseif GetScreenAspectRatio() <= 1 then
 				self:x(SCREEN_CENTER_X+152*WideScreenDiff()):addy(SCREEN_CENTER_Y+70*WideScreenDiff()):rotationz(90)
 			end
@@ -168,7 +168,7 @@ local graphs = showGraph and (#GAMESTATE:GetHumanPlayers() == 1 and loadfile(THE
 	loadfile(THEME:GetPathB("ScreenGameplay","underlay/stepstats/graph"))(PLAYER_2)..{
 			InitCommand=function(self) self:zoom(1/3*WideScreenDiff()):zoomy(1/3*WideScreenDiff())
 				if IsUsingWideScreen() then
-					self:x(SCREEN_CENTER_X+288):addy(SCREEN_CENTER_Y*1.15)
+					self:x(SCREEN_CENTER_X+288):addy(SCREEN_CENTER_Y*1.13)
 				elseif GetScreenAspectRatio() <= 1 then
 					self:x(SCREEN_CENTER_X+224*WideScreenDiff()):addy(SCREEN_CENTER_Y+70*WideScreenDiff()):rotationz(90)
 				end
@@ -181,7 +181,7 @@ local graphs = showGraph and (#GAMESTATE:GetHumanPlayers() == 1 and loadfile(THE
 	loadfile(THEME:GetPathB("ScreenGameplay","underlay/stepstats/graph"))(PLAYER_1)..{
 		InitCommand=function(self) self:zoom(-1/3*WideScreenDiff()):zoomy(1/3*WideScreenDiff())
 			if IsUsingWideScreen() then
-				self:x(SCREEN_CENTER_X+256):addy(SCREEN_CENTER_Y*1.15)
+				self:x(SCREEN_CENTER_X+256):addy(SCREEN_CENTER_Y*1.13)
 			elseif GetScreenAspectRatio() <= 1 then
 				self:x(SCREEN_CENTER_X+80*WideScreenDiff()):addy(SCREEN_CENTER_Y+70*WideScreenDiff()):rotationz(90)
 			end
