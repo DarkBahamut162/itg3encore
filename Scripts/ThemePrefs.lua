@@ -165,6 +165,11 @@ local Prefs = {
 		Choices = { OptionNameString('Normal'), OptionNameString('Final') },
 		Values = { false, true }
 	},
+	EnableOnlineLobbies = {
+		Default = false,
+		Choices = { OptionNameString('Off'), OptionNameString('On') },
+		Values = { false, true }
+	},
 	ExperimentalProfileLevel = {
 		Default = false,
 		Choices = { OptionNameString('Off'), OptionNameString('On') },

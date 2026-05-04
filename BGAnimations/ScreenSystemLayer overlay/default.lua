@@ -137,6 +137,7 @@ end
 
 local t = Def.ActorFrame{}
 
+if isITGmania() then t[#t+1] = CreateOnlineHandler() end
 t[#t+1] = loadfile(THEME:GetPathB("ScreenSystemLayer",isEtterna() and "error" or "aux"))()
 t[#t+1] = Def.ActorFrame{
 	CreditsText(PLAYER_1),

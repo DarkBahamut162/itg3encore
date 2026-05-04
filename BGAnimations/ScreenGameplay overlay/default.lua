@@ -25,41 +25,49 @@ local ctrlHeld = false
 local keyboardEnabled = ThemePrefs.Get("KeyboardEnabled")
 
 local InputHandler = function(event)
-	if keyboardEnabled then
+	if isITGmaniaOnline() then
 		if event.type == "InputEventType_FirstPress" then
-			if string.find(event.DeviceInput.button,"ctrl") and not ctrlHeld then ctrlHeld = true end
-			if ctrlHeld then
-				if event.DeviceInput.button == "DeviceButton_r" then
-					setenv("Restart",getenv("Restart")+1)
-					SCREENMAN:GetTopScreen():SetPrevScreenName(Branch.BeforeGameplay()):begin_backing_out()
-				elseif event.DeviceInput.button == "DeviceButton_f" then
-					if SCREENMAN:GetTopScreen():GetChild("Debug") then SCREENMAN:GetTopScreen():GetChild("Debug"):visible(false) end
-					for pn in ivalues(GAMESTATE:GetEnabledPlayers()) do
-						STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):FailPlayer()
-						SCREENMAN:GetTopScreen():GetChild('Player'..pname(pn)):SetLife(0)
-					end
-				end
+			if event.GameButton == "Select" or event.GameButton == "Back" then
+				if IsWaiting() then SCREENMAN:GetTopScreen():Cancel() end
 			end
-		elseif event.type == "InputEventType_Release" then
-			if string.find(event.DeviceInput.button,"ctrl") and ctrlHeld then ctrlHeld = false end
 		end
 	else
-		if event.type == "InputEventType_FirstPress" then
-			if event.GameButton == "Select" and not ctrlHeld then ctrlHeld = true end
-			if ctrlHeld then
-				if event.GameButton == "Start" then
-					setenv("Restart",getenv("Restart")+1)
-					SCREENMAN:GetTopScreen():SetPrevScreenName(Branch.BeforeGameplay()):begin_backing_out()
-				elseif event.GameButton == "Back" then
-					if SCREENMAN:GetTopScreen():GetChild("Debug") then SCREENMAN:GetTopScreen():GetChild("Debug"):visible(false) end
-					for pn in ivalues(GAMESTATE:GetEnabledPlayers()) do
-						STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):FailPlayer()
-						SCREENMAN:GetTopScreen():GetChild('Player'..pname(pn)):SetLife(0)
+		if keyboardEnabled then
+			if event.type == "InputEventType_FirstPress" then
+				if string.find(event.DeviceInput.button,"ctrl") and not ctrlHeld then ctrlHeld = true end
+				if ctrlHeld then
+					if event.DeviceInput.button == "DeviceButton_r" then
+						setenv("Restart",getenv("Restart")+1)
+						SCREENMAN:GetTopScreen():SetPrevScreenName(Branch.BeforeGameplay()):begin_backing_out()
+					elseif event.DeviceInput.button == "DeviceButton_f" then
+						if SCREENMAN:GetTopScreen():GetChild("Debug") then SCREENMAN:GetTopScreen():GetChild("Debug"):visible(false) end
+						for pn in ivalues(GAMESTATE:GetEnabledPlayers()) do
+							STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):FailPlayer()
+							SCREENMAN:GetTopScreen():GetChild('Player'..pname(pn)):SetLife(0)
+						end
 					end
 				end
+			elseif event.type == "InputEventType_Release" then
+				if string.find(event.DeviceInput.button,"ctrl") and ctrlHeld then ctrlHeld = false end
 			end
-		elseif event.type == "InputEventType_Release" then
-			if event.GameButton == "Select" and ctrlHeld then ctrlHeld = false end
+		else
+			if event.type == "InputEventType_FirstPress" then
+				if event.GameButton == "Select" and not ctrlHeld then ctrlHeld = true end
+				if ctrlHeld then
+					if event.GameButton == "Start" then
+						setenv("Restart",getenv("Restart")+1)
+						SCREENMAN:GetTopScreen():SetPrevScreenName(Branch.BeforeGameplay()):begin_backing_out()
+					elseif event.GameButton == "Back" then
+						if SCREENMAN:GetTopScreen():GetChild("Debug") then SCREENMAN:GetTopScreen():GetChild("Debug"):visible(false) end
+						for pn in ivalues(GAMESTATE:GetEnabledPlayers()) do
+							STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):FailPlayer()
+							SCREENMAN:GetTopScreen():GetChild('Player'..pname(pn)):SetLife(0)
+						end
+					end
+				end
+			elseif event.type == "InputEventType_Release" then
+				if event.GameButton == "Select" and ctrlHeld then ctrlHeld = false end
+			end
 		end
 	end
 end
@@ -390,6 +398,7 @@ local t = Def.ActorFrame{
 
 					offsetdata[player][#offsetdata[player]+1] = { time, noff, faplus and WX or params.TapNoteScore }
 				end
+				if isITGmaniaOnline() then MESSAGEMAN:Broadcast("UpdateMachineState") end
 			end
 		end
 	end,
@@ -448,7 +457,7 @@ for pn in ivalues(GAMESTATE:GetEnabledPlayers()) do
 	t[#t+1] = loadfile(THEME:GetPathB("ScreenGameplay","overlay/FCSplash"))(pn)
 	if isRegular() or isNonstop() or isLifeline(pn) then t[#t+1] = loadfile(THEME:GetPathB("ScreenGameplay","overlay/Score"))(pn) end
 	if getenv("GreenNumber"..pname(pn)) then t[#t+1] = loadfile(THEME:GetPathB("ScreenGameplay","overlay/GreenNumber"))(pn) end
-	if (isRegular() or isNonstop() or isLifeline(pn)) and getenv("SetScoreFA"..pname(pn)) then t[#t+1] = loadfile(THEME:GetPathB("ScreenGameplay","overlay/FA"))(pn) end
+	if (isRegular() or isNonstop() or isLifeline(pn)) and (getenv("SetScoreFA"..pname(pn)) or isITGmaniaOnline()) then t[#t+1] = loadfile(THEME:GetPathB("ScreenGameplay","overlay/FA"))(pn) end
 	t[#t+1] = loadfile(THEME:GetPathB("ScreenGameplay","overlay/Dynamic"))(pn)
 	if getenv("Flare"..pname(pn)) and getenv("Flare"..pname(pn)) > 0 and isRegular() then t[#t+1] = loadfile(THEME:GetPathB("ScreenGameplay","overlay/Flare"))(pn) end
 	if getenv("SetPacemakerFail"..pname(pn)) and getenv("SetPacemakerFail"..pname(pn)) > 1 and not isVS() then t[#t+1] = loadfile(THEME:GetPathB("ScreenGameplay","overlay/PacemakerFail"))(pn) end

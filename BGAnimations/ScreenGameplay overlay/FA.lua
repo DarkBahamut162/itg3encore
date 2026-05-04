@@ -136,7 +136,8 @@ local SN = {
 
 return Def.ActorFrame{
 	OnCommand=function(self)
-		if isGamePlay() or isSurvival(player) then self:SetUpdateFunction(UpdateScore) end self:visible(isGamePlay())
+		self:visible(isGamePlay() and getenv("SetScoreFA"..pname(player)))
+		if isGamePlay() or isSurvival(player) then self:SetUpdateFunction(UpdateScore) end
 		if IsIIDXFrame(PLAYER_1) then self:visible(false) end
 		if scoreType == 4 or scoreType == 5 or scoreType == 6 or scoreType == 7 then
 			local SongOrCourse = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentCourse() or GAMESTATE:GetCurrentSong()

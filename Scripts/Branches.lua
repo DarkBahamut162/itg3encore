@@ -1,6 +1,8 @@
 function SelectMusicOrCourse()
 	if IsNetSMOnline() then
 		return "ScreenNetSelectMusic"..(isFinal() and "Final" or "")
+	elseif isITGmaniaOnline() then
+		return "ScreenSelectMusic"
 	elseif GAMESTATE:IsCourseMode() then
 		return "ScreenSelectCourse"..(isFinal() and "Final" or "")
 	else
@@ -43,14 +45,16 @@ Branch.BeforeSelectStyle = function()
 end
 
 Branch.AfterSelectStyle = function()
+	if IsNetSMOnline() then return SMOnlineScreen() end
+	if ThemePrefs.Get("EnableOnlineLobbies") then return "ScreenOnlineLobbies" end
 	if getenv("Workout") then return "ScreenWorkoutMenu" end
 	if GAMESTATE:IsCourseMode() then return "ScreenSelectCourse"..(isFinal() and "Final" or "") end
-	if IsNetSMOnline() then return SMOnlineScreen() end
 	if IsNetConnected() then return "ScreenNetSelectMusic" end
 	return "ScreenSelectMusic"..(isFinal() and "Final" or "")
 end
 
 Branch.AfterWorkoutMenu = function()
+	if isITGmaniaOnline() then return "ScreenSelectMusic" end
 	if GAMESTATE:IsCourseMode() then return "ScreenSelectCourse"..(isFinal() and "Final" or "") end
 	return "ScreenSelectMusic"..(isFinal() and "Final" or "")
 end
@@ -101,6 +105,7 @@ Branch.PostProfileSave = function()
 end
 
 Branch.PlayerOptions = function()
+	if isITGmaniaOnline() then MESSAGEMAN:Broadcast("SongSelected") end
 	local restricted = { PlayMode_Oni = true }
 	local optionsScreen = "ScreenPlayerOptions"
 	if not isEtterna("0.70.2") and restricted[GAMESTATE:GetPlayMode()] then
@@ -171,7 +176,9 @@ end
 
 Branch.AfterEvaluationWorkout = function()
 	if isPlayMode("PlayMode_Endless") then return "ScreenWorkoutMenu" end
-	return "ScreenSelectCourse"
+	if isITGmaniaOnline() then return "ScreenSelectMusic" end
+	if GAMESTATE:IsCourseMode() then return "ScreenSelectCourse"..(isFinal() and "Final" or "") end
+	return "ScreenSelectMusic"..(isFinal() and "Final" or "")
 end
 
 Branch.ScreenSelectMusicPrevScreen = function()

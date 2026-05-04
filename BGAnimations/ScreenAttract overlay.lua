@@ -42,7 +42,7 @@ return Def.ActorFrame{
 		CoinInsertedMessageCommand=function(self) self:playcommand("Refresh") end,
 		CoinModeChangedMessageCommand=function(self) self:playcommand("Refresh") end,
 		RefreshCommand=function(self)
-			if IsNetSMOnline() or isOutFoxOnline() then self:settext('ONLINE MODE') return end
+			if IsNetSMOnline() or isOutFoxOnline() or isITGmaniaOnline() then self:settext('ONLINE MODE') return end
 			if GAMESTATE:IsEventMode() and GAMESTATE:GetCoinMode()~='CoinMode_Home' then self:settext('EVENT MODE') return end
 			if GAMESTATE:GetCoinMode()=='CoinMode_Free' then self:settext('FREE PLAY') return end
 			if GAMESTATE:GetCoinMode()=='CoinMode_Home' then self:visible(false) end

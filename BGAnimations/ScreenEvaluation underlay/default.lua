@@ -24,11 +24,15 @@ local InputHandler = function(event)
 						setenv("Restarting",true)
 						c.Restart:diffusealpha(1)
 					elseif event.DeviceInput.button == "DeviceButton_p" then
-						practice = true
-						SOUND:PlayOnce(THEME:GetPathS("LifeMeterTime", "GainLife"), true)
-						SCREENMAN:GetTopScreen():SetNextScreenName("ScreenPractice")
-						setenv("Practicing",true)
-						c.Practice:diffusealpha(1)
+						if isITGmaniaOnline() then
+							SOUND:PlayOnce(THEME:GetPathS('Common',"invalid"))
+						else
+							practice = true
+							SOUND:PlayOnce(THEME:GetPathS("LifeMeterTime", "GainLife"), true)
+							SCREENMAN:GetTopScreen():SetNextScreenName("ScreenPractice")
+							setenv("Practicing",true)
+							c.Practice:diffusealpha(1)
+						end
 					end
 				end
 			end
@@ -50,11 +54,14 @@ local InputHandler = function(event)
 			end
 			if effectUp then
 				if event.GameButton == "Select" and not practice then
-					practice = true
-					SOUND:PlayOnce(THEME:GetPathS("LifeMeterTime", "GainLife"), true)
-					SCREENMAN:GetTopScreen():SetNextScreenName("ScreenPractice")
-					setenv("Practicing",true)
-					c.Practice:diffusealpha(1)
+					if isITGmaniaOnline() then
+						SOUND:PlayOnce(THEME:GetPathS('Common',"invalid"))
+					else
+						practice = true
+						SOUND:PlayOnce(THEME:GetPathS("LifeMeterTime", "GainLife"), true)
+						SCREENMAN:GetTopScreen():SetNextScreenName("ScreenPractice")
+						setenv("Practicing",true)
+					end
 				end
 			end
 		elseif event.type == "InputEventType_Release" then
