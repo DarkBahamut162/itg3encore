@@ -1,10 +1,11 @@
 local BPMtype = IsGame("pump") and 0 or ThemePrefs.Get("ShowBPMDisplayType")
 local courseMode = GAMESTATE:IsCourseMode()
 
-local function getTrueBPMRange(self,bpm)
+local function getTrueBPMRange(self,bpm,recolor)
+	local max = tonumber(THEME:GetMetric('Player', 'MModHighCap'))
 	if bpm[3] == 0.0 then
 		if bpm[2] and bpm[1] ~= bpm[2] then
-			self:diffuse(color("#d8f6ff"))
+			self:diffuse((recolor and bpm[2]>max) and color("#ffd8d8") or color("#d8f6ff"))
 			return bpm[1].."-"..bpm[2]
 		else
 			self:diffuse(color("#ffffff"))
@@ -16,17 +17,17 @@ local function getTrueBPMRange(self,bpm)
 			return bpm[1]
 		elseif bpm[3] == bpm[1] or bpm[3] == 0 then
 			if bpm[1] ~= bpm[2] then
-				self:diffuse(color("#d8f6ff"))
+				self:diffuse(recolor and (bpm[2]>max and color("#ffd8d8") or color("#ffffd8")) or color("#d8f6ff"))
 				return bpm[1] .. " (" .. bpm[2] .. ")"
 			else
 				self:diffuse(color("#ffffff"))
 				return bpm[1]
 			end
 		elseif bpm[3] < bpm[2] then
-			self:diffuse(color("#d8f6ff"))
+			self:diffuse(recolor and (bpm[2]>max and color("#ffd8d8") or color("#ffffd8")) or color("#d8f6ff"))
 			return bpm[1] .. "-" .. bpm[3] .. " (" .. bpm[2] .. ")"
 		else
-			self:diffuse(color("#d8f6ff"))
+			self:diffuse((recolor and bpm[2]>max) and color("#ffd8d8") or color("#d8f6ff"))
 			return bpm[1] .. "-" .. bpm[2]
 		end
 	end
@@ -65,7 +66,14 @@ return Def.ActorFrame{
 									if bpm[3] > currentBPM[3] then currentBPM[3] = bpm[3] end
 								end
 							end
-							temp[pn] = getTrueBPMRange(self,currentBPM) 
+							local playeroptions = GAMESTATE:GetPlayerState(pn):GetPlayerOptions("ModsLevel_Preferred")
+							local recolor = false
+							if playeroptions:MMod() then recolor = true
+							elseif isOutFox(20210200) then if playeroptions:AMod() then recolor = true end
+							elseif isOutFox(20220300) then if playeroptions:CAMod() then recolor = true end
+							elseif isOutFox(20220900) then if playeroptions:AVMod() then recolor = true end
+							end
+							temp[pn] = getTrueBPMRange(self,currentBPM,recolor) 
 						end
 					end
 				end
@@ -74,7 +82,16 @@ return Def.ActorFrame{
 				if song then
 					for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
 						local step = GAMESTATE:GetCurrentSteps(pn)
-						if step then temp[pn] = getTrueBPMRange(self,getAllTheBPMs(song,step,BPMtype)) end
+						if step then
+							local playeroptions = GAMESTATE:GetPlayerState(pn):GetPlayerOptions("ModsLevel_Preferred")
+							local recolor = false
+							if playeroptions:MMod() then recolor = true
+							elseif isOutFox(20210200) then if playeroptions:AMod() then recolor = true end
+							elseif isOutFox(20220300) then if playeroptions:CAMod() then recolor = true end
+							elseif isOutFox(20220900) then if playeroptions:AVMod() then recolor = true end
+							end
+							temp[pn] = getTrueBPMRange(self,getAllTheBPMs(song,step,BPMtype),recolor)
+						end
 					end
 				end
 			end
