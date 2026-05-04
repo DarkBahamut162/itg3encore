@@ -1,5 +1,6 @@
 local cacheVersion = "0.45"
-local stepCache = {}
+stepCache = {}
+addedToStepCache = false
 local typeList = {"avi","f4v","flv","mkv","mp4","mpeg","mpg","mov","ogv","webm","wmv"}
 Master,P1,P2={},{},{}
 SummaryAdjust = 0
@@ -1446,27 +1447,54 @@ end
 
 function LoadFromCache(Song,Step,key)
 	local file = getStepCacheFile(Step)
-	if not FILEMAN:DoesFileExist(file) then
-		stepCache[file] = cacheStepX(Song,Step)
-	else
-		if stepCache[file] and stepCache[file]["Version"] == "0" then
-			return nil
-		elseif stepCache[file] and stepCache[file][key] then
-			return stepCache[file][key]
-		else
-			if not stepCache[file] then stepCache[file] = LoadModule("Config.LoadAll.lua")(file) end
-		end
-		local version = LoadModule("Config.Load.lua")("Version",file)
-
-		if version == "0" then
-			stepCache[file] = {["Version"] = "0"}
-			return nil
-		elseif not version or version ~= cacheVersion then
+	if not stepCache[file] then 
+		if not FILEMAN:DoesFileExist(file) then
 			stepCache[file] = cacheStepX(Song,Step)
+			if not addedToStepCache then addedToStepCache = true end
+		else
+			stepCache[file] = LoadModule("Config.LoadAll.lua")(file)
 		end
+	end
+	if stepCache[file]["Version"] == "0" then
+		return nil
+	elseif stepCache[file]["Version"] ~= cacheVersion then
+		stepCache[file] = cacheStepX(Song,Step)
+		if not addedToStepCache then addedToStepCache = true end
+		return stepCache[file][key] or nil
+	elseif stepCache[file][key] then
+		return stepCache[file][key]
 	end
 
 	return stepCache[file][key] or LoadModule("Config.Load.lua")("Version",file)
+end
+
+function QuickLoadStepCache()
+	if stepCache ~= {} then return end
+	if FILEMAN:DoesFileExist("/Cache/StepCache.db9") then
+		stepCache = IniFile.ReadFile("/Cache/StepCache.db9")
+		local added = 0
+		for file in ivalues(FILEMAN:GetDirListing("/Cache/Steps/")) do
+			if file:sub(-4) == ".db9" then
+				if stepCache[file] then else
+					added = added + 1
+					stepCache[file] = LoadModule("Config.LoadAll.lua")("/Cache/Steps/"..file)
+				end
+			end
+		end
+		if added > 0 then QuickSaveStepCache() end
+	else
+		for file in ivalues(FILEMAN:GetDirListing("/Cache/Steps/")) do
+			if file:sub(-4) == ".db9" then
+				stepCache[file] = LoadModule("Config.LoadAll.lua")("/Cache/Steps/"..file)
+			end
+		end
+		QuickSaveStepCache()
+	end
+end
+
+function QuickSaveStepCache()
+	addedToStepCache = false
+	IniFile.WriteFile("/Cache/StepCache.db9",stepCache)
 end
 
 function GetMinSecondsToStep()

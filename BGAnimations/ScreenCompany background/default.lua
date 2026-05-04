@@ -41,6 +41,7 @@ elseif isOutFoxV043() and ThemePrefs.Get("UseStepCache") then
 	SCREENMAN:SystemMessage("WARNING!\nThis OutFox Version might cause Frame Crashes when trying to use the StepCache!\nTurn off StepCache until further notice!\nAnd please report to OutFox...")
 end
 
+if ThemePrefs.Get("UseStepCache") and ThemePrefs.Get("UseStepCacheQuickload") then QuickLoadStepCache() end
 if isITGmania() then CheckThemeVersion() CheckEngineVersion() end
 
 return Def.ActorFrame{

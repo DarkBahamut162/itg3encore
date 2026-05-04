@@ -236,11 +236,8 @@ return Def.ActorFrame{
 								local filename = split("/",step:GetFilename())
 								if #filename >= 4 then
 									local cacheFile = getStepCacheFile(step)
-									if not FILEMAN:DoesFileExist(cacheFile) then
-										stepsToCache[#stepsToCache+1] = step
-										toBeCachedTotal = toBeCachedTotal + 1
-									else
-										local version = LoadModule("Config.Load.lua")("Version",cacheFile)
+									if ThemePrefs.Get("UseStepCacheQuickload") and stepCache[cacheFile:sub(7)] then
+										local version = stepCache[cacheFile:sub(7)]["Version"]
 										if version == "0" then
 											unableToBeCachedTotal = unableToBeCachedTotal + 1
 										elseif not version or version ~= currentCacheVersion then
@@ -249,6 +246,22 @@ return Def.ActorFrame{
 											cachedWrongVersionTotal = cachedWrongVersionTotal + 1
 										else
 											alreadyCachedTotal = alreadyCachedTotal + 1
+										end
+									else
+										if not FILEMAN:DoesFileExist(cacheFile) then
+											stepsToCache[#stepsToCache+1] = step
+											toBeCachedTotal = toBeCachedTotal + 1
+										else
+											local version = LoadModule("Config.Load.lua")("Version",cacheFile)
+											if version == "0" then
+												unableToBeCachedTotal = unableToBeCachedTotal + 1
+											elseif not version or version ~= currentCacheVersion then
+												stepsToCache[#stepsToCache+1] = step
+												alreadyCachedTotal = alreadyCachedTotal + 1
+												cachedWrongVersionTotal = cachedWrongVersionTotal + 1
+											else
+												alreadyCachedTotal = alreadyCachedTotal + 1
+											end
 										end
 									end
 								else
@@ -320,17 +333,23 @@ return Def.ActorFrame{
 					local checkDWI = filePath:sub(-3):sub(1,1) == 'd'	-- [D]WI
 					--local checkBMS = filePath:sub(-3):sub(2,2) == 'm'	-- B[M]S & B[M]E & B[M]L & P[M]S
 					local checkPMS = filePath:sub(-3) == 'pms'
+					local temp = nil
 
 					if not isOutFox(20200400) or ((checkSM or checkPMS) and isOutFoxV()) then
 						if checkSM then
-							cacheStepSM(nil,step)
+							temp = cacheStepSM(nil,step)
 						elseif checkDWI then
-							cacheStepDWI(nil,step)
+							temp = cacheStepDWI(nil,step)
 						else
-							cacheStepBMS(nil,step)
+							temp = cacheStepBMS(nil,step)
 						end
 					else
-						cacheStep(nil,step)
+						temp = cacheStep(nil,step)
+					end
+					if ThemePrefs.Get("UseStepCacheQuickload") then
+						if not addedToStepCache then addedToStepCache = true end
+						local cacheFile = getStepCacheFile(step)
+						stepCache[cacheFile] = temp
 					end
 					local stepType = split("_",step:GetStepsType())[2]
 					cachedTime = GetTimeSinceStart()-cacheTime

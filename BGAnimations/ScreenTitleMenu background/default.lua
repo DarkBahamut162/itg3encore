@@ -28,6 +28,7 @@ else
 		end
 	end
 end
+if isEtterna("0.55") and ThemePrefs.Get("UseStepCache") and ThemePrefs.Get("UseStepCacheQuickload") then QuickLoadStepCache() end
 
 local versions = {
 	["Etterna"]					= "etterna",

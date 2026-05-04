@@ -205,6 +205,11 @@ local Prefs = {
 		Choices = { OptionNameString('Off'), OptionNameString('On') },
 		Values = { false, true }
 	},
+	UseStepCacheQuickload = {
+		Default = false,
+		Choices = { OptionNameString('Off'), OptionNameString('On') },
+		Values = { false, true }
+	},
 	--[ScreenTitleMenu]
 	AllowBattle = {
 		Default = true,
