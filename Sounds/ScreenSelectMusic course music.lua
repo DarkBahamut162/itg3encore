@@ -1,1 +1,1 @@
-return THEME:GetPathS("_course ",(isFinal() and "final" or "normal").." music")
+return THEME:GetPathS("_course",(isFinal() and "final" or "normal").." music")
