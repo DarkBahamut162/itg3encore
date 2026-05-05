@@ -440,8 +440,8 @@ function ValidForGrooveStats(player,checkAUTO)
 	valid[12] = 100 <= rate and rate <= 300
 
 	local po = GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Preferred")
-	valid[13] = not ( po:Little()  or po:NoHolds() or po:NoStretch() or po:NoHands() or po:NoJumps() or po:NoFakes() or po:NoLifts() or po:NoQuads() or po:NoRolls() )
-	valid[14] = not ( po:Wide() or po:Skippy() or po:Quick() or po:Echo() or po:BMRize() or po:Stomp() or po:Big() )
+	valid[13] = not (po:Little() or po:NoHolds() or po:NoStretch() or po:NoHands() or po:NoJumps() or po:NoFakes() or po:NoLifts() or po:NoQuads() or po:NoRolls())
+	valid[14] = not (po:Wide() or po:Skippy() or po:Quick() or po:Echo() or po:BMRize() or po:Stomp() or po:Big())
 
 	local failType = isITGmania(20250313) and GAMESTATE:GetPlayerFailType(player) or po:FailSetting()
 	valid[15] = (failType == "FailType_Immediate" or failType == "FailType_ImmediateContinue")
@@ -484,13 +484,16 @@ function GetJudgmentCounts(player)
 		["decent"] = stats:GetTapNoteScores("TapNoteScore_W4"),
 		["wayOff"] = stats:GetTapNoteScores("TapNoteScore_W5"),
 		["miss"] = stats:GetTapNoteScores("TapNoteScore_Miss"),
-		["totalSteps"] = StepsOrTrail:GetRadarValues(player):GetValue( "RadarCategory_TapsAndHolds" ),
+		["LetGo"] = stats:GetHoldNoteScores("HoldNoteScore_LetGo"),
+		["MissedHeld"] = stats:GetHoldNoteScores("HoldNoteScore_MissedHold"),
+		["totalSteps"] = StepsOrTrail:GetRadarValues(player):GetValue("RadarCategory_TapsAndHolds"),
 		["holdsHeld"] = stats:GetRadarActual():GetValue("RadarCategory_Holds"),
-		["totalHolds"] = StepsOrTrail:GetRadarValues(player):GetValue("RadarCategory_Holds" ),
+		["totalHolds"] = StepsOrTrail:GetRadarValues(player):GetValue("RadarCategory_Holds"),
 		["minesHit"] = po:NoMines() and 0 or StepsOrTrail:GetRadarValues(player):GetValue("RadarCategory_Mines")-stats:GetRadarActual():GetValue("RadarCategory_Mines"),
+		["AvoidMine"] = stats:GetTapNoteScores("TapNoteScore_AvoidMine"),
 		["totalMines"] = po:NoMines() and 0 or StepsOrTrail:GetRadarValues(player):GetValue("RadarCategory_Mines"),
 		["rollsHeld"] = stats:GetRadarActual():GetValue("RadarCategory_Rolls"),
-		["totalRolls"] = StepsOrTrail:GetRadarValues(player):GetValue( "RadarCategory_Rolls")
+		["totalRolls"] = StepsOrTrail:GetRadarValues(player):GetValue("RadarCategory_Rolls")
 	}
 end
 
@@ -509,8 +512,14 @@ function CalculateExScore(player)
 		["rollsHeld"]		= 1,
 		["minesHit"]		= -1
 	}
-	local total_possible = ex_counts["totalSteps"] * ExWeights["fantasticPlus"] + ex_counts["totalHolds"] * ExWeights["holdsHeld"] + ex_counts["totalRolls"] * ExWeights["rollsHeld"]
+	local total_possible = 0
 	local total_points = 0
+	if ex_counts["totalSteps"] < 0 then
+		ex_counts["totalSteps"] = ex_counts["fantasticPlus"] + ex_counts["fantastic"] + ex_counts["excellent"] + ex_counts["great"] + ex_counts["decent"] + ex_counts["wayOff"] + ex_counts["miss"]
+		ex_counts["totalHolds"] = ex_counts["LetGo"] + ex_counts["MissedHeld"] + ex_counts["holdsHeld"] + ex_counts["rollsHeld"]
+		ex_counts["totalMines"] = ex_counts["minesHit"] + ex_counts["AvoidMine"]
+	end
+	total_possible = ex_counts["totalSteps"] * ExWeights["fantasticPlus"] + ex_counts["totalHolds"] * ExWeights["holdsHeld"] + math.max(0,ex_counts["totalRolls"]) * ExWeights["rollsHeld"]
 
 	local po = GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Preferred")
 	if po:NoMines() then
