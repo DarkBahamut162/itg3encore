@@ -198,11 +198,17 @@ local function DisplayLobbyState(data,actor)
 		if not songSelected then
 			local topScreen = SCREENMAN:GetTopScreen()
 			if topScreen and string.find(topScreen:GetName(),"ScreenSelectMusic") then
-				local song = SONGMAN:FindSong(data.songInfo.songPath)
+				local SongOrCourse = GAMESTATE:IsCourseMode() and SONGMAN:FindCourse(data.songInfo.songPath) or SONGMAN:FindSong(data.songInfo.songPath)
 				local wheel = topScreen:GetMusicWheel()
-				if not song and data.songInfo.songPath:split("/")[2] then song = SONGMAN:FindSong(data.songInfo.songPath:split("/")[2]) end
-				if song and wheel then
-					wheel:SelectSong(song)
+				if not SongOrCourse and data.songInfo.songPath:split("/")[2] then
+					if GAMESTATE:IsCourseMode() then
+						SongOrCourse = SONGMAN:FindCourse(data.songInfo.songPath:split("/")[2])
+					else
+						SongOrCourse = SONGMAN:FindSong(data.songInfo.songPath:split("/")[2])
+					end
+				end
+				if SongOrCourse and wheel then
+					if GAMESTATE:IsCourseMode() then wheel:SelectCourse(SongOrCourse) else wheel:SelectSong(SongOrCourse) end
 					wheel:Move(1)
 					wheel:Move(-1)
 					wheel:Move(0)
@@ -378,15 +384,36 @@ function CreateOnlineHandler()
 			end,
 			SongSelectedMessageCommand=function(self)
 				if self.connected and self.socket ~= nil and self.inLobby then
-					local song = GAMESTATE:GetCurrentSong()
-					local songPath = song:GetSongDir()
+					local SongOrCourse = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentCourse() or GAMESTATE:GetCurrentSong()
+					local songPath = GAMESTATE:IsCourseMode() and SongOrCourse:GetCourseDir() or  SongOrCourse:GetSongDir()
 					songPath = songPath:sub(8,#songPath-1)
+					local artist = ""
+					local length = 0
+					if GAMESTATE:IsCourseMode() then
+						local trail = GAMESTATE:GetCurrentTrail(GAMESTATE:GetMasterPlayerNumber())
+						if trail then
+							local artists = trail:GetArtists()
+							length = TrailUtil.GetTotalSeconds(trail)
+							for i=1,#artists do
+								if not string.find(artist,artists[i]) then
+									artist = addToOutput(artist,artists[i],", ")
+									if string.len(artist) >= 60 then
+										artist = "Various Artists"
+										break
+									end
+								end
+							end
+						end
+					else
+						artist = SongOrCourse:GetDisplayArtist()
+						length = SongOrCourse:MusicLengthSeconds()
+					end
 					local data = {
 						songInfo = {
 							songPath=songPath,
-							title=song:GetDisplayFullTitle(),
-							artist=song:GetDisplayArtist(),
-							songLength=song:MusicLengthSeconds()
+							title=SongOrCourse:GetDisplayFullTitle(),
+							artist=artist,
+							songLength=length
 						}
 					}
 					local request = CreateRequest("selectSong",data)
