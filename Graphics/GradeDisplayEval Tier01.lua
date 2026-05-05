@@ -2,7 +2,7 @@ return Def.ActorFrame{
 	BeginCommand=function(self)
 		local name = self:GetParent():GetName():sub(-2)
 		if name ~= "" then
-			local faCheck = getenv("SetScoreFA"..name)
+			local faCheck = getenv("SetScoreFA"..name) or isITGmaniaOnline()
 			if faCheck then
 				local W0Count = getenv("W0"..name) or 0
 				local WXCount = getenv("WX"..name) or 0

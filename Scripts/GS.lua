@@ -471,7 +471,7 @@ function GetMachineTag(entry)
 end
 
 function GetJudgmentCounts(player)
-	local faplus = getenv("SetScoreFA"..pname(player))
+	local faplus = getenv("SetScoreFA"..pname(player)) or isITGmaniaOnline()
 	local stats = STATSMAN:GetCurStageStats():GetPlayerStageStats(player)
 	local po = GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Preferred")
 	local StepsOrTrail = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentTrail(player) or GAMESTATE:GetCurrentSteps(player)

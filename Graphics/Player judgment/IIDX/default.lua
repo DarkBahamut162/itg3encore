@@ -2,7 +2,7 @@ local C
 local player = ...
 local screen
 local glifemeter = 100
-local faplus = getenv("SetScoreFA"..pname(player)) or false
+local faplus = getenv("SetScoreFA"..pname(player)) or isITGmaniaOnline()
 local adjust = 0.8
 local brightness = tonumber(getenv("IIDXJudgmentBrightness"..pname(player))) or 1.0
 

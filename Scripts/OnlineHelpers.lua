@@ -259,9 +259,7 @@ local onlineHandlerShuttingDown = false
 function isITGmaniaOnline()
 	if isITGmania() then
 		local onlineHandler = GetOnlineHandlerInstance()
-		if onlineHandler and onlineHandler.connected then
-			return onlineHandler.connected or false
-		end
+		if onlineHandler and onlineHandler.connected then return onlineHandler.connected end
 	end
 	return false
 end

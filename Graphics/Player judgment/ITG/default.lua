@@ -21,7 +21,7 @@ if isOpenDDR() then
 	}
 end
 
-local faplus = getenv("SetScoreFA"..pname(player))
+local faplus = getenv("SetScoreFA"..pname(player)) or isITGmaniaOnline()
 local TNSFrames = {
 	["TapNoteScore_W0"] = 0,
 	["TapNoteScore_W1"] = faplus and 1 or 0,
