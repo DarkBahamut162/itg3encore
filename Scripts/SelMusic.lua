@@ -1679,7 +1679,7 @@ function getCalculatedDifficulty(Step)
 	end
 
 	if usesStepCache then
-		if #stepCounter > 0 then for i=1,#stepCounter do stepSum = stepSum + (stepCounter[i] * i) end end
+		if #stepCounter > 1 then for i=1,#stepCounter do stepSum = stepSum + (stepCounter[i] * i) end end
 		if IsGame("be-mu") or IsGame("beat") then
 			stepSum = stepSum / totalSeconds
 		else
@@ -1700,9 +1700,9 @@ function getCalculatedDifficulty(Step)
 	local SPS = 0
 	if usesStepCache then
 		if IsGame("be-mu") or IsGame("beat") then
-			SPS = tonumber(LoadFromCache(Song,Step,"StepsPerSecond")) / 2
+			SPS = tonumber(LoadFromCache(Song,Step,"StepsPerSecond") or 0) / 2
 		else
-			SPS = tonumber(LoadFromCache(Song,Step,"StepsPerSecond")) * (getColumnsPerPlayer(stepType[2],stepType[3],true) / 4) * ddrtype
+			SPS = tonumber(LoadFromCache(Song,Step,"StepsPerSecond") or 0) * (getColumnsPerPlayer(stepType[2],stepType[3],true) / 4) * ddrtype
 		end
 	end
 
