@@ -21,7 +21,7 @@ if getenv("EvalCombo"..pname(player)) then
 			if ThemePrefs.Get("UseStepCache") then
 				SPS = tonumber(LoadFromCache(song,steps,"StepsPerSecond"))
 			else
-				local trueSeconds = song:GetLastSecond()-song:GetFirstSecond()
+				local trueSeconds = isOutFox(20211230) and steps:GetChartLength() or song:GetLastSecond()-song:GetFirstSecond()
 				if not VersionDateCheck(20150500) then
 					SPS = RadarCategory_Notes(song,steps)/trueSeconds
 				else

@@ -522,14 +522,14 @@ function GetLives(player)
 		for entry in ivalues(steps:GetTrailEntries()) do
 			stepCounter = stepCounter + entry:GetSteps():GetRadarValues(player):GetValue('RadarCategory_TapsAndHolds')
 			holdCounter = holdCounter + entry:GetSteps():GetRadarValues(player):GetValue('RadarCategory_Holds')
-			songInSeconds = songInSeconds + (entry:GetSong():GetLastSecond() - entry:GetSong():GetFirstSecond())
+			songInSeconds = songInSeconds + (isOutFox(20211230) and entry:GetSteps():GetChartLength() or entry:GetSong():GetLastSecond()-entry:GetSong():GetFirstSecond())
 		end
 	else
 		songs = GAMESTATE:GetCurrentSong()
 		steps = GAMESTATE:GetCurrentSteps(player)
 		stepCounter = steps:GetRadarValues(player):GetValue('RadarCategory_TapsAndHolds')
 		holdCounter = steps:GetRadarValues(player):GetValue('RadarCategory_Holds')
-		songInSeconds = songInSeconds + (songs:GetLastSecond() - songs:GetFirstSecond())
+		songInSeconds = songInSeconds + (isOutFox(20211230) and steps:GetChartLength() or songs:GetLastSecond()-songs:GetFirstSecond())
 	end
 
 	if not GAMESTATE:IsCourseMode() then

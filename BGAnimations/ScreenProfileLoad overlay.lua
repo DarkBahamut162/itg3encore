@@ -31,7 +31,7 @@ return Def.ActorFrame{
 									if ThemePrefs.Get("UseStepCache") then
 										SPS = tonumber(LoadFromCache(songs[s],steps[ss],"StepsPerSecond"))
 									else
-										local trueSeconds = songs[s]:GetLastSecond()-songs[s]:GetFirstSecond()
+										local trueSeconds = isOutFox(20211230) and steps[ss]:GetChartLength() or songs[s]:GetLastSecond()-songs[s]:GetFirstSecond()
 										if not VersionDateCheck(20150500) then
 											SPS = RadarCategory_Notes(songs[s],steps[ss])/trueSeconds
 										else

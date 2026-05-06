@@ -47,7 +47,7 @@ return Def.ActorFrame{
 							if steps then
 								local trueSeconds = 0
 								if usesStepCache and not (not isEtterna("0.55") and steps:IsAutogen()) then trueSeconds = tonumber(LoadFromCache(SongOrCourse,steps,"TrueSeconds")) or 0 end
-								if trueSeconds <= 0 then trueSeconds = SongOrCourse:GetFirstSecond() > SongOrCourse:GetLastSecond() and 0 or SongOrCourse:GetLastSecond()-SongOrCourse:GetFirstSecond() end
+								if trueSeconds <= 0 then trueSeconds = SongOrCourse:GetFirstSecond() > SongOrCourse:GetLastSecond() and 0 or (isOutFox(20211230) and steps:GetChartLength() or SongOrCourse:GetLastSecond()-SongOrCourse:GetFirstSecond()) end
 
 								IsMarathon = trueSeconds > MarathonCutoff
 								IsLong     = trueSeconds > LongCutoff

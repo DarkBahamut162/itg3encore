@@ -24,7 +24,7 @@ if courseMode then
                 seconds = seconds + tonumber(LoadFromCache(entry:GetSong(),entry:GetSteps(),"TrueSeconds"))
                 first = tonumber(LoadFromCache(entry:GetSong(),entry:GetSteps(),"TrueFirstSecond"))
             else
-                seconds = seconds + (entry:GetSong():GetLastSecond()-entry:GetSong():GetFirstSecond())
+                seconds = seconds + (isOutFox(20211230) and entry:GetSteps():GetChartLength() or entry:GetSong():GetLastSecond()-entry:GetSong():GetFirstSecond())
                 first = entry:GetSong():GetFirstSecond()
             end
             table.insert(trialSeconds, seconds)
@@ -40,7 +40,7 @@ else
             totalSeconds = tonumber(LoadFromCache(song,steps,"TrueSeconds"))
             firstSeconds = tonumber(LoadFromCache(song,steps,"TrueFirstSecond"))
         else
-            totalSeconds = song:GetLastSecond()-song:GetFirstSecond()
+            totalSeconds = isOutFox(20211230) and GAMESTATE:GetCurrentSteps(master):GetChartLength() or song:GetLastSecond()-song:GetFirstSecond()
             firstSeconds = song:GetFirstSecond()
         end
     end

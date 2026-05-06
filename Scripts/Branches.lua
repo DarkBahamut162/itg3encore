@@ -79,7 +79,7 @@ Branch.PostProfileSave = function()
 					if ThemePrefs.Get("UseStepCache") then
 						trueSeconds = tonumber(LoadFromCache(song,steps,"TrueSeconds")) or 0
 					else
-						trueSeconds = song:GetFirstSecond() > song:GetLastSecond() and 0 or song:GetLastSecond()-song:GetFirstSecond()
+						trueSeconds = song:GetFirstSecond() > song:GetLastSecond() and 0 or (isOutFox(20211230) and steps:GetChartLength() or song:GetLastSecond()-song:GetFirstSecond())
 					end
 
 					local IsMarathon = trueSeconds > MarathonCutoff

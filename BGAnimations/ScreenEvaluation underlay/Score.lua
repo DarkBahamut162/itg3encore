@@ -23,7 +23,7 @@ if PROFILEMAN:IsPersistentProfile(player) and enableEPL then
 		SPS = tonumber(LoadFromCache(Song,Steps,"StepsPerSecond"))
 		trueSeconds = tonumber(LoadFromCache(Song,Steps,"TrueSeconds"))
 	else
-		trueSeconds = Song:GetLastSecond()-Song:GetFirstSecond()
+		trueSeconds = isOutFox(20211230) and Steps:GetChartLength() or Song:GetLastSecond()-Song:GetFirstSecond()
 		if not VersionDateCheck(20150500) then
 			SPS = RadarCategory_Notes(Song,Steps)/trueSeconds
 		else

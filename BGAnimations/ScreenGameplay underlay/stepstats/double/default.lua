@@ -32,7 +32,7 @@ if getenv("SetPacemaker"..pname(pn)) == 18 then
 		if ThemePrefs.Get("UseStepCache") then
 			SPS = tonumber(LoadFromCache(song[i],steps[i],"StepsPerSecond"))
 		else
-			local trueSeconds = song[i]:GetLastSecond()-song[i]:GetFirstSecond()
+			local trueSeconds = isOutFox(20211230) and steps[i]:GetChartLength() or song[i]:GetLastSecond()-song[i]:GetFirstSecond()
 			if not VersionDateCheck(20150500) then
 				SPS = RadarCategory_Notes(song,steps)/trueSeconds
 			else

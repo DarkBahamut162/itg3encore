@@ -30,7 +30,7 @@ return Def.ActorFrame{
 							for i=1,#entries do
 								local trueSeconds = usesStepCache and tonumber(LoadFromCache(entries[i]:GetSong(),entries[i]:GetSteps(),"TrueSeconds")) or 0
 								--local trueSeconds = getTrueSeconds(entries[i]:GetSong(),entries[i]:GetSteps())["TrueSeconds"]
-								if trueSeconds <= 0 then trueSeconds = entries[i]:GetSong():GetFirstSecond() > entries[i]:GetSong():GetLastSecond() and 0 or entries[i]:GetSong():GetLastSecond()-entries[i]:GetSong():GetFirstSecond() end
+								if trueSeconds <= 0 then trueSeconds = entries[i]:GetSong():GetFirstSecond() > entries[i]:GetSong():GetLastSecond() and 0 or (isOutFox(20211230) and entries[i]:GetSteps():GetChartLength() or entries[i]:GetSong():GetLastSecond()-entries[i]:GetSong():GetFirstSecond()) end
 								length[pos+1] = length[pos+1] + trueSeconds
 							end
 						end
@@ -45,7 +45,7 @@ return Def.ActorFrame{
 						local steps = GAMESTATE:GetCurrentSteps(player)
 						if steps then length[pos+1] = usesStepCache and tonumber(LoadFromCache(curSelection,steps,"TrueSeconds")) or 0 end
 						--if steps then length[pos+1] = getTrueSeconds(curSelection,steps)["TrueSeconds"] end
-						if length[pos+1] <= 0 then length[pos+1] = curSelection:GetFirstSecond() > curSelection:GetLastSecond() and 0 or curSelection:GetLastSecond()-curSelection:GetFirstSecond() end
+						if length[pos+1] <= 0 then length[pos+1] = curSelection:GetFirstSecond() > curSelection:GetLastSecond() and 0 or (isOutFox(20211230) and steps:GetChartLength() or curSelection:GetLastSecond()-curSelection:GetFirstSecond()) end
 					end
 				else
 					local songs = SONGMAN:GetSongsInGroup(SCREENMAN:GetTopScreen():GetMusicWheel():GetSelectedSection())

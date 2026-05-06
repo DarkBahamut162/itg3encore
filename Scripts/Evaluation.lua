@@ -43,7 +43,7 @@ function TotalPossibleStepSecondsCurrent(player)
 				if ThemePrefs.Get("UseStepCache") then
 					trueSeconds = tonumber(LoadFromCache(song,step,"TrueSeconds"))
 				else
-					trueSeconds = song:GetFirstSecond() > song:GetLastSecond() and 0 or song:GetLastSecond()-song:GetFirstSecond()
+					trueSeconds = song:GetFirstSecond() > song:GetLastSecond() and 0 or (isOutFox(20211230) and step:GetChartLength() or song:GetLastSecond()-song:GetFirstSecond())
 				end
 				fSecs = fSecs + trueSeconds
 			end
@@ -53,7 +53,7 @@ function TotalPossibleStepSecondsCurrent(player)
 		if ThemePrefs.Get("UseStepCache") then
 			fSecs = tonumber(LoadFromCache(Song,StepsOrTrail,"TrueSeconds"))
 		else
-			fSecs = Song:GetFirstSecond() > Song:GetLastSecond() and 0 or Song:GetLastSecond()-Song:GetFirstSecond()
+			fSecs = Song:GetFirstSecond() > Song:GetLastSecond() and 0 or (isOutFox(20211230) and StepsOrTrail:GetChartLength() or Song:GetLastSecond()-Song:GetFirstSecond())
 		end
 	end
 
@@ -75,7 +75,7 @@ function TotalPossibleStepSeconds(player)
 			if ThemePrefs.Get("UseStepCache") then
 				trueSeconds = tonumber(LoadFromCache(Song,Steps,"TrueSeconds"))
 			else
-				trueSeconds = Song:GetFirstSecond() > Song:GetLastSecond() and 0 or Song:GetLastSecond()-Song:GetFirstSecond()
+				trueSeconds = Song:GetFirstSecond() > Song:GetLastSecond() and 0 or (isOutFox(20211230) and Steps:GetChartLength() or Song:GetLastSecond()-Song:GetFirstSecond())
 			end
 			fSecs = fSecs + trueSeconds
 		else
