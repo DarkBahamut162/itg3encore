@@ -100,6 +100,7 @@ local function InputHandler(event)
 				if topScreen then
 					topScreen:SetNextScreenName(SelectMusicOrCourse())
 					topScreen:StartTransitioningScreen("SM_GoToNextScreen")
+					SCREENMAN:PlayStartSound()
 				end
 			elseif event.GameButton == "Back" or event.GameButton == "Select" then
 				local topScreen = SCREENMAN:GetTopScreen()
@@ -125,7 +126,7 @@ local function InputHandler(event)
 			elseif event.GameButton == "MenuUp" then
 				local selected_char = password_chars[password_active_index]
 				if selected_char == "&START;" then
-					SOUND:PlayOnce(THEME:GetPathS('Common',"invalid"))
+					SCREENMAN:PlayInvalidSound()
 				else
 					SOUND:PlayOnce(THEME:GetPathS("ScreenSelectMaster","change"))
 					password_active_index = 2
@@ -134,7 +135,7 @@ local function InputHandler(event)
 			elseif event.GameButton == "MenuDown" then
 				local selected_char = password_chars[password_active_index]
 				if selected_char == "&SELECT;" then
-					SOUND:PlayOnce(THEME:GetPathS('Common',"invalid"))
+					SCREENMAN:PlayInvalidSound()
 				else
 					SOUND:PlayOnce(THEME:GetPathS("ScreenSelectMaster","change"))
 					password_active_index = 1
@@ -144,8 +145,8 @@ local function InputHandler(event)
 				local selected_char = password_chars[password_active_index]
 				if selected_char == "&START;" then
 					if password_prompt_mode == "join" and join_lobby_code == "" then
-						SOUND:PlayOnce(THEME:GetPathS("Common","Cancel"))
-						return false
+						SCREENMAN:PlayCancelSound()
+						return
 					end
 					showing_password_prompt = false
 					t:GetChild("Prompt"):playcommand("PasswordOff")
@@ -157,39 +158,40 @@ local function InputHandler(event)
 						MESSAGEMAN:Broadcast("SetStatus",{text="Creating lobby..."})
 						MESSAGEMAN:Broadcast("CreateLobby",{password=create_lobby_password:upper()})
 					end
-					SOUND:PlayOnce(THEME:GetPathS("Common","Start"))
+					SCREENMAN:PlayStartSound()
 				elseif selected_char == "&SELECT;" then
 					local password = GetPromptPassword()
 					if password:len() > 0 then
 						SetPromptPassword(password:sub(1,-2))
-						SOUND:PlayOnce(THEME:GetPathS("Common","Cancel"))
 						t:GetChild("Prompt"):playcommand("PasswordRefresh")
+						SCREENMAN:PlayCancelSound()
 					else
-						SOUND:PlayOnce(THEME:GetPathS('Common',"invalid"))
+						SCREENMAN:PlayInvalidSound()
 					end
 				else
 					local password = GetPromptPassword()
 					if password:len() < password_char_limit then
 						SetPromptPassword(password .. selected_char)
-						SOUND:PlayOnce(THEME:GetPathS("Common","Start"))
 						if GetPromptPassword():len() >= password_char_limit then password_active_index = 2 end
 						t:GetChild("Prompt"):playcommand("PasswordRefresh")
+						SCREENMAN:PlayStartSound()
 					else
-						SOUND:PlayOnce(THEME:GetPathS('Common',"invalid"))
+						SCREENMAN:PlayInvalidSound()
 					end
 				end
 			elseif event.DeviceInput.button == "DeviceButton_backspace" then
 				local password = GetPromptPassword()
 				if password:len() > 0 then
 					SetPromptPassword(password:sub(1,-2))
-					SOUND:PlayOnce(THEME:GetPathS("Common","Cancel"))
 					t:GetChild("Prompt"):playcommand("PasswordRefresh")
+					SCREENMAN:PlayCancelSound()
 				else
-					SOUND:PlayOnce(THEME:GetPathS('Common',"invalid"))
+					SCREENMAN:PlayInvalidSound()
 				end
 			elseif event.GameButton == "Select" or event.GameButton == "Back" then
 				showing_password_prompt = false
 				t:GetChild("Prompt"):playcommand("PasswordOff")
+				SCREENMAN:PlayCancelSound()
 			else
 				local letter =split("_",event.DeviceInput.button)
 				local found = FindInTable(letter[#letter],letters)
@@ -197,11 +199,11 @@ local function InputHandler(event)
 					local password = GetPromptPassword()
 					if password:len() < password_char_limit then
 						SetPromptPassword(password..event.DeviceInput.button:sub(-1):upper())
-						SOUND:PlayOnce(THEME:GetPathS("Common","Start"))
 						if GetPromptPassword():len() >= password_char_limit then password_active_index = 2 end
 						t:GetChild("Prompt"):playcommand("PasswordRefresh")
+						SCREENMAN:PlayStartSound()
 					else
-						SOUND:PlayOnce(THEME:GetPathS('Common',"invalid"))
+						SCREENMAN:PlayInvalidSound()
 					end
 				end
 			end
@@ -248,13 +250,20 @@ local function InputHandler(event)
 			MESSAGEMAN:Broadcast("Change")
 		elseif event.GameButton == "Back" or event.GameButton == "Select" then
 			if showing_leave_confirm then
-				SOUND:PlayOnce(THEME:GetPathS("Common","Cancel"))
 				t:GetChild("Prompt"):playcommand("PromptOff")
 				showing_leave_confirm = false
+				SCREENMAN:PlayCancelSound()
 			elseif list_selected then
 				list_selected = false
 				lobby = 0
 				MESSAGEMAN:Broadcast("Change")
+				SCREENMAN:PlayCancelSound()
+			elseif mode == "joined" then
+				leave_confirm_index = 0
+				showing_leave_confirm = true
+				t:GetChild("Prompt"):GetChild("Cursor"):queuecommand("No")
+				t:GetChild("Prompt"):playcommand("PromptOn")
+				SCREENMAN:PlayStartSound()
 			else
 				local topScreen = SCREENMAN:GetTopScreen()
 				if topScreen then
@@ -266,14 +275,14 @@ local function InputHandler(event)
 		elseif event.GameButton == "Start" then
 			if showing_leave_confirm then
 				if leave_confirm_index == 0 then
-					SOUND:PlayOnce(THEME:GetPathS("Common","Cancel"))
+					SCREENMAN:PlayCancelSound()
 				elseif leave_confirm_index == 1 then
-					SOUND:PlayOnce(THEME:GetPathS("Common","Start"))
-					MESSAGEMAN:Broadcast("SearchLobby")
-					MESSAGEMAN:Broadcast("Change")
 					mode = "browse"
 					joined_lobby_code = ""
 					joined_lobby_players = {}
+					MESSAGEMAN:Broadcast("SearchLobby")
+					MESSAGEMAN:Broadcast("Change")
+					SCREENMAN:PlayStartSound()
 				end
 				t:GetChild("Prompt"):playcommand("PromptOff")
 				showing_leave_confirm = false
@@ -283,24 +292,24 @@ local function InputHandler(event)
 
 				local selected = lobbies[current]
 				if not selected then
-					SOUND:PlayOnce(THEME:GetPathS("Common","Cancel"))
+					SCREENMAN:PlayCancelSound()
 					return
 				end
 
 				MESSAGEMAN:Broadcast("OnlineLobbyJoinSelected",{code=selected.code,isPasswordProtected=selected.isPasswordProtected,password=(params and params.password) or ""})
 				MESSAGEMAN:Broadcast("Change")
+				SCREENMAN:PlayStartSound()
 			else
 				if mode == "browse" then
 					if active_index == 0 then
 						if #lobbies > 0 then
 							list_selected = true
-							SOUND:PlayOnce(THEME:GetPathS("Common","Start"))
 							MESSAGEMAN:Broadcast("Change")
+							SCREENMAN:PlayStartSound()
 						else
-							SOUND:PlayOnce(THEME:GetPathS("Common","Cancel"))
+							SCREENMAN:PlayCancelSound()
 						end
 					elseif active_index == 1 then
-						SOUND:PlayOnce(THEME:GetPathS("Common","Start"))
 						if isITGmaniaOnline() then
 							MESSAGEMAN:Broadcast("SetStatus",{text="Searching lobbies..."})
 							MESSAGEMAN:Broadcast("SearchLobby")
@@ -312,8 +321,8 @@ local function InputHandler(event)
 							MESSAGEMAN:Broadcast("SetStatus",{text="Refreshing lobby list..."})
 							MESSAGEMAN:Broadcast("Connect")
 						end
+						SCREENMAN:PlayStartSound()
 					elseif active_index == 2 then
-						SOUND:PlayOnce(THEME:GetPathS("Common","Start"))
 						password_prompt_mode = "create"
 						create_lobby_password = ""
 						show_password_in_lobby = false
@@ -325,8 +334,8 @@ local function InputHandler(event)
 							password_active_index = 3
 							t:GetChild("Prompt"):playcommand("PasswordRefresh")
 						end
+						SCREENMAN:PlayStartSound()
 					elseif active_index == 3 then
-						SOUND:PlayOnce(THEME:GetPathS("Common","Start"))
 						local topScreen = SCREENMAN:GetTopScreen()
 						if topScreen then
 							topScreen:SetNextScreenName(Branch.TitleScreen())
@@ -334,11 +343,11 @@ local function InputHandler(event)
 							SCREENMAN:PlayCancelSound()
 						end
 					elseif active_index == 4 then
-						SOUND:PlayOnce(THEME:GetPathS("Common","Start"))
 						local topScreen = SCREENMAN:GetTopScreen()
 						if topScreen then
 							topScreen:SetNextScreenName(SelectMusicOrCourse())
 							topScreen:StartTransitioningScreen("SM_GoToNextScreen")
+							SCREENMAN:PlayStartSound()
 						end
 					end
 				else
@@ -346,16 +355,19 @@ local function InputHandler(event)
 						show_password_in_lobby = not show_password_in_lobby
 						passwordHidden = hasPassword and (not show_password_in_lobby)
 						MESSAGEMAN:Broadcast("Change")
+						SCREENMAN:PlayStartSound()
 					elseif joined_active_index == 1 then
 						leave_confirm_index = 0
 						showing_leave_confirm = true
 						t:GetChild("Prompt"):GetChild("Cursor"):queuecommand("No")
 						t:GetChild("Prompt"):playcommand("PromptOn")
+						SCREENMAN:PlayStartSound()
 					elseif joined_active_index == 2 then
 						local topScreen = SCREENMAN:GetTopScreen()
 						if topScreen then
 							topScreen:SetNextScreenName(SelectMusicOrCourse())
 							topScreen:StartTransitioningScreen("SM_GoToNextScreen")
+							SCREENMAN:PlayStartSound()
 						end
 					end
 				end
@@ -444,7 +456,7 @@ return Def.ActorFrame{
 	end,
 	OnlineLobbyJoinSelectedMessageCommand=function(self,params)
 		if not params or not params.code then
-			SOUND:PlayOnce(THEME:GetPathS("Common","Cancel"))
+			SCREENMAN:PlayCancelSound()
 			return
 		end
 
