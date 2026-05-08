@@ -46,7 +46,7 @@ end
 
 Branch.AfterSelectStyle = function()
 	if IsNetSMOnline() then return SMOnlineScreen() end
-	if ThemePrefs.Get("EnableOnlineLobbies") then return "ScreenOnlineLobbies" end
+	if ThemePrefs.Get("EnableOnlineLobbies") and NETWORK:IsUrlAllowed("ws://syncservice.groovestats.com:1337") then return "ScreenOnlineLobbies" end
 	if getenv("Workout") then return "ScreenWorkoutMenu" end
 	if GAMESTATE:IsCourseMode() then return "ScreenSelectCourse"..(isFinal() and "Final" or "") end
 	if IsNetConnected() then return "ScreenNetSelectMusic" end
