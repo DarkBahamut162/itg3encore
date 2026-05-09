@@ -216,14 +216,18 @@ local function DisplayLobbyState(data,actor)
 			end
 		else
 			if string.find(screenName,"ScreenSelectMusic") then
-				local songPathParts = data.songInfo.songPath:split("/")
-				local pack = songPathParts[1] or "Unknown"
-				local song = songPathParts[2] or "Unknown"
+				local pack = data.songInfo.songPath:split("/")[1] or "Unknown"
+				local title = data.songInfo.title
+				local artist = data.songInfo.artist
+				local difficulty = data.songInfo.difficulty:split("_")[2]
 				local maxLength = 30
 				if #pack > maxLength then pack = string.sub(pack,1,maxLength) .. "..." end
-				if #song > maxLength then song = string.sub(song,1,maxLength) .. "..." end
+				if #title > maxLength then title = string.sub(title,1,maxLength) .. "..." end
+				if #artist > maxLength then artist = string.sub(artist,1,maxLength) .. "..." end
 				lines[#lines+1] = "Pack: "..pack
-				lines[#lines+1] = "Song: "..song
+				lines[#lines+1] = "Title: "..title
+				lines[#lines+1] = "Artist: "..artist
+				lines[#lines+1] = "Difficulty: "..difficulty
 			end
 		end
 	end
@@ -387,10 +391,12 @@ function CreateOnlineHandler()
 					songPath = songPath:sub(8,#songPath-1)
 					local artist = ""
 					local length = 0
+					local difficulty = ""
 					if GAMESTATE:IsCourseMode() then
 						local trail = GAMESTATE:GetCurrentTrail(GAMESTATE:GetMasterPlayerNumber())
 						if trail then
 							local artists = trail:GetArtists()
+							difficulty = trail:GetDifficulty()
 							length = TrailUtil.GetTotalSeconds(trail)
 							for i=1,#artists do
 								if not string.find(artist,artists[i]) then
@@ -403,6 +409,7 @@ function CreateOnlineHandler()
 							end
 						end
 					else
+						difficulty = GAMESTATE:GetCurrentSteps(GAMESTATE:GetMasterPlayerNumber()):GetDifficulty()
 						artist = SongOrCourse:GetDisplayArtist()
 						length = SongOrCourse:MusicLengthSeconds()
 					end
@@ -411,6 +418,7 @@ function CreateOnlineHandler()
 							songPath=songPath,
 							title=SongOrCourse:GetDisplayFullTitle(),
 							artist=artist,
+							difficulty=difficulty,
 							songLength=length
 						}
 					}
