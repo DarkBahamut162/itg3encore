@@ -72,7 +72,7 @@ function ScreenTextEntry()
 				MESSAGEMAN:Broadcast("CreateLobby",{password=create_lobby_password})
 			end
 		end,
-		ValidateAppend = function(answer,append) return FindInTable(append:lower(),letters) ~= nil end,
+		ValidateAppend = function(answer,append) return FindInTable(append:lower(),letters) ~= nil and answer:len() < password_char_limit end,
 		FormatAnswerForDisplay = function(answer) return answer:upper() end
 	}
 	SCREENMAN:GetTopScreen():Load(question)
