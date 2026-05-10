@@ -503,7 +503,7 @@ function CreateOnlineHandler()
 							bg:zoomto(width,height)
 						end
 					elseif string.find(screenName,"ScreenOnlineLobbies") then
-						bg:zoomto(0,0)
+						self:xy(-SCREEN_WIDTH,_screen.cy)
 					end
 					self:GetChild("Text"):playcommand("Resize",{width=width,height=height,text=params.text})
 				end,
