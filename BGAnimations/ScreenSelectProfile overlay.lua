@@ -384,21 +384,21 @@ return Def.ActorFrame {
 	children = {
 		Def.ActorFrame {
 			Name = 'P1Frame',
-			InitCommand=function(self) self:x(SCREEN_CENTER_X-160):y(SCREEN_CENTER_Y) end,
-			OnCommand=function(self) self:zoom(0):bounceend(0.35):zoom(1) end,
+			InitCommand=function(self) self:x(SCREEN_CENTER_X-160*WideScreenDiff()):y(SCREEN_CENTER_Y) end,
+			OnCommand=function(self) self:zoom(0):bounceend(0.35):zoom(WideScreenDiff()) end,
 			OffCommand=function(self) self:bouncebegin(0.35):zoom(0) end,
 			PlayerJoinedMessageCommand=function(self,param)
-				if param.Player == PLAYER_1 then self:zoom(1.15):bounceend(0.175):zoom(1.0) end
+				if param.Player == PLAYER_1 then self:zoom(1.15*WideScreenDiff()):bounceend(0.175):zoom(WideScreenDiff()) end
 			end,
 			children = LoadPlayerStuff(PLAYER_1)
 		},
 		Def.ActorFrame {
 			Name = 'P2Frame',
-			InitCommand=function(self) self:x(SCREEN_CENTER_X+160):y(SCREEN_CENTER_Y) end,
-			OnCommand=function(self) self:zoom(0):bounceend(0.35):zoom(1) end,
+			InitCommand=function(self) self:x(SCREEN_CENTER_X+160*WideScreenDiff()):y(SCREEN_CENTER_Y) end,
+			OnCommand=function(self) self:zoom(0):bounceend(0.35):zoom(WideScreenDiff()) end,
 			OffCommand=function(self) self:bouncebegin(0.35):zoom(0) end,
 			PlayerJoinedMessageCommand=function(self,param)
-				if param.Player == PLAYER_2 then self:zoom(1.15):bounceend(0.175):zoom(1.0) end
+				if param.Player == PLAYER_2 then self:zoom(1.15*WideScreenDiff()):bounceend(0.175):zoom(WideScreenDiff()) end
 			end,
 			children = LoadPlayerStuff(PLAYER_2)
 		},
