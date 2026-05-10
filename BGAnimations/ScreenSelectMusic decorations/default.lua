@@ -321,6 +321,27 @@ t[#t+1] = Def.BitmapText {
 	end
 }
 
+local levels = {
+	[2] = "StageAward_FullComboW3",
+	[3] = "StageAward_SingleDigitW3",
+	[4] = "StageAward_OneW3",
+	[5] = "StageAward_FullComboW2",
+	[6] = "StageAward_SingleDigitW2",
+	[7] = "StageAward_OneW2",
+	[8] = "StageAward_FullComboW1"
+}
+
+local states = {
+	["StageAward_FullComboW3"]		= 2,
+	["StageAward_SingleDigitW3"]	= 3,
+	["StageAward_OneW3"]			= 4,
+	["StageAward_FullComboW2"]		= 5,
+	["StageAward_SingleDigitW2"]	= 6,
+	["StageAward_OneW2"]			= 7,
+	["StageAward_FullComboW1"]		= 8
+}
+
+
 if ThemePrefs.Get("ShowPackClears") and not courseMode then
 	t[#t+1] = Def.ActorFrame {
 		InitCommand=function(self) self:x(SCREEN_CENTER_X+132*WideScreenDiff()):y(SCREEN_CENTER_Y+12*WideScreenDiff()):zoom(0.5*WideScreenDiff()) end,
@@ -340,7 +361,14 @@ if ThemePrefs.Get("ShowPackClears") and not courseMode then
 					local songsCleared = {}
 					local stepsTotal = 0
 					local stepsCleared = {}
-					local grades = {[PLAYER_1]={},[PLAYER_2]={}}
+					local FC = {
+						[PLAYER_1]={["MFC"]=0,["PFC"]=0,["GFC"]=0},
+						[PLAYER_2]={["MFC"]=0,["PFC"]=0,["GFC"]=0}
+					}
+					local grades = {
+						[PLAYER_1]={},
+						[PLAYER_2]={}
+					}
 					for s=1,#songs do
 						local currentSongCleared = {}
 						local currentSongClearedCheck = {}
@@ -350,12 +378,31 @@ if ThemePrefs.Get("ShowPackClears") and not courseMode then
 							for ss=1,#steps do
 								stepsTotal = stepsTotal + 1
 								for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
+									local grade = false
+									local level = 0
 									local profile = PROFILEMAN:GetProfile(pn):GetHighScoreList(songs[s],steps[ss]):GetHighScores()
 									if #profile > 0 then
 										for place,highscore in pairs(profile) do
-											grades[pn][highscore:GetGrade()] = (grades[pn][highscore:GetGrade()] or 0) + 1
-											currentSongClearedCheck[pn]=currentSongClearedCheck[pn] or highscore:GetGrade()~="Grade_Failed"
-											break
+											if not grade then
+												grades[pn][highscore:GetGrade()] = (grades[pn][highscore:GetGrade()] or 0) + 1
+												currentSongClearedCheck[pn]=currentSongClearedCheck[pn] or highscore:GetGrade()~="Grade_Failed"
+												grade = true
+											end
+											if not ThemePrefs.Get("ShowLamps") then break end
+											if level <= 0 then 
+												if highscore:GetGrade() ~= "Grade_Failed" then level = 1 elseif level <= 0 then level = -1 end
+											end
+											local stageAward = highscore:GetStageAward()
+											if states[stageAward] then
+												if states[stageAward] > level then level = states[stageAward] end
+											end
+										end
+										if level == 8 then
+											FC[pn]["MFC"] = FC[pn]["MFC"] + 1
+										elseif level >= 5 then
+											FC[pn]["PFC"] = FC[pn]["PFC"] + 1
+										elseif level >= 2 then
+											FC[pn]["GFC"] = FC[pn]["GFC"] + 1
 										end
 										if currentSongClearedCheck[pn] then
 											currentSongCleared[pn] = (currentSongCleared[pn] or 0) + 1
@@ -403,25 +450,12 @@ if ThemePrefs.Get("ShowPackClears") and not courseMode then
 						
 					end
 					for grade in ivalues({
-						"Grade_Tier01",
-						"Grade_Tier02",
-						"Grade_Tier03",
-						"Grade_Tier04",
-						"Grade_Tier05",
-						"Grade_Tier06",
-						"Grade_Tier07",
-						"Grade_Tier08",
-						"Grade_Tier09",
-						"Grade_Tier10",
-						"Grade_Tier11",
-						"Grade_Tier12",
-						"Grade_Tier13",
-						"Grade_Tier14",
-						"Grade_Tier15",
-						"Grade_Tier16",
-						"Grade_Tier17",
-						"Grade_Tier18",
-						"Grade_Failed"
+						"Grade_Tier01","Grade_Tier02","Grade_Tier03","Grade_Tier04",
+						"Grade_Tier05","Grade_Tier06","Grade_Tier07",
+						"Grade_Tier08","Grade_Tier09","Grade_Tier10",
+						"Grade_Tier11","Grade_Tier12","Grade_Tier13",
+						"Grade_Tier14","Grade_Tier15","Grade_Tier16",
+						"Grade_Tier17","Grade_Tier18","Grade_Failed"
 					}) do
 						self:GetParent():GetChild("Grades"):diffusealpha(songsTotal == 0 and 0 or 1)
 						local text = ""
@@ -436,6 +470,23 @@ if ThemePrefs.Get("ShowPackClears") and not courseMode then
 								Length = attribute.LENGTH,
 								Diffuse = attribute.COLOR
 							})
+						end
+					end
+					if ThemePrefs.Get("ShowLamps") then
+						for fc in ivalues({"MFC","PFC","GFC"}) do
+							local text = ""
+							local attributes = {}
+							for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
+								attributes[#attributes+1]={FIRST=string.len(''..text),LENGTH=string.len(''..(FC[pn][fc] or 0)),COLOR=PlayerColor(pn)}
+								text = text..(FC[pn][fc] or 0).."|"
+							end
+							self:GetParent():GetChild("Grades"):GetChild(fc):settext(text):ClearAttributes()
+							for attribute in ivalues(attributes) do
+								self:GetParent():GetChild("Grades"):GetChild(fc):AddAttribute(attribute.FIRST,{
+									Length = attribute.LENGTH,
+									Diffuse = attribute.COLOR
+								})
+							end
 						end
 					end
 				end
@@ -540,6 +591,21 @@ if ThemePrefs.Get("ShowPackClears") and not courseMode then
 				InitCommand=function(self) self:x(320):y(128):valign(0):halign(0) end
 			},
 			Def.BitmapText {
+				File = "_v 26px bold shadow",
+				Text="FC",
+				InitCommand=function(self) self:visible(ThemePrefs.Get("ShowLamps")):x(-64):y(160):diffuse(color("#7BE8FF")):valign(0):halign(0) end
+			},
+			Def.BitmapText {
+				File = "_v 26px bold shadow",
+				Text="FC",
+				InitCommand=function(self) self:visible(ThemePrefs.Get("ShowLamps")):x(128):y(160):diffuse(color("#FFA959")):valign(0):halign(0) end
+			},
+			Def.BitmapText {
+				File = "_v 26px bold shadow",
+				Text="FC",
+				InitCommand=function(self) self:visible(ThemePrefs.Get("ShowLamps")):x(320):y(160):diffuse(color("#67FF19")):valign(0):halign(0) end
+			},
+			Def.BitmapText {
 				Name="Grade_Tier01",
 				File = "_v 26px bold shadow",
 				InitCommand=function(self) self:x(-192):y(64):valign(0):halign(1) end
@@ -633,6 +699,21 @@ if ThemePrefs.Get("ShowPackClears") and not courseMode then
 				Name="Grade_Failed",
 				File = "_v 26px bold shadow",
 				InitCommand=function(self) self:x(320):y(128):valign(0):halign(1) end
+			},
+			Def.BitmapText {
+				Name="MFC",
+				File = "_v 26px bold shadow",
+				InitCommand=function(self) self:x(-64):y(160):diffuse(color("#7BE8FF")):valign(0):halign(1) end
+			},
+			Def.BitmapText {
+				Name="PFC",
+				File = "_v 26px bold shadow",
+				InitCommand=function(self) self:x(128):y(160):diffuse(color("#FFA959")):valign(0):halign(1) end
+			},
+			Def.BitmapText {
+				Name="GFC",
+				File = "_v 26px bold shadow",
+				InitCommand=function(self) self:x(320):y(160):diffuse(color("#67FF19")):valign(0):halign(1) end
 			}
 		}
 	}
