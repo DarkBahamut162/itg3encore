@@ -593,7 +593,7 @@ return Def.ActorFrame{
 		},
 		Def.Sprite {
 			Texture = THEME:GetPathG("ScreenSelectMusic","Triangle/glow"),
-			InitCommand=function(self) self:xy(SCREEN_CENTER_X-272,SCREEN_CENTER_Y-7):zoomx(-1):halign(0) end,
+			InitCommand=function(self) self:xy(SCREEN_CENTER_X-272*WideScreenDiff(),SCREEN_CENTER_Y-7*WideScreenDiff()):zoomx(-WideScreenDiff()):halign(0) end,
 			TriangleOnMessageCommand=function(self) self:visible(true) end,
 			TriangleOffMessageCommand=function(self) self:visible(false) end
 		},
@@ -602,75 +602,75 @@ return Def.ActorFrame{
 			Def.BitmapText {
 				Name="Slot1",
 				File = "_v 26px bold white",
-				InitCommand=function(self) self:xy(SCREEN_CENTER_X-272,SCREEN_CENTER_Y-7-28*3):maxwidth(265):halign(0):shadowlength(0):vertspacing(-3):diffuse(color(".5,.5,.5,1")) end
+				InitCommand=function(self) self:xy(SCREEN_CENTER_X-272*WideScreenDiff(),SCREEN_CENTER_Y-91*WideScreenDiff()):zoom(WideScreenDiff()):maxwidth(265):halign(0):shadowlength(0):vertspacing(-3):diffuse(color(".5,.5,.5,1")) end
 			},
 			Def.BitmapText {
 				Name="Slot2",
 				File = "_v 26px bold white",
-				InitCommand=function(self) self:xy(SCREEN_CENTER_X-272,SCREEN_CENTER_Y-7-28*2):maxwidth(265):halign(0):shadowlength(0):vertspacing(-3):diffuse(color(".5,.5,.5,1")) end
+				InitCommand=function(self) self:xy(SCREEN_CENTER_X-272*WideScreenDiff(),SCREEN_CENTER_Y-63*WideScreenDiff()):zoom(WideScreenDiff()):maxwidth(265):halign(0):shadowlength(0):vertspacing(-3):diffuse(color(".5,.5,.5,1")) end
 			},
 			Def.BitmapText {
 				Name="Slot3",
 				File = "_v 26px bold white",
-				InitCommand=function(self) self:xy(SCREEN_CENTER_X-272,SCREEN_CENTER_Y-7-28*1):maxwidth(265):halign(0):shadowlength(0):vertspacing(-3):diffuse(color(".5,.5,.5,1")) end
+				InitCommand=function(self) self:xy(SCREEN_CENTER_X-272*WideScreenDiff(),SCREEN_CENTER_Y-35*WideScreenDiff()):zoom(WideScreenDiff()):maxwidth(265):halign(0):shadowlength(0):vertspacing(-3):diffuse(color(".5,.5,.5,1")) end
 			},
 			Def.BitmapText {
 				Name="Slot4",
 				File = "_v 26px bold white",
-				InitCommand=function(self) self:xy(SCREEN_CENTER_X-272,SCREEN_CENTER_Y-7):maxwidth(265):maxheight(190):halign(0):shadowlength(0):vertspacing(-3) end
+				InitCommand=function(self) self:xy(SCREEN_CENTER_X-272*WideScreenDiff(),SCREEN_CENTER_Y-7*WideScreenDiff()):zoom(WideScreenDiff()):maxwidth(265):maxheight(190):halign(0):shadowlength(0):vertspacing(-3) end
 			},
 			Def.BitmapText {
 				Name="Slot5",
 				File = "_v 26px bold white",
-				InitCommand=function(self) self:xy(SCREEN_CENTER_X-272,SCREEN_CENTER_Y-7+28*1):maxwidth(265):halign(0):shadowlength(0):vertspacing(-3):diffuse(color(".5,.5,.5,1")) end
+				InitCommand=function(self) self:xy(SCREEN_CENTER_X-272*WideScreenDiff(),SCREEN_CENTER_Y+21*WideScreenDiff()):zoom(WideScreenDiff()):maxwidth(265):halign(0):shadowlength(0):vertspacing(-3):diffuse(color(".5,.5,.5,1")) end
 			},
 			Def.BitmapText {
 				Name="Slot6",
 				File = "_v 26px bold white",
-				InitCommand=function(self) self:xy(SCREEN_CENTER_X-272,SCREEN_CENTER_Y-7+28*2):maxwidth(265):halign(0):shadowlength(0):vertspacing(-3):diffuse(color(".5,.5,.5,1")) end
+				InitCommand=function(self) self:xy(SCREEN_CENTER_X-272*WideScreenDiff(),SCREEN_CENTER_Y+49*WideScreenDiff()):zoom(WideScreenDiff()):maxwidth(265):halign(0):shadowlength(0):vertspacing(-3):diffuse(color(".5,.5,.5,1")) end
 			},
 			Def.BitmapText {
 				Name="Slot7",
 				File = "_v 26px bold white",
-				InitCommand=function(self) self:xy(SCREEN_CENTER_X-272,SCREEN_CENTER_Y-7+28*3):maxwidth(265):halign(0):shadowlength(0):vertspacing(-3):diffuse(color(".5,.5,.5,1")) end
+				InitCommand=function(self) self:xy(SCREEN_CENTER_X-272*WideScreenDiff(),SCREEN_CENTER_Y+77*WideScreenDiff()):zoom(WideScreenDiff()):maxwidth(265):halign(0):shadowlength(0):vertspacing(-3):diffuse(color(".5,.5,.5,1")) end
 			}
 		},
 		Def.ActorFrame{
 			Name="Display",
 			Def.BitmapText {
 				File = "_v 26px bold white",
-				InitCommand=function(self) self:xy(SCREEN_CENTER_X+147.5,SCREEN_CENTER_Y-20+20*-5.5):zoom(2/3):maxwidth(430):valign(0):shadowlength(0):vertspacing(-3) end,
+				InitCommand=function(self) self:xy(SCREEN_CENTER_X+147.5*WideScreenDiff(),SCREEN_CENTER_Y-130*WideScreenDiff()):zoom(2/3*WideScreenDiff()):maxwidth(430):valign(0):shadowlength(0):vertspacing(-3) end,
 				SetStatusMessageCommand=function(self,params) self:settext(params.text) end,
 			},
 			Def.BitmapText {
 				Name="Option1",
 				File = "_v 26px bold white",
-				InitCommand=function(self) self:xy(SCREEN_CENTER_X+147.5,SCREEN_CENTER_Y-20+20*-2.5):zoom(2/3):maxwidth(430):valign(0):shadowlength(0):vertspacing(-3) end
+				InitCommand=function(self) self:xy(SCREEN_CENTER_X+147.5*WideScreenDiff(),SCREEN_CENTER_Y-70*WideScreenDiff()):zoom(2/3*WideScreenDiff()):maxwidth(430):valign(0):shadowlength(0):vertspacing(-3) end
 			},
 			Def.BitmapText {
 				Name="Option2",
 				File = "_v 26px bold white",
-				InitCommand=function(self) self:xy(SCREEN_CENTER_X+147.5,SCREEN_CENTER_Y-20+20*0):zoom(2/3):maxwidth(430):valign(0):shadowlength(0):vertspacing(-3) end
+				InitCommand=function(self) self:xy(SCREEN_CENTER_X+147.5*WideScreenDiff(),SCREEN_CENTER_Y-20*WideScreenDiff()):zoom(2/3*WideScreenDiff()):maxwidth(430):valign(0):shadowlength(0):vertspacing(-3) end
 			},
 			Def.BitmapText {
 				Name="Option3",
 				File = "_v 26px bold white",
-				InitCommand=function(self) self:xy(SCREEN_CENTER_X+147.5,SCREEN_CENTER_Y-20+20*2.5):zoom(2/3):maxwidth(430):valign(0):shadowlength(0):vertspacing(-3) end
+				InitCommand=function(self) self:xy(SCREEN_CENTER_X+147.5*WideScreenDiff(),SCREEN_CENTER_Y+30*WideScreenDiff()):zoom(2/3*WideScreenDiff()):maxwidth(430):valign(0):shadowlength(0):vertspacing(-3) end
 			},
 			Def.BitmapText {
 				Name="Option4",
 				File = "_v 26px bold white",
-				InitCommand=function(self) self:xy(SCREEN_CENTER_X+147.5,SCREEN_CENTER_Y-20+20*5):zoom(2/3):maxwidth(430):valign(0):shadowlength(0):vertspacing(-3) end
+				InitCommand=function(self) self:xy(SCREEN_CENTER_X+147.5*WideScreenDiff(),SCREEN_CENTER_Y+80*WideScreenDiff()):zoom(2/3*WideScreenDiff()):maxwidth(430):valign(0):shadowlength(0):vertspacing(-3) end
 			},
 			Def.BitmapText {
 				Name="Top",
 				File = "_v 26px bold white",
-				InitCommand=function(self) self:xy(SCREEN_CENTER_X-272,SCREEN_CENTER_Y-7-28*4):maxwidth(265):halign(0):shadowlength(0):vertspacing(-3) end
+				InitCommand=function(self) self:xy(SCREEN_CENTER_X-272*WideScreenDiff(),SCREEN_CENTER_Y-119*WideScreenDiff()):zoom(WideScreenDiff()):maxwidth(265):halign(0):shadowlength(0):vertspacing(-3) end
 			},
 			Def.BitmapText {
 				Name="Bottom",
 				File = "_v 26px bold white",
-				InitCommand=function(self) self:xy(SCREEN_CENTER_X-272,SCREEN_CENTER_Y-7+28*4):maxwidth(265):halign(0):shadowlength(0):vertspacing(-3) end
+				InitCommand=function(self) self:xy(SCREEN_CENTER_X-272*WideScreenDiff(),SCREEN_CENTER_Y+105*WideScreenDiff()):zoom(WideScreenDiff()):maxwidth(265):halign(0):shadowlength(0):vertspacing(-3) end
 			}
 		}
 	},
@@ -730,17 +730,17 @@ return Def.ActorFrame{
         Def.BitmapText {
             File = "_z 36px shadowx",
 			Name="Warning",
-			InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y-SCREEN_CENTER_Y/3):zoom(0.6*WideScreenDiff()):diffusealpha(0) end
+			InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y-SCREEN_CENTER_Y/3*WideScreenDiff()):maxwidth(SCREEN_WIDTH/WideScreenDiff()):zoom(0.6*WideScreenDiff()):diffusealpha(0) end
 		},
         Def.BitmapText {
             File = "_z 36px shadowx",
 			Name="Password",
-			InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y-SCREEN_CENTER_Y/6):zoom(0.6*WideScreenDiff()):diffusealpha(0) end
+			InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y-SCREEN_CENTER_Y/6*WideScreenDiff()):maxwidth(SCREEN_WIDTH/WideScreenDiff()):zoom(0.6*WideScreenDiff()):diffusealpha(0) end
 		},
         Def.BitmapText {
             File = "_z 36px shadowx",
 			Name="PasswordSelected",
-			InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y):zoom(0.6*WideScreenDiff()):diffuse(color("#808080")):diffusealpha(0) end
+			InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y):zoom(0.6*WideScreenDiff()):maxwidth(SCREEN_WIDTH/WideScreenDiff()):diffuse(color("#808080")):diffusealpha(0) end
 		},
 		Def.BitmapText{
             File = "_z 36px shadowx",
