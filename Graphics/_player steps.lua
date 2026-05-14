@@ -42,7 +42,7 @@ return Def.ActorFrame{
 						end
 						if IsGame("be-mu") or IsGame("beat") then
 							local loadScratches = LoadFromCache(SongOrCourse,StepsOrTrail,"Scratches")
-							if string.find(loadScratches,"%.") then loadScratches = "" end
+							if loadScratches and string.find(loadScratches,"%.") then loadScratches = "" end
 							if loadScratches and not (loadScratches == "" or loadScratches == "0") then output = addToOutput(output,"Scratches: "..loadScratches," | ") end
 							if GetUserPrefN("StylePosition") == 2 then
 								local loadFoots = LoadFromCache(SongOrCourse,StepsOrTrail,"Foots")
