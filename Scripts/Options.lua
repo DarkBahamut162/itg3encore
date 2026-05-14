@@ -417,7 +417,7 @@ function InitPlayerOptions()
 		setenv("PercentageClearThreshold"..pname(pn),(not isVS() and VersionDateCheck(20160000)) and LoadUserPrefN(pn, "PercentageClearThreshold", tonumber(DefaultLuaModifiers["PercentageClearThreshold"])) or 0)
 
 		setenv("Flare"..pname(pn),(not isVS() and VersionDateCheck(20160000)) and LoadUserPrefN(pn, "Flare", tonumber(DefaultLuaModifiers["Flare"])) or 0)
-		setenv("FlareFloat"..pname(pn),(not isVS() and VersionDateCheck(20160000)) and LoadUserPrefN(pn, "FlareFloat", tobool(DefaultLuaModifiers["FlareFloat"])) or false)
+		setenv("FlareFloat"..pname(pn),(not isVS() and VersionDateCheck(20160000)) and LoadUserPrefB(pn, "FlareFloat", tobool(DefaultLuaModifiers["FlareFloat"])) or false)
 		setenv("FlareType"..pname(pn),(not isVS() and VersionDateCheck(20160000)) and LoadUserPrefN(pn, "FlareType", tonumber(DefaultLuaModifiers["FlareType"])) or 1)
 		setenv("FlareAccurate"..pname(pn),(not isVS() and VersionDateCheck(20160000)) and LoadUserPrefB(pn, "FlareAccurate", tobool(DefaultLuaModifiers["FlareAccurate"])) or false)
 
