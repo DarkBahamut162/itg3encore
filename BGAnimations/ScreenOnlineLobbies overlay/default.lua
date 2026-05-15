@@ -280,6 +280,7 @@ local function InputHandler(event)
 					mode = "browse"
 					joined_lobby_code = ""
 					joined_lobby_players = {}
+					MESSAGEMAN:Broadcast("LeaveLobby")
 					MESSAGEMAN:Broadcast("SearchLobby")
 					MESSAGEMAN:Broadcast("Change")
 					SCREENMAN:PlayStartSound()
@@ -330,9 +331,8 @@ local function InputHandler(event)
 							ScreenTextEntry()
 						else
 							showing_password_prompt = true
-							t:GetChild("Prompt"):playcommand("PasswordOn")
 							password_active_index = 3
-							t:GetChild("Prompt"):playcommand("PasswordRefresh")
+							t:GetChild("Prompt"):playcommand("PasswordOn")
 						end
 						SCREENMAN:PlayStartSound()
 					elseif active_index == 3 then
@@ -468,9 +468,8 @@ return Def.ActorFrame{
 				ScreenTextEntry()
 			else
 				showing_password_prompt = true
-				self:GetChild("Prompt"):playcommand("PasswordOn")
 				password_active_index = 3
-				self:GetChild("Prompt"):playcommand("PasswordRefresh")
+				self:GetChild("Prompt"):playcommand("PasswordOn")
 			end
 		else
 			showing_password_prompt = false
@@ -499,6 +498,7 @@ return Def.ActorFrame{
 			showing_leave_confirm = false
 			MESSAGEMAN:Broadcast("SetStatus",{text=params.message and ("Leave lobby failed:\n"..params.message) or "Leave lobby failed."})
 		elseif params and params.event == "searchLobby" and params.success == false then
+			MESSAGEMAN:Broadcast("SetStatus",{text=params.message and ("Search lobby failed:\n"..params.message) or "Search lobby failed."})
 		end
 	end,
 
