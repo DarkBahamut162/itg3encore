@@ -124,25 +124,28 @@ local function InputHandler(event)
 				t:GetChild("Prompt"):playcommand("PasswordRefresh")
 				SOUND:PlayOnce(THEME:GetPathS("ScreenSelectMaster","change"))
 			elseif event.GameButton == "MenuUp" then
-				local selected_char = password_chars[password_active_index]
+				local selected = ((password_active_index-1) % #password_chars)+1
+				local selected_char = password_chars[selected]
 				if selected_char == "&START;" then
+					SCREENMAN:PlayInvalidSound()
+				else
+					SOUND:PlayOnce(THEME:GetPathS("ScreenSelectMaster","change"))
+					password_active_index = 3
+					t:GetChild("Prompt"):playcommand("PasswordRefresh")
+				end
+			elseif event.GameButton == "MenuDown" then
+				local selected = ((password_active_index-1) % #password_chars)+1
+				local selected_char = password_chars[selected]
+				if selected_char == "&SELECT;" then
 					SCREENMAN:PlayInvalidSound()
 				else
 					SOUND:PlayOnce(THEME:GetPathS("ScreenSelectMaster","change"))
 					password_active_index = 2
 					t:GetChild("Prompt"):playcommand("PasswordRefresh")
 				end
-			elseif event.GameButton == "MenuDown" then
-				local selected_char = password_chars[password_active_index]
-				if selected_char == "&SELECT;" then
-					SCREENMAN:PlayInvalidSound()
-				else
-					SOUND:PlayOnce(THEME:GetPathS("ScreenSelectMaster","change"))
-					password_active_index = 1
-					t:GetChild("Prompt"):playcommand("PasswordRefresh")
-				end
 			elseif event.GameButton == "Start" then
-				local selected_char = password_chars[password_active_index]
+				local selected = ((password_active_index-1) % #password_chars)+1
+				local selected_char = password_chars[selected]
 				if selected_char == "&START;" then
 					if password_prompt_mode == "join" and join_lobby_code == "" then
 						SCREENMAN:PlayCancelSound()
