@@ -2,7 +2,9 @@ local player = ...
 
 return Def.ActorFrame {
 	InitCommand=function(self) if not (IsGame("beat") or IsGame("be-mu")) then self:CenterY() end end,
-	OffCommand=function(self) if PlayerFullComboed(player) then self:queuecommand("CheckScore") end end,
+	OffCommand=function(self)
+		if PlayerFullComboed(player) then self:queuecommand("CheckScore") else self:visible(false) end
+	end,
 	CheckScoreCommand=function(self)
 		local fct = STATSMAN:GetCurStageStats():GetPlayerStageStats(player)
 		if fct:FullComboOfScore('TapNoteScore_W1') then
