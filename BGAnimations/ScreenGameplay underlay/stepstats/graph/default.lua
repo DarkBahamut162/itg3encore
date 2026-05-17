@@ -1,4 +1,5 @@
-local pn = ...
+local pn,switch = ...
+local player = switch and OtherPlayer[pn] or pn
 local graphW  = SCREEN_HEIGHT-126.5
 local graphH  = 92
 local height  = (SCREEN_HEIGHT / graphH)
@@ -693,14 +694,14 @@ return Def.ActorFrame{
         Texture = "notegraph",
         InitCommand=function(self)
             if screenCheck then self:diffuse(PlayerColor(pn)) end
-            self:cropleft(pn == PLAYER_1 and 0 or 1):cropright(pn == PLAYER_1 and 1 or 0):zoomy(2/3):sleep(0.5):linear(0.5):x(pn == PLAYER_1 and -100 or 100):cropleft(pn == PLAYER_1 and 0 or cropValue):cropright(pn == PLAYER_1 and cropValue or 0)
+            self:cropleft(player == PLAYER_1 and 0 or 1):cropright(player == PLAYER_1 and 1 or 0):zoomy(2/3):sleep(0.5):linear(0.5):x(player == PLAYER_1 and -100 or 100):cropleft(player == PLAYER_1 and 0 or cropValue):cropright(player == PLAYER_1 and cropValue or 0)
         end
     },
     Def.Sprite {
         Texture = "notegraph",
         InitCommand=function(self)
             if screenCheck then self:diffuse(PlayerColor(pn)) end
-            self:cropleft(pn == PLAYER_1 and 0 or 1):cropright(pn == PLAYER_1 and 1 or 0):zoomy(2/3):sleep(0.5):linear(0.5):x(pn == PLAYER_1 and -100 or 100):cropleft(pn == PLAYER_1 and 0 or cropValue):cropright(pn == PLAYER_1 and cropValue or 0)
+            self:cropleft(player == PLAYER_1 and 0 or 1):cropright(player == PLAYER_1 and 1 or 0):zoomy(2/3):sleep(0.5):linear(0.5):x(player == PLAYER_1 and -100 or 100):cropleft(player == PLAYER_1 and 0 or cropValue):cropright(player == PLAYER_1 and cropValue or 0)
         end,
         OnCommand=function(self) self:blend(Blend.Add):diffuseramp():effectcolor1(color("#FFFFFF00")):effectcolor2(color("#FFFFFF")):effectperiod(0.5):effect_hold_at_full(0.5):effectclock('beat') end
     },
@@ -708,38 +709,38 @@ return Def.ActorFrame{
         DoneLoadingNextSongMessageCommand=function(self) self:diffusealpha(0):sleep(1):linear(0.5):diffusealpha(1) end,
         Def.ActorMultiVertex{
             DoneLoadingNextSongMessageCommand=function(self) self:playcommand("Init") end,
-            CurrentStepsP1ChangedMessageCommand=function(self) if not courseMode and pn == PLAYER_1 then self:playcommand("Init") end end,
-            CurrentStepsChangedMessageCommand=function(self) if not courseMode and pn == PLAYER_1 then self:playcommand("Init") end end,
-            CurrentStepsP2ChangedMessageCommand=function(self) if not courseMode and pn == PLAYER_2 then self:playcommand("Init") end end,
-            CurrentTrailP1ChangedMessageCommand=function(self) if courseMode and pn == PLAYER_1 then self:playcommand("Init") end end,
-            CurrentTrailP2ChangedMessageCommand=function(self) if courseMode and pn == PLAYER_2 then self:playcommand("Init") end end,
+            CurrentStepsP1ChangedMessageCommand=function(self) if not courseMode and player == PLAYER_1 then self:playcommand("Init") end end,
+            CurrentStepsChangedMessageCommand=function(self) if not courseMode and player == PLAYER_1 then self:playcommand("Init") end end,
+            CurrentStepsP2ChangedMessageCommand=function(self) if not courseMode and player == PLAYER_2 then self:playcommand("Init") end end,
+            CurrentTrailP1ChangedMessageCommand=function(self) if courseMode and player == PLAYER_1 then self:playcommand("Init") end end,
+            CurrentTrailP2ChangedMessageCommand=function(self) if courseMode and player == PLAYER_2 then self:playcommand("Init") end end,
             InitCommand=function(self)
                 local vertices = playerNoteGraph == 3 and GetVerticesAlt(isOutFox(20200400) and UpdateGraphAlt() or UpdateGraphAltOld()) or GetVertices(isOutFox(20200400) and UpdateGraph() or UpdateGraphOld())
                 self:SetDrawState(playerNoteGraph == 3 and {Mode = 'DrawMode_Triangles'} or {Mode = 'DrawMode_Quads'})
                 self:SetVertices(1, vertices)
                 self:SetNumVertices(#vertices)
-                self:rotationz(pn == PLAYER_1 and 90 or -90)
-                self:rotationx(pn == PLAYER_1 and 180 or 0)
-                self:x(pn == PLAYER_1 and -graphH*1.5 or graphH*1.5):y(175)
+                self:rotationz(player == PLAYER_1 and 90 or -90)
+                self:rotationx(player == PLAYER_1 and 180 or 0)
+                self:x(player == PLAYER_1 and -graphH*1.5 or graphH*1.5):y(175)
             end
         },
         Def.ActorMultiVertex{
             Condition=(getenv("ShowSpeedAssist"..pname(pn)) or getenv("ShowStopAssist"..pname(pn))) and not screenCheck,
             DoneLoadingNextSongMessageCommand=function(self) self:sleep(1/30):queuecommand("Draw") end,
-            CurrentStepsP1ChangedMessageCommand=function(self) if not courseMode and pn == PLAYER_1 then self:sleep(1/30):queuecommand("Draw") end end,
-            CurrentStepsChangedMessageCommand=function(self) if not courseMode and pn == PLAYER_1 then self:sleep(1/30):queuecommand("Draw") end end,
-            CurrentStepsP2ChangedMessageCommand=function(self) if not courseMode and pn == PLAYER_2 then self:sleep(1/30):queuecommand("Draw") end end,
-            CurrentTrailP1ChangedMessageCommand=function(self) if courseMode and pn == PLAYER_1 then self:sleep(1/30):queuecommand("Draw") end end,
-            CurrentTrailP2ChangedMessageCommand=function(self) if courseMode and pn == PLAYER_2 then self:sleep(1/30):queuecommand("Draw") end end,
+            CurrentStepsP1ChangedMessageCommand=function(self) if not courseMode and player == PLAYER_1 then self:sleep(1/30):queuecommand("Draw") end end,
+            CurrentStepsChangedMessageCommand=function(self) if not courseMode and player == PLAYER_1 then self:sleep(1/30):queuecommand("Draw") end end,
+            CurrentStepsP2ChangedMessageCommand=function(self) if not courseMode and player == PLAYER_2 then self:sleep(1/30):queuecommand("Draw") end end,
+            CurrentTrailP1ChangedMessageCommand=function(self) if courseMode and player == PLAYER_1 then self:sleep(1/30):queuecommand("Draw") end end,
+            CurrentTrailP2ChangedMessageCommand=function(self) if courseMode and player == PLAYER_2 then self:sleep(1/30):queuecommand("Draw") end end,
             InitCommand=function(self) self:sleep(1/30):queuecommand("Draw") end,
             DrawCommand=function(self)
                 local vertices = GetVerticesAssist(UpdateGraphAssist())
                 self:SetDrawState(isOutFox(20201100) and {Mode = 'DrawMode_Lines'} or {Mode = 'DrawMode_Quads'})
                 self:SetVertices(1, vertices)
                 self:SetNumVertices(#vertices)
-                self:rotationz(pn == PLAYER_1 and 90 or -90)
-                self:rotationx(pn == PLAYER_1 and 180 or 0)
-                self:x(pn == PLAYER_1 and -graphH*1.5 or graphH*1.5):y(175)
+                self:rotationz(player == PLAYER_1 and 90 or -90)
+                self:rotationx(player == PLAYER_1 and 180 or 0)
+                self:x(player == PLAYER_1 and -graphH*1.5 or graphH*1.5):y(175)
             end
         },
         Def.BitmapText{
@@ -748,19 +749,19 @@ return Def.ActorFrame{
             InitCommand=function(self)
                 self:diffuseramp():effectcolor1(PlayerColor(pn)):effectcolor2(color("#FFFFFF")):effectperiod(0.5):effect_hold_at_full(0.5):effectclock('beat'):vertspacing(-10)
                 if screenCheck and GetScreenAspectRatio() > 1 then
-                    self:x(pn == PLAYER_1 and -graphH*1.525 or graphH*1.525):y(graphH*2.1):zoomx((pn == PLAYER_1 and not IsNetSMOnline()) and -1 or 1):maxwidth(graphH):halign(IsNetSMOnline() and 1 or 0):valign(0)
+                    self:x(player == PLAYER_1 and -graphH*1.525 or graphH*1.525):y(graphH*2.1):zoomx((player == PLAYER_1 and not IsNetSMOnline()) and -1 or 1):maxwidth(graphH):halign(IsNetSMOnline() and 1 or 0):valign(0)
                 else
-                    self:x(pn == PLAYER_1 and -graphH*2.55 or graphH*2.55):rotationz(pn == PLAYER_2 and 90 or -90):maxwidth(ShowStatsSize == 1 and graphW or graphW):valign(1)
-                    if screenCheck then self:valign(0) if pn == PLAYER_2 then self:zoom(-1) else self:zoomy(-1) end end
+                    self:x(player == PLAYER_1 and -graphH*2.55 or graphH*2.55):rotationz(player == PLAYER_2 and 90 or -90):maxwidth(ShowStatsSize == 1 and graphW or graphW):valign(1)
+                    if screenCheck then self:valign(0) if player == PLAYER_2 then self:zoom(-1) else self:zoomy(-1) end end
                 end
                 self:queuecommand("Draw")
             end,
             DoneLoadingNextSongMessageCommand=function(self) self:sleep(1/30):queuecommand("Draw") end,
-            CurrentStepsP1ChangedMessageCommand=function(self) if not courseMode and pn == PLAYER_1 then self:sleep(1/30):queuecommand("Draw") end end,
-            CurrentStepsChangedMessageCommand=function(self) if not courseMode and pn == PLAYER_1 then self:sleep(1/30):queuecommand("Draw") end end,
-            CurrentStepsP2ChangedMessageCommand=function(self) if not courseMode and pn == PLAYER_2 then self:sleep(1/30):queuecommand("Draw") end end,
-            CurrentTrailP1ChangedMessageCommand=function(self) if courseMode and pn == PLAYER_1 then self:sleep(1/30):queuecommand("Draw") end end,
-            CurrentTrailP2ChangedMessageCommand=function(self) if courseMode and pn == PLAYER_2 then self:sleep(1/30):queuecommand("Draw") end end,
+            CurrentStepsP1ChangedMessageCommand=function(self) if not courseMode and player == PLAYER_1 then self:sleep(1/30):queuecommand("Draw") end end,
+            CurrentStepsChangedMessageCommand=function(self) if not courseMode and player == PLAYER_1 then self:sleep(1/30):queuecommand("Draw") end end,
+            CurrentStepsP2ChangedMessageCommand=function(self) if not courseMode and player == PLAYER_2 then self:sleep(1/30):queuecommand("Draw") end end,
+            CurrentTrailP1ChangedMessageCommand=function(self) if courseMode and player == PLAYER_1 then self:sleep(1/30):queuecommand("Draw") end end,
+            CurrentTrailP2ChangedMessageCommand=function(self) if courseMode and player == PLAYER_2 then self:sleep(1/30):queuecommand("Draw") end end,
             DrawCommand=function(self)
                 if screenCheck and GetScreenAspectRatio() > 1 then
                     self:settext("AVG: "..math.round(average/counter).."\nMED: "..math.round(median).."\nMAX: "..math.round(max))
@@ -774,7 +775,7 @@ return Def.ActorFrame{
         Condition=not screenCheck,
         Texture = THEME:GetPathG("horiz-line","short"),
         DoneLoadingNextSongMessageCommand=function(self) self:queuecommand("RePos") end,
-        InitCommand=function(self) self:x(pn == PLAYER_1 and -140 or 140):blend(Blend.Add):fadeleft(0.25):faderight(0.25):zoomy(0.5):cropleft(pn == PLAYER_1 and 0 or 0.25):cropright(pn == PLAYER_1 and 0.25 or 0):queuecommand("RePos") end,
+        InitCommand=function(self) self:x(player == PLAYER_1 and -140 or 140):blend(Blend.Add):fadeleft(0.25):faderight(0.25):zoomy(0.5):cropleft(player == PLAYER_1 and 0 or 0.25):cropright(player == PLAYER_1 and 0.25 or 0):queuecommand("RePos") end,
         OnCommand=function(self) self:diffusealpha(0):linear(0.5):diffusealpha(1) end,
         RePosCommand=function(self)
             if lastSec == 0 then lastSec = GAMESTATE:GetCurrentSong():GetLastSecond() end
