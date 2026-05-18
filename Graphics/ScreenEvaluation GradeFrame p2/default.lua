@@ -396,7 +396,7 @@ return Def.ActorFrame{
 			Name="IIDX",
 			Condition=showOffset and showColumnGrades,
 			Font= "_z bold 19px",
-			InitCommand=function(self) self:x(-75*(WideScreenDiff_(1.4) < 1 and 2/3 or 5/6)*WideScreenDiff()*WideScreenDiff()):maxwidth((WideScreenDiff_(1.4) < 1 and 256 or 300)*WideScreenSemiDiff()):y(-10*WideScreenDiff()) end,
+			InitCommand=function(self) self:x(75*(WideScreenDiff_(1.4) < 1 and 2/3 or 5/6)*WideScreenDiff()*WideScreenDiff()):maxwidth((WideScreenDiff_(1.4) < 1 and 256 or 300)*WideScreenSemiDiff()):y(-10*WideScreenDiff()) end,
 			OnCommand=function(self,params) self:settext(Single):zoomx(0.6*WideScreenDiff()):zoomy(0.4*WideScreenDiff()):diffusealpha(0):sleep(3.60):linear(0.7):diffusealpha(1) end,
 			OffCommand=function(self) self:linear(0.2):diffusealpha(0) end
 		},
