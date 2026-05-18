@@ -770,7 +770,7 @@ return Def.ActorFrame{
 		},
 		Def.Quad{
 			InitCommand=function(self)
-				self:x(195*WideScreenDiff()):y(-205*WideScreenDiff()):zoom(WideScreenDiff()):valign(0):diffuse(color("#1E90FF")):
+				self:x(195*WideScreenDiff()):y(-205*WideScreenDiff()):zoom(WideScreenDiff()):valign(0):diffuse(color("#1E90FF"))
 				local cur,max,size = 0,perfect,120
 				for _,l in pairs(late) do max = max + l end
 				for _,e in pairs(early) do
@@ -782,7 +782,7 @@ return Def.ActorFrame{
 		},
 		Def.ActorMultiVertex{
 			InitCommand=function(self)
-				self:x(-172*WideScreenDiff()):y(-70*WideScreenDiff()):zoom(WideScreenDiff()):valign(0)
+				self:x(172*WideScreenDiff()):y(-70*WideScreenDiff()):zoom(WideScreenDiff()):valign(0)
                 local stats = STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_2)
 				local W0Count = getenv("W0"..pname(PLAYER_2)) or 0
 				local w1 = stats:GetTapNoteScores('TapNoteScore_W1')
