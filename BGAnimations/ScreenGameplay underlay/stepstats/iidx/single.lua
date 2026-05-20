@@ -264,7 +264,7 @@ return Def.ActorFrame{
 			if AnyPlayerFullComboed() then self:sleep(1) end
 			self:accelerate(0.8):addx(pn == PLAYER_1 and move or -move)
 		end,
-		loadfile(THEME:GetPathB("ScreenGameplay","underlay/stepstats/graph"))(pn,true)..{
+		loadfile(THEME:GetPathB("ScreenGameplay","underlay/stepstats/graph"))(pn,size==2)..{
 			Condition=graph,
 			InitCommand=function(self)
 				self:x(pn == PLAYER_1 and 2 or -2):y(15):zoomx(0.5)
