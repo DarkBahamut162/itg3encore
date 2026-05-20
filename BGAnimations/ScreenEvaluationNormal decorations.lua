@@ -98,6 +98,8 @@ if ShowStandardDecoration("StepsDisplay") then
 						else
 							if flareColor[level] == "rainbow" then self:rainbow() else self:stopeffect():diffuse(color(flareColor[level])) end
 						end
+					else
+						if flareColor[level] == "rainbow" then self:rainbow() else self:stopeffect():diffuse(color(flareColor[level])) end
 					end
 				end
 			},
@@ -152,6 +154,12 @@ for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
 		t[#t+1] = loadfile(THEME:GetPathG(Var "LoadingScreen", "PersonalRecord"))(pn)..{
 			InitCommand=function(self)
 				self:player(pn):name("PersonalRecord" .. PlayerNumberToString(pn))
+				ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen")
+			end
+		}
+		t[#t+1] = loadfile(THEME:GetPathG(Var "LoadingScreen", "FlareRecord"))(pn)..{
+			InitCommand=function(self)
+				self:player(pn):name("FlareRecord" .. PlayerNumberToString(pn))
 				ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen")
 			end
 		}
@@ -759,19 +767,6 @@ local function GraphDisplay(pn)
 				end
 			}
 		}
-	end
-
-	if flareLevel > 0 and not GAMESTATE:IsCourseMode() then
-		if PSS:GetFailed() then last = 0 end
-		if getenv("FlareFloat"..pname(pn)) and last <= flareLevel and tonumber(float[#float][2][flareLevel]) < 0 then last = 0 end
-
-		if flareLevel > 0 and last > 0 then
-			if (isEtterna("0.71") and not STATSMAN:GetCurStageStats():Failed() or STATSMAN:GetCurStageStats():OnePassed()) and GAMESTATE:GetPlayerState(pn):GetPlayerController() == 'PlayerController_Human' then
-				local Song = GAMESTATE:GetCurrentSong()
-				local Steps = GAMESTATE:GetCurrentSteps(pn)
-				if UpdateFlare(Song,Steps,last,pn) then SaveFlare(pn) end
-			end
-		end
 	end
 
 	return Def.ActorFrame {

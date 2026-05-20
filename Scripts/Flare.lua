@@ -88,17 +88,20 @@ function LoadFlare(player)
     if path and FILEMAN:DoesFileExist(path) then Flares[player] = IniFile.ReadFile(path) end
 end
 
-function UpdateFlare(Song,Steps,level,player)
+function UpdateFlare(Song,Steps,level,score,player)
     if not Flares[player] then Flares[player] = {} end
     local group = FlareGroup(Song)
     if not Flares[player][group] then Flares[player][group] = {} end
     local step = FlareStep(Steps)
     if not Flares[player][group][step] then
-        Flares[player][group][step] = level
+        Flares[player][group][step] = level.."_"..score
         return true
-    elseif Flares[player][group][step] < level then
-        Flares[player][group][step] = level
-        return true
+    else
+        local table = split("_",Flares[player][group][step])
+        if tonumber(table[1]) < level or tonumber(table[2] or 0) < tonumber(score) then
+            Flares[player][group][step] = level.."_"..score
+            return true
+        end
     end
     return false
 end

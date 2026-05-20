@@ -57,15 +57,27 @@ return Def.ActorFrame{
 			self:GetChild("MachineScore"):GetChild("ScorePercent"):settext("?")
 			self:GetChild("ProfileScore"):GetChild("ScorePercent"):settext("?")
 		end
-		if flare == 10 then
+		flare = split("_",flare)
+		local level = tonumber(flare[1] or "0") or 0
+		local score = flare[2] or "???????"
+		flares = {800000,850000,900000,930000,955000,960000,970000,980000,990000,995000,1000000}
+		score = tonumber(score or 0)
+		local fill = level > 0 and (score-flares[level])/(flares[level+1]-flares[level]) or 0
+		if level == 10 then
 			self:GetChild("ProfileScore"):GetChild("ScoreName"):rainbow()
 			self:GetChild("ProfileScore"):GetChild("FlareName"):settext("FX")
-		elseif flare == 0 then
-			self:GetChild("ProfileScore"):GetChild("ScoreName"):stopeffect():diffuse(color("#fff"))
+			self:GetChild("ProfileScore"):GetChild("Flare"):visible(true)
+			self:GetChild("ProfileScore"):GetChild("FlareFill"):visible(true):stoptweening():decelerate(0.1):zoomx(math.min(fill,1)*13):stopeffect():rainbow():effectclock('beat')
+		elseif level == 0 then
+			self:GetChild("ProfileScore"):GetChild("ScoreName"):stopeffect():diffuse(color("FFFFFF"))
 			self:GetChild("ProfileScore"):GetChild("FlareName"):settext("")
+			self:GetChild("ProfileScore"):GetChild("Flare"):visible(false)
+			self:GetChild("ProfileScore"):GetChild("FlareFill"):visible(false):stoptweening():decelerate(0.1):zoomx(0):stopeffect()
 		else
-			self:GetChild("ProfileScore"):GetChild("ScoreName"):stopeffect():diffuse(color(flareColor[flare]))
-			self:GetChild("ProfileScore"):GetChild("FlareName"):settext("F"..flare)
+			self:GetChild("ProfileScore"):GetChild("ScoreName"):stopeffect():diffuse(level > 0 and color(flareColor[level]) or color("#FFFFFF00"))
+			self:GetChild("ProfileScore"):GetChild("FlareName"):settext("F"..level)
+			self:GetChild("ProfileScore"):GetChild("Flare"):visible(true)
+			self:GetChild("ProfileScore"):GetChild("FlareFill"):visible(true):stoptweening():decelerate(0.1):zoomx(math.min(fill,1)*13):stopeffect():diffuseramp():effectcolor1(ColorDarkTone(color(flareColor[level]))):effectcolor2(color(flareColor[level])):effectperiod(0.5):effect_hold_at_full(0.5):effectclock('beat')
 		end
 	end,
 	Def.ActorFrame{
@@ -104,6 +116,15 @@ return Def.ActorFrame{
 			Name="ScorePercent",
 			Text="0.00%",
 			InitCommand=function(self) self:y(100):zoom(0.55):shadowlength(2):maxwidth(175):diffusebottomedge(PlayerColor(player)) end
+		},
+		Def.Sprite {
+			Name="Flare",
+			Texture = THEME:GetPathG("_pane icons/_long",isFinal() and "final" or "normal"),
+			InitCommand=function(self) self:x(self:GetParent():GetChild("ScoreName"):GetWidth()/3.3+7):y(76.5):rotationz(90):halign(0):zoomx(2/3):shadowlength(1) end
+		},
+		Def.Quad{
+			Name="FlareFill",
+			InitCommand=function(self) self:x(self:GetParent():GetChild("ScoreName"):GetWidth()/3.3+7):y(91):rotationz(-90):halign(0):zoomto(13,4):blend(Blend.Add) end
 		}
 	}
 }

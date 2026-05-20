@@ -297,6 +297,7 @@ I could have actually forked it but I didn't. My reasoning was that it wasn't go
 
 * Shows **TimingData** and **"GrooveRadar"**
 * Shows **TOTAL** and **STEPS** NoteCounter of currently selected Song's Difficulty
+* Shows **Flare Level** and **Flare Progress**
 * Shows **StepCounter** *(when StepCounter & StepCache enabled)*
 * Shows **TechCounter** *(when TechCounter enabled | ITGmania Only)*
 * Shows **Player Avatar** *(Project OutFox AND WideScreen Only)*
@@ -435,6 +436,7 @@ I could have actually forked it but I didn't. My reasoning was that it wasn't go
 <details>
   <summary><b>ScreenEvaluation</b> <i>(click to expand)</i></summary>
 
+* Added **FlareRecord** *(if Flare used)*
 * Re-added **marvelous/perfect/great color bar** on top of the **LifeGraph**
 * Added more **Graphs** *(press left/right to switch graphs)*
   * **LifeGraph**
