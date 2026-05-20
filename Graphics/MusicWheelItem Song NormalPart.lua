@@ -96,7 +96,7 @@ local LampsP1 = ThemePrefs.Get("ShowLamps") and Def.Sprite {
 				self:stopeffect():diffuseshift():effectclock("timerglobal"):effectcolor1(states[levels[level]].Color):effectcolor2(states[levels[level]].SemiColor):effectperiod(1/6)
 			end
 		end
-		if GAMESTATE:GetNumPlayersEnabled()==2 then self:cropbottom(0.5) end
+		if #GAMESTATE:GetHumanPlayers()==2 then self:cropbottom(0.5) end
 	end
 } or Def.ActorFrame{}
 local GradesP1 = ThemePrefs.Get("ShowGrade") and Def.BitmapText{
@@ -175,7 +175,7 @@ local LampsP2 = ThemePrefs.Get("ShowLamps") and Def.Sprite {
 				self:stopeffect():diffuseshift():effectclock("timerglobal"):effectcolor1(states[levels[level]].Color):effectcolor2(states[levels[level]].SemiColor):effectperiod(1/6)
 			end
 		end
-		if GAMESTATE:GetNumPlayersEnabled()==2 then self:croptop(0.5) end
+		if #GAMESTATE:GetHumanPlayers()==2 then self:croptop(0.5) end
 	end
 } or Def.ActorFrame{}
 local GradesP2 = ThemePrefs.Get("ShowGrade") and Def.BitmapText{
