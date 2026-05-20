@@ -210,7 +210,7 @@ function StepsTypeDouble()
 end
 
 function SongMods(part)
-	local add,add2 = "",isOutFoxV(20230624) and ",27" or ""
+	local add,add2 = "",""
 
 	if not isOni() then add = "20G," end
 
@@ -263,7 +263,10 @@ function SongMods(part)
 		options = addToOutput(options,"SelectDanceStage,OptionRowCharacters,CutInOverVideo,VideoOverStage,BoomSync,DiscoStars,RMStage,CharacterSync,CharaShadow,SNEnv",",")
 	end
 
-	if part == nil or part == 1 then options = addToOutput(options,"24,16",",") end
+	if part == nil or part == 1 then
+		if isOutFoxV(20230624) then options = addToOutput(options,"27",",") end
+		options = addToOutput(options,"24,16",",")
+	end
 	if part == 1 then options = addToOutput(options,"After1",",") end
 	if part == 2 then options = addToOutput(options,"After2",",") end
 	if part == 3 then options = addToOutput(options,"After3",",") end
