@@ -1,5 +1,5 @@
 local player = ...
-assert(player,"[ScreenEvaluation PersonalRecord] requires player")
+assert(player,"[ScreenEvaluation PacemakerRecord] requires player")
 
 local HighscoreRecord = ""
 local TargetRecord = ""
