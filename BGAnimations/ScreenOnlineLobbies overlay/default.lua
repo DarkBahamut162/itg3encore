@@ -27,7 +27,7 @@ local showing_password_prompt = false
 local password_active_index = 1
 local password_char_limit = 19
 local password_chars = {
-	"&SELECT;","&START;",
+	"&BACK;","&SELECT;","&START;",
 	"A","B","C","D","E","F","G","H","I","J","K","L","M",
 	"N","O","P","Q","R","S","T","U","V","W","X","Y","Z",
 }
@@ -37,14 +37,14 @@ local letters = {
 }
 
 local function GetPromptPassword()
-	if password_prompt_mode == "join" then
+	if (password_prompt_mode == "join" or password_prompt_mode == "spectate") then
 		return join_lobby_password
 	end
 	return create_lobby_password
 end
 
 local function SetPromptPassword(value)
-	if password_prompt_mode == "join" then
+	if (password_prompt_mode == "join" or password_prompt_mode == "spectate") then
 		join_lobby_password = value
 	else
 		create_lobby_password = value
@@ -57,7 +57,7 @@ local passwordHidden = false
 function ScreenTextEntry()
 	SCREENMAN:AddNewScreenToTop("ScreenTextEntry")
 	local question = {
-		Question = password_prompt_mode == "join" and "Enter Lobby Password" or "Create Lobby Password (Optional)",
+		Question = (password_prompt_mode == "join" or password_prompt_mode == "spectate") and "Enter Lobby Password" or "Create Lobby Password (Optional)",
 		MaxInputLength = 255,
 		OnOK = function(answer)
 			answer = answer:upper()
@@ -65,6 +65,11 @@ function ScreenTextEntry()
 				join_lobby_password = answer
 				MESSAGEMAN:Broadcast("SetStatus",{text="Joining lobby..."})
 				MESSAGEMAN:Broadcast("JoinLobby",{code=join_lobby_code,password=join_lobby_password})
+				join_lobby_password = ""
+			elseif password_prompt_mode == "spectate" then
+				join_lobby_password = answer
+				MESSAGEMAN:Broadcast("SetStatus",{text="Joining lobby..."})
+				MESSAGEMAN:Broadcast("SpectateLobby",{code=join_lobby_code,password=join_lobby_password})
 				join_lobby_password = ""
 			else
 				create_lobby_password = answer
@@ -147,7 +152,7 @@ local function InputHandler(event)
 				local selected = ((password_active_index-1) % #password_chars)+1
 				local selected_char = password_chars[selected]
 				if selected_char == "&START;" then
-					if password_prompt_mode == "join" and join_lobby_code == "" then
+					if (password_prompt_mode == "join" or password_prompt_mode == "spectate") and join_lobby_code == "" then
 						SCREENMAN:PlayCancelSound()
 						return
 					end
@@ -156,6 +161,10 @@ local function InputHandler(event)
 					if password_prompt_mode == "join" then
 						MESSAGEMAN:Broadcast("SetStatus",{text="Joining lobby..."})
 						MESSAGEMAN:Broadcast("JoinLobby",{code=join_lobby_code,password=join_lobby_password:upper()})
+						--join_lobby_password = ""
+					elseif password_prompt_mode == "spectate" then
+						MESSAGEMAN:Broadcast("SetStatus",{text="Spectating lobby..."})
+						MESSAGEMAN:Broadcast("SpectateLobby",{code=join_lobby_code,password=join_lobby_password:upper()})
 						--join_lobby_password = ""
 					else
 						MESSAGEMAN:Broadcast("SetStatus",{text="Creating lobby..."})
@@ -171,18 +180,22 @@ local function InputHandler(event)
 					else
 						SCREENMAN:PlayInvalidSound()
 					end
+				elseif selected_char == "&BACK;" then
+					showing_password_prompt = false
+					t:GetChild("Prompt"):playcommand("PasswordOff")
+					SCREENMAN:PlayCancelSound()
 				else
 					local password = GetPromptPassword()
 					if password:len() < password_char_limit then
 						SetPromptPassword(password .. selected_char)
-						if GetPromptPassword():len() >= password_char_limit then password_active_index = 2 end
+						if GetPromptPassword():len() >= password_char_limit then password_active_index = 3 end
 						t:GetChild("Prompt"):playcommand("PasswordRefresh")
 						SCREENMAN:PlayStartSound()
 					else
 						SCREENMAN:PlayInvalidSound()
 					end
 				end
-			elseif event.DeviceInput.button == "DeviceButton_backspace" then
+			elseif event.DeviceInput.button == "DeviceButton_backspace" or event.GameButton == "Select" and password_prompt_mode == "create" then
 				local password = GetPromptPassword()
 				if password:len() > 0 then
 					SetPromptPassword(password:sub(1,-2))
@@ -191,7 +204,15 @@ local function InputHandler(event)
 				else
 					SCREENMAN:PlayInvalidSound()
 				end
-			elseif event.GameButton == "Select" or event.GameButton == "Back" then
+			elseif event.GameButton == "Select" and password_prompt_mode ~= "create" then
+				if password_prompt_mode == "join" then
+					password_prompt_mode = "spectate"
+				elseif password_prompt_mode == "spectate" then
+					password_prompt_mode = "join"
+				end
+				t:GetChild("Prompt"):playcommand("PasswordOn")
+				SOUND:PlayOnce(THEME:GetPathS("ScreenSelectMaster","change"))
+			elseif event.GameButton == "Back" then
 				showing_password_prompt = false
 				t:GetChild("Prompt"):playcommand("PasswordOff")
 				SCREENMAN:PlayCancelSound()
@@ -202,7 +223,7 @@ local function InputHandler(event)
 					local password = GetPromptPassword()
 					if password:len() < password_char_limit then
 						SetPromptPassword(password..event.DeviceInput.button:sub(-1):upper())
-						if GetPromptPassword():len() >= password_char_limit then password_active_index = 2 end
+						if GetPromptPassword():len() >= password_char_limit then password_active_index = 3 end
 						t:GetChild("Prompt"):playcommand("PasswordRefresh")
 						SCREENMAN:PlayStartSound()
 					else
@@ -334,7 +355,7 @@ local function InputHandler(event)
 							ScreenTextEntry()
 						else
 							showing_password_prompt = true
-							password_active_index = 3
+							password_active_index = 4
 							t:GetChild("Prompt"):playcommand("PasswordOn")
 						end
 						SCREENMAN:PlayStartSound()
@@ -368,7 +389,7 @@ local function InputHandler(event)
 					elseif joined_active_index == 2 then
 						local topScreen = SCREENMAN:GetTopScreen()
 						if topScreen then
-							topScreen:SetNextScreenName(SelectMusicOrCourse())
+							topScreen:SetNextScreenName(password_prompt_mode == "spectate" and "ScreenSpectatorRoom" or SelectMusicOrCourse())
 							topScreen:StartTransitioningScreen("SM_GoToNextScreen")
 							SCREENMAN:PlayStartSound()
 						end
@@ -380,9 +401,9 @@ local function InputHandler(event)
 end
 
 return Def.ActorFrame{
+	InitCommand=function(self) self:Center() end,
 	OnCommand=function(self)
 		t=self
-		self:Center()
 		if not input_added and SCREENMAN:GetTopScreen() then
 			SCREENMAN:GetTopScreen():AddInputCallback(InputHandler)
 			input_added = true
@@ -446,7 +467,7 @@ return Def.ActorFrame{
 		showing_leave_confirm = false
 		list_selected = false
 		showing_password_prompt = false
-		password_prompt_mode = "create"
+		--password_prompt_mode = "create"
 		join_lobby_code = ""
 		join_lobby_password = ""
 		joined_lobby_code = params and params.code or ""
@@ -471,7 +492,7 @@ return Def.ActorFrame{
 				ScreenTextEntry()
 			else
 				showing_password_prompt = true
-				password_active_index = 3
+				password_active_index = 4
 				self:GetChild("Prompt"):playcommand("PasswordOn")
 			end
 		else
@@ -497,6 +518,9 @@ return Def.ActorFrame{
 		elseif params and params.event == "joinLobby" and params.success == false then
 			mode = "browse"
 			MESSAGEMAN:Broadcast("SetStatus",{text=params.message and ("Join lobby failed:\n"..params.message) or "Join lobby failed."})
+		elseif params and params.event == "spectateLobby" and params.success == false then
+			mode = "browse"
+			MESSAGEMAN:Broadcast("SetStatus",{text=params.message and ("Spectate lobby failed:\n"..params.message) or "Spectate lobby failed."})
 		elseif params and params.event == "leaveLobby" and params.success == false then
 			showing_leave_confirm = false
 			MESSAGEMAN:Broadcast("SetStatus",{text=params.message and ("Leave lobby failed:\n"..params.message) or "Leave lobby failed."})
@@ -560,7 +584,7 @@ return Def.ActorFrame{
 				MESSAGEMAN:Broadcast("TriangleOff")
 				self:GetChild("Display"):GetChild("Option1"):diffuse(joined_active_index == 0 and color("#FFFFFF") or color("#808080"))
 				self:GetChild("Display"):GetChild("Option2"):diffuse(joined_active_index == 1 and color("#FFFFFF") or color("#808080")):settext("Leave Lobby")
-				self:GetChild("Display"):GetChild("Option3"):diffuse(joined_active_index == 2 and color("#FFFFFF") or color("#808080")):settext("Continue to Select Music")
+				self:GetChild("Display"):GetChild("Option3"):diffuse(joined_active_index == 2 and color("#FFFFFF") or color("#808080")):settext(password_prompt_mode == "spectate" and "Continue to Spectator Room" or "Continue to Select Music")
 				self:GetChild("Display"):GetChild("Top"):settext("Lobby: "..(joined_lobby_code ~= "" and joined_lobby_code or "(pending)"))
 				self:GetChild("Display"):GetChild("Option1"):settext(hasPassword and (passwordHidden and "Show Password" or "Hide Password") or "")
 				self:GetChild("Display"):GetChild("Option4"):settext("")
@@ -696,8 +720,8 @@ return Def.ActorFrame{
 		end,
 		PasswordOnCommand=function(self)
 			self:GetChild("BG"):diffusealpha(4/5)
-			self:GetChild("Warning"):settext(password_prompt_mode == "join" and "Enter Lobby Password" or "Create Lobby Password (Optional)"):diffusealpha(1)
-			self:GetChild("Hint"):diffusealpha(1)
+			self:GetChild("Warning"):settext((password_prompt_mode == "join" or password_prompt_mode == "spectate") and "Enter Lobby Password\n"..(password_prompt_mode == "spectate" and "To Spectate" or "To Join") or "Create Lobby Password (Optional)"):diffusealpha(1)
+			self:GetChild("Hint"):settext("Use &MENULEFT;/&MENURIGHT; to pick characters\nPress &START; to select, Press &SELECT; to delete\nSelect &START; to set password\n"..(password_prompt_mode == "create" and "Select &SELECT; to delete" or "Select &SELECT; to switch between join/spectate").."\nSelect &BACK; to return to Lobby Selection")
 			self:playcommand("PasswordRefresh")
 			self:GetChild("PasswordSelected"):diffusealpha(1)
 			self:GetChild("Password"):diffusealpha(1)
@@ -715,7 +739,7 @@ return Def.ActorFrame{
 		PasswordOffCommand=function(self)
 			self:GetChild("BG"):diffusealpha(0)
 			self:GetChild("Warning"):diffusealpha(0)
-			self:GetChild("Hint"):diffusealpha(0)
+			self:GetChild("Hint"):settext("")
 			self:GetChild("PasswordSelected"):settext(""):diffusealpha(0)
 			self:GetChild("Password"):settext(""):diffusealpha(0)
 		end,
@@ -748,8 +772,7 @@ return Def.ActorFrame{
 		Def.BitmapText{
             File = "_z 36px shadowx",
 			Name="Hint",
-			Text="Use &MENULEFT;/&MENURIGHT; to pick characters\nPress &START; to select, Press &SELECT; to delete\nSelect &START; to set password, Select &SELECT; to return to Lobby Selection",
-			InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+SCREEN_CENTER_Y/3):zoom(0.3*WideScreenDiff()):diffusealpha(0) end
+			InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+SCREEN_CENTER_Y/3):zoom(0.3*WideScreenDiff()) end
 		},
         Def.BitmapText {
             File = "_r bold 30px",

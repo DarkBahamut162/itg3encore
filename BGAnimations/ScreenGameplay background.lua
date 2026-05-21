@@ -151,7 +151,10 @@ local t = Def.ActorFrame {
 			end
 		end
 	end,
-	DoneLoadingNextSongMessageCommand=function(self) self:playcommand("On") end,
+	DoneLoadingNextSongMessageCommand=function(self)
+		if isITGmaniaOnline() then MESSAGEMAN:Broadcast("UpdateMachineState") end
+		self:playcommand("On")
+	end,
 	Def.ActorProxy{
 		Name="PC2",
 		MULTICommand=function(self) self:SetTarget( SCREENMAN:GetTopScreen():GetChild("SongBackground"):GetChild("") ):y(SCREEN_HEIGHT/3) end,

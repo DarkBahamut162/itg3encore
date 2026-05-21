@@ -63,6 +63,12 @@ local function GetMachineState()
 			local judgments = nil
 			local score = nil
 			local exScore = nil
+			local songPath = nil
+			local courseMode = nil
+			local title = nil
+			local artist = nil
+			local difficulty = nil
+			local songLength = nil
 			for screen in ivalues(scoreScreens) do
 				if string.find(screenName,screen) then
 					judgments = GetJudgmentCounts(player)
@@ -70,6 +76,36 @@ local function GetMachineState()
 					local percent = FormatPercentScore(dance_points):gsub("%%","")
 					score = tonumber(percent)
 					exScore = CalculateExScore(player)
+
+					local SongOrCourse = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentCourse() or GAMESTATE:GetCurrentSong()
+					songPath = GAMESTATE:IsCourseMode() and SongOrCourse:GetCourseDir() or  SongOrCourse:GetSongDir()
+					songPath = songPath:sub(GAMESTATE:IsCourseMode() and 10 or 8,#songPath-(GAMESTATE:IsCourseMode() and 0 or 1))
+					artist = ""
+					difficulty = ""
+					if GAMESTATE:IsCourseMode() then
+						local trail = GAMESTATE:GetCurrentTrail(player)
+						if trail then
+							local artists = trail:GetArtists()
+							difficulty = trail:GetDifficulty()
+							songLength = TrailUtil.GetTotalSeconds(trail)
+							for i=1,#artists do
+								if not string.find(artist,artists[i]) then
+									artist = addToOutput(artist,artists[i],", ")
+									if string.len(artist) >= 60 then
+										artist = "Various Artists"
+										break
+									end
+								end
+							end
+						end
+					else
+						difficulty = GAMESTATE:GetCurrentSteps(player):GetDifficulty()
+						artist = SongOrCourse:GetDisplayArtist()
+						songLength = SongOrCourse:MusicLengthSeconds()
+					end
+					courseMode=GAMESTATE:IsCourseMode()
+					title=SongOrCourse:GetDisplayFullTitle()
+					songLength=length
 				end
 			end
 			local pn = ToEnumShortString(player)
@@ -82,6 +118,18 @@ local function GetMachineState()
 				judgments = judgments,
 				score = score,
 				exScore = exScore,
+				index = GAMESTATE:GetCourseSongIndex(),
+
+				songPath=songPath,
+				courseMode=GAMESTATE:IsCourseMode(),
+				gameMode=GAMESTATE:GetCurrentGame():GetName():lower(),
+				playMode=GAMESTATE:GetPlayMode(),
+				stepsType=isDouble() and StepsTypeDouble()[GetUserPrefN("StylePosition")] or StepsTypeSingle()[GetUserPrefN("StylePosition")],
+
+				title=title,
+				artist=artist,
+				difficulty=difficulty,
+				songLength=songLength
 			}
 		end
 	end
@@ -139,6 +187,15 @@ local function OrderPlayers(data,localScreenName)
 
 	return updatedData
 end
+
+local playModes = {
+	["PlayMode_Regular"] = "PlayMode_Regular",
+	["PlayMode_Battle"] = "PlayMode_Regular",
+	["PlayMode_Rave"] = "PlayMode_Regular",
+	["PlayMode_Nonstop"] = "PlayMode_Nonstop",
+	["PlayMode_Oni"] = "PlayMode_Oni",
+	["PlayMode_Endless"] = "PlayMode_Endless",
+}
 
 local function DisplayLobbyState(data,actor)
 	local screen = SCREENMAN:GetTopScreen()
@@ -198,7 +255,7 @@ local function DisplayLobbyState(data,actor)
 		if not songSelected then
 			local topScreen = SCREENMAN:GetTopScreen()
 			if topScreen and string.find(topScreen:GetName(),"ScreenSelectMusic") then
-				local SongOrCourse = GAMESTATE:IsCourseMode() and SONGMAN:FindCourse(data.songInfo.songPath) or SONGMAN:FindSong(data.songInfo.songPath)
+				local SongOrCourse = data.songInfo.courseMode and SONGMAN:FindCourse(data.songInfo.songPath) or SONGMAN:FindSong(data.songInfo.songPath)
 				local wheel = topScreen:GetMusicWheel()
 				if not SongOrCourse and data.songInfo.songPath:split("/")[2] then
 					if GAMESTATE:IsCourseMode() then
@@ -207,11 +264,51 @@ local function DisplayLobbyState(data,actor)
 						SongOrCourse = SONGMAN:FindSong(data.songInfo.songPath:split("/")[2])
 					end
 				end
-				if SongOrCourse and wheel then
-					if GAMESTATE:IsCourseMode() then wheel:SelectCourse(SongOrCourse) else wheel:SelectSong(SongOrCourse) end
-					wheel:Move(1)
-					wheel:Move(-1)
-					wheel:Move(0)
+
+				local gameCheck = data.songInfo.gameMode == GAMESTATE:GetCurrentGame():GetName():lower()
+				local playCheck = playModes[data.songInfo.playMode] == playModes[GAMESTATE:GetPlayMode()]
+				local stepsType = data.songInfo.stepsType == isDouble() and StepsTypeDouble()[GetUserPrefN("StylePosition")] or StepsTypeSingle()[GetUserPrefN("StylePosition")]
+
+				if gameCheck and playCheck and stepsType then
+					if SongOrCourse and wheel then
+						if data.songInfo.courseMode then wheel:SelectCourse(SongOrCourse) else wheel:SelectSong(SongOrCourse) end
+						local chosen
+						if data.songInfo.courseMode then
+							for trail in ivalues(SongOrCourse:GetAllTrails()) do
+								if trail:GetDifficulty() == data.songInfo.difficulty then chosen = trail break end
+							end
+						else
+							local availableSteps = SongOrCourse:GetStepsByStepsType(StepsTypeSingle()[GetUserPrefN("StylePosition")])
+							for steps in ivalues(availableSteps) do
+								if steps:GetDifficulty() == data.songInfo.difficulty then chosen = steps break end
+							end
+						end
+						if chosen then
+							for pn in ivalues(GAMESTATE:GetEnabledPlayers()) do
+								if data.songInfo.courseMode then
+									GAMESTATE:SetCurrentTrail(pn,chosen)
+								else
+									GAMESTATE:SetCurrentSteps(pn,chosen)
+								end
+							end
+						else
+							SOUND:PlayOnce(THEME:GetPathS('MemoryCardManager',"error"))
+							SCREENMAN:SystemMessage("Chosen "..(data.songInfo.courseMode and "course" or "song").." found but chosen difficulty not found!")
+						end
+						wheel:Move(1)
+						wheel:Move(-1)
+						wheel:Move(0)
+					else
+						SOUND:PlayOnce(THEME:GetPathS('MemoryCardManager',"error"))
+						SCREENMAN:SystemMessage("Chosen "..(data.songInfo.courseMode and "course" or "song").." not found!")
+					end
+				else
+					local output = ""
+					if not gameCheck then output = addToOutput(output,"Wrong GameMode ("..data.songInfo.gameMode..")"," & ") end
+					if not playCheck then output = addToOutput(output,"Wrong PlayMode ("..playModes[data.songInfo.playMode]..")"," & ") end
+					if not stepsType then output = addToOutput(output,"Wrong StepsType ("..data.songInfo.stepsType..")"," & ") end
+					SOUND:PlayOnce(THEME:GetPathS('MemoryCardManager',"error"))
+					SCREENMAN:SystemMessage("Error: "..output.."!")
 				end
 			end
 		else
@@ -388,7 +485,7 @@ function CreateOnlineHandler()
 				if self.connected and self.socket ~= nil and self.inLobby then
 					local SongOrCourse = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentCourse() or GAMESTATE:GetCurrentSong()
 					local songPath = GAMESTATE:IsCourseMode() and SongOrCourse:GetCourseDir() or  SongOrCourse:GetSongDir()
-					songPath = songPath:sub(8,#songPath-1)
+					songPath = songPath:sub(GAMESTATE:IsCourseMode() and 10 or 8,#songPath-(GAMESTATE:IsCourseMode() and 0 or 1))
 					local artist = ""
 					local length = 0
 					local difficulty = ""
@@ -416,6 +513,10 @@ function CreateOnlineHandler()
 					local data = {
 						songInfo = {
 							songPath=songPath,
+							courseMode=GAMESTATE:IsCourseMode(),
+							gameMode=GAMESTATE:GetCurrentGame():GetName():lower(),
+							playMode=GAMESTATE:GetPlayMode(),
+							stepsType=isDouble() and StepsTypeDouble()[GetUserPrefN("StylePosition")] or StepsTypeSingle()[GetUserPrefN("StylePosition")],
 							title=SongOrCourse:GetDisplayFullTitle(),
 							artist=artist,
 							difficulty=difficulty,
@@ -424,6 +525,26 @@ function CreateOnlineHandler()
 					}
 					local request = CreateRequest("selectSong",data)
 					local ret = self.socket:Send(request)
+				end
+			end,
+			SpectateLobbyMessageCommand=function(self,params)
+				if self.connected and self.socket ~= nil then
+					self.inLobby = false
+					local spectator = ""
+					for player in ivalues(GAMESTATE:GetHumanPlayers()) do
+						local profileName = "NoName"
+						if (PROFILEMAN:IsPersistentProfile(player) and PROFILEMAN:GetProfile(player)) then profileName = PROFILEMAN:GetProfile(player):GetDisplayName() end
+						spectator = addToOutput(spectator,profileName," & ")
+					end
+					local data = {
+						spectator = {
+							profileName = spectator
+						}
+					}
+					data.code = params.code and params.code
+					data.password = params.password and params.password or ""
+					local request = CreateRequest("spectateLobby",data)
+					self.socket:Send(request)
 				end
 			end,
 			JoinLobbyMessageCommand=function(self,params)
@@ -502,7 +623,7 @@ function CreateOnlineHandler()
 							self:xy(LEFT,_screen.cy)
 							bg:zoomto(width,height)
 						end
-					elseif string.find(screenName,"ScreenOnlineLobbies") then
+					elseif string.find(screenName,"ScreenOnlineLobbies") or string.find(screenName,"ScreenSpectatorRoom") then
 						self:xy(-SCREEN_WIDTH,_screen.cy)
 					end
 					self:GetChild("Text"):playcommand("Resize",{width=width,height=height,text=params.text})
