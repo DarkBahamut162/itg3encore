@@ -275,6 +275,7 @@ local InputHandler = function(event)
 					if GAMESTATE:GetNumPlayersEnabled()==2 then return end
 					if GAMESTATE:GetCurrentStyle():GetName() == double then
 						GAMESTATE:SetCurrentStyle(single)
+						for pn in ivalues(GAMESTATE:GetHumanPlayers()) do LoadFlare(pn) end
 						SCREENMAN:GetTopScreen():SetNextScreenName(SelectMusicOrCourse())
 						SCREENMAN:GetTopScreen():StartTransitioningScreen("SM_GoToNextScreen")
 						SCREENMAN:PlayStartSound()
@@ -283,6 +284,7 @@ local InputHandler = function(event)
 					if GAMESTATE:GetNumPlayersEnabled()==2 then return end
 					if GAMESTATE:GetCurrentStyle():GetName() == single then
 						GAMESTATE:SetCurrentStyle(double)
+						for pn in ivalues(GAMESTATE:GetHumanPlayers()) do LoadFlare(pn) end
 						SCREENMAN:GetTopScreen():SetNextScreenName(SelectMusicOrCourse())
 						SCREENMAN:GetTopScreen():StartTransitioningScreen("SM_GoToNextScreen")
 						SCREENMAN:PlayStartSound()

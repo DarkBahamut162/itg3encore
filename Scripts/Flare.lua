@@ -76,6 +76,7 @@ end
 
 function LoadFlare(player)
     local path = getFlaresPath(player)
+    Flares[player] = {}
     if path and FILEMAN:DoesFileExist(path) then Flares[player] = IniFile.ReadFile(path) end
 end
 
