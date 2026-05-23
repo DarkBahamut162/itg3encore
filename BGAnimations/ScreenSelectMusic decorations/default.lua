@@ -356,7 +356,7 @@ if ThemePrefs.Get("ShowPackClears") and not courseMode then
 				self:visible(visible)
 				if visible then
 					local songs = SONGMAN:GetSongsInGroup(SCREENMAN:GetTopScreen():GetMusicWheel():GetSelectedSection())
-					local stepsType = StepsTypeSingle()[GetUserPrefN("StylePosition")]
+					local stepsType = isDouble() and StepsTypeDouble()[GetUserPrefN("StylePosition")] or StepsTypeSingle()[GetUserPrefN("StylePosition")]
 					local songsTotal = 0
 					local songsCleared = {}
 					local stepsTotal = 0

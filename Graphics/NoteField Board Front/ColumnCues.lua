@@ -487,7 +487,6 @@ local trueFirst = tonumber(LoadFromCache(SongOrCourse,StepsOrTrail,"TrueFirstBea
 local GCM = GetColumnMapping(player)
 local GCM_ITG = GetColumnMappingITG(player)
 
-local category = isDouble() and StepsTypeDouble()[GetUserPrefN("StylePosition")] or StepsTypeSingle()[GetUserPrefN("StylePosition")]
 function setCol()
 	noteData = {}
 	local SongOrCourse,StepsOrTrail
@@ -506,7 +505,7 @@ function setCol()
 
 	if isOutFox(20200400) then
 		if not isOutFoxV043() then
-			for i,current in pairs( SongOrCourse:GetStepsByStepsType(category) ) do
+			for i,current in pairs( SongOrCourse:GetAllSteps() ) do
 				if current == StepsOrTrail then
 					chartint = i
 					break

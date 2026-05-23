@@ -37,7 +37,6 @@ local allowednotes = {
 	["Roll"] = true
 }
 
-local category = isDouble() and StepsTypeDouble()[GetUserPrefN("StylePosition")] or StepsTypeSingle()[GetUserPrefN("StylePosition")]
 local function UpdateGraph()
     lastSec = 0
     lastBeat = 0
@@ -50,7 +49,7 @@ local function UpdateGraph()
 
     if SongOrCourse and StepsOrTrail then
         if not isOutFoxV043() then
-            for k,v in pairs( SongOrCourse:GetStepsByStepsType(category) ) do
+            for k,v in pairs( SongOrCourse:GetAllSteps() ) do
                 if v == StepsOrTrail then
                     chartint = k
                     break
@@ -269,7 +268,7 @@ local function UpdateGraphAlt()
 
     if SongOrCourse and StepsOrTrail then
         if not isOutFoxV043() then
-            for k,v in pairs( SongOrCourse:GetStepsByStepsType(category) ) do
+            for k,v in pairs( SongOrCourse:GetAllSteps() ) do
                 if v == StepsOrTrail then
                     chartint = k
                     break
