@@ -49,6 +49,7 @@ local states = {
 	["StageAward_FullComboW1"]		= { Number = 8, Color = color("#7BE8FF") }
 }
 
+local category = isDouble() and StepsTypeDouble()[GetUserPrefN("StylePosition")] or StepsTypeSingle()[GetUserPrefN("StylePosition")]
 local LampsP1 = ThemePrefs.Get("ShowLamps") and Def.Sprite {
 	Texture = "MusicWheelItem _lamp "..(isFinal() and "Final" or "Normal"),
 	InitCommand=function(self) self:diffuse(color("0,0,0,0")) end,
@@ -60,7 +61,7 @@ local LampsP1 = ThemePrefs.Get("ShowLamps") and Def.Sprite {
 				steps = GAMESTATE:GetCurrentSteps(PLAYER_1)
 			elseif GAMESTATE:GetCurrentSteps(PLAYER_1) then
 				local currentDifficulty = GAMESTATE:GetCurrentSteps(PLAYER_1):GetDifficulty()
-				local allSteps = params.Song:GetAllSteps()
+				local allSteps = params.Song:GetStepsByStepsType(category)
 				for step in ivalues(allSteps) do
 					if step:GetDifficulty() == currentDifficulty then steps = step break end
 				end
@@ -111,7 +112,7 @@ local GradesP1 = ThemePrefs.Get("ShowGrade") and Def.BitmapText{
 				steps = GAMESTATE:GetCurrentSteps(PLAYER_1)
 			elseif GAMESTATE:GetCurrentSteps(PLAYER_1) then
 				local currentDifficulty = GAMESTATE:GetCurrentSteps(PLAYER_1):GetDifficulty()
-				local allSteps = params.Song:GetAllSteps()
+				local allSteps = params.Song:GetStepsByStepsType(category)
 				for step in ivalues(allSteps) do
 					if step:GetDifficulty() == currentDifficulty then steps = step break end
 				end
@@ -139,7 +140,7 @@ local LampsP2 = ThemePrefs.Get("ShowLamps") and Def.Sprite {
 				steps = GAMESTATE:GetCurrentSteps(PLAYER_2)
 			elseif GAMESTATE:GetCurrentSteps(PLAYER_2) then
 				local currentDifficulty = GAMESTATE:GetCurrentSteps(PLAYER_2):GetDifficulty()
-				local allSteps = params.Song:GetAllSteps()
+				local allSteps = params.Song:GetStepsByStepsType(category)
 				for step in ivalues(allSteps) do
 					if step:GetDifficulty() == currentDifficulty then steps = step break end
 				end
@@ -190,7 +191,7 @@ local GradesP2 = ThemePrefs.Get("ShowGrade") and Def.BitmapText{
 				steps = GAMESTATE:GetCurrentSteps(PLAYER_2)
 			elseif GAMESTATE:GetCurrentSteps(PLAYER_2) then
 				local currentDifficulty = GAMESTATE:GetCurrentSteps(PLAYER_2):GetDifficulty()
-				local allSteps = params.Song:GetAllSteps()
+				local allSteps = params.Song:GetStepsByStepsType(category)
 				for step in ivalues(allSteps) do
 					if step:GetDifficulty() == currentDifficulty then steps = step break end
 				end
