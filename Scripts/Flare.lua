@@ -44,16 +44,13 @@ local ProfileSlot = {
 
 local Flares = {}
 
-function getFlares(player)
-    return Flares[player] or {}
-end
-
 local function getFlaresPath(player)
-    return PROFILEMAN:GetProfileDir(ProfileSlot[player]) .. "flares.ini"
+	local category = isDouble() and StepsTypeDouble()[GetUserPrefN("StylePosition")] or StepsTypeSingle()[GetUserPrefN("StylePosition")]
+    return PROFILEMAN:GetProfileDir(ProfileSlot[player]).."/Flares/"..category..".ini"
 end
 
 local function FlareGroup(Song)
-    return string.gsub(string.gsub(Song:GetGroupName(), '%[', '<'), '%]', '>')
+    return string.gsub(string.gsub(Song:GetGroupName(),'%[','<'),'%]','>')
 end
 
 local function FlareStep(Step)
@@ -62,13 +59,7 @@ local function FlareStep(Step)
 	local identifier = Step:GetHash()
 	if identifier == 0 then identifier = Step:GetMeter() end
 
-    return string.format(
-        '%s_%s_%s_%s',
-        songName,
-        ToEnumShortString(Step:GetStepsType()),
-        ToEnumShortString(Step:GetDifficulty()),
-        identifier
-    )
+    return string.format('%s_%s_%s_%s',songName,ToEnumShortString(Step:GetStepsType()),ToEnumShortString(Step:GetDifficulty()),identifier)
 end
 
 function GetFlare(player,Song,Steps)
@@ -108,6 +99,6 @@ end
 
 function SaveFlare(player)
     local path = getFlaresPath(player)
-    IniFile.WriteFile(path, Flares[player])
+    IniFile.WriteFile(path,Flares[player])
     if FILEMAN.FlushDirCache then FILEMAN:FlushDirCache(path) end
 end
