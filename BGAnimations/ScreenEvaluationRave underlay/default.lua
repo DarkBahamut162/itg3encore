@@ -1,5 +1,8 @@
 local enableOffset = ThemePrefs.Get("ShowOffset")
-local offsetInfo = getenv("OffsetTable")
+local offsetInfo = {
+	[PLAYER_1] = getenv("OffsetTableP1"),
+	[PLAYER_2] = getenv("OffsetTableP2")
+}
 local early = {
 	[PLAYER_1] = {
 		["TapNoteScore_W0"] = 0,

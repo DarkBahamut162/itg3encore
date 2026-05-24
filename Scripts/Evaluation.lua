@@ -91,7 +91,10 @@ end
 
 function prepSummary()
 	local currentStage = GAMESTATE:GetCurrentStageIndex()+SummaryAdjust
-	local offsetInfo = getenv("OffsetTable")
+	local offsetInfo = {
+		[PLAYER_1] = getenv("OffsetTableP1"),
+		[PLAYER_2] = getenv("OffsetTableP2")
+	}
 	local scores = isOpenDDR() and {
 		"TapNoteScore_W1",
 		"TapNoteScore_W2",

@@ -48,6 +48,7 @@ local WXCounter = getenv("WX"..pname(player)) or 0
 local judgment
 local offsetdata = {}
 local offsetdataall = {}
+local enableOffsets = ThemePrefs.Get("ShowOffset")
 
 setenv("checkFantastics"..pname(player),true)
 setenv("checkPerfects"..pname(player),true)
@@ -131,7 +132,7 @@ return Def.ActorFrame{
 			MESSAGEMAN:Broadcast("W0",{Player=player,W0=W0Counter,W1=W1Counter,WX=WXCounter})
 		end
 
-		if GAMESTATE:GetCurrentGame():CountNotesSeparately() then
+		if enableOffsets then
 			local vStats = STATSMAN:GetCurStageStats():GetPlayerStageStats( player )
 			local time = GAMESTATE:IsCourseMode() and vStats:GetAliveSeconds() or GAMESTATE:GetCurMusicSeconds()/GAMESTATE:GetSongOptionsObject("ModsLevel_Song"):MusicRate()
 			local noff = param.TapNoteScore == "TapNoteScore_Miss" and "Miss" or param.TapNoteOffset
@@ -182,8 +183,8 @@ return Def.ActorFrame{
 		c.Judgment:visible( true )
 	end,
 	OffCommand=function(self)
-		if GAMESTATE:GetCurrentGame():CountNotesSeparately() then setenv("OffsetTable"..pname(player),offsetdata) end
-		if GAMESTATE:GetCurrentGame():CountNotesSeparately() then setenv("OffsetTableAll"..pname(player),offsetdataall) end
+		setenv("OffsetTable"..pname(player),offsetdata)
+		setenv("OffsetTableAll"..pname(player),offsetdataall)
 		if getenv("checkFantastics"..pname(player)) then setenv("LastFantastic"..pname(player),isEtterna("0.55") and GAMESTATE:GetSongPosition():GetMusicSecondsVisible() or STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetAliveSeconds()) end
 		if getenv("checkPerfects"..pname(player)) then setenv("LastPerfect"..pname(player),isEtterna("0.55") and GAMESTATE:GetSongPosition():GetMusicSecondsVisible() or STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetAliveSeconds()) end
 		if getenv("checkGreats"..pname(player)) then setenv("LastGreat"..pname(player),isEtterna("0.55") and GAMESTATE:GetSongPosition():GetMusicSecondsVisible() or STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetAliveSeconds()) end

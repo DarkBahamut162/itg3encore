@@ -9,7 +9,10 @@ local judges = { [PLAYER_1] = isOpenDDR() and 4 or 5, [PLAYER_2] = isOpenDDR() a
 if getenv("SetScoreFA"..pname(PLAYER_1)) then judges[PLAYER_1]=judges[PLAYER_1]+1 end
 if getenv("SetScoreFA"..pname(PLAYER_2)) then judges[PLAYER_2]=judges[PLAYER_2]+1 end
 local enableOffsets = ThemePrefs.Get("ShowOffset")
-local offsetInfo = getenv("OffsetTable")
+local offsetInfo = {
+	[PLAYER_1] = getenv("OffsetTableP1"),
+	[PLAYER_2] = getenv("OffsetTableP2")
+}
 
 local timing = GetTimingDifficulty()
 local timingChange = { 1.50,1.33,1.16,1.00,0.84,0.66,0.50,0.33,0.20 }
