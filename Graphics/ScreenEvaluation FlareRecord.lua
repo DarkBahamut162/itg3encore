@@ -20,7 +20,7 @@ if visible and getenv("FlareFloat"..pname(player)) then
 	end
 end
 
-if visible then
+if visible and getenv("EvalCombo"..pname(player)) then
 	if PSS:GetFailed() then currentLevel = 0 end
 	if getenv("FlareFloat"..pname(player)) and currentLevel <= flareLevel and tonumber(float[#float][2][flareLevel]) < 0 then currentLevel = 0 end
 

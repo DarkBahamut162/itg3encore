@@ -162,7 +162,7 @@ for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
 		}
 		t[#t+1] = loadfile(THEME:GetPathG(Var "LoadingScreen", "FlareRecord"))(pn)..{
 			InitCommand=function(self)
-				self:player(pn):name("FlareRecord" .. PlayerNumberToString(pn))
+				self:player(pn):name("FlareRecord" .. PlayerNumberToString(pn)):visible(getenv("EvalCombo"..pname(pn)))
 				ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen")
 			end
 		}
