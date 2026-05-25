@@ -52,7 +52,8 @@ judg[#judg+1] = W2
 judg[#judg+1] = W3
 if not isOpenDDR() then judg[#judg+1] = W4 end
 local Wmax = (isOpenDDR() and W4 or W5)
-local width = isFinal() and 125 or 125/2
+local base = filterWidth / 2
+local width = isFinal() and base or base/2
 
 local errorBar = getenv("ErrorBar"..pname(player)) or 0
 if errorBar == 1 then
@@ -90,14 +91,14 @@ local function DisplayTick(self,params)
 
 		if WX == "TapNoteScore_W1" and faplus then
 			if math.abs(params.TapNoteOffset) <= W0 then else WX = "TapNoteScore_W0" end
-		elseif errorBar < jugdE[WX] then
+		elseif jugdE[WX] and errorBar < jugdE[WX] then
 			posX = 0
-			zoomX = isFinal() and 250 or 125
+			zoomX = width * (isFinal() and 2 or 1)
 			length = 0.25
 		end
-        local color = TapNoteScoreToColor(WX) 
+        local color = TapNoteScoreToColor(WX)
 
-        tick:zoomx(zoomX):diffusealpha(1):diffuse(color):x(125*posX):sleep(0.03):linear(length - 0.03):diffusealpha(0)
+        tick:zoomx(zoomX):diffusealpha(1):diffuse(color):x(base*posX):sleep(0.03):linear(length - 0.03):diffusealpha(0)
     end
 end
 
@@ -109,18 +110,19 @@ local judgments = Def.ActorFrame{
     end
 }
 
-for WX in ivalues(judg) do
+for i,WX in ipairs(judg) do
 	if WX < Wmax then
+		local color = i==#judg and TapNoteScoreToColor("TapNoteScore_Miss") or TapNoteScoreToColor("TapNoteScore_W"..(faplus and i-1 or i))
 		judgments[#judgments+1] = Def.Sprite{
 			Texture = THEME:GetPathG("horiz-line","short"),
 			InitCommand=function(self)
-				self:zoomto(1,30):diffusealpha(0.25):x(125*(WX/Wmax)):blend(Blend.Add)
+				self:zoomto(1,30):diffusealpha(0.25):x(base*(WX/Wmax)):diffuse(color):diffusealpha(0.5):blend(Blend.Add)
 			end
 		}
 		judgments[#judgments+1] = Def.Sprite{
 			Texture = THEME:GetPathG("horiz-line","short"),
 			InitCommand=function(self)
-				self:zoomto(1,30):diffusealpha(0.25):x(125*(-WX/Wmax)):blend(Blend.Add)
+				self:zoomto(1,30):diffusealpha(0.25):x(base*(-WX/Wmax)):diffuse(color):diffusealpha(0.5):blend(Blend.Add)
 			end
 		}
 	end
@@ -135,10 +137,9 @@ end
 t[#t+1] = Def.ActorFrame{
 	InitCommand=function(self)
 		local NoteFieldMiddle = (THEME:GetMetric("Player","ReceptorArrowsYStandard")+THEME:GetMetric("Player","ReceptorArrowsYReverse"))/2
-		local mods = string.find(GAMESTATE:GetPlayerState(player):GetPlayerOptionsString("ModsLevel_Song"),"FlipUpsideDown")
 		local reverse = GAMESTATE:GetPlayerState(player):GetPlayerOptions('ModsLevel_Song'):UsingReverse()
-		if mods then reverse = not reverse end
-		self:addy(reverse and -NoteFieldMiddle*3 or NoteFieldMiddle*3):addy(-64):zoomy(0.5)
+		local move = (IsGame("beat") or IsGame("be-mu")) and 96 or 64
+		self:addy(reverse and -NoteFieldMiddle or NoteFieldMiddle*3):addy(reverse and move or -move):zoomy(0.5)
 	end,
 	Def.Sprite {
 		Texture = "bar "..(isFinal() and "final" or "normal"),
@@ -146,7 +147,7 @@ t[#t+1] = Def.ActorFrame{
 	},
 	Def.Sprite {
 		Texture = THEME:GetPathG("horiz-line","short"),
-		InitCommand=function(self) self:zoomto(1,30):diffusealpha(0.25) end
+		InitCommand=function(self) self:zoomto(1,30):diffusealpha(0.5) end
 	},
 	judgments
 }
