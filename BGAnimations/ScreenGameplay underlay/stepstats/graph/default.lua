@@ -17,6 +17,8 @@ local screenMusicCheck = isTopScreen("ScreenSelectMusic") or isTopScreen("Screen
 local screenNetMusicCheck = IsNetSMOnline() or isTopScreen("ScreenNetSelectMusic") or isTopScreen("ScreenNetSelectMusicFinal")
 local screenCheck = screenMusicCheck or screenNetMusicCheck
 local cropValue = screenNetMusicCheck and 0.64 or screenMusicCheck and 0.6 or 0.5
+local LifeMeter = nil
+local life_verts = {}
 local max = 0
 local average = 0
 local median = 0
@@ -591,13 +593,6 @@ local function GetVerticesAlt(stepsPerSecList)
 
     average,median,counter,max = 0,0,0,0
     local medians = {}
-    for _=1, #stepsList do
-        average = average + (stepsList[_] or 0)
-        medians[#medians+1] = (stepsList[_] or 0)
-        counter = counter + 1
-        max = math.max(max,stepsList[_] or 0)
-    end
-
     for _i,_ in pairs( stepsList ) do
         max = math.max(max,_)
         average = average + _
@@ -689,6 +684,28 @@ local function GetVerticesAssist(insert)
     return vertices
 end
 
+local function GetVerticesLife(stepsPerSecList)
+    local stepsList = stepsPerSecList or {1}
+    local last = 0
+
+    for _i,_ in pairs( stepsList ) do
+        if _i > last then last = _i end
+    end
+
+    local seconds = GAMESTATE:GetCurMusicSeconds()
+    if seconds > last then return life_verts end
+    local x = scale( seconds, 0, last, 0, graphH*3.825 )
+    local y = scale( LifeMeter:GetLife(), 0, 1, 0, graphH )
+
+    if #life_verts >= 2 and life_verts[#life_verts][1][2] == y then
+        life_verts[#life_verts][1] = {x, y, 0}
+    else
+        life_verts[#life_verts+1] = {{x, y, 0}, {1,1,1,1}}
+    end
+
+    return life_verts
+end
+
 return Def.ActorFrame{
     Def.Sprite {
         Texture = "notegraph",
@@ -741,6 +758,27 @@ return Def.ActorFrame{
                 self:rotationz(player == PLAYER_1 and 90 or -90)
                 self:rotationx(player == PLAYER_1 and 180 or 0)
                 self:x(player == PLAYER_1 and -graphH*1.5 or graphH*1.5):y(175)
+            end
+        },
+        Def.ActorMultiVertex{
+            Condition=not screenCheck and getenv("PlayerNoteLifeGraph"..pname(player)),
+            InitCommand=function(self)
+                self:SetDrawState({Mode="DrawMode_LineStrip"})
+                self:rotationz(player == PLAYER_1 and 90 or -90)
+                self:rotationx(player == PLAYER_1 and 180 or 0)
+                self:x(player == PLAYER_1 and -graphH*1.5 or graphH*1.5):y(175)
+            end,
+            OnCommand=function(self)
+                LifeMeter = SCREENMAN:GetTopScreen():GetChild("Life"..pname(pn))
+                self:sleep(1/60):queuecommand("Update")
+            end,
+            UpdateCommand=function(self)
+                local vertices = GetVerticesLife(isOutFox(20200400) and UpdateGraphAlt() or UpdateGraphAltOld())
+                self:SetNumVertices(#vertices):SetVertices(vertices):sleep(1/60):queuecommand("Update")
+            end,
+            CurrentSongChangedMessageCommand=function(self)
+                life_verts = {}
+                self:SetNumVertices(#life_verts):SetVertices(life_verts)
             end
         },
         Def.BitmapText{

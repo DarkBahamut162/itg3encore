@@ -36,6 +36,7 @@ local file = {
 		PlayerNoteGraph = 1,
 		PlayerNoteGraphType = 2,
 		PlayerNoteGraphRange = 1,
+		PlayerNoteLifeGraph = false,
 		PlayerNoteGraphData = false,
 		SetPacemaker = 0,
 		SetPacemakerFail = 0,
