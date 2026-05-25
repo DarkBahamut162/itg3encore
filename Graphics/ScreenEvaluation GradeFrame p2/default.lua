@@ -433,7 +433,8 @@ return Def.ActorFrame{
 			Def.BitmapText {
 				Name="W0Column"..PlayerNumberToString(PLAYER_2),
 				File=THEME:GetPathF("ScreenEvaluation","JudgmentLineNumber"),
-				InitCommand=function(self) self:x(62*WideScreenDiff()):diffuse(PlayerColor(PLAYER_2)):diffusealpha(0):zoom(0.6*WideScreenDiff()) end
+				InitCommand=function(self) self:x(62*WideScreenDiff()):diffuse(PlayerColor(PLAYER_2)):diffusealpha(0):zoom(0.6*WideScreenDiff()) end,
+				OffCommand=function(self) self:linear(0.2):diffusealpha(0) end
 			},
 			Def.RollingNumbers{
 				Font=THEME:GetPathF("ScreenEvaluation","JudgmentLineNumber"),
@@ -464,7 +465,8 @@ return Def.ActorFrame{
 			Def.BitmapText {
 				Name="W1Column"..PlayerNumberToString(PLAYER_2),
 				File=THEME:GetPathF("ScreenEvaluation","JudgmentLineNumber"),
-				InitCommand=function(self) self:x(65*WideScreenDiff()):diffuse(PlayerColor(PLAYER_2)):diffusealpha(0):zoom(0.6*WideScreenDiff()) end
+				InitCommand=function(self) self:x(65*WideScreenDiff()):diffuse(PlayerColor(PLAYER_2)):diffusealpha(0):zoom(0.6*WideScreenDiff()) end,
+				OffCommand=function(self) self:linear(0.2):diffusealpha(0) end
 			},
 			Def.RollingNumbers{
 				Condition=faplus,
@@ -489,7 +491,8 @@ return Def.ActorFrame{
 			Def.BitmapText {
 				Name="W2Column"..PlayerNumberToString(PLAYER_2),
 				File=THEME:GetPathF("ScreenEvaluation","JudgmentLineNumber"),
-				InitCommand=function(self) self:x(68*WideScreenDiff()):diffuse(PlayerColor(PLAYER_2)):diffusealpha(0):zoom(0.6*WideScreenDiff()) end
+				InitCommand=function(self) self:x(68*WideScreenDiff()):diffuse(PlayerColor(PLAYER_2)):diffusealpha(0):zoom(0.6*WideScreenDiff()) end,
+				OffCommand=function(self) self:linear(0.2):diffusealpha(0) end
 			},
 			Def.BitmapText {
 				Name="W2Judgment"..PlayerNumberToString(PLAYER_2),
@@ -512,7 +515,8 @@ return Def.ActorFrame{
 			Def.BitmapText {
 				Name="W3Column"..PlayerNumberToString(PLAYER_2),
 				File=THEME:GetPathF("ScreenEvaluation","JudgmentLineNumber"),
-				InitCommand=function(self) self:x(71*WideScreenDiff()):diffuse(PlayerColor(PLAYER_2)):diffusealpha(0):zoom(0.6*WideScreenDiff()) end
+				InitCommand=function(self) self:x(71*WideScreenDiff()):diffuse(PlayerColor(PLAYER_2)):diffusealpha(0):zoom(0.6*WideScreenDiff()) end,
+				OffCommand=function(self) self:linear(0.2):diffusealpha(0) end
 			},
 			Def.BitmapText {
 				Name="W3Judgment"..PlayerNumberToString(PLAYER_2),
@@ -535,7 +539,8 @@ return Def.ActorFrame{
 			Def.BitmapText {
 				Name="W4Column"..PlayerNumberToString(PLAYER_2),
 				File=THEME:GetPathF("ScreenEvaluation","JudgmentLineNumber"),
-				InitCommand=function(self) self:x(74*WideScreenDiff()):diffuse(PlayerColor(PLAYER_2)):diffusealpha(0):zoom(0.6*WideScreenDiff()) end
+				InitCommand=function(self) self:x(74*WideScreenDiff()):diffuse(PlayerColor(PLAYER_2)):diffusealpha(0):zoom(0.6*WideScreenDiff()) end,
+				OffCommand=function(self) self:linear(0.2):diffusealpha(0) end
 			},
 			Def.BitmapText {
 				Name="W4Judgment"..PlayerNumberToString(PLAYER_2),
@@ -558,7 +563,8 @@ return Def.ActorFrame{
 			Def.BitmapText {
 				Name="W5Column"..PlayerNumberToString(PLAYER_2),
 				File=THEME:GetPathF("ScreenEvaluation","JudgmentLineNumber"),
-				InitCommand=function(self) self:x(77*WideScreenDiff()):diffuse(PlayerColor(PLAYER_2)):diffusealpha(0):zoom(0.6*WideScreenDiff()) end
+				InitCommand=function(self) self:x(77*WideScreenDiff()):diffuse(PlayerColor(PLAYER_2)):diffusealpha(0):zoom(0.6*WideScreenDiff()) end,
+				OffCommand=function(self) self:linear(0.2):diffusealpha(0) end
 			},
 			Def.BitmapText {
 				Name="W5Judgment"..PlayerNumberToString(PLAYER_2),
@@ -582,7 +588,8 @@ return Def.ActorFrame{
 			Def.BitmapText {
 				Name="MissColumn"..PlayerNumberToString(PLAYER_2),
 				File=THEME:GetPathF("ScreenEvaluation","JudgmentLineNumber"),
-				InitCommand=function(self) self:x(80*WideScreenDiff()):diffuse(PlayerColor(PLAYER_2)):diffusealpha(0):zoom(0.6*WideScreenDiff()) end
+				InitCommand=function(self) self:x(80*WideScreenDiff()):diffuse(PlayerColor(PLAYER_2)):diffusealpha(0):zoom(0.6*WideScreenDiff()) end,
+				OffCommand=function(self) self:linear(0.2):diffusealpha(0) end
 			},
 			Def.BitmapText {
 				Name="MissJudgment"..PlayerNumberToString(PLAYER_2),
