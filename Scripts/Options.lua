@@ -238,7 +238,7 @@ function SongMods(part)
 	end
 	if part == nil or part == 2 then options = addToOutput(options,"12"..(isITGmania(20240317) and ",12ITG" or "")..",13,14,7,BGC,M,A,15",",") end
 	if part == nil or part == 3 then
-		options = addToOutput(options,"19,28,30,S,EB,CC,25",",")
+		options = addToOutput(options,"19,28,30,S,EB,CC,CF,25",",")
 		if isITGmania(20250327) then add2 = addToOutput(add2,",HLT",",") end
 		if isITGmania(20220612) then add2 = addToOutput(add2,",DTW",",") end
 		if isITGmania(20240307) then add2 = addToOutput(add2,",BB",",") end
@@ -256,7 +256,7 @@ function SongMods(part)
 		if isVS() then
 			if part == nil or part == 3 then options = addToOutput(options,"28,21"..add2..",33",",") end
 		end
-		if part == nil or part == 3 then options = addToOutput(options,"28,S,EB,CC,20,"..add.."P,PF,29,21"..add2..",33",",") end
+		if part == nil or part == 3 then options = addToOutput(options,"28,S,EB,CC,CF,20,"..add.."P,PF,29,21"..add2..",33",",") end
 	end
 
 	if DoesDanceRepoExist() and (part == nil or part == 4) then
@@ -438,7 +438,8 @@ function InitPlayerOptions()
 		setenv("ShowMovePlayerfieldStats"..pname(pn),LoadUserPrefN(pn, "ShowMovePlayerfieldStats", tonumber(DefaultLuaModifiers["ShowMovePlayerfieldStats"])) or 3)
 		setenv("SetScoreType"..pname(pn),LoadUserPrefN(pn, "SetScoreType", tonumber(DefaultLuaModifiers["SetScoreType"])) or 2)
 		setenv("ErrorBar"..pname(pn),LoadUserPrefN(pn, "ErrorBar", tonumber(DefaultLuaModifiers["ErrorBar"])) or 0)
-		setenv("ShowColumns"..pname(pn),LoadUserPrefN(pn, "ShowColumns", tonumber(DefaultLuaModifiers["ShowColumns"])) or 0)
+		setenv("ShowColumnCues"..pname(pn),LoadUserPrefN(pn, "ShowColumnCues", tonumber(DefaultLuaModifiers["ShowColumnCues"])) or 0)
+		setenv("ShowColumnFlashes"..pname(pn),LoadUserPrefN(pn, "ShowColumnFlashes", tonumber(DefaultLuaModifiers["ShowColumnFlashes"])) or 0)
 		if isITGmania(20240307) then setenv("BeatBars"..pname(pn),LoadUserPrefN(pn, "BeatBars", tonumber(DefaultLuaModifiers["BeatBars"])) or 0) end
 		if isOutFox(20211200) then setenv("BeatBarsOutFox"..pname(pn),LoadUserPrefN(pn, "BeatBarsOutFox", tonumber(DefaultLuaModifiers["BeatBarsOutFox"])) or 0) end
 		if (isOutFox(20210300) or isEtterna("0.50")) and GAMESTATE:GetCurrentGame():CountNotesSeparately() then
@@ -819,29 +820,56 @@ function NumberToBits(num,bits)
     return t
 end
 
-function OptionShowColumns()
+function OptionShowColumnCues()
+	local t = {
+		Name="ShowColumnCues",
+		LayoutType = "ShowAllInRow",
+		SelectType = "SelectMultiple",
+		OneChoiceForAllPlayers = false,
+		ExportOnChange = false,
+		Choices = { "First Arrow/Note","All Arrows/Notes" },
+		LoadSelections = function(self, list, pn)
+			local bits = NumberToBits(getenv("ShowColumnCues"..pname(pn)) or 0,2)
+			for i=1,#list do list[i] = bits[3-i] end
+		end,
+		SaveSelections = function() end,
+		NotifyOfSelection= function(self, pn, choice)
+			local current = getenv("ShowColumnCues"..pname(pn))
+			if choice == 1 then
+				setenv("ShowColumnCues"..pname(pn),SaveUserPref(pn, "ShowColumnCues", current == 1 and 0 or 1))
+			elseif choice == 2 then
+				setenv("ShowColumnCues"..pname(pn),SaveUserPref(pn, "ShowColumnCues", current == 2 and 0 or 2))
+			end
+			return true
+		end
+	}
+	setmetatable(t, t)
+	return t
+end
+
+function OptionShowColumnFlashes()
 	function Range()
 		if isOpenDDR() then
-			return { "Preview","Miss","Decent","Great","Excellent","Fantastic" }
+			return { "Miss","Decent","Great","Excellent","Fantastic" }
 		else
-			return { "Preview","Miss","Way Off","Decent","Great","Excellent","Fantastic" }
+			return { "Miss","Way Off","Decent","Great","Excellent","Fantastic" }
 		end
 	end
 	local t = {
-		Name="ShowColumns",
+		Name="ShowColumnFlashes",
 		LayoutType = "ShowAllInRow",
 		SelectType = "SelectMultiple",
 		OneChoiceForAllPlayers = false,
 		ExportOnChange = false,
 		Choices = Range(),
 		LoadSelections = function(self, list, pn)
-			local bits = NumberToBits(getenv("ShowColumns"..pname(pn)) or 0,isOpenDDR() and 6 or 7)
-			for i=1,#list do list[i] = bits[8-i] end
+			local bits = NumberToBits(getenv("ShowColumnFlashes"..pname(pn)) or 0,isOpenDDR() and 5 or 6)
+			for i=1,#list do list[i] = bits[(isOpenDDR() and 6 or 7)-i] end
 		end,
 		SaveSelections = function(self, list, pn)
 			local total = 0
 			for i=1,#list do if list[i] then total = total + math.pow(2,i-1) end end
-			setenv("ShowColumns"..pname(pn),SaveUserPref(pn, "ShowColumns", total))
+			setenv("ShowColumnFlashes"..pname(pn),SaveUserPref(pn, "ShowColumnFlashes", total))
 		end
 	}
 	setmetatable(t, t)

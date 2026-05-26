@@ -382,9 +382,10 @@ I could have actually forked it but I didn't. My reasoning was that it wasn't go
       - Enable an additional FA+ Scoring to the selected ScoreType
       - WIFE3 *(from Etterna)* can't be selected if the GameMode is on **CountNotesSeperately** because of a judgment bug in the engine
     - **ErrorBar:** Selectable **Range of Judgment** to be displayed *(lowest first)*
-    - **Column Cues/Flashes:**
-      - Shows where the **First Notes** are
-      - Selectable **Range of Judgment** to be displayed *(lowest first)*
+    - **Column Cues:**
+      - Shows either just where the **First Arrows/Notes** or **All Arrows/Notes** are *(only of there are no arrows/notes currently displayed)*
+    - **Column Flashes:**
+      - Selectable **Range of Judgment** to be displayed wen hit
     - **PlayerStats:** Selectable **Range of Judgment** to be displayed *(highest first)*
       - **IIDX** switches **StatsMode** to a fully functional **IIDX pacemaker** and shows **Player**, **Highscore** *(if available)* and **Target**
       - Ability to switch between **FullSize** & **MiniSize**
