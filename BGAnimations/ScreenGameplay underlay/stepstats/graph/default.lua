@@ -167,7 +167,7 @@ local function UpdateGraphDWI(Step)
         
         local beat = 0
         if chart then
-            local currentMeasure = -1
+            local currentMeasure = 0
             for measure in ivalues(chart) do
                 currentMeasure = currentMeasure + 1
                 local currentRow = -1
@@ -396,7 +396,7 @@ local function UpdateGraphAltDWI(Step)
         
         local beat = 0
         if chart then
-            local currentMeasure = -1
+            local currentMeasure = 0
             for measure in ivalues(chart) do
                 currentMeasure = currentMeasure + 1
                 local currentRow = -1
