@@ -9,6 +9,7 @@ end
 return Def.ActorFrame{
 	Def.Quad{ OnCommand=function(self) self:zoomto(678,200):MaskSource(true):x(69):y(-131) end },
 	Def.Quad{ OnCommand=function(self) self:zoomto(678,200):MaskSource():x(69):y(276) end },
+	CurrentCourseChangedMessageCommand=function(self) self:visible(GAMESTATE:GetCurrentCourse() ~= nil) end,
 	Def.CourseContentsList {
 		MaxSongs = 99,
 		NumItemsToDraw = 8,
