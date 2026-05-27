@@ -70,7 +70,7 @@ function SelectMenuAvailable()
 end
 
 function ModeMenuAvailable()
-	return (not GAMESTATE:IsCourseMode()) and (GAMESTATE:GetSortOrder() ~= 'SortOrder_ModeMenu')
+	return GAMESTATE:GetSortOrder() ~= 'SortOrder_ModeMenu'
 end
 
 function TextBannerAfterSet(self,param)
