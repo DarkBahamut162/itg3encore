@@ -40,9 +40,9 @@ return Def.ActorFrame{
 		CoinInsertedMessageCommand=function(self) self:stoptweening():playcommand("Refresh") end
 	},
 	Def.ActorFrame{
-		Condition=ThemePrefs.Get("ShowClock"),
+		Condition=ThemePrefs.Get("ShowClock") and isGamePlay(),
 		Name="TIME & DATE",
-		OnCommand=function(self) self:CenterX():y(isGamePlay() and SCREEN_BOTTOM-26*WideScreenDiff() or SCREEN_BOTTOM-33*WideScreenDiff()) if GAMESTATE:IsEventMode() and isGamePlay() then self:y(SCREEN_BOTTOM-16*WideScreenDiff()) end end,
+		OnCommand=function(self) self:CenterX():y(SCREEN_BOTTOM-26*WideScreenDiff()) if GAMESTATE:IsEventMode() then self:y(SCREEN_BOTTOM-16*WideScreenDiff()) end end,
 		Def.BitmapText {
 			File = "_v 26px bold black",
 			InitCommand=function(self) self:zoom(0.5*WideScreenDiff()):playcommand("Set") end,
