@@ -329,6 +329,11 @@ local Prefs = {
 		Choices = { OptionNameString('Off'), OptionNameString('On') },
 		Values = { false, true }
 	},
+	ShowCalcDiffOnly = {
+		Default = false,
+		Choices = { OptionNameString('Off'), OptionNameString('On') },
+		Values = { false, true }
+	},
 	ShowCalcDiffDecimals = {
 		Default = 0,
 		Choices = { "0", "1", "2" },

@@ -123,6 +123,8 @@ Show the calculated Difficulty of the currently selected stepchart
     - **SPS (StepCache Only)** *(median steps per second per steps)*
 - **ShowCalcDiffDecimals**
 Change the number of decimals for the calculated Difficulty
+- **ShowCalcDiffOnly**
+Choose if the calculated difficulty should be displayed with or without the original difficulty
 - **DanceDifficultyType:** *(GameMode Dance Only)*
 Switch between **Old DDR/ITG & DDR X-SCALE** difficulty ranges
 - **ShowGrade:**

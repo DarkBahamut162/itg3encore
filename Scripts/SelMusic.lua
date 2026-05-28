@@ -1652,12 +1652,10 @@ end
 --[[
 	This function gets called intentionally through MeterSetCommand inside Metrics.ini for [StepsDisplayListRow]
 	But for whatever reason, it gets called on ALL Changed*MessageCommands FOR ALL ENABLED PLAYERS.
-	Because of this, if ShowCalcDiff is enabled, I'm forcing a check so that the function only gets executed once and loaded every other time. 
 ]]--
 function getCalculatedDifficulty(Step)
 	if not Step then return "" end
 	local value = split("/",getStepCacheFile(Step))[3]
-	if repeatCheck[value] then return repeatCheck[value] end
 	local OG = Step:GetMeter()
 
 	local Song = SONGMAN:GetSongFromSteps(Step)
@@ -1708,14 +1706,19 @@ function getCalculatedDifficulty(Step)
 
 	local output = {}
 	local decimals = tonumber(ThemePrefs.Get("ShowCalcDiffDecimals"))
+	local MusicRate = math.round(GAMESTATE:GetSongOptionsObject("ModsLevel_Song"):MusicRate(),1)
 	if DB9 > SPS then
-		output = {math.round(DB9,decimals),"DB9"}
+		output = {math.round(DB9*MusicRate,decimals),"DB9"}
 	elseif SPS > DB9 then
-		output = {math.round(SPS,decimals),"SPS"}
+		output = {math.round(SPS*MusicRate,decimals),"SPS"}
 	end
 	if output[1] and output[1] ~= OG then
-		repeatCheck[value] = output[1].." "..output[2].."\n"..OG.." OG"
-		return output[1].." "..output[2].."\n"..OG.." OG"
+		if ThemePrefs.Get("ShowCalcDiffOnly") then
+			return output[1]
+		else
+			repeatCheck[value] = output[1].." "..output[2].."\n"..OG.." OG"
+			return output[1].." "..output[2].."\n"..OG.." OG"
+		end
 	else
 		repeatCheck[value] = OG
 		return OG
