@@ -46,12 +46,16 @@ return Def.ActorFrame{
 							if not steps then steps = GAMESTATE:GetCurrentSteps(GAMESTATE:GetMasterPlayerNumber()) end
 							if steps then
 								local trueSeconds = 0
-								if usesStepCache and not (not isEtterna("0.55") and steps:IsAutogen()) then trueSeconds = tonumber(LoadFromCache(SongOrCourse,steps,"TrueSeconds")) or 0 end
-								if trueSeconds <= 0 then trueSeconds = SongOrCourse:GetFirstSecond() > SongOrCourse:GetLastSecond() and 0 or (isOutFox(20211230) and steps:GetChartLength() or SongOrCourse:GetLastSecond()-SongOrCourse:GetFirstSecond()) end
-
-								IsMarathon = trueSeconds > MarathonCutoff
-								IsLong     = trueSeconds > LongCutoff
-								IsShort    = trueSeconds < 60
+								if usesStepCache and not (not isEtterna("0.55") and steps:IsAutogen()) then
+									trueSeconds = LoadFromCache(SongOrCourse,steps,"TrueSeconds")
+									if trueSeconds then trueSeconds = tonumber(trueSeconds) or 0 end
+								end
+								if trueSeconds and trueSeconds <= 0 then trueSeconds = SongOrCourse:GetFirstSecond() > SongOrCourse:GetLastSecond() and 0 or (isOutFox(20211230) and steps:GetChartLength() or SongOrCourse:GetLastSecond()-SongOrCourse:GetFirstSecond()) end
+								if trueSeconds then
+									IsMarathon = trueSeconds > MarathonCutoff
+									IsLong     = trueSeconds > LongCutoff
+									IsShort    = trueSeconds < 60
+								end
 							end
 						end
 						if IsMarathon then
@@ -60,13 +64,15 @@ return Def.ActorFrame{
 						elseif IsLong then
 							output = eventMode and "LONG" or "COUNTS AS 2 ROUNDS"
 							self:diffuseshift():effectcolor1(color("#FFFF00")):effectcolor2(color("#FFFFFF")):effectclock(EC ~= "" and "beat" or "timerglobal")
-						else
-							if eventMode and IsShort then 
+						elseif IsShort then
+							if eventMode then 
 								self:diffuseshift():effectcolor1(color("#00FF00")):effectcolor2(color("#FFFFFF")):effectclock(EC ~= "" and "beat" or "timerglobal")
 								output = "SHORT"
 							else
 								self:stopeffect()
 							end
+						else
+							self:stopeffect()
 						end
 					end
 					if IsGame("po-mu") or IsGame("be-mu") then
