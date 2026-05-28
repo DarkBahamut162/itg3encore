@@ -311,6 +311,17 @@ t[#t+1] = Def.BitmapText {
 	OffCommand=function(self) self:accelerate(0.75):addx(SCREEN_WIDTH) end,
 	BeginCommand=function(self) self:playcommand("Set") end,
 	SortOrderChangedMessageCommand=function(self) self:playcommand("Set") end,
+	RateChangedMessageCommand=function(self)
+		local topScreen = SCREENMAN:GetTopScreen()
+		if topScreen then
+			local wheel = topScreen:GetMusicWheel()
+			if wheel then
+				wheel:Move(1)
+				wheel:Move(-1)
+				wheel:Move(0)
+			end
+		end
+	end,
 	SetCommand=function(self)
 		local s = GAMESTATE:GetSortOrder()
 		if s ~= nil then
