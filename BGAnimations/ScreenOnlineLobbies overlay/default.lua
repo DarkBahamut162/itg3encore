@@ -599,9 +599,6 @@ return Def.ActorFrame{
 				self:GetChild("Slots"):GetChild("Slot4"):settext(text):stopeffect():diffuse(color("#FFFFFF"))
 			end
 		end,
-		Def.Quad{
-			InitCommand=function(self) self:FullScreen():diffuse(color("0,0,0,0.5")) end,
-		},
 		Def.Sprite {
 			Texture = THEME:GetPathG("ScreenOptions","page/lobby page"),
 			InitCommand=function(self) self:Center():zoom(WideScreenDiff()):visible(true) end,
