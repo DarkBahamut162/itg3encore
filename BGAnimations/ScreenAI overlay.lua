@@ -138,6 +138,7 @@ for line = 1, #file do
 		totalWeights = totalWeights + 1
 		local splitted = split("=",file[line])
 		totalWeightNames[totalWeights] = splitted[1]
+		if splitted[2] == "" then splitted[2] = 0 end
 		AIini[currentSkillName][splitted[1]] = splitted[2]
 		AIiniOLD[currentSkillName][splitted[1]] = splitted[2]
 	end
