@@ -1178,7 +1178,7 @@ end
 function Time(time,ms,min)
 	if not ms then time = math.round(time,2) end
 	local minus = time < 0
-	if min then time = math.abs(time) end
+	if min then time = math.abs(time) else time = math.max(0,time) end
 	return ((minus and min) and "-" or "")..math.floor(time/60)..":"..string.format(ms and "%05.2f" or "%02.0f",time%60)
 end
 
