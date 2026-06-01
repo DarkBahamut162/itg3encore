@@ -799,7 +799,8 @@ return Def.ActorFrame{
 				local w5 = stats:GetTapNoteScores('TapNoteScore_W5')
 				local miss = stats:GetTapNoteScores('TapNoteScore_Miss')
 				local judgments = {}
-				local max = getMaxNotes(PLAYER_2)
+				local StepsOrTrail = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentTrail(PLAYER_2) or GAMESTATE:GetCurrentSteps(PLAYER_2)
+				local max = StepsOrTrail:GetRadarValues(PLAYER_2):GetValue("RadarCategory_TapsAndHolds") or 0
 
 				if getenv("SetScoreFA"..pname(PLAYER_2)) then
 					judgments[#judgments+1]=(w1-W0Count)/max*100
