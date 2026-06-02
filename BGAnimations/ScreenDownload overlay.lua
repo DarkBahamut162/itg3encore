@@ -4,22 +4,142 @@ local selected = 0
 local searching = false
 local search = ""
 local change = { PLAYER_1 = false, PLAYER_2 = false }
-local specialHeld = false
 local baselink = "https://stepmaniaonline.net/download/pack/"
 local reload = false
 
+local showing_value_prompt = false
+local value_active_index = 4
+local value_char_limit = 19
+local value_chars = {
+	"&BACK;","&SELECT;","&START;",
+	"A","B","C","D","E","F","G","H","I","J","K","L","M",
+	"N","O","P","Q","R","S","T","U","V","W","X","Y","Z",
+}
+local letters = {
+	"a","b","c","d","e","f","g","h","i","j","k","l","m",
+	"n","o","p","q","r","s","t","u","v","w","x","y","z",
+}
+
+local keyboardEnabled = ThemePrefs.Get("KeyboardEnabled")
 local InputHandler = function(event)
-	if selecting then
-		if string.find(event.DeviceInput.button,"shift") then
-			if event.type == "InputEventType_FirstPress" then
-				if not specialHeld then specialHeld = true end
-			elseif event.type == "InputEventType_Release" then
-				if specialHeld then specialHeld = false end
+	if showing_value_prompt and (event.type == "InputEventType_FirstPress" or event.type == "InputEventType_Repeat") then
+		if event.GameButton == "MenuRight" then
+			value_active_index = value_active_index + 1
+			prompt.ValueSelected:playcommand("ValueSelectedRefresh")
+			SOUND:PlayOnce(THEME:GetPathS("ScreenSelectMaster","change"))
+		elseif event.GameButton == "MenuLeft" then
+			value_active_index = value_active_index - 1
+			prompt.ValueSelected:playcommand("ValueSelectedRefresh")
+			SOUND:PlayOnce(THEME:GetPathS("ScreenSelectMaster","change"))
+		elseif event.GameButton == "MenuUp" then
+			local selected = ((value_active_index-1) % #value_chars)+1
+			local selected_char = value_chars[selected]
+			if selected_char == "&START;" then
+				SCREENMAN:PlayInvalidSound()
+			else
+				SOUND:PlayOnce(THEME:GetPathS("ScreenSelectMaster","change"))
+				value_active_index = 3
+				prompt.ValueSelected:playcommand("ValueSelectedRefresh")
 			end
+		elseif event.GameButton == "MenuDown" then
+			local selected = ((value_active_index-1) % #value_chars)+1
+			local selected_char = value_chars[selected]
+			if selected_char == "&SELECT;" then
+				SCREENMAN:PlayInvalidSound()
+			else
+				SOUND:PlayOnce(THEME:GetPathS("ScreenSelectMaster","change"))
+				value_active_index = 2
+				prompt.ValueSelected:playcommand("ValueSelectedRefresh")
+			end
+		elseif event.GameButton == "Start" then
+			local selected = ((value_active_index-1) % #value_chars)+1
+			local selected_char = value_chars[selected]
+			if selected_char == "&START;" then
+				showing_value_prompt = false
+				prompt.ValueSelected:diffusealpha(0)
+				prompt.BG:playcommand("BGOff")
+				if not keyboardEnabled then
+					prompt.ValueSelected:diffusealpha(0)
+					prompt.Hint:diffusealpha(0)
+				end
+				prompt.Text:stoptweening():linear(0.125):diffusealpha(0)
+				prompt.Value:stoptweening():linear(0.125):diffusealpha(0)
+
+				selection = {}
+				for pack in ivalues(PackList) do
+					if string.find(string.lower(pack[2]),string.lower(search)) then
+						table.insert(selection,pack)
+					end
+				end
+				if #selection == 0 then
+					selection = PackList
+					SCREENMAN:SystemMessage("No Packs Found!")
+					SCREENMAN:PlayCancelSound()
+				else
+					table.sort(selection,function(a,b)
+						return a[2]:lower() < b[2]:lower()
+					end)
+					searching = true
+				end
+				selected = 0
+				MESSAGEMAN:Broadcast("Change")
+
+				SCREENMAN:PlayStartSound()
+				showing_value_prompt = false
+			elseif selected_char == "&SELECT;" then
+				if search:len() > 0 then
+					search = search:sub(1,-2)
+					prompt.ValueSelected:playcommand("ValueSelectedRefresh")
+					SCREENMAN:PlayCancelSound()
+				else
+					SCREENMAN:PlayInvalidSound()
+				end
+			elseif selected_char == "&BACK;" then
+				showing_value_prompt = false
+				prompt.BG:playcommand("BGOff")
+				prompt.Text:stoptweening():linear(0.125):diffusealpha(0)
+				prompt.Value:stoptweening():linear(0.125):diffusealpha(0)
+				if not keyboardEnabled then
+					prompt.ValueSelected:diffusealpha(0)
+					prompt.Hint:diffusealpha(0)
+				end
+				SCREENMAN:PlayCancelSound()
+			else
+				search = search..selected_char
+				prompt.ValueSelected:playcommand("ValueSelectedRefresh")
+				SCREENMAN:PlayStartSound()
+			end
+		elseif event.GameButton == "Select" then
+			if search:len() > 0 then
+				search = search:sub(1,-2)
+				prompt.ValueSelected:playcommand("ValueSelectedRefresh")
+				SCREENMAN:PlayCancelSound()
+			else
+				SCREENMAN:PlayInvalidSound()
+			end
+		elseif event.GameButton == "Back" then
+			showing_value_prompt = false
+			prompt.BG:playcommand("BGOff")
+			prompt.Text:stoptweening():linear(0.125):diffusealpha(0)
+			prompt.Value:stoptweening():linear(0.125):diffusealpha(0)
+			if not keyboardEnabled then
+				prompt.ValueSelected:diffusealpha(0)
+				prompt.Hint:diffusealpha(0)
+			end
+			SCREENMAN:PlayCancelSound()
 		end
-		if event.type == "InputEventType_FirstPress" then
-			if event.DeviceInput.button == "DeviceButton_s" or event.DeviceInput.button == "DeviceButton_f" then
-				if not specialHeld then return end 
+		return
+	elseif selecting and (event.type == "InputEventType_FirstPress" or event.type == "InputEventType_Repeat") then
+		if event.GameButton == "MenuLeft" or event.GameButton == "MenuUp" then
+			SOUND:PlayOnce(THEME:GetPathS("ScreenOptions","next"))
+			selected = selected - 1
+			MESSAGEMAN:Broadcast("Change")
+		elseif event.GameButton == "MenuRight" or event.GameButton == "MenuDown" then
+			SOUND:PlayOnce(THEME:GetPathS("ScreenOptions","next"))
+			selected = selected + 1
+			MESSAGEMAN:Broadcast("Change")
+		elseif event.GameButton == "Select" then
+			if keyboardEnabled then
 				SCREENMAN:PlayStartSound()
 				SCREENMAN:AddNewScreenToTop("ScreenTextEntry")
 				selection = {}
@@ -38,7 +158,7 @@ local InputHandler = function(event)
 							SCREENMAN:SystemMessage("No Packs Found!")
 							SCREENMAN:PlayCancelSound()
 						else
-							table.sort(selection, function(a, b)
+							table.sort(selection,function(a,b)
 								return a[2]:lower() < b[2]:lower()
 							end)
 							searching = true
@@ -47,78 +167,76 @@ local InputHandler = function(event)
 						MESSAGEMAN:Broadcast("Change")
 					end,
 					Validate = function(answer,errorOut)
-						if answer == "" then return false, "Must Contain Text!" else return true, "" end
+						if answer == "" then return false,"Must Contain Text!" else return true,"" end
 					end,
 					OnCancel = function() selection = PackList SCREENMAN:PlayCancelSound() end
 				}
 				SCREENMAN:GetTopScreen():Load(question)
+			else
+				prompt.BG:playcommand("BGOn")
+				showing_value_prompt = true
+				search = ""
+				prompt.ValueSelected:diffusealpha(1):playcommand("ValueSelectedRefresh")
+				prompt.Hint:diffusealpha(1)
+				prompt.Text:playcommand("Set"):stoptweening():linear(0.125):diffusealpha(1)
+				prompt.Value:playcommand("Set"):playcommand("Update"):stoptweening():linear(0.125):diffusealpha(1)
+				SCREENMAN:PlayStartSound()
 			end
-		end
-		if event.type == "InputEventType_FirstPress" or event.type == "InputEventType_Repeat" then
-			if event.GameButton == "MenuLeft" or event.GameButton == "MenuUp" then
-				SOUND:PlayOnce( THEME:GetPathS("ScreenOptions","next") )
-				selected = selected - 1
+		elseif event.GameButton == "Back" then
+			if searching then
+				searching = false
+				selection = PackList
 				MESSAGEMAN:Broadcast("Change")
-			elseif event.GameButton == "MenuRight" or event.GameButton == "MenuDown" then
-				SOUND:PlayOnce( THEME:GetPathS("ScreenOptions","next") )
-				selected = selected + 1
-				MESSAGEMAN:Broadcast("Change")
-			elseif event.GameButton == "Back" then
-				if searching then
-					searching = false
-					selection = PackList
-					MESSAGEMAN:Broadcast("Change")
-					SCREENMAN:PlayCancelSound()
-				else
-					selecting = false
-					if reload then
-						SCREENMAN:GetTopScreen():StartTransitioningScreen("SM_GoToNextScreen")
-						SCREENMAN:PlayStartSound()
-					else
-						SCREENMAN:GetTopScreen():Cancel()
-					end
-				end
-			elseif event.GameButton == "Start" then
-				local current = (selected % #selection)+1
-				if FindInTable(selection[current][2],FILEMAN:GetDirListing("/Songs/")) then selection[current][9] = true end
-				if not selection[current][9] then
-					selecting = false
+				SCREENMAN:PlayCancelSound()
+			else
+				selecting = false
+				if reload then
+					SCREENMAN:GetTopScreen():StartTransitioningScreen("SM_GoToNextScreen")
 					SCREENMAN:PlayStartSound()
-					local url = baselink..selection[current][1].."/"
-					NETWORK:HttpRequest{
-						url=url,
-						downloadFile=selection[current][1]..".zip",
-						onProgress=function(currentBytes,totalBytes) MESSAGEMAN:Broadcast("Download",{currentBytes=currentBytes,totalBytes=totalBytes}) end,
-						onResponse=function(response)
-							if response.error ~= nil then
-								MESSAGEMAN:Broadcast("Error",{Error=response.errorMessage})
-								return
-							end
-							if response.statusCode == 200 then
-								if response.headers["Content-Type"] == "application/zip" then
-									if not FILEMAN:Unzip("/Downloads/"..selection[current][1]..".zip","/Songs/") then
-										SOUND:PlayOnce( THEME:GetPathS( 'Common', "invalid" ) )
-										MESSAGEMAN:Broadcast("DownloadError")
-									else
-										MESSAGEMAN:Broadcast("DownloadDone")
-										reload = true
-										selection[current][9] = true
-									end
+				else
+					SCREENMAN:GetTopScreen():Cancel()
+				end
+			end
+		elseif event.GameButton == "Start" then
+			local current = (selected % #selection)+1
+			if FindInTable(selection[current][2],FILEMAN:GetDirListing("/Songs/")) then selection[current][9] = true end
+			if not selection[current][9] then
+				selecting = false
+				SCREENMAN:PlayStartSound()
+				local url = baselink..selection[current][1].."/"
+				NETWORK:HttpRequest{
+					url=url,
+					downloadFile=selection[current][1]..".zip",
+					onProgress=function(currentBytes,totalBytes) MESSAGEMAN:Broadcast("Download",{currentBytes=currentBytes,totalBytes=totalBytes}) end,
+					onResponse=function(response)
+						if response.error ~= nil then
+							MESSAGEMAN:Broadcast("Error",{Error=response.errorMessage})
+							return
+						end
+						if response.statusCode == 200 then
+							if response.headers["Content-Type"] == "application/zip" then
+								if not FILEMAN:Unzip("/Downloads/"..selection[current][1]..".zip","/Songs/") then
+									SCREENMAN:PlayInvalidSound()
+									MESSAGEMAN:Broadcast("DownloadError")
 								else
-									SOUND:PlayOnce( THEME:GetPathS( 'Common', "invalid" ) )
-									MESSAGEMAN:Broadcast("DownloadNoZip")
+									MESSAGEMAN:Broadcast("DownloadDone")
+									reload = true
+									selection[current][9] = true
 								end
 							else
-								SOUND:PlayOnce( THEME:GetPathS( 'Common', "invalid" ) )
-								MESSAGEMAN:Broadcast("NetworkError",{Code=response.statusCode})
+								SCREENMAN:PlayInvalidSound()
+								MESSAGEMAN:Broadcast("DownloadNoZip")
 							end
-							selecting = true
+						else
+							SCREENMAN:PlayInvalidSound()
+							MESSAGEMAN:Broadcast("NetworkError",{Code=response.statusCode})
 						end
-					}
-				else
-					MESSAGEMAN:Broadcast("AlreadyDownloaded")
-					SOUND:PlayOnce( THEME:GetPathS( 'Common', "invalid" ) )
-				end
+						selecting = true
+					end
+				}
+			else
+				MESSAGEMAN:Broadcast("AlreadyDownloaded")
+				SCREENMAN:PlayInvalidSound()
 			end
 		end
 	end
@@ -377,6 +495,48 @@ return Def.ActorFrame{
 				Text="Loading...",
 				InitCommand=function(self) self:xy(SCREEN_CENTER_X-272*WideScreenDiff(),SCREEN_CENTER_Y+105*WideScreenDiff()):zoom(WideScreenDiff()):maxwidth(265*WideScreenDiff()):halign(0):shadowlength(0):vertspacing(-3):diffuse(color(".5,.5,.5,1")) end
 			}
+		}
+	},
+	Def.ActorFrame{
+		Name="Prompt",
+		InitCommand=function(self) prompt = self:GetChildren() end,
+		Def.Quad{
+			Name="BG",
+			InitCommand=function(self) self:FullScreen():diffuse(color("0,0,0")):diffusealpha(0) end,
+			BGOnCommand=function(self) self:FullScreen():diffuse(color("0,0,0")):diffusealpha(0.5) editing = true end,
+			BGOffCommand=function(self) self:FullScreen():diffuse(color("0,0,0")):diffusealpha(0) editing = false end
+		},
+		Def.BitmapText {
+			File = "_z 36px shadowx",
+			Name="Text",
+			Text="What should be searched?",
+			InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y-SCREEN_CENTER_Y/3*WideScreenDiff()):maxwidth(SCREEN_WIDTH/WideScreenDiff()):zoom(0.6*WideScreenDiff()):diffusealpha(0) end
+		},
+		Def.BitmapText {
+			File = "_z 36px shadowx",
+			Name="Value",
+			InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y-SCREEN_CENTER_Y/6*WideScreenDiff()):maxwidth(SCREEN_WIDTH/WideScreenDiff()):zoom(0.6*WideScreenDiff()):diffusealpha(0) end
+		},
+		Def.BitmapText {
+			File = "_z 36px shadowx",
+			Name="ValueSelected",
+			InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y):zoom(0.6*WideScreenDiff()):maxwidth(SCREEN_WIDTH/WideScreenDiff()):diffuse(color("#808080")):diffusealpha(0) end,
+			ValueSelectedRefreshCommand=function(self)
+				local text = ""
+				for i=1,5 do
+					local current = (value_active_index-1-(3-i)) % #value_chars
+					if current < 0 then current = current + #value_chars end
+					text = addToOutput(text,value_chars[current+1],"   ")
+				end
+				self:settext(text):AddAttribute(6,{Length=6,Diffuse=color("#FFFFFF")})
+				self:GetParent():GetChild("Value"):settext(search)
+			end
+		},
+		Def.BitmapText{
+			File = "_z 36px shadowx",
+			Name="Hint",
+			Text="Use &MENULEFT;/&MENURIGHT; to pick characters\nPress &START; to select, Press &SELECT; to delete\nSelect &START; to set password\nSelect &SELECT; to delete\nSelect &BACK; to exit",
+			InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+SCREEN_CENTER_Y/3):zoom(0.3*WideScreenDiff()):diffusealpha(0) end
 		}
 	}
 }

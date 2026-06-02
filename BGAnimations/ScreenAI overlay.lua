@@ -2,7 +2,7 @@ local function LoadAI()
 	if not FILEMAN:DoesFileExist("Data/AI.ini") then return {} end
 
 	local configfile = RageFileUtil.CreateRageFile()
-	configfile:Open("Data/AI.ini", 1)
+	configfile:Open("Data/AI.ini",1)
 
 	local configcontent = configfile:Read()
 
@@ -12,7 +12,7 @@ local function LoadAI()
 	return configcontent
 end
 
-local file = split("\n",LoadAI():gsub("%\r", ""))
+local file = split("\n",LoadAI():gsub("%\r",""))
 local AIini,AIiniOLD = {},{}
 local AIiniDefault = {
 	["Skill0"] = {
@@ -126,7 +126,7 @@ local selectHeld = false
 local totalSkillNames = {}
 local totalWeightNames = {}
 
-for line = 1, #file do
+for line = 1,#file do
 	if string.find(file[line],"%[") then
 		currentSkillName = file[line]:match("%[(.-)%]")
 		totalSkills = totalSkills + 1
@@ -168,7 +168,7 @@ end
 local function CalcPercent(array)
 	local max = 0
 	local total = 0
-	for i = 1, #totalWeightNames do
+	for i = 1,#totalWeightNames do
 		total = total + (tonumber(array[SkillsDefault[currentSkill]][WeightsDefault[i]]) * getScore(WeightsDefault[i]))
 		max = max + (tonumber(array[SkillsDefault[currentSkill]][WeightsDefault[i]]) * getScore("WeightW1"))
 	end
@@ -176,8 +176,8 @@ local function CalcPercent(array)
 end
 
 local function CheckChanges()
-    for skills,weights in pairs( AIini ) do
-		for weight,value in pairs( weights ) do
+    for skills,weights in pairs(AIini) do
+		for weight,value in pairs(weights) do
 			if tonumber(value) ~= tonumber(AIiniOLD[skills][weight]) then return true end
 		end
 	end
@@ -187,21 +187,24 @@ end
 local function SaveAI()
 	local configfile = RageFileUtil.CreateRageFile()
 	local output = ""
-	for i1 = 1, #totalSkillNames do
+	for i1 = 1,#totalSkillNames do
 		output = addToOutput(output,"["..totalSkillNames[i1].."]","\n")
-		for i2 = 1, #totalWeightNames do
+		for i2 = 1,#totalWeightNames do
 			output = addToOutput(output,totalWeightNames[i2].."="..AIini[totalSkillNames[i1]][totalWeightNames[i2]],"\n")
 		end
 	end
-	if configfile:Open("Data/AI.ini", 2) then
-		SOUND:PlayOnce(THEME:GetPathS("", "_save"), true)
+	if configfile:Open("Data/AI.ini",2) then
+		SOUND:PlayOnce(THEME:GetPathS("","_save"),true)
 		configfile:Write(output)
 		configfile:Close()
 	else
-		SOUND:PlayOnce( THEME:GetPathS( 'MemoryCardManager', "error" ) )
+		SOUND:PlayOnce(THEME:GetPathS('MemoryCardManager',"error"))
 	end
 	configfile:destroy()
 end
+
+local ToUpdate = {"Percent","WeightMiss","WeightW5","WeightW4","WeightW3","WeightW2","WeightW1"}
+local ToUpdatePro = {"WeightProW5","WeightProW4","WeightProW3","WeightProW2","WeightProW1"}
 
 local numbers = {
 	["DeviceButton_1"] = true,
@@ -215,227 +218,283 @@ local numbers = {
 	["DeviceButton_9"] = true
 }
 
+local showing_value_prompt = false
+local value_char_limit = 14
+local value_active_index = 4
+local value_chars = {
+	"&BACK;","&SELECT;","&START;",
+	"0","1","2","3","4","5","6","7","8","9"
+}
+
+local keyboardEnabled = ThemePrefs.Get("KeyboardEnabled")
 local InputHandler = function(event)
-	if (not event.PlayerNumber or not event.button) and not editing then return false end
-	if event.type == "InputEventType_FirstPress" then
-		if event.GameButton == "MenuLeft" then
-			if selectHeld and not editing then -- changing skills
-				if currentSkill - 1 < 1 then currentSkill = totalSkills else currentSkill = currentSkill - 1 end
-				weight.Percent:playcommand("Update")
-				weight.WeightMiss:playcommand("Update")
-				weight.WeightW5:playcommand("Update")
-				weight.WeightW4:playcommand("Update")
-				weight.WeightW3:playcommand("Update")
-				weight.WeightW2:playcommand("Update")
-				weight.WeightW1:playcommand("Update")
-				if totalWeights>6 then
-					weight.WeightProW5:playcommand("Update")
-					weight.WeightProW4:playcommand("Update")
-					weight.WeightProW3:playcommand("Update")
-					weight.WeightProW2:playcommand("Update")
-					weight.WeightProW1:playcommand("Update")
-					default.WeightProW5:playcommand("Update")
-					default.WeightProW4:playcommand("Update")
-					default.WeightProW3:playcommand("Update")
-					default.WeightProW2:playcommand("Update")
-					default.WeightProW1:playcommand("Update")
-				end
-				default.Percent:playcommand("Update")
-				default.WeightMiss:playcommand("Update")
-				default.WeightW5:playcommand("Update")
-				default.WeightW4:playcommand("Update")
-				default.WeightW3:playcommand("Update")
-				default.WeightW2:playcommand("Update")
-				default.WeightW1:playcommand("Update")
-				skill.Current:playcommand("Update")
-				skill.Name:playcommand("Update")
-				SOUND:PlayOnce( THEME:GetPathS( 'OptionsList', "left" ) )
-			elseif checking then -- changing prompt options
-				cur = cur - 1
-				if cur%2 == 1 then prompt.Cursor:queuecommand("Yes") else prompt.Cursor:queuecommand("No") end
-				SOUND:PlayOnce(THEME:GetPathS('ScreenPrompt',"change"))
-			end
-		elseif event.GameButton == "MenuRight" then
-			if selectHeld and not editing then -- changing skills
-				if currentSkill + 1 > totalSkills then currentSkill = 1 else currentSkill = currentSkill + 1 end
-				weight.Percent:playcommand("Update")
-				weight.WeightMiss:playcommand("Update")
-				weight.WeightW5:playcommand("Update")
-				weight.WeightW4:playcommand("Update")
-				weight.WeightW3:playcommand("Update")
-				weight.WeightW2:playcommand("Update")
-				weight.WeightW1:playcommand("Update")
-				if totalWeights>6 then
-					weight.WeightProW5:playcommand("Update")
-					weight.WeightProW4:playcommand("Update")
-					weight.WeightProW3:playcommand("Update")
-					weight.WeightProW2:playcommand("Update")
-					weight.WeightProW1:playcommand("Update")
-					default.WeightProW5:playcommand("Update")
-					default.WeightProW4:playcommand("Update")
-					default.WeightProW3:playcommand("Update")
-					default.WeightProW2:playcommand("Update")
-					default.WeightProW1:playcommand("Update")
-				end
-				default.Percent:playcommand("Update")
-				default.WeightMiss:playcommand("Update")
-				default.WeightW5:playcommand("Update")
-				default.WeightW4:playcommand("Update")
-				default.WeightW3:playcommand("Update")
-				default.WeightW2:playcommand("Update")
-				default.WeightW1:playcommand("Update")
-				skill.Current:playcommand("Update")
-				skill.Name:playcommand("Update")
-				SOUND:PlayOnce( THEME:GetPathS( 'OptionsList', "right" ) )
-			elseif checking then -- changing prompt options
-				cur = cur + 1
-				if cur%2 == 1 then prompt.Cursor:queuecommand("Yes") else prompt.Cursor:queuecommand("No") end
-				SOUND:PlayOnce(THEME:GetPathS('ScreenPrompt',"change"))
-			end
+	if (not event.PlayerNumber or not event.button) and not editing then return end
+	if editing and not showing_value_prompt and not keyboardEnabled then showing_value_prompt = true end
+	
+	if showing_value_prompt and event.type == "InputEventType_FirstPress" then
+		if event.GameButton == "MenuRight" then
+			value_active_index = value_active_index + 1
+			prompt.ValueSelected:playcommand("ValueSelectedRefresh")
+			SOUND:PlayOnce(THEME:GetPathS("ScreenSelectMaster","change"))
+		elseif event.GameButton == "MenuLeft" then
+			value_active_index = value_active_index - 1
+			prompt.ValueSelected:playcommand("ValueSelectedRefresh")
+			SOUND:PlayOnce(THEME:GetPathS("ScreenSelectMaster","change"))
 		elseif event.GameButton == "MenuUp" then
-			if not editing and not checking then -- changing currently selected weight
-				if currentList - 1 < 1 then currentList = totalList else currentList = currentList - 1 end
-				if currentList <= totalWeights then weight.Current:y((currentList-1)*16*WideScreenDiff()) else weight.Current:y(currentList*16*WideScreenDiff()) end
-				SOUND:PlayOnce( THEME:GetPathS( 'OptionsList', "left" ) )
+			local selected = ((value_active_index-1) % #value_chars)+1
+			local selected_char = value_chars[selected]
+			if selected_char == "&START;" then
+				SCREENMAN:PlayInvalidSound()
+			else
+				SOUND:PlayOnce(THEME:GetPathS("ScreenSelectMaster","change"))
+				value_active_index = 3
+				prompt.ValueSelected:playcommand("ValueSelectedRefresh")
 			end
 		elseif event.GameButton == "MenuDown" then
-			if not editing and not checking then -- changing currently selected weight
-				if currentList + 1 > totalList then currentList = 1 else currentList = currentList + 1 end
-				if currentList <= totalWeights then weight.Current:y((currentList-1)*16*WideScreenDiff()) else weight.Current:y(currentList*16*WideScreenDiff()) end
-				SOUND:PlayOnce( THEME:GetPathS( 'OptionsList', "right" ) )
-			end
-		elseif event.GameButton == "Select" and not selectHeld then -- skill change switch
-				SOUND:PlayOnce( THEME:GetPathS( 'OptionsList', "opened" ) )
-				skill.Left:stoptweening():linear(0.125):diffusealpha(1)
-				skill.Right:stoptweening():linear(0.125):diffusealpha(1)
-				selectHeld = true
-		elseif event.GameButton == "Back" then
-			if not editing then 
-				if CheckChanges() then -- changes detected | ask player to discard
-					if not checking then
-						SOUND:PlayOnce( THEME:GetPathS( 'MemoryCardManager', "error" ) )
-						prompt.BG:diffusealpha(0.5)
-						if cur%2 == 1 then prompt.Cursor:queuecommand("Yes") else prompt.Cursor:queuecommand("No") end
-						prompt.Cursor:diffusealpha(1)
-						prompt.Warning:diffusealpha(1)
-						prompt.YES:diffusealpha(1)
-						prompt.NO:diffusealpha(1)
-						checking = true
-					end
-				else -- exit screen
-					SCREENMAN:GetTopScreen():Cancel()
-				end
-			elseif editing then -- exit value changer
-				prompt.BG:playcommand("BGOff")
-				prompt.Text:stoptweening():linear(0.125):diffusealpha(0)
-				prompt.Value:stoptweening():linear(0.125):diffusealpha(0)
-				SOUND:PlayOnce(THEME:GetPathS("", "_prompt"), true)
+			local selected = ((value_active_index-1) % #value_chars)+1
+			local selected_char = value_chars[selected]
+			if selected_char == "&SELECT;" then
+				SCREENMAN:PlayInvalidSound()
+			else
+				SOUND:PlayOnce(THEME:GetPathS("ScreenSelectMaster","change"))
+				value_active_index = 2
+				prompt.ValueSelected:playcommand("ValueSelectedRefresh")
 			end
 		elseif event.GameButton == "Start" then
-			if not editing and not checking then -- setup value changer
-				if currentList <= totalWeights then
-					prompt.BG:playcommand("BGOn")
-					prompt.Text:playcommand("Set"):stoptweening():linear(0.125):diffusealpha(1)
-					prompt.Value:playcommand("Set"):playcommand("Update"):stoptweening():linear(0.125):diffusealpha(1)
-					SOUND:PlayOnce(THEME:GetPathS("Common", "Start"), true)
-				elseif currentList < totalWeights + 3 then
-					if currentList == totalWeights + 1 then -- reset current skill
-						AIini[SkillsDefault[currentSkill]] = DeepCopy(AIiniDefault[SkillsDefault[currentSkill]])
-					elseif currentList == totalWeights + 2 then -- reset all skills
-						AIini = DeepCopy(AIiniDefault)
-						AIiniOLD = DeepCopy(AIini)
-					end
-					weight.Percent:playcommand("Update")
-					weight.WeightMiss:playcommand("Update")
-					weight.WeightW5:playcommand("Update")
-					weight.WeightW4:playcommand("Update")
-					weight.WeightW3:playcommand("Update")
-					weight.WeightW2:playcommand("Update")
-					weight.WeightW1:playcommand("Update")
-					if totalWeights>6 then
-						weight.WeightProW5:playcommand("Update")
-						weight.WeightProW4:playcommand("Update")
-						weight.WeightProW3:playcommand("Update")
-						weight.WeightProW2:playcommand("Update")
-						weight.WeightProW1:playcommand("Update")
-					end
-					SOUND:PlayOnce(THEME:GetPathS("ScreenPlayerOptions", "cancel all"), true)
-				elseif currentList == totalWeights + 3 then -- save ai
-					SaveAI()
-					AIiniOLD = DeepCopy(AIini)
-				end
-			elseif editing and not checking then -- change value
+			local selected = ((value_active_index-1) % #value_chars)+1
+			local selected_char = value_chars[selected]
+			if selected_char == "&START;" then
+				showing_value_prompt = false
 				if currentList <= totalWeights then
 					AIini[SkillsDefault[currentSkill]][WeightsDefault[currentList]] = tonumber(value)
 					prompt.BG:playcommand("BGOff")
+					if not keyboardEnabled then
+						prompt.ValueSelected:diffusealpha(0)
+						prompt.Hint:diffusealpha(0)
+					end
 					prompt.Text:stoptweening():linear(0.125):diffusealpha(0)
 					prompt.Value:stoptweening():linear(0.125):diffusealpha(0)
-					weight.Percent:playcommand("Update")
-					weight.WeightMiss:playcommand("Update")
-					weight.WeightW5:playcommand("Update")
-					weight.WeightW4:playcommand("Update")
-					weight.WeightW3:playcommand("Update")
-					weight.WeightW2:playcommand("Update")
-					weight.WeightW1:playcommand("Update")
+					for update in ivalues(ToUpdate) do weight[update]:playcommand("Update") end
 					if totalWeights>6 then
-						weight.WeightProW5:playcommand("Update")
-						weight.WeightProW4:playcommand("Update")
-						weight.WeightProW3:playcommand("Update")
-						weight.WeightProW2:playcommand("Update")
-						weight.WeightProW1:playcommand("Update")
+						for update in ivalues(ToUpdatePro) do weight.update:playcommand("Update") end
 					end
-					SOUND:PlayOnce(THEME:GetPathS("Common", "Start"), true)
 				end
-			elseif checking then
-				if cur%2 == 1 then -- "YES" option selected
-					SCREENMAN:GetTopScreen():Cancel()
-				elseif cur%2 == 0 then -- "NO" option selected
-					SOUND:PlayOnce(THEME:GetPathS("Common", "Start"), true)
-					prompt.BG:diffusealpha(0)
-					prompt.Cursor:diffusealpha(0)
-					prompt.Warning:diffusealpha(0)
-					prompt.YES:diffusealpha(0)
-					prompt.NO:diffusealpha(0)
-					checking = false
+				SCREENMAN:PlayStartSound()
+			elseif selected_char == "&SELECT;" then
+				if value:len() > 0 and value ~= "0" then
+					value = value:sub(1,-2)
+					if value == "" then value = "0" end
+					prompt.ValueSelected:playcommand("ValueSelectedRefresh")
+					SCREENMAN:PlayCancelSound()
+				else
+					SCREENMAN:PlayInvalidSound()
+				end
+			elseif selected_char == "&BACK;" then
+				showing_value_prompt = false
+				prompt.BG:playcommand("BGOff")
+				prompt.Text:stoptweening():linear(0.125):diffusealpha(0)
+				prompt.Value:stoptweening():linear(0.125):diffusealpha(0)
+				if not keyboardEnabled then
+					prompt.ValueSelected:diffusealpha(0)
+					prompt.Hint:diffusealpha(0)
+				end
+				SCREENMAN:PlayCancelSound()
+			else
+				if value:len() < value_char_limit then
+					if value == "0" then value = selected_char else value = value..selected_char end
+					if value:len() >= value_char_limit then password_active_index = 3 end
+					prompt.ValueSelected:playcommand("ValueSelectedRefresh")
+					SCREENMAN:PlayStartSound()
+				else
+					SCREENMAN:PlayInvalidSound()
 				end
 			end
-		elseif event.DeviceInput.button == "DeviceButton_0" then
-			if value == "0" then -- value is already 0
-				SOUND:PlayOnce( THEME:GetPathS( 'Common', "invalid" ) )
-			else -- add number to value
-				value = value.."0"
+		elseif event.GameButton == "Select" then
+			if value:len() > 0 and value ~= "0" then
+				value = value:sub(1,-2)
+				if value == "" then value = "0" end
+				prompt.ValueSelected:playcommand("ValueSelectedRefresh")
+				SCREENMAN:PlayCancelSound()
+			else
+				SCREENMAN:PlayInvalidSound()
+			end
+		elseif event.GameButton == "Back" then
+			showing_value_prompt = false
+			prompt.BG:playcommand("BGOff")
+			prompt.Text:stoptweening():linear(0.125):diffusealpha(0)
+			prompt.Value:stoptweening():linear(0.125):diffusealpha(0)
+			if not keyboardEnabled then
+				prompt.ValueSelected:diffusealpha(0)
+				prompt.Hint:diffusealpha(0)
+			end
+			SCREENMAN:PlayCancelSound()
+		end
+	else
+		if event.type == "InputEventType_FirstPress" then
+			if event.GameButton == "MenuLeft" then
+				if selectHeld and not editing then -- changing skills
+					if currentSkill - 1 < 1 then currentSkill = totalSkills else currentSkill = currentSkill - 1 end
+					weight.Percent:playcommand("Update")
+					for update in ivalues(ToUpdate) do weight.update:playcommand("Update") end
+					for update in ivalues(ToUpdate) do default.update:playcommand("Update") end
+					if totalWeights>6 then
+						for update in ivalues(ToUpdatePro) do weight.update:playcommand("Update") end
+						for update in ivalues(ToUpdatePro) do default.update:playcommand("Update") end
+					end
+					skill.Current:playcommand("Update")
+					skill.Name:playcommand("Update")
+					SOUND:PlayOnce(THEME:GetPathS('OptionsList',"left"))
+				elseif checking then -- changing prompt options
+					cur = cur - 1
+					if cur%2 == 1 then prompt.Cursor:queuecommand("Yes") else prompt.Cursor:queuecommand("No") end
+					SOUND:PlayOnce(THEME:GetPathS('ScreenPrompt',"change"))
+				end
+			elseif event.GameButton == "MenuRight" then
+				if selectHeld and not editing then -- changing skills
+					if currentSkill + 1 > totalSkills then currentSkill = 1 else currentSkill = currentSkill + 1 end
+					for update in ivalues(ToUpdate) do weight.update:playcommand("Update") end
+					for update in ivalues(ToUpdate) do default.update:playcommand("Update") end
+					if totalWeights>6 then
+						for update in ivalues(ToUpdatePro) do weight.update:playcommand("Update") end
+						for update in ivalues(ToUpdatePro) do default.update:playcommand("Update") end
+					end
+					skill.Current:playcommand("Update")
+					skill.Name:playcommand("Update")
+					SOUND:PlayOnce(THEME:GetPathS('OptionsList',"right"))
+				elseif checking then -- changing prompt options
+					cur = cur + 1
+					if cur%2 == 1 then prompt.Cursor:queuecommand("Yes") else prompt.Cursor:queuecommand("No") end
+					SOUND:PlayOnce(THEME:GetPathS('ScreenPrompt',"change"))
+				end
+			elseif event.GameButton == "MenuUp" then
+				if not editing and not checking then -- changing currently selected weight
+					if currentList - 1 < 1 then currentList = totalList else currentList = currentList - 1 end
+					if currentList <= totalWeights then weight.Current:y((currentList-1)*16*WideScreenDiff()) else weight.Current:y(currentList*16*WideScreenDiff()) end
+					SOUND:PlayOnce(THEME:GetPathS('OptionsList',"left"))
+				end
+			elseif event.GameButton == "MenuDown" then
+				if not editing and not checking then -- changing currently selected weight
+					if currentList + 1 > totalList then currentList = 1 else currentList = currentList + 1 end
+					if currentList <= totalWeights then weight.Current:y((currentList-1)*16*WideScreenDiff()) else weight.Current:y(currentList*16*WideScreenDiff()) end
+					SOUND:PlayOnce(THEME:GetPathS('OptionsList',"right"))
+				end
+			elseif event.GameButton == "Select" and not selectHeld then -- skill change switch
+					SOUND:PlayOnce(THEME:GetPathS('OptionsList',"opened"))
+					skill.Left:stoptweening():linear(0.125):diffusealpha(1)
+					skill.Right:stoptweening():linear(0.125):diffusealpha(1)
+					selectHeld = true
+			elseif event.GameButton == "Back" then
+				if not editing then 
+					if CheckChanges() then -- changes detected | ask player to discard
+						if not checking then
+							SOUND:PlayOnce(THEME:GetPathS('MemoryCardManager',"error"))
+							prompt.BG:diffusealpha(0.5)
+							if cur%2 == 1 then prompt.Cursor:queuecommand("Yes") else prompt.Cursor:queuecommand("No") end
+							prompt.Cursor:diffusealpha(1)
+							prompt.Warning:diffusealpha(1)
+							prompt.YES:diffusealpha(1)
+							prompt.NO:diffusealpha(1)
+							checking = true
+						end
+					else -- exit screen
+						SCREENMAN:GetTopScreen():Cancel()
+					end
+				elseif editing then -- exit value changer
+					prompt.BG:playcommand("BGOff")
+					prompt.Text:stoptweening():linear(0.125):diffusealpha(0)
+					prompt.Value:stoptweening():linear(0.125):diffusealpha(0)
+					SOUND:PlayOnce(THEME:GetPathS("","_prompt"),true)
+				end
+			elseif event.GameButton == "Start" then
+				if not editing and not checking then -- setup value changer
+					if currentList <= totalWeights then
+						prompt.BG:playcommand("BGOn")
+						if not keyboardEnabled then
+							prompt.ValueSelected:diffusealpha(1):playcommand("ValueSelectedRefresh")
+							prompt.Hint:diffusealpha(1)
+						end
+						prompt.Text:playcommand("Set"):stoptweening():linear(0.125):diffusealpha(1)
+						prompt.Value:playcommand("Set"):playcommand("Update"):stoptweening():linear(0.125):diffusealpha(1)
+						SCREENMAN:PlayStartSound()
+					elseif currentList < totalWeights + 3 then
+						if currentList == totalWeights + 1 then -- reset current skill
+							AIini[SkillsDefault[currentSkill]] = DeepCopy(AIiniDefault[SkillsDefault[currentSkill]])
+						elseif currentList == totalWeights + 2 then -- reset all skills
+							AIini = DeepCopy(AIiniDefault)
+							AIiniOLD = DeepCopy(AIini)
+						end
+						for update in ivalues(ToUpdate) do weight.update:playcommand("Update") end
+						if totalWeights>6 then
+							for update in ivalues(ToUpdatePro) do weight.update:playcommand("Update") end
+						end
+						SOUND:PlayOnce(THEME:GetPathS("ScreenPlayerOptions","cancel all"),true)
+					elseif currentList == totalWeights + 3 then -- save ai
+						SaveAI()
+						AIiniOLD = DeepCopy(AIini)
+					end
+				elseif editing and not checking then -- change value
+					if currentList <= totalWeights then
+						AIini[SkillsDefault[currentSkill]][WeightsDefault[currentList]] = tonumber(value)
+						prompt.BG:playcommand("BGOff")
+						prompt.Text:stoptweening():linear(0.125):diffusealpha(0)
+						prompt.Value:stoptweening():linear(0.125):diffusealpha(0)
+						for update in ivalues(ToUpdate) do weight.update:playcommand("Update") end
+						if totalWeights>6 then
+							for update in ivalues(ToUpdatePro) do weight.update:playcommand("Update") end
+						end
+						SCREENMAN:PlayStartSound()
+					end
+				elseif checking then
+					if cur%2 == 1 then -- "YES" option selected
+						SCREENMAN:GetTopScreen():Cancel()
+					elseif cur%2 == 0 then -- "NO" option selected
+						SCREENMAN:PlayStartSound()
+						prompt.BG:diffusealpha(0)
+						prompt.Cursor:diffusealpha(0)
+						prompt.Warning:diffusealpha(0)
+						prompt.YES:diffusealpha(0)
+						prompt.NO:diffusealpha(0)
+						checking = false
+					end
+				end
+			elseif event.DeviceInput.button == "DeviceButton_0" then
+				if value == "0" then -- value is already 0
+					SCREENMAN:PlayInvalidSound()
+				else -- add number to value
+					value = value.."0"
+					prompt.Value:playcommand("Update")
+					SOUND:PlayOnce(THEME:GetPathS('ScreenOptions',"change"))
+				end
+			elseif numbers[event.DeviceInput.button] then -- add number to value
+				if value == "0" then value = event.DeviceInput.button:sub(-1) else value = value..event.DeviceInput.button:sub(-1) end
 				prompt.Value:playcommand("Update")
-				SOUND:PlayOnce( THEME:GetPathS( 'ScreenOptions', "change" ) )
+				SOUND:PlayOnce(THEME:GetPathS('ScreenOptions',"change"))
+			elseif event.DeviceInput.button == "DeviceButton_backspace" then
+				if value ~= "0" then -- erase latest number from value
+					value = value:sub(1,-2)
+					if value == "" then value = "0" end
+					prompt.Value:playcommand("Update")
+					SOUND:PlayOnce(THEME:GetPathS('ScreenOptions',"change"))
+				else -- value is already 0
+					SCREENMAN:PlayInvalidSound()
+				end
 			end
-		elseif numbers[event.DeviceInput.button] then -- add number to value
-			if value == "0" then value = event.DeviceInput.button:sub(-1) else value = value..event.DeviceInput.button:sub(-1) end
-			prompt.Value:playcommand("Update")
-			SOUND:PlayOnce( THEME:GetPathS( 'ScreenOptions', "change" ) )
-		elseif event.DeviceInput.button == "DeviceButton_backspace" then
+		elseif event.type == "InputEventType_Repeat" and event.DeviceInput.button == "DeviceButton_backspace" then
 			if value ~= "0" then -- erase latest number from value
-				value = value:sub(1, -2)
+				value = value:sub(1,-2)
 				if value == "" then value = "0" end
 				prompt.Value:playcommand("Update")
-				SOUND:PlayOnce( THEME:GetPathS( 'ScreenOptions', "change" ) )
+				SOUND:PlayOnce(THEME:GetPathS('ScreenOptions',"change"))
 			else -- value is already 0
-				SOUND:PlayOnce( THEME:GetPathS( 'Common', "invalid" ) )
+				SCREENMAN:PlayInvalidSound()
 			end
-		end
-	elseif event.type == "InputEventType_Repeat" and event.DeviceInput.button == "DeviceButton_backspace" then
-		if value ~= "0" then -- erase latest number from value
-			value = value:sub(1, -2)
-			if value == "" then value = "0" end
-			prompt.Value:playcommand("Update")
-			SOUND:PlayOnce( THEME:GetPathS( 'ScreenOptions', "change" ) )
-		else -- value is already 0
-			SOUND:PlayOnce( THEME:GetPathS( 'Common', "invalid" ) )
-		end
-	elseif event.type == "InputEventType_Release" then
-		if event.GameButton == "Select" and selectHeld then -- skill change switch
-			skill.Left:stoptweening():linear(0.125):diffusealpha(0)
-			skill.Right:stoptweening():linear(0.125):diffusealpha(0)
-			SOUND:PlayOnce( THEME:GetPathS( 'OptionsList', "closed" ) )
-			selectHeld = false
+		elseif event.type == "InputEventType_Release" then
+			if event.GameButton == "Select" and selectHeld then -- skill change switch
+				skill.Left:stoptweening():linear(0.125):diffusealpha(0)
+				skill.Right:stoptweening():linear(0.125):diffusealpha(0)
+				SOUND:PlayOnce(THEME:GetPathS('OptionsList',"closed"))
+				selectHeld = false
+			end
 		end
 	end
 end
@@ -443,7 +502,7 @@ end
 local function GetWeightPercent(array,skill)
 	local total = 0
 
-    for i,v in pairs( array[SkillsDefault[currentSkill]] ) do
+    for i,v in pairs(array[SkillsDefault[currentSkill]]) do
 		total = total + array[SkillsDefault[currentSkill]][i]
 	end
 
@@ -460,7 +519,7 @@ return Def.ActorFrame{
 			delta = GetTimeSinceStart()
 			if currentList - 1 < 1 then currentList = totalList else currentList = currentList - 1 end
 			if currentList <= totalWeights then weight.Current:y((currentList-1)*16*WideScreenDiff()) else weight.Current:y(currentList*16*WideScreenDiff()) end
-			SOUND:PlayOnce( THEME:GetPathS( 'OptionsList', "left" ) )
+			SOUND:PlayOnce(THEME:GetPathS('OptionsList',"left"))
 		end
 	end,
 	MouseWheelDownMessageCommand=function()
@@ -468,7 +527,7 @@ return Def.ActorFrame{
 			delta = GetTimeSinceStart()
 			if currentList + 1 > totalList then currentList = 1 else currentList = currentList + 1 end
 			if currentList <= totalWeights then weight.Current:y((currentList-1)*16*WideScreenDiff()) else weight.Current:y(currentList*16*WideScreenDiff()) end
-			SOUND:PlayOnce( THEME:GetPathS( 'OptionsList', "right" ) )
+			SOUND:PlayOnce(THEME:GetPathS('OptionsList',"right"))
 		end
 	end,
 	OnCommand=function() SCREENMAN:GetTopScreen():AddInputCallback(InputHandler) end,
@@ -526,42 +585,42 @@ return Def.ActorFrame{
         Def.BitmapText {
             File = "_z bold 36px",
 			Name="WeightMiss",
-			InitCommand=function(self) self:y(16*0*WideScreenDiff()):shadowlength(1):zoom(1/3*WideScreenDiff()):horizalign(left) end,
+			InitCommand=function(self) self:y(16*0*WideScreenDiff()):shadowlength(1):zoom(1/3*WideScreenDiff()):maxwidth(1000):horizalign(left) end,
 			OnCommand=function(self) self:playcommand("Update") end,
 			UpdateCommand=function(self) self:settext("Miss: "..AIini[SkillsDefault[currentSkill]]["WeightMiss"].." ("..GetWeightPercent(AIini,"WeightMiss").."%)") end
 		},
         Def.BitmapText {
             File = "_z bold 36px",
 			Name="WeightW5",
-			InitCommand=function(self) self:y(16*1*WideScreenDiff()):shadowlength(1):zoom(1/3*WideScreenDiff()):horizalign(left) end,
+			InitCommand=function(self) self:y(16*1*WideScreenDiff()):shadowlength(1):zoom(1/3*WideScreenDiff()):maxwidth(1000):horizalign(left) end,
 			OnCommand=function(self) self:playcommand("Update") end,
 			UpdateCommand=function(self) self:settext("W5: "..AIini[SkillsDefault[currentSkill]]["WeightW5"].." ("..GetWeightPercent(AIini,"WeightW5").."%)") end
 		},
         Def.BitmapText {
             File = "_z bold 36px",
 			Name="WeightW4",
-			InitCommand=function(self) self:y(16*2*WideScreenDiff()):shadowlength(1):zoom(1/3*WideScreenDiff()):horizalign(left) end,
+			InitCommand=function(self) self:y(16*2*WideScreenDiff()):shadowlength(1):zoom(1/3*WideScreenDiff()):maxwidth(1000):horizalign(left) end,
 			OnCommand=function(self) self:playcommand("Update") end,
 			UpdateCommand=function(self) self:settext("W4: "..AIini[SkillsDefault[currentSkill]]["WeightW4"].." ("..GetWeightPercent(AIini,"WeightW4").."%)") end
 		},
         Def.BitmapText {
             File = "_z bold 36px",
 			Name="WeightW3",
-			InitCommand=function(self) self:y(16*3*WideScreenDiff()):shadowlength(1):zoom(1/3*WideScreenDiff()):horizalign(left) end,
+			InitCommand=function(self) self:y(16*3*WideScreenDiff()):shadowlength(1):zoom(1/3*WideScreenDiff()):maxwidth(1000):horizalign(left) end,
 			OnCommand=function(self) self:playcommand("Update") end,
 			UpdateCommand=function(self) self:settext("W3: "..AIini[SkillsDefault[currentSkill]]["WeightW3"].." ("..GetWeightPercent(AIini,"WeightW3").."%)") end
 		},
         Def.BitmapText {
             File = "_z bold 36px",
 			Name="WeightW2",
-			InitCommand=function(self) self:y(16*4*WideScreenDiff()):shadowlength(1):zoom(1/3*WideScreenDiff()):horizalign(left) end,
+			InitCommand=function(self) self:y(16*4*WideScreenDiff()):shadowlength(1):zoom(1/3*WideScreenDiff()):maxwidth(1000):horizalign(left) end,
 			OnCommand=function(self) self:playcommand("Update") end,
 			UpdateCommand=function(self) self:settext("W2: "..AIini[SkillsDefault[currentSkill]]["WeightW2"].." ("..GetWeightPercent(AIini,"WeightW2").."%)") end
 		},
         Def.BitmapText {
             File = "_z bold 36px",
 			Name="WeightW1",
-			InitCommand=function(self) self:y(16*5*WideScreenDiff()):shadowlength(1):zoom(1/3*WideScreenDiff()):horizalign(left) end,
+			InitCommand=function(self) self:y(16*5*WideScreenDiff()):shadowlength(1):zoom(1/3*WideScreenDiff()):maxwidth(1000):horizalign(left) end,
 			OnCommand=function(self) self:playcommand("Update") end,
 			UpdateCommand=function(self) self:settext("W1: "..AIini[SkillsDefault[currentSkill]]["WeightW1"].." ("..GetWeightPercent(AIini,"WeightW1").."%)") end
 		},
@@ -569,7 +628,7 @@ return Def.ActorFrame{
             File = "_z bold 36px",
 			Condition=totalWeights>6,
 			Name="WeightProW5",
-			InitCommand=function(self) self:y(16*6*WideScreenDiff()):shadowlength(1):zoom(1/3*WideScreenDiff()):horizalign(left) end,
+			InitCommand=function(self) self:y(16*6*WideScreenDiff()):shadowlength(1):zoom(1/3*WideScreenDiff()):maxwidth(1000):horizalign(left) end,
 			OnCommand=function(self) self:playcommand("Update") end,
 			UpdateCommand=function(self) self:settext("ProW5: "..AIini[SkillsDefault[currentSkill]]["WeightProW5"].." ("..GetWeightPercent(AIini,"WeightProW5").."%)") end
 		},
@@ -577,7 +636,7 @@ return Def.ActorFrame{
             File = "_z bold 36px",
 			Condition=totalWeights>6,
 			Name="WeightProW4",
-			InitCommand=function(self) self:y(16*7*WideScreenDiff()):shadowlength(1):zoom(1/3*WideScreenDiff()):horizalign(left) end,
+			InitCommand=function(self) self:y(16*7*WideScreenDiff()):shadowlength(1):zoom(1/3*WideScreenDiff()):maxwidth(1000):horizalign(left) end,
 			OnCommand=function(self) self:playcommand("Update") end,
 			UpdateCommand=function(self) self:settext("ProW4: "..AIini[SkillsDefault[currentSkill]]["WeightProW4"].." ("..GetWeightPercent(AIini,"WeightProW4").."%)") end
 		},
@@ -585,7 +644,7 @@ return Def.ActorFrame{
             File = "_z bold 36px",
 			Condition=totalWeights>6,
 			Name="WeightProW3",
-			InitCommand=function(self) self:y(16*8*WideScreenDiff()):shadowlength(1):zoom(1/3*WideScreenDiff()):horizalign(left) end,
+			InitCommand=function(self) self:y(16*8*WideScreenDiff()):shadowlength(1):zoom(1/3*WideScreenDiff()):maxwidth(1000):horizalign(left) end,
 			OnCommand=function(self) self:playcommand("Update") end,
 			UpdateCommand=function(self) self:settext("ProW3: "..AIini[SkillsDefault[currentSkill]]["WeightProW3"].." ("..GetWeightPercent(AIini,"WeightProW3").."%)") end
 		},
@@ -593,7 +652,7 @@ return Def.ActorFrame{
             File = "_z bold 36px",
 			Condition=totalWeights>6,
 			Name="WeightProW2",
-			InitCommand=function(self) self:y(16*9*WideScreenDiff()):shadowlength(1):zoom(1/3*WideScreenDiff()):horizalign(left) end,
+			InitCommand=function(self) self:y(16*9*WideScreenDiff()):shadowlength(1):zoom(1/3*WideScreenDiff()):maxwidth(1000):horizalign(left) end,
 			OnCommand=function(self) self:playcommand("Update") end,
 			UpdateCommand=function(self) self:settext("ProW2: "..AIini[SkillsDefault[currentSkill]]["WeightProW2"].." ("..GetWeightPercent(AIini,"WeightProW2").."%)") end
 		},
@@ -601,7 +660,7 @@ return Def.ActorFrame{
             File = "_z bold 36px",
 			Condition=totalWeights>6,
 			Name="WeightProW1",
-			InitCommand=function(self) self:y(16*10*WideScreenDiff()):shadowlength(1):zoom(1/3*WideScreenDiff()):horizalign(left) end,
+			InitCommand=function(self) self:y(16*10*WideScreenDiff()):shadowlength(1):zoom(1/3*WideScreenDiff()):maxwidth(1000):horizalign(left) end,
 			OnCommand=function(self) self:playcommand("Update") end,
 			UpdateCommand=function(self) self:settext("ProW1: "..AIini[SkillsDefault[currentSkill]]["WeightProW1"].." ("..GetWeightPercent(AIini,"WeightProW1").."%)") end
 		},
@@ -733,11 +792,34 @@ return Def.ActorFrame{
 			SetCommand=function(self) self:settext("Current Value to Change: "..WeightsDefault[currentList]) end
 		},
         Def.BitmapText {
+			Condition=not keyboardEnabled,
+            File = "_z 36px shadowx",
+			Name="ValueSelected",
+			InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y):zoom(0.6*WideScreenDiff()):maxwidth(SCREEN_WIDTH/WideScreenDiff()):diffuse(color("#808080")):diffusealpha(0) end,
+			ValueSelectedRefreshCommand=function(self)
+				local text = ""
+				for i=1,5 do
+					local current = (value_active_index-1-(3-i)) % #value_chars
+					if current < 0 then current = current + #value_chars end
+					text = addToOutput(text,value_chars[current+1],"   ")
+				end
+				self:settext(text):AddAttribute(6,{Length=6,Diffuse=color("#FFFFFF")})
+				self:GetParent():GetChild("Value"):playcommand("Update")
+			end
+		},
+        Def.BitmapText {
             File = "_r bold 30px",
 			Name="Value",
-			InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+SCREEN_CENTER_Y/3):diffusealpha(0) end,
+			InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+(keyboardEnabled and SCREEN_CENTER_Y/3 or -SCREEN_CENTER_Y/6*WideScreenDiff())):diffusealpha(0) end,
 			SetCommand=function(self) value = tostring(AIini[SkillsDefault[currentSkill]][WeightsDefault[currentList]]) end,
 			UpdateCommand=function(self) self:settext(value and value or "0") end
+		},
+		Def.BitmapText{
+			Condition=not keyboardEnabled,
+            File = "_z 36px shadowx",
+			Name="Hint",
+			Text="Use &MENULEFT;/&MENURIGHT; to pick characters\nPress &START; to select, Press &SELECT; to delete\nSelect &START; to set password\nSelect &SELECT; to delete\nSelect &BACK; to exit",
+			InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+SCREEN_CENTER_Y/3):zoom(0.3*WideScreenDiff()):diffusealpha(0) end
 		},
 		Def.Sprite {
 			Name="Cursor",
