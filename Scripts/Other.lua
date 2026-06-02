@@ -1241,15 +1241,13 @@ function CheckEngineVersion()
 	end
 end
 
-function PercentageCheck()
+function PercentageCheck(pn)
 	local ret = false
-	for pn in ivalues(GAMESTATE:GetEnabledPlayers()) do
-		if (getenv("Flare"..pname(pn)) or 0) == 0 then
-			local drainType = GAMESTATE:GetPlayerState(pn):GetPlayerOptions('ModsLevel_Song'):DrainSetting()
-			if drainType == "DrainType_Normal" then
-				local life = getenv("PercentageClearThreshold"..pname(pn)) or 0
-				if life > 0 then ret = true end
-			end
+	if (getenv("Flare"..pname(pn)) or 0) == 0 then
+		local drainType = GAMESTATE:GetPlayerState(pn):GetPlayerOptions('ModsLevel_Song'):DrainSetting()
+		if drainType == "DrainType_Normal" then
+			local life = getenv("PercentageClearThreshold"..pname(pn)) or 0
+			if life > 0 then ret = true end
 		end
 	end
 

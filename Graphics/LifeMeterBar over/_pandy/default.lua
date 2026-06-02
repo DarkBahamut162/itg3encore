@@ -1,6 +1,6 @@
 local pn = ...
 
-local percent = PercentageCheck() and loadfile(THEME:GetPathG("LifeMeterBar","over/life"))(pn) or Def.ActorFrame{}
+local percent = PercentageCheck(pn) and loadfile(THEME:GetPathG("LifeMeterBar","over/life"))(pn) or Def.ActorFrame{}
 
 return Def.ActorFrame{
 	Def.Sprite {
