@@ -63,7 +63,7 @@ setenv("checkGreats"..pname(player),true)
 setenv("check"..pname(player),true)
 setenv("checkAuto"..pname(player),true)
 
-if not isOutFox(20200530) then GAMESTATE:ApplyGameCommand('mod,savescore',player) end
+GAMESTATE:ApplyGameCommand('mod,savescore',player)
 local judgment = not (getenv("HideJudgment" .. pname(player)) or false)
 local combo = not (getenv("HideCombo" .. pname(player)) or false)
 local iidx = getenv("IIDXJudgment" .. pname(player)) or "default"

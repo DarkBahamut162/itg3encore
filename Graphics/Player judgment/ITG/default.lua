@@ -56,7 +56,7 @@ setenv("checkGreats"..pname(player),true)
 setenv("check"..pname(player),true)
 setenv("checkAuto"..pname(player),true)
 
-if not isOutFox(20200530) then GAMESTATE:ApplyGameCommand('mod,savescore',player) end
+GAMESTATE:ApplyGameCommand('mod,savescore',player)
 if IsGame("po-mu") or IsGame("popn") then
 	judgment = "_pop 1x"
 else

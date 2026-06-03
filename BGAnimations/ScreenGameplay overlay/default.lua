@@ -415,7 +415,7 @@ local t = Def.ActorFrame{
 				if lifeMeter < index[life+1] then
 					STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):FailPlayer()
 					SCREENMAN:GetTopScreen():GetChild('Player'..pname(pn)):SetLife(0)
-					if not isOutFox(20200530) then GAMESTATE:ApplyGameCommand('mod,no savescore',pn) end
+					GAMESTATE:ApplyGameCommand('mod,no savescore',pn)
 					fail = true
 					failCounter = failCounter + 1
 				end
