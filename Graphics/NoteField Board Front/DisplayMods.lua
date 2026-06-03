@@ -4,8 +4,15 @@ if not GAMESTATE:IsHumanPlayer(player) or isTopScreen("ScreenEdit") then return 
 local optionslist = GAMESTATE:GetPlayerState(player):GetPlayerOptionsString("ModsLevel_Song")
 local SongOrCourse = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentTrail(player):GetTrailEntry(1):GetSong() or GAMESTATE:GetCurrentSong()
 local StepsOrTrail = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentTrail(player):GetTrailEntry(1):GetSteps() or GAMESTATE:GetCurrentSteps(player)
-
 local sleep = 0
+
+if IsGame("beat") or IsGame("be-mu") then
+	if HasKeysounds(StepsOrTrail) then
+		optionslist = optionslist..", Has Keysounds"
+	else
+		optionslist = optionslist..", No Keysounds"
+	end
+end
 
 if ThemePrefs.Get("UseStepCache") then
 	sleep = math.max(1,tonumber(LoadFromCache(SongOrCourse,StepsOrTrail,"TrueFirstSecond"))-1.55)
