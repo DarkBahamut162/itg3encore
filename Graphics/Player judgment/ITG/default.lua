@@ -64,6 +64,85 @@ else
 	judgment = judgment .. ((not GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentSteps(player):GetDifficulty() == 'Difficulty_Beginner') and "_beginner 2x" or " 2x")
 	if judgment:sub(1,5) == "_itg1" then judgment = judgment:gsub("_beginner",""):gsub("2x","1x") end
 end
+local life = 0
+local pn
+local stepSize = 1
+local calculation
+
+local StepsOrTrail = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentTrail(player) or GAMESTATE:GetCurrentSteps(player)
+if StepsOrTrail then
+	local holdlifts = isOutFox(20210400) and GAMESTATE:GetPlayerState(player):GetPlayerOptions('ModsLevel_Song'):HoldLifts() or false
+	if IsCourseSecret() or not IsCourseFixed() then
+		stepSize = RadarCategory_Trail(StepsOrTrail,player,"RadarCategory_TapsAndHolds")
+		stepSize = math.max(stepSize + (RadarCategory_Trail(StepsOrTrail,player,"RadarCategory_Holds") + RadarCategory_Trail(StepsOrTrail,player,"RadarCategory_Rolls")*(holdlifts and 2 or 1)),1)
+	else
+		stepSize = StepsOrTrail:GetRadarValues(player):GetValue("RadarCategory_TapsAndHolds") or 0
+		stepSize = math.max(stepSize + (StepsOrTrail:GetRadarValues(player):GetValue('RadarCategory_Holds') + StepsOrTrail:GetRadarValues(player):GetValue('RadarCategory_Rolls'))*(holdlifts and 2 or 1),1)
+	end
+end
+if stepSize > 330 then calculation = 260/stepSize else calculation = 760.5/(stepSize+650) end
+
+local lifeAdd = {
+	{
+		["Begin"] = 0.22,
+		["HoldNoteScore_Held"] = calculation/100,
+		["TapNoteScore_W0"] = calculation/100,
+		["TapNoteScore_W1"] = calculation/100,
+		["TapNoteScore_W2"] = calculation/100,
+		["TapNoteScore_W3"] = calculation/50,
+		["TapNoteScore_W4"] = -0.012,
+		["TapNoteScore_W5"] = -0.024,
+		["TapNoteScore_Miss"] = -0.036,
+		["HoldNoteScore_LetGo"] = -0.036
+	},{
+		["Begin"] = 0.22,
+		["HoldNoteScore_Held"] = calculation/100,
+		["TapNoteScore_W0"] = calculation/100,
+		["TapNoteScore_W1"] = calculation/100,
+		["TapNoteScore_W2"] = calculation/100,
+		["TapNoteScore_W3"] = calculation/50,
+		["TapNoteScore_W4"] = -0.016,
+		["TapNoteScore_W5"] = -0.032,
+		["TapNoteScore_Miss"] = -0.048,
+		["HoldNoteScore_LetGo"] = -0.048
+	},{
+		["Begin"] = 0.22,
+		["HoldNoteScore_Held"] = calculation/100,
+		["TapNoteScore_W0"] = calculation/100,
+		["TapNoteScore_W1"] = calculation/100,
+		["TapNoteScore_W2"] = calculation/100,
+		["TapNoteScore_W3"] = calculation/50,
+		["TapNoteScore_W4"] = -0.02,
+		["TapNoteScore_W5"] = -0.04,
+		["TapNoteScore_Miss"] = -0.06,
+		["HoldNoteScore_LetGo"] = -0.06
+	},{
+		["Begin"] = 1,
+		["HoldNoteScore_Held"] = 0.0016,
+		["TapNoteScore_W0"] = 0.0016,
+		["TapNoteScore_W1"] = 0.0016,
+		["TapNoteScore_W2"] = 0.0016,
+		["TapNoteScore_W3"] = 0,
+		["TapNoteScore_W4"] = -0.05,
+		["TapNoteScore_W5"] = -0.07,
+		["TapNoteScore_Miss"] = -0.09,
+		["HoldNoteScore_LetGo"] = -0.09
+	},{
+		["Begin"] = 1,
+		["HoldNoteScore_Held"] = 0.0016,
+		["TapNoteScore_W0"] = 0.0016,
+		["TapNoteScore_W1"] = 0.0016,
+		["TapNoteScore_W2"] = 0.0016,
+		["TapNoteScore_W3"] = 0,
+		["TapNoteScore_W4"] = -0.10,
+		["TapNoteScore_W5"] = -0.14,
+		["TapNoteScore_Miss"] = -0.18,
+		["HoldNoteScore_LetGo"] = -0.18
+	}
+}
+
+local PercentageCheck = PercentageCheck(player)
+local level = getenv("IIDXDifficultyType"..pname(player)) or 0
 
 return Def.ActorFrame{
 	Def.Sprite{
@@ -77,6 +156,11 @@ return Def.ActorFrame{
 		if GAMESTATE:GetCurrentGame():CountNotesSeparately() then GetTrueJudgment(nil,player) end
 		screen = SCREENMAN:GetTopScreen()
 		self:zoom(judgment == "_pop 1x" and 7/9 or 1):visible(not (getenv("HideJudgment" .. pname(player)) or false))
+		if PercentageCheck then
+			pn = screen:GetChild('Player'..pname(player))
+			life = lifeAdd[level]["Begin"]
+			pn:SetLife(life)
+		end
 	end,
 	JudgmentMessageCommand=function(self, param)
 		if param.Player ~= player then return end
@@ -84,11 +168,14 @@ return Def.ActorFrame{
 		if param.HoldNoteScore then
 			if isMGD(player) then
 				if param.HoldNoteScore == "HoldNoteScore_Held" then
+					if PercentageCheck then life = life + lifeAdd[level]["HoldNoteScore_Held"] end
 					glifemeter = screen:GetLifeMeter(player):GetLivesLeft()
 					if glifemeter < 100 then screen:GetLifeMeter(player):ChangeLives(1) end
 				elseif param.HoldNoteScore == "HoldNoteScore_LetGo" then
 					screen:GetLifeMeter(player):ChangeLives(-1)
+					if PercentageCheck then life = life + lifeAdd[level]["HoldNoteScore_LetGo"] end
 				end
+				if PercentageCheck then pn:SetLife(life) end
 			end
 			return
 		end
@@ -97,6 +184,12 @@ return Def.ActorFrame{
 		if GAMESTATE:GetCurrentGame():CountNotesSeparately() then param = GetTrueJudgment(param,player) end
 		local tns = param.TapNoteScore
 		if tns == "TapNoteScore_None" or tns == "" then return end
+		if PercentageCheck then
+			local add = lifeAdd[level][tns] or 0
+			if level == 4 and life <= 0.3 then add = add*0.6 end
+			life = math.min(1,life+add)
+			pn:SetLife(life)
+		end
 		for col,tapnote in pairs(param.Notes or {}) do
 			local tnt = ToEnumShortString(tapnote:GetTapNoteType())
 			if tnt == "Tap" or tnt == "HoldHead" or tnt == "LongNoteHead" or tnt == "Lift" then

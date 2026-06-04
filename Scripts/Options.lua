@@ -217,7 +217,7 @@ function SongMods(part)
 	local options = ""
 
 	if part == nil or part == 1 then
-		options = addToOutput(options,(isEtterna() and "Speed," or "1,") .."2,4,F,PCT,"..((isRegular() and VersionDateCheck(20160000)) and (isOpenDDR() and "0DDR" or "0,Flare") or "0")..",3",",")
+		options = addToOutput(options,(isEtterna() and "Speed," or "1,") .."2,4,F,IDT,"..((isRegular() and VersionDateCheck(20160000)) and (isOpenDDR() and "0DDR" or "0,Flare") or "0")..",3",",")
 		if not (IsGame("pump") or GAMESTATE:IsCourseMode()) then options = addToOutput(options,(IsGame("beat") or IsGame("be-mu")) and "IIDXFrame,IIDXDouble,IIDXJudgment,IIDXJudgmentBrightness,IIDXVisibility" or "31",",") end
 		if IIDXcheck() then options = addToOutput(options,"IIDXNote,IIDXNoteBackgroundBrightness,IIDXNoteBrightness,IIDXNoteLength,IIDXBeam,IIDXBeamBrightness,IIDXBeamLength,IIDXExplosion,IIDXExplosionBrightness,IIDXTurntable",",") end
 		if not (IsGame("be-mu") or IsGame("beat") or IsGame("po-mu") or IsGame("popn")) then options = addToOutput(options,"32,32H",",") end
@@ -417,7 +417,7 @@ end
 
 function InitPlayerOptions()
 	for pn in ivalues(GAMESTATE:GetEnabledPlayers()) do
-		setenv("PercentageClearThreshold"..pname(pn),(not isVS() and VersionDateCheck(20160000)) and LoadUserPrefN(pn, "PercentageClearThreshold", tonumber(DefaultLuaModifiers["PercentageClearThreshold"])) or 0)
+		setenv("IIDXDifficultyType"..pname(pn),(not isVS() and VersionDateCheck(20160000)) and LoadUserPrefN(pn, "IIDXDifficultyType", tonumber(DefaultLuaModifiers["IIDXDifficultyType"])) or 0)
 
 		setenv("Flare"..pname(pn),(not isVS() and VersionDateCheck(20160000)) and LoadUserPrefN(pn, "Flare", tonumber(DefaultLuaModifiers["Flare"])) or 0)
 		setenv("FlareFloat"..pname(pn),(not isVS() and VersionDateCheck(20160000)) and LoadUserPrefB(pn, "FlareFloat", tobool(DefaultLuaModifiers["FlareFloat"])) or false)
@@ -491,16 +491,16 @@ function InitPlayerOptions()
 	end
 end
 
-function OptionPercentageClearThreshold()
+function OptionIIDXDifficultyType()
 	local t = {
-		Name="PercentageClearThreshold",
+		Name="IIDXDifficultyType",
 		LayoutType = "ShowAllInRow",
 		SelectType = "SelectOne",
 		OneChoiceForAllPlayers = false,
 		ExportOnChange = false,
-		Choices = { "0%","10%","20%","30%","40%","50%","60%","70%","80%","90%","100%" },
+		Choices = { "Off","Very Easy","Easy","Normal","Hard","Very Hard" },
 		LoadSelections = function(self, list, pn)
-			local selected = (getenv("PercentageClearThreshold"..pname(pn)) or 0) + 1
+			local selected = (getenv("IIDXDifficultyType"..pname(pn)) or 0) + 1
 			if selected and selected ~= 0 then
 				list[selected] = true
 			else
@@ -510,7 +510,7 @@ function OptionPercentageClearThreshold()
 		SaveSelections = function(self, list, pn)
 			for i=1,#list do
 				if list[i] then
-					setenv("PercentageClearThreshold"..pname(pn),SaveUserPref(pn, "PercentageClearThreshold", i-1))
+					setenv("IIDXDifficultyType"..pname(pn),SaveUserPref(pn, "IIDXDifficultyType", i-1))
 					break
 				end
 			end

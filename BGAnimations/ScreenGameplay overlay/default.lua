@@ -409,7 +409,9 @@ local t = Def.ActorFrame{
 		local failCounter = 0
 		for pn in ivalues(GAMESTATE:GetEnabledPlayers()) do
 			if PercentageCheck(pn) then
-				local life = getenv("PercentageClearThreshold"..pname(pn)) or 0
+				local life = 0
+				local type = getenv("IIDXDifficultyType"..pname(pn)) or 0
+				if type == 1 then life = 6 elseif type <= 3 then life = 8 end
 				local lifeMeter = math.round(SCREENMAN:GetTopScreen():GetLifeMeter(pn):GetLife(),2)
 				local index = {0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1}
 				if lifeMeter < index[life+1] then

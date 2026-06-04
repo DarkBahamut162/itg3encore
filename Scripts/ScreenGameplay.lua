@@ -91,12 +91,13 @@ end
 function IIDXLifeBar(pn)
 	local PO = GAMESTATE:GetPlayerState(pn):GetPlayerOptions('ModsLevel_Song')
 	local drain = PO:DrainSetting()
-	local pass = PO:FailSetting() == "FailType_80Percent" and 0.8 or 0
-	local flare = (getenv("Flare"..pname(pn)) or 0) > 0
-	local life = (getenv("PercentageClearThreshold"..pname(pn)) or 0) + 1
-	local index = {"red","09","19","29","39","49","59","69","79","89","99"}
+	if drain ~= "DrainType_Normal" then return "gold" end
 
-	return flare and "white" or drain ~= "DrainType_Normal" and "gold" or pass == 0.8 and "79" or index[life]
+	local flare = (getenv("Flare"..pname(pn)) or 0) > 0
+	if flare then return "white" end
+
+	local type = getenv("IIDXDifficultyType"..pname(pn)) or 0
+	if type == 0 then return "red" elseif type == 1 then return "59" elseif type <= 3 then return "79" elseif type == 4 then return "red" elseif type == 5 then return "gold" end
 end
 
 function songfail(bVertex)
