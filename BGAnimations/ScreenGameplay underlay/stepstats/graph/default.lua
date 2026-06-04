@@ -244,8 +244,9 @@ local function UpdateGraphOld()
         if Step then
             local filePath = Step:GetFilename()
             local checkSM = filePath:sub(-2):sub(1,1) == 's'	-- [S]M & S[S]C
-            local checkDWI = filePath:sub(-3):sub(1,1) == 'd'	-- [D]WI
-            if checkSM then
+            local checkEDIT = filePath:sub(-1):sub(1,1) == 't'	-- EDI[T]
+            local checkDWI = filePath:sub(-2):sub(1,1) == 'w'	-- D[W]I
+            if checkSM or checkEDIT then
                 return UpdateGraphSM(Step)
             elseif checkDWI then
                 return UpdateGraphDWI(Step)
@@ -483,8 +484,9 @@ local function UpdateGraphAltOld()
         if Step then
             local filePath = Step:GetFilename()
             local checkSM = filePath:sub(-2):sub(1,1) == 's'	-- [S]M & S[S]C
-            local checkDWI = filePath:sub(-3):sub(1,1) == 'd'
-            if checkSM then
+            local checkEDIT = filePath:sub(-1):sub(1,1) == 't'	-- EDI[T]
+            local checkDWI = filePath:sub(-2):sub(1,1) == 'w'	-- D[W]I
+            if checkSM or checkEDIT then
                 return UpdateGraphAltSM(Step)
             elseif checkDWI then
                 return UpdateGraphAltDWI(Step)

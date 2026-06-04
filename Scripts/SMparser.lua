@@ -34,7 +34,7 @@ local function GetSimfileString(steps)
 	if not filename or filename == "" then return end
 
 	local filetype = filename:match("[^.]+$"):lower()
-	if not (filetype=="ssc" or filetype=="sm") then return end
+	if not (filetype=="ssc" or filetype=="sm" or filetype=="edit") then return end
 
 	local f = RageFileUtil.CreateRageFile()
 	local contents
@@ -177,7 +177,7 @@ local function GetSimfileChartString(SimfileString, StepsType, Difficulty, Steps
 				end
 			end
 		end
-	elseif Filetype == "sm" then
+	elseif Filetype == "sm" or Filetype == "edit" then
 		for noteData in SimfileString:gmatch("#"..NOTES.."2?[^;]*") do
 			local normalizedNoteData = noteData:gsub('\r\n?', '\n')
 			local parts = {}

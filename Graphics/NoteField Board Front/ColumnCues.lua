@@ -526,9 +526,10 @@ function setCol()
 		}
 		if cueBits[1] then
 			local checkSM = filePath:sub(-2):sub(1,1) == 's'	-- [S]M & S[S]C
-			local checkDWI = filePath:sub(-3):sub(1,1) == 'd'	-- [D]WI
+			local checkEDIT = filePath:sub(-1):sub(1,1) == 't'	-- EDI[T]
+			local checkDWI = filePath:sub(-2):sub(1,1) == 'w'	-- D[W]I
 
-			if checkSM then
+			if checkSM or checkEDIT then
 				local chart = SMParser(StepsOrTrail)
 				chart = split("\n,\n",chart)
 				local currentMeasure = -1
