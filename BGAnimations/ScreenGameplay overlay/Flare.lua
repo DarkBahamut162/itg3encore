@@ -86,7 +86,6 @@ local stepSize = 1
 local dif = 4
 local c
 
-local SongOrCourse = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentCourse() or GAMESTATE:GetCurrentSong()
 local StepsOrTrail = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentTrail(pn) or GAMESTATE:GetCurrentSteps(pn)
 if StepsOrTrail then
 	local holdlifts = isOutFox(20210400) and GAMESTATE:GetPlayerState(pn):GetPlayerOptions('ModsLevel_Song'):HoldLifts() or false

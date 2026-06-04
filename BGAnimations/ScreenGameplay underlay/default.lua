@@ -20,8 +20,6 @@ if not xms and DanceStageSelected ~= "OFF" and DoesDanceRepoExist() and not HasL
 		end
 	end
 
-	local style = GAMESTATE:GetCurrentStyle():GetStyleType()
-	local st = GAMESTATE:GetCurrentStyle():GetStepsType()
 	local show_cutins = GAMESTATE:GetCurrentSong() and (not GAMESTATE:GetCurrentSong():HasBGChanges()) or true
 	local filter_color= color("0,0,0,0")
 	local screen = Var"LoadingScreen"
@@ -31,7 +29,7 @@ if not xms and DanceStageSelected ~= "OFF" and DoesDanceRepoExist() and not HasL
 	}
 	setenv("ForceCutin",false)
 	for _, pn in ipairs(GAMESTATE:GetEnabledPlayers()) do
-		if st ~= 'StepsType_Dance_Double' and ThemePrefs.Get("FlashyCombo") == true then
+		if not isDouble() and ThemePrefs.Get("FlashyCombo") == true then
 			if FILEMAN:DoesFileExist("/Characters/"..WhichRead(pn).."/Cut-In") then
 				setenv("ForceCutin",true)
 				if (not HasVideo() and not GAMESTATE:GetCurrentSong():HasBGChanges()) or (HasVideo() and VideoStage()) or (HasVideo() and not VideoStage() and getenv("CutInOverVideo") == "ON") then
