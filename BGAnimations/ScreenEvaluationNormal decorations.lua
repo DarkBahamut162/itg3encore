@@ -425,6 +425,8 @@ end
 local checkUpdate = false
 local ctrlHeld = false
 local keyboardEnabled = ThemePrefs.Get("KeyboardEnabled")
+local holdLeft = false
+local holdRight = false
 
 local InputHandler = function(event)
 	if keyboardEnabled then
@@ -446,6 +448,7 @@ local InputHandler = function(event)
 	if not ctrlHeld and event.type == "InputEventType_FirstPress" then
 		if event.GameButton == "MenuLeft" or event.GameButton == "MenuRight" then
 			if event.GameButton == "MenuLeft" then
+				if holdRight then addOrRemoveFavorite(event.PlayerNumber) elseif not holdLeft then holdLeft = true end
 				view[event.PlayerNumber] = view[event.PlayerNumber] - 1
 				if view[event.PlayerNumber] % maxView[event.PlayerNumber] == 4 and #target[event.PlayerNumber] == 0 then
 					view[event.PlayerNumber] = view[event.PlayerNumber] - 1
@@ -454,6 +457,7 @@ local InputHandler = function(event)
 					view[event.PlayerNumber] = view[event.PlayerNumber] - 1
 				end
 			elseif event.GameButton == "MenuRight" then
+				if holdLeft then addOrRemoveFavorite(event.PlayerNumber) elseif not holdRight then holdRight = true end
 				view[event.PlayerNumber] = view[event.PlayerNumber] + 1
 				if view[event.PlayerNumber] % maxView[event.PlayerNumber] == 3 and #highscore[event.PlayerNumber] == 0 then
 					view[event.PlayerNumber] = view[event.PlayerNumber] + 1
@@ -477,6 +481,9 @@ local InputHandler = function(event)
 				checkUpdate = false
 			end
 		end
+	elseif event.type == "InputEventType_Release" then
+		if event.GameButton == "MenuLeft" then if holdLeft then holdLeft = false end end
+		if event.GameButton == "MenuRight" then if holdRight then holdRight = false end end
 	end
 end
 

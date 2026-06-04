@@ -142,6 +142,7 @@ function GetScreenEvaluationHelpText()
 	if isOutFoxOnline() and ThemePrefs.Get("KeyboardEnabled") then
 		ret = addToOutput(ret,THEME:GetString("ScreenEvaluation", "HelpTextHighscoreKeyboard"),"::")
 	end
+	ret = addToOutput(ret,THEME:GetString("ScreenEvaluation", "HelpTextFavorite"),"::")
 	return ret
 end
 
