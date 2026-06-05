@@ -72,6 +72,8 @@ Activate ability to favorite songs like in SL
 **Rounds/Lengths** will be adjusted if the **StepChart's Length** is shorter than the **Song's Length**
 - **UseStepCache:**
 Activate StepCache to use the chart's data for more accurate values or enable other features requiring it *(cached values are listed further down)*
+- **UseStepCacheQuickload:**
+Compress everything already cached to lessen process load
 </details>
 
 <details>
