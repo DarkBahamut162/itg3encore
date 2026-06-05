@@ -16,6 +16,9 @@ EngineVersion = "?.?.?"
 local full = isOutFoxV() and "FullRes" or "Full"
 DefaultLuaModifiers = {}
 PaceMaker = {[PLAYER_1]={},[PLAYER_2]={}}
+WIFE3 = {[PLAYER_1]={},[PLAYER_2]={}}
+FAplus = {[PLAYER_1]={},[PLAYER_2]={}}
+IIDXClear = {[PLAYER_1]={},[PLAYER_2]={}}
 local buffer = 24
 PackListHeader = {}
 PackList = {}

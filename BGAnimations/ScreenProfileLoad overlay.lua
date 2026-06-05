@@ -17,6 +17,9 @@ return Def.ActorFrame{
 				end
 			end
 			LoadFlare(pn)
+			WIFE3Load(pn)
+			FAplusLoad(pn)
+			IIDXClearLoad(pn)
 			if not isEtterna("0.55") and not (PaceMaker[pn] and PaceMaker[pn][category] and #PaceMaker[pn][category] > 0) and not PacemakerLoad(pn) then
 				for s=1,#songs do
 					if songs[s]:HasStepsType(category) then
@@ -47,12 +50,16 @@ return Def.ActorFrame{
 										end
 
 										SPS = math.floor(SPS)
-										if not PaceMaker[pn] then PaceMaker[pn] = {} end
-										if not PaceMaker[pn][category] then PaceMaker[pn][category] = {} end
 										PaceMaker[pn][category][math.floor(SPS)]=PaceMaker[pn][category][math.floor(SPS)] or {}
 
 										if highscore:GetPercentDP() > 0.5 then
-											PaceMaker[pn][category][math.floor(SPS)][#PaceMaker[pn][category][math.floor(SPS)]+1] = highscore:GetPercentDP()
+											local songDir = songs[s]:GetSongDir()
+											local arr = split("/",songDir)
+											local difficulty = ToEnumShortString(steps[ss]:GetDifficulty())
+											local identifier = steps[ss]:GetHash()
+											if identifier == 0 then identifier = steps[ss]:GetMeter() end
+											songDir = arr[4].."/"..difficulty.."/"..identifier
+											PaceMaker[pn][category][math.floor(SPS)][arr[3].."/"..songDir] = highscore:GetPercentDP()
 										end
 									end
 								end

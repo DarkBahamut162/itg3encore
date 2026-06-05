@@ -32,7 +32,7 @@ if getenv("SetPacemaker"..pname(player)) == 18 then
 
 	local min = 1
 	local category = isDouble() and StepsTypeDouble()[GetUserPrefN("StylePosition")] or StepsTypeSingle()[GetUserPrefN("StylePosition")]
-	for pms in ivalues(PaceMaker[player][category] and PaceMaker[player][category][math.floor(SPS)] or {}) do
+	for _,pms in pairs(PaceMaker[player][category] and PaceMaker[player][category][math.floor(SPS)] or {}) do
 		min = math.min(min,math.max(0.5,pms))
 		target = math.max(0.5,min)
 	end

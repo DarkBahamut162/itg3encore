@@ -1,7 +1,10 @@
 local player = ...
 assert(player,"[ScreenEvaluation PersonalRecord] requires player")
 local record = STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetPersonalHighScoreIndex()
+local category = isDouble() and StepsTypeDouble()[GetUserPrefN("StylePosition")] or StepsTypeSingle()[GetUserPrefN("StylePosition")]
 
+local passed = false
+if isEtterna("0.71") then passed = not STATSMAN:GetCurStageStats():Failed() else passed = STATSMAN:GetCurStageStats():OnePassed() end
 if getenv("EvalCombo"..pname(player)) then
 	if isEtterna("0.55") then
 		local score = SCOREMAN:GetMostRecentScore()
@@ -29,20 +32,48 @@ if getenv("EvalCombo"..pname(player)) then
 			end
 		end
 	end
-	if record == 0 then
-		local category = isDouble() and StepsTypeDouble()[GetUserPrefN("StylePosition")] or StepsTypeSingle()[GetUserPrefN("StylePosition")]
+	if song and steps and passed then
+		local ProfileSlot = {
+			[PLAYER_1] = "ProfileSlot_Player1",
+			[PLAYER_2] = "ProfileSlot_Player2",
+			["Machine"] = "ProfileSlot_Machine",
+		}
+
+		local songDir = song:GetSongDir()
+		local arr = split("/",songDir)
+		local difficulty = ToEnumShortString(steps:GetDifficulty())
+		local identifier = steps:GetHash()
+		if identifier == 0 then identifier = steps:GetMeter() end
+		songDir = arr[4].."/"..difficulty.."/"..identifier
+
 		local DP = STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetPercentDancePoints()
 		if DP > 0.5 then
-			if not PaceMaker[player][category] then PaceMaker[player][category] = {} end
-			if not PaceMaker[player][category][math.floor(SPS)] then PaceMaker[player][category][math.floor(SPS)] = {} end
-			PaceMaker[player][category][math.floor(SPS)][#PaceMaker[player][category][math.floor(SPS)]+1] = DP
-			local highscores = PROFILEMAN:GetProfile(player):GetHighScoreList(song,steps):GetHighScores()
-			if #highscores > 1 then
-				local toDelete = highscores[2]:GetPercentDP()
-				local index = FindInTable(toDelete,PaceMaker[player][category][math.floor(SPS)])
-				if index then table.remove(PaceMaker[player][category][math.floor(SPS)],index) end
+			if tonumber(PaceMaker[player][category][math.floor(SPS)] and PaceMaker[player][category][math.floor(SPS)][arr[3].."/"..songDir] or 0) < DP then
+				PaceMaker[player][category][math.floor(SPS)][arr[3].."/"..songDir] = DP
+				PacemakerSave(player)
 			end
-			PacemakerSave(player)
+		end
+
+		local WIFE3Score = getenv("WIFE3"..pname(player))
+		if tonumber(WIFE3[player][category][arr[3]] and WIFE3[player][category][arr[3]][songDir] or 0) < WIFE3Score then
+			WIFE3[player][category][arr[3]][songDir] = WIFE3Score
+			WIFE3Save(player)
+		end
+
+		local W0Count = getenv("W0"..pname(player))
+		if getenv("SetScoreFA"..pname(player)) then
+			if tonumber(FAplus[player][category][arr[3]] and FAplus[player][category][arr[3]][songDir] or 0) < W0Count then
+				FAplus[player][category][arr[3]][songDir] = W0Count
+				FAplusSave(player)
+			end
+		end
+
+		local IIDXDifficultyType = getenv("IIDXDifficultyType"..pname(player)) or 0
+		if IIDXDifficultyType > 0 then
+			if tonumber(IIDXClear[player][category][arr[3]] and IIDXClear[player][category][arr[3]][songDir] or 0) < IIDXDifficultyType then
+				IIDXClear[player][category][arr[3]][songDir] = IIDXDifficultyType
+				IIDXClearSave(player)
+			end
 		end
 	end
 end

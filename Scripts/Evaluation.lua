@@ -296,48 +296,146 @@ function SummaryBackupCheck()
 	if SummaryAdjust > 0 then return true else return false end
 end
 
-function PacemakerLoad(player)
-	local ProfileSlot = {
-		[PLAYER_1] = "ProfileSlot_Player1",
-		[PLAYER_2] = "ProfileSlot_Player2"
-	}
-	if not player then return false end
-	if not ProfileSlot[player] then return false end
-	local dir = PROFILEMAN:GetProfileDir(ProfileSlot[player])
-	if not dir or #dir == 0 then return false end
-	local category = isDouble() and StepsTypeDouble()[GetUserPrefN("StylePosition")] or StepsTypeSingle()[GetUserPrefN("StylePosition")]
-	local path = dir.."Pacemaker/"..category..".ini"
+local ProfileSlot = {
+	[PLAYER_1] = "ProfileSlot_Player1",
+	[PLAYER_2] = "ProfileSlot_Player2"
+}
 
-	if FILEMAN:DoesFileExist(path) then
+function PacemakerLoad(player)
+	if ThemePrefs.Get("UseStepCache") then
+		if not player then return false end
+		if not ProfileSlot[player] then return false end
+		local dir = PROFILEMAN:GetProfileDir(ProfileSlot[player])
+		if not dir or #dir == 0 then return false end
+		local category = isDouble() and StepsTypeDouble()[GetUserPrefN("StylePosition")] or StepsTypeSingle()[GetUserPrefN("StylePosition")]
+		local path = dir.."Pacemaker/"..category..".ini"
+
 		if not PaceMaker[player] then PaceMaker[player] = {} end
-		local PM = {}
-		PaceMaker[player][category] = IniFile.ReadFile(path)
-		for k1,v1 in pairs(PaceMaker[player][category]) do
-			PM[tonumber(k1)] = {}
-			for k2,v2 in pairs(v1) do
-				PM[tonumber(k1)][tonumber(k2)] = v2
+		if not PaceMaker[player][category] then PaceMaker[player][category] = {} end
+		if FILEMAN:DoesFileExist(path) then
+			local PM = IniFile.ReadFile(path)
+			local isOld = false
+
+			for _, v in pairs(PM) do
+				for key, _ in pairs(v) do
+					if key:len() <= 4 then
+						isOld = true
+						break
+					end
+				end
+				if isOld then break end
+			end
+
+			if isOld then
+				return false
+			else
+				for k, v in pairs(PM) do
+					PaceMaker[player][category][tonumber(k)] = v
+				end
+				return true
 			end
 		end
-		PaceMaker[player][category] = PM
-		return true
 	end
 
 	return false
 end
 
 function PacemakerSave(player)
-	local ProfileSlot = {
-		[PLAYER_1] = "ProfileSlot_Player1",
-		[PLAYER_2] = "ProfileSlot_Player2"
-	}
+	if ThemePrefs.Get("UseStepCache") then
+		if not player then return end
+		if not ProfileSlot[player] then return end
+		local dir = PROFILEMAN:GetProfileDir(ProfileSlot[player])
+		local category = isDouble() and StepsTypeDouble()[GetUserPrefN("StylePosition")] or StepsTypeSingle()[GetUserPrefN("StylePosition")]
+		local path = dir.."/Pacemaker/"..category..".ini"
+
+		if PaceMaker[player] and PaceMaker[player][category] then
+			IniFile.WriteFile(path,PaceMaker[player][category])
+			if FILEMAN.FlushDirCache then FILEMAN:FlushDirCache(path) end
+		end
+	end
+end
+
+function WIFE3Load(player)
+	if not player then return end
+	if not ProfileSlot[player] then return end
+	local dir = PROFILEMAN:GetProfileDir(ProfileSlot[player])
+	if not dir or #dir == 0 then return end
+	local category = isDouble() and StepsTypeDouble()[GetUserPrefN("StylePosition")] or StepsTypeSingle()[GetUserPrefN("StylePosition")]
+	local path = dir.."/WIFE3/"..category..".ini"
+
+	if not WIFE3[player] then WIFE3[player] = {} end
+	if not WIFE3[player][category] then WIFE3[player][category] = {} end
+	if FILEMAN:DoesFileExist(path) then
+		WIFE3[player][category] = IniFile.ReadFile(path)
+	end
+end
+
+function WIFE3Save(player)
 	if not player then return end
 	if not ProfileSlot[player] then return end
 	local dir = PROFILEMAN:GetProfileDir(ProfileSlot[player])
 	local category = isDouble() and StepsTypeDouble()[GetUserPrefN("StylePosition")] or StepsTypeSingle()[GetUserPrefN("StylePosition")]
-	local path = dir.."Pacemaker/"..category..".ini"
+	local path = dir.."/WIFE3/"..category..".ini"
 
-	if PaceMaker[player] and PaceMaker[player][category] then
-		IniFile.WriteFile(path,PaceMaker[player][category])
+	if WIFE3[player] and WIFE3[player][category] then
+		IniFile.WriteFile(path,WIFE3[player][category])
+		if FILEMAN.FlushDirCache then FILEMAN:FlushDirCache(path) end
+	end
+end
+
+function FAplusLoad(player)
+	if not player then return end
+	if not ProfileSlot[player] then return end
+	local dir = PROFILEMAN:GetProfileDir(ProfileSlot[player])
+	if not dir or #dir == 0 then return end
+	local category = isDouble() and StepsTypeDouble()[GetUserPrefN("StylePosition")] or StepsTypeSingle()[GetUserPrefN("StylePosition")]
+	local path = dir.."/FAplus/"..category..".ini"
+
+	if not FAplus[player] then FAplus[player] = {} end
+	if not FAplus[player][category] then FAplus[player][category] = {} end
+	if FILEMAN:DoesFileExist(path) then
+		FAplus[player][category] = IniFile.ReadFile(path)
+	end
+end
+
+function FAplusSave(player)
+	if not player then return end
+	if not ProfileSlot[player] then return end
+	local dir = PROFILEMAN:GetProfileDir(ProfileSlot[player])
+	local category = isDouble() and StepsTypeDouble()[GetUserPrefN("StylePosition")] or StepsTypeSingle()[GetUserPrefN("StylePosition")]
+	local path = dir.."/FAplus/"..category..".ini"
+
+	if FAplus[player] and FAplus[player][category] then
+		IniFile.WriteFile(path,FAplus[player][category])
+		if FILEMAN.FlushDirCache then FILEMAN:FlushDirCache(path) end
+	end
+end
+
+function IIDXClearLoad(player)
+	if not player then return end
+	if not ProfileSlot[player] then return end
+	local dir = PROFILEMAN:GetProfileDir(ProfileSlot[player])
+	if not dir or #dir == 0 then return end
+	local category = isDouble() and StepsTypeDouble()[GetUserPrefN("StylePosition")] or StepsTypeSingle()[GetUserPrefN("StylePosition")]
+	local path = dir.."/IIDXClear/"..category..".ini"
+
+	if not IIDXClear[player] then IIDXClear[player] = {} end
+	if not IIDXClear[player][category] then IIDXClear[player][category] = {} end
+	if FILEMAN:DoesFileExist(path) then
+		IIDXClear[player][category] = IniFile.ReadFile(path)
+	end
+end
+
+function IIDXClearSave(player)
+	if not player then return end
+	if not ProfileSlot[player] then return end
+	local dir = PROFILEMAN:GetProfileDir(ProfileSlot[player])
+	local category = isDouble() and StepsTypeDouble()[GetUserPrefN("StylePosition")] or StepsTypeSingle()[GetUserPrefN("StylePosition")]
+	local path = dir.."/IIDXClear/"..category..".ini"
+
+	if IIDXClear[player] and IIDXClear[player][category] then
+		IniFile.WriteFile(path,IIDXClear[player][category])
+		if FILEMAN.FlushDirCache then FILEMAN:FlushDirCache(path) end
 	end
 end
 

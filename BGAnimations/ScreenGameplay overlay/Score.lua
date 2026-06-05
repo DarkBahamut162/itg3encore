@@ -208,25 +208,24 @@ return Def.ActorFrame{
 		end,
 		JudgmentMessageCommand=function(self,param)
 			if stop then stop = false end
-			if scoreType == 8 then
-				if param.Player == player then
-					if param.HoldNoteScore then
-						if param.HoldNoteScore == "HoldNoteScore_LetGo" or param.HoldNoteScore == "HoldNoteScore_MissedHold" then
-							curwifescore = curwifescore + wife3_hold_drop_weight
-						end
-					elseif param.TapNoteScore and not param.HoldNoteScore then
-						if param.TapNoteScore == "TapNoteScore_HitMine" then
-							curwifescore = curwifescore + wife3_mine_hit_weight
-						elseif param.TapNoteScore == "TapNoteScore_Miss" then
-							curwifescore = curwifescore + wife3_miss_weight
-							maxwifescore = maxwifescore + 2
-						elseif param.TapNoteScore == "TapNoteScore_W1" or param.TapNoteScore == "TapNoteScore_W2" or param.TapNoteScore == "TapNoteScore_W3" or param.TapNoteScore == "TapNoteScore_W4" or param.TapNoteScore == "TapNoteScore_W5" then
-							curwifescore = curwifescore + wife3(param.TapNoteOffset, 1)
-							maxwifescore = maxwifescore + 2
-						end
+			if param.Player == player then
+				if param.HoldNoteScore then
+					if param.HoldNoteScore == "HoldNoteScore_LetGo" or param.HoldNoteScore == "HoldNoteScore_MissedHold" then
+						curwifescore = curwifescore + wife3_hold_drop_weight
+					end
+				elseif param.TapNoteScore and not param.HoldNoteScore then
+					if param.TapNoteScore == "TapNoteScore_HitMine" then
+						curwifescore = curwifescore + wife3_mine_hit_weight
+					elseif param.TapNoteScore == "TapNoteScore_Miss" then
+						curwifescore = curwifescore + wife3_miss_weight
+						maxwifescore = maxwifescore + 2
+					elseif param.TapNoteScore == "TapNoteScore_W1" or param.TapNoteScore == "TapNoteScore_W2" or param.TapNoteScore == "TapNoteScore_W3" or param.TapNoteScore == "TapNoteScore_W4" or param.TapNoteScore == "TapNoteScore_W5" then
+						curwifescore = curwifescore + wife3(param.TapNoteOffset, 1)
+						maxwifescore = maxwifescore + 2
 					end
 				end
-			elseif scoreType == 4 or scoreType == 5 then
+			end
+			if scoreType == 4 or scoreType == 5 then
 				if (param.HoldNoteScore and SN[param.HoldNoteScore]) or SN[param.TapNoteScore] then else return end
 			end
 			local short = ToEnumShortString(param.HoldNoteScore and param.HoldNoteScore or param.TapNoteScore)
@@ -392,7 +391,7 @@ return Def.ActorFrame{
 		end,
 		OffCommand=function(self)
 			if scoreDirection == 2 then scoreDirection = 1 self:queuecommand("RedrawScore") end
-			if scoreType == 8 then setenv("WIFE3"..pname(player),curwifescore/totalwifescore) end
+			setenv("WIFE3"..pname(player),curwifescore/totalwifescore)
 		end
 	}
 }
