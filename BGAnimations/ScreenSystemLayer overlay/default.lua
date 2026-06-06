@@ -76,13 +76,17 @@ if not FILEMAN:DoesFileExist(path) then
 else
 	local loaded = IniFile.ReadFile("Save/DefaultLuaModifiers.ini")
 	local missing = false
+	local wrong = false
 	for key,value in pairs(file["LuaOptions"]) do
 		if loaded["LuaOptions"][key] == nil then
 			loaded["LuaOptions"][key] = file["LuaOptions"][key]
 			missing = true
+		elseif loaded["LuaOptions"][key] ~= file["LuaOptions"][key] then
+			loaded["LuaOptions"][key] = file["LuaOptions"][key]
+			wrong = true
 		end
 	end
-	if missing then
+	if missing or wrong then
 		IniFile.WriteFile(path, loaded)
 		if FILEMAN.FlushDirCache then FILEMAN:FlushDirCache(path) end
 	end
