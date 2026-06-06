@@ -238,19 +238,17 @@ function LoadPlayerStuff(Player)
 				["Right"..pname(Player).."MessageCommand"]=function(self) self:queuecommand("Update") end,
 				UpdateCommand=function(self)
 					local selection = ""
-					local memoryCheck = (isEtterna("0.55") or MEMCARDMAN:GetCardState(Player) == 'MemoryCardState_none') and 1 or 0
-					for i=memoryCheck,PROFILEMAN:GetNumLocalProfiles() do
-						selection = addToOutput(selection,i == 0 and "·" or "•","")
+					local memoryCheck = not (isEtterna("0.55") or MEMCARDMAN:GetCardState(Player) == 'MemoryCardState_none')
+					for i=-1,PROFILEMAN:GetNumLocalProfiles() do
+						selection = addToOutput(selection,i == -1 and "×" or i == 0 and (memoryCheck and "·" or " ") or "•","")
 					end
 					self:settext(selection):ClearAttributes()
 
 					local index = SCREENMAN:GetTopScreen():GetProfileIndex(Player)
-					if index >= 0 then
-						self:AddAttribute(index-memoryCheck, {
-							Length = 1,
-							Diffuse = PlayerColor(Player)
-						})
-					end
+					self:AddAttribute(index+1, {
+						Length = 1,
+						Diffuse = PlayerColor(Player)
+					})
 				end
 			}
 		},
@@ -287,6 +285,8 @@ function UpdateInternal3(self,Player)
 			end
 			if name == "" then name = "NoName" end
 			seltext:settext(name)
+		elseif ind == -1 then
+			seltext:settext("Guest")
 		else
 			if SCREENMAN:GetTopScreen():SetProfileIndex(Player,1) then
 				self:queuecommand('UpdateInternal2')
@@ -303,6 +303,14 @@ function UpdateInternal3(self,Player)
 	end
 end
 
+local ready = {}
+local function AllPlayersReady()
+	for i, pn in ipairs(GAMESTATE:GetHumanPlayers()) do
+		if not ready[pn] then return false end
+	end
+	return true
+end
+
 local InputHandler =function(event)
 	if not event.PlayerNumber then return end
 	if event.type == "InputEventType_FirstPress" then
@@ -316,6 +324,12 @@ local InputHandler =function(event)
 						MESSAGEMAN:Broadcast("DirectionButton")
 						MESSAGEMAN:Broadcast("Left"..pname(event.PlayerNumber))
 					end
+				elseif ind == (memoryCheck and 0 or 1) then
+					if SCREENMAN:GetTopScreen():SetProfileIndex(event.PlayerNumber,-1) then
+						MESSAGEMAN:Broadcast("DirectionButton")
+						MESSAGEMAN:Broadcast("Left"..pname(event.PlayerNumber))
+						PREFSMAN:SetPreference("DefaultLocalProfileID"..pname(event.PlayerNumber),"")
+					end
 				end
 			elseif event.GameButton == "MenuRight" or event.GameButton == "MenuDown" or event.GameButton == "Right" or event.GameButton == "Down" or event.GameButton == "UpRight" or event.GameButton == "DownRight" then
 				if playerReady and playerReady == event.PlayerNumber then return end
@@ -323,6 +337,11 @@ local InputHandler =function(event)
 				local memoryCheck = not isEtterna("0.55") and MEMCARDMAN:GetCardState(event.PlayerNumber) ~= 'MemoryCardState_none' or false
 				if ind >= 0 or memoryCheck then
 					if SCREENMAN:GetTopScreen():SetProfileIndex(event.PlayerNumber,ind+1) then
+						MESSAGEMAN:Broadcast("DirectionButton")
+						MESSAGEMAN:Broadcast("Right"..pname(event.PlayerNumber))
+					end
+				elseif ind == -1 then
+					if SCREENMAN:GetTopScreen():SetProfileIndex(event.PlayerNumber,(memoryCheck and 0 or 1)) then
 						MESSAGEMAN:Broadcast("DirectionButton")
 						MESSAGEMAN:Broadcast("Right"..pname(event.PlayerNumber))
 					end
@@ -341,7 +360,12 @@ local InputHandler =function(event)
 					end
 				end
 				MESSAGEMAN:Broadcast("StartButton")
-				SCREENMAN:GetTopScreen():Finish()
+				ready[event.PlayerNumber] = true
+				if AllPlayersReady() then
+					if not SCREENMAN:GetTopScreen():Finish() then
+						SCREENMAN:GetTopScreen():StartTransitioningScreen("SM_GoToNextScreen",0)
+					end
+				end
 			elseif event.GameButton == "Back" then
 				if playerReady and playerReady == event.PlayerNumber then
 					MESSAGEMAN:Broadcast("Unselected"..pname(event.PlayerNumber))
