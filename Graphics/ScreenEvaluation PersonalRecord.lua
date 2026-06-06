@@ -32,7 +32,8 @@ if getenv("EvalCombo"..pname(player)) then
 			end
 		end
 	end
-	if song and steps and passed then
+
+	if song and steps and passed and PROFILEMAN:IsPersistentProfile(player) then
 		local ProfileSlot = {
 			[PLAYER_1] = "ProfileSlot_Player1",
 			[PLAYER_2] = "ProfileSlot_Player2",
