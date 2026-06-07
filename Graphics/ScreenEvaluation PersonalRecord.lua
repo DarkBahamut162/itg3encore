@@ -50,6 +50,7 @@ if getenv("EvalCombo"..pname(player)) then
 		local DP = STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetPercentDancePoints()
 		if DP > 0.5 then
 			if tonumber(PaceMaker[player][category][math.floor(SPS)] and PaceMaker[player][category][math.floor(SPS)][arr[3].."/"..songDir] or 0) < DP then
+				if not PaceMaker[player][category][math.floor(SPS)] then PaceMaker[player][category][math.floor(SPS)] = {} end
 				PaceMaker[player][category][math.floor(SPS)][arr[3].."/"..songDir] = DP
 				PacemakerSave(player)
 			end
@@ -57,6 +58,7 @@ if getenv("EvalCombo"..pname(player)) then
 
 		local WIFE3Score = getenv("WIFE3"..pname(player))
 		if tonumber(WIFE3[player][category][arr[3]] and WIFE3[player][category][arr[3]][songDir] or 0) < WIFE3Score then
+			if not WIFE3[player][category][arr[3]] then WIFE3[player][category][arr[3]] = {} end
 			WIFE3[player][category][arr[3]][songDir] = WIFE3Score
 			WIFE3Save(player)
 		end
@@ -64,6 +66,7 @@ if getenv("EvalCombo"..pname(player)) then
 		local W0Count = getenv("W0"..pname(player))
 		if getenv("SetScoreFA"..pname(player)) then
 			if tonumber(FAplus[player][category][arr[3]] and FAplus[player][category][arr[3]][songDir] or 0) < W0Count then
+				if not FAplus[player][category][arr[3]] then FAplus[player][category][arr[3]] = {} end
 				FAplus[player][category][arr[3]][songDir] = W0Count
 				FAplusSave(player)
 			end
