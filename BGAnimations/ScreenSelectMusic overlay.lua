@@ -2,7 +2,9 @@ local t = Def.ActorFrame{}
 local tOnline = Def.ActorFrame{}
 setenv("Restart",0)
 
-for pn in ivalues(GAMESTATE:GetHumanPlayers()) do SCREENMAN:set_input_redirected(pn,false) end
+for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
+	if VersionDateCheck(20160000) then SCREENMAN:set_input_redirected(pn,false) end
+end
 
 if ShowStandardDecoration("StyleIcon") then
 	t[#t+1] = loadfile(THEME:GetPathG(Var "LoadingScreen", "StyleIcon"))() .. {
@@ -144,7 +146,7 @@ local InputHandler = function(event)
 				GAMESTATE:SetCurrentSong(selection[current])
 				GAMESTATE:SetPreferredSong(selection[current])
 				SOUND:StopMusic()
-				SCREENMAN:PlayStartSound()
+				if isStepMania(20160400) then SCREENMAN:PlayStartSound() else SOUND:PlayOnce(THEME:GetPathS('Common',"start")) end
 				local screen = SCREENMAN:GetTopScreen()
 
 				if GAMESTATE:GetSortOrder() == "SortOrder_Preferred" then screen:GetMusicWheel():ChangeSort("SortOrder_Group") end
@@ -172,7 +174,7 @@ local InputHandler = function(event)
 							end
 						end
 					else
-						SOUND:PlayOnce( THEME:GetPathS( 'Common', "invalid" ) )
+						if isStepMania(20160400) then SCREENMAN:PlayInvalidSound() else SOUND:PlayOnce(THEME:GetPathS('Common',"invalid")) end
 					end
 				elseif event.type == "InputEventType_Release" then
 					if shiftHeld[pn] then MESSAGEMAN:Broadcast("ShiftMenuClosed"..pname(pn)) end
@@ -230,7 +232,7 @@ local InputHandler = function(event)
 						specialHeld[pn] = false
 					end
 					if not check then return end 
-					SCREENMAN:PlayStartSound()
+					if isStepMania(20160400) then SCREENMAN:PlayStartSound() else SOUND:PlayOnce(THEME:GetPathS('Common',"start")) end
 					SCREENMAN:AddNewScreenToTop("ScreenTextEntry")
 					selection = {}
 					local question = {
@@ -251,7 +253,7 @@ local InputHandler = function(event)
 								output = "No Songs Found"
 								SCREENMAN:SystemMessage("No Songs Found!")
 								MESSAGEMAN:Broadcast("Return")
-								SCREENMAN:PlayCancelSound()
+								if isStepMania(20160400) then SCREENMAN:PlayCancelSound() else SOUND:PlayOnce(THEME:GetPathS('Common',"Cancel")) end
 							else
 								table.sort(selection, function(a, b)
 									return a:GetDisplayFullTitle():lower() < b:GetDisplayFullTitle():lower()
@@ -265,7 +267,7 @@ local InputHandler = function(event)
 						end,
 						OnCancel = function()
 							MESSAGEMAN:Broadcast("Return")
-							SCREENMAN:PlayCancelSound()
+							if isStepMania(20160400) then SCREENMAN:PlayCancelSound() else SOUND:PlayOnce(THEME:GetPathS('Common',"Cancel")) end
 							SOUND:StopMusic()
 						end
 					}
@@ -278,7 +280,7 @@ local InputHandler = function(event)
 						for pn in ivalues(GAMESTATE:GetHumanPlayers()) do LoadFlare(pn) end
 						SCREENMAN:GetTopScreen():SetNextScreenName(SelectMusicOrCourse())
 						SCREENMAN:GetTopScreen():StartTransitioningScreen("SM_GoToNextScreen")
-						SCREENMAN:PlayStartSound()
+						if isStepMania(20160400) then SCREENMAN:PlayStartSound() else SOUND:PlayOnce(THEME:GetPathS('Common',"start")) end
 					end
 				elseif event.DeviceInput.button == "DeviceButton_2" then
 					if GAMESTATE:GetNumPlayersEnabled()==2 then return end
@@ -287,7 +289,7 @@ local InputHandler = function(event)
 						for pn in ivalues(GAMESTATE:GetHumanPlayers()) do LoadFlare(pn) end
 						SCREENMAN:GetTopScreen():SetNextScreenName(SelectMusicOrCourse())
 						SCREENMAN:GetTopScreen():StartTransitioningScreen("SM_GoToNextScreen")
-						SCREENMAN:PlayStartSound()
+						if isStepMania(20160400) then SCREENMAN:PlayStartSound() else SOUND:PlayOnce(THEME:GetPathS('Common',"start")) end
 					end
 				end
 			end
