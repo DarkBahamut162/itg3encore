@@ -28,7 +28,7 @@ local InputHandler = function(event)
 						c.Restart:diffusealpha(1)
 					elseif event.DeviceInput.button == "DeviceButton_p" then
 						if isITGmaniaOnline() then
-							SOUND:PlayOnce(THEME:GetPathS('Common',"invalid"))
+							if isStepMania(20160400) then SCREENMAN:PlayInvalidSound() else SOUND:PlayOnce(THEME:GetPathS('Common',"invalid")) end
 						else
 							practice = true
 							SOUND:PlayOnce(THEME:GetPathS("LifeMeterTime", "GainLife"), true)
@@ -58,7 +58,7 @@ local InputHandler = function(event)
 			if effectUp then
 				if event.GameButton == "Select" and not practice then
 					if isITGmaniaOnline() then
-						SOUND:PlayOnce(THEME:GetPathS('Common',"invalid"))
+						if isStepMania(20160400) then SCREENMAN:PlayInvalidSound() else SOUND:PlayOnce(THEME:GetPathS('Common',"invalid")) end
 					else
 						practice = true
 						SOUND:PlayOnce(THEME:GetPathS("LifeMeterTime", "GainLife"), true)

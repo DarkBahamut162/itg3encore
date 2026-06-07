@@ -57,11 +57,11 @@ local InputHandler = function(event)
 			if checked then
 				if updated then
 					SCREENMAN:GetTopScreen():StartTransitioningScreen("SM_GoToNextScreen")
-					SOUND:PlayOnce(THEME:GetPathS("Common","Start"),true)
+					if isStepMania(20160400) then SCREENMAN:PlayStartSound() else SOUND:PlayOnce(THEME:GetPathS('Common',"start")) end
 				else
 					if cur%2 == 1 then
 						SCREENMAN:GetTopScreen():StartTransitioningScreen("SM_GoToNextScreen")
-						SOUND:PlayOnce(THEME:GetPathS("Common","Start"),true)
+						if isStepMania(20160400) then SCREENMAN:PlayStartSound() else SOUND:PlayOnce(THEME:GetPathS('Common',"start")) end
 					else
 						checked = false
 						s,ss = 5,50

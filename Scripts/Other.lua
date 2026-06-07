@@ -1142,19 +1142,19 @@ function GetProfileToEdit(player)
 		SaveSelections = function(self)
 			local pname = self.Name:sub(-2)
 			if pname == "P0" then
-				SOUND:PlayOnce(THEME:GetPathS("Common","Start"))
+				if isStepMania(20160400) then SCREENMAN:PlayStartSound() else SOUND:PlayOnce(THEME:GetPathS('Common',"start")) end
 				setenv("EditUSBProfile",player)						
 				SCREENMAN:GetTopScreen():SetNextScreenName( "ScreenOptionsService" )
 				SCREENMAN:GetTopScreen():StartTransitioningScreen("SM_GoToNextScreen")
 			else
 				local player = pname == "P1" and PLAYER_1 or PLAYER_2
 				if USBReady(player) then
-					SOUND:PlayOnce(THEME:GetPathS("Common","Start"))
+					if isStepMania(20160400) then SCREENMAN:PlayStartSound() else SOUND:PlayOnce(THEME:GetPathS('Common',"start")) end
 					setenv("EditUSBProfile",player)						
 					SCREENMAN:GetTopScreen():SetNextScreenName( "ScreenOptionsCustomizeProfile" )
 					SCREENMAN:GetTopScreen():StartTransitioningScreen("SM_GoToNextScreen")
 				else
-					SOUND:PlayOnce(THEME:GetPathS("Common","invalid"))
+					if isStepMania(20160400) then SCREENMAN:PlayInvalidSound() else SOUND:PlayOnce(THEME:GetPathS('Common',"invalid")) end
 				end
 			end
 		end,

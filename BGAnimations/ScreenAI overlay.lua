@@ -244,7 +244,7 @@ local InputHandler = function(event)
 			local selected = ((value_active_index-1) % #value_chars)+1
 			local selected_char = value_chars[selected]
 			if selected_char == "&START;" then
-				SCREENMAN:PlayInvalidSound()
+				if isStepMania(20160400) then SCREENMAN:PlayInvalidSound() else SOUND:PlayOnce(THEME:GetPathS('Common',"invalid")) end
 			else
 				SOUND:PlayOnce(THEME:GetPathS("ScreenSelectMaster","change"))
 				value_active_index = 3
@@ -254,7 +254,7 @@ local InputHandler = function(event)
 			local selected = ((value_active_index-1) % #value_chars)+1
 			local selected_char = value_chars[selected]
 			if selected_char == "&SELECT;" then
-				SCREENMAN:PlayInvalidSound()
+				if isStepMania(20160400) then SCREENMAN:PlayInvalidSound() else SOUND:PlayOnce(THEME:GetPathS('Common',"invalid")) end
 			else
 				SOUND:PlayOnce(THEME:GetPathS("ScreenSelectMaster","change"))
 				value_active_index = 2
@@ -279,15 +279,15 @@ local InputHandler = function(event)
 						for update in ivalues(ToUpdatePro) do weight.update:playcommand("Update") end
 					end
 				end
-				SCREENMAN:PlayStartSound()
+				if isStepMania(20160400) then SCREENMAN:PlayStartSound() else SOUND:PlayOnce(THEME:GetPathS('Common',"start")) end
 			elseif selected_char == "&SELECT;" then
 				if value:len() > 0 and value ~= "0" then
 					value = value:sub(1,-2)
 					if value == "" then value = "0" end
 					prompt.ValueSelected:playcommand("ValueSelectedRefresh")
-					SCREENMAN:PlayCancelSound()
+					if isStepMania(20160400) then SCREENMAN:PlayCancelSound() else SOUND:PlayOnce(THEME:GetPathS('Common',"Cancel")) end
 				else
-					SCREENMAN:PlayInvalidSound()
+					if isStepMania(20160400) then SCREENMAN:PlayInvalidSound() else SOUND:PlayOnce(THEME:GetPathS('Common',"invalid")) end
 				end
 			elseif selected_char == "&BACK;" then
 				showing_value_prompt = false
@@ -298,15 +298,15 @@ local InputHandler = function(event)
 					prompt.ValueSelected:diffusealpha(0)
 					prompt.Hint:diffusealpha(0)
 				end
-				SCREENMAN:PlayCancelSound()
+				if isStepMania(20160400) then SCREENMAN:PlayCancelSound() else SOUND:PlayOnce(THEME:GetPathS('Common',"Cancel")) end
 			else
 				if value:len() < value_char_limit then
 					if value == "0" then value = selected_char else value = value..selected_char end
 					if value:len() >= value_char_limit then password_active_index = 3 end
 					prompt.ValueSelected:playcommand("ValueSelectedRefresh")
-					SCREENMAN:PlayStartSound()
+					if isStepMania(20160400) then SCREENMAN:PlayStartSound() else SOUND:PlayOnce(THEME:GetPathS('Common',"start")) end
 				else
-					SCREENMAN:PlayInvalidSound()
+					if isStepMania(20160400) then SCREENMAN:PlayInvalidSound() else SOUND:PlayOnce(THEME:GetPathS('Common',"invalid")) end
 				end
 			end
 		elseif event.GameButton == "Select" then
@@ -314,9 +314,9 @@ local InputHandler = function(event)
 				value = value:sub(1,-2)
 				if value == "" then value = "0" end
 				prompt.ValueSelected:playcommand("ValueSelectedRefresh")
-				SCREENMAN:PlayCancelSound()
+				if isStepMania(20160400) then SCREENMAN:PlayCancelSound() else SOUND:PlayOnce(THEME:GetPathS('Common',"Cancel")) end
 			else
-				SCREENMAN:PlayInvalidSound()
+				if isStepMania(20160400) then SCREENMAN:PlayInvalidSound() else SOUND:PlayOnce(THEME:GetPathS('Common',"invalid")) end
 			end
 		elseif event.GameButton == "Back" then
 			showing_value_prompt = false
@@ -327,7 +327,7 @@ local InputHandler = function(event)
 				prompt.ValueSelected:diffusealpha(0)
 				prompt.Hint:diffusealpha(0)
 			end
-			SCREENMAN:PlayCancelSound()
+			if isStepMania(20160400) then SCREENMAN:PlayCancelSound() else SOUND:PlayOnce(THEME:GetPathS('Common',"Cancel")) end
 		end
 	else
 		if event.type == "InputEventType_FirstPress" then
@@ -415,7 +415,7 @@ local InputHandler = function(event)
 						end
 						prompt.Text:playcommand("Set"):stoptweening():linear(0.125):diffusealpha(1)
 						prompt.Value:playcommand("Set"):playcommand("Update"):stoptweening():linear(0.125):diffusealpha(1)
-						SCREENMAN:PlayStartSound()
+						if isStepMania(20160400) then SCREENMAN:PlayStartSound() else SOUND:PlayOnce(THEME:GetPathS('Common',"start")) end
 					elseif currentList < totalWeights + 3 then
 						if currentList == totalWeights + 1 then -- reset current skill
 							AIini[SkillsDefault[currentSkill]] = DeepCopy(AIiniDefault[SkillsDefault[currentSkill]])
@@ -442,13 +442,13 @@ local InputHandler = function(event)
 						if totalWeights>6 then
 							for update in ivalues(ToUpdatePro) do weight.update:playcommand("Update") end
 						end
-						SCREENMAN:PlayStartSound()
+						if isStepMania(20160400) then SCREENMAN:PlayStartSound() else SOUND:PlayOnce(THEME:GetPathS('Common',"start")) end
 					end
 				elseif checking then
 					if cur%2 == 1 then -- "YES" option selected
 						SCREENMAN:GetTopScreen():Cancel()
 					elseif cur%2 == 0 then -- "NO" option selected
-						SCREENMAN:PlayStartSound()
+						if isStepMania(20160400) then SCREENMAN:PlayStartSound() else SOUND:PlayOnce(THEME:GetPathS('Common',"start")) end
 						prompt.BG:diffusealpha(0)
 						prompt.Cursor:diffusealpha(0)
 						prompt.Warning:diffusealpha(0)
@@ -459,7 +459,7 @@ local InputHandler = function(event)
 				end
 			elseif event.DeviceInput.button == "DeviceButton_0" then
 				if value == "0" then -- value is already 0
-					SCREENMAN:PlayInvalidSound()
+					if isStepMania(20160400) then SCREENMAN:PlayInvalidSound() else SOUND:PlayOnce(THEME:GetPathS('Common',"invalid")) end
 				else -- add number to value
 					value = value.."0"
 					prompt.Value:playcommand("Update")
@@ -476,7 +476,7 @@ local InputHandler = function(event)
 					prompt.Value:playcommand("Update")
 					SOUND:PlayOnce(THEME:GetPathS('ScreenOptions',"change"))
 				else -- value is already 0
-					SCREENMAN:PlayInvalidSound()
+					if isStepMania(20160400) then SCREENMAN:PlayInvalidSound() else SOUND:PlayOnce(THEME:GetPathS('Common',"invalid")) end
 				end
 			end
 		elseif event.type == "InputEventType_Repeat" and event.DeviceInput.button == "DeviceButton_backspace" then
@@ -486,7 +486,7 @@ local InputHandler = function(event)
 				prompt.Value:playcommand("Update")
 				SOUND:PlayOnce(THEME:GetPathS('ScreenOptions',"change"))
 			else -- value is already 0
-				SCREENMAN:PlayInvalidSound()
+				if isStepMania(20160400) then SCREENMAN:PlayInvalidSound() else SOUND:PlayOnce(THEME:GetPathS('Common',"invalid")) end
 			end
 		elseif event.type == "InputEventType_Release" then
 			if event.GameButton == "Select" and selectHeld then -- skill change switch

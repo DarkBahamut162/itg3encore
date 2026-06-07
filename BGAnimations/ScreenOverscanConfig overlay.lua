@@ -56,7 +56,7 @@ local function input(event)
 	local input_functions = {
 		Start=function()
 			SCREENMAN:GetTopScreen():StartTransitioningScreen("SM_GoToNextScreen")
-			SOUND:PlayOnce(THEME:GetPathS("Common", "Start"), true)
+			if isStepMania(20160400) then SCREENMAN:PlayStartSound() else SOUND:PlayOnce(THEME:GetPathS('Common',"start")) end
 		end,
 		Back=function() SCREENMAN:GetTopScreen():Cancel() end
 	}

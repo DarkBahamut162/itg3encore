@@ -28,7 +28,7 @@ local InputHandler = function(event)
 				else
 					SetUserPref("StylePosition",currentStylePosition-1)
 				end
-				SOUND:PlayOnce( THEME:GetPathS( 'Common', "start" ) )
+				if isStepMania(20160400) then SCREENMAN:PlayStartSound() else SOUND:PlayOnce(THEME:GetPathS('Common',"start")) end
 				SCREENMAN:GetTopScreen():SetNextScreenName(screenName)
 				SCREENMAN:GetTopScreen():StartTransitioningScreen("SM_GoToNextScreen")
 			end
@@ -39,7 +39,7 @@ local InputHandler = function(event)
 				else
 					SetUserPref("StylePosition",currentStylePosition+1)
 				end
-				SOUND:PlayOnce( THEME:GetPathS( 'Common', "start" ) )
+				if isStepMania(20160400) then SCREENMAN:PlayStartSound() else SOUND:PlayOnce(THEME:GetPathS('Common',"start")) end
 				SCREENMAN:GetTopScreen():SetNextScreenName(screenName)
 				SCREENMAN:GetTopScreen():StartTransitioningScreen("SM_GoToNextScreen")
 			end
@@ -49,7 +49,7 @@ local InputHandler = function(event)
 			else
 				setenv("BattleMode","rave")
 			end
-			SOUND:PlayOnce( THEME:GetPathS( 'Common', "start" ) )
+			if isStepMania(20160400) then SCREENMAN:PlayStartSound() else SOUND:PlayOnce(THEME:GetPathS('Common',"start")) end
 			SCREENMAN:GetTopScreen():SetNextScreenName(screenName)
 			SCREENMAN:GetTopScreen():StartTransitioningScreen("SM_GoToNextScreen")
 		elseif event.GameButton == "Select" and not selectState then

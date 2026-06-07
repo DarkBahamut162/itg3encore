@@ -262,7 +262,7 @@ return Def.ActorFrame{
 						local check2 = wheel:GetSelectedSection()
 						wheel:SetOpenSection(check1 == check2 and "" or check2)
 						if check1 == check2 then
-							SOUND:PlayOnce(THEME:GetPathS("Common", "invalid"), true)
+							if isStepMania(20160400) then SCREENMAN:PlayInvalidSound() else SOUND:PlayOnce(THEME:GetPathS('Common',"invalid")) end
 						else
 							SOUND:PlayOnce(THEME:GetPathS("MusicWheel", "expand"), true)
 						end

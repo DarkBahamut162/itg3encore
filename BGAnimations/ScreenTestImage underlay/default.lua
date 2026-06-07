@@ -2,7 +2,7 @@ local function InputHandler(event)
 	if event.type == "InputEventType_FirstPress" then
 		if event.GameButton == "Back" or event.GameButton == "Start" then
 			SCREENMAN:GetTopScreen():StartTransitioningScreen("SM_GoToNextScreen")
-			SOUND:PlayOnce(THEME:GetPathS("Common", "Start"), true)
+			if isStepMania(20160400) then SCREENMAN:PlayStartSound() else SOUND:PlayOnce(THEME:GetPathS('Common',"start")) end
 		end
 	end
 end

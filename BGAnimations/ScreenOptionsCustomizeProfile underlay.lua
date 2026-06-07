@@ -52,8 +52,8 @@ end
 local number_entry = new_numpad_entry{
 	Name = "number_entry",
 	InitCommand=function(self) self:diffusealpha(0):xy(_screen.cx, _screen.cy):zoom(WideScreenDiff_(16/10)) end,
-	InvalidValueCommand=function(self) SCREENMAN:PlayInvalidSound() end,
-	EntryDoneCommand=function(self) SCREENMAN:PlayStartSound() end,
+	InvalidValueCommand=function(self) if isStepMania(20160400) then SCREENMAN:PlayInvalidSound() else SOUND:PlayOnce(THEME:GetPathS('Common',"invalid")) end end,
+	EntryDoneCommand=function(self) if isStepMania(20160400) then SCREENMAN:PlayStartSound() else SOUND:PlayOnce(THEME:GetPathS('Common',"start")) end end,
 	value_color = PlayerColor(master),
 	cursor_draw = "first",
 	cursor_color = PlayerDarkColor(master)
@@ -224,7 +224,7 @@ local function exit_screen(newscreen)
 		end
 	end
 	SCREENMAN:GetTopScreen():StartTransitioningScreen("SM_GoToNextScreen")
-	SCREENMAN:PlayStartSound()
+	if isStepMania(20160400) then SCREENMAN:PlayStartSound() else SOUND:PlayOnce(THEME:GetPathS('Common',"start")) end
 end
 
 local update = true
@@ -261,7 +261,7 @@ local function input(event)
 						end,
 						OnCancel = function()
 							update = true
-							SCREENMAN:PlayInvalidSound()
+							if isStepMania(20160400) then SCREENMAN:PlayInvalidSound() else SOUND:PlayOnce(THEME:GetPathS('Common',"invalid")) end
 						end,
 						FormatAnswerForDisplay = function(answer)
 							return answer == "" and 0 or tonumber(answer)
@@ -279,7 +279,7 @@ local function input(event)
 					number_entry.prompt_actor:playcommand("Set", {THEME:GetString("ScreenOptionsCustomizeProfile", item.name)})
 					cursor_on_menu = "numpad"
 				end
-				SCREENMAN:PlayStartSound()
+				if isStepMania(20160400) then SCREENMAN:PlayStartSound() else SOUND:PlayOnce(THEME:GetPathS('Common',"start")) end
 			elseif item.item_type == "string" then
 				update = false
 				SCREENMAN:AddNewScreenToTop("ScreenTextEntry")
@@ -295,11 +295,11 @@ local function input(event)
 					end,
 					OnCancel = function()
 						update = true
-						SCREENMAN:PlayInvalidSound()
+						if isStepMania(20160400) then SCREENMAN:PlayInvalidSound() else SOUND:PlayOnce(THEME:GetPathS('Common',"invalid")) end
 					end
 				}
 				SCREENMAN:GetTopScreen():Load(question)
-				SCREENMAN:PlayStartSound()
+				if isStepMania(20160400) then SCREENMAN:PlayStartSound() else SOUND:PlayOnce(THEME:GetPathS('Common',"start")) end
 			elseif item.item_type == "list" then
 				cursor_on_menu = "list"
 				active_list = menu_items[menu_pos].list
@@ -319,7 +319,7 @@ local function input(event)
 					update_menu_cursor()
 					MESSAGEMAN:Broadcast("Next")
 				else
-					SCREENMAN:PlayInvalidSound()
+					if isStepMania(20160400) then SCREENMAN:PlayInvalidSound() else SOUND:PlayOnce(THEME:GetPathS('Common',"invalid")) end
 				end
 			elseif button == "MenuRight" or button == "MenuDown" then
 				if menu_pos < #menu_items then
@@ -327,7 +327,7 @@ local function input(event)
 					update_menu_cursor()
 					MESSAGEMAN:Broadcast("Next")
 				else
-					SCREENMAN:PlayInvalidSound()
+					if isStepMania(20160400) then SCREENMAN:PlayInvalidSound() else SOUND:PlayOnce(THEME:GetPathS('Common',"invalid")) end
 				end
 			end
 		end
@@ -340,7 +340,7 @@ local function input(event)
 				menu_values[menu_pos]:playcommand("Set", {item_value_to_text(item, number_entry.value)})
 			else
 				update = true
-				SCREENMAN:PlayCancelSound()
+				if isStepMania(20160400) then SCREENMAN:PlayCancelSound() else SOUND:PlayOnce(THEME:GetPathS('Common',"Cancel")) end
 			end
 			fade_actor_to(fader, 0)
 			fade_actor_to(number_entry.container, 0)
@@ -389,7 +389,7 @@ local args = {
 					update_menu_cursor()
 					MESSAGEMAN:Broadcast("Next")
 				else
-					SCREENMAN:PlayInvalidSound()
+					if isStepMania(20160400) then SCREENMAN:PlayInvalidSound() else SOUND:PlayOnce(THEME:GetPathS('Common',"invalid")) end
 				end
 			end
 		end,
@@ -401,7 +401,7 @@ local args = {
 					update_menu_cursor()
 					MESSAGEMAN:Broadcast("Next")
 				else
-					SCREENMAN:PlayInvalidSound()
+					if isStepMania(20160400) then SCREENMAN:PlayInvalidSound() else SOUND:PlayOnce(THEME:GetPathS('Common',"invalid")) end
 				end
 			end
 		end,
