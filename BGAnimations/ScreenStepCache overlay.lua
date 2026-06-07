@@ -330,13 +330,14 @@ return Def.ActorFrame{
 					cacheTime = GetTimeSinceStart()
 					local filePath = step:GetFilename():lower()
 					local checkSM  = filePath:sub(-2):sub(1,1) == 's'	-- [S]M & S[S]C
-					local checkDWI = filePath:sub(-3):sub(1,1) == 'd'	-- [D]WI
+					local checkEDIT = filePath:sub(-1):sub(1,1) == 't'	-- EDI[T]
+					local checkDWI = filePath:sub(-2):sub(1,1) == 'w'	-- D[W]I
 					--local checkBMS = filePath:sub(-3):sub(2,2) == 'm'	-- B[M]S & B[M]E & B[M]L & P[M]S
 					local checkPMS = filePath:sub(-3) == 'pms'
 					local temp = nil
 
-					if not isOutFox(20200400) or ((checkSM or checkPMS) and isOutFoxV()) then
-						if checkSM then
+					if not isOutFox(20200400) or ((checkSM or checkEDIT or checkPMS) and isOutFoxV()) then
+						if checkSM or checkEDIT then
 							temp = cacheStepSM(nil,step)
 						elseif checkDWI then
 							temp = cacheStepDWI(nil,step)
