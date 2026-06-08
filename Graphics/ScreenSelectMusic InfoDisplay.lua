@@ -75,7 +75,7 @@ return Def.ActorFrame{
 							self:stopeffect()
 						end
 					end
-					if IsGame("po-mu") or IsGame("be-mu") then
+					if IsGame("beat") or IsGame("be-mu") or IsGame("popn") or IsGame("po-mu") then
 						if not steps then steps = GAMESTATE:GetCurrentSteps(GAMESTATE:GetMasterPlayerNumber()) end
 						if steps and not HasKeysounds(steps) then
 							output = addToOutput(output,"NO KEYSOUNDS"," & ")

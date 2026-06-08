@@ -6,7 +6,7 @@ local SongOrCourse = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentTrail(play
 local StepsOrTrail = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentTrail(player):GetTrailEntry(1):GetSteps() or GAMESTATE:GetCurrentSteps(player)
 local sleep = 0
 
-if IsGame("beat") or IsGame("be-mu") then
+if IsGame("beat") or IsGame("be-mu") or IsGame("popn") or IsGame("po-mu") then
 	if HasKeysounds(StepsOrTrail) then
 		optionslist = optionslist..", Has Keysounds"
 	else
