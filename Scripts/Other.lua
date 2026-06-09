@@ -605,10 +605,8 @@ function JudgmentTransformCommand( self, params )
 		if y < 0 then y=y+SCREEN_CENTER_Y/4 else y=y-SCREEN_CENTER_Y/2 end
 		zoom = zoom * 2
 	end
-
-	self:x( 0 )
-	self:y( y*zoom + add )
-	self:zoom( zoom )
+	if (getenv("ErrorBar"..pname(params.Player)) or 0) > 0 then y = y * 1.5 end
+	self:x(0):y(y*zoom+add):zoom(zoom)
 end
 
 function JudgmentTransformSharedCommand( self, params )
@@ -637,10 +635,8 @@ function ComboTransformCommand( self, params )
 		if y < 0 then y=y+SCREEN_CENTER_Y/4 else y=y-SCREEN_CENTER_Y/2 end
 		zoom = zoom * 2
 	end
-
-	self:x( 0 )
-	self:y( y*zoom + add )
-	self:zoom( zoom )
+	if (getenv("ErrorBar"..pname(params.Player)) or 0) > 0 then y = y * 1.5 end
+	self:x(0):y(y*zoom+add):zoom(zoom)
 end
 
 function FindInTable(needle, haystack)
