@@ -34,7 +34,10 @@ return Def.ActorFrame{
 				local profileMachine = PROFILEMAN:GetMachineProfile()
 				local hsl = profileMachine:GetHighScoreList(SongOrCourse,StepsOrTrail)
 				local scores = hsl and hsl:GetHighScores()
-				if scores[1] then
+				if not IsCourseFixed() then
+					self:GetChild("MachineScore"):GetChild("ScoreName"):settext("????")
+					self:GetChild("MachineScore"):GetChild("ScorePercent"):settext("?.??%")
+				elseif scores[1] then
 					self:GetChild("MachineScore"):GetChild("ScoreName"):settext(scores[1]:GetName())
 					self:GetChild("MachineScore"):GetChild("ScorePercent"):settext(string.format("%0.2f%%",scores[1]:GetPercentDP()*100))
 				else
@@ -45,7 +48,9 @@ return Def.ActorFrame{
 				local profilePlayer = PROFILEMAN:GetProfile(player)
 				local hsl = profilePlayer:GetHighScoreList(SongOrCourse,StepsOrTrail)
 				local scores = hsl and hsl:GetHighScores()
-				if scores[1] then
+				if not IsCourseFixed() then
+					self:GetChild("ProfileScore"):GetChild("ScorePercent"):settext("?.??%")
+				elseif scores[1] then
 					self:GetChild("ProfileScore"):GetChild("ScorePercent"):settext(string.format("%0.2f%%",scores[1]:GetPercentDP()*100))
 				else
 					self:GetChild("ProfileScore"):GetChild("ScorePercent"):settext("0.00%")
