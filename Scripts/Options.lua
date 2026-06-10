@@ -247,7 +247,7 @@ function SongMods(part)
 	end
 
 	if GAMESTATE:IsCourseMode() then
-		if part == nil or part == 1 then options = "1,3,IDC" end
+		if part == nil or part == 1 then options = "1,3"..(not isOni() and ",IDC" or "") end
 		if part == nil or part == 3 then
 			if (GAMESTATE:GetNumPlayersEnabled() == 1 and not isDouble()) then
 				if part == nil then options = addToOutput(options,"22R",",") elseif part == 3 then options = "22R" end

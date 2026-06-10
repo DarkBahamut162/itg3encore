@@ -6,7 +6,7 @@ local PSS = STATSMAN:GetCurStageStats():GetPlayerStageStats(player)
 local currentScore = STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetCurrentLife()
 local currentLevel = 0
 if GAMESTATE:IsCourseMode() then currentLevel = getenv("IIDXDifficultyClass"..pname(player)) else currentLevel = getenv("IIDXDifficultyGauge"..pname(player)) end
-local visible = currentLevel > 0
+local visible = currentLevel > 0 and not isOni() and not isMGD(player) and not isSurvival(player)
 local previousScore = 0
 local previousLevel = 1
 local update = false

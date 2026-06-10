@@ -1241,11 +1241,11 @@ function PercentageCheck(pn)
 	local ret = false
 	if (getenv("Flare"..pname(pn)) or 0) == 0 then
 		local drainType = GAMESTATE:GetPlayerState(pn):GetPlayerOptions('ModsLevel_Song'):DrainSetting()
-		if drainType == "DrainType_Normal" then
+		if drainType == "DrainType_Normal" and not isMGD(pn) and not isSurvival(pn) then
 			local type = getenv("IIDXDifficultyGauge"..pname(pn)) or 0
 			local class = getenv("IIDXDifficultyClass"..pname(pn)) or 0
 			if GAMESTATE:IsCourseMode() then
-				if class > 0 then ret = true end
+				if not isOni() then if class > 0 then ret = true end end
 			else
 				if type > 0 then ret = true end
 			end
