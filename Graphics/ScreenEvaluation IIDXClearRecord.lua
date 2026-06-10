@@ -26,7 +26,7 @@ if visible and getenv("EvalCombo"..pname(player)) then
 					local difficulty = ToEnumShortString(StepsOrTrail:GetDifficulty())
 					local identifier = StepsOrTrail.GetHash and StepsOrTrail:GetHash() or 0
 					if identifier == 0 then identifier = StepsOrTrail:GetMeter() end
-					directory = arr[arr[4]].."/"..difficulty.."/"..identifier
+					directory = arr[4].."/"..difficulty.."/"..identifier
 
 					local table = split("_",IIDXClear[player][category][arr[3]] and IIDXClear[player][category][arr[3]][directory] or "0")
 					previousLevel = table[1] or "0"
