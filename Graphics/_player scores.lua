@@ -15,6 +15,7 @@ return Def.ActorFrame{
 		local SongOrCourse = courseMode and GAMESTATE:GetCurrentCourse() or GAMESTATE:GetCurrentSong()
 		local StepsOrTrail = courseMode and GAMESTATE:GetCurrentTrail(player) or GAMESTATE:GetCurrentSteps(player)
 		local flare = 0
+		local iidx = 0
 
 		if SongOrCourse and StepsOrTrail then
 			if isEtterna("0.50") then
@@ -57,32 +58,66 @@ return Def.ActorFrame{
 				end
 			end
 			flare = GetFlare(player,SongOrCourse,StepsOrTrail)
+			local songDir = courseMode and SongOrCourse:GetCourseDir() or SongOrCourse:GetSongDir()
+			local arr = split("/",songDir)
+			local difficulty = ToEnumShortString(StepsOrTrail:GetDifficulty())
+			local identifier = StepsOrTrail.GetHash and StepsOrTrail:GetHash() or 0
+			if identifier == 0 then identifier = StepsOrTrail:GetMeter() end
+			songDir = arr[4].."/"..difficulty.."/"..identifier
+
+			local category = isDouble() and StepsTypeDouble()[GetUserPrefN("StylePosition")] or StepsTypeSingle()[GetUserPrefN("StylePosition")]
+			if IIDXClear[player][category] and IIDXClear[player][category][arr[3]] and IIDXClear[player][category][arr[3]][songDir] then
+				iidx = IIDXClear[player][category][arr[3]][songDir] or ""
+			end
 		else
 			self:GetChild("MachineScore"):GetChild("ScoreName"):settext("?")
 			self:GetChild("MachineScore"):GetChild("ScorePercent"):settext("?")
 			self:GetChild("ProfileScore"):GetChild("ScorePercent"):settext("?")
 		end
+
 		flare = split("_",flare)
-		local level = tonumber(flare[1] or "0") or 0
-		local score = flare[2] or "???????"
+		local flareLevel = tonumber(flare[1] or "0") or 0
+		local flareScore = flare[2] or "???????"
 		flares = {800000,850000,900000,930000,955000,960000,970000,980000,990000,995000,1000000}
-		score = tonumber(score or 0)
-		local fill = level > 0 and (score-flares[level])/(flares[level+1]-flares[level]) or 0
-		if level == 10 then
+		flareScore = tonumber(flareScore or 0)
+		local flareFill = flareLevel > 0 and (flareScore-flares[flareLevel])/(flares[flareLevel+1]-flares[flareLevel]) or 0
+		if flareLevel == 10 then
 			self:GetChild("ProfileScore"):GetChild("ScoreName"):rainbow()
 			self:GetChild("ProfileScore"):GetChild("FlareName"):settext("FX")
 			self:GetChild("ProfileScore"):GetChild("Flare"):visible(true)
-			self:GetChild("ProfileScore"):GetChild("FlareFill"):visible(true):stoptweening():decelerate(0.1):zoomx(math.min(fill,1)*13):stopeffect():rainbow():effectclock('beat')
-		elseif level == 0 then
+			self:GetChild("ProfileScore"):GetChild("FlareFill"):visible(true):stoptweening():decelerate(0.1):zoomx(math.min(flareFill,1)*13):stopeffect():rainbow():effectclock('beat')
+		elseif flareLevel == 0 then
 			self:GetChild("ProfileScore"):GetChild("ScoreName"):stopeffect():diffuse(color("FFFFFF"))
 			self:GetChild("ProfileScore"):GetChild("FlareName"):settext("")
 			self:GetChild("ProfileScore"):GetChild("Flare"):visible(false)
 			self:GetChild("ProfileScore"):GetChild("FlareFill"):visible(false):stoptweening():decelerate(0.1):zoomx(0):stopeffect()
 		else
-			self:GetChild("ProfileScore"):GetChild("ScoreName"):stopeffect():diffuse(level > 0 and color(flareColor[level]) or color("#FFFFFF00"))
-			self:GetChild("ProfileScore"):GetChild("FlareName"):settext("F"..level)
+			self:GetChild("ProfileScore"):GetChild("ScoreName"):stopeffect():diffuse(flareLevel > 0 and color(flareColor[flareLevel]) or color("#FFFFFF00"))
+			self:GetChild("ProfileScore"):GetChild("FlareName"):settext("F"..flareLevel)
 			self:GetChild("ProfileScore"):GetChild("Flare"):visible(true)
-			self:GetChild("ProfileScore"):GetChild("FlareFill"):visible(true):stoptweening():decelerate(0.1):zoomx(math.min(fill,1)*13):stopeffect():diffuseramp():effectcolor1(ColorDarkTone(color(flareColor[level]))):effectcolor2(color(flareColor[level])):effectperiod(0.5):effect_hold_at_full(0.5):effectclock('beat')
+			self:GetChild("ProfileScore"):GetChild("FlareFill"):visible(true):stoptweening():decelerate(0.1):zoomx(math.min(flareFill,1)*13):stopeffect():diffuseramp():effectcolor1(ColorDarkTone(color(flareColor[flareLevel]))):effectcolor2(color(flareColor[flareLevel])):effectperiod(0.5):effect_hold_at_full(0.5):effectclock('beat')
+		end
+
+		iidx = split("_",iidx)
+		local iidxLevel = tonumber(iidx[1] or "0")
+		local iidxFill = tonumber(iidx[2] or "0")
+		local iidxLevels = {"VE","E","N","H","VH"}
+		if iidxLevel == 0 then
+			self:GetChild("ProfileScore"):GetChild("IIDXName"):settext("")
+			self:GetChild("ProfileScore"):GetChild("IIDX"):visible(false)
+			self:GetChild("ProfileScore"):GetChild("IIDXFill"):visible(false):stoptweening():decelerate(0.1):zoomx(0)
+		else
+			self:GetChild("ProfileScore"):GetChild("IIDXName"):settext(iidxLevels[iidxLevel])
+			self:GetChild("ProfileScore"):GetChild("IIDX"):visible(true)
+			local iidxColor = color("#00000000")
+			if iidxLevel <= 3 then
+				if iidxLevel == 1 and iidxFill >= 0.6 or iidxFill >= 0.8 then iidxColor = color("#FF0808") else iidxColor = color("#7BE8FF") end
+			elseif iidxLevel == 4 then
+				iidxColor = color("#FF0808")
+			else
+				iidxColor = color("#FFA959")
+			end
+			self:GetChild("ProfileScore"):GetChild("IIDXFill"):visible(true):stoptweening():decelerate(0.1):zoomx(math.min(iidxFill,1)*13):diffuseramp():effectcolor1(ColorDarkTone(iidxColor)):effectcolor2(iidxColor):effectperiod(0.5):effect_hold_at_full(0.5):effectclock('beat')
 		end
 	end,
 	Def.ActorFrame{
@@ -108,7 +143,12 @@ return Def.ActorFrame{
 		Def.BitmapText {
 			File = "_z 36px shadowx",
 			Name="FlareName",
-			OnCommand=function(self) self:x(self:GetParent():GetChild("ScoreName"):GetWidth()/3.3):y(85):rotationz(90):zoom(0.25):shadowlength(2):maxwidth(175) end
+			OnCommand=function(self) self:x(self:GetParent():GetChild("ScoreName"):GetWidth()/3.4):y(85):rotationz(90):zoom(0.25):shadowlength(2):maxwidth(60) end
+		},
+		Def.BitmapText {
+			File = "_z 36px shadowx",
+			Name="IIDXName",
+			OnCommand=function(self) self:x(-self:GetParent():GetChild("ScoreName"):GetWidth()/3.4):y(85):rotationz(-90):zoom(0.25):shadowlength(2):maxwidth(60) end
 		},
 		Def.BitmapText {
 			File = "_z 36px shadowx",
@@ -130,6 +170,15 @@ return Def.ActorFrame{
 		Def.Quad{
 			Name="FlareFill",
 			InitCommand=function(self) self:x(self:GetParent():GetChild("ScoreName"):GetWidth()/3.3+7):y(91):rotationz(-90):halign(0):zoomto(13,4):blend(Blend.Add) end
+		},
+		Def.Sprite {
+			Name="IIDX",
+			Texture = THEME:GetPathG("_pane icons/_long",isFinal() and "final" or "normal"),
+			InitCommand=function(self) self:x(-self:GetParent():GetChild("ScoreName"):GetWidth()/3.3-7):y(76.5):rotationz(90):halign(0):zoomx(2/3):shadowlength(1) end
+		},
+		Def.Quad{
+			Name="IIDXFill",
+			InitCommand=function(self) self:x(-self:GetParent():GetChild("ScoreName"):GetWidth()/3.3-7):y(91):rotationz(-90):halign(0):zoomto(13,4):blend(Blend.Add) end
 		}
 	}
 }

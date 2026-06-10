@@ -1242,8 +1242,13 @@ function PercentageCheck(pn)
 	if (getenv("Flare"..pname(pn)) or 0) == 0 then
 		local drainType = GAMESTATE:GetPlayerState(pn):GetPlayerOptions('ModsLevel_Song'):DrainSetting()
 		if drainType == "DrainType_Normal" then
-			local type = getenv("IIDXDifficultyType"..pname(pn)) or 0
-			if type > 0 then ret = true end
+			local type = getenv("IIDXDifficultyGauge"..pname(pn)) or 0
+			local class = getenv("IIDXDifficultyClass"..pname(pn)) or 0
+			if GAMESTATE:IsCourseMode() then
+				if class > 0 then ret = true end
+			else
+				if type > 0 then ret = true end
+			end
 		end
 	end
 

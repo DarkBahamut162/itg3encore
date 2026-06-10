@@ -217,7 +217,7 @@ function SongMods(part)
 	local options = ""
 
 	if part == nil or part == 1 then
-		options = addToOutput(options,(isEtterna() and "Speed," or "1,") .."2,4,F,IDT,"..((isRegular() and VersionDateCheck(20160000)) and (isOpenDDR() and "0DDR" or "0,Flare") or "0")..",3",",")
+		options = addToOutput(options,(isEtterna() and "Speed," or "1,") .."2,4,F,IDG,"..((isRegular() and VersionDateCheck(20160000)) and (isOpenDDR() and "0DDR" or "0,Flare") or "0")..",3",",")
 		if not (IsGame("pump") or GAMESTATE:IsCourseMode()) then options = addToOutput(options,(IsGame("beat") or IsGame("be-mu")) and "IIDXFrame,IIDXDouble,IIDXJudgment,IIDXJudgmentBrightness,IIDXVisibility" or "31",",") end
 		if IIDXcheck() then options = addToOutput(options,"IIDXNote,IIDXNoteBackgroundBrightness,IIDXNoteBrightness,IIDXNoteLength,IIDXBeam,IIDXBeamBrightness,IIDXBeamLength,IIDXExplosion,IIDXExplosionBrightness,IIDXTurntable",",") end
 		if not (IsGame("be-mu") or IsGame("beat") or IsGame("po-mu") or IsGame("popn")) then options = addToOutput(options,"32,32H",",") end
@@ -247,7 +247,7 @@ function SongMods(part)
 	end
 
 	if GAMESTATE:IsCourseMode() then
-		if part == nil or part == 1 then options = "1,3" end
+		if part == nil or part == 1 then options = "1,3,IDC" end
 		if part == nil or part == 3 then
 			if (GAMESTATE:GetNumPlayersEnabled() == 1 and not isDouble()) then
 				if part == nil then options = addToOutput(options,"22R",",") elseif part == 3 then options = "22R" end
@@ -417,7 +417,8 @@ end
 
 function InitPlayerOptions()
 	for pn in ivalues(GAMESTATE:GetEnabledPlayers()) do
-		setenv("IIDXDifficultyType"..pname(pn),(not isVS() and VersionDateCheck(20160000)) and LoadUserPrefN(pn, "IIDXDifficultyType", tonumber(DefaultLuaModifiers["IIDXDifficultyType"])) or 0)
+		setenv("IIDXDifficultyGauge"..pname(pn),(not isVS() and VersionDateCheck(20160000)) and LoadUserPrefN(pn, "IIDXDifficultyGauge", tonumber(DefaultLuaModifiers["IIDXDifficultyGauge"])) or 0)
+		setenv("IIDXDifficultyClass"..pname(pn),(not isVS() and VersionDateCheck(20160000)) and LoadUserPrefN(pn, "IIDXDifficultyClass", tonumber(DefaultLuaModifiers["IIDXDifficultyClass"])) or 0)
 
 		setenv("Flare"..pname(pn),(not isVS() and VersionDateCheck(20160000)) and LoadUserPrefN(pn, "Flare", tonumber(DefaultLuaModifiers["Flare"])) or 0)
 		setenv("FlareFloat"..pname(pn),(not isVS() and VersionDateCheck(20160000)) and LoadUserPrefB(pn, "FlareFloat", tobool(DefaultLuaModifiers["FlareFloat"])) or false)
@@ -491,16 +492,16 @@ function InitPlayerOptions()
 	end
 end
 
-function OptionIIDXDifficultyType()
+function OptionIIDXDifficultyGauge()
 	local t = {
-		Name="IIDXDifficultyType",
+		Name="IIDXDifficultyGauge",
 		LayoutType = "ShowAllInRow",
 		SelectType = "SelectOne",
 		OneChoiceForAllPlayers = false,
 		ExportOnChange = false,
 		Choices = { "Off","Very Easy","Easy","Normal","Hard","Very Hard" },
 		LoadSelections = function(self, list, pn)
-			local selected = (getenv("IIDXDifficultyType"..pname(pn)) or 0) + 1
+			local selected = (getenv("IIDXDifficultyGauge"..pname(pn)) or 0) + 1
 			if selected and selected ~= 0 then
 				list[selected] = true
 			else
@@ -510,7 +511,36 @@ function OptionIIDXDifficultyType()
 		SaveSelections = function(self, list, pn)
 			for i=1,#list do
 				if list[i] then
-					setenv("IIDXDifficultyType"..pname(pn),SaveUserPref(pn, "IIDXDifficultyType", i-1))
+					setenv("IIDXDifficultyGauge"..pname(pn),SaveUserPref(pn, "IIDXDifficultyGauge", i-1))
+					break
+				end
+			end
+		end
+	}
+	setmetatable(t, t)
+	return t
+end
+
+function OptionIIDXDifficultyClass()
+	local t = {
+		Name="IIDXDifficultyClass",
+		LayoutType = "ShowAllInRow",
+		SelectType = "SelectOne",
+		OneChoiceForAllPlayers = false,
+		ExportOnChange = false,
+		Choices = { "Off","Normal","Hard" },
+		LoadSelections = function(self, list, pn)
+			local selected = (getenv("IIDXDifficultyClass"..pname(pn)) or 0) + 1
+			if selected and selected ~= 0 then
+				list[selected] = true
+			else
+				list[1] = true
+			end
+		end,
+		SaveSelections = function(self, list, pn)
+			for i=1,#list do
+				if list[i] then
+					setenv("IIDXDifficultyClass"..pname(pn),SaveUserPref(pn, "IIDXDifficultyClass", i-1))
 					break
 				end
 			end

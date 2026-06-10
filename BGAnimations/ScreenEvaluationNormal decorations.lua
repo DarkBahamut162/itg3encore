@@ -166,6 +166,12 @@ for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
 				ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen")
 			end
 		}
+		t[#t+1] = loadfile(THEME:GetPathG(Var "LoadingScreen", "IIDXClearRecord"))(pn)..{
+			InitCommand=function(self)
+				self:player(pn):name("IIDXClearRecord" .. PlayerNumberToString(pn)):visible(getenv("EvalCombo"..pname(pn)))
+				ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen")
+			end
+		}
 		t[#t+1] = loadfile(THEME:GetPathG(Var "LoadingScreen", "AutoPlayer"))(pn) .. {
 			InitCommand=function(self)
 				self:player(pn):name("AutoPlayer" .. PlayerNumberToString(pn))

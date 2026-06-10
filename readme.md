@@ -347,10 +347,12 @@ I could have actually forked it but I didn't. My reasoning was that it wasn't go
 * Added various PlayerOptions:
   - **GameOptions:**
     - **FailType:** **Fail At 30 Misses** *originally ImmediateContinue but fails after 30 Misses*
-    - **IIDXDifficultyType:**
+    - **IIDXDifficultyGauge:**
       - **[Very Easy]** *Life begins ad 22%* & *Clear Threshold is 60%*
       - **[Easy & Normal]** *Life begins ad 22%* & *Clear Threshold is 80%*
       - **[Hard & Very Hard]** *Life begins ad 100%* & *Clear Threshold is 0%*
+    - **IIDXDifficultyClass:**
+      - **[Normal & Hard]** *Life begins ad 100%* & *Clear Threshold is 0%*
     - **LifeType:** **LifeLine** *(MGD|Battery)* & **Survival** *(Timer)*
     - **FlareLevel:** **Flare 1-10** & **Flare Float**
       - Ability to change between **Old** & **New** score requirement

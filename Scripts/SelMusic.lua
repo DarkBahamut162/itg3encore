@@ -518,7 +518,7 @@ function getStepCacheFile(Step)
 		groupName = Song:GetGroupName()
 	end
 
-	local identifier = Step:GetHash()
+	local identifier = Step.GetHash and Step:GetHash() or 0
 	if identifier == 0 then identifier = Step:GetMeter() end
 
 	return "Cache/Steps/Steps_"..groupName.."_"..songName.."_"..ToEnumShortString(Step:GetStepsType()).."_"..ToEnumShortString(Step:GetDifficulty()).."_"..identifier..".db9"

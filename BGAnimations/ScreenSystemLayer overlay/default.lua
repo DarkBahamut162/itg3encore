@@ -2,7 +2,8 @@ local path = "Save/DefaultLuaModifiers.ini"
 local file = {
 	LuaOptions = {
 		Rotation = 1,
-		IIDXDifficultyType = 0,
+		IIDXDifficultyGauge = 0,
+		IIDXDifficultyClass = 0,
 
 		Flare = 0,
 		FlareFloat = false,

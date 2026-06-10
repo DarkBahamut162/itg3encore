@@ -96,8 +96,9 @@ function IIDXLifeBar(pn)
 	local flare = (getenv("Flare"..pname(pn)) or 0) > 0
 	if flare then return "white" end
 
-	local type = getenv("IIDXDifficultyType"..pname(pn)) or 0
-	if type == 0 then return "red" elseif type == 1 then return "59" elseif type <= 3 then return "79" elseif type == 4 then return "red" elseif type == 5 then return "gold" end
+	local type = getenv("IIDXDifficultyGauge"..pname(pn)) or 0
+	local class = getenv("IIDXDifficultyClass"..pname(pn)) or 0
+	if type == 0 then return "red" elseif type == 1 then return "59" elseif type <= 3 then return "79" elseif type == 4 or class == 1 then return "red" elseif type == 5 or class == 2 then return "gold" end
 end
 
 function songfail(bVertex)

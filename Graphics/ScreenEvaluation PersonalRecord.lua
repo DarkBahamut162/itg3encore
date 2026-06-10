@@ -4,8 +4,8 @@ local record = STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetPerson
 local category = isDouble() and StepsTypeDouble()[GetUserPrefN("StylePosition")] or StepsTypeSingle()[GetUserPrefN("StylePosition")]
 
 local passed = false
-if isEtterna("0.71") then passed = not STATSMAN:GetCurStageStats():Failed() else passed = STATSMAN:GetCurStageStats():OnePassed() end
 if getenv("EvalCombo"..pname(player)) then
+	if isEtterna("0.71") then passed = not STATSMAN:GetCurStageStats():Failed() else passed = STATSMAN:GetCurStageStats():OnePassed() end
 	if isEtterna("0.55") then
 		local score = SCOREMAN:GetMostRecentScore()
 		local origTable = getScoresByKey(player)
@@ -34,16 +34,10 @@ if getenv("EvalCombo"..pname(player)) then
 	end
 
 	if song and steps and passed and PROFILEMAN:IsPersistentProfile(player) then
-		local ProfileSlot = {
-			[PLAYER_1] = "ProfileSlot_Player1",
-			[PLAYER_2] = "ProfileSlot_Player2",
-			["Machine"] = "ProfileSlot_Machine",
-		}
-
-		local songDir = song:GetSongDir()
+		local songDir = GAMESTATE:IsCourseMode() and song:GetCourseDir() or song:GetSongDir()
 		local arr = split("/",songDir)
 		local difficulty = ToEnumShortString(steps:GetDifficulty())
-		local identifier = steps:GetHash()
+		local identifier = steps.GetHash and steps:GetHash() or 0
 		if identifier == 0 then identifier = steps:GetMeter() end
 		songDir = arr[4].."/"..difficulty.."/"..identifier
 
@@ -71,14 +65,6 @@ if getenv("EvalCombo"..pname(player)) then
 				FAplusSave(player)
 			end
 		end
-
-		local IIDXDifficultyType = getenv("IIDXDifficultyType"..pname(player)) or 0
-		if IIDXDifficultyType > 0 then
-			if tonumber(IIDXClear[player][category][arr[3]] and IIDXClear[player][category][arr[3]][songDir] or 0) < IIDXDifficultyType then
-				IIDXClear[player][category][arr[3]][songDir] = IIDXDifficultyType
-				IIDXClearSave(player)
-			end
-		end
 	end
 end
 
@@ -89,7 +75,7 @@ return Def.ActorFrame{
 	Def.BitmapText {
 		File = "_v 26px bold white",
 		Text="New Personal Record!",
-		InitCommand=function(self) self:zoomx(0.6):zoomy(0.5):shadowlength(2*WideScreenDiff()):cropright(1):visible(hasPersonalRecord) end,
+		InitCommand=function(self) self:zoomx(0.6):zoomy(0.5):shadowlength(2*WideScreenDiff()):cropright(1):visible(hasPersonalRecord and passed) end,
 		OnCommand=function(self) self:sleep(3):linear(0.3):cropright(0):diffuseshift():effectcolor1(color("#00C0FF")) end
 	}
 }

@@ -138,11 +138,39 @@ local lifeAdd = {
 		["TapNoteScore_W5"] = -0.14,
 		["TapNoteScore_Miss"] = -0.18,
 		["HoldNoteScore_LetGo"] = -0.18
+	},{
+		["Begin"] = 1,
+		["HoldNoteScore_Held"] = 0.0016,
+		["TapNoteScore_W0"] = 0.0016,
+		["TapNoteScore_W1"] = 0.0016,
+		["TapNoteScore_W2"] = 0.0016,
+		["TapNoteScore_W3"] = 0.0004,
+		["TapNoteScore_W4"] = -0.015,
+		["TapNoteScore_W5"] = -0.020,
+		["TapNoteScore_Miss"] = -0.025,
+		["HoldNoteScore_LetGo"] = -0.025
+	},{
+		["Begin"] = 1,
+		["HoldNoteScore_Held"] = 0.0016,
+		["TapNoteScore_W0"] = 0.0016,
+		["TapNoteScore_W1"] = 0.0016,
+		["TapNoteScore_W2"] = 0.0016,
+		["TapNoteScore_W3"] = 0.0004,
+		["TapNoteScore_W4"] = -0.03,
+		["TapNoteScore_W5"] = -0.04,
+		["TapNoteScore_Miss"] = -0.05,
+		["HoldNoteScore_LetGo"] = -0.05
 	}
 }
 
 local PercentageCheck = PercentageCheck(player)
-local level = getenv("IIDXDifficultyType"..pname(player)) or 0
+local level = 0
+if GAMESTATE:IsCourseMode() then
+	level = getenv("IIDXDifficultyClass"..pname(player))
+	if level > 0 then level = level + 5 end
+else
+	level = getenv("IIDXDifficultyGauge"..pname(player))
+end
 
 return Def.ActorFrame{
 	Def.Sprite{
@@ -173,6 +201,7 @@ return Def.ActorFrame{
 					if glifemeter < 100 then screen:GetLifeMeter(player):ChangeLives(1) end
 				elseif param.HoldNoteScore == "HoldNoteScore_LetGo" then
 					screen:GetLifeMeter(player):ChangeLives(-1)
+					local multi = ((level == 4 or level == 6) and life <= 0.3) and 0.5 or 1
 					if PercentageCheck then life = life + lifeAdd[level]["HoldNoteScore_LetGo"] end
 				end
 				if PercentageCheck then pn:SetLife(life) end
@@ -186,7 +215,7 @@ return Def.ActorFrame{
 		if tns == "TapNoteScore_None" or tns == "" then return end
 		if PercentageCheck then
 			local add = lifeAdd[level][tns] or 0
-			if level == 4 and life <= 0.3 then add = add*0.6 end
+			if (level == 4 or level == 6) and life <= 0.3 and add < 0 then add = add*0.5 end
 			life = math.min(1,life+add)
 			pn:SetLife(life)
 		end

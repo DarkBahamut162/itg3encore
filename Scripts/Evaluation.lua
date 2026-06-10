@@ -310,8 +310,8 @@ function PacemakerLoad(player)
 		local category = isDouble() and StepsTypeDouble()[GetUserPrefN("StylePosition")] or StepsTypeSingle()[GetUserPrefN("StylePosition")]
 		local path = dir.."Pacemaker/"..category..".ini"
 
-		if not PaceMaker[player] then PaceMaker[player] = {} end
-		if not PaceMaker[player][category] then PaceMaker[player][category] = {} end
+		PaceMaker[player] = {}
+		PaceMaker[player][category] = {}
 		if FILEMAN:DoesFileExist(path) then
 			local PM = IniFile.ReadFile(path)
 			local isOld = false
@@ -363,8 +363,8 @@ function WIFE3Load(player)
 	local category = isDouble() and StepsTypeDouble()[GetUserPrefN("StylePosition")] or StepsTypeSingle()[GetUserPrefN("StylePosition")]
 	local path = dir.."/WIFE3/"..category..".ini"
 
-	if not WIFE3[player] then WIFE3[player] = {} end
-	if not WIFE3[player][category] then WIFE3[player][category] = {} end
+	WIFE3[player] = {}
+	WIFE3[player][category] = {}
 	if FILEMAN:DoesFileExist(path) then
 		WIFE3[player][category] = IniFile.ReadFile(path)
 	end
@@ -391,8 +391,8 @@ function FAplusLoad(player)
 	local category = isDouble() and StepsTypeDouble()[GetUserPrefN("StylePosition")] or StepsTypeSingle()[GetUserPrefN("StylePosition")]
 	local path = dir.."/FAplus/"..category..".ini"
 
-	if not FAplus[player] then FAplus[player] = {} end
-	if not FAplus[player][category] then FAplus[player][category] = {} end
+	FAplus[player] = {}
+	FAplus[player][category] = {}
 	if FILEMAN:DoesFileExist(path) then
 		FAplus[player][category] = IniFile.ReadFile(path)
 	end
@@ -419,8 +419,8 @@ function IIDXClearLoad(player)
 	local category = isDouble() and StepsTypeDouble()[GetUserPrefN("StylePosition")] or StepsTypeSingle()[GetUserPrefN("StylePosition")]
 	local path = dir.."/IIDXClear/"..category..".ini"
 
-	if not IIDXClear[player] then IIDXClear[player] = {} end
-	if not IIDXClear[player][category] then IIDXClear[player][category] = {} end
+	IIDXClear[player] = {}
+	IIDXClear[player][category] = {}
 	if FILEMAN:DoesFileExist(path) then
 		IIDXClear[player][category] = IniFile.ReadFile(path)
 	end
