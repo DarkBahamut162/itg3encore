@@ -824,19 +824,24 @@ return Def.ActorFrame{
 		File="_v 26px bold shadow",
 		InitCommand=function(self)
 			local fail = STATSMAN:GetCurStageStats(PLAYER_2):GetPlayerStageStats(PLAYER_2):GetFailed()
-			local alive = STATSMAN:GetCurStageStats(PLAYER_2):GetPlayerStageStats(PLAYER_2):GetAliveSeconds()local first = 0
+			local alive = STATSMAN:GetCurStageStats(PLAYER_2):GetPlayerStageStats(PLAYER_2):GetAliveSeconds()
+			local total = GAMESTATE:IsCourseMode() and TrailUtil.GetTotalSeconds(GAMESTATE:GetCurrentTrail(PLAYER_2)) or 0
 			local first = 0
 			local last = 0
-
-			if ThemePrefs.Get("UseStepCache") then
-				first = LoadFromCache(GAMESTATE:GetCurrentSong(),GAMESTATE:GetCurrentSteps(PLAYER_2),"TrueFirstSecond")
-				last = LoadFromCache(GAMESTATE:GetCurrentSong(),GAMESTATE:GetCurrentSteps(PLAYER_2),"TrueLastSecond")
+			if GAMESTATE:IsCourseMode() then
+				self:settext(fail and Time(math.min(alive,total),true).." - "..Time(total,true) or Time(total,true))
 			else
-				first = GAMESTATE:GetCurrentSong():GetFirstSecond()
-				last = GAMESTATE:GetCurrentSong():GetLastSecond()
+				if ThemePrefs.Get("UseStepCache") then
+					first = LoadFromCache(GAMESTATE:GetCurrentSong(),GAMESTATE:GetCurrentSteps(PLAYER_2),"TrueFirstSecond")
+					last = LoadFromCache(GAMESTATE:GetCurrentSong(),GAMESTATE:GetCurrentSteps(PLAYER_2),"TrueLastSecond")
+				else
+					first = GAMESTATE:GetCurrentSong():GetFirstSecond()
+					last = GAMESTATE:GetCurrentSong():GetLastSecond()
+				end
+				self:settext(fail and Time(math.min(alive-first,last-first),true).." - "..Time(last-first,true) or Time(last-first,true))
 			end
 
-			self:x(52*WideScreenDiff()):y(118*WideScreenDiff()):settext(fail and Time(math.min(alive-first,last-first),true).." - "..Time(last-first,true) or Time(last-first,true)):zoomx(0.5*WideScreenDiff()):zoomy(0.4*WideScreenDiff()):addx(EvalTweenDistance())
+			self:x(52*WideScreenDiff()):y(118*WideScreenDiff()):zoomx(0.5*WideScreenDiff()):zoomy(0.4*WideScreenDiff()):addx(EvalTweenDistance())
 			if fail then self:diffuseshift():effectcolor1(color("#FFFFFF")):effectcolor2(color("#FF0000")):effectclock("timerglobal") end
 		end,
 		OnCommand=function(self) self:sleep(3):decelerate(0.3):addx(-EvalTweenDistance()) end,
