@@ -1,5 +1,5 @@
 return Def.ActorFrame{
-	LoadFallbackB(),
+	loadfile(THEME:GetPathB("ScreenEvaluationNormal","decorations"))(),
 	Def.ActorFrame{
 		Condition=GAMESTATE:IsHumanPlayer(PLAYER_1) and GAMESTATE:GetCurrentCourse(PLAYER_1):GetCourseEntry(0):GetGainSeconds() > 0,
 		InitCommand=function(self) self:x(SCREEN_CENTER_X-156*WideScreenDiff()):y(SCREEN_CENTER_Y-60*WideScreenDiff()):draworder(101):zoom(2.5*WideScreenDiff()) end,
