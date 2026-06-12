@@ -1330,8 +1330,8 @@ function OptionIIDXJudgment()
 		SelectType = "SelectOne",
 		OneChoiceForAllPlayers = false,
 		ExportOnChange = false,
-		Values = { "default", "digital", "smart", "metallicblue", "techno", "wire", "abyss", "spada", "ancient", "onlyonejudge", "dotmatrix", "sinobuz", "segment", "rootage", "heroicverse", "bistrover", "casthour", "resident", "epolis", "pinkycrush", "random" },
-		Choices = { "Default", "Digital", "Smart", "Metallic Blue", "Techno", "Wire", "Abyss", "Spada", "Ancient", "Only One Judge", "Dot Matrix", "Sinobuz", "Segment", "Rootage", "Heroic Verse", "Bistrover", "CastHour", "Resident", "Epolis", "Pinky Crush", "Random" },
+		Values = { "default", "digital", "smart", "metallicblue", "techno", "wire", "abyss", "spada", "ancient", "onlyonejudge", "dotmatrix", "sinobuz", "segment", "rootage", "heroicverse", "bistrover", "casthour", "resident", "epolis", "pinkycrush", "sparkleshower", "random" },
+		Choices = { "Default", "Digital", "Smart", "Metallic Blue", "Techno", "Wire", "Abyss", "Spada", "Ancient", "Only One Judge", "Dot Matrix", "Sinobuz", "Segment", "Rootage", "Heroic Verse", "Bistrover", "CastHour", "Resident", "Epolis", "Pinky Crush", "Sparkle Shower", "Random" },
 		LoadSelections = function(self, list, pn)
 			for i=1,#list do
 				list[i] = getenv("IIDXJudgment"..pname(pn)) == self.Values[i]
@@ -1387,8 +1387,8 @@ function OptionIIDXBeam()
 		SelectType = "SelectOne",
 		OneChoiceForAllPlayers = false,
 		ExportOnChange = false,
-		Values = { "none", "default", "orange", "pink", "monochrome", "onlyonebeam", "copula", "cannonballers", "heroicverse", "bistrover", "fresnelbeam", "resident", "epolis", "pinkycrush", "random" },
-		Choices = { "None", "Default", "Orange", "Pink", "Monochrome", "Only One Beam", "Copula", "Cannon Ballers", "Heroic Verse", "Bistrover", "Fresnel Beam", "Resident", "Epolis", "Pinky Crush", "Random" },
+		Values = { "none", "default", "orange", "pink", "monochrome", "onlyonebeam", "copula", "cannonballers", "heroicverse", "bistrover", "fresnelbeam", "resident", "epolis", "pinkycrush", "sparkleshower", "random" },
+		Choices = { "None", "Default", "Orange", "Pink", "Monochrome", "Only One Beam", "Copula", "Cannon Ballers", "Heroic Verse", "Bistrover", "Fresnel Beam", "Resident", "Epolis", "Pinky Crush", "Sparkle Shower", "Random" },
 		LoadSelections = function(self, list, pn)
 			for i=1,#list do
 				list[i] = getenv("IIDXBeam"..pname(pn)) == self.Values[i]
@@ -1465,8 +1465,8 @@ function OptionIIDXNote()
 		SelectType = "SelectOne",
 		OneChoiceForAllPlayers = false,
 		ExportOnChange = false,
-		Values = { "default", "gorgeous", "aqua", "gyaru", "photon", "pastel", "simplecolor", "light", "tricoro", "bubble", "random" },
-		Choices = { "Default", "Gorgeous", "Aqua", "Gyaru", "Photon", "Pastel", "Simple Color", "Light", "Tricoro", "Bubble", "Random" },
+		Values = { "default", "gorgeous", "aqua", "gyaru", "photon", "pastel", "simplecolor", "light", "tricoro", "bubble", "fruity", "random" },
+		Choices = { "Default", "Gorgeous", "Aqua", "Gyaru", "Photon", "Pastel", "Simple Color", "Light", "Tricoro", "Bubble", "Fruity", "Random" },
 		LoadSelections = function(self, list, pn)
 			for i=1,#list do
 				list[i] = getenv("IIDXNote"..pname(pn)) == self.Values[i]
@@ -1621,8 +1621,8 @@ function OptionIIDXTurntable()
 		SelectType = "SelectOne",
 		OneChoiceForAllPlayers = false,
 		ExportOnChange = false,
-		Values = { "_default", "_tran", "_jojo", "_delta", "_orangedisc", "_distorted", "_gold", "_troopers", "_empress", "_sirius", "_resortanthem", "_lincle", "_tricoro", "_spada", "_shakunetsu", "_onlyonerecord", "_pendual", "_copula", "_sinobuz", "_cannonballers", "_rootage", "_heroicverse", "_casthour", "_resident", "_strawberry", "_epolis", "_pinkycrush", "random" },
-		Choices = { "Default", "Tran", "Jojo", "Delta", "Orange Disc", "Distorted", "Gold", "Dj Troopers", "Empress", "Sirius", "Resort Anthem", "Lincle", "Tricoro", "Spada", "Shakunetsu", "Only One Record", "Pendual", "Copula", "Sinobuz", "Cannon Ballers", "Rootage", "Heroic Verse", "CastHour", "Resident", "Strawberry", "Epolis", "Pinky Crush", "Random" },
+		Values = { "_default", "_tran", "_jojo", "_delta", "_orangedisc", "_distorted", "_gold", "_troopers", "_empress", "_sirius", "_resortanthem", "_lincle", "_tricoro", "_spada", "_shakunetsu", "_onlyonerecord", "_pendual", "_copula", "_sinobuz", "_cannonballers", "_rootage", "_heroicverse", "_casthour", "_resident", "_strawberry", "_epolis", "_pinkycrush", "sparkleshower", "random" },
+		Choices = { "Default", "Tran", "Jojo", "Delta", "Orange Disc", "Distorted", "Gold", "Dj Troopers", "Empress", "Sirius", "Resort Anthem", "Lincle", "Tricoro", "Spada", "Shakunetsu", "Only One Record", "Pendual", "Copula", "Sinobuz", "Cannon Ballers", "Rootage", "Heroic Verse", "CastHour", "Resident", "Strawberry", "Epolis", "Pinky Crush", "Sparkle Shower", "Random" },
 		LoadSelections = function(self, list, pn)
 			for i=1,#list do
 				list[i] = getenv("IIDXTurntable"..pname(pn)) == self.Values[i]
@@ -1751,7 +1751,7 @@ function ScreenAfterPlayerOptions(part)
 		["Options1"] = "GameOptions" ,
 		["Options2"] = engine.."Options",
 		["Options3"] = "LuaOptions",
-		["Options4"] = "DanceStageOptions"
+		["Options4"] = "DSOptions"
 	}
 	for i=1,#choices do
 		if choices[i] then
