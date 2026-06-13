@@ -78,14 +78,8 @@ local jugdE = {
 
 local function DisplayTick(self,params)
     if params.TapNoteOffset then
-		--if math.abs(params.TapNoteOffset) > Wmax then return end
-        local tick = self:GetChild("Tick"..currentTick)
-        currentTick = currentTick % 15 + 1
-
-        tick:finishtweening()
-
 		local WX = params.TapNoteScore
-		local posX = -params.TapNoteOffset/Wmax
+		local posX = params.TapNoteOffset/Wmax
 		local zoomX = isFinal() and 2 or 1
 		local length = 0.75
 
@@ -96,9 +90,16 @@ local function DisplayTick(self,params)
 			zoomX = width * (isFinal() and 2 or 1)
 			length = 0.25
 		end
-        local color = TapNoteScoreToColor(WX)
 
-        tick:zoomx(zoomX):diffusealpha(1):diffuse(color):x(base*posX):sleep(0.03):linear(length - 0.03):diffusealpha(0)
+        local color = TapNoteScoreToColor(WX)
+        local tick = self:GetChild("Tick"..currentTick)
+        currentTick = currentTick % 15 + 1
+        tick:finishtweening():zoomx(zoomX):diffusealpha(1):diffuse(color):x(base*posX):sleep(0.03):linear(length):diffusealpha(0)
+		local showMS = getenv("ErrorBarMS"..pname(player)) or false
+		if showMS then
+			local ms = self:GetParent():GetChild("ms")
+			ms:stoptweening():settext(string.format("%2.0f",params.TapNoteOffset*1000).." ms"):diffuse(color):sleep(0.03):linear(length):diffusealpha(0)
+		end
     end
 end
 
@@ -141,6 +142,11 @@ t[#t+1] = Def.ActorFrame{
 		local move = (IsGame("beat") or IsGame("be-mu")) and 96 or 64
 		self:addy(reverse and -NoteFieldMiddle or NoteFieldMiddle*3):addy(reverse and move or -move):zoomy(0.5)
 	end,
+	Def.BitmapText {
+		Name="ms",
+		File = "_z bold gray",
+		InitCommand=function(self) self:y(-18):valign(1):shadowlength(0):zoomx(1/3):zoomy(2/3) end
+	},
 	Def.Sprite {
 		Texture = "bar "..(isFinal() and "final" or "normal"),
 		InitCommand=function(self) self:zoomtowidth(filterWidth+14) end

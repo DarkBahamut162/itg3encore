@@ -439,6 +439,7 @@ function InitPlayerOptions()
 		setenv("ShowMovePlayerfieldStats"..pname(pn),LoadUserPrefN(pn, "ShowMovePlayerfieldStats", tonumber(DefaultLuaModifiers["ShowMovePlayerfieldStats"])) or 3)
 		setenv("SetScoreType"..pname(pn),LoadUserPrefN(pn, "SetScoreType", tonumber(DefaultLuaModifiers["SetScoreType"])) or 2)
 		setenv("ErrorBar"..pname(pn),LoadUserPrefN(pn, "ErrorBar", tonumber(DefaultLuaModifiers["ErrorBar"])) or 0)
+		setenv("ErrorBarMS"..pname(pn),LoadUserPrefB(pn, "ErrorBarMS", tobool(DefaultLuaModifiers["ErrorBarMS"])) or false)
 		setenv("ShowColumnCues"..pname(pn),LoadUserPrefN(pn, "ShowColumnCues", tonumber(DefaultLuaModifiers["ShowColumnCues"])) or 0)
 		setenv("ShowColumnFlashes"..pname(pn),LoadUserPrefN(pn, "ShowColumnFlashes", tonumber(DefaultLuaModifiers["ShowColumnFlashes"])) or 0)
 		if isITGmania(20240307) then setenv("BeatBars"..pname(pn),LoadUserPrefN(pn, "BeatBars", tonumber(DefaultLuaModifiers["BeatBars"])) or 0) end
@@ -777,33 +778,39 @@ end
 function OptionErrorBar()
 	function Range()
 		if isOpenDDR() then
-			return { "Off","Fantastic","Excellent","Great","Decent","Miss" }
+			return { "Off","Fantastic","Excellent","Great","Decent","Miss","Show ms" }
 		else
-			return { "Off","Fantastic","Excellent","Great","Decent","Way Off","Miss" }
+			return { "Off","Fantastic","Excellent","Great","Decent","Way Off","Miss","Show ms" }
 		end
 	end
 	local t = {
 		Name="ErrorBar",
 		LayoutType = "ShowAllInRow",
-		SelectType = "SelectOne",
+		SelectType = "SelectMultiple",
 		OneChoiceForAllPlayers = false,
 		ExportOnChange = false,
 		Choices = Range(),
 		LoadSelections = function(self, list, pn)
 			local selected = (getenv("ErrorBar"..pname(pn)) or 0) + 1
+			local ms = getenv("ErrorBarMS"..pname(pn)) or false
 			if selected and selected ~= 0 then
 				list[selected] = true
 			else
 				list[1] = true
 			end
-		end,
-		SaveSelections = function(self, list, pn)
-			for i=1,#list do
-				if list[i] then
-					setenv("ErrorBar"..pname(pn),SaveUserPref(pn, "ErrorBar", i-1))
-					break
-				end
+			if ms then
+				list[#list] = true
 			end
+		end,
+		SaveSelections = function() end,
+		NotifyOfSelection= function(self, pn, choice)
+			if choice <= #self.Choices-1 then
+				setenv("ErrorBar"..pname(pn),SaveUserPref(pn, "ErrorBar", choice-1))
+			else
+				local ms = getenv("ErrorBarMS"..pname(pn))
+				setenv("ErrorBarMS"..pname(pn),SaveUserPref(pn, "ErrorBarMS", not ms))
+			end
+			return true
 		end
 	}
 	setmetatable(t, t)

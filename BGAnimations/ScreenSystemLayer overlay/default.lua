@@ -24,6 +24,7 @@ local file = {
 		ShowMovePlayerfieldStats = 3,
 		SetScoreType = 2,
 		ErrorBar = 0,
+		ErrorBarMS = false,
 		ShowColumnCues = 0,
 		ShowColumnFlashes = 0,
 		BeatBars = 0,
