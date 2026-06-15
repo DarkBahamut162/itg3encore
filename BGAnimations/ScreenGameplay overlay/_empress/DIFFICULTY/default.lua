@@ -7,38 +7,39 @@ local DifficultyToFrame = {
 	Difficulty_Challenge = 4,
 	Difficulty_Edit		 = 5,
 }
+if GAMESTATE:GetNumPlayersEnabled() == 2 then pn = PLAYER_2 end
 
 local song = GAMESTATE:GetCurrentSong()
 local steps = GAMESTATE:GetCurrentSteps(pn)
 local diff = steps:GetDifficulty()
 local og = getCalculatedDifficulty(steps)
 if not string.find(og,"OG") then og = "LEVEL "..og end
-local add = getenv("IIDXDouble"..pname(PLAYER_1)) and 5 or 0
+local add = getenv("IIDXDouble"..pname(pn)) and 5 or 0
 
 return Def.ActorFrame{
 	Def.Sprite {
 		Texture = "_diff",
-		InitCommand=function(self) self:x((453-add)*WideScreenDiff()):y(472+add):zoom(WideScreenDiff()):animate(false):setstate(DifficultyToFrame[diff] or 5):addy(WideScreenDiff()*-14):croptop(1):sleep(2.45):linear(0.35):addy(WideScreenDiff()*14):croptop(0):playcommand("Animate") end,
-		AnimateCommand=function(self) self:x((453-add)*WideScreenDiff()):y(472+add):sleep(2):linear(0.35):addy(WideScreenDiff()*14):cropbottom(1):sleep(0):sleep(2.8):croptop(1):cropbottom(0):sleep(0.1):addy(WideScreenDiff()*-28):linear(0.35):addy(WideScreenDiff()*14):croptop(0):queuecommand("Animate") end
+		InitCommand=function(self) self:x((437-add)*WideScreenDiff()):y(472+add):zoom(WideScreenDiff()):animate(false):setstate(DifficultyToFrame[diff] or 5):addy(WideScreenDiff()*-14):croptop(1):sleep(2.45):linear(0.35):addy(WideScreenDiff()*14):croptop(0):playcommand("Animate") end,
+		AnimateCommand=function(self) self:x((437-add)*WideScreenDiff()):y(472+add):sleep(2):linear(0.35):addy(WideScreenDiff()*14):cropbottom(1):sleep(0):sleep(2.8):croptop(1):cropbottom(0):sleep(0.1):addy(WideScreenDiff()*-28):linear(0.35):addy(WideScreenDiff()*14):croptop(0):queuecommand("Animate") end
 	},
 	Def.ActorFrame{
 		Def.BitmapText {
 			File=THEME:GetPathF("_iidx/Difficulty", "Normal"),
 			Text=string.gsub(og,"\n"," | "),
 			InitCommand=function(self) if DifficultyToFrame[diff] ~= 4 then self:diffusetopedge(color("#FFFFFF")) end self:maxwidth(90):diffuse(CustomIIDXDifficultyToColor(ToEnumShortString(diff))):zoom(0.9*WideScreenDiff()):queuecommand("Animate") end,
-			AnimateCommand=function(self) self:x((453-add)*WideScreenDiff()):y(472+add):sleep(2):linear(0.35):cropleft(1):sleep(0):sleep(2.8):cropright(1):cropleft(0):sleep(0.1):linear(0.35):cropright(0):queuecommand("Animate") end
+			AnimateCommand=function(self) self:x((437-add)*WideScreenDiff()):y(472+add):sleep(2):linear(0.35):cropleft(1):sleep(0):sleep(2.8):cropright(1):cropleft(0):sleep(0.1):linear(0.35):cropright(0):queuecommand("Animate") end
 		},
 		Def.BitmapText {
 			Condition=DifficultyToFrame[diff] == 4,
 			File=THEME:GetPathF("_iidx/Difficulty", "Stroke"),
 			Text=string.gsub(og,"\n"," | "),
 			InitCommand=function(self) self:maxwidth(90):diffuse(Color("Red")):zoom(0.9*WideScreenDiff()):queuecommand("Animate") end,
-			AnimateCommand=function(self) self:x((453-add)*WideScreenDiff()):y(472+add):sleep(2):linear(0.35):cropleft(1):sleep(0):sleep(2.8):cropright(1):cropleft(0):sleep(0.1):linear(0.35):cropright(0):queuecommand("Animate") end
+			AnimateCommand=function(self) self:x((437-add)*WideScreenDiff()):y(472+add):sleep(2):linear(0.35):cropleft(1):sleep(0):sleep(2.8):cropright(1):cropleft(0):sleep(0.1):linear(0.35):cropright(0):queuecommand("Animate") end
 		}
 	},
 	Def.BitmapText {
 		File=THEME:GetPathF("_iidx/Speed", "White"),
-		InitCommand=function(self) self:x(450*WideScreenDiff()):y(440+add):maxwidth(85):zoom(0.9*WideScreenDiff()) end,
-		SpeedMessageCommand=function(self,param) if param.PLAYER == PLAYER_2 then self:settext("SPEED: "..param.SPEED..string.upper(param.MOD)) end end
+		InitCommand=function(self) self:x(434*WideScreenDiff()):y(440+add):maxwidth(85):zoom(0.9*WideScreenDiff()) end,
+		SpeedMessageCommand=function(self,param) if param.PLAYER == pn then self:settext("SPEED: "..param.SPEED..string.upper(param.MOD)) end end
 	}
 }

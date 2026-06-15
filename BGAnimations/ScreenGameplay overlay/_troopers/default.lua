@@ -45,10 +45,10 @@ return Def.ActorFrame{
 		InitCommand=function(self) self:x(SCREEN_CENTER_X+2*WideScreenDiff()):y(101*WideScreenDiff()):diffusealpha(1):maxwidth(15*3):zoom(WideScreenDiff()) end
 	},
 	loadfile(THEME:GetPathB("ScreenGameplay","overlay/_troopers/DIFFICULTY"))(GAMESTATE:GetMasterPlayerNumber())..{
-		InitCommand=function(self) self:x(SCREEN_CENTER_X-323*WideScreenDiff()):y(-12) end
+		InitCommand=function(self) self:x(SCREEN_CENTER_X-320*WideScreenDiff()):y(-12) end
 	},
 	loadfile(THEME:GetPathB("ScreenGameplay","overlay/_troopers/STAGE"))()..{
-		InitCommand=function(self) self:x(SCREEN_CENTER_X-317*WideScreenDiff()):y(-12) end
+		InitCommand=function(self) self:x(SCREEN_CENTER_X-320*WideScreenDiff()):y(-12) end
 	},
 	loadfile(THEME:GetPathB("ScreenGameplay","overlay/_troopers/TIME_DISPLAY"))()..{
 		InitCommand=function(self) self:CenterX():y(23):zoomx(WideScreenDiff()):zoomy(0.8*WideScreenDiff()) end
