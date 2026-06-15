@@ -28,19 +28,15 @@ for i=1, 7 do
     barWidth[i] = barWidth[i] * 0.5
     barSpace[i] = barSpace[i] * 0.5
 end
-if players == 1 then
-	if size == 2 then
-		startX = THEME:GetMetric(Var "LoadingScreen","PlayerP2OnePlayerOneSideX") / 8
-		if pn == PLAYER_2 then startX = SCREEN_WIDTH - startX end
-	else
-		if pn == PLAYER_1 then
-			startX = THEME:GetMetric(Var "LoadingScreen","PlayerP2OnePlayerOneSideX")
-		else
-			startX = THEME:GetMetric(Var "LoadingScreen","PlayerP1OnePlayerOneSideX")
-		end
-	end
+if (players == 1 and size == 2) or players == 2 then
+	startX = THEME:GetMetric(Var "LoadingScreen","PlayerP2OnePlayerOneSideX") / 8
+	if pn == PLAYER_2 then startX = SCREEN_WIDTH - startX end
 else
-	startX = startX + (pn == PLAYER_1 and -45 or 45)
+	if pn == PLAYER_1 then
+		startX = THEME:GetMetric(Var "LoadingScreen","PlayerP2OnePlayerOneSideX")
+	else
+		startX = THEME:GetMetric(Var "LoadingScreen","PlayerP1OnePlayerOneSideX")
+	end
 end
 
 local barHeight,totalWidth,barCenter = 227,202,0
@@ -254,7 +250,7 @@ return Def.ActorFrame{
 			local move = SCREEN_WIDTH/2
             self:x(startX):y(-16):zoom(solo and 0.75 or 0.9)
 			if players == 2 or size == 2 then self:zoomx(0.65*WideScreenDiff_(16/9)*WideScreenDiff_(16/10)) end
-			if players == 1 and size == 2 then self:addx(graph and (pn == PLAYER_1 and -32 or 32) or 0) end
+			if (players == 1 and size == 2) or players == 2 then self:addx(graph and (pn == PLAYER_1 and -32 or 32) or 0) end
 			if players == 2 or size == 2 then move = move * -1 end
 			self:addx(pn == PLAYER_1 and move or -move):decelerate(1):addx(pn == PLAYER_1 and -move-beginner or move+beginner)
 		end,
