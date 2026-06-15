@@ -81,12 +81,19 @@ local t = Def.ActorFrame{
 		SCREENMAN:GetTopScreen():AddInputCallback(InputHandler)
 		for pn in ivalues(GAMESTATE:GetEnabledPlayers()) do
 			local playeroptions = GAMESTATE:GetPlayerState(pn):GetPlayerOptions("ModsLevel_Song")
-			if playeroptions:MMod() then MOD[pn] = "m" CURRENT[pn] = playeroptions:MMod() break end
-			if isOutFox(20210200) then if playeroptions:AMod() then MOD[pn] = "a" CURRENT[pn] = playeroptions:AMod() break end end
-			if isOutFox(20220300) then if playeroptions:CAMod() then MOD[pn] = "ca" CURRENT[pn] = playeroptions:CAMod() break end end
-			if isOutFox(20220900) then if playeroptions:AVMod() then MOD[pn] = "av" CURRENT[pn] = playeroptions:AVMod() break end end
-			if playeroptions:XMod() then MOD[pn] = "x" CURRENT[pn] = playeroptions:XMod()*100 end
-			if playeroptions:CMod() then MOD[pn] = "c" CURRENT[pn] = playeroptions:CMod() end
+			if playeroptions:MMod() then
+				MOD[pn] = "m" CURRENT[pn] = playeroptions:MMod()
+			elseif isOutFox(20210200) and playeroptions:AMod() then
+				MOD[pn] = "a" CURRENT[pn] = playeroptions:AMod()
+			elseif isOutFox(20220300) and playeroptions:CAMod() then
+				MOD[pn] = "ca" CURRENT[pn] = playeroptions:CAMod()
+			elseif isOutFox(20220900) and playeroptions:AVMod() then
+				MOD[pn] = "av" CURRENT[pn] = playeroptions:AVMod()
+			elseif playeroptions:XMod() then
+				MOD[pn] = "x" CURRENT[pn] = playeroptions:XMod()*100
+			elseif playeroptions:CMod() then
+				MOD[pn] = "c" CURRENT[pn] = playeroptions:CMod()
+			end
 		end
 	end,
 	CodeMessageCommand = function(self, params)
@@ -153,7 +160,6 @@ local t = Def.ActorFrame{
 			File = "_eurostile normal",
 			Condition=GAMESTATE:IsPlayerEnabled(PLAYER_2) and modify,
 			Name="MOD2",
-			Text=CURRENT[PLAYER_2] or "?",
 			InitCommand=function(self) if IsIIDXFrame(PLAYER_2) then self:visible(false) end self:shadowlength(1):zoom(0.4*WideScreenDiff()):x(THEME:GetMetric("ScreenGameplay","ScoreP2X")):y(THEME:GetMetric("ScreenGameplay","ScoreP2Y")-15*WideScreenDiff()) end,
 			BeginCommand=function(self) if not IsIIDXFrame(PLAYER_2) then self:addy(-100):sleep(0.5):decelerate(0.8):addy(100) end end,
 			OffCommand=function(self) if not IsGame("pump") then if AnyPlayerFullComboed() then self:sleep(1) end if not IsIIDXFrame(PLAYER_2) then self:accelerate(0.8):addy(-100) end end end,
