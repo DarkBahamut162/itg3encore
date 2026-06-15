@@ -7,10 +7,12 @@ local width = GetTrueWidth(GAMESTATE:GetMasterPlayerNumber())
 
 local function xS() return SCREEN_WIDTH*0.25+width/2*currentMini end
 local function zoomS() return (SCREEN_WIDTH-xS())/SCREEN_WIDTH end
+local function zoomC() return (SCREEN_WIDTH-xS()*2)/SCREEN_WIDTH end
 local function xM() return SCREEN_CENTER_X+width/2*currentMini end
 local function zoomM() return (SCREEN_WIDTH-xM())/SCREEN_WIDTH end
 local iidx = (IsGame("beat") or IsGame("be-mu")) and -15 or 0
 
+local single = GAMESTATE:GetNumPlayersEnabled() == 2 and not isDouble() and (IsGame("be-mu") or IsGame("beat") or IsGame("po-mu") or IsGame("popn"))
 local multi = GAMESTATE:GetNumPlayersEnabled() == 1 and not isDouble() and (IsGame("be-mu") or IsGame("beat") or IsGame("po-mu") or IsGame("popn"))
 
 local t = Def.ActorFrame {
@@ -79,6 +81,9 @@ local t = Def.ActorFrame {
 							end
 						end
 					end
+				elseif single then
+					SCREENMAN:GetTopScreen():GetChild("SongBackground"):GetChild(""):zoom(zoomC()):x(xS()):y(SCREEN_CENTER_Y+iidx):vertalign(top)
+					self:GetChild("PC0"):playcommand("MULTI")
 				end
 				if SCREENMAN:GetTopScreen():GetChild("Player"..pname(pn)) and SCREENMAN:GetTopScreen():GetChild("Player"..pname(pn)):GetChild("NoteField") then
 					if isITGmania(20240307) then
@@ -155,6 +160,10 @@ local t = Def.ActorFrame {
 		if isITGmaniaOnline() then MESSAGEMAN:Broadcast("UpdateMachineState") end
 		self:playcommand("On")
 	end,
+	Def.ActorProxy{
+		Name="PC0",
+		MULTICommand=function(self) self:SetTarget( SCREENMAN:GetTopScreen():GetChild("SongBackground"):GetChild("") ):y(-SCREEN_HEIGHT/3) end,
+	},
 	Def.ActorProxy{
 		Name="PC2",
 		MULTICommand=function(self) self:SetTarget( SCREENMAN:GetTopScreen():GetChild("SongBackground"):GetChild("") ):y(SCREEN_HEIGHT/3) end,
