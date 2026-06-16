@@ -8,7 +8,11 @@ local sleep = 0
 
 if IsGame("beat") or IsGame("be-mu") or IsGame("popn") or IsGame("po-mu") then
 	if HasKeysounds(StepsOrTrail) then
-		optionslist = optionslist..", Has Keysounds"
+		if not isOutFoxV043() and HasExtendedKeysounds(StepsOrTrail) then
+			optionslist = optionslist..", Has Extended Keysounds"
+		else
+			optionslist = optionslist..", Has Keysounds"
+		end
 	else
 		optionslist = optionslist..", No Keysounds"
 	end
