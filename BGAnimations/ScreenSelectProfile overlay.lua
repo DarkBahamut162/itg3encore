@@ -360,12 +360,12 @@ local InputHandler =function(event)
 					end
 				end
 				MESSAGEMAN:Broadcast("StartButton")
-				ready[event.PlayerNumber] = true
 				if AllPlayersReady() then
 					if not SCREENMAN:GetTopScreen():Finish() then
 						SCREENMAN:GetTopScreen():StartTransitioningScreen("SM_GoToNextScreen",0)
 					end
 				end
+				ready[event.PlayerNumber] = true
 			elseif event.GameButton == "Back" then
 				if playerReady and playerReady == event.PlayerNumber then
 					MESSAGEMAN:Broadcast("Unselected"..pname(event.PlayerNumber))
