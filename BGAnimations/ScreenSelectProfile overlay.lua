@@ -37,8 +37,22 @@ function LoadPlayerStuff(Player)
 			LoadCard(PlayerColor(Player)),
 			Def.BitmapText {
 				File = "_r bold shadow 30px",
-				Text="Press &START; to join",
-				InitCommand=function(self) self:maxwidth(200):shadowlength(1) end,
+				InitCommand=function(self) self:maxwidth(200):shadowlength(1):playcommand("Refresh") end,
+				RefreshCommand=function(self)
+					if GAMESTATE:GetCoinMode()=='CoinMode_Pay' then
+						local coins=GAMESTATE:GetCoins()
+						local coinsPerCredit=PREFSMAN:GetPreference('CoinsPerCredit')
+						if coins >= coinsPerCredit then
+							self:settext("Press &START; to Join")
+						else
+							self:settext("Insert Coin to Play")
+						end
+					else
+						self:settext("Press &START; to Join")
+					end
+				end,
+				CoinModeChangedMessageCommand=function(self) self:playcommand("Refresh") end,
+				CoinInsertedMessageCommand=function(self) self:playcommand("Refresh") end,
 				OnCommand=function(self) self:diffuseshift():effectcolor1(Color('White')):effectcolor2(color("0.5,0.5,0.5")) end
 			}
 		},
@@ -360,27 +374,45 @@ local InputHandler =function(event)
 					end
 				end
 				MESSAGEMAN:Broadcast("StartButton")
+				ready[event.PlayerNumber] = true
 				if AllPlayersReady() then
 					if not SCREENMAN:GetTopScreen():Finish() then
 						SCREENMAN:GetTopScreen():StartTransitioningScreen("SM_GoToNextScreen",0)
 					end
 				end
-				ready[event.PlayerNumber] = true
 			elseif event.GameButton == "Back" then
+				if GAMESTATE:GetCoinMode() == 'CoinMode_Pay' then
+					local coinsPerCredit=PREFSMAN:GetPreference('CoinsPerCredit')
+					GAMESTATE:InsertCredit(coinsPerCredit)
+				end
 				if playerReady and playerReady == event.PlayerNumber then
 					MESSAGEMAN:Broadcast("Unselected"..pname(event.PlayerNumber))
 					playerReady = nil
 					selected = nil
+					ready[event.PlayerNumber] = false
 				end
 				MESSAGEMAN:Broadcast("BackButton")
 				SCREENMAN:GetTopScreen():SetProfileIndex(event.PlayerNumber,-2)
 			end
 		else
 			if event.GameButton == "Start" or event.GameButton == "Center" then
-				MESSAGEMAN:Broadcast("StartButton")
-				MESSAGEMAN:Broadcast("Left"..pname(event.PlayerNumber))
-				MESSAGEMAN:Broadcast("Right"..pname(event.PlayerNumber))
-				SCREENMAN:GetTopScreen():SetProfileIndex(event.PlayerNumber,-1)
+				local locked = false
+				if GAMESTATE:GetCoinMode() == 'CoinMode_Pay' then
+					local coins=GAMESTATE:GetCoins()
+					local coinsPerCredit=PREFSMAN:GetPreference('CoinsPerCredit')
+					if coins >= coinsPerCredit then
+						GAMESTATE:InsertCoin(-coinsPerCredit)
+					else
+						if isStepMania(20160400) then SCREENMAN:PlayInvalidSound() else SOUND:PlayOnce(THEME:GetPathS('Common',"invalid")) end
+						locked = true
+					end
+				end
+				if not locked then
+					MESSAGEMAN:Broadcast("StartButton")
+					MESSAGEMAN:Broadcast("Left"..pname(event.PlayerNumber))
+					MESSAGEMAN:Broadcast("Right"..pname(event.PlayerNumber))
+					SCREENMAN:GetTopScreen():SetProfileIndex(event.PlayerNumber,-1)
+				end
 			elseif event.GameButton == "Back" then
 				if GAMESTATE:GetNumPlayersEnabled()==0 then
 					SCREENMAN:GetTopScreen():Cancel()
