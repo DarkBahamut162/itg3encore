@@ -119,7 +119,7 @@ function RequestResponseActor()
 			if self.request_handler then
 				self.request_handler:Cancel()
 				self.request_handler = nil
-				if self.tocache ~= {} then
+				if self.tocache and self.tocache ~= {} then
 					for cache in ivalues(self.tocache) do
 						GSCaching[cache] = false
 					end
