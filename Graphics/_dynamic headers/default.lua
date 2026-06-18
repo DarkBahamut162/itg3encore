@@ -13,6 +13,7 @@ local NameCase = setmetatable(
 			["ScreenPlayerOptions2"] = "ScreenPlayerOptions",
 			["ScreenPlayerOptions3"] = "ScreenPlayerOptions",
 			["ScreenPlayerOptions4"] = "ScreenPlayerOptions",
+			["ScreenPlayerOptions5"] = "ScreenPlayerOptions",
 			["ScreenPlayerOptionsRestricted"] = "ScreenPlayerOptions",
 			["ScreenSelectCourse"] = "ScreenSelectCourse",
 			["ScreenSelectMusic"] = GAMESTATE:IsCourseMode() and "ScreenSelectCourse" or "ScreenSelectMusic",

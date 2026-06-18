@@ -219,8 +219,10 @@ function SongMods(part)
 	if part == nil or part == 1 then
 		options = addToOutput(options,(isEtterna() and "Speed," or "1,") .."2,4,F,IDG,"..((isRegular() and VersionDateCheck(20160000)) and (isOpenDDR() and "0DDR" or "0,Flare") or "0")..",3",",")
 		if not (IsGame("pump") or GAMESTATE:IsCourseMode()) then options = addToOutput(options,(IsGame("beat") or IsGame("be-mu")) and "IIDXFrame,IIDXDouble,IIDXJudgment,IIDXJudgmentBrightness,IIDXVisibility" or "31",",") end
-		if IIDXcheck() then options = addToOutput(options,"IIDXNote,IIDXNoteBackgroundBrightness,IIDXNoteBrightness,IIDXNoteLength,IIDXBeam,IIDXBeamBrightness,IIDXBeamLength,IIDXExplosion,IIDXExplosionBrightness,IIDXTurntable",",") end
 		if not (IsGame("be-mu") or IsGame("beat") or IsGame("po-mu") or IsGame("popn")) then options = addToOutput(options,"32,32H",",") end
+	end
+	if part == nil or part == 5 then
+		if IIDXcheck() then options = addToOutput(options,"IIDXNote,IIDXNoteBackgroundBrightness,IIDXNoteBrightness,IIDXNoteLength,IIDXBeam,IIDXBeamBrightness,IIDXBeamLength,IIDXExplosion,IIDXExplosionBrightness,IIDXTurntable",",") end
 	end
 	if part == nil or part == 2 then
 		options = addToOutput(options,"5"..((isEtterna() or isOldStepMania()) and ",REE,AEE" or ",RE,RE2,AE,AE2,AE3")..(isOutFox() and ",AE4" or "")..",17,9",",")
@@ -271,6 +273,8 @@ function SongMods(part)
 	if part == 2 then options = addToOutput(options,"After2",",") end
 	if part == 3 then options = addToOutput(options,"After3",",") end
 	if part == 4 then options = addToOutput(options,"After4",",") end
+	if part == 5 then options = addToOutput(options,"After5",",") end
+
 	return options
 end
 
@@ -1742,6 +1746,7 @@ function ScreenAfterPlayerOptions(part)
 	if part ~= 3 then choices[#choices+1] = "Options3" end
 	local xms = IsGame("beat") or IsGame("be-mu") or IsGame("popn") or IsGame("po-mu")
 	if part ~= 4 and not xms and DoesDanceRepoExist() then choices[#choices+1] = "Options4" end
+	if part ~= 5 and IIDXcheck() then choices[#choices+1] = "Options5" end
 
 	local screens = {
 		["Gameplay"] = Branch.BeforeGameplay(),
@@ -1749,7 +1754,8 @@ function ScreenAfterPlayerOptions(part)
 		["Options1"] = "ScreenPlayerOptions",
 		["Options2"] = "ScreenPlayerOptions2",
 		["Options3"] = "ScreenPlayerOptions3",
-		["Options4"] = "ScreenPlayerOptions4"
+		["Options4"] = "ScreenPlayerOptions4",
+		["Options5"] = "ScreenPlayerOptions5"
 	}
 	local engine = isOutFox() and "OutFox" or isStepMania() and "StepMania" or isITGmania() and "ITGmania" or isEtterna() and "Etterna" or isOpenDDR() and "DDR" or "Engine"
 	local names = {
@@ -1758,7 +1764,8 @@ function ScreenAfterPlayerOptions(part)
 		["Options1"] = "GameOptions" ,
 		["Options2"] = engine.."Options",
 		["Options3"] = "LuaOptions",
-		["Options4"] = "DSOptions"
+		["Options4"] = "DSOptions",
+		["Options5"] = "IIDXACOptions"
 	}
 	for i=1,#choices do
 		if choices[i] then
