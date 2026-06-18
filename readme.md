@@ -34,7 +34,6 @@ The **Theme/Engine Version** can be displayed in the following colors:<br>
 ## ScreenDownload
 Another **ITGmania Only** Feature.<br>
 This needs **two prerequisites** to enable:
-  - **KeyboardEnabled** needs to be turned on.
   - "**,stepmaniaonline.net**" needs to be in **HttpAllowHosts** inside **Save/Preferences.ini**.<br>
 
 This screen can be accessed through **ScreenTitleMenu** as an additional option to select.<br>
