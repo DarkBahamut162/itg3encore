@@ -1239,7 +1239,7 @@ end
 
 function PercentageCheck(pn)
 	local ret = false
-	if (getenv("Flare"..pname(pn)) or 0) == 0 then
+	if not isTopScreen("ScreenDemonstration2") and (getenv("Flare"..pname(pn)) or 0) == 0 then
 		local drainType = GAMESTATE:GetPlayerState(pn):GetPlayerOptions('ModsLevel_Song'):DrainSetting()
 		if drainType == "DrainType_Normal" and not isMGD(pn) and not isSurvival(pn) then
 			local type = getenv("IIDXDifficultyGauge"..pname(pn)) or 0
