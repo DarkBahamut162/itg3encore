@@ -276,7 +276,7 @@ local InputHandler = function(event)
 					prompt.Value:stoptweening():linear(0.125):diffusealpha(0)
 					for update in ivalues(ToUpdate) do weight[update]:playcommand("Update") end
 					if totalWeights>6 then
-						for update in ivalues(ToUpdatePro) do weight.update:playcommand("Update") end
+						for update in ivalues(ToUpdatePro) do weight[update]:playcommand("Update") end
 					end
 				end
 				if isStepMania(20160400) then SCREENMAN:PlayStartSound() else SOUND:PlayOnce(THEME:GetPathS('Common',"start")) end
@@ -335,11 +335,11 @@ local InputHandler = function(event)
 				if selectHeld and not editing then -- changing skills
 					if currentSkill - 1 < 1 then currentSkill = totalSkills else currentSkill = currentSkill - 1 end
 					weight.Percent:playcommand("Update")
-					for update in ivalues(ToUpdate) do weight.update:playcommand("Update") end
-					for update in ivalues(ToUpdate) do default.update:playcommand("Update") end
+					for update in ivalues(ToUpdate) do weight[update]:playcommand("Update") end
+					for update in ivalues(ToUpdate) do default[update]:playcommand("Update") end
 					if totalWeights>6 then
-						for update in ivalues(ToUpdatePro) do weight.update:playcommand("Update") end
-						for update in ivalues(ToUpdatePro) do default.update:playcommand("Update") end
+						for update in ivalues(ToUpdatePro) do weight[update]:playcommand("Update") end
+						for update in ivalues(ToUpdatePro) do default[update]:playcommand("Update") end
 					end
 					skill.Current:playcommand("Update")
 					skill.Name:playcommand("Update")
@@ -352,11 +352,11 @@ local InputHandler = function(event)
 			elseif event.GameButton == "MenuRight" then
 				if selectHeld and not editing then -- changing skills
 					if currentSkill + 1 > totalSkills then currentSkill = 1 else currentSkill = currentSkill + 1 end
-					for update in ivalues(ToUpdate) do weight.update:playcommand("Update") end
-					for update in ivalues(ToUpdate) do default.update:playcommand("Update") end
+					for update in ivalues(ToUpdate) do weight[update]:playcommand("Update") end
+					for update in ivalues(ToUpdate) do default[update]:playcommand("Update") end
 					if totalWeights>6 then
-						for update in ivalues(ToUpdatePro) do weight.update:playcommand("Update") end
-						for update in ivalues(ToUpdatePro) do default.update:playcommand("Update") end
+						for update in ivalues(ToUpdatePro) do weight[update]:playcommand("Update") end
+						for update in ivalues(ToUpdatePro) do default[update]:playcommand("Update") end
 					end
 					skill.Current:playcommand("Update")
 					skill.Name:playcommand("Update")
@@ -423,9 +423,9 @@ local InputHandler = function(event)
 							AIini = DeepCopy(AIiniDefault)
 							AIiniOLD = DeepCopy(AIini)
 						end
-						for update in ivalues(ToUpdate) do weight.update:playcommand("Update") end
+						for update in ivalues(ToUpdate) do weight[update]:playcommand("Update") end
 						if totalWeights>6 then
-							for update in ivalues(ToUpdatePro) do weight.update:playcommand("Update") end
+							for update in ivalues(ToUpdatePro) do weight[update]:playcommand("Update") end
 						end
 						SOUND:PlayOnce(THEME:GetPathS("ScreenPlayerOptions","cancel all"),true)
 					elseif currentList == totalWeights + 3 then -- save ai
@@ -438,9 +438,9 @@ local InputHandler = function(event)
 						prompt.BG:playcommand("BGOff")
 						prompt.Text:stoptweening():linear(0.125):diffusealpha(0)
 						prompt.Value:stoptweening():linear(0.125):diffusealpha(0)
-						for update in ivalues(ToUpdate) do weight.update:playcommand("Update") end
+						for update in ivalues(ToUpdate) do weight[update]:playcommand("Update") end
 						if totalWeights>6 then
-							for update in ivalues(ToUpdatePro) do weight.update:playcommand("Update") end
+							for update in ivalues(ToUpdatePro) do weight[update]:playcommand("Update") end
 						end
 						if isStepMania(20160400) then SCREENMAN:PlayStartSound() else SOUND:PlayOnce(THEME:GetPathS('Common',"start")) end
 					end
