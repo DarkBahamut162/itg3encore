@@ -39,6 +39,6 @@ return Def.ActorFrame{
 	Def.BitmapText {
 		File=THEME:GetPathF("_iidx/Speed", "Black"),
 		InitCommand=function(self) self:x(431*WideScreenDiff()):y(444):maxwidth(90):zoom(0.8*WideScreenDiff()) end,
-		SpeedMessageCommand=function(self,param) if param.PLAYER == pn then self:settext("SPEED: "..param.SPEED..string.upper(param.MOD)) end end
+		SpeedMessageCommand=function(self,param) if param.PLAYER == PLAYER_2 then self:settext("SPEED: "..param.SPEED..string.upper(param.MOD)) end end
 	}
 }
