@@ -50,7 +50,7 @@ local InputHandler = function(event)
 				if cur%2 == 0 then c.Cursor:queuecommand("Yes") else c.Cursor:queuecommand("No") end
 				SOUND:PlayOnce(THEME:GetPathS('ScreenPrompt',"change"))
 			end
-		elseif event.GameButton == "Back" then
+		elseif event.GameButton == "Back" or event.GameButton == "Select" then
 			cancel = true
 			SCREENMAN:GetTopScreen():Cancel()
 		elseif event.GameButton == "Start" then
