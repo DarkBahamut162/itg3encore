@@ -144,7 +144,7 @@ for line = 1,#file do
 	end
 end
 
-totalList = totalWeights + 3
+totalList = totalWeights + 4
 local skill,weight,default,prompt
 local currentSkill = 1
 local currentList = 1
@@ -331,7 +331,7 @@ local InputHandler = function(event)
 		end
 	else
 		if event.type == "InputEventType_FirstPress" then
-			if event.GameButton == "MenuLeft" then
+			if event.GameButton == "MenuLeft" or event.GameButton == "MenuUp" then
 				if selectHeld and not editing then -- changing skills
 					if currentSkill - 1 < 1 then currentSkill = totalSkills else currentSkill = currentSkill - 1 end
 					weight.Percent:playcommand("Update")
@@ -344,12 +344,16 @@ local InputHandler = function(event)
 					skill.Current:playcommand("Update")
 					skill.Name:playcommand("Update")
 					SOUND:PlayOnce(THEME:GetPathS('OptionsList',"left"))
+				elseif not editing and not checking then -- changing currently selected weight
+					if currentList - 1 < 1 then currentList = totalList else currentList = currentList - 1 end
+					if currentList <= totalWeights then weight.Current:y((currentList-1)*16*WideScreenDiff()) else weight.Current:y(currentList*16*WideScreenDiff()) end
+					SOUND:PlayOnce(THEME:GetPathS('OptionsList',"left"))
 				elseif checking then -- changing prompt options
 					cur = cur - 1
 					if cur%2 == 1 then prompt.Cursor:queuecommand("Yes") else prompt.Cursor:queuecommand("No") end
 					SOUND:PlayOnce(THEME:GetPathS('ScreenPrompt',"change"))
 				end
-			elseif event.GameButton == "MenuRight" then
+			elseif event.GameButton == "MenuRight" or event.GameButton == "MenuDown" then
 				if selectHeld and not editing then -- changing skills
 					if currentSkill + 1 > totalSkills then currentSkill = 1 else currentSkill = currentSkill + 1 end
 					for update in ivalues(ToUpdate) do weight[update]:playcommand("Update") end
@@ -361,22 +365,14 @@ local InputHandler = function(event)
 					skill.Current:playcommand("Update")
 					skill.Name:playcommand("Update")
 					SOUND:PlayOnce(THEME:GetPathS('OptionsList',"right"))
+				elseif not editing and not checking then -- changing currently selected weight
+					if currentList + 1 > totalList then currentList = 1 else currentList = currentList + 1 end
+					if currentList <= totalWeights then weight.Current:y((currentList-1)*16*WideScreenDiff()) else weight.Current:y(currentList*16*WideScreenDiff()) end
+					SOUND:PlayOnce(THEME:GetPathS('OptionsList',"right"))
 				elseif checking then -- changing prompt options
 					cur = cur + 1
 					if cur%2 == 1 then prompt.Cursor:queuecommand("Yes") else prompt.Cursor:queuecommand("No") end
 					SOUND:PlayOnce(THEME:GetPathS('ScreenPrompt',"change"))
-				end
-			elseif event.GameButton == "MenuUp" then
-				if not editing and not checking then -- changing currently selected weight
-					if currentList - 1 < 1 then currentList = totalList else currentList = currentList - 1 end
-					if currentList <= totalWeights then weight.Current:y((currentList-1)*16*WideScreenDiff()) else weight.Current:y(currentList*16*WideScreenDiff()) end
-					SOUND:PlayOnce(THEME:GetPathS('OptionsList',"left"))
-				end
-			elseif event.GameButton == "MenuDown" then
-				if not editing and not checking then -- changing currently selected weight
-					if currentList + 1 > totalList then currentList = 1 else currentList = currentList + 1 end
-					if currentList <= totalWeights then weight.Current:y((currentList-1)*16*WideScreenDiff()) else weight.Current:y(currentList*16*WideScreenDiff()) end
-					SOUND:PlayOnce(THEME:GetPathS('OptionsList',"right"))
 				end
 			elseif event.GameButton == "Select" and not selectHeld then -- skill change switch
 					SOUND:PlayOnce(THEME:GetPathS('OptionsList',"opened"))
@@ -431,6 +427,8 @@ local InputHandler = function(event)
 					elseif currentList == totalWeights + 3 then -- save ai
 						SaveAI()
 						AIiniOLD = DeepCopy(AIini)
+					elseif currentList == totalWeights + 4 then -- exit
+						SCREENMAN:GetTopScreen():Cancel()
 					end
 				elseif editing and not checking then -- change value
 					if currentList <= totalWeights then
@@ -681,6 +679,12 @@ return Def.ActorFrame{
 			Name="SaveAI",
 			Text="Save AI",
 			OnCommand=function(self) self:y(16*(#totalWeightNames+3)*WideScreenDiff()):diffusebottomedge(color("0,0.5,0")):shadowlength(1):zoom(1/3*WideScreenDiff()):horizalign(left) end
+		},
+        Def.BitmapText {
+            File = "_z bold 36px",
+			Name="Exit",
+			Text="Exit",
+			OnCommand=function(self) self:y(16*(#totalWeightNames+4)*WideScreenDiff()):diffusebottomedge(color("0.5,0,0")):shadowlength(1):zoom(1/3*WideScreenDiff()):horizalign(left) end
 		}
 	},
 	Def.ActorFrame{
