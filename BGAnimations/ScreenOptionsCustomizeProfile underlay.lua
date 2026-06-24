@@ -581,7 +581,7 @@ args[#args+1] = Def.ActorFrame{
 	},
     Def.Sprite{
 		Condition=avatar,
-        InitCommand=function(self) self:Load(ProfileImage):visible(avatar) end,
+        InitCommand=function(self) self:Load(ProfileImage):visible(avatar and avatar ~= "") end,
         OnCommand=function(self) self:xy(38,136):halign(0):setsize(96,96) end
     },
 	Def.BitmapText{
