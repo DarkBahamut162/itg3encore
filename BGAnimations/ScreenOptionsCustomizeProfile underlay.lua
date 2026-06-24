@@ -15,6 +15,7 @@
 
 local profile,master,profile_id,OF
 local inputTypes = {"Keyboard Player","Pad Player","Controller Player"}
+local GS_
 
 if getenv("EditUSBProfile") then
 	GAMESTATE:LoadProfiles()
@@ -29,7 +30,33 @@ else
 end
 
 if ThemePrefs.Get("EnableGrooveStats") then
-	LoadGrooveStatsIni(master)
+	local path
+	if profile_id then
+		path = "/Save/LocalProfiles/"..profile_id.."/GrooveStats.ini"
+	else
+		path = "@mc"..(master == PLAYER_1 and "1" or "2").."/"..PREFSMAN:GetPreference("MemoryCardProfileSubdir").."/GrooveStats.ini"
+	end
+	if path and FILEMAN:DoesFileExist(path) then
+		local contents = IniFile.ReadFile(path)
+		GS_ = {}
+		for k,v in pairs(contents["GrooveStats"]) do
+			if k == "ApiKey" then
+				if string.len(v) ~= 64 then
+					GS_.ApiKey = ""
+				else
+					GS_.ApiKey = v
+				end
+			elseif k == "Username" then
+				GS_.Username = v
+			elseif k == "IsPadPlayer" then
+				if v == 1 then
+					GS_.IsPadPlayer = true
+				else
+					GS_.IsPadPlayer = false
+				end
+			end
+		end
+	end
 elseif isOutFoxOnline() then
 	local ProfileSlot = {
 		[PLAYER_1] = "ProfileSlot_Player1",
@@ -51,7 +78,7 @@ end
 -- enter a number, and the prompt is updated by running its SetCommand.
 local number_entry = new_numpad_entry{
 	Name = "number_entry",
-	InitCommand=function(self) self:diffusealpha(0):xy(_screen.cx, _screen.cy):zoom(WideScreenDiff_(16/10)) end,
+	InitCommand=function(self) self:diffusealpha(0):xy(_screen.cx,_screen.cy):zoom(WideScreenDiff_(16/10)) end,
 	InvalidValueCommand=function(self) if isStepMania(20160400) then SCREENMAN:PlayInvalidSound() else SOUND:PlayOnce(THEME:GetPathS('Common',"invalid")) end end,
 	EntryDoneCommand=function(self) if isStepMania(20160400) then SCREENMAN:PlayStartSound() else SOUND:PlayOnce(THEME:GetPathS('Common',"start")) end end,
 	value_color = PlayerColor(master),
@@ -59,22 +86,22 @@ local number_entry = new_numpad_entry{
 	cursor_color = PlayerDarkColor(master)
 }
 
-local function calc_list_pos(value, list)
-	for i, entry in ipairs(list) do
+local function calc_list_pos(value,list)
+	for i,entry in ipairs(list) do
 		if entry.setting == value then return i end
 	end
 	return 1
 end
 
-local function item_value_to_text(item, value)
+local function item_value_to_text(item,value)
 	if item.item_type == "bool" then
 		if value then
-			value = THEME:GetString("ScreenOptionsCustomizeProfile", item.true_text)
+			value = THEME:GetString("ScreenOptionsCustomizeProfile",item.true_text)
 		else
-			value = THEME:GetString("ScreenOptionsCustomizeProfile", item.false_text)
+			value = THEME:GetString("ScreenOptionsCustomizeProfile",item.false_text)
 		end
 	elseif item.item_type == "list" then
-		local pos = calc_list_pos(value, item.list)
+		local pos = calc_list_pos(value,item.list)
 		return item.list[pos].display_name
 	end
 	return value
@@ -153,8 +180,8 @@ if isOutFox() and profile_id then
 		name = "avatimg_edit",
 		item_type = "menu",
 		get = function()
-			local ProfileImage = LoadModule("Config.Load.lua")( "AvatarImage", "/Save/LocalProfiles/"..profile_id.."/OutFoxPrefs.ini" )
-			return ProfileImage and string.gsub(ProfileImage, "/Appearance/Avatars/","") or "default"
+			local ProfileImage = LoadModule("Config.Load.lua")("AvatarImage","/Save/LocalProfiles/"..profile_id.."/OutFoxPrefs.ini")
+			return ProfileImage and string.gsub(ProfileImage,"/Appearance/Avatars/","") or "default"
 		end,
 		screen_name = "ScreenAvatarImageSelection"
 	}
@@ -177,7 +204,7 @@ local active_list = {}
 local left_showing = false
 local right_showing = false
 
-local function fade_actor_to(actor, alf)
+local function fade_actor_to(actor,alf)
 	actor:stoptweening():linear(0.2):diffusealpha(alf)
 end
 
@@ -187,7 +214,7 @@ end
 
 local function update_list_cursor()
 	local valactor = menu_values[menu_pos]
-	valactor:playcommand("Set", {active_list[list_pos].display_name})
+	valactor:playcommand("Set",{active_list[list_pos].display_name})
 	if list_pos > 1 then
 		if not left_showing then
 			valactor:playcommand("ShowLeft")
@@ -214,13 +241,13 @@ end
 
 local function exit_screen(newscreen)
 	if newscreen then
-		SCREENMAN:GetTopScreen():SetNextScreenName( newscreen )
+		SCREENMAN:GetTopScreen():SetNextScreenName(newscreen)
 	else
 		if profile_id then
 			PROFILEMAN:SaveLocalProfile(profile_id)
 		else
 			GAMESTATE:SaveProfiles()
-			SCREENMAN:GetTopScreen():SetNextScreenName( "ScreenOptionsManageUSBProfiles" )
+			SCREENMAN:GetTopScreen():SetNextScreenName("ScreenOptionsManageUSBProfiles")
 		end
 	end
 	SCREENMAN:GetTopScreen():StartTransitioningScreen("SM_GoToNextScreen")
@@ -239,21 +266,21 @@ local function input(event)
 			local item= menu_items[menu_pos]
 			if item.item_type == "bool" then
 				local value = not profile[item.get](profile)
-				menu_values[menu_pos]:playcommand("Set", {item_value_to_text(item, value)})
-				profile[item.set](profile, value)
+				menu_values[menu_pos]:playcommand("Set",{item_value_to_text(item,value)})
+				profile[item.set](profile,value)
 				MESSAGEMAN:Broadcast("Change")
 			elseif item.item_type == "number" then
 				update = false
 				if isOutFoxV() or not isOutFox() then
 					SCREENMAN:AddNewScreenToTop("ScreenTextEntry")
 					local question = {
-						Question = "Insert new value for "..string.gsub(" "..item.name, "%W%l", string.upper):sub(2),
+						Question = "Insert new value for "..string.gsub(" "..item.name,"%W%l",string.upper):sub(2),
 						MaxInputLength = string.len(""..item.auto_done),
 						InitialAnswer = profile[item.get](profile) == 0 and "" or profile[item.get](profile),
 						OnOK = function(answer)
 							if answer == "" then answer = "0" end
-							profile[item.set](profile, answer)
-							menu_values[menu_pos]:playcommand("Set", {item_value_to_text(item, answer)})
+							profile[item.set](profile,answer)
+							menu_values[menu_pos]:playcommand("Set",{item_value_to_text(item,answer)})
 							update = true
 						end,
 						ValidateAppend = function(answer,append)
@@ -269,14 +296,14 @@ local function input(event)
 					}
 					SCREENMAN:GetTopScreen():Load(question)
 				else
-					fade_actor_to(fader, .8)
-					fade_actor_to(number_entry.container, 1)
+					fade_actor_to(fader,0.8)
+					fade_actor_to(number_entry.container,1)
 					number_entry.value = profile[item.get](profile)
-					number_entry.value_actor:playcommand("Set", {number_entry.value})
+					number_entry.value_actor:playcommand("Set",{number_entry.value})
 					number_entry.auto_done_value = item.auto_done
 					number_entry.max_value = item.max
 					number_entry:update_cursor(number_entry.cursor_start)
-					number_entry.prompt_actor:playcommand("Set", {THEME:GetString("ScreenOptionsCustomizeProfile", item.name)})
+					number_entry.prompt_actor:playcommand("Set",{THEME:GetString("ScreenOptionsCustomizeProfile",item.name)})
 					cursor_on_menu = "numpad"
 				end
 				if isStepMania(20160400) then SCREENMAN:PlayStartSound() else SOUND:PlayOnce(THEME:GetPathS('Common',"start")) end
@@ -288,9 +315,9 @@ local function input(event)
 					MaxInputLength = 255,
 					InitialAnswer = profile[item.get](profile),
 					OnOK = function(answer)
-						profile[item.set](profile, answer)
+						profile[item.set](profile,answer)
 						if item.name == "profile" then MESSAGEMAN:Broadcast("ChangeProfile") end
-						menu_values[menu_pos]:playcommand("Set", {item_value_to_text(item, answer)})
+						menu_values[menu_pos]:playcommand("Set",{item_value_to_text(item,answer)})
 						update = true
 					end,
 					OnCancel = function()
@@ -303,10 +330,10 @@ local function input(event)
 			elseif item.item_type == "list" then
 				cursor_on_menu = "list"
 				active_list = menu_items[menu_pos].list
-				list_pos = calc_list_pos(profile[menu_items[menu_pos].get](profile), active_list)
+				list_pos = calc_list_pos(profile[menu_items[menu_pos].get](profile),active_list)
 				update_list_cursor()
 			elseif item.item_type == "menu" then
-				exit_screen( item.screen_name )
+				exit_screen(item.screen_name)
 			elseif item.item_type == "exit" then
 				exit_screen()
 			end
@@ -336,14 +363,14 @@ local function input(event)
 		if done or button == "Back" then
 			local item= menu_items[menu_pos]
 			if button ~= "Back" then
-				profile[item.set](profile, number_entry.value)
-				menu_values[menu_pos]:playcommand("Set", {item_value_to_text(item, number_entry.value)})
+				profile[item.set](profile,number_entry.value)
+				menu_values[menu_pos]:playcommand("Set",{item_value_to_text(item,number_entry.value)})
 			else
 				update = true
 				if isStepMania(20160400) then SCREENMAN:PlayCancelSound() else SOUND:PlayOnce(THEME:GetPathS('Common',"Cancel")) end
 			end
-			fade_actor_to(fader, 0)
-			fade_actor_to(number_entry.container, 0)
+			fade_actor_to(fader,0)
+			fade_actor_to(number_entry.container,0)
 			cursor_on_menu = "main"
 		elseif button == "Start" then
 			update = true
@@ -362,7 +389,7 @@ local function input(event)
 			menu_values[menu_pos]:playcommand("PressRight")
 		elseif button == "Start" or button == "Back" then
 			if button ~= "Back" then
-				profile[menu_items[menu_pos].set](profile, active_list[list_pos].setting)
+				profile[menu_items[menu_pos].set](profile,active_list[list_pos].setting)
 			end
 			local valactor = menu_values[menu_pos]
 			left_showing = false
@@ -413,13 +440,13 @@ local args = {
 -- characters to choose from.  You might want to adjust positioning for that.
 local itemspacing = 56/2
 
-for i, item in ipairs(menu_items) do
+for i,item in ipairs(menu_items) do
 	local item_y = menu_start + ((i-1) * itemspacing)
 	-- 3.  The Menu Items
 	-- This creates the actor that will be used to show each item on the menu.
 	local menuitemnew
 	if item.get then
-		local value_text = type(item.get) == "string" and item_value_to_text(item, profile[item.get](profile)) or item.get()
+		local value_text = type(item.get) == "string" and item_value_to_text(item,profile[item.get](profile)) or item.get()
 		-- 4.  The Menu Values
 		-- Each of the values needs to have a SetCommand so it can be updated
 		-- when the player changes it.
@@ -439,7 +466,7 @@ for i, item in ipairs(menu_items) do
 				Font = "Common Normal",
 				Text = value_text,
 				InitCommand=function(self) self:diffuse(Color.White):zoom(0.75*WideScreenDiff_(16/10)):horizalign(left) end,
-				SetCommand=function(self, param) self:settext(param[1]) end
+				SetCommand=function(self,param) self:settext(param[1]) end
 			}
 		}
 		if item.item_type == "list" then
@@ -458,10 +485,10 @@ for i, item in ipairs(menu_items) do
 			value_args[#value_args+1] = Def.ActorMultiVertex{
 				InitCommand= function(self)
 					self:SetVertices{
-						{{-5, 0, 0}, Color.White},
-						{{0, -10, 0}, Color.White},
-						{{0, 10, 0}, Color.White}
-					}:SetDrawState{Mode = "DrawMode_Triangles"}:x(-8):visible(false):playcommand("Set", {value_text})
+						{{-5,0,0},Color.White},
+						{{0,-10,0},Color.White},
+						{{0,10,0},Color.White}
+					}:SetDrawState{Mode = "DrawMode_Triangles"}:x(-8):visible(false):playcommand("Set",{value_text})
 				end,
 				ShowLeftCommand=function(self) self:visible(true) end,
 				HideLeftCommand=function(self) self:visible(false) end,
@@ -470,9 +497,9 @@ for i, item in ipairs(menu_items) do
 			value_args[#value_args+1] = Def.ActorMultiVertex{
 				InitCommand=function(self)
 					self:SetVertices{
-						{{5, 0, 0}, Color.White},
-						{{0, -10, 0}, Color.White},
-						{{0, 10, 0}, Color.White}
+						{{5,0,0},Color.White},
+						{{0,-10,0},Color.White},
+						{{0,10,0},Color.White}
 					}:SetDrawState{Mode = "DrawMode_Triangles"}:visible(false)
 				end,
 				SetCommand=function(self)
@@ -489,9 +516,9 @@ for i, item in ipairs(menu_items) do
 
 	args[#args+1] = Def.ActorFrame{
 		InitCommand=function(self) self:y(item_y) end,
-		UpdateCursorMessageCommand=function(self) self:stoptweening():smooth(0.2):y( menu_pos > 8 and item_y-(itemspacing*(menu_pos-8)) or item_y ) end,
+		UpdateCursorMessageCommand=function(self) self:stoptweening():smooth(0.2):y(menu_pos > 8 and item_y-(itemspacing*(menu_pos-8)) or item_y) end,
 		Def.Quad{
-			OnCommand=function(self) self:x( 0 ):halign(0):zoomto( SCREEN_WIDTH, itemspacing-2 ):diffusealpha(0):linear(0.2):diffuse( color("#00000076") ) end,
+			OnCommand=function(self) self:x(0):halign(0):zoomto(SCREEN_WIDTH,itemspacing-2):diffusealpha(0):linear(0.2):diffuse(color("#00000076")) end,
 			OffCommand=function(self) self:linear(0.2):diffusealpha(0) end
 		},
 		Def.ActorFrame{
@@ -500,12 +527,12 @@ for i, item in ipairs(menu_items) do
 			UpdateCursorMessageCommand=function(self,param) self:stoptweening():linear(0.16):diffusealpha(param.ind == i and 1 or 0) end,
 			Def.Quad {
 				InitCommand=function(self)
-					self:x(0):faderight( 0.5 ):zoomto(SCREEN_WIDTH, 2 ):halign(0):vertalign(top):y(-itemspacing/2):diffuse(PlayerColor(master)):diffuseleftedge(ColorLightTone(PlayerColor(master)))
+					self:x(0):faderight(0.5):zoomto(SCREEN_WIDTH,2):halign(0):vertalign(top):y(-itemspacing/2):diffuse(PlayerColor(master)):diffuseleftedge(ColorLightTone(PlayerColor(master)))
 				end
 			},
 			Def.Quad {
 				InitCommand=function(self)
-					self:x(0):faderight( 0.5 ):zoomto(SCREEN_WIDTH, 2 ):halign(0):vertalign(bottom):y(itemspacing/2):diffuse(ColorLightTone(PlayerColor(master))):diffuseleftedge(PlayerColor(master))
+					self:x(0):faderight(0.5):zoomto(SCREEN_WIDTH,2):halign(0):vertalign(bottom):y(itemspacing/2):diffuse(ColorLightTone(PlayerColor(master))):diffuseleftedge(PlayerColor(master))
 				end
 			}
 		},
@@ -513,7 +540,7 @@ for i, item in ipairs(menu_items) do
 		Def.BitmapText{
 			Name = "menu_" .. item.name,
 			Font = "Common Normal",
-			Text = THEME:GetString("ScreenOptionsCustomizeProfile", item.name),
+			Text = THEME:GetString("ScreenOptionsCustomizeProfile",item.name),
 			InitCommand=function(self)
 				-- Note that the item adds itself to the list menu_item_actors.  This
 				-- is so that when the cursor is moved, the appropriate item can be
@@ -532,7 +559,7 @@ for i, item in ipairs(menu_items) do
 end
 
 local avatar = false
-if (isOutFox() and profile_id) then avatar = LoadModule("Config.Load.lua")( "AvatarImage", "/Save/LocalProfiles/"..profile_id.."/OutFoxPrefs.ini" ) or false end
+if (isOutFox() and profile_id) then avatar = LoadModule("Config.Load.lua")("AvatarImage","/Save/LocalProfiles/"..profile_id.."/OutFoxPrefs.ini") or false end
 if not avatar then
 	if profile_id then
 		local path = ActorUtil.ResolvePath("/Save/LocalProfiles/"..profile_id.."/avatar",1,true) or ActorUtil.ResolvePath("/Save/LocalProfiles/"..profile_id.."/profile picture",1,true)
@@ -549,72 +576,72 @@ args[#args+1] = Def.ActorFrame{
     OnCommand=function(self) self:diffusealpha(0):addy(-20):decelerate(0.2):addy(20):diffusealpha(1) end,
     OffCommand=function(self) self:accelerate(0.2):addy(-20):diffusealpha(0) end,
 	Def.Quad{
-		OnCommand=function(self) self:xy( 0,136 ):halign(0):zoomto( SCREEN_WIDTH/WideScreenDiff_(16/10), itemspacing*4 ):diffusealpha(0):linear(0.2):diffuse( color("#00000076") ) end,
+		OnCommand=function(self) self:xy(0,136):halign(0):zoomto(SCREEN_WIDTH/WideScreenDiff_(16/10),itemspacing*4):diffusealpha(0):linear(0.2):diffuse(color("#00000076")) end,
 		OffCommand=function(self) self:linear(0.2):diffusealpha(0) end
 	},
     Def.Sprite{
 		Condition=avatar,
-        InitCommand=function(self) self:Load( ProfileImage ):visible(profile_id ~= nil) end,
-        OnCommand=function(self) self:xy( 38, 136 ):halign(0):setsize(96,96) end
+        InitCommand=function(self) self:Load(ProfileImage):visible(avatar) end,
+        OnCommand=function(self) self:xy(38,136):halign(0):setsize(96,96) end
     },
 	Def.BitmapText{
 		Font = "Common Normal",
 		Text = (profile_id and "" or "USB ").."Profile: "..profile:GetDisplayName(),
-		OnCommand=function(self) self:xy( (avatar and profile_id) and 150 or 50, 100 ):halign(0):shadowlength(3) end,
+		OnCommand=function(self) self:xy((avatar and profile_id) and 150 or 50,100):halign(0):shadowlength(3) end,
 		ChangeProfileMessageCommand=function(self) self:settext("Profile: "..profile:GetDisplayName()) end
 	},
 	Def.BitmapText{
 		Font = "Common Normal",
 		Text = "GUID: "..profile:GetGUID(),
-		OnCommand=function(self) self:xy( (avatar and profile_id) and 150 or 50, 136 ):halign(0):shadowlength(3) end
+		OnCommand=function(self) self:xy((avatar and profile_id) and 150 or 50,136):halign(0):shadowlength(3) end
 	},
 	Def.BitmapText{
 		Font = "Common Normal",
 		Text = Screen.String("TotalTime").. ": "..SecondsToHHMMSS(profile:GetTotalGameplaySeconds()),
-		OnCommand=function(self) self:xy( (avatar and profile_id) and 150 or 50, 172 ):halign(0):shadowlength(3) end
+		OnCommand=function(self) self:xy((avatar and profile_id) and 150 or 50,172):halign(0):shadowlength(3) end
 	},
 	Def.ActorFrame{
-		Condition=ThemePrefs.Get("EnableGrooveStats") and GS,
+		Condition=ThemePrefs.Get("EnableGrooveStats") and GS_,
 		Def.Sprite{
-			InitCommand=function(self) self:Load( THEME:GetPathG("GS","OG") ):visible(profile_id ~= nil) end,
-			OnCommand=function(self) self:xy( SCREEN_WIDTH-50, 136 ):blend(Blend.Add):halign(1):setsize(128,128) end
+			InitCommand=function(self) self:Load(THEME:GetPathG("GS","OG")) end,
+			OnCommand=function(self) self:xy(SCREEN_WIDTH-50,136):blend(Blend.Add):halign(1):setsize(128,128) end
 		},
 		Def.BitmapText{
 			Font = "Common Normal",
-			Text = GS and GS[master] and GS[master].Username or "--empty--",
-			OnCommand=function(self) self:xy( SCREEN_WIDTH-50, 100 ):halign(1):shadowlength(3):diffuse(color("#37AAB6")) end
+			Text = GS_ and GS_.Username or "--empty--",
+			OnCommand=function(self) self:xy(SCREEN_WIDTH-50,100):halign(1):shadowlength(3):diffuse(color("#37AAB6")) end
 		},
 		Def.BitmapText{
 			Font = "Common Normal",
-			Text = (GS and GS[master] and GS[master].IsPadPlayer) and "Pad Player" or "Keyboard Player",
-			OnCommand=function(self) self:xy( SCREEN_WIDTH-50, 136 ):halign(1):shadowlength(3):diffuse(color("#37AAB6")) end
+			Text = (GS_ and GS_.IsPadPlayer) and "Pad Player" or "Keyboard Player",
+			OnCommand=function(self) self:xy(SCREEN_WIDTH-50,136):halign(1):shadowlength(3):diffuse(color("#37AAB6")) end
 		},
 		Def.BitmapText{
 			Font = "Common Normal",
-			Text = (GS and GS[master] and GS[master].ApiKey ~= "") and GS[master].ApiKey:sub(1,6).."..."..GS[master].ApiKey:sub(-6) or "--empty--",
-			OnCommand=function(self) self:xy( SCREEN_WIDTH-50, 172 ):halign(1):shadowlength(3):diffuse(color("#37AAB6")) end
+			Text = (GS_ and GS_.ApiKey ~= "") and GS_.ApiKey:sub(1,6).."..."..GS_.ApiKey:sub(-6) or "--empty--",
+			OnCommand=function(self) self:xy(SCREEN_WIDTH-50,172):halign(1):shadowlength(3):diffuse(color("#37AAB6")) end
 		}
 	},
 	Def.ActorFrame{
 		Condition=isOutFoxOnline(),
 		Def.Sprite{
-			InitCommand=function(self) self:Load( THEME:GetPathG("OF","Online") ):visible(profile_id ~= nil) end,
-			OnCommand=function(self) self:xy( SCREEN_WIDTH-50, 136 ):blend(Blend.Add):halign(1):setsize(128,128) end
+			InitCommand=function(self) self:Load(THEME:GetPathG("OF","Online")):visible(profile_id ~= nil) end,
+			OnCommand=function(self) self:xy(SCREEN_WIDTH-50,136):blend(Blend.Add):halign(1):setsize(128,128) end
 		},
 		Def.BitmapText{
 			Font = "Common Normal",
 			Text = (OF and OF.Online and OF.Online.InputType) and inputTypes[OF.Online.InputType+1] or "",
-			OnCommand=function(self) self:xy( SCREEN_WIDTH-50, 100 ):halign(1):shadowlength(3):diffuse(color("#AACCFF")) end
+			OnCommand=function(self) self:xy(SCREEN_WIDTH-50,100):halign(1):shadowlength(3):diffuse(color("#AACCFF")) end
 		},
 		Def.BitmapText{
 			Font = "Common Normal",
 			Text = (OF and OF.Online and OF.Online.Registered) and "Registered" or "Not Registered",
-			OnCommand=function(self) self:xy( SCREEN_WIDTH-50, (OF.Online and OF.Online.InputType) and 136 or 118 ):halign(1):shadowlength(3):diffuse(color("#AACCFF")) end
+			OnCommand=function(self) self:xy(SCREEN_WIDTH-50,(OF.Online and OF.Online.InputType) and 136 or 118):halign(1):shadowlength(3):diffuse(color("#AACCFF")) end
 		},
 		Def.BitmapText{
 			Font = "Common Normal",
 			Text = (OF and OF.Online and OF.Online.Token ~= "") and OF.Online.Token:sub(1,6).."..."..OF.Online.Token:sub(-6) or "--empty--",
-			OnCommand=function(self) self:xy( SCREEN_WIDTH-50, (OF.Online and OF.Online.InputType) and 172 or 154 ):halign(1):shadowlength(3):diffuse(color("#AACCFF")) end
+			OnCommand=function(self) self:xy(SCREEN_WIDTH-50,(OF.Online and OF.Online.InputType) and 172 or 154):halign(1):shadowlength(3):diffuse(color("#AACCFF")) end
 		}
 	}
 }
@@ -629,7 +656,7 @@ args[#args+1]= Def.Quad{
 	Name = "fader",
 	InitCommand=function(self)
 		fader = self
-		self:setsize( SCREEN_WIDTH ,SCREEN_HEIGHT):Center(menu_x-10, menu_start-12):diffuse(Color.Black):diffusealpha(0)
+		self:setsize(SCREEN_WIDTH,SCREEN_HEIGHT):Center(menu_x-10,menu_start-12):diffuse(Color.Black):diffusealpha(0)
 	end
 }
 
