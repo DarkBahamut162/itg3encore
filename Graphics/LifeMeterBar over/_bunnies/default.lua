@@ -10,7 +10,7 @@ return Def.ActorFrame{
 	},
 	percent,
 	Def.Sprite {
-		Texture = "base",
+		Texture = "base "..(isFinal() and "final" or "normal"),
 		InitCommand=function(self) self:addx(-5) end
 	},
 	Def.Sprite {

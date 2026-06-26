@@ -596,7 +596,7 @@ end
 function OptionOrientation()
 	function AvailableArrowDirections()
 		local dirs = { "Normal", "Left", "Right", "Upside-Down" }
-		if GAMESTATE:GetNumPlayersEnabled() == 1 then dirs[#dirs+1] = "Solo-Centered" end
+		if GAMESTATE:GetNumPlayersEnabled() == 1 then dirs[#dirs+1] = "Centered" end
 		return dirs
 	end
 
@@ -1208,7 +1208,7 @@ function OptionOrientationRestricted()
 		SelectType = "SelectOne",
 		OneChoiceForAllPlayers = false,
 		ExportOnChange = false,
-		Choices = { "Normal", "Solo-Centered" },
+		Choices = { "Normal", "Centered" },
 		LoadSelections = function(self, list, pn)
 			list[1] = getenv("Rotation"..pname(pn)) == 1
 			list[2] = getenv("Rotation"..pname(pn)) == 5

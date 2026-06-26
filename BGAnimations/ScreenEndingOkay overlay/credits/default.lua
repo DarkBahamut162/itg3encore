@@ -22,16 +22,6 @@ credits[#credits+1] = Def.ActorFrame{}
 credits[#credits+1] = Def.ActorFrame{}
 credits[#credits+1] = Def.ActorFrame{}
 credits[#credits+1] = Def.ActorFrame{}
-credits[#credits+1] = loadfile(THEME:GetPathB("ScreenEndingOkay","overlay/credits/albeiro"))()
-credits[#credits+1] = Def.ActorFrame{}
-credits[#credits+1] = Def.ActorFrame{}
-credits[#credits+1] = Def.ActorFrame{}
-credits[#credits+1] = Def.ActorFrame{}
-credits[#credits+1] = loadfile(THEME:GetPathB("ScreenEndingOkay","overlay/credits/angel"))()
-credits[#credits+1] = Def.ActorFrame{}
-credits[#credits+1] = Def.ActorFrame{}
-credits[#credits+1] = Def.ActorFrame{}
-credits[#credits+1] = Def.ActorFrame{}
 credits[#credits+1] = loadfile(THEME:GetPathB("ScreenEndingOkay","overlay/credits/skin"))()
 credits[#credits+1] = Def.ActorFrame{}
 credits[#credits+1] = Def.ActorFrame{}
@@ -98,6 +88,11 @@ credits[#credits+1] = Def.ActorFrame{}
 credits[#credits+1] = Def.ActorFrame{}
 credits[#credits+1] = Def.ActorFrame{}
 credits[#credits+1] = loadfile(THEME:GetPathB("ScreenEndingOkay","overlay/credits/pat"))()
+credits[#credits+1] = Def.ActorFrame{}
+credits[#credits+1] = Def.ActorFrame{}
+credits[#credits+1] = Def.ActorFrame{}
+credits[#credits+1] = Def.ActorFrame{}
+credits[#credits+1] = loadfile(THEME:GetPathB("ScreenEndingOkay","overlay/credits/gutter"))()
 credits[#credits+1] = Def.ActorFrame{}
 credits[#credits+1] = Def.ActorFrame{}
 credits[#credits+1] = Def.ActorFrame{}
@@ -216,7 +211,7 @@ return Def.ActorFrame{
 			OnCommand=function(self) self:SetLoop(false):ScrollThroughAllItems():SetCurrentAndDestinationItem(-16):SetDestinationItem(#credits) end,
 			TransformFunction=function(self,offset,itemIndex,numItems)
 				self:y(offset*24*WideScreenDiff()):zoom(0.7*WideScreenDiff()):ztest(1)
-				if itemIndex <= 97+math.ceil((SCREEN_HEIGHT-SCREEN_HEIGHT*WideScreenDiff())/24) and itemIndex ~= 0 then self:zoom(1*WideScreenDiff()) end
+				if itemIndex <= 92+math.ceil((SCREEN_HEIGHT-SCREEN_HEIGHT*WideScreenDiff())/24) and itemIndex ~= 0 then self:zoom(1*WideScreenDiff()) end
 			end,
 			children = credits
 		}

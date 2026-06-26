@@ -1,7 +1,7 @@
 local pn = ...
 
 return Def.ActorFrame{
-	InitCommand=function(self) self:addy(1):zoomx(1.35):zoomy(1.1) end,
+	InitCommand=function(self) self:addy(1):zoomx(1.36):zoomy(1.1) end,
 	Def.Sprite {
 		Texture = THEME:GetPathB("ScreenGameplay","overlay/life/"..IIDXLifeBar(pn)),
 		InitCommand=function(self) self:diffuse(.3,.3,.3,1) end

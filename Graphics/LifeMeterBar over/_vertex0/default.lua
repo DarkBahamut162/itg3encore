@@ -29,15 +29,13 @@ return Def.ActorFrame{
 	percent,
 
 	Def.Sprite {
-		Texture = "base "..(isFinal() and "final" or "normal"),
-		InitCommand=function(self) self:addx(-5) if vertexOn then self:diffusecolor(color1) end end
+		Texture = "base complemet",
+		Condition=isFinal(),
+		InitCommand=function(self) self:addx(-5) end
 	},
 	Def.Sprite {
-		Texture = "base glow final",
-		Condition=isFinal(),
-		InitCommand=function(self)
-			self:addx(-5):blend(Blend.Add) if vertexOn then self:diffusecolor(color1) end
-			self:diffuseramp():effectcolor1(color("#FFFFFF00")):effectcolor2(color("#FFFFFF")):effectperiod(0.5):effect_hold_at_full(0.5):effectclock('beat') end
+		Texture = "base "..(isFinal() and "final" or "normal"),
+		InitCommand=function(self) self:addx(-5) if vertexOn then self:diffusecolor(color1) end end
 	},
 	Def.Sprite {
 		Texture = "streak",

@@ -4,6 +4,8 @@ assert(pn)
 local IsUsingSoloSingles = getenv("Rotation"..pname(pn)) == 5
 local NumPlayers = GAMESTATE:GetNumPlayersEnabled()
 local NumSides = GAMESTATE:GetNumSidesJoined()
+local text = "full combo text"..(isFinal() and " final" or "")
+local glow = "full combo glow"..(isFinal() and " final" or "")
 
 local function GetPosition(pn)
 	if IsUsingSoloSingles and NumPlayers == 1 and NumSides == 1 then return SCREEN_CENTER_X end
@@ -42,7 +44,7 @@ return Def.ActorFrame{
 		end
 	},
 	Def.Sprite {
-		Texture = "full combo text",
+		Texture = text,
 		InitCommand=function(self) self:x(GetPosition(pn)):y(SCREEN_CENTER_Y-SCREEN_HEIGHT/8+15):diffusealpha(0):shadowlength(0) end,
 		OffCommand=function(self) if PlayerFullComboed(pn) then self:queuecommand("CheckScore") end end,
 		CheckScoreCommand=function(self)
@@ -64,7 +66,7 @@ return Def.ActorFrame{
 		end
 	},
 	Def.Sprite {
-		Texture = "full combo glow",
+		Texture = glow,
 		InitCommand=function(self) self:x(GetPosition(pn)):y(SCREEN_CENTER_Y-SCREEN_HEIGHT/8+15):diffusealpha(0) end,
 		OffCommand=function(self) if PlayerFullComboed(pn) then self:queuecommand("CheckScore") end end,
 		CheckScoreCommand=function(self)
@@ -180,7 +182,7 @@ return Def.ActorFrame{
 		end
 	},
 	Def.Sprite {
-		Texture = "full combo text",
+		Texture = text,
 		InitCommand=function(self) self:x(GetPosition(pn)):y(SCREEN_CENTER_Y-SCREEN_HEIGHT/8+15):diffusealpha(0):shadowlength(0) end,
 		OffCommand=function(self) if PlayerFullComboed(pn) then self:queuecommand("CheckScore") end end,
 		CheckScoreCommand=function(self)
@@ -202,7 +204,7 @@ return Def.ActorFrame{
 		end
 	},
 	Def.Sprite {
-		Texture = "full combo glow",
+		Texture = glow,
 		InitCommand=function(self) self:x(GetPosition(pn)):y(SCREEN_CENTER_Y-SCREEN_HEIGHT/8+15):diffusealpha(0) end,
 		OffCommand=function(self) if PlayerFullComboed(pn) then self:queuecommand("CheckScore") end end,
 		CheckScoreCommand=function(self)
@@ -318,7 +320,7 @@ return Def.ActorFrame{
 		end
 	},
 	Def.Sprite {
-		Texture = "full combo text",
+		Texture = text,
 		InitCommand=function(self) self:x(GetPosition(pn)):y(SCREEN_CENTER_Y-SCREEN_HEIGHT/8+15):diffusealpha(0):shadowlength(0) end,
 		OffCommand=function(self) if PlayerFullComboed(pn) then self:queuecommand("CheckScore") end end,
 		CheckScoreCommand=function(self)
@@ -340,7 +342,7 @@ return Def.ActorFrame{
 		end
 	},
 	Def.Sprite {
-		Texture = "full combo glow",
+		Texture = glow,
 		InitCommand=function(self) self:x(GetPosition(pn)):y(SCREEN_CENTER_Y-SCREEN_HEIGHT/8+15):diffusealpha(0) end,
 		OffCommand=function(self) if PlayerFullComboed(pn) then self:queuecommand("CheckScore") end end,
 		CheckScoreCommand=function(self)

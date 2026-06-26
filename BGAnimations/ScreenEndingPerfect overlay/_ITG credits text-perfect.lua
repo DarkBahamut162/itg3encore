@@ -10,6 +10,7 @@ credits[#credits+1] = Def.BitmapText { File = "_v credit", Text="Dominick Renzet
 credits[#credits+1] = Def.BitmapText { File = "_v credit", Text="Felipe Valladares", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
 credits[#credits+1] = Def.BitmapText { File = "_v credit", Text="A.J. Kung", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
 credits[#credits+1] = Def.BitmapText { File = "_v credit", Text="Jason Bolt", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
+credits[#credits+1] = Def.BitmapText { File = "_v credit", Text="Gabriel Marchan", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
 credits[#credits+1] = Def.ActorFrame{}
 credits[#credits+1] = Def.ActorFrame{}
 credits[#credits+1] = Def.BitmapText { File = "_v credit", Text="Original UI Concept", OnCommand=function(self) self:horizalign(left):shadowlength(1.25):AddAttribute(0, {Length = -1, Diffuse = color("#76B1D5")}) end}
@@ -45,6 +46,7 @@ credits[#credits+1] = Def.BitmapText { File = "_v credit", Text="Donnie D'Amato"
 credits[#credits+1] = Def.BitmapText { File = "_v credit", Text="Matthew Emirzian", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
 credits[#credits+1] = Def.BitmapText { File = "_v credit", Text="Dalton Runberg", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
 credits[#credits+1] = Def.BitmapText { File = "_v credit", Text="Dominick Renzetti", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
+credits[#credits+1] = Def.BitmapText { File = "_v credit", Text="Gabriel Marchan", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
 credits[#credits+1] = Def.BitmapText { File = "_v credit", Text="Jordan Frederick", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
 credits[#credits+1] = Def.BitmapText { File = "_v credit", Text="Mike Calfin", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
 credits[#credits+1] = Def.BitmapText { File = "_v credit", Text="Ryan Konkul", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
@@ -68,8 +70,8 @@ credits[#credits+1] = Def.BitmapText { File = "_v credit", Text="Eric Holniker",
 credits[#credits+1] = Def.ActorFrame{}
 credits[#credits+1] = Def.ActorFrame{}
 credits[#credits+1] = Def.BitmapText { File = "_v credit", Text="Courses", OnCommand=function(self) self:horizalign(left):shadowlength(1.25):AddAttribute(0, {Length = -1, Diffuse = color("#76B1D5")}) end}
-credits[#credits+1] = Def.BitmapText { File = "_v credit", Text="Barry Knapp-Tabbernor", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
 credits[#credits+1] = Def.BitmapText { File = "_v credit", Text="Gabriel Marchan", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
+credits[#credits+1] = Def.BitmapText { File = "_v credit", Text="Barry Knapp-Tabbernor", OnCommand=function(self) self:horizalign(left):shadowlength(1.25) end}
 credits[#credits+1] = Def.ActorFrame{}
 credits[#credits+1] = Def.ActorFrame{}
 credits[#credits+1] = Def.BitmapText { File = "_v credit", Text="Producer", OnCommand=function(self) self:horizalign(left):shadowlength(1.25):AddAttribute(0, {Length = -1, Diffuse = color("#76B1D5")}) end}

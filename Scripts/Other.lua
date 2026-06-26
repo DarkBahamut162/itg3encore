@@ -99,7 +99,7 @@ function GetRandomModifierNames(n)
 		"Accel","Decel","Wave","Expand","Boomerang","Random",
 		"Dizzy","Twirl","Roll",
 		"Fade Out","F.O. Dynamic","Fade In","F.I. Dynamic","Blink","Invisible","Vanish",
-		"Normal Orientation","Left Orientation","Right Orientation","Upside-Down Orientation","Solo-Centered Orientation",
+		"Normal Orientation","Left Orientation","Right Orientation","Upside-Down Orientation","Centered Orientation",
 		"Vibrate","Spin Right","Spin Left","Bob","Pulse","Wag",
 		"Simple","No Jumps","No Hands","No Quads","No Fakes",
 		"No Holds","No Rolls","No Lifts","No Stretch Jumps",
