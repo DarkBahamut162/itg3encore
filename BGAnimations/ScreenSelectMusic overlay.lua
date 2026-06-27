@@ -161,34 +161,6 @@ local InputHandler = function(event)
 		end
 		return
 	end
-	if (ThemePrefs.Get("EnableGrooveStats") or isOutFoxOnline()) and string.find(event.DeviceInput.button,"shift") then
-		local pn = string.find(event.DeviceInput.button,"left") and PLAYER_1 or PLAYER_2
-		if GAMESTATE:IsHumanPlayer(pn) and ((GS and GS.IsConnected) or isOutFoxOnline()) then
-			if not ctrlHeld[pn] then
-				if event.type == "InputEventType_FirstPress" then
-					if (GS and GS.IsConnected and GS[pn] and GS[pn].ApiKey ~= "") or isOutFoxOnline() then
-						if GAMESTATE:GetCurrentSong() then
-							if not shiftHeld[pn] then
-								MESSAGEMAN:Broadcast("ShiftMenuOpened"..pname(pn))
-								shiftHeld[pn] = true
-							end
-						end
-					else
-						if isStepMania(20160400) then SCREENMAN:PlayInvalidSound() else SOUND:PlayOnce(THEME:GetPathS('Common',"invalid")) end
-					end
-				elseif event.type == "InputEventType_Release" then
-					if shiftHeld[pn] then MESSAGEMAN:Broadcast("ShiftMenuClosed"..pname(pn)) end
-					shiftHeld[pn] = false
-				end
-			elseif ctrlHeld[pn] then
-				if event.type == "InputEventType_FirstPress" then
-					if (GS and GS.IsConnected and GS[pn] and GS[pn].ApiKey ~= "") or isOutFoxOnline() then
-						SOUND:PlayOnce( THEME:GetPathS( 'Common', "invalid" ) )
-					end
-				end
-			end
-		end
-	end
 	if keyboardEnabled then
 		if string.find(event.DeviceInput.button,"ctrl") then
 			local pn = string.find(event.DeviceInput.button,"left") and PLAYER_1 or PLAYER_2
@@ -205,7 +177,7 @@ local InputHandler = function(event)
 			elseif GAMESTATE:IsHumanPlayer(pn) and shiftHeld[pn] and change[pn] then
 				if event.type == "InputEventType_FirstPress" then
 					if isOutFoxOnline() then
-						SOUND:PlayOnce( THEME:GetPathS( 'Common', "invalid" ) )
+						if isStepMania(20160400) then SCREENMAN:PlayInvalidSound() else SOUND:PlayOnce(THEME:GetPathS('Common',"invalid")) end
 					else
 						leaderboard[pn] = leaderboard[pn] < 4 and leaderboard[pn] + 1 or 1
 						c["Leaderboard"..pname(pn)]:GetChild("Header"):playcommand("Update")
@@ -214,10 +186,29 @@ local InputHandler = function(event)
 					end
 				end
 			else
-				SOUND:PlayOnce( THEME:GetPathS( 'Common', "invalid" ) )
+				if isStepMania(20160400) then SCREENMAN:PlayInvalidSound() else SOUND:PlayOnce(THEME:GetPathS('Common',"invalid")) end
 			end
 		elseif string.find(event.DeviceInput.button,"shift") then
 			local pn = string.find(event.DeviceInput.button,"left") and PLAYER_1 or PLAYER_2
+			if GAMESTATE:IsHumanPlayer(pn) and (isGrooveStats(pn) or isOutFoxOnline()) then
+				if not ctrlHeld[pn] then
+					if event.type == "InputEventType_FirstPress" then
+						if GAMESTATE:GetCurrentSong() then
+							if not shiftHeld[pn] then
+								MESSAGEMAN:Broadcast("ShiftMenuOpened"..pname(pn))
+								shiftHeld[pn] = true
+							end
+						end
+					elseif event.type == "InputEventType_Release" then
+						if shiftHeld[pn] then MESSAGEMAN:Broadcast("ShiftMenuClosed"..pname(pn)) end
+						shiftHeld[pn] = false
+					end
+				elseif ctrlHeld[pn] then
+					if event.type == "InputEventType_FirstPress" then
+						if isStepMania(20160400) then SCREENMAN:PlayInvalidSound() else SOUND:PlayOnce(THEME:GetPathS('Common',"invalid")) end
+					end
+				end
+			end
 			if event.type == "InputEventType_FirstPress" then
 				if not specialHeld[pn] then specialHeld[pn] = true end
 			elseif event.type == "InputEventType_Release" then
@@ -296,8 +287,33 @@ local InputHandler = function(event)
 		end
 	else
 		if event.PlayerNumber then
-			if event.GameButton == "Select" then
-				if GAMESTATE:IsHumanPlayer(event.PlayerNumber) and not shiftHeld[event.PlayerNumber] then
+			if event.GameButton == "Select" and GAMESTATE:IsHumanPlayer(event.PlayerNumber) then
+				if ThemePrefs.Get("EnableGrooveStats") then
+					if event.type == "InputEventType_FirstPress" then
+						MESSAGEMAN:Broadcast("SelectMenuOpened",{Player=event.PlayerNumber})
+					elseif event.type == "InputEventType_Release" then
+						MESSAGEMAN:Broadcast("SelectMenuClosed",{Player=event.PlayerNumber})
+					end
+				end
+				if ((ThemePrefs.Get("EnableGrooveStats") and isGrooveStats(event.PlayerNumber)) or isOutFoxOnline()) then
+					if not ctrlHeld[event.PlayerNumber] then
+						if event.type == "InputEventType_FirstPress" then
+							if GAMESTATE:GetCurrentSong() then
+								if not shiftHeld[event.PlayerNumber] then
+									MESSAGEMAN:Broadcast("ShiftMenuOpened"..pname(event.PlayerNumber))
+									shiftHeld[event.PlayerNumber] = true
+								end
+							end
+						elseif event.type == "InputEventType_Release" then
+							if shiftHeld[event.PlayerNumber] then MESSAGEMAN:Broadcast("ShiftMenuClosed"..pname(event.PlayerNumber)) end
+							shiftHeld[event.PlayerNumber] = false
+						end
+					elseif ctrlHeld[event.PlayerNumber] then
+						if event.type == "InputEventType_FirstPress" then
+							if isStepMania(20160400) then SCREENMAN:PlayInvalidSound() else SOUND:PlayOnce(THEME:GetPathS('Common',"invalid")) end
+						end
+					end
+				elseif GAMESTATE:IsHumanPlayer(event.PlayerNumber) and not shiftHeld[event.PlayerNumber] then
 					if event.type == "InputEventType_FirstPress" then
 						if GAMESTATE:GetCurrentSong() and not ctrlHeld[event.PlayerNumber] then
 							ctrlHeld[event.PlayerNumber] = true
@@ -307,6 +323,32 @@ local InputHandler = function(event)
 						ctrlHeld[event.PlayerNumber] = false
 						MESSAGEMAN:Broadcast("SelectMenuClosed",{Player=event.PlayerNumber})
 						MESSAGEMAN:Broadcast("ControlMenuClosed"..pname(event.PlayerNumber))
+					end
+				end
+			elseif event.GameButton == "Start" and GAMESTATE:IsHumanPlayer(event.PlayerNumber) then
+				if event.type == "InputEventType_FirstPress" then
+					if ((ThemePrefs.Get("EnableGrooveStats") and isGrooveStats(event.PlayerNumber)) or isOutFoxOnline()) then
+						local check
+						local GrooveStatsHash = GSH[event.PlayerNumber]
+						if GrooveStatsHash then
+							if leaderboard[event.PlayerNumber] == 1 then
+								check = GSCache[GrooveStatsHash]
+							elseif leaderboard[event.PlayerNumber] == 2 then
+								check = EXCache[GrooveStatsHash]
+							elseif leaderboard[event.PlayerNumber] == 3 then
+								check = RPGCache[GrooveStatsHash]
+							elseif leaderboard[event.PlayerNumber] == 4 then
+								check = ITLCache[GrooveStatsHash]
+							end
+						end
+						if check and #check > 0 then
+							leaderboard[event.PlayerNumber] = leaderboard[event.PlayerNumber] < 4 and leaderboard[event.PlayerNumber] + 1 or 1
+							c["Leaderboard"..pname(event.PlayerNumber)]:GetChild("Header"):playcommand("Update")
+							c["Leaderboard"..pname(event.PlayerNumber)]:GetChild("Text"):playcommand("Update")
+							SOUND:PlayOnce( THEME:GetPathS( 'OptionsList', "pop" ) )
+						else
+							if isStepMania(20160400) then SCREENMAN:PlayInvalidSound() else SOUND:PlayOnce(THEME:GetPathS('Common',"invalid")) end
+						end
 					end
 				end
 			end
@@ -328,8 +370,8 @@ local function LeaderboardRequestProcessor_SM(res, _)
 					if hash == GSH[pn] then MESSAGEMAN:Broadcast("Update"..pname(pn)) end
 				end
 				if data[playerStr]["exLeaderboard"] then EXCache[hash] = data[playerStr]["exLeaderboard"] end
-				--if data[playerStr]["rpg"] and data[playerStr]["rpg"]["rpgLeaderboard"] then RPGCache[hash] = data[playerStr]["rpg"]["rpgLeaderboard"] end
-				--if data[playerStr]["itl"] and data[playerStr]["itl"]["itlLeaderboard"] then ITLCache[hash] = data[playerStr]["itl"]["itlLeaderboard"] end
+				if data[playerStr]["rpg"] and data[playerStr]["rpg"]["rpgLeaderboard"] then RPGCache[hash] = data[playerStr]["rpg"]["rpgLeaderboard"] end
+				if data[playerStr]["itl"] and data[playerStr]["itl"]["itlLeaderboard"] then ITLCache[hash] = data[playerStr]["itl"]["itlLeaderboard"] end
 			end
 		end
 	elseif res["status"] == "fail" then
@@ -365,8 +407,8 @@ local function LeaderboardRequestProcessor(res, _)
 					if hash == GSH[pn] then MESSAGEMAN:Broadcast("Update"..pname(pn)) end
 				end
 				if data[playerStr]["exLeaderboard"] then EXCache[hash] = data[playerStr]["exLeaderboard"] end
-				--if data[playerStr]["rpg"] and data[playerStr]["rpg"]["rpgLeaderboard"] then RPGCache[hash] = data[playerStr]["rpg"]["rpgLeaderboard"] end
-				--if data[playerStr]["itl"] and data[playerStr]["itl"]["itlLeaderboard"] then ITLCache[hash] = data[playerStr]["itl"]["itlLeaderboard"] end
+				if data[playerStr]["rpg"] and data[playerStr]["rpg"]["rpgLeaderboard"] then RPGCache[hash] = data[playerStr]["rpg"]["rpgLeaderboard"] end
+				if data[playerStr]["itl"] and data[playerStr]["itl"]["itlLeaderboard"] then ITLCache[hash] = data[playerStr]["itl"]["itlLeaderboard"] end
 			end
 		end
 	end
@@ -407,7 +449,7 @@ local Leaderboard = isOutFoxOnline() and Def.ActorFrame{
 							end
 						end,
 						OnFail = function(data)
-							lua.ReportScriptError("OnFail")
+							SCREENMAN:SystemMessage("FuncHighScoresForChart Failed!")
 							--lua.ReportScriptError(rin_inspect(data))
 						end
 					}
@@ -484,7 +526,7 @@ local Leaderboard = isOutFoxOnline() and Def.ActorFrame{
 							end
 						end,
 						OnFail = function(data)
-							lua.ReportScriptError("OnFail")
+							SCREENMAN:SystemMessage("FuncHighScoresForChart Failed!")
 							--lua.ReportScriptError(rin_inspect(data))
 						end
 					}
@@ -507,17 +549,27 @@ local Leaderboard = isITGmania() and RequestResponseActor()..{
 		local previousGrooveStatsHash
 		local toCache = {}
 		for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
-			GrooveStatsHash = LoadFromCache(GAMESTATE:GetCurrentSong(),GAMESTATE:GetCurrentSteps(pn),"GrooveStatsHash")
-			if GS[pn] and GS[pn].ApiKey ~= "" and GrooveStatsHash ~= "" and previousGrooveStatsHash ~= GrooveStatsHash and not GSCache[GrooveStatsHash] and not GSCaching[GrooveStatsHash] then
-				query["chartHashP"..pn:sub(-1)] = GrooveStatsHash
-				headers["x-api-key-player-"..pn:sub(-1)] = GS[pn].ApiKey
-				sendRequest = true
-				GSCaching[GrooveStatsHash] = true
-				toCache[#toCache+1] = GrooveStatsHash
-			elseif GSCache[GrooveStatsHash] then
-				MESSAGEMAN:Broadcast("Update"..pname(pn))
+			local song = GAMESTATE:GetCurrentSong()
+			if song then
+				local steps = GAMESTATE:GetCurrentSteps(pn)
+				if steps then
+					local filename = steps:GetFilename()
+					local filetype = filename:match("[^.]+$"):lower()
+					if filetype == "sm" or filetype == "ssc" or filetype == "edit" then
+						GrooveStatsHash = LoadFromCache(song,steps,"GrooveStatsHash")
+						if GS[pn] and GS[pn].ApiKey ~= "" and GrooveStatsHash ~= "" and previousGrooveStatsHash ~= GrooveStatsHash and not GSCache[GrooveStatsHash] and not GSCaching[GrooveStatsHash] then
+							query["chartHashP"..pn:sub(-1)] = GrooveStatsHash
+							headers["x-api-key-player-"..pn:sub(-1)] = GS[pn].ApiKey
+							sendRequest = true
+							GSCaching[GrooveStatsHash] = true
+							toCache[#toCache+1] = GrooveStatsHash
+						elseif GSCache[GrooveStatsHash] then
+							MESSAGEMAN:Broadcast("Update"..pname(pn))
+						end
+						previousGrooveStatsHash = GrooveStatsHash
+					end
+				end
 			end
-			previousGrooveStatsHash = GrooveStatsHash
 		end
 
 		if sendRequest then
@@ -542,16 +594,26 @@ local Leaderboard = isITGmania() and RequestResponseActor()..{
 		local previousGrooveStatsHash
 		local toCache = {}
 		for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
-			GrooveStatsHash = LoadFromCache(GAMESTATE:GetCurrentSong(),GAMESTATE:GetCurrentSteps(pn),"GrooveStatsHash")
-			if GS[pn].ApiKey ~= "" and GrooveStatsHash ~= "" and previousGrooveStatsHash ~= GrooveStatsHash and not GSCache[GrooveStatsHash] and not GSCaching[GrooveStatsHash] then
-				data["player"..pn:sub(-1)] = { chartHash=GrooveStatsHash, apiKey=GS[pn].ApiKey }
-				sendRequest = true
-				GSCaching[GrooveStatsHash] = true
-				toCache[#toCache+1] = GrooveStatsHash
-			elseif GSCache[GrooveStatsHash] then
-				MESSAGEMAN:Broadcast("Update"..pname(pn))
+			local song = GAMESTATE:GetCurrentSong()
+			if song then
+				local steps = GAMESTATE:GetCurrentSteps(pn)
+				if steps then
+					local filename = steps:GetFilename()
+					local filetype = filename:match("[^.]+$"):lower()
+					if filetype == "sm" or filetype == "ssc" or filetype == "edit" then
+						GrooveStatsHash = LoadFromCache(song,steps,"GrooveStatsHash")
+						if GS[pn].ApiKey ~= "" and GrooveStatsHash ~= "" and previousGrooveStatsHash ~= GrooveStatsHash and not GSCache[GrooveStatsHash] and not GSCaching[GrooveStatsHash] then
+							data["player"..pn:sub(-1)] = { chartHash=GrooveStatsHash, apiKey=GS[pn].ApiKey }
+							sendRequest = true
+							GSCaching[GrooveStatsHash] = true
+							toCache[#toCache+1] = GrooveStatsHash
+						elseif GSCache[GrooveStatsHash] then
+							MESSAGEMAN:Broadcast("Update"..pname(pn))
+						end
+						previousGrooveStatsHash = GrooveStatsHash
+					end
+				end
 			end
-			previousGrooveStatsHash = GrooveStatsHash
 		end
 
 		if sendRequest then MESSAGEMAN:Broadcast("Leaderboard", { data=data, callback=LeaderboardRequestProcessor_SM, tocache=toCache }) end
@@ -570,6 +632,9 @@ local states = {
 }
 
 return Def.ActorFrame{
+	CurrentSongChangedMessageCommand=function(self) self:stoptweening():sleep(0.4):queuecommand("HighlightReactivate") end,
+	CurrentCourseChangedMessageCommand=function(self) self:stoptweening():sleep(0.4):queuecommand("HighlightReactivate") end,
+	HighlightReactivateCommand=function() MESSAGEMAN:Broadcast("HighlightReactivated") end,
 	OnCommand=function(self)
 		if getenv("SessionStart") == 0 then setenv("SessionStart",GetTimeSinceStart()) end
 		if isOutFox(20200500) then
@@ -785,6 +850,7 @@ return Def.ActorFrame{
 		OffCommand=function(self) self:accelerate(0.75):addx(-SCREEN_WIDTH) end,
 		ShowCommand=function(self)
 			local _,lines = string.gsub(self:GetChild("Text"):GetText(),"\n","")
+			if not keyboardEnabled then lines = lines + 1 end
 			self:stoptweening():decelerate(0.3):y(SCREEN_BOTTOM-(127+15*lines)*WideScreenDiff()):playcommand("Update")
 		end,
 		HideCommand=function(self) self:stoptweening():decelerate(0.3):y(SCREEN_BOTTOM-100*WideScreenDiff()) end,
@@ -845,23 +911,39 @@ return Def.ActorFrame{
 									GSH[PLAYER_1] = chartKey
 									if getenv("SetScoreFA"..pname(PLAYER_1)) then cache = EXCache[chartKey] else cache = OFCache[chartKey] end
 								elseif ThemePrefs.Get("EnableGrooveStats") then
-									GrooveStatsHash = LoadFromCache(song,steps,"GrooveStatsHash")
-									GSH[PLAYER_1] = GrooveStatsHash
-									if leaderboard[PLAYER_1] == 1 then
-										cache = GSCache[GrooveStatsHash]
-									elseif leaderboard[PLAYER_1] == 2 then
-										cache = EXCache[GrooveStatsHash]
-									elseif leaderboard[PLAYER_1] == 3 then
-										cache = RPGCache[GrooveStatsHash]
-									elseif leaderboard[PLAYER_1] == 4 then
-										cache = ITLCache[GrooveStatsHash]
+									local filename = steps:GetFilename()
+									local filetype = filename:match("[^.]+$"):lower()
+									if filetype == "sm" or filetype == "ssc" or filetype == "edit" then
+										GrooveStatsHash = LoadFromCache(song,steps,"GrooveStatsHash")
+										GSH[PLAYER_1] = GrooveStatsHash
+										if leaderboard[PLAYER_1] == 1 then
+											cache = GSCache[GrooveStatsHash]
+										elseif leaderboard[PLAYER_1] == 2 then
+											cache = EXCache[GrooveStatsHash]
+										elseif leaderboard[PLAYER_1] == 3 then
+											cache = RPGCache[GrooveStatsHash]
+										elseif leaderboard[PLAYER_1] == 4 then
+											cache = ITLCache[GrooveStatsHash]
+										end
+									else
+										cache = {
+											{
+												["rank"] = 0,
+												["score"] = 0,
+												["name"] = "UNSUPPORTED",
+												["rank"] = 0,
+												["date"] = "1970-01-01 12:00:00",
+											}
+										}
 									end
 								end
 								if cache then
 									output = ""
 									for i=1,#cache do
 										local begin = string.len(output)
-										output = addToOutput(output,"#"..cache[i]["rank"].." | "..string.format("%03.2f%%",cache[i]["score"]/100).." | "..GetMachineTag(cache[i]).." | x"..string.format("%1.1f",cache[i]["rate"]).." | "..cache[i]["date"],"\n")
+										local add = ""
+										if cache[i]["rate"] then add = " | x"..string.format("%1.1f",cache[i]["rate"]) end
+										output = addToOutput(output,"#"..cache[i]["rank"].." | "..string.format("%03.2f%%",cache[i]["score"]/100).." | "..GetMachineTag(cache[i])..add.." | "..cache[i]["date"],"\n")
 										if cache[i]["isFail"] or cache[i]["isRival"] or cache[i]["isSelf"] then
 											coloring[#coloring+1] = {FIRST = begin, LAST = string.len(output)-begin, COLOR = cache[i]["isFail"] and color("#FF0000") or cache[i]["isRival"] and color("#AA00AA") or cache[i]["isSelf"] and color("#00FF00") or color("#FFFFFF")}
 										end
@@ -883,6 +965,7 @@ return Def.ActorFrame{
 							end
 						end
 						local _,lines = string.gsub(output,"\n","")
+						if not keyboardEnabled then lines = lines + 1 end
 						self:GetParent():stoptweening():decelerate(0.3):y(SCREEN_BOTTOM-(127+15.5*lines)*WideScreenDiff())
 					end
 					change[PLAYER_1] = output ~= "LOADING..."
@@ -910,6 +993,7 @@ return Def.ActorFrame{
 		OffCommand=function(self) self:accelerate(0.75):addx(SCREEN_WIDTH) end,
 		ShowCommand=function(self)
 			local _,lines = string.gsub(self:GetChild("Text"):GetText(),"\n","")
+			if not keyboardEnabled then lines = lines + 1 end
 			self:stoptweening():decelerate(0.3):y(SCREEN_BOTTOM-(127+15*lines)*WideScreenDiff()):playcommand("Update")
 		end,
 		HideCommand=function(self) self:stoptweening():decelerate(0.3):y(SCREEN_BOTTOM-100*WideScreenDiff()) end,
@@ -970,23 +1054,39 @@ return Def.ActorFrame{
 									GSH[PLAYER_2] = chartKey
 									if getenv("SetScoreFA"..pname(PLAYER_2)) then cache = EXCache[chartKey] else cache = OFCache[chartKey] end
 								elseif ThemePrefs.Get("EnableGrooveStats") then
-									GrooveStatsHash = LoadFromCache(song,steps,"GrooveStatsHash")
-									GSH[PLAYER_2] = GrooveStatsHash
-									if leaderboard[PLAYER_2] == 1 then
-										cache = GSCache[GrooveStatsHash]
-									elseif leaderboard[PLAYER_2] == 2 then
-										cache = EXCache[GrooveStatsHash]
-									elseif leaderboard[PLAYER_2] == 3 then
-										cache = RPGCache[GrooveStatsHash]
-									elseif leaderboard[PLAYER_2] == 4 then
-										cache = ITLCache[GrooveStatsHash]
+									local filename = steps:GetFilename()
+									local filetype = filename:match("[^.]+$"):lower()
+									if filetype == "sm" or filetype == "ssc" or filetype == "edit" then
+										GrooveStatsHash = LoadFromCache(song,steps,"GrooveStatsHash")
+										GSH[PLAYER_2] = GrooveStatsHash
+										if leaderboard[PLAYER_2] == 1 then
+											cache = GSCache[GrooveStatsHash]
+										elseif leaderboard[PLAYER_2] == 2 then
+											cache = EXCache[GrooveStatsHash]
+										elseif leaderboard[PLAYER_2] == 3 then
+											cache = RPGCache[GrooveStatsHash]
+										elseif leaderboard[PLAYER_2] == 4 then
+											cache = ITLCache[GrooveStatsHash]
+										end
+									else
+										cache = {
+											{
+												["rank"] = 0,
+												["score"] = 0,
+												["name"] = "UNSUPPORTED",
+												["rank"] = 0,
+												["date"] = "1970-01-01 12:00:00",
+											}
+										}
 									end
 								end
 								if cache then
 									output = ""
 									for i=1,#cache do
 										local begin = string.len(output)
-										output = addToOutput(output,"#"..cache[i]["rank"].." | "..string.format("%03.2f%%",cache[i]["score"]/100).." | "..GetMachineTag(cache[i]).." | "..cache[i]["date"],"\n")
+										local add = ""
+										if cache[i]["rate"] then add = " | x"..string.format("%1.1f",cache[i]["rate"]) end
+										output = addToOutput(output,"#"..cache[i]["rank"].." | "..string.format("%03.2f%%",cache[i]["score"]/100).." | "..GetMachineTag(cache[i])..add.." | "..cache[i]["date"],"\n")
 										if cache[i]["isFail"] or cache[i]["isRival"] or cache[i]["isSelf"] then
 											coloring[#coloring+1] = {FIRST = begin, LAST = string.len(output)-begin, COLOR = cache[i]["isFail"] and color("#FF0000") or cache[i]["isRival"] and color("#AA00AA") or cache[i]["isSelf"] and color("#00FF00") or color("#FFFFFF")}
 										end
@@ -1008,6 +1108,7 @@ return Def.ActorFrame{
 							end
 						end
 						local _,lines = string.gsub(output,"\n","")
+						if not keyboardEnabled then lines = lines + 1 end
 						self:GetParent():stoptweening():decelerate(0.3):y(SCREEN_BOTTOM-(127+15.5*lines)*WideScreenDiff())
 					end
 					change[PLAYER_2] = output ~= "LOADING..."
@@ -1039,7 +1140,7 @@ return Def.ActorFrame{
 				self:playcommand((courseMode and GAMESTATE:GetCurrentCourse() or GAMESTATE:GetCurrentSong()) and "Show" or "Hide")
 			end
 		end,
-		SelectMenuClosedMessageCommand=function(self) self:playcommand("Hide") end,
+		SelectMenuClosedMessageCommand=function(self,params) if params.Player == PLAYER_1 then self:playcommand("Hide") end end,
 		Def.Sprite {
 			Texture = THEME:GetPathG("_pane","elements/_artist "..(isFinal() and "final" or "normal")),
 			InitCommand=function(self) self:horizalign(left):zoom(0.5*WideScreenDiff()) end
@@ -1098,7 +1199,7 @@ return Def.ActorFrame{
 				self:playcommand((courseMode and GAMESTATE:GetCurrentCourse() or GAMESTATE:GetCurrentSong()) and "Show" or "Hide")
 			end
 		end,
-		SelectMenuClosedMessageCommand=function(self) self:playcommand("Hide") end,
+		SelectMenuClosedMessageCommand=function(self,params) if params.Player == PLAYER_2 then self:playcommand("Hide") end end,
 		Def.Sprite {
 			Texture = THEME:GetPathG("_pane","elements/_artist "..(isFinal() and "final" or "normal")),
 			InitCommand=function(self) self:horizalign(left):zoomx(-0.5*WideScreenDiff()):zoomy(0.5*WideScreenDiff()) end
@@ -1340,9 +1441,12 @@ return Def.ActorFrame{
 	t,
 
 	Def.ActorFrame{
+		InitCommand=function(self) self:y(isFinal() and SCREEN_BOTTOM-54*WideScreenDiff() or SCREEN_BOTTOM-51*WideScreenDiff()) end,
+		HelpDisplay,
+	},
+	Def.ActorFrame{
 		Name="SelButtonMenu",
 		InitCommand=function(self) self:y(isFinal() and SCREEN_BOTTOM-54*WideScreenDiff() or SCREEN_BOTTOM-51*WideScreenDiff()):visible(DifficultyChangingAvailable()) end,
-		HelpDisplay,
 		Def.ActorFrame{
 			InitCommand=function(self) self:x(SCREEN_CENTER_X-100*WideScreenDiff()) end,
 			Def.BitmapText {

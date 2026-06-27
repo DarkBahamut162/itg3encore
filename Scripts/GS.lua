@@ -8,6 +8,28 @@ GSCache = {}
 EXCache = {}
 RPGCache = {}
 ITLCache = {}
+preventedSLUpdate = false
+
+function isCaching()
+	for GSH,check in pairs(GSCaching) do if check then return check end end
+	for GSH,check in pairs(OFCaching) do if check then return check end end
+	for GSH,check in pairs(EXCaching) do if check then return check end end
+	return false
+end
+
+function checkSLUpdate()
+	if not isCaching() and preventedSLUpdate then
+		local screen = SCREENMAN:GetTopScreen()
+		screen:GetMusicWheel():Move(1)
+		screen:GetMusicWheel():Move(-1)
+		screen:GetMusicWheel():Move(0)
+		preventedSLUpdate = false
+	end
+end
+
+function isGrooveStats(pn)
+	return ThemePrefs.Get("EnableGrooveStats") and GS and GS.IsConnected and GS[pn] and GS[pn].ApiKey ~= ""
+end
 
 function RequestResponseActor_SM(name, timeout)
     local timeout = clamp(timeout, 1.0, 59.0)
@@ -471,7 +493,7 @@ function GetMachineTag(entry)
 end
 
 function GetJudgmentCounts(player)
-	local faplus = getenv("SetScoreFA"..pname(player)) or isITGmaniaOnline()
+	local faplus = getenv("SetScoreFA"..pname(player)) or ThemePrefs.Get("EnableGrooveStats") and isITGmaniaOnline()
 	local stats = STATSMAN:GetCurStageStats():GetPlayerStageStats(player)
 	local po = GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Preferred")
 	local StepsOrTrail = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentTrail(player) or GAMESTATE:GetCurrentSteps(player)

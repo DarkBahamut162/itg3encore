@@ -9,31 +9,35 @@ return Def.ActorFrame{
 			Texture = "frame "..(isFinal() and "final" or "normal"),
 			InitCommand=function(self) self:x(SCREEN_CENTER_X+140*WideScreenDiff()):y(SCREEN_CENTER_Y-18*WideScreenDiff()):zoom(WideScreenDiff()) end
 		},
-		Def.ActorFrame{
-			Def.Sprite {
-				Texture = "border red",
-				InitCommand=function(self) self:x(SCREEN_CENTER_X+140*WideScreenDiff()):y(SCREEN_CENTER_Y-18*WideScreenDiff()):zoom(WideScreenDiff()) end,
-				OnCommand=function(self) self:playcommand("Blink") end,
-				BlinkCommand=function(self)
-					self:diffuseshift():effectcolor1(color("#00000000")):effectcolor2(color("#00000000"))
-					local song = GAMESTATE:GetCurrentSong()
-					if song then
-						local spmp = VersionDateCheck(20150300) and song:GetPreviewMusicPath() or GetPreviewMusicPath(song)
-						local effectclock = spmp ~= "" and "beat" or "timerglobal"
-						if song:GetFirstSecond() <= 1 then
-							self:effectcolor1(color("#FFFFFFFF")):effectclock(effectclock):effectcolor2(color("#FFFFFFFF"))
-						elseif song:GetFirstSecond() <= 2 then
-							self:effectcolor1(color("#FFFFFFFF")):effectclock(effectclock):effectcolor2(color("#FFFFFF80"))
-						else
-							self:effectcolor1(color("#00000000")):effectclock(effectclock):effectcolor2(color("#00000000"))
-						end
-					end
-				end,
-				CurrentSongChangedMessageCommand=function(self) self:playcommand("Blink") end
-			}
+		Def.Sprite {
+			COndition=isFinal(),
+			Texture = "glow final",
+			InitCommand=function(self) self:x(SCREEN_CENTER_X+140*WideScreenDiff()):y(SCREEN_CENTER_Y-18*WideScreenDiff()):zoom(WideScreenDiff()) end,
+			OnCommand=function(self) self:diffuseshift():effectcolor1(color("#973636")):effectcolor2(color("#f11e1e")):effectclock("bgm") end
 		},
 		Def.Sprite {
-			Texture = "flare",
+			Texture = "border red "..(isFinal() and "final" or "normal"),
+			InitCommand=function(self) self:x(SCREEN_CENTER_X+140*WideScreenDiff()):y(SCREEN_CENTER_Y-18*WideScreenDiff()):zoom(WideScreenDiff()) end,
+			OnCommand=function(self) self:playcommand("Blink") end,
+			BlinkCommand=function(self)
+				self:diffuseshift():effectcolor1(color("#00000000")):effectcolor2(color("#00000000"))
+				local song = GAMESTATE:GetCurrentSong()
+				if song then
+					local spmp = VersionDateCheck(20150300) and song:GetPreviewMusicPath() or GetPreviewMusicPath(song)
+					local effectclock = spmp ~= "" and "beat" or "timerglobal"
+					if song:GetFirstSecond() <= 1 then
+						self:effectcolor1(color("#FFFFFFFF")):effectclock(effectclock):effectcolor2(color("#FFFFFFFF"))
+					elseif song:GetFirstSecond() <= 2 then
+						self:effectcolor1(color("#FFFFFFFF")):effectclock(effectclock):effectcolor2(color("#FFFFFF80"))
+					else
+						self:effectcolor1(color("#00000000")):effectclock(effectclock):effectcolor2(color("#00000000"))
+					end
+				end
+			end,
+			CurrentSongChangedMessageCommand=function(self) self:playcommand("Blink") end
+		},
+		Def.Sprite {
+			Texture = "flare "..(isFinal() and "final" or "normal"),
 			InitCommand=function(self) self:x(SCREEN_CENTER_X+142*WideScreenDiff()):y(SCREEN_CENTER_Y-18*WideScreenDiff()):blend(Blend.Add) end,
 			OnCommand=function(self) self:diffusealpha(0) end,
 			RefreshCommand=function(self) self:stoptweening(5):zoom(WideScreenDiff()):diffusealpha(1):sleep(0.1):accelerate(0.2):zoom(1.2*WideScreenDiff()):diffusealpha(0) end,

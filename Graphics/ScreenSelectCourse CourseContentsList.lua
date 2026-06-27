@@ -7,8 +7,8 @@ local transform = function(self,offsetFromCenter,itemIndex,numitems)
 	end
 end
 return Def.ActorFrame{
-	Def.Quad{ OnCommand=function(self) self:zoomto(678,200):MaskSource(true):x(69):y(-131) end },
-	Def.Quad{ OnCommand=function(self) self:zoomto(678,200):MaskSource():x(69):y(276) end },
+	Def.Quad{ OnCommand=function(self) self:zoomto(678,200):MaskSource(true):x(69):y(isFinal() and -125 or -131) end },
+	Def.Quad{ OnCommand=function(self) self:zoomto(678,200):MaskSource():x(69):y(isFinal() and 260 or 276) end },
 	CurrentCourseChangedMessageCommand=function(self) self:visible(GAMESTATE:GetCurrentCourse() ~= nil) end,
 	Def.CourseContentsList {
 		MaxSongs = 99,
@@ -31,7 +31,7 @@ return Def.ActorFrame{
 			InitCommand=function(self) self:setsize(270,44) end,
 			Def.BitmapText {
 				File = "_r bold 30px",
-				InitCommand=function(self) self:x(-145):zoom(0.8):shadowlength(0):halign(1) end,
+				InitCommand=function(self) self:x(isFinal() and -125 or -145):zoom(0.8):shadowlength(0):halign(1) end,
 				SetSongCommand=function(self, params)
 					if params.PlayerNumber ~= GAMESTATE:GetMasterPlayerNumber() then return end
 					self:settext( params.Meter )
@@ -51,7 +51,7 @@ return Def.ActorFrame{
 				end
 			},
 			Def.Quad{
-				InitCommand=function(self) self:x(64):y(24):ztest(false):zoomto(512,2):diffusealpha(0.45):blend(Blend.Add):fadeleft(0.25):faderight(0.25) end
+				InitCommand=function(self) self:x(isFinal() and 96 or 64):y(24):ztest(false):zoomto(512,2):diffusealpha(0.45):blend(Blend.Add):fadeleft(0.25):faderight(0.25) end
 			}
 		}
 	}

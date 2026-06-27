@@ -191,13 +191,30 @@ t[#t+1] = Def.ActorFrame {
 			self:x(SCREEN_CENTER_X+302*WideScreenDiff()):y(SCREEN_CENTER_Y-154*WideScreenDiff()):zoom(WideScreenDiff())
 		end
 	end,
-	CurrentSongChangedMessageCommand=function(self) if not courseMode then CDTitleUpdate(self) end end,
 	OnCommand=function(self) self:addx(SCREEN_WIDTH):decelerate(0.75):addx(-SCREEN_WIDTH) end,
 	OffCommand=function(self) self:accelerate(0.75):addx(SCREEN_WIDTH) end,
-	Def.Sprite {
-		Name="CDTitle",
-		InitCommand=function(self) self:vertalign(bottom) if GetScreenAspectRatio() <= 1 then self:horizalign(right) end end,
-		OnCommand=function(self) self:effectclock('beat'):diffuseramp():effectoffset(0.2):effectcolor1(color("#808080FF")):effectcolor2(color("#FFFFFFFF")):effectperiod(1):diffusealpha(0):linear(0.4):diffusealpha(1) end
+	Def.ActorFrame {
+		InitCommand=function(self)
+			if isFinal() then
+				local smaller = false
+				for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
+					local PlayerNoteGraph = (getenv("PlayerNoteGraph"..pname(pn)) or 1) > 0
+					local PlayerNoteGraphData = (getenv("PlayerNoteGraphData"..pname(pn)) or false)
+					if PlayerNoteGraph and PlayerNoteGraphData then smaller = true end
+				end
+				if GetScreenAspectRatio() > 1 then
+					self:zoom(smaller and 0.6 or 0.8):addx(smaller and 0 or 12):addy(-25)
+				else
+					self:addy(-8)
+				end
+			end
+		end,
+		CurrentSongChangedMessageCommand=function(self) if not courseMode then CDTitleUpdate(self) end end,
+		Def.Sprite {
+			Name="CDTitle",
+			InitCommand=function(self) self:vertalign(bottom) if GetScreenAspectRatio() <= 1 then self:horizalign(right) end end,
+			OnCommand=function(self) self:effectclock('beat'):diffuseramp():effectoffset(0.2):effectcolor1(color("#808080FF")):effectcolor2(color("#FFFFFFFF")):effectperiod(1):diffusealpha(0):linear(0.4):diffusealpha(1) end
+		}
 	}
 }
 

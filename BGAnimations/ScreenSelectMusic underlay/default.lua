@@ -156,8 +156,9 @@ local graphs = showGraph and (#GAMESTATE:GetHumanPlayers() == 1 and loadfile(THE
 		InitCommand=function(self) self:zoomx(GAMESTATE:GetMasterPlayerNumber() == PLAYER_1 and -1/3*WideScreenDiff() or 1/3*WideScreenDiff()):zoomy(1/3*WideScreenDiff())
 			if IsUsingWideScreen() then
 				self:x(SCREEN_CENTER_X+256):addy(SCREEN_CENTER_Y*1.13)
+				if isFinal() then self:addx(26) end
 			elseif GetScreenAspectRatio() <= 1 then
-				self:x(SCREEN_CENTER_X+152*WideScreenDiff()):addy(SCREEN_CENTER_Y+70*WideScreenDiff()):rotationz(90)
+				self:x(SCREEN_CENTER_X+152*WideScreenDiff()):addy(SCREEN_CENTER_Y+(70+(isFinal() and 6 or 0))*WideScreenDiff()):rotationz(90)
 			end
 		end,
 		CurrentSongChangedMessageCommand=function(self) if not courseMode then if GAMESTATE:GetCurrentSong() then self:diffusealpha(1) else self:diffusealpha(0) end end end,
@@ -169,8 +170,9 @@ local graphs = showGraph and (#GAMESTATE:GetHumanPlayers() == 1 and loadfile(THE
 			InitCommand=function(self) self:zoom(1/3*WideScreenDiff()):zoomy(1/3*WideScreenDiff())
 				if IsUsingWideScreen() then
 					self:x(SCREEN_CENTER_X+288):addy(SCREEN_CENTER_Y*1.13)
+					if isFinal() then self:addx(26) end
 				elseif GetScreenAspectRatio() <= 1 then
-					self:x(SCREEN_CENTER_X+224*WideScreenDiff()):addy(SCREEN_CENTER_Y+70*WideScreenDiff()):rotationz(90)
+					self:x(SCREEN_CENTER_X+224*WideScreenDiff()):addy(SCREEN_CENTER_Y+(70+(isFinal() and 6 or 0))*WideScreenDiff()):rotationz(90)
 				end
 			end,
 			CurrentSongChangedMessageCommand=function(self) if not courseMode then if GAMESTATE:GetCurrentSong() then self:diffusealpha(1) else self:diffusealpha(0) end end end,
@@ -182,8 +184,9 @@ local graphs = showGraph and (#GAMESTATE:GetHumanPlayers() == 1 and loadfile(THE
 		InitCommand=function(self) self:zoom(-1/3*WideScreenDiff()):zoomy(1/3*WideScreenDiff())
 			if IsUsingWideScreen() then
 				self:x(SCREEN_CENTER_X+256):addy(SCREEN_CENTER_Y*1.13)
+				if isFinal() then self:addx(26) end
 			elseif GetScreenAspectRatio() <= 1 then
-				self:x(SCREEN_CENTER_X+80*WideScreenDiff()):addy(SCREEN_CENTER_Y+70*WideScreenDiff()):rotationz(90)
+				self:x(SCREEN_CENTER_X+80*WideScreenDiff()):addy(SCREEN_CENTER_Y+(70+(isFinal() and 6 or 0))*WideScreenDiff()):rotationz(90)
 			end
 		end,
 		CurrentSongChangedMessageCommand=function(self) if not courseMode then if GAMESTATE:GetCurrentSong() then self:diffusealpha(1) else self:diffusealpha(0) end end end,
@@ -239,9 +242,9 @@ return Def.ActorFrame{
 					end
 				end
 				if (params.Move == -1 and chartint > 1) or (params.Move == 1 and chartint < #stepsAll) then
-					GAMESTATE:SetCurrentSteps(player, stepsAll[chartint+params.Move])
-					GAMESTATE:SetPreferredDifficulty(player, stepsAll[chartint+params.Move]:GetDifficulty())
-					SOUND:PlayOnce(THEME:GetPathS("ScreenSelectMusic difficulty", params.Move == -1 and "easier" or "harder"), true)
+					GAMESTATE:SetCurrentSteps(player,stepsAll[chartint+params.Move])
+					GAMESTATE:SetPreferredDifficulty(player,stepsAll[chartint+params.Move]:GetDifficulty())
+					SOUND:PlayOnce(THEME:GetPathS("ScreenSelectMusic difficulty",params.Move == -1 and "easier" or "harder"),true)
 				end
 			end
 		end
@@ -264,7 +267,7 @@ return Def.ActorFrame{
 						if check1 == check2 then
 							if isStepMania(20160400) then SCREENMAN:PlayInvalidSound() else SOUND:PlayOnce(THEME:GetPathS('Common',"invalid")) end
 						else
-							SOUND:PlayOnce(THEME:GetPathS("MusicWheel", "expand"), true)
+							SOUND:PlayOnce(THEME:GetPathS("MusicWheel","expand"),true)
 						end
 					end
 				else
@@ -274,7 +277,7 @@ return Def.ActorFrame{
 					if "Section" == ToEnumShortString(wheel:GetSelectedType()) then
 						local check2 = wheel:GetSelectedSection()
 						if check1 ~= check2 then
-							SOUND:PlayOnce(THEME:GetPathS("MusicWheel", "expand"), true)
+							SOUND:PlayOnce(THEME:GetPathS("MusicWheel","expand"),true)
 						end
 						wheel:SetOpenSection(wheel:GetSelectedSection())
 					end
@@ -308,7 +311,7 @@ return Def.ActorFrame{
 		end
 	end,
 	Def.Sprite {
-		Texture = "mask",
+		Texture = "mask "..(isFinal() and "final" or "normal"),
 		InitCommand=function(self) self:x(SCREEN_CENTER_X+139.5*WideScreenDiff()):y(SCREEN_CENTER_Y-16*WideScreenDiff()):zoom(WideScreenDiff()):z(2):zwrite(true):blend(Blend.NoEffect) end,
 		OnCommand=function(self) self:addx(SCREEN_WIDTH):decelerate(0.75):addx(-SCREEN_WIDTH) end,
 		OffCommand=function(self) self:accelerate(0.75):addx(SCREEN_WIDTH) end

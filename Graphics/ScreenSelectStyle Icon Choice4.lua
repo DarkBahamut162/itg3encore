@@ -10,14 +10,14 @@ return Def.ActorFrame{
 	Def.ActorFrame{
 		InitCommand=function(self) self:x(SCREEN_LEFT+111*WideScreenDiff()):y(SCREEN_CENTER_Y+25+120*WideScreenDiff()):horizalign(left) end,
 		Def.Sprite {
-			Texture = THEME:GetPathG("_join","icons/choice3"),
+			Texture = THEME:GetPathG("_join","icons/choice4"),
 			OnCommand=function(self) self:y(isFinal() and -4.5 or -2):zoomto((isFinal() and 155 or 150)*WideScreenDiff(),(isFinal() and 110 or 110)*WideScreenDiff()) end,
 			GainFocusCommand=function(self) self:accelerate(0.1):diffuse(color("#FFFFFF")):x((isFinal() and 29 or 26)*WideScreenDiff()) end,
 			LoseFocusCommand=function(self) self:finishtweening():decelerate(0.1):diffuse(color("#636363")):x((isFinal() and 9 or 6)*WideScreenDiff()) end,
 			OffFocusCommand=function(self) self:accelerate(0.4):addx(-SCREEN_WIDTH*.5) end
 		},
 		Def.Sprite {
-			Texture = THEME:GetPathG("_join","icons/double_icon "..(isFinal() and "final" or "normal")),
+			Texture = THEME:GetPathG("_join","icons/"..(isFinal() and "couple_icon" or "co-op_icon")),
 			InitCommand=function(self) self:zoom(WideScreenDiff()) end,
 			GainFocusCommand=function(self) self:accelerate(0.1):diffuse(color("#FFFFFF")):x(20*WideScreenDiff()) end,
 			LoseFocusCommand=function(self) self:finishtweening():decelerate(0.1):diffuse(color("#636363")):x(0) end,
