@@ -24,8 +24,8 @@ return Def.ActorFrame{
 			OffFocusCommand=function(self) self:accelerate(0.4):addx(-SCREEN_WIDTH*.5) end
 		},
 		Def.Sprite {
-			Texture = THEME:GetPathG("_join","icons/gameglow"),
-			InitCommand=function(self) self:zoom(WideScreenDiff()):zoomx((isFinal() and 1.03 or 1)*WideScreenDiff()):blend(Blend.Add) end,
+			Texture = THEME:GetPathG("_join","icons/gameglow "..(isFinal() and "final" or "normal")),
+			InitCommand=function(self) self:zoom(WideScreenDiff()):zoomx(WideScreenDiff()):blend(Blend.Add) end,
 			GainFocusCommand=function(self) self:accelerate(0.1):diffusealpha(1):x(-(isFinal() and 17 or 20)*WideScreenDiff()):sleep(0.07):linear(0.2):diffusealpha(0) end,
 			LoseFocusCommand=function(self) self:finishtweening():decelerate(0.1):x(0):diffusealpha(0) end,
 			OffFocusCommand=function(self) self:accelerate(0.4):addx(-SCREEN_WIDTH*.5) end
