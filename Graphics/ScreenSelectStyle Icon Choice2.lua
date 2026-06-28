@@ -12,14 +12,14 @@ return Def.ActorFrame{
 		Def.Sprite {
 			Texture = THEME:GetPathG("_join","icons/choice2"),
 			OnCommand=function(self) self:y(isFinal() and -4.5 or -2):zoomto((isFinal() and 155 or 150)*WideScreenDiff(),(isFinal() and 110 or 110)*WideScreenDiff()) end,
-			GainFocusCommand=function(self) self:accelerate(0.1):diffuse(color("#FFFFFF")):x((isFinal() and 29 or 26)*WideScreenDiff()) end,
+			GainFocusCommand=function(self) self:accelerate(0.1):diffuse(color("#FFFFFF")):x(26*WideScreenDiff()) end,
 			LoseFocusCommand=function(self) self:finishtweening():decelerate(0.1):diffuse(color("#636363")):x((isFinal() and 9 or 6)*WideScreenDiff()) end,
 			OffFocusCommand=function(self) self:accelerate(0.4):addx(-SCREEN_WIDTH*.5) end
 		},
 		Def.Sprite {
 			Texture = THEME:GetPathG("_join","icons/versus_icon "..(isFinal() and "final" or "normal")),
 			InitCommand=function(self) self:zoom(WideScreenDiff()) end,
-			GainFocusCommand=function(self) self:accelerate(0.1):diffuse(color("#FFFFFF")):x(20*WideScreenDiff()) end,
+			GainFocusCommand=function(self) self:accelerate(0.1):diffuse(color("#FFFFFF")):x((isFinal() and 17 or 20)*WideScreenDiff()) end,
 			LoseFocusCommand=function(self) self:finishtweening():decelerate(0.1):diffuse(color("#636363")):x(0) end,
 			OffFocusCommand=function(self) self:accelerate(0.4):addx(-SCREEN_WIDTH*.5) end
 		},
