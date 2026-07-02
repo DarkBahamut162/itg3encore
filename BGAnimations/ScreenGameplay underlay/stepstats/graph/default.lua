@@ -697,7 +697,7 @@ local function GetVerticesLife(stepsPerSecList)
     local seconds = GAMESTATE:GetCurMusicSeconds()
     if seconds > last then return life_verts end
     local x = scale( seconds, 0, last, 0, graphH*3.825 )
-    local y = scale( LifeMeter:GetLife(), 0, 1, 0, graphH )
+    local y = scale( LifeMeter and LifeMeter:GetLife() or 0, 0, 1, 0, graphH )
 
     if #life_verts >= 2 and life_verts[#life_verts][1][2] == y then
         life_verts[#life_verts][1] = {x, y, 0}

@@ -219,7 +219,8 @@ end
 
 function checkBMS()
 	if IsGame("beat") or IsGame("be-mu") or IsGame("popn") or IsGame("po-mu") then
-		local filename = GAMESTATE:GetCurrentSteps(GAMESTATE:GetMasterPlayerNumber()):GetFilename()
+		local steps = GAMESTATE:GetCurrentSteps(GAMESTATE:GetMasterPlayerNumber())
+		local filename = steps and steps:GetFilename() or ""
 		if not filename or filename == "" then return false end
 		local filetype = filename:match("[^.]+$"):sub(-3,3):lower()
 		local bms = filetype == "bms" or filetype == "bme" or filetype == "bml" or filetype == "pms"
@@ -1462,6 +1463,7 @@ function cacheStepX(Song,Step)
 end
 
 function LoadFromCache(Song,Step,key)
+	if not Step then return nil end
 	local file = getStepCacheFile(Step)
 	if not stepCache[file] then 
 		if not FILEMAN:DoesFileExist(file) then

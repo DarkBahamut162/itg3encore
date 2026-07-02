@@ -501,6 +501,7 @@ function setCol()
 		SongOrCourse = GAMESTATE:GetCurrentSong()
 		StepsOrTrail = GAMESTATE:GetCurrentSteps(player)
 	end
+	if not StepsOrTrail then return end
 	trueFirst = tonumber(LoadFromCache(SongOrCourse,StepsOrTrail,"TrueFirstBeat"))
 	local timingData = StepsOrTrail:GetTimingData()
 	local chartint = 1
@@ -785,7 +786,6 @@ if columnCues > 0 or columnFlashes > 0 then
 					if not index then index = note[1] end
 					if note[1] ~= index then break end
 					self:GetChild("Column"..note[2]):diffuse(Color("White"))
-					break
 				end
 			end
 		end,
@@ -797,7 +797,6 @@ if columnCues > 0 or columnFlashes > 0 then
 					if not index then index = note[1] end
 					if note[1] ~= index then break end
 					self:GetChild("Column"..note[2]):diffuse(Color("White"))
-					break
 				end
 				self:SetUpdateFunction(Update)
 			end
