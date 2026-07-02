@@ -368,7 +368,7 @@ if ThemePrefs.Get("EnableGrooveStats") or isOutFoxOnline() then
 				["OnlineClosed"..pname(pn).."MessageCommand"]=function(self) self:accelerate(0.1):addx(-SCREEN_CENTER_X) end,
 				Def.ActorFrame{
 					Name="Unsubmitted",
-					Condition=GAMESTATE:IsHumanPlayer(pn) and isGrooveStats(pn) and not isOutFoxOnline(),
+					Condition=GAMESTATE:IsHumanPlayer(pn) and (isGrooveStats(pn) or isOutFoxOnline()),
 					Def.Sprite { Texture="main" },
 					Def.ActorFrame{
 						Name="QR",

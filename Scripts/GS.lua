@@ -460,8 +460,8 @@ function ValidForGrooveStats(player,checkAUTO)
 	local rate = GAMESTATE:GetSongOptionsObject("ModsLevel_Song"):MusicRate() * 100
 	valid[12] = 100 <= rate and rate <= 300
 
+	local po = GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Preferred")
 	if player then
-		local po = GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Preferred")
 		valid[13] = not (po:Little() or po:NoHolds() or po:NoStretch() or po:NoHands() or po:NoJumps() or po:NoFakes() or po:NoLifts() or po:NoQuads() or po:NoRolls())
 		valid[14] = not (po:Wide() or po:Skippy() or po:Quick() or po:Echo() or po:BMRize() or po:Stomp() or po:Big())
 
