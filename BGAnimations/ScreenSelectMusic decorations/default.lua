@@ -531,17 +531,17 @@ if ThemePrefs.Get("ShowPackClears") and not courseMode then
 			Def.BitmapText {
 				File = "_v 26px bold shadow",
 				Text="☆☆☆",
-				InitCommand=function(self) self:x(-192):y(96):valign(0):halign(0) end
+				InitCommand=function(self) self:x(-192):y(isFinal() and 88 or 96):valign(0):halign(0) end
 			},
 			Def.BitmapText {
 				File = "_v 26px bold shadow",
 				Text="☆☆",
-				InitCommand=function(self) self:x(-192):y(128):valign(0):halign(0) end
+				InitCommand=function(self) self:x(-192):y(isFinal() and 112 or 128):valign(0):halign(0) end
 			},
 			Def.BitmapText {
 				File = "_v 26px bold shadow",
 				Text="☆",
-				InitCommand=function(self) self:x(-192):y(160):valign(0):halign(0) end
+				InitCommand=function(self) self:x(-192):y(isFinal() and 136 or 160):valign(0):halign(0) end
 			},
 			Def.BitmapText {
 				File = "_v 26px bold shadow",
@@ -551,12 +551,12 @@ if ThemePrefs.Get("ShowPackClears") and not courseMode then
 			Def.BitmapText {
 				File = "_v 26px bold shadow",
 				Text="S",
-				InitCommand=function(self) self:x(-64):y(96):valign(0):halign(0) end
+				InitCommand=function(self) self:x(-64):y(isFinal() and 88 or 96):valign(0):halign(0) end
 			},
 			Def.BitmapText {
 				File = "_v 26px bold shadow",
 				Text="S-",
-				InitCommand=function(self) self:x(-64):y(128):valign(0):halign(0) end
+				InitCommand=function(self) self:x(-64):y(isFinal() and 112 or 128):valign(0):halign(0) end
 			},
 			Def.BitmapText {
 				File = "_v 26px bold shadow",
@@ -566,12 +566,12 @@ if ThemePrefs.Get("ShowPackClears") and not courseMode then
 			Def.BitmapText {
 				File = "_v 26px bold shadow",
 				Text="A",
-				InitCommand=function(self) self:x(32):y(96):valign(0):halign(0) end
+				InitCommand=function(self) self:x(32):y(isFinal() and 88 or 96):valign(0):halign(0) end
 			},
 			Def.BitmapText {
 				File = "_v 26px bold shadow",
 				Text="A-",
-				InitCommand=function(self) self:x(32):y(128):valign(0):halign(0) end
+				InitCommand=function(self) self:x(32):y(isFinal() and 112 or 128):valign(0):halign(0) end
 			},
 			Def.BitmapText {
 				File = "_v 26px bold shadow",
@@ -581,12 +581,12 @@ if ThemePrefs.Get("ShowPackClears") and not courseMode then
 			Def.BitmapText {
 				File = "_v 26px bold shadow",
 				Text="B",
-				InitCommand=function(self) self:x(128):y(96):valign(0):halign(0) end
+				InitCommand=function(self) self:x(128):y(isFinal() and 88 or 96):valign(0):halign(0) end
 			},
 			Def.BitmapText {
 				File = "_v 26px bold shadow",
 				Text="B-",
-				InitCommand=function(self) self:x(128):y(128):valign(0):halign(0) end
+				InitCommand=function(self) self:x(128):y(isFinal() and 112 or 128):valign(0):halign(0) end
 			},
 			Def.BitmapText {
 				File = "_v 26px bold shadow",
@@ -596,12 +596,12 @@ if ThemePrefs.Get("ShowPackClears") and not courseMode then
 			Def.BitmapText {
 				File = "_v 26px bold shadow",
 				Text="C",
-				InitCommand=function(self) self:x(224):y(96):valign(0):halign(0) end
+				InitCommand=function(self) self:x(224):y(isFinal() and 88 or 96):valign(0):halign(0) end
 			},
 			Def.BitmapText {
 				File = "_v 26px bold shadow",
 				Text="C-",
-				InitCommand=function(self) self:x(224):y(128):valign(0):halign(0) end
+				InitCommand=function(self) self:x(224):y(isFinal() and 112 or 128):valign(0):halign(0) end
 			},
 			Def.BitmapText {
 				File = "_v 26px bold shadow",
@@ -611,27 +611,27 @@ if ThemePrefs.Get("ShowPackClears") and not courseMode then
 			Def.BitmapText {
 				File = "_v 26px bold shadow",
 				Text="D",
-				InitCommand=function(self) self:x(320):y(96):valign(0):halign(0) end
+				InitCommand=function(self) self:x(320):y(isFinal() and 88 or 96):valign(0):halign(0) end
 			},
 			Def.BitmapText {
 				File = "_v 26px bold shadow",
 				Text="F",
-				InitCommand=function(self) self:x(320):y(128):valign(0):halign(0) end
+				InitCommand=function(self) self:x(320):y(isFinal() and 112 or 128):valign(0):halign(0) end
 			},
 			Def.BitmapText {
 				File = "_v 26px bold shadow",
 				Text="FC",
-				InitCommand=function(self) self:visible(ThemePrefs.Get("ShowLamps")):x(-64):y(160):diffuse(color("#7BE8FF")):valign(0):halign(0) end
+				InitCommand=function(self) self:visible(ThemePrefs.Get("ShowLamps")):x(-64):y(isFinal() and 136 or 160):diffuse(color("#7BE8FF")):valign(0):halign(0) end
 			},
 			Def.BitmapText {
 				File = "_v 26px bold shadow",
 				Text="FC",
-				InitCommand=function(self) self:visible(ThemePrefs.Get("ShowLamps")):x(128):y(160):diffuse(color("#FFA959")):valign(0):halign(0) end
+				InitCommand=function(self) self:visible(ThemePrefs.Get("ShowLamps")):x(128):y(isFinal() and 136 or 160):diffuse(color("#FFA959")):valign(0):halign(0) end
 			},
 			Def.BitmapText {
 				File = "_v 26px bold shadow",
 				Text="FC",
-				InitCommand=function(self) self:visible(ThemePrefs.Get("ShowLamps")):x(320):y(160):diffuse(color("#67FF19")):valign(0):halign(0) end
+				InitCommand=function(self) self:visible(ThemePrefs.Get("ShowLamps")):x(320):y(isFinal() and 136 or 160):diffuse(color("#67FF19")):valign(0):halign(0) end
 			},
 			Def.BitmapText {
 				Name="Grade_Tier01",
@@ -641,17 +641,17 @@ if ThemePrefs.Get("ShowPackClears") and not courseMode then
 			Def.BitmapText {
 				Name="Grade_Tier02",
 				File = "_v 26px bold shadow",
-				InitCommand=function(self) self:x(-192):y(96):valign(0):halign(1) end
+				InitCommand=function(self) self:x(-192):y(isFinal() and 88 or 96):valign(0):halign(1) end
 			},
 			Def.BitmapText {
 				Name="Grade_Tier03",
 				File = "_v 26px bold shadow",
-				InitCommand=function(self) self:x(-192):y(128):valign(0):halign(1) end
+				InitCommand=function(self) self:x(-192):y(isFinal() and 112 or 128):valign(0):halign(1) end
 			},
 			Def.BitmapText {
 				Name="Grade_Tier04",
 				File = "_v 26px bold shadow",
-				InitCommand=function(self) self:x(-192):y(160):valign(0):halign(1) end
+				InitCommand=function(self) self:x(-192):y(isFinal() and 136 or 160):valign(0):halign(1) end
 			},
 			Def.BitmapText {
 				Name="Grade_Tier05",
@@ -661,12 +661,12 @@ if ThemePrefs.Get("ShowPackClears") and not courseMode then
 			Def.BitmapText {
 				Name="Grade_Tier06",
 				File = "_v 26px bold shadow",
-				InitCommand=function(self) self:x(-64):y(96):valign(0):halign(1) end
+				InitCommand=function(self) self:x(-64):y(isFinal() and 88 or 96):valign(0):halign(1) end
 			},
 			Def.BitmapText {
 				Name="Grade_Tier07",
 				File = "_v 26px bold shadow",
-				InitCommand=function(self) self:x(-64):y(128):valign(0):halign(1) end
+				InitCommand=function(self) self:x(-64):y(isFinal() and 112 or 128):valign(0):halign(1) end
 			},
 			Def.BitmapText {
 				Name="Grade_Tier08",
@@ -676,12 +676,12 @@ if ThemePrefs.Get("ShowPackClears") and not courseMode then
 			Def.BitmapText {
 				Name="Grade_Tier09",
 				File = "_v 26px bold shadow",
-				InitCommand=function(self) self:x(32):y(96):valign(0):halign(1) end
+				InitCommand=function(self) self:x(32):y(isFinal() and 88 or 96):valign(0):halign(1) end
 			},
 			Def.BitmapText {
 				Name="Grade_Tier10",
 				File = "_v 26px bold shadow",
-				InitCommand=function(self) self:x(32):y(128):valign(0):halign(1) end
+				InitCommand=function(self) self:x(32):y(isFinal() and 112 or 128):valign(0):halign(1) end
 			},
 			Def.BitmapText {
 				Name="Grade_Tier11",
@@ -691,12 +691,12 @@ if ThemePrefs.Get("ShowPackClears") and not courseMode then
 			Def.BitmapText {
 				Name="Grade_Tier12",
 				File = "_v 26px bold shadow",
-				InitCommand=function(self) self:x(128):y(96):valign(0):halign(1) end
+				InitCommand=function(self) self:x(128):y(isFinal() and 88 or 96):valign(0):halign(1) end
 			},
 			Def.BitmapText {
 				Name="Grade_Tier13",
 				File = "_v 26px bold shadow",
-				InitCommand=function(self) self:x(128):y(128):valign(0):halign(1) end
+				InitCommand=function(self) self:x(128):y(isFinal() and 112 or 128):valign(0):halign(1) end
 			},
 			Def.BitmapText {
 				Name="Grade_Tier14",
@@ -706,12 +706,12 @@ if ThemePrefs.Get("ShowPackClears") and not courseMode then
 			Def.BitmapText {
 				Name="Grade_Tier15",
 				File = "_v 26px bold shadow",
-				InitCommand=function(self) self:x(224):y(96):valign(0):halign(1) end
+				InitCommand=function(self) self:x(224):y(isFinal() and 88 or 96):valign(0):halign(1) end
 			},
 			Def.BitmapText {
 				Name="Grade_Tier16",
 				File = "_v 26px bold shadow",
-				InitCommand=function(self) self:x(224):y(128):valign(0):halign(1) end
+				InitCommand=function(self) self:x(224):y(isFinal() and 112 or 128):valign(0):halign(1) end
 			},
 			Def.BitmapText {
 				Name="Grade_Tier17",
@@ -721,27 +721,27 @@ if ThemePrefs.Get("ShowPackClears") and not courseMode then
 			Def.BitmapText {
 				Name="Grade_Tier18",
 				File = "_v 26px bold shadow",
-				InitCommand=function(self) self:x(320):y(96):valign(0):halign(1) end
+				InitCommand=function(self) self:x(320):y(isFinal() and 88 or 96):valign(0):halign(1) end
 			},
 			Def.BitmapText {
 				Name="Grade_Failed",
 				File = "_v 26px bold shadow",
-				InitCommand=function(self) self:x(320):y(128):valign(0):halign(1) end
+				InitCommand=function(self) self:x(320):y(isFinal() and 112 or 128):valign(0):halign(1) end
 			},
 			Def.BitmapText {
 				Name="MFC",
 				File = "_v 26px bold shadow",
-				InitCommand=function(self) self:x(-64):y(160):diffuse(color("#7BE8FF")):valign(0):halign(1) end
+				InitCommand=function(self) self:x(-64):y(isFinal() and 136 or 160):diffuse(color("#7BE8FF")):valign(0):halign(1) end
 			},
 			Def.BitmapText {
 				Name="PFC",
 				File = "_v 26px bold shadow",
-				InitCommand=function(self) self:x(128):y(160):diffuse(color("#FFA959")):valign(0):halign(1) end
+				InitCommand=function(self) self:x(128):y(isFinal() and 136 or 160):diffuse(color("#FFA959")):valign(0):halign(1) end
 			},
 			Def.BitmapText {
 				Name="GFC",
 				File = "_v 26px bold shadow",
-				InitCommand=function(self) self:x(320):y(160):diffuse(color("#67FF19")):valign(0):halign(1) end
+				InitCommand=function(self) self:x(320):y(isFinal() and 136 or 160):diffuse(color("#67FF19")):valign(0):halign(1) end
 			}
 		}
 	}
