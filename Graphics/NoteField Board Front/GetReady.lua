@@ -3,7 +3,7 @@ local SongOrCourse = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentTrail(play
 local StepsOrTrail = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentTrail(player):GetTrailEntry(1):GetSteps() or GAMESTATE:GetCurrentSteps(player)
 local first = 0
 
-if ThemePrefs.Get("UseStepCache") then
+if UsesStepCache() then
 	first = tonumber(LoadFromCache(SongOrCourse,StepsOrTrail,"TrueFirstSecond"))
 else
 	first = SongOrCourse:GetFirstSecond()

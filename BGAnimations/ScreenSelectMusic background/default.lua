@@ -1,7 +1,7 @@
 return Def.ActorFrame{
 	OnCommand=function()
 		if GAMESTATE:GetCurrentStageIndex() > 0 then
-			if ThemePrefs.Get("UseStepCache") and ThemePrefs.Get("UseStepCacheQuickload") and addedToStepCache then QuickSaveStepCache() end
+			if UsesStepCache() and ThemePrefs.Get("UseStepCacheQuickload") and addedToStepCache then QuickSaveStepCache() end
 			if GAMESTATE:IsEventMode() then SummaryBackup() end
 		end
 	end,

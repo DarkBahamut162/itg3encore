@@ -70,7 +70,7 @@ local _start = GetTimeSinceStart()
 local HelpDisplay = isEtterna("0.65") and Def.BitmapText {
 	File=THEME:GetPathF("HelpDisplay","text"),
 	InitCommand=function(self)
-		local s = THEME:GetString("ScreenSelectMusic", "HelpSelectText"..(ThemePrefs.Get("SLFavorites") and "WithSL" or ""))
+		local s = THEME:GetString("ScreenSelectMusic", "HelpSelectText"..(ThemePrefs.Get("SLFavorites") and "WithSL" or "")..(ThemePrefs.Get("EnableGrooveStats") and "AndGS" or ""))
 		_text = split("::",s)
 		self:diffuseshift():effectcolor1(color("#FFFFFF")):effectcolor2(color("#9A9999")):effectperiod(1.5):maxwidth(269):shadowlength(2):queuecommand("Update")
 		self:CenterX():zoomx(0.3*WideScreenDiff()):zoomy(0.6*WideScreenDiff()):diffusealpha(0)
@@ -93,7 +93,7 @@ local HelpDisplay = isEtterna("0.65") and Def.BitmapText {
 	} or Def.HelpDisplay {
 	File=THEME:GetPathF("HelpDisplay", "text"),
 	InitCommand=function(self)
-		local s = isOutFox(20230000) and THEME:GetString("ScreenSelectMusic", "HelpSelectTextOutFox"..(ThemePrefs.Get("SLFavorites") and "WithSL" or "")) or THEME:GetString("ScreenSelectMusic", "HelpSelectText"..(ThemePrefs.Get("SLFavorites") and "WithSL" or ""))
+		local s = THEME:GetString("ScreenSelectMusic", "HelpSelectText"..(isOutFox(20230000) and "OutFox" or "")..(ThemePrefs.Get("SLFavorites") and "WithSL" or "")..(ThemePrefs.Get("EnableGrooveStats") and "AndGS" or ""))
 		self:SetSecsBetweenSwitches(THEME:GetMetric("HelpDisplay","TipSwitchTime"))
 		self:SetTipsColonSeparated(s)
 		self:maxwidth(269):shadowlength(2)
@@ -122,6 +122,13 @@ local change = { PLAYER_1 = false, PLAYER_2 = false }
 local highscores = { PLAYER_1 = 0, PLAYER_2 = 0 }
 local GSH = { [PLAYER_1] = nil, [PLAYER_2] = nil }
 local c
+
+local difficultyList = {
+	"Difficulty_Beginner","Difficulty_Easy","Difficulty_Medium","Difficulty_Hard","Difficulty_Challenge","Difficulty_Edit",
+	"Difficulty_D1","Difficulty_D2","Difficulty_D3","Difficulty_D4","Difficulty_D5",
+	"Difficulty_D6","Difficulty_D7","Difficulty_D8","Difficulty_D9","Difficulty_D10",
+	"Difficulty_D11","Difficulty_D12","Difficulty_D13","Difficulty_D14","Difficulty_D15"
+}
 
 local InputHandler = function(event)
 	if searching then
@@ -351,11 +358,83 @@ local InputHandler = function(event)
 						end
 					end
 				end
+			elseif (event.GameButton == "MenuLeft" or event.GameButton == "MenuRight") and GAMESTATE:IsHumanPlayer(event.PlayerNumber) then
+				if shiftHeld[event.PlayerNumber] then
+					if event.type == "InputEventType_FirstPress" then
+						if not isCaching() then
+							local SongOrCourse = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentCourse() or GAMESTATE:GetCurrentSong()
+							local StepsOrTrail = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentTrail(event.PlayerNumber) or GAMESTATE:GetCurrentSteps(event.PlayerNumber)
+
+							if not SongOrCourse or not StepsOrTrail then
+								SOUND:PlayOnce(THEME:GetPathS('MemoryCardManager',"error"))
+								return
+							end
+
+							local currentDifficulty = StepsOrTrail:GetDifficulty()
+							local selected = FindInTable(currentDifficulty, difficultyList)
+
+							if not selected then
+								SOUND:PlayOnce(THEME:GetPathS('MemoryCardManager',"error"))
+								return
+							end
+
+							local chosen = nil
+							local targetDirection = (event.GameButton == "MenuLeft") and -1 or 1
+
+							if GAMESTATE:IsCourseMode() then
+								for trail in ivalues(SongOrCourse:GetAllTrails()) do
+									local newIdx = FindInTable(trail:GetDifficulty(), difficultyList)
+									if newIdx then
+										local diff = newIdx - selected
+										if (targetDirection == -1 and diff < 0) or (targetDirection == 1 and diff > 0) then
+											if not chosen or math.abs(diff) < math.abs(FindInTable(chosen:GetDifficulty(), difficultyList) - selected) then
+												chosen = trail
+											end
+										end
+									end
+								end
+							else
+								-- Non-course mode
+								local stepsType = GAMESTATE:GetCurrentStyle(event.PlayerNumber):GetStepsType()
+								local availableSteps = SongOrCourse:GetStepsByStepsType(stepsType)
+
+								for steps in ivalues(availableSteps) do
+									local newIdx = FindInTable(steps:GetDifficulty(), difficultyList)
+									if newIdx then
+										local diff = newIdx - selected
+										if (targetDirection == -1 and diff < 0) or (targetDirection == 1 and diff > 0) then
+											if not chosen or math.abs(diff) < math.abs(FindInTable(chosen:GetDifficulty(), difficultyList) - selected) then
+												chosen = steps
+											end
+										end
+									end
+								end
+							end
+
+							if chosen then
+								if GAMESTATE:IsCourseMode() then
+									GAMESTATE:SetCurrentTrail(event.PlayerNumber, chosen)
+									GAMESTATE:SetPreferredDifficulty(event.PlayerNumber,chosen:GetDifficulty())
+								else
+									GAMESTATE:SetCurrentSteps(event.PlayerNumber, chosen)
+									GAMESTATE:SetPreferredDifficulty(event.PlayerNumber,chosen:GetDifficulty())
+								end
+								if targetDirection < 0 then
+									SOUND:PlayOnce(THEME:GetPathS('',"_easier"))
+								else
+									SOUND:PlayOnce(THEME:GetPathS('',"_harder"))
+								end
+							end
+						else
+							SOUND:PlayOnce(THEME:GetPathS('MusicWheel',"locked"))
+						end
+					end
+				end
 			end
 		end
 	end
 end
---[[
+
 local function LeaderboardRequestProcessor_SM(res, _)
 	if res["status"] == "success" then
 		local data = res["data"]
@@ -365,7 +444,6 @@ local function LeaderboardRequestProcessor_SM(res, _)
 				local hash = data[playerStr]["chartHash"]
 				if data[playerStr]["gsLeaderboard"] then
 					GSCache[hash] = data[playerStr]["gsLeaderboard"]
-					GSRanking[hash] = data[playerStr]["isRanked"]
 					GSCaching[hash] = false
 					if hash == GSH[pn] then MESSAGEMAN:Broadcast("Update"..pname(pn)) end
 				end
@@ -402,7 +480,6 @@ local function LeaderboardRequestProcessor(res, _)
 				local hash = data[playerStr]["chartHash"]
 				if data[playerStr]["gsLeaderboard"] then
 					GSCache[hash] = data[playerStr]["gsLeaderboard"]
-					GSRanking[hash] = data[playerStr]["isRanked"]
 					GSCaching[hash] = false
 					if hash == GSH[pn] then MESSAGEMAN:Broadcast("Update"..pname(pn)) end
 				end
@@ -413,7 +490,6 @@ local function LeaderboardRequestProcessor(res, _)
 		end
 	end
 end
-]]
 
 local Leaderboard = isOutFoxOnline() and Def.ActorFrame{
 	SendOFLeaderboardRequestMessageCommand=function(self,param)
@@ -536,7 +612,6 @@ local Leaderboard = isOutFoxOnline() and Def.ActorFrame{
 	end
 } or Def.ActorFrame{}
 
---[[
 local Leaderboard = isITGmania() and RequestResponseActor()..{
 	SendLeaderboardRequestMessageCommand=function(self)
 		if not IsServiceAllowed(GS.Leaderboard) then return end
@@ -619,7 +694,6 @@ local Leaderboard = isITGmania() and RequestResponseActor()..{
 		if sendRequest then MESSAGEMAN:Broadcast("Leaderboard", { data=data, callback=LeaderboardRequestProcessor_SM, tocache=toCache }) end
 	end
 }
-]]--
 
 local states = {
 	["StageAward_FullComboW3"]		= color("#67FF19"),
@@ -865,16 +939,15 @@ return Def.ActorFrame{
 		Def.BitmapText {
 			Name = "Header",
 			File = "_v 26px bold shadow",
-			Text = "GS:",
 			InitCommand=function(self) self:maxwidth(500):horizalign(left):vertalign(bottom):x(20*WideScreenDiff()):y(-12*WideScreenDiff()):shadowlength(0.5):zoom(0.5*WideScreenDiff()):diffusealpha(0) end,
 			ShowCommand=function(self) self:stoptweening():decelerate(0.3):diffusealpha(1) end,
 			HideCommand=function(self) self:stoptweening():accelerate(0.3):diffusealpha(0) end,
 			UpdateCommand=function(self)
 				local output = ""
 				if isOutFoxOnline() then
-					if getenv("SetScoreFA"..pname(PLAYER_1)) then output = "EX:" else output = "OF:" end
+					if getenv("SetScoreFA"..pname(PLAYER_1)) then output = "OutFox EX:" else output = "OutFox:" end
 				elseif ThemePrefs.Get("EnableGrooveStats") then
-					if leaderboard[PLAYER_1] == 1 then output = "GS:" elseif leaderboard[PLAYER_1] == 2 then output = "EX:" elseif leaderboard[PLAYER_1] == 3 then output = "RPG:" elseif leaderboard[PLAYER_1] == 4 then output = "ITL:" end
+					if leaderboard[PLAYER_1] == 1 then output = "GrooveStats:" elseif leaderboard[PLAYER_1] == 2 then output = "GrooveStats EX:" elseif leaderboard[PLAYER_1] == 3 then output = "Stamina RPG:" elseif leaderboard[PLAYER_1] == 4 then output = "International Timing League:" end
 				end
 				self:settext(output)
 			end,
@@ -938,6 +1011,7 @@ return Def.ActorFrame{
 									end
 								end
 								if cache then
+									checkSLUpdate()
 									output = ""
 									for i=1,#cache do
 										local begin = string.len(output)
@@ -1015,9 +1089,9 @@ return Def.ActorFrame{
 			UpdateCommand=function(self)
 				local output = ""
 				if isOutFoxOnline() then
-					if getenv("SetScoreFA"..pname(PLAYER_2)) then output = "EX:" else output = "OF:" end
+					if getenv("SetScoreFA"..pname(PLAYER_2)) then output = "OutFox EX:" else output = "OutFox:" end
 				elseif ThemePrefs.Get("EnableGrooveStats") then
-					if leaderboard[PLAYER_2] == 1 then output = "GS:" elseif leaderboard[PLAYER_2] == 2 then output = "EX:" elseif leaderboard[PLAYER_2] == 3 then output = "RPG:" elseif leaderboard[PLAYER_2] == 4 then output = "ITL:" end
+					if leaderboard[PLAYER_2] == 1 then output = "GrooveStats:" elseif leaderboard[PLAYER_2] == 2 then output = "GrooveStats EX:" elseif leaderboard[PLAYER_2] == 3 then output = "Stamina RPG:" elseif leaderboard[PLAYER_2] == 4 then output = "International Timing League:" end
 				end
 				self:settext(output)
 			end,
@@ -1081,6 +1155,7 @@ return Def.ActorFrame{
 									end
 								end
 								if cache then
+									checkSLUpdate()
 									output = ""
 									for i=1,#cache do
 										local begin = string.len(output)
@@ -1420,7 +1495,8 @@ return Def.ActorFrame{
 			loadfile(THEME:GetPathG("_pane","numbers"))(PLAYER_1)..{ InitCommand=function(self) self:y(129) end },
 			loadfile(THEME:GetPathG("_pane","avatar"))(PLAYER_1),
 			loadfile(THEME:GetPathG("_player","scores"))(PLAYER_1),
-			loadfile(THEME:GetPathG("_player","steps"))(PLAYER_1)
+			loadfile(THEME:GetPathG("_player","steps"))(PLAYER_1),
+			loadfile(THEME:GetPathG("_player","groovestats"))(PLAYER_1)..{ Condition=ThemePrefs.Get("EnableGrooveStats") }
 		},
 		Def.ActorFrame{
 			Name="PaneDisplayP2",
@@ -1432,7 +1508,8 @@ return Def.ActorFrame{
 			loadfile(THEME:GetPathG("_pane","numbers"))(PLAYER_2)..{ InitCommand=function(self) self:y(129) end },
 			loadfile(THEME:GetPathG("_pane","avatar"))(PLAYER_2),
 			loadfile(THEME:GetPathG("_player","scores"))(PLAYER_2),
-			loadfile(THEME:GetPathG("_player","steps"))(PLAYER_2)
+			loadfile(THEME:GetPathG("_player","steps"))(PLAYER_2),
+			loadfile(THEME:GetPathG("_player","groovestats"))(PLAYER_2)..{ Condition=ThemePrefs.Get("EnableGrooveStats") }
 		}
 	},
 	loadfile(THEME:GetPathB("ScreenWithMenuElements","underlay/_sides"))()..{ InitCommand=function(self) self:ztest(true) end },
@@ -1650,12 +1727,6 @@ return Def.ActorFrame{
 				["Difficulty_D1"]="",["Difficulty_D2"]="",["Difficulty_D3"]="",["Difficulty_D4"]="",["Difficulty_D5"]="",
 				["Difficulty_D6"]="",["Difficulty_D7"]="",["Difficulty_D8"]="",["Difficulty_D9"]="",["Difficulty_D10"]="",
 				["Difficulty_D11"]="",["Difficulty_D12"]="",["Difficulty_D13"]="",["Difficulty_D14"]="",["Difficulty_D15"]=""
-			}
-			local difficultyList = {
-				"Difficulty_Beginner","Difficulty_Easy","Difficulty_Medium","Difficulty_Hard","Difficulty_Challenge","Difficulty_Edit",
-				"Difficulty_D1","Difficulty_D2","Difficulty_D3","Difficulty_D4","Difficulty_D5",
-				"Difficulty_D6","Difficulty_D7","Difficulty_D8","Difficulty_D9","Difficulty_D10",
-				"Difficulty_D11","Difficulty_D12","Difficulty_D13","Difficulty_D14","Difficulty_D15"
 			}
 			for steps in ivalues(selection[display]:GetStepsByStepsType(category)) do
 				difficulty[steps:GetDifficulty()]=addToOutput(difficulty[steps:GetDifficulty()],steps:GetMeter(),"|")

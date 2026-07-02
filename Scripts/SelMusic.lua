@@ -1,4 +1,4 @@
-local cacheVersion = "0.45"
+local cacheVersion = "0.46"
 stepCache = {}
 addedToStepCache = false
 local typeList = {"avi","f4v","flv","mkv","mp4","mpeg","mpg","mov","ogv","webm","wmv"}
@@ -65,7 +65,11 @@ function getCacheVersion()
 end
 
 function DifficultyChangingAvailable()
-	return not isPlayMode('PlayMode_Endless') and not isOni() and GAMESTATE:GetSortOrder() ~= 'SortOrder_ModeMenu'
+	if ThemePrefs.Get("EnableGrooveStats") then
+		return false
+	else
+		return not isPlayMode('PlayMode_Endless') and not isOni() and GAMESTATE:GetSortOrder() ~= 'SortOrder_ModeMenu'
+	end
 end
 
 function SelectMenuAvailable()
@@ -753,6 +757,7 @@ function cacheStep(Song,Step)
 	local IsJudgableAtBeat = false
 	local firstArrow = 0
 	local firstArrowCheck = false
+	local _,Hash = SMParser(Step,true)
 	local buffered_notes = 0
 	local buffered_sec = 0
 
@@ -875,6 +880,7 @@ function cacheStep(Song,Step)
 			["TrueLastSecond"] = Step:GetTimingData():GetElapsedTimeFromBeat(lastBeat),
 			["TrueSeconds"] = Step:GetTimingData():GetElapsedTimeFromBeat(lastBeat)-Step:GetTimingData():GetElapsedTimeFromBeat(firstBeat)
 		}
+		if Hash then list["GrooveStatsHash"] = Hash end
 
 		if stepType[2] == "Bm" then
 			if #noteCounter == 7 or #noteCounter == 14 then
@@ -897,6 +903,7 @@ function cacheStep(Song,Step)
 			LoadModule("Config.Save.lua")("TrueFirstSecond",Step:GetTimingData():GetElapsedTimeFromBeat(firstBeat),file)
 			LoadModule("Config.Save.lua")("TrueLastSecond",Step:GetTimingData():GetElapsedTimeFromBeat(lastBeat),file)
 			LoadModule("Config.Save.lua")("TrueSeconds",Step:GetTimingData():GetElapsedTimeFromBeat(lastBeat)-Step:GetTimingData():GetElapsedTimeFromBeat(firstBeat),file)
+			if Hash then LoadModule("Config.Save.lua")("GrooveStatsHash",Hash,file) end
 			if stepType[2] == "Bm" then
 				if #noteCounter == 7 or #noteCounter == 14 then
 					LoadModule("Config.Save.lua")("Foots",foots,file)
@@ -946,7 +953,7 @@ function cacheStepSM(Song,Step)
 		noteCounter[i] = 0
 	end
 
-	local chart = SMParser(Step)
+	local chart,Hash = SMParser(Step,true)
 	local beat = 0
 
 	local beats = {}
@@ -1048,6 +1055,7 @@ function cacheStepSM(Song,Step)
 				["TrueLastSecond"] = lastSecond,
 				["TrueSeconds"] = lastSecond-firstSecond
 			}
+			if Hash then list["GrooveStatsHash"] = Hash end
 
 			if isEtterna("0.55") then
 				list["chaosCount"] = chaosCount
@@ -1068,6 +1076,7 @@ function cacheStepSM(Song,Step)
 				LoadModule("Config.Save.lua")("TrueFirstSecond",firstSecond,file)
 				LoadModule("Config.Save.lua")("TrueLastSecond",lastSecond,file)
 				LoadModule("Config.Save.lua")("TrueSeconds",lastSecond-firstSecond,file)
+				if Hash then LoadModule("Config.Save.lua")("GrooveStatsHash",Hash,file) end
 				if isEtterna("0.55") then
 					LoadModule("Config.Save.lua")("chaosCount",chaosCount,file)
 					LoadModule("Config.Save.lua")("maxVoltage",maxVoltage,file)
@@ -1120,7 +1129,7 @@ function cacheStepDWI(Song,Step)
 	local firstRow
 
 	if chart then
-		local currentMeasure = -1
+		local currentMeasure = 0
 		for measure in ivalues(chart) do
 			currentMeasure = currentMeasure + 1
 			local currentRow = -1
@@ -1323,38 +1332,40 @@ function cacheStepBMS(Song,Step)
 				end
 
 				local currentSec = timingData:GetElapsedTimeFromBeat(beat)
-				noteCounter[row] = noteCounter[row] + 1
-				if not firstBeat then firstBeat = beat end
-				if beat > lastBeat then lastBeat = beat end
+				if row <= #noteCounter then
+					noteCounter[row] = noteCounter[row] + 1
+					if not firstBeat then firstBeat = beat end
+					if beat > lastBeat then lastBeat = beat end
 
-				if lastSec > 0 then
-					local buffered_diff = currentSec - buffered_sec
-					if buffered_diff >= 1/buffer then
-						if buffered_notes == 0 then buffered_notes = row end
-						local currentSPS = (1 / buffered_diff) * buffered_notes
-						if stepsPerSec[currentSPS] then stepsPerSec[currentSPS] = stepsPerSec[currentSPS] + 1 else stepsPerSec[currentSPS] = 1 end
-						buffered_notes = 0
-					else
-						buffered_notes = buffered_notes + row
-					end
-					buffered_sec = currentSec
-					local currentSPS = 1 / (currentSec - lastSec) * row
-					if stepsPerSec[currentSPS] then stepsPerSec[currentSPS] = stepsPerSec[currentSPS] + 1 else stepsPerSec[currentSPS] = 1 end
-				end
-				lastSec = currentSec
-
-				if isEtterna("0.55") then
-					if getNoteType(beat) >= 12 then chaosCount = chaosCount + 1 end
-					for _=1,row do table.insert(beats,beat) end
-					for i=1,#beats do
-						if beats[i] and beats[i] < beat - 8 then
-							table.remove(beats,i)
-							i=i-1
+					if lastSec > 0 then
+						local buffered_diff = currentSec - buffered_sec
+						if buffered_diff >= 1/buffer then
+							if buffered_notes == 0 then buffered_notes = row end
+							local currentSPS = (1 / buffered_diff) * buffered_notes
+							if stepsPerSec[currentSPS] then stepsPerSec[currentSPS] = stepsPerSec[currentSPS] + 1 else stepsPerSec[currentSPS] = 1 end
+							buffered_notes = 0
 						else
-							break
+							buffered_notes = buffered_notes + row
 						end
+						buffered_sec = currentSec
+						local currentSPS = 1 / (currentSec - lastSec) * row
+						if stepsPerSec[currentSPS] then stepsPerSec[currentSPS] = stepsPerSec[currentSPS] + 1 else stepsPerSec[currentSPS] = 1 end
 					end
-					maxVoltage = math.max(maxVoltage,#beats)
+					lastSec = currentSec
+
+					if isEtterna("0.55") then
+						if getNoteType(beat) >= 12 then chaosCount = chaosCount + 1 end
+						for _=1,row do table.insert(beats,beat) end
+						for i=1,#beats do
+							if beats[i] and beats[i] < beat - 8 then
+								table.remove(beats,i)
+								i=i-1
+							else
+								break
+							end
+						end
+						maxVoltage = math.max(maxVoltage,#beats)
+					end
 				end
 			end
 		end
@@ -1627,7 +1638,7 @@ function getAllTheBPMs(song,steps,BPMtype)
 		bpms = steps:GetTimingData():GetActualBPM()
 		bpms[3] = 0
 	elseif BPMtype == 2 then
-		local usesStepCache = ThemePrefs.Get("UseStepCache")
+		local usesStepCache = UsesStepCache()
 		local trueBPM = usesStepCache and tonumber(LoadFromCache(song,steps,"TrueMaxBPM")) or -1
 		if usesStepCache and trueBPM >= 0 then
 			bpms = steps:GetTimingData():GetActualBPM()
@@ -1664,7 +1675,7 @@ function getCalculatedDifficulty(Step)
 	local OG = Step:GetMeter()
 
 	local Song = SONGMAN:GetSongFromSteps(Step)
-	local usesStepCache = ThemePrefs.Get("UseStepCache")
+	local usesStepCache = UsesStepCache()
 	local version = usesStepCache and LoadFromCache(Song,Step,"Version") or ThemePrefs.Get("ShowCalcDiff")
 	if not version or version == "0" then
 		repeatCheck[value] = OG
@@ -1731,7 +1742,7 @@ function getCalculatedDifficulty(Step)
 end
 
 function IIDXGrooveRadar(song,steps,RadarValues)
-	local usesStepCache = ThemePrefs.Get("UseStepCache")
+	local usesStepCache = UsesStepCache()
 	local notes,peak,scratch,charge,chord,soflan = 0,0,0,0,0,0
 	local timingData = steps:GetTimingData()
 	if not isEtterna(20160826) then
@@ -1807,7 +1818,7 @@ function grooveRadar(song,steps,RadarValues)
 	end
 
 	if not IsGame("pump") then
-		local usesStepCache = ThemePrefs.Get("UseStepCache")
+		local usesStepCache = UsesStepCache()
 		local totalSeconds = usesStepCache and tonumber(LoadFromCache(song,steps,"TrueSeconds")) or song:GetLastSecond() - song:GetFirstSecond()
 		local totalBeats = usesStepCache and tonumber(LoadFromCache(song,steps,"TrueBeats")) or song:GetLastBeat() - song:GetFirstBeat()
 		local avg_bps_OLD = song:GetLastBeat() / song:MusicLengthSeconds()

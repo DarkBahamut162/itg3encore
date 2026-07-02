@@ -2,7 +2,6 @@ GS = {}
 GSCaching = {}
 OFCaching = {}
 EXCaching = {}
-GSRanking = {}
 OFCache = {}
 GSCache = {}
 EXCache = {}
@@ -388,7 +387,7 @@ function ValidForGrooveStats(player,checkAUTO)
 	local valid = {}
 
 	valid[1] = IsGame("dance") or IsGame("pump")
-	valid[2] = GAMESTATE:GetCurrentStyle():GetName() ~= "solo"
+	if GAMESTATE:GetCurrentStyle() then valid[2] = GAMESTATE:GetCurrentStyle():GetName() ~= "solo" end
 	valid[3] = not GAMESTATE:IsCourseMode()
 	valid[4] = PREFSMAN:GetPreference("TimingWindowScale") <= 1
 	valid[5] = PREFSMAN:GetPreference("LifeDifficultyScale") <= 1
@@ -461,13 +460,15 @@ function ValidForGrooveStats(player,checkAUTO)
 	local rate = GAMESTATE:GetSongOptionsObject("ModsLevel_Song"):MusicRate() * 100
 	valid[12] = 100 <= rate and rate <= 300
 
-	local po = GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Preferred")
-	valid[13] = not (po:Little() or po:NoHolds() or po:NoStretch() or po:NoHands() or po:NoJumps() or po:NoFakes() or po:NoLifts() or po:NoQuads() or po:NoRolls())
-	valid[14] = not (po:Wide() or po:Skippy() or po:Quick() or po:Echo() or po:BMRize() or po:Stomp() or po:Big())
+	if player then
+		local po = GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Preferred")
+		valid[13] = not (po:Little() or po:NoHolds() or po:NoStretch() or po:NoHands() or po:NoJumps() or po:NoFakes() or po:NoLifts() or po:NoQuads() or po:NoRolls())
+		valid[14] = not (po:Wide() or po:Skippy() or po:Quick() or po:Echo() or po:BMRize() or po:Stomp() or po:Big())
 
-	local failType = isITGmania(20250313) and GAMESTATE:GetPlayerFailType(player) or po:FailSetting()
-	valid[15] = (failType == "FailType_Immediate" or failType == "FailType_ImmediateContinue")
-	valid[16] = not checkAUTO and true or getenv("EvalCombo"..pname(player))
+		local failType = isITGmania(20250313) and GAMESTATE:GetPlayerFailType(player) or po:FailSetting()
+		valid[15] = (failType == "FailType_Immediate" or failType == "FailType_ImmediateContinue")
+		valid[16] = not checkAUTO and true or getenv("EvalCombo"..pname(player))
+	end
 
 	local minTNSToScoreNores = ToEnumShortString(isITGmania(20230618) and PREFSMAN:GetPreference("MinTNSToScoreNotes") or po:MinTNSToHideNotes())
     valid[17] = minTNSToScoreNores ~= "W1" and minTNSToScoreNores ~= "W2"

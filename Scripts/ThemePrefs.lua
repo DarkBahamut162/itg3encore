@@ -165,6 +165,11 @@ local Prefs = {
 		Choices = { OptionNameString('Normal'), OptionNameString('Final') },
 		Values = { false, true }
 	},
+	EnableGrooveStats = {
+		Default = false,
+		Choices = { OptionNameString('Off'), OptionNameString('On') },
+		Values = { false, true }
+	},
 	EnableOnlineLobbies = {
 		Default = false,
 		Choices = { OptionNameString('Off'), OptionNameString('On') },
@@ -466,3 +471,7 @@ local Prefs = {
 }
 
 ThemePrefs.InitAll(Prefs)
+
+function UsesStepCache()
+	return ThemePrefs.Get("UseStepCache") or ThemePrefs.Get("EnableGrooveStats")
+end

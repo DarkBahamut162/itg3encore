@@ -22,7 +22,7 @@ if getenv("EvalCombo"..pname(player)) then
 		if song then
 			steps = GAMESTATE:GetCurrentSteps(player)
 			if steps then
-				if ThemePrefs.Get("UseStepCache") then
+				if UsesStepCache() then
 					SPS = tonumber(LoadFromCache(song,steps,"StepsPerSecond"))
 				else
 					local trueSeconds = isOutFox(20211230) and steps:GetChartLength() or song:GetLastSecond()-song:GetFirstSecond()

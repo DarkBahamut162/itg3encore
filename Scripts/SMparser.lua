@@ -97,6 +97,24 @@ local function MinimizeChart(chartString)
 	return table.concat(finalChartData, '\n')
 end
 
+local function NormalizeFloatDigits(param)
+	local function NormalizeDecimal(decimal)
+		decimal = decimal:gsub("%c", "")
+		local rounded = tonumber(decimal)
+
+		local mult = 10^3
+		rounded = (rounded * mult + 0.5 - (rounded * mult + 0.5) % 1) / mult
+		return string.format("%.3f", rounded)
+	end
+
+	local paramParts = {}
+	for beat_bpm in param:gmatch('[^,]+') do
+		local beat, bpm = beat_bpm:match('(.+)=(.+)')
+		table.insert(paramParts, NormalizeDecimal(beat) .. '=' .. NormalizeDecimal(bpm))
+	end
+	return table.concat(paramParts, ',')
+end
+
 local function MixedCaseRegex(str)
 	local t = {}
 	for c in str:gmatch(".") do
@@ -107,11 +125,13 @@ end
 
 local function GetSimfileChartString(SimfileString, StepsType, Difficulty, StepsDescription, Meter, Filetype)
 	local NoteDataString = nil
+	local BPMs = nil
 
 	StepsType = StepsType:lower()
 	Difficulty = Difficulty:lower()
 	Filetype = Filetype:lower()
 
+	local BPMS = MixedCaseRegex("BPMS")
 	local NOTEDATA = MixedCaseRegex("NOTEDATA")
 	local NOTES = MixedCaseRegex("NOTES")
 	local STEPSTYPE = MixedCaseRegex("STEPSTYPE")
@@ -122,6 +142,7 @@ local function GetSimfileChartString(SimfileString, StepsType, Difficulty, Steps
 	local dupCheck = {}
 
 	if Filetype == "ssc" then
+		local topLevelBpm = NormalizeFloatDigits(SimfileString:match("#"..BPMS..":(.-);"):gsub("%s+", ""))
 		for noteData in SimfileString:gmatch("#"..NOTEDATA..".-#"..NOTES.."2?:[^;]*") do
 			local normalizedNoteData = noteData:gsub('\r\n?', '\n')
 
@@ -170,6 +191,10 @@ local function GetSimfileChartString(SimfileString, StepsType, Difficulty, Steps
 
 			if (stepsType == StepsType and difficulty == Difficulty and meter == Meter) then
 				if (difficulty ~= "edit" or description == StepsDescription) then
+					local splitBpm = normalizedNoteData:match("#"..BPMS..":(.-);") or ''
+					splitBpm = splitBpm:gsub("%s+", "")
+
+					if #splitBpm == 0 then BPMs = topLevelBpm else BPMs = NormalizeFloatDigits(splitBpm) end
 
                     NoteDataString = normalizedNoteData:match("#"..NOTES.."2?:[\n]*([^;]*)\n?$"):gsub("//[^\n]*", ""):gsub('[\r\t\f\v ]+', ''):gsub('{(.-)}', ''):gsub('[{}]', '')
 					NoteDataString = MinimizeChart(NoteDataString)
@@ -178,6 +203,8 @@ local function GetSimfileChartString(SimfileString, StepsType, Difficulty, Steps
 			end
 		end
 	elseif Filetype == "sm" or Filetype == "edit" then
+		BPMs = SimfileString:match("#"..BPMS..":(.-);")
+		if BPMs then BPMs = NormalizeFloatDigits(BPMs:gsub("%s+", "")) else BPMs = "" end
 		for noteData in SimfileString:gmatch("#"..NOTES.."2?[^;]*") do
 			local normalizedNoteData = noteData:gsub('\r\n?', '\n')
 			local parts = {}
@@ -212,10 +239,22 @@ local function GetSimfileChartString(SimfileString, StepsType, Difficulty, Steps
 		end
 	end
 
-	return NoteDataString
+	return NoteDataString, BPMs
 end
 
-function SMParser(steps)
+local Bin2Hex = function(s)
+	local hex_bytes = {}
+	for i = 1, string.len(s), 1 do
+		hex_bytes[#hex_bytes+1] = string.format('%02x', string.byte(s, i))
+	end
+	return table.concat(hex_bytes, '')
+end
+
+if type(BinaryToHex) == "function" and BinaryToHex("\0") == "00" then
+	Bin2Hex = BinaryToHex
+end
+
+function SMParser(steps,hash)
 	local stepsType = ToEnumShortString( steps:GetStepsType() ):gsub("_", "-"):lower()
 	local difficulty = ToEnumShortString( steps:GetDifficulty() )
 	local description = steps:GetDescription()
@@ -223,9 +262,14 @@ function SMParser(steps)
     local simfileString, fileType = GetSimfileString( steps )
 
     if simfileString then
-        local chartString = GetSimfileChartString(simfileString, stepsType, difficulty, description, meter, fileType)
-        if chartString ~= nil then
-            return chartString
+        local chartString, BPMs = GetSimfileChartString(simfileString, stepsType, difficulty, description, meter, fileType)
+        if chartString ~= nil and BPMs ~= nil then
+			if hash then
+				local Hash = Bin2Hex(CRYPTMAN:SHA1String(chartString..BPMs)):sub(1, 16)
+				return chartString, Hash
+			else
+				return chartString
+			end
         end
     end
 end
@@ -471,4 +515,15 @@ function GetTechniques(chartString)
 	CommitStream(nil)
 
 	return NumCrossovers, NumFootswitches, NumSideswitches, NumJacks, NumBrackets
+end
+
+function GetHashFromSimfileString(steps, simfileString, fileType)
+	local filename = steps:GetFilename()
+	local stepsType = ToEnumShortString( steps:GetStepsType() ):gsub("_", "-"):lower()
+	local difficulty = ToEnumShortString( steps:GetDifficulty() )
+	local description = steps:GetDescription()
+	local chartString, BPMs = GetSimfileChartString(simfileString, stepsType, difficulty, description, fileType)
+	if (not chartString) or (not BPMs) then return "" end
+
+	return Bin2Hex(CRYPTMAN:SHA1String(chartString..BPMs)):sub(1, 16)
 end

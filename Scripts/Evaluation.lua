@@ -40,7 +40,7 @@ function TotalPossibleStepSecondsCurrent(player)
 				local song = entries[i]:GetSong()
 				local step = entries[i]:GetSteps()
 				local trueSeconds = 0
-				if ThemePrefs.Get("UseStepCache") then
+				if UsesStepCache() then
 					trueSeconds = tonumber(LoadFromCache(song,step,"TrueSeconds"))
 				else
 					trueSeconds = song:GetFirstSecond() > song:GetLastSecond() and 0 or (isOutFox(20211230) and step:GetChartLength() or song:GetLastSecond()-song:GetFirstSecond())
@@ -50,7 +50,7 @@ function TotalPossibleStepSecondsCurrent(player)
 		end
 	else
 		local Song = GAMESTATE:GetCurrentSong()
-		if ThemePrefs.Get("UseStepCache") then
+		if UsesStepCache() then
 			fSecs = tonumber(LoadFromCache(Song,StepsOrTrail,"TrueSeconds"))
 		else
 			fSecs = Song:GetFirstSecond() > Song:GetLastSecond() and 0 or (isOutFox(20211230) and StepsOrTrail:GetChartLength() or Song:GetLastSecond()-Song:GetFirstSecond())
@@ -72,7 +72,7 @@ function TotalPossibleStepSeconds(player)
 			local Song = s:GetPossibleSongs()[a]
 			local Steps = s:GetPlayerStageStats(player):GetPossibleSteps()[a]
 			local trueSeconds = 0
-			if ThemePrefs.Get("UseStepCache") then
+			if UsesStepCache() then
 				trueSeconds = tonumber(LoadFromCache(Song,Steps,"TrueSeconds"))
 			else
 				trueSeconds = Song:GetFirstSecond() > Song:GetLastSecond() and 0 or (isOutFox(20211230) and Steps:GetChartLength() or Song:GetLastSecond()-Song:GetFirstSecond())
@@ -176,7 +176,7 @@ function prepSummary()
 			local alive = STATSMAN:GetCurStageStats(player):GetPlayerStageStats(player):GetAliveSeconds()
 			local first = 0
 			local last = 0
-			if ThemePrefs.Get("UseStepCache") then
+			if UsesStepCache() then
 				first = LoadFromCache(GAMESTATE:GetCurrentSong(),GAMESTATE:GetCurrentSteps(player),"TrueFirstSecond")
 				last = LoadFromCache(GAMESTATE:GetCurrentSong(),GAMESTATE:GetCurrentSteps(player),"TrueLastSecond")
 			else
@@ -189,7 +189,7 @@ function prepSummary()
 
 		local Song = GAMESTATE:GetCurrentSong()
 		local seconds = 0
-		if ThemePrefs.Get("UseStepCache") then
+		if UsesStepCache() then
 			local Steps = GAMESTATE:GetCurrentSteps(player)
 			seconds = tonumber(LoadFromCache(Song,Steps,"TrueSeconds"))
 		else
@@ -302,7 +302,7 @@ local ProfileSlot = {
 }
 
 function PacemakerLoad(player)
-	if ThemePrefs.Get("UseStepCache") then
+	if UsesStepCache() then
 		if not player then return false end
 		if not ProfileSlot[player] then return false end
 		local dir = PROFILEMAN:GetProfileDir(ProfileSlot[player])
@@ -341,7 +341,7 @@ function PacemakerLoad(player)
 end
 
 function PacemakerSave(player)
-	if ThemePrefs.Get("UseStepCache") then
+	if UsesStepCache() then
 		if not player then return end
 		if not ProfileSlot[player] then return end
 		local dir = PROFILEMAN:GetProfileDir(ProfileSlot[player])

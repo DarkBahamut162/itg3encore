@@ -29,7 +29,7 @@ if getenv("SetPacemaker"..pname(pn)) == 18 then
 		steps = {GAMESTATE:GetCurrentSteps(pn)}
 	end
 	for i=1,#song do
-		if ThemePrefs.Get("UseStepCache") then
+		if UsesStepCache() then
 			SPS = tonumber(LoadFromCache(song[i],steps[i],"StepsPerSecond"))
 		else
 			local trueSeconds = isOutFox(20211230) and steps[i]:GetChartLength() or song[i]:GetLastSecond()-song[i]:GetFirstSecond()

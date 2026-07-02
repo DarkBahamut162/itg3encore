@@ -476,6 +476,7 @@ I could have actually forked it but I didn't. My reasoning was that it wasn't go
   - TrueFirstSecond *(Second of First Real Note)*
   - TrueLastSecond *(Second of Last Real Note)*
   - TrueSeconds *(Real Duration of Stepchart in Seconds)*
+  - GrooveStatsHash *(Needed for GrooveStats)*
   - chaosCount *(Etterna Only)*
   - maxVoltage *(Etterna Only)*
 </details>

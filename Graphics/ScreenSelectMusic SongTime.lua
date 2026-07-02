@@ -3,7 +3,7 @@ local course = GAMESTATE:IsCourseMode()
 local players = GAMESTATE:GetHumanPlayers()
 local length = {0.0,0.0,0.0}
 local EC = " "
-local usesStepCache = ThemePrefs.Get("UseStepCache")
+local usesStepCache = UsesStepCache()
 
 return Def.ActorFrame{
 	Def.BitmapText {

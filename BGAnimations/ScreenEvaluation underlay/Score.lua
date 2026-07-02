@@ -19,7 +19,7 @@ if PROFILEMAN:IsPersistentProfile(player) and enableEPL then
 	local Steps = GAMESTATE:GetCurrentSteps(player)
 	local trueSeconds = 0
 
-	if ThemePrefs.Get("UseStepCache") then
+	if UsesStepCache() then
 		SPS = tonumber(LoadFromCache(Song,Steps,"StepsPerSecond"))
 		trueSeconds = tonumber(LoadFromCache(Song,Steps,"TrueSeconds"))
 	else

@@ -19,10 +19,15 @@ local function updateFavorites()
 		if not isITGmania(20230317) and changed then reloadPreferredSortSM() end
 		SCREENMAN:GetTopScreen():GetMusicWheel():ChangeSort(isEtterna() and "SortOrder_Favorites" or "SortOrder_Preferred")
 	else
-		local screen = SCREENMAN:GetTopScreen()
-		screen:GetMusicWheel():Move(1)
-		screen:GetMusicWheel():Move(-1)
-		screen:GetMusicWheel():Move(0)
+		if not isCaching() then
+			local screen = SCREENMAN:GetTopScreen()
+			screen:GetMusicWheel():Move(1)
+			screen:GetMusicWheel():Move(-1)
+			screen:GetMusicWheel():Move(0)
+		else
+			preventedSLUpdate = true
+			SOUND:PlayOnce(THEME:GetPathS("MusicWheel","locked"),true)
+		end
 	end
 end
 

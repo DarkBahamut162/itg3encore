@@ -23,55 +23,93 @@ local message = { [PLAYER_1] = nil, [PLAYER_2] = nil }
 local leaderboard = { [PLAYER_1] = getenv("SetScoreFA"..pname(PLAYER_1)) and 2 or 1, [PLAYER_2] = getenv("SetScoreFA"..pname(PLAYER_2)) and 2 or 1 }
 --local additional = { [PLAYER_1] = nil, [PLAYER_2] = nil }
 local KEY = { [PLAYER_1] = nil, [PLAYER_2] = nil }
---local GSH = { [PLAYER_1] = nil, [PLAYER_2] = nil }
---[[
+local GSH = { [PLAYER_1] = nil, [PLAYER_2] = nil }
+local direction = { [PLAYER_1] = 1, [PLAYER_2] = 1 }
+
 if ThemePrefs.Get("EnableGrooveStats") then
 	for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
-		local SongOrCourse = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentCourse() or GAMESTATE:GetCurrentSong()
-		local StepsOrTrail = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentTrail(pn) or GAMESTATE:GetCurrentSteps(pn)
-		if not GAMESTATE:IsCourseMode() then
-			if ThemePrefs.Get("EnableGrooveStats") then
-				GSH[pn] = LoadFromCache(SongOrCourse,StepsOrTrail,"GrooveStatsHash")
+		local song = GAMESTATE:GetCurrentSong()
+		if song then
+			local steps = GAMESTATE:GetCurrentSteps(pn)
+			if steps then
+				local filename = steps:GetFilename()
+				local filetype = filename:match("[^.]+$"):lower()
+				if filetype == "sm" or filetype == "ssc" or filetype == "edit" then
+					GSH[pn] = LoadFromCache(song,steps,"GrooveStatsHash")
+				else
+					GSH[pn] = ""
+				end
 			end
 		end
 	end
 end
-]]--
+
 local InputHandler = function(event)
-	--if ThemePrefs.Get("EnableGrooveStats") or isOutFoxOnline() then
-	if isOutFoxOnline() then
-		if string.find(event.DeviceInput.button,"shift") then
-			local pn = string.find(event.DeviceInput.button,"left") and PLAYER_1 or PLAYER_2
-			if GAMESTATE:IsHumanPlayer(pn) and ((GS and GS.IsConnected) or isOutFoxOnline()) then
-				if event.type == "InputEventType_FirstPress" then
-					if isOutFoxOnline() or (GS and GS[pn] and GS[pn].ApiKey ~= "") then
-						if not shiftHeld[pn] then MESSAGEMAN:Broadcast("OnlineOpened"..pname(pn)) end
-						shiftHeld[pn] = true
-					else
-						SOUND:PlayOnce( THEME:GetPathS( 'Common', "invalid" ) )
+	if ThemePrefs.Get("EnableGrooveStats") or isOutFoxOnline() then
+		if ThemePrefs.Get("KeyboardEnabled") then
+			if string.find(event.DeviceInput.button,"shift") then
+				local pn = string.find(event.DeviceInput.button,"left") and PLAYER_1 or PLAYER_2
+				if GAMESTATE:IsHumanPlayer(pn) and ((GS and GS.IsConnected) or isOutFoxOnline()) then
+					if event.type == "InputEventType_FirstPress" then
+						if isOutFoxOnline() or isGrooveStats(pn) then
+							if not shiftHeld[pn] then MESSAGEMAN:Broadcast("OnlineOpened"..pname(pn)) end
+							shiftHeld[pn] = true
+						else
+							if isStepMania(20160400) then SCREENMAN:PlayInvalidSound() else SOUND:PlayOnce(THEME:GetPathS('Common',"invalid")) end
+						end
+					elseif event.type == "InputEventType_Release" then
+						if shiftHeld[pn] then MESSAGEMAN:Broadcast("OnlineClosed"..pname(pn)) end
+						shiftHeld[pn] = false
 					end
-				elseif event.type == "InputEventType_Release" then
-					if shiftHeld[pn] then MESSAGEMAN:Broadcast("OnlineClosed"..pname(pn)) end
-					shiftHeld[pn] = false
 				end
 			end
-		end
-		if string.find(event.DeviceInput.button,"ctrl") then
-			local pn = string.find(event.DeviceInput.button,"left") and PLAYER_1 or PLAYER_2
-			if GAMESTATE:IsHumanPlayer(pn) and ((GS and GS.IsConnected) or isOutFoxOnline()) and shiftHeld[pn] then
-				if event.type == "InputEventType_FirstPress" then
-					if isOutFoxOnline() then
-						--leaderboard[pn] = leaderboard[pn] < 2 and leaderboard[pn] + 1 or 1
-					else
-						leaderboard[pn] = leaderboard[pn] < 4 and leaderboard[pn] + 1 or 1
+			if string.find(event.DeviceInput.button,"ctrl") then
+				local pn = string.find(event.DeviceInput.button,"left") and PLAYER_1 or PLAYER_2
+				if GAMESTATE:IsHumanPlayer(pn) and ((GS and GS.IsConnected) or isOutFoxOnline()) and shiftHeld[pn] then
+					if event.type == "InputEventType_FirstPress" then
+						if isOutFoxOnline() then
+							--leaderboard[pn] = leaderboard[pn] < 2 and leaderboard[pn] + 1 or 1
+						else
+							leaderboard[pn] = leaderboard[pn] < 4 and leaderboard[pn] + 1 or 1
+						end
+						MESSAGEMAN:Broadcast("OnlineOpened"..pname(pn))
 					end
-					MESSAGEMAN:Broadcast("OnlineOpened"..pname(pn))
+				end
+			end
+		else
+			if event.GameButton == "Select" then
+				if GAMESTATE:IsHumanPlayer(event.PlayerNumber) and ((GS and GS.IsConnected) or isOutFoxOnline()) then
+					if event.type == "InputEventType_FirstPress" then
+						if isOutFoxOnline() or isGrooveStats(event.PlayerNumber) then
+							if not shiftHeld[event.PlayerNumber] then MESSAGEMAN:Broadcast("OnlineOpened"..pname(event.PlayerNumber)) end
+							shiftHeld[event.PlayerNumber] = true
+						end
+					elseif event.type == "InputEventType_Release" then
+						if shiftHeld[event.PlayerNumber] then MESSAGEMAN:Broadcast("OnlineClosed"..pname(event.PlayerNumber)) end
+						shiftHeld[event.PlayerNumber] = false
+					end
+				end
+			elseif event.GameButton == "MenuLeft" or event.GameButton == "MenuRight" then
+				if GAMESTATE:IsHumanPlayer(event.PlayerNumber) and ((GS and GS.IsConnected) or isOutFoxOnline()) and shiftHeld[event.PlayerNumber] then
+					if shiftHeld[event.PlayerNumber] and event.type == "InputEventType_FirstPress" then
+						if isOutFoxOnline() then
+							--leaderboard[event.PlayerNumber] = leaderboard[event.PlayerNumber] < 2 and leaderboard[event.PlayerNumber] + 1 or 1
+						else
+							direction[event.PlayerNumber] = event.GameButton == "MenuLeft" and -1 or 1
+							if direction[event.PlayerNumber] > 0 then
+								leaderboard[event.PlayerNumber] = leaderboard[event.PlayerNumber] < 4 and leaderboard[event.PlayerNumber] + 1 or 1
+							else
+								leaderboard[event.PlayerNumber] = leaderboard[event.PlayerNumber] > 1 and leaderboard[event.PlayerNumber] - 1 or 4
+							end
+						end
+						MESSAGEMAN:Broadcast("OnlineOpened"..pname(event.PlayerNumber))
+					end
 				end
 			end
 		end
 	end
 end
---[[
+
 function CreateCommentString(player)
 	local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(player)
 	local comment = ""
@@ -108,51 +146,40 @@ function CreateCommentString(player)
 	return comment
 end
 
+local function processData(pn,data)
+	local hash = data["chartHash"]
+	if hash then
+		GSCache[hash] = data["gsLeaderboard"]
+		GSCaching[hash] = false
+		if data["exLeaderboard"] then EXCache[hash] = data["exLeaderboard"] end
+		if data["rpg"] or data["itl"] then
+			if data["rpg"] and data["rpg"]["rpgLeaderboard"] then RPGCache[hash] = data["rpg"]["rpgLeaderboard"] end
+			if data["itl"] and data["itl"]["itlLeaderboard"] then ITLCache[hash] = data["itl"]["itlLeaderboard"] end
+			if data["rpg"] and data["itl"] then
+				SCREENMAN:SystemMessage("RPG & ITL NOT SUPPORTED!")
+			elseif data["rpg"] then
+				SCREENMAN:SystemMessage("RPG NOT SUPPORTED!")
+			elseif data["itl"] then
+				SCREENMAN:SystemMessage("ITL NOT SUPPORTED!")
+			end
+		end
+	end
+end
+
 local function AutoSubmitRequestProcessor_SM(res)
-	local hasRpg = false
-	local showRpg = false
-	local rpgname
-	
-	local shownotif = {PLAYER_1 = false, PLAYER_2 = false}
-	local wrplr = 0
-	
 	if (res ~= nil) and res["status"] == "success" then
 		local data = res["data"]
-
 		for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
 			local playerStr = "player"..pn:sub(-1)
-
 			if data and data[playerStr] then
 				if GSH[pn] == data[playerStr]["chartHash"] then
-					-- show notification based on result
-					if data[playerStr]["result"] == "score-added" or data[playerStr]["result"] == "improved"
-					or data[playerStr]["result"] == "score-not-improved"
-					or data[playerStr]["result"] == "score-improved" then
-						shownotif[pn] = true
-						lua.ReportScriptError("GROOVESTATS RECORD NOT YET SUPPORTED")
-						-- set qr panes to "already submitted"
-					elseif not data[playerStr]["isRanked"] then
-						-- set qr panes to "not ranked"
-					end
-
-					if data[playerStr]["rpg"] or data[playerStr]["itl"] then
-						--additional[pn] = {}
-						if data[playerStr]["rpg"] then
-							lua.ReportScriptError("RPG NOT YET SUPPORTED")
-						end
-
-						if data[playerStr]["itl"] then
-							lua.ReportScriptError("RPG NOT YET SUPPORTED")
-						end
-					else
-						--additional[pn] = nil
-					end
+					processData(pn,data[playerStr])
 				end
 			end
 		end
-
 		for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
 			if GS[pn].ApiKey ~= "" then
+				submitted[pn] = true
 				for pn in ivalues(GAMESTATE:GetHumanPlayers()) do MESSAGEMAN:Broadcast("Submit"..pname(pn),{Message = "Submit Successful!\nHold "..(pn == PLAYER_1 and "Left" or "Right").." Shift for Leaderboard\nPress "..(pn == PLAYER_1 and "Left" or "Right").." CTRL to switch Leaderboards"}) end
 			end
 		end
@@ -168,16 +195,12 @@ end
 local function AutoSubmitRequestProcessor(res)
 	if res.error or res.statusCode ~= 200 then
 		local error = res.error and ToEnumShortString(res.error) or nil
-		if error == "Timeout" then
-			for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
-				if GS[pn].ApiKey ~= "" then
-					for pn in ivalues(GAMESTATE:GetHumanPlayers()) do MESSAGEMAN:Broadcast("Submit"..pname(pn),{Message = "Time Out!\nHold "..(pn == PLAYER_1 and "Left" or "Right").." Shift for QR Code"}) end
-				end
-			end
-		elseif error or (res.statusCode ~= nil and res.statusCode ~= 200) then
-			for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
-				if GS[pn].ApiKey ~= "" then
-					for pn in ivalues(GAMESTATE:GetHumanPlayers()) do MESSAGEMAN:Broadcast("Submit"..pname(pn),{Message = "Submit Failed!\nHold "..(pn == PLAYER_1 and "Left" or "Right").." Shift for QR Code"}) end
+		for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
+			if GS[pn].ApiKey ~= "" then
+				if error == "Timeout" then
+					MESSAGEMAN:Broadcast("Submit"..pname(pn),{Message = "Time Out!\nHold "..(pn == PLAYER_1 and "Left" or "Right").." Shift for QR Code"})
+				elseif error or (res.statusCode ~= nil and res.statusCode ~= 200) then
+					MESSAGEMAN:Broadcast("Submit"..pname(pn),{Message = "Submit Failed!\nHold "..(pn == PLAYER_1 and "Left" or "Right").." Shift for QR Code"})
 				end
 			end
 		end
@@ -185,52 +208,18 @@ local function AutoSubmitRequestProcessor(res)
 	end
 
 	local data = JsonDecode(res.body)
-
 	for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
 		local playerStr = "player"..pn:sub(-1)
 
 		if data and data[playerStr] then
 			if GSH[pn] == data[playerStr]["chartHash"] then
-				local personalRank = nil
-				local showExScore = getenv("SetScoreFA"..pname(pn)) and data[playerStr]["exLeaderboard"]
-				local hash = data[playerStr]["chartHash"]
-
-				if data[playerStr]["key"] then
-					GSCache[hash] = data[playerStr]["gsLeaderboard"]
-					GSRanking[hash] = data[playerStr]["isRanked"]
-					GSCaching[hash] = false
-				end
-				if data[playerStr]["exLeaderboard"] then EXCache[hash] = data[playerStr]["exLeaderboard"] end
-				if data[playerStr]["rpg"] and data[playerStr]["rpg"]["rpgLeaderboard"] then RPGCache[hash] = data[playerStr]["rpg"]["rpgLeaderboard"] end
-				if data[playerStr]["itl"] and data[playerStr]["itl"]["itlLeaderboard"] then ITLCache[hash] = data[playerStr]["itl"]["itlLeaderboard"] end
-
-				-- Only display the overlay on the sides that are actually joined.
-				if data[playerStr]["rpg"] or data[playerStr]["itl"] then
-					if data[playerStr]["rpg"] then
-						lua.ReportScriptError("RPG NOT YET SUPPORTED")
-					end
-
-					if data[playerStr]["itl"] then
-						lua.ReportScriptError("RPG NOT YET SUPPORTED")
-					end
-				end
-
-				if data[playerStr]["result"] == "score-added" or data[playerStr]["result"] == "improved" then
-					lua.ReportScriptError("GROOVESTATS RECORD NOT YET SUPPORTED")
-					--if personalRank == 1 then
-					--	local worldRecordText = THEME:GetString("GrooveStats", "WorldRecord")
-					--	if showExScore then worldRecordText = worldRecordText .. " (EX)" end
-					--	--recordText:settext(worldRecordText)
-					--else
-					--	--recordText:settext(THEME:GetString("GrooveStats", "PersonalBest"))
-					--end
-				end
+				processData(pn,data[playerStr])
 			end
 		end
-
-		if res["status"] == "success" then
+		if res["status"] == "success" or not res.error or res.statusCode == 200 then
 			for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
 				if GS[pn].ApiKey ~= "" then
+					submitted[pn] = true
 					for pn in ivalues(GAMESTATE:GetHumanPlayers()) do MESSAGEMAN:Broadcast("Submit"..pname(pn),{Message = "Submit Successful!\nHold "..(pn == PLAYER_1 and "Left" or "Right").." Shift for Leaderboard\nPress "..(pn == PLAYER_1 and "Left" or "Right").." CTRL to switch Leaderboards"}) end
 				end
 			end
@@ -363,13 +352,12 @@ local AutoSubmit = isITGmania() and RequestResponseActor()..{
 		end
 	end
 }
-]]
 
 local ONLINE = Def.ActorFrame{}
 
-if isOutFoxOnline() then
+if ThemePrefs.Get("EnableGrooveStats") or isOutFoxOnline() then
 	for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
-		ONLINE = Def.ActorFrame{
+		ONLINE[#ONLINE+1] = Def.ActorFrame{
 			Name="Online"..pname(pn),
 			OnCommand=function() SCREENMAN:GetTopScreen():AddInputCallback(InputHandler) end,
 			OffCommand=function() SCREENMAN:GetTopScreen():RemoveInputCallback(InputHandler) end,
@@ -380,9 +368,8 @@ if isOutFoxOnline() then
 				["OnlineClosed"..pname(pn).."MessageCommand"]=function(self) self:accelerate(0.1):addx(-SCREEN_CENTER_X) end,
 				Def.ActorFrame{
 					Name="Unsubmitted",
-					Condition=GAMESTATE:IsHumanPlayer(pn),
+					Condition=GAMESTATE:IsHumanPlayer(pn) and isGrooveStats(pn) and not isOutFoxOnline(),
 					Def.Sprite { Texture="main" },
-					--[[
 					Def.ActorFrame{
 						Name="QR",
 						["OnlineOpened"..pname(pn).."MessageCommand"]=function(self) self:visible(not submitted[pn]) end,
@@ -395,7 +382,6 @@ if isOutFoxOnline() then
 							end
 						}
 					}
-					]]
 				},
 				Def.BitmapText {
 					File="Common Normal",
@@ -421,21 +407,22 @@ if isOutFoxOnline() then
 							else
 								local key = GSH[pn]
 								if leaderboard[pn] == 1 then
-									scores = GSCache[key]
+									scores = GSCache[key] or {}
 								elseif leaderboard[pn] == 2 then
-									scores = EXCache[key]
+									scores = EXCache[key] or {}
 								elseif leaderboard[pn] == 3 then
-									scores = RPGCache[key]
+									scores = RPGCache[key] or {}
 								elseif leaderboard[pn] == 4 then
-									scores = ITLCache[key]
+									scores = ITLCache[key] or {}
 								end
 							end
 
 							if scores then
 								output = ""
 								for i=1,#scores do
-									local begin = string.len(''..output)
-									output = addToOutput(output,"#"..scores[i]["rank"].." | "..string.format("%03.2f%%",scores[i]["score"]/100).." | "..GetMachineTag(scores[i]).." | x"..string.format("%1.1f",scores[i]["rate"]).." | "..scores[i]["date"],"\n")
+									local begin = string.len(''..output) or 0
+									local add = scores[i]["rate"] and " | x"..string.format("%1.1f",scores[i]["rate"]) or ""
+									output = addToOutput(output,"#"..scores[i]["rank"].." | "..string.format("%03.2f%%",scores[i]["score"]/100).." | "..GetMachineTag(scores[i])..add.." | "..scores[i]["date"],"\n")
 									update = scores[i]["score"]/100
 									if scores[i]["isFail"] or scores[i]["isRival"] or scores[i]["isSelf"] then
 										coloring[#coloring+1] = {FIRST = begin, LAST = string.len(''..output)-begin, COLOR = scores[i]["isFail"] and color("#FF0000") or scores[i]["isRival"] and color("#AA00AA") or scores[i]["isSelf"] and color("#00FF00") or color("#FFFFFF")}
@@ -505,6 +492,15 @@ if isOutFoxOnline() then
 											self:settext("Stamina RPG")
 										elseif leaderboard[pn] == 4 and ITLCache[key] then
 											self:settext("International Timing League")
+										elseif not GSCache[key] and not EXCache[key] and not RPGCache[key] and not ITLCache[key] then
+											self:settext("Unsupported!")
+										else
+											if direction[pn] > 0 then
+												leaderboard[pn] = leaderboard[pn] == 4 and 1 or leaderboard[pn] + 1
+											else
+												leaderboard[pn] = leaderboard[pn] == 1 and 4 or leaderboard[pn] - 1
+											end
+											MESSAGEMAN:Broadcast("OnlineOpened"..pname(pn))
 										end
 									end
 								else
@@ -513,7 +509,6 @@ if isOutFoxOnline() then
 										self:settext(message[pn] or ""):visible(true)
 										--if output == "" then self:GetParent():GetParent():GetChild("Unsubmitted"):GetChild("QR"):visible(false) end
 									else
-										--[[
 										local valid, allChecksValid = ValidForGrooveStats(pn,true)
 										if not allChecksValid then
 											for i,error in pairs(valid) do
@@ -524,7 +519,6 @@ if isOutFoxOnline() then
 										end
 										if output ~= "" then self:settext("QR Disabled!\n"..output):visible(true) end
 										if output == "" then self:GetParent():GetParent():GetChild("Unsubmitted"):GetChild("QR"):visible(false) end
-										]]
 									end
 								end
 							end
@@ -593,14 +587,13 @@ if isOutFoxOnline() then
 	end
 end
 
---if ThemePrefs.Get("EnableGrooveStats") or isOutFoxOnline() then
-if isOutFoxOnline() then
+if ThemePrefs.Get("EnableGrooveStats") or isOutFoxOnline() then
 	return Def.ActorFrame{
 		loadfile(THEME:GetPathB("","_coins"))(),
 		t,
 
 		ONLINE,
-		--AutoSubmit
+		AutoSubmit
 	}
 else
 	return Def.ActorFrame{

@@ -273,10 +273,10 @@ return Def.ActorFrame{
 	},
 	Def.BitmapText {
 		File = "ScreenOptions serial number",
-		Condition=ThemePrefs.Get("UseStepCache"),
+		Condition=UsesStepCache(),
 		InitCommand=function(self)
 			self:x(SCREEN_LEFT+25*WideScreenDiff()):shadowlength(2):horizalign(left):maxwidth(SCREEN_WIDTH/5*3/WideScreenDiff()):zoom(0.5*WideScreenDiff())
-			if ThemePrefs.Get("UseStepCache") then
+			if UsesStepCache() then
 				self:y(isFinal() and SCREEN_BOTTOM-82*WideScreenDiff() or SCREEN_BOTTOM-74*WideScreenDiff())
 			else
 				self:y(isFinal() and SCREEN_BOTTOM-66*WideScreenDiff() or SCREEN_BOTTOM-58*WideScreenDiff())

@@ -19,7 +19,7 @@ if courseMode then
 		local entries = trail:GetTrailEntries()
 		for i, entry in ipairs(entries) do
             local first = 0
-            if ThemePrefs.Get("UseStepCache") then
+            if UsesStepCache() then
                 local steps = GAMESTATE:GetCurrentSteps(master)
                 seconds = seconds + tonumber(LoadFromCache(entry:GetSong(),entry:GetSteps(),"TrueSeconds"))
                 first = tonumber(LoadFromCache(entry:GetSong(),entry:GetSteps(),"TrueFirstSecond"))
@@ -35,7 +35,7 @@ if courseMode then
 else
 	local song = GAMESTATE:GetCurrentSong()
 	if song then
-        if ThemePrefs.Get("UseStepCache") then
+        if UsesStepCache() then
             local steps = GAMESTATE:GetCurrentSteps(master)
             totalSeconds = tonumber(LoadFromCache(song,steps,"TrueSeconds"))
             firstSeconds = tonumber(LoadFromCache(song,steps,"TrueFirstSecond"))

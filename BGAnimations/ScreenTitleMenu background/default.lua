@@ -28,7 +28,7 @@ else
 		end
 	end
 end
-if isEtterna("0.55") and ThemePrefs.Get("UseStepCache") and ThemePrefs.Get("UseStepCacheQuickload") then QuickLoadStepCache() end
+if isEtterna("0.55") and UsesStepCache() and ThemePrefs.Get("UseStepCacheQuickload") then QuickLoadStepCache() end
 
 local versions = {
 	["Etterna"]					= "etterna",
@@ -75,7 +75,6 @@ local function sortArray(array)
 	return output
 end
 
---[[
 local GrooveStats = isITGmania() and RequestResponseActor()..{
 	SendRequestCommand=function(self)
 		if GS.IsConnected then MESSAGEMAN:Broadcast("GrooveStatsUpdate") return end
@@ -122,7 +121,6 @@ local GrooveStats = isITGmania() and RequestResponseActor()..{
 		end
 	}
 }
-]]
 
 return Def.ActorFrame{
 	OnCommand=function(self)
@@ -510,10 +508,10 @@ return Def.ActorFrame{
 	},
 	Def.BitmapText {
 		File = "ScreenOptions serial number",
-		Condition=ThemePrefs.Get("UseStepCache"),
+		Condition=UsesStepCache(),
 		InitCommand=function(self)
 			self:x(SCREEN_LEFT+25*WideScreenDiff()):shadowlength(2):horizalign(left):maxwidth(SCREEN_WIDTH/5*3/WideScreenDiff()):zoom(0.5*WideScreenDiff())
-			if ThemePrefs.Get("UseStepCache") then
+			if UsesStepCache() then
 				self:y(isFinal() and SCREEN_BOTTOM-82*WideScreenDiff() or SCREEN_BOTTOM-74*WideScreenDiff())
 			else
 				self:y(isFinal() and SCREEN_BOTTOM-66*WideScreenDiff() or SCREEN_BOTTOM-58*WideScreenDiff())
@@ -770,7 +768,7 @@ return Def.ActorFrame{
 			InitCommand=function(self) self:addy(90):horizalign(left):diffuse(color("#ff000000")):shadowlength(2) end
 		},
 
-		--GrooveStats
+		GrooveStats
 	},
 	Def.ActorFrame{
 		Condition=ThemePrefs.Get("ShowClock"),

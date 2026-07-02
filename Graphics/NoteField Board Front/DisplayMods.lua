@@ -18,7 +18,7 @@ if IsGame("beat") or IsGame("be-mu") or IsGame("popn") or IsGame("po-mu") then
 	end
 end
 
-if ThemePrefs.Get("UseStepCache") then
+if UsesStepCache() then
 	sleep = math.max(1,tonumber(LoadFromCache(SongOrCourse,StepsOrTrail,"TrueFirstSecond"))-1.55)
 else
 	sleep = math.max(1,SongOrCourse:GetFirstSecond()-1.55)

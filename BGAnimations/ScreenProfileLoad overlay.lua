@@ -16,6 +16,7 @@ return Def.ActorFrame{
 					SCREENMAN:GetTopScreen():SetNextScreenName("ScreenSummaryBackup")
 				end
 			end
+			if ThemePrefs.Get("EnableGrooveStats") then LoadGrooveStatsIni(pn) end
 			LoadFlare(pn)
 			WIFE3Load(pn)
 			FAplusLoad(pn)
@@ -31,7 +32,7 @@ return Def.ActorFrame{
 								if highscore:GetGrade()~="Grade_Failed" then
 									local SPS = 0
 
-									if ThemePrefs.Get("UseStepCache") then
+									if UsesStepCache() then
 										SPS = tonumber(LoadFromCache(songs[s],steps[ss],"StepsPerSecond"))
 									else
 										local trueSeconds = isOutFox(20211230) and steps[ss]:GetChartLength() or songs[s]:GetLastSecond()-songs[s]:GetFirstSecond()

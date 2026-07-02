@@ -831,7 +831,7 @@ return Def.ActorFrame{
 			if GAMESTATE:IsCourseMode() then
 				self:settext(fail and Time(math.min(alive,total),true).." - "..Time(total,true) or Time(total,true))
 			else
-				if ThemePrefs.Get("UseStepCache") then
+				if UsesStepCache() then
 					first = LoadFromCache(GAMESTATE:GetCurrentSong(),GAMESTATE:GetCurrentSteps(PLAYER_1),"TrueFirstSecond")
 					last = LoadFromCache(GAMESTATE:GetCurrentSong(),GAMESTATE:GetCurrentSteps(PLAYER_1),"TrueLastSecond")
 				else
