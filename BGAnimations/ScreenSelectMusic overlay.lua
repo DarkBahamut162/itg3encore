@@ -610,9 +610,7 @@ local Leaderboard = isOutFoxOnline() and Def.ActorFrame{
 			end
 		end
 	end
-} or Def.ActorFrame{}
-
-local Leaderboard = isITGmania() and RequestResponseActor()..{
+} or isITGmania() and RequestResponseActor()..{
 	SendLeaderboardRequestMessageCommand=function(self)
 		if not IsServiceAllowed(GS.Leaderboard) then return end
 
