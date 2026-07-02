@@ -13,10 +13,13 @@ return Def.ActorFrame{
 				self:diffuse(color("#FF0000"))
 			elseif GS and GS[player] and not GS[player].IsPadPlayer then
 				self:diffuse(color("#FF8000"))
-			elseif not ValidForGrooveStats(player) then
-				self:diffuse(color("#FFFF00"))
 			else
-				self:diffuse(color("#00FF00"))
+				local _,check = ValidForGrooveStats(player)
+				if not check then
+					self:diffuse(color("#FFFF00"))
+				else
+					self:diffuse(color("#00FF00"))
+				end
 			end
 		end
 	}

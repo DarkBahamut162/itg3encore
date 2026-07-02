@@ -441,21 +441,26 @@ function ValidForGrooveStats(player,checkAUTO)
 	valid[8] = PREFSMAN:GetPreference("HarshHotLifePenalty")
 
 	local TWA = isEtterna("0.55") and 0 or PREFSMAN:GetPreference("TimingWindowAdd")
-	local check = false
+	local check = true
     for i, window in ipairs(TimingWindows) do
 		--Wrong TimingWindowSeconds
-		check = FloatEquals(PREFSMAN:GetPreference("TimingWindowSeconds"..window) + TWA, ExpectedWindows[i])
-        valid[9] = valid[9] ~= nil and (valid[9] and check) or check
+		if not FloatEquals(PREFSMAN:GetPreference("TimingWindowSeconds"..window) + TWA, ExpectedWindows[i]) then check = false break end
     end
+	valid[9] = check
 
+	check = true
     for i, window in ipairs(LifeWindows) do
 		--Wrong LifePercentChange
-		check = FloatEquals(THEME:GetMetric("LifeMeterBar", "LifePercentChange"..window), ExpectedLife[i])
-        valid[10] = valid[10] ~= nil and (valid[10] and check) or check
-		--Wrong PercentScoreWeight
-		check = THEME:GetMetric("ScoreKeeperNormal", "PercentScoreWeight"..window) == ExpectedScoreWeight[i]
-        valid[11] = valid[11] ~= nil and (valid[10] and check) or check
+		if not FloatEquals(THEME:GetMetric("LifeMeterBar", "LifePercentChange"..window), ExpectedLife[i]) then check = false break end
     end
+	valid[10] = check
+
+	check = true
+    for i, window in ipairs(LifeWindows) do
+		--Wrong PercentScoreWeight
+		if not FloatEquals(THEME:GetMetric("ScoreKeeperNormal", "PercentScoreWeight"..window), ExpectedScoreWeight[i]) then check = false break end
+    end
+	valid[11] = check
 
 	local rate = GAMESTATE:GetSongOptionsObject("ModsLevel_Song"):MusicRate() * 100
 	valid[12] = 100 <= rate and rate <= 300
@@ -477,7 +482,7 @@ function ValidForGrooveStats(player,checkAUTO)
 	end
 
 	local allChecksValid = true
-	for _, passed_check in ipairs(valid) do
+	for _, passed_check in pairs(valid) do
 		if not passed_check then allChecksValid = false break end
 	end
 
