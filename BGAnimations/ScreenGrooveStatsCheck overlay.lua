@@ -12,6 +12,7 @@ return Def.ActorFrame{
 		File = "_z 36px shadowx",
 		InitCommand=function(self) self:Center():zoom(0.6*WideScreenDiff()):shadowlength(2):maxwidth(SCREEN_WIDTH/0.7/WideScreenDiff()) end,
 		OnCommand=function(self)
+            SCREENMAN:GetTopScreen():AddInputCallback(InputHandler)
             local valid, allChecksValid = ValidForGrooveStats()
             local output = ""
             if not allChecksValid then
@@ -24,6 +25,9 @@ return Def.ActorFrame{
             else
                 self:settext("GrooveStats\nNo Issues Detected!"):diffuse(color("#00FF00"))
             end
+        end,
+		OffCommand=function(self)
+            SCREENMAN:GetTopScreen():RemoveInputCallback(InputHandler)
         end
 	}
 }

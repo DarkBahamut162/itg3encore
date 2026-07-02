@@ -25,6 +25,7 @@ local leaderboard = { [PLAYER_1] = getenv("SetScoreFA"..pname(PLAYER_1)) and 2 o
 local KEY = { [PLAYER_1] = nil, [PLAYER_2] = nil }
 local GSH = { [PLAYER_1] = nil, [PLAYER_2] = nil }
 local direction = { [PLAYER_1] = 1, [PLAYER_2] = 1 }
+local keyboardEnabled = ThemePrefs.Get("KeyboardEnabled")
 
 if ThemePrefs.Get("EnableGrooveStats") then
 	for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
@@ -180,13 +181,15 @@ local function AutoSubmitRequestProcessor_SM(res)
 		for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
 			if GS[pn].ApiKey ~= "" then
 				submitted[pn] = true
-				for pn in ivalues(GAMESTATE:GetHumanPlayers()) do MESSAGEMAN:Broadcast("Submit"..pname(pn),{Message = "Submit Successful!\nHold "..(pn == PLAYER_1 and "Left" or "Right").." Shift for Leaderboard\nPress "..(pn == PLAYER_1 and "Left" or "Right").." CTRL to switch Leaderboards"}) end
+				local add = keyboardEnabled and "Hold "..(pn == PLAYER_1 and "Left" or "Right").." Shift for Leaderboard\nPress "..(pn == PLAYER_1 and "Left" or "Right").." CTRL to switch Leaderboards" or "Hold &SELECT; for Leaderboard\nPress &MENULEFT;/&MENURIGHT; to switch Leaderboards"
+				for pn in ivalues(GAMESTATE:GetHumanPlayers()) do MESSAGEMAN:Broadcast("Submit"..pname(pn),{Message = "Submit Successful!\n"..add}) end
 			end
 		end
 	else
 		for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
 			if GS[pn].ApiKey ~= "" then
-				for pn in ivalues(GAMESTATE:GetHumanPlayers()) do MESSAGEMAN:Broadcast("Submit"..pname(pn),{Message = "Submit Failed!\nHold "..(pn == PLAYER_1 and "Left" or "Right").." Shift for QR Code"}) end
+				local add = keyboardEnabled and "Hold "..(pn == PLAYER_1 and "Left" or "Right").." Shift for QR Code" or "Hold &SELECT; for QR Code"
+				for pn in ivalues(GAMESTATE:GetHumanPlayers()) do MESSAGEMAN:Broadcast("Submit"..pname(pn),{Message = "Submit Failed!\n"..add}) end
 			end
 		end
 	end
@@ -200,7 +203,8 @@ local function AutoSubmitRequestProcessor(res)
 				if error == "Timeout" then
 					MESSAGEMAN:Broadcast("Submit"..pname(pn),{Message = "Time Out!\nHold "..(pn == PLAYER_1 and "Left" or "Right").." Shift for QR Code"})
 				elseif error or (res.statusCode ~= nil and res.statusCode ~= 200) then
-					MESSAGEMAN:Broadcast("Submit"..pname(pn),{Message = "Submit Failed!\nHold "..(pn == PLAYER_1 and "Left" or "Right").." Shift for QR Code"})
+					local add = keyboardEnabled and "Hold "..(pn == PLAYER_1 and "Left" or "Right").." Shift for QR Code" or "Hold &SELECT; for QR Code"
+					MESSAGEMAN:Broadcast("Submit"..pname(pn),{Message = "Submit Failed!\n"..add})
 				end
 			end
 		end
@@ -220,7 +224,8 @@ local function AutoSubmitRequestProcessor(res)
 			for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
 				if GS[pn].ApiKey ~= "" then
 					submitted[pn] = true
-					for pn in ivalues(GAMESTATE:GetHumanPlayers()) do MESSAGEMAN:Broadcast("Submit"..pname(pn),{Message = "Submit Successful!\nHold "..(pn == PLAYER_1 and "Left" or "Right").." Shift for Leaderboard\nPress "..(pn == PLAYER_1 and "Left" or "Right").." CTRL to switch Leaderboards"}) end
+					local add = keyboardEnabled and "Hold "..(pn == PLAYER_1 and "Left" or "Right").." Shift for Leaderboard\nPress "..(pn == PLAYER_1 and "Left" or "Right").." CTRL to switch Leaderboards" or "Hold &SELECT; for Leaderboard\nPress &MENULEFT;/&MENURIGHT; to switch Leaderboards"
+					for pn in ivalues(GAMESTATE:GetHumanPlayers()) do MESSAGEMAN:Broadcast("Submit"..pname(pn),{Message = "Submit Successful!\n"..add}) end
 				end
 			end
 		end
@@ -566,7 +571,8 @@ if ThemePrefs.Get("EnableGrooveStats") or isOutFoxOnline() then
 												OFCaching[key] = false
 											end
 											for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
-												MESSAGEMAN:Broadcast("Submit"..pname(pn),{Message = "Submit Successful!\nHold "..(pn == PLAYER_1 and "Left" or "Right").." Shift for Leaderboard"})
+												local add = keyboardEnabled and "Hold "..(pn == PLAYER_1 and "Left" or "Right").." Shift for Leaderboard" or "Hold &SELECT; for Leaderboard"
+												MESSAGEMAN:Broadcast("Submit"..pname(pn),{Message = "Submit Successful!"..add})
 											end
 											submitted[pn] = true
 										end,
