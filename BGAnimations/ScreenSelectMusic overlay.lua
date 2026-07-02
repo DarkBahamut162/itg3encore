@@ -332,7 +332,7 @@ local InputHandler = function(event)
 						MESSAGEMAN:Broadcast("ControlMenuClosed"..pname(event.PlayerNumber))
 					end
 				end
-			elseif event.GameButton == "Start" and GAMESTATE:IsHumanPlayer(event.PlayerNumber) then
+			elseif shiftHeld[event.PlayerNumber] and event.GameButton == "Start" and GAMESTATE:IsHumanPlayer(event.PlayerNumber) then
 				if event.type == "InputEventType_FirstPress" then
 					if ((ThemePrefs.Get("EnableGrooveStats") and isGrooveStats(event.PlayerNumber)) or isOutFoxOnline()) then
 						local check
