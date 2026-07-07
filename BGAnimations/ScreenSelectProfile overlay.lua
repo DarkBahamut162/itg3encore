@@ -84,6 +84,7 @@ function LoadPlayerStuff(Player)
 				["Unselected"..pname(Player).."MessageCommand"]=function(self) self:settext("Selecting...") end
 			},
 			Def.ActorFrame {
+				Name="Border",
 				InitCommand=function(self) self:y(-90) end,
 				Def.Sprite {
 					Name="Avatar",
@@ -274,12 +275,30 @@ function LoadPlayerStuff(Player)
 	}
 end
 
+local function GrooveStatsCheck(path)
+	if path and FILEMAN:DoesFileExist(path) then
+		local contents = IniFile.ReadFile(path)
+		GS_ = {}
+		for k,v in pairs(contents["GrooveStats"]) do
+			if k == "ApiKey" then
+				if string.len(v) ~= 64 then return false end
+			elseif k == "IsPadPlayer" then
+				if v == 1 then else return false end
+			end
+		end
+		return true
+	end
+	return false
+end
+
 function UpdateInternal3(self,Player)
 	local pn = (Player == PLAYER_1) and 1 or 2
 	local frame = self:GetChild(string.format('P%uFrame',pn))
 	local seltext = frame:GetChild('SelectedProfileText')
 	local joinframe = frame:GetChild('JoinFrame')
 	local bigframe = frame:GetChild('BigFrame')
+	local border = bigframe:GetChild('Border')
+	local frameBorder = border:GetChild('Frame')
 
 	if GAMESTATE:IsHumanPlayer(Player) then
 		frame:visible(true)
@@ -289,6 +308,16 @@ function UpdateInternal3(self,Player)
 		local ind = SCREENMAN:GetTopScreen():GetProfileIndex(Player)
 		if ind > 0 then
 			seltext:settext(PROFILEMAN:GetLocalProfileFromIndex(ind-1):GetDisplayName())
+			if ThemePrefs.Get("EnableGrooveStats") then
+				local id = PROFILEMAN:GetLocalProfileIDFromIndex(ind-1)
+				if id then
+					if GrooveStatsCheck("/Save/LocalProfiles/"..id.."/GrooveStats.ini") then
+						frameBorder:diffuse(color("#00FF00"))
+					else
+						frameBorder:diffuse(color("#FF0000"))
+					end
+				end
+			end
 		elseif ind == 0 then
 			local name = ""
 			local add = PREFSMAN:GetPreference("MemoryCardProfileSubdir")
@@ -299,8 +328,16 @@ function UpdateInternal3(self,Player)
 			end
 			if name == "" then name = "NoName" end
 			seltext:settext(name)
+			if ThemePrefs.Get("EnableGrooveStats") then
+				if GrooveStatsCheck("@mc"..(Player == PLAYER_1 and "1" or "2").."/"..PREFSMAN:GetPreference("MemoryCardProfileSubdir").."/GrooveStats.ini") then
+					frameBorder:diffuse(color("#00FF00"))
+				else
+					frameBorder:diffuse(color("#FF0000"))
+				end
+			end
 		elseif ind == -1 then
 			seltext:settext("Guest")
+			frameBorder:diffuse(color("#FFFFFF"))
 		else
 			if SCREENMAN:GetTopScreen():SetProfileIndex(Player,1) then
 				self:queuecommand('UpdateInternal2')
@@ -309,6 +346,7 @@ function UpdateInternal3(self,Player)
 				bigframe:visible(false)
 				seltext:settext('No profile'):y(32)
 			end
+			frameBorder:diffuse(color("#FFFFFF"))
 		end
 	else
 		joinframe:visible(true)
