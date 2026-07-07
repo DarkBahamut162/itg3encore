@@ -17,7 +17,7 @@ return Def.ActorFrame{
 			OffFocusCommand=function(self) self:accelerate(0.4):addx(-SCREEN_WIDTH*.5) end
 		},
 		Def.Sprite {
-			Texture = THEME:GetPathG("_join","icons/"..(isFinal() and "couple_icon" or "co-op_icon")),
+			Texture = THEME:GetPathG("_join","icons/couple_icon "..(isFinal() and "final" or "normal")),
 			InitCommand=function(self) self:zoom(WideScreenDiff()) end,
 			GainFocusCommand=function(self) self:accelerate(0.1):diffuse(color("#FFFFFF")):x((isFinal() and 17 or 20)*WideScreenDiff()) end,
 			LoseFocusCommand=function(self) self:finishtweening():decelerate(0.1):diffuse(color("#636363")):x(0) end,
