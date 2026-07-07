@@ -248,7 +248,7 @@ local AutoSubmit = isITGmania() and RequestResponseActor()..{
 
 		local rate = tonumber(string.format("%.0f", GAMESTATE:GetSongOptionsObject("ModsLevel_Preferred"):MusicRate() * 100))
 		for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
-			local _, valid = ValidForGrooveStats(pn,true)
+			local checks, valid = ValidForGrooveStats(pn,true)
 			local stats = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn)
 
 			if valid and not stats:GetFailed() and GS[pn].IsPadPlayer then
@@ -282,7 +282,19 @@ local AutoSubmit = isITGmania() and RequestResponseActor()..{
 					MESSAGEMAN:Broadcast("Submit"..pname(pn),{Message = "Submitting..."})
 				end
 			else
-				MESSAGEMAN:Broadcast("Submit"..pname(pn),{Message = "GrooveStats Not Valid!\nHold "..(pn == PLAYER_1 and "Left" or "Right").." Shift for reason"})
+				if not valid then
+					local add = ""
+					for i,error in pairs(checks) do
+						if not error then
+							output = addToOutput(add,THEME:GetString("ScreenEvaluation","QRInvalidScore"..i),"\n")
+						end
+					end
+					MESSAGEMAN:Broadcast("Submit"..pname(pn),{Message = "GrooveStats Not Valid!\n"..add})
+				elseif stats:GetFailed() then
+					MESSAGEMAN:Broadcast("Submit"..pname(pn),{Message = "GrooveStats Not Valid!\nSong Failed!"})
+				elseif not GS[pn].IsPadPlayer then
+					MESSAGEMAN:Broadcast("Submit"..pname(pn),{Message = "GrooveStats Not Valid!\nNo Pad!"})
+				end
 			end
 		end
 
@@ -318,7 +330,7 @@ local AutoSubmit = isITGmania() and RequestResponseActor()..{
 		}
 
 		for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
-			local _, valid = ValidForGrooveStats(pn,true)
+			local checks, valid = ValidForGrooveStats(pn,true)
 			local stats = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn)
 
 			if valid and not stats:GetFailed() and GS[pn].IsPadPlayer then
@@ -345,7 +357,19 @@ local AutoSubmit = isITGmania() and RequestResponseActor()..{
 					MESSAGEMAN:Broadcast("Submit"..pname(pn),{Message = "Submitting..."})
 				end
 			else
-				MESSAGEMAN:Broadcast("Submit"..pname(pn),{Message = "GrooveStats Not Valid!\nHold "..(pn == PLAYER_1 and "Left" or "Right").." Shift for reason"})
+				if not valid then
+					local add = ""
+					for i,error in pairs(checks) do
+						if not error then
+							output = addToOutput(add,THEME:GetString("ScreenEvaluation","QRInvalidScore"..i),"\n")
+						end
+					end
+					MESSAGEMAN:Broadcast("Submit"..pname(pn),{Message = "GrooveStats Not Valid!\n"..add})
+				elseif stats:GetFailed() then
+					MESSAGEMAN:Broadcast("Submit"..pname(pn),{Message = "GrooveStats Not Valid!\nSong Failed!"})
+				elseif not GS[pn].IsPadPlayer then
+					MESSAGEMAN:Broadcast("Submit"..pname(pn),{Message = "GrooveStats Not Valid!\nNo Pad!"})
+				end
 			end
 		end
 
