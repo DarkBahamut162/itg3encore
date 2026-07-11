@@ -109,7 +109,9 @@ return Def.ActorFrame{
 	Def.BitmapText {
 		File = "_v 26px bold white",
 		Text="MOD:",
-		InitCommand=function(self) self:shadowlength(2.5):zoom(0.5*WideScreenDiff()):y(-17.5*WideScreenDiff()):halign(1) end
+		InitCommand=function(self) self:shadowlength(2.5):zoom(0.5*WideScreenDiff()):y(-17.5*WideScreenDiff()):halign(1) end,
+		CurrentSongChangedMessageCommand=function(self) if not courseMode then if GAMESTATE:GetCurrentSong() then self:visible(true) else self:visible(false) end end end,
+		CurrentCourseChangedMessageCommand=function(self) if courseMode then if GAMESTATE:GetCurrentCourse() then self:visible(true) else self:visible(false) end end end
 	},
 	Def.BitmapText {
 		Font="BPMDisplay bpm",
