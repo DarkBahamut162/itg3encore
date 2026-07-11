@@ -23,6 +23,7 @@ local max = 0
 local average = 0
 local median = 0
 local counter = 0
+local buffer = 24
 
 local allowednotes = {
 	["TapNoteType_Tap"] = true,
@@ -285,6 +286,8 @@ local function UpdateGraphAlt()
         local delays = check and {} or timingData:GetDelays()
         local warps = check and {} or timingData:GetWarps()
         local IsJudgableAtBeat = false
+        local buffered_notes = 0
+        local buffered_sec = 0
 
         for v in ivalues(isOutFoxV043() and StepsOrTrail:GetNoteData() or SongOrCourse:GetNoteData(chartint)) do
             if check then
@@ -301,11 +304,19 @@ local function UpdateGraphAlt()
                     local currentSec = math.round(timingData:GetElapsedTimeFromBeat(v[1]),3)
                     if previousSec ~= currentSec then
                         combo = 1
-                        stepsPerSecList[currentSec] = math.max(combo,1/(currentSec-previousSec))
+						local buffered_diff = currentSec - buffered_sec
+						if buffered_diff >= 1/buffer then
+							if buffered_notes == 0 then buffered_notes = combo end
+                            stepsPerSecList[currentSec] = math.max(combo,1/(currentSec-buffered_sec))
+							buffered_notes = 0
+						else
+							buffered_notes = buffered_notes + combo
+						end
+						buffered_sec = currentSec
                     else
                         if not rowLimit then
                             combo = combo + 1
-                            stepsPerSecList[currentSec] = math.max(combo,stepsPerSecList[currentSec] / (combo-1) * combo)
+                            stepsPerSecList[currentSec] = math.max(combo,(stepsPerSecList[currentSec] or 1) / (combo-1) * combo)
                         end
                     end
                     if v["length"] then
@@ -339,7 +350,9 @@ local function UpdateGraphAltSM(Step)
         local delays = timingData:GetDelays()
         local warps = timingData:GetWarps()
         local chart = SMParser(Step)
-        local previousSec = nil
+        local previousSec = -999
+        local buffered_notes = 0
+        local buffered_sec = 0
         
         local beat = 0
         if chart then
@@ -362,8 +375,16 @@ local function UpdateGraphAltSM(Step)
                         local isJudgableAtBeat = not isWarp or (isWarp and (isStop or isDelay))
                         if isJudgableAtBeat then
                             local currentSec = math.round(timingData:GetElapsedTimeFromBeat(beat),3)
-                            if previousSec then
-                                stepsPerSecList[currentSec] = math.max(count,1/(currentSec-previousSec) * count)
+                            if previousSec ~= currentSec then
+                                local buffered_diff = currentSec - buffered_sec
+                                if buffered_diff >= 1/buffer then
+                                    if buffered_notes == 0 then buffered_notes = count end
+                                    stepsPerSecList[currentSec] = math.max(count,1/(currentSec-buffered_sec)*count)
+                                    buffered_notes = 0
+                                else
+                                    buffered_notes = buffered_notes + count
+                                end
+                                buffered_sec = currentSec
                             end
                             previousSec = currentSec
                         end
@@ -393,7 +414,9 @@ local function UpdateGraphAltDWI(Step)
         local delays = timingData:GetDelays()
         local warps = timingData:GetWarps()
         local chart = DWIParser(Step)
-        local previousSec = nil
+        local previousSec = -999
+        local buffered_notes = 0
+        local buffered_sec = 0
         
         local beat = 0
         if chart then
@@ -414,8 +437,16 @@ local function UpdateGraphAltDWI(Step)
                         local isJudgableAtBeat = not isWarp or (isWarp and (isStop or isDelay))
                         if isJudgableAtBeat then
                             local currentSec = math.round(timingData:GetElapsedTimeFromBeat(beat),3)
-                            if previousSec then
-                                stepsPerSecList[currentSec] = math.max(count,1/(currentSec-previousSec) * count)
+                            if previousSec ~= currentSec then
+                                local buffered_diff = currentSec - buffered_sec
+                                if buffered_diff >= 1/buffer then
+                                    if buffered_notes == 0 then buffered_notes = count end
+                                    stepsPerSecList[currentSec] = math.max(count,1/(currentSec-buffered_sec)*count)
+                                    buffered_notes = 0
+                                else
+                                    buffered_notes = buffered_notes + count
+                                end
+                                buffered_sec = currentSec
                             end
                             previousSec = currentSec
                         end
@@ -445,7 +476,9 @@ local function UpdateGraphAltBMS(Step)
         local delays = timingData:GetDelays()
         local warps = timingData:GetWarps()
         local chart,lastHold = BMSParser(Step)
-        local previousSec = nil
+        local previousSec = -999
+        local buffered_notes = 0
+        local buffered_sec = 0
 
         local beats = {}
         for beat in pairs(chart) do beats[#beats+1] = beat end
@@ -461,8 +494,18 @@ local function UpdateGraphAltBMS(Step)
                 if warps and #warps > 0 then isWarp,warps = HasWarpAtBeat(beat,warps) end
                 if not isWarp or (isWarp and (isStop or isDelay)) then
                     local currentSec = math.round(timingData:GetElapsedTimeFromBeat(beat),3)
-                    if previousSec then
-                        stepsPerSecList[currentSec] = math.max(chart[beat],(1/(currentSec-previousSec)) * chart[beat])
+                    if previousSec ~= currentSec then
+                        if previousSec ~= currentSec then
+                            local buffered_diff = currentSec - buffered_sec
+                            if buffered_diff >= 1/buffer then
+                                if buffered_notes == 0 then buffered_notes = chart[beat] end
+                                stepsPerSecList[currentSec] = math.max(chart[beat],(1/(currentSec-previousSec))*chart[beat])
+                                buffered_notes = 0
+                            else
+                                buffered_notes = buffered_notes + chart[beat]
+                            end
+                            buffered_sec = currentSec
+                        end
                     end
                     previousSec = currentSec
                 end
