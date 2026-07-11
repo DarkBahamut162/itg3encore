@@ -130,6 +130,10 @@ local difficultyList = {
 	"Difficulty_D11","Difficulty_D12","Difficulty_D13","Difficulty_D14","Difficulty_D15"
 }
 
+local timeHold = nil
+local leftHold = { [PLAYER_1] = false, [PLAYER_2] = false }
+local rightHold = { [PLAYER_1] = false, [PLAYER_2] = false }
+
 local InputHandler = function(event)
 	if searching then
 		if event.type == "InputEventType_FirstPress" or event.type == "InputEventType_Repeat" then
@@ -427,6 +431,31 @@ local InputHandler = function(event)
 							end
 						else
 							SOUND:PlayOnce(THEME:GetPathS('MusicWheel',"locked"))
+						end
+					elseif event.type == "InputEventType_Repeat" then
+						if leftHold[event.PlayerNumber] and rightHold[event.PlayerNumber] then
+							local current = GetTimeSinceStart()
+							if not timeHold then timeHold = current end
+							if current >= (timeHold+5) then
+								SCREENMAN:SystemMessage("Exit session!")
+								SCREENMAN:GetTopScreen():Cancel()
+							else
+								SCREENMAN:SystemMessage("Hold for "..math.ceil(math.abs(current-(timeHold+5))).." seconds to exit!")
+							end
+						elseif event.GameButton == "MenuLeft" then
+							if not leftHold[event.PlayerNumber] then leftHold[event.PlayerNumber] = true end
+						elseif event.GameButton == "MenuRight" then
+							if not rightHold[event.PlayerNumber] then rightHold[event.PlayerNumber] = true end
+						end
+					elseif event.type == "InputEventType_Release" then
+						if leftHold[event.PlayerNumber] and rightHold[event.PlayerNumber] then
+							if timeHold then timeHold = nil end
+							SCREENMAN:SystemMessage("Exit aborted!")
+						end
+						if event.GameButton == "MenuLeft" then
+							if leftHold[event.PlayerNumber] then leftHold[event.PlayerNumber] = false end
+						elseif event.GameButton == "MenuRight" then
+							if rightHold[event.PlayerNumber] then rightHold[event.PlayerNumber] = false end
 						end
 					end
 				end
