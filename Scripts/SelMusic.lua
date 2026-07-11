@@ -120,6 +120,8 @@ function GetScreenSelectMusicHelpText()
 			if isOutFoxOnline() then
 				ret = addToOutput(ret,THEME:GetString("ScreenSelectMusic","ShiftButtonAvailableHelpTextAppend"),"::")
 			end
+		else
+			ret = addToOutput(ret,THEME:GetString("ScreenSelectMusic","ExitHelpTextAppend"),"::")
 		end
 		if DifficultyChangingAvailable() then ret = addToOutput(ret,THEME:GetString("ScreenSelectMusic","DifficultyChangingAvailableHelpTextAppend"..((IsGame("pump") or IsGame("smx") or IsGame("techno") or IsGame("beat") or IsGame("be-mu") or IsGame("popn") or IsGame("po-mu")) and "One" or "Two")),"::") end
 		if ModeMenuAvailable() then ret = addToOutput(ret,THEME:GetString("ScreenSelectMusic","SortMenuAvailableHelpTextAppend"),"::") end
