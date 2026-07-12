@@ -9,7 +9,6 @@ return Def.ActorFrame{
 		CurrentSongChangedMessageCommand=function(self) if not courseMode then if GAMESTATE:GetCurrentSong() then self:visible(true) else self:visible(false) end end end,
 		CurrentCourseChangedMessageCommand=function(self) if courseMode then if GAMESTATE:GetCurrentCourse() then self:visible(true) else self:visible(false) end end end
 	},
-	},
 	Def.BitmapText {
 		File = "_r bold shadow 30px",
 		InitCommand=function(self) self:zoom(0.66*WideScreenDiff()):maxwidth(340):halign(0) end,
