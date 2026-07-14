@@ -448,8 +448,8 @@ function hasSLAvatar(pn)
 		[PLAYER_2] = "ProfileSlot_Player2"
 	}
 	if not profile_slot[pn] then return false end
-	local dir  = PROFILEMAN:GetProfileDir(profile_slot[pn])
-	if FILEMAN:DoesFileExist(dir.."avatar") or FILEMAN:DoesFileExist(dir.."profile picture") then
+	local dir = PROFILEMAN:GetProfileDir(profile_slot[pn])
+	if dir and dir ~= "" then
 		local path = ActorUtil.ResolvePath(dir.."avatar",1,true) or ActorUtil.ResolvePath(dir.."profile picture",1,true)
 		if path and ActorUtil.GetFileType(path) == "FileType_Bitmap" then return true end
 	end
