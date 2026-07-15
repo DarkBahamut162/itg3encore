@@ -103,6 +103,7 @@ local function CreditsText(pn)
 			self:name("Credits"..PlayerNumberToString(pn))
 			ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen")
 		end,
+		ForceUpdateMessageCommand=function(self) self:queuecommand("UpdateText") end,
 		UpdateTextCommand=function(self)
 			local str = ScreenSystemLayerHelpers.GetCreditsMessage(pn)
 			if PROFILEMAN:IsPersistentProfile(pn) then

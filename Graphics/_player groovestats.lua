@@ -8,6 +8,7 @@ return Def.ActorFrame{
 		Name="GrooveStats",
 		Texture = THEME:GetPathG("GS","White"),
 		InitCommand=function(self) self:x(player == PLAYER_1 and 146 or -146):y(73):setsize(20,20):shadowlength(1):diffuse(color("#00000000")) end,
+		ForceUpdateMessageCommand=function(self) self:queuecommand("On") end,
 		OnCommand=function(self)
 			if not isGrooveStats(player) then
 				self:diffuse(color("#FF0000"))

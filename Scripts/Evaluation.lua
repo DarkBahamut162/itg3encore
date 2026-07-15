@@ -355,6 +355,68 @@ function PacemakerSave(player)
 	end
 end
 
+function ResetPacemaker(pn)
+	local category = isDouble() and StepsTypeDouble()[GetUserPrefN("StylePosition")] or StepsTypeSingle()[GetUserPrefN("StylePosition")]
+	if PaceMaker[pn] and PaceMaker[pn][category] and #PaceMaker[pn][category] > 0 then PaceMaker[pn][category] = {} end
+end
+
+function PreparePacemaker(pn)
+	local category = isDouble() and StepsTypeDouble()[GetUserPrefN("StylePosition")] or StepsTypeSingle()[GetUserPrefN("StylePosition")]
+	SetCategory(category)
+	if not isEtterna("0.55") and not (PaceMaker[pn] and PaceMaker[pn][category] and #PaceMaker[pn][category] > 0) and not PacemakerLoad(pn) then
+		local stepsType = StepsTypeSingle()[GetUserPrefN("StylePosition")]
+		local stepType = split("_",stepsType)
+		local songs = SONGMAN:GetAllSongs()
+		for s=1,#songs do
+			if songs[s]:HasStepsType(category) then
+				local steps = songs[s]:GetStepsByStepsType(category)
+				for ss=1,#steps do
+					local highscores = PROFILEMAN:GetProfile(pn):GetHighScoreList(songs[s],steps[ss]):GetHighScores()
+					if #highscores > 0 then
+						local highscore = highscores[1]
+						if highscore:GetGrade()~="Grade_Failed" then
+							local SPS = 0
+
+							if UsesStepCache() then
+								SPS = tonumber(LoadFromCache(songs[s],steps[ss],"StepsPerSecond"))
+							else
+								local trueSeconds = isOutFox(20211230) and steps[ss]:GetChartLength() or songs[s]:GetLastSecond()-songs[s]:GetFirstSecond()
+								if not VersionDateCheck(20150500) then
+									SPS = RadarCategory_Notes(songs[s],steps[ss])/trueSeconds
+								else
+									SPS = steps[ss]:GetRadarValues(player):GetValue("RadarCategory_Notes")/trueSeconds
+								end
+							end
+
+							if SPS then
+								if IsGame("be-mu") or IsGame("beat") then
+									SPS = SPS / 2
+								else
+									SPS = SPS * (getColumnsPerPlayer(stepType[2],stepType[3],true) / 4)
+								end
+
+								SPS = math.floor(SPS)
+								PaceMaker[pn][category][math.floor(SPS)]=PaceMaker[pn][category][math.floor(SPS)] or {}
+
+								if highscore:GetPercentDP() > 0.5 then
+									local songDir = songs[s]:GetSongDir()
+									local arr = split("/",songDir)
+									local difficulty = ToEnumShortString(steps[ss]:GetDifficulty())
+									local identifier = steps[ss]:GetHash()
+									if identifier == 0 then identifier = steps[ss]:GetMeter() end
+									songDir = arr[4].."/"..difficulty.."/"..identifier
+									PaceMaker[pn][category][math.floor(SPS)][arr[3].."/"..songDir] = highscore:GetPercentDP()
+								end
+							end
+						end
+					end
+				end
+			end
+		end
+		PacemakerSave(pn)
+	end
+end
+
 function WIFE3Load(player)
 	if not player then return end
 	if not ProfileSlot[player] then return end

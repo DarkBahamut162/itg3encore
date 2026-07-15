@@ -403,6 +403,7 @@ local InputHandler =function(event)
 					MESSAGEMAN:Broadcast("Selected"..pname(event.PlayerNumber))
 					selected = SCREENMAN:GetTopScreen():GetProfileIndex(event.PlayerNumber)
 					playerReady = event.PlayerNumber
+					MESSAGEMAN:Broadcast("StartButton")
 				elseif selected and selected == SCREENMAN:GetTopScreen():GetProfileIndex(event.PlayerNumber) then
 					if playerReady and playerReady == event.PlayerNumber then
 						if GAMESTATE:GetNumPlayersEnabled()==2 then return end
@@ -411,26 +412,52 @@ local InputHandler =function(event)
 						return
 					end
 				end
-				MESSAGEMAN:Broadcast("StartButton")
 				ready[event.PlayerNumber] = true
 				if AllPlayersReady() then
+					for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
+						if inSessionProfileSwitch and SCREENMAN:GetTopScreen():GetProfileIndex(pn) == -1 then
+							PREFSMAN:SetPreference("DefaultLocalProfileID"..pname(pn),"")
+							SCREENMAN:GetTopScreen():SetProfileIndex(pn,-2)
+							SCREENMAN:GetTopScreen():SetProfileIndex(pn,-1)
+							if inSessionProfileSwitch then
+								if ThemePrefs.Get("ExperimentalProfileLevel") then LoadData(pn) MESSAGEMAN:Broadcast("EnablePlayerStats",{PLAYER=pn}) end
+								if ThemePrefs.Get("EnableGrooveStats") then LoadGrooveStatsIni(pn) end
+								LoadFlare(pn)
+								WIFE3Load(pn)
+								FAplusLoad(pn)
+								IIDXClearLoad(pn)
+								ResetPacemaker(pn)
+								PreparePacemaker(pn)
+							end
+						else
+							if SCREENMAN:GetTopScreen():GetProfileIndex(pn) == -1 then PREFSMAN:SetPreference("DefaultLocalProfileID"..pname(pn),"") end
+						end
+					end
+					if inSessionProfileSwitch then InitPlayerOptions() end
 					if not SCREENMAN:GetTopScreen():Finish() then
+						if inSessionProfileSwitch then inSessionProfileSwitch = false end
 						SCREENMAN:GetTopScreen():StartTransitioningScreen("SM_GoToNextScreen",0)
 					end
 				end
-			elseif event.GameButton == "Back" then
-				if GAMESTATE:GetCoinMode() == 'CoinMode_Pay' then
-					local coinsPerCredit=PREFSMAN:GetPreference('CoinsPerCredit')
-					GAMESTATE:InsertCredit(coinsPerCredit)
+			elseif event.GameButton == "Back" or event.GameButton == "Select" then
+				if inSessionProfileSwitch then
+					if inSessionProfileSwitch then inSessionProfileSwitch = false end
+					MESSAGEMAN:Broadcast("BackButton")
+					SCREENMAN:GetTopScreen():StartTransitioningScreen("SM_GoToNextScreen",0)
+				else
+					if GAMESTATE:GetCoinMode() == 'CoinMode_Pay' then
+						local coinsPerCredit=PREFSMAN:GetPreference('CoinsPerCredit')
+						GAMESTATE:InsertCredit(coinsPerCredit)
+					end
+					if playerReady and playerReady == event.PlayerNumber then
+						MESSAGEMAN:Broadcast("Unselected"..pname(event.PlayerNumber))
+						playerReady = inSessionProfileSwitch and playerReady or nil
+						selected = inSessionProfileSwitch and -1 or nil
+						ready[event.PlayerNumber] = false
+					end
+					MESSAGEMAN:Broadcast("BackButton")
+					SCREENMAN:GetTopScreen():SetProfileIndex(event.PlayerNumber,-2)
 				end
-				if playerReady and playerReady == event.PlayerNumber then
-					MESSAGEMAN:Broadcast("Unselected"..pname(event.PlayerNumber))
-					playerReady = nil
-					selected = nil
-					ready[event.PlayerNumber] = false
-				end
-				MESSAGEMAN:Broadcast("BackButton")
-				SCREENMAN:GetTopScreen():SetProfileIndex(event.PlayerNumber,-2)
 			end
 		else
 			if event.GameButton == "Start" or event.GameButton == "Center" then
@@ -446,14 +473,19 @@ local InputHandler =function(event)
 					end
 				end
 				if not locked then
-					MESSAGEMAN:Broadcast("StartButton")
+					--MESSAGEMAN:Broadcast("StartButton")
 					MESSAGEMAN:Broadcast("Left"..pname(event.PlayerNumber))
 					MESSAGEMAN:Broadcast("Right"..pname(event.PlayerNumber))
+					PREFSMAN:SetPreference("DefaultLocalProfileID"..pname(event.PlayerNumber),"")
 					SCREENMAN:GetTopScreen():SetProfileIndex(event.PlayerNumber,-1)
 				end
-			elseif event.GameButton == "Back" then
+			elseif event.GameButton == "Back" or event.GameButton == "Select" then
 				if GAMESTATE:GetNumPlayersEnabled()==0 then
-					SCREENMAN:GetTopScreen():Cancel()
+					if inSessionProfileSwitch then
+						if isStepMania(20160400) then SCREENMAN:PlayInvalidSound() else SOUND:PlayOnce(THEME:GetPathS('Common',"invalid")) end
+					else
+						SCREENMAN:GetTopScreen():Cancel()
+					end
 				end
 			end
 		end
@@ -465,12 +497,35 @@ return Def.ActorFrame {
 	PlayerJoinedMessageCommand=function(self) self:queuecommand('UpdateInternal2') end,
 	PlayerUnjoinedMessageCommand=function(self) self:queuecommand('UpdateInternal2') end,
 	DirectionButtonMessageCommand=function(self) self:queuecommand('UpdateInternal2') end,
-	OffCommand=function() SCREENMAN:GetTopScreen():RemoveInputCallback(InputHandler) end,
+	OffCommand=function()
+		if inSessionProfileSwitch then
+			for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
+				selectedProfiles[pn] = SCREENMAN:GetTopScreen():GetProfileIndex(pn)
+				if ThemePrefs.Get("ExperimentalProfileLevel") then LoadData(pn) MESSAGEMAN:Broadcast("EnablePlayerStats",{PLAYER=pn}) end
+				if ThemePrefs.Get("EnableGrooveStats") then LoadGrooveStatsIni(pn) end
+				LoadFlare(pn)
+				WIFE3Load(pn)
+				FAplusLoad(pn)
+				IIDXClearLoad(pn)
+				ResetPacemaker(pn)
+				PreparePacemaker(pn)
+			end
+			InitPlayerOptions()
+		end
+		MESSAGEMAN:Broadcast("UndarkenScreen")
+		MESSAGEMAN:Broadcast("ForceUpdate")
+		inSessionProfileSwitch = false
+		SCREENMAN:GetTopScreen():RemoveInputCallback(InputHandler)
+	end,
 	OnCommand=function(self)
 		SCREENMAN:GetTopScreen():AddInputCallback(InputHandler)
+		for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
+			if selectedProfiles[pn] then
+				SCREENMAN:GetTopScreen():SetProfileIndex(pn,selectedProfiles[pn])
+			end
+		end
 		self:queuecommand('UpdateInternal2')
 	end,
-	OffCommand=function() SCREENMAN:GetTopScreen():RemoveInputCallback(InputHandler) end,
 	UpdateInternal2Command=function(self)
 		UpdateInternal3(self,PLAYER_1)
 		UpdateInternal3(self,PLAYER_2)
@@ -480,7 +535,7 @@ return Def.ActorFrame {
 			Name = 'P1Frame',
 			InitCommand=function(self) self:x(SCREEN_CENTER_X-160*WideScreenDiff()):y(SCREEN_CENTER_Y) end,
 			OnCommand=function(self) self:zoom(0):bounceend(0.35):zoom(WideScreenDiff()) end,
-			OffCommand=function(self) self:bouncebegin(0.35):zoom(0) end,
+			OffCommand=function(self) self:stoptweening():bouncebegin(0.35):zoom(0) end,
 			PlayerJoinedMessageCommand=function(self,param)
 				if param.Player == PLAYER_1 then self:zoom(1.15*WideScreenDiff()):bounceend(0.175):zoom(WideScreenDiff()) end
 			end,
@@ -490,7 +545,7 @@ return Def.ActorFrame {
 			Name = 'P2Frame',
 			InitCommand=function(self) self:x(SCREEN_CENTER_X+160*WideScreenDiff()):y(SCREEN_CENTER_Y) end,
 			OnCommand=function(self) self:zoom(0):bounceend(0.35):zoom(WideScreenDiff()) end,
-			OffCommand=function(self) self:bouncebegin(0.35):zoom(0) end,
+			OffCommand=function(self) self:stoptweening():bouncebegin(0.35):zoom(0) end,
 			PlayerJoinedMessageCommand=function(self,param)
 				if param.Player == PLAYER_2 then self:zoom(1.15*WideScreenDiff()):bounceend(0.175):zoom(WideScreenDiff()) end
 			end,

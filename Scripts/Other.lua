@@ -430,7 +430,7 @@ function getSLAvatar(pn)
 end
 
 function hasAvatar(pn)
-	if isOutFox() then
+	if isOutFox() and PROFILEMAN:IsPersistentProfile(pn) then
 		if Basename(LoadModule("Options.GetProfileData.lua")(pn)["Image"]) ~= "UserProfile generic icon.png" then return true end
 	end
 	return false
@@ -448,10 +448,12 @@ function hasSLAvatar(pn)
 		[PLAYER_2] = "ProfileSlot_Player2"
 	}
 	if not profile_slot[pn] then return false end
-	local dir = PROFILEMAN:GetProfileDir(profile_slot[pn])
-	if dir and dir ~= "" then
-		local path = ActorUtil.ResolvePath(dir.."avatar",1,true) or ActorUtil.ResolvePath(dir.."profile picture",1,true)
-		if path and ActorUtil.GetFileType(path) == "FileType_Bitmap" then return true end
+	if PROFILEMAN:IsPersistentProfile(pn) then
+		local dir = PROFILEMAN:GetProfileDir(profile_slot[pn])
+		if dir and dir ~= "" then
+			local path = ActorUtil.ResolvePath(dir.."avatar",1,true) or ActorUtil.ResolvePath(dir.."profile picture",1,true)
+			if path and ActorUtil.GetFileType(path) == "FileType_Bitmap" then return true end
+		end
 	end
 	return false
 end

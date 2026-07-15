@@ -397,8 +397,21 @@ function InitRotationOptions()
 	end
 end
 
+inSessionProfileSwitch = false
+selectedProfiles = {[PLAYER_1]=nil,[PLAYER_2]=nil}
+
+function switchProfiles()
+	if not inSessionProfileSwitch then
+		inSessionProfileSwitch = true
+		if isStepMania(20160400) then SCREENMAN:PlayStartSound() else SOUND:PlayOnce(THEME:GetPathS('Common',"start")) end
+		SCREENMAN:AddNewScreenToTop("ScreenSelectProfile")
+		MESSAGEMAN:Broadcast("DarkenScreen")
+	end
+end
+
 function InitOptions()
 	Master,P1,P2={},{},{}
+	selectedProfiles = {[PLAYER_1]=nil,[PLAYER_2]=nil}
 	GAMESTATE:SetFailTypeExplicitlySet(true)
 	setenv("HighScoreableP1",false)
 	setenv("HighScoreableP2",false)

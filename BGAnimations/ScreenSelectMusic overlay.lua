@@ -1670,37 +1670,40 @@ return Def.ActorFrame{
 			}
 		},
 		Def.ActorFrame{
-			Condition=GAMESTATE:IsHumanPlayer(PLAYER_1),
-			Name="TimePlayerP1",
-			InitCommand=function(self)
-				local adjust = WideScaleFixed(95*WideScreenDiff(),130*WideScreenDiff())
-				self:x(SCREEN_CENTER_X-adjust):y(SCREEN_BOTTOM-11*WideScreenDiff())
-			end,
-			OnCommand=function(self) self:addy(100):decelerate(0.6):addy(-100) end,
-			OffCommand=function(self) self:accelerate(0.5):addy(100) end,
-			Def.BitmapText {
-				File = "_v 26px bold black",
-				OnCommand=function(self)
-					local time = getenv("TimePlayedP1")+TimePlayerP1Adjust
-					self:settext( string.format('Time Played\n%02i:%02i', math.floor(time/60), math.floor(time%60))):zoom(0.5*WideScreenDiff()):diffuse(PlayerColor(PLAYER_1)):shadowlength(0):halign(1):valign(1):vertspacing(-8)
-				end
-			}
-		},
-		Def.ActorFrame{
-			Condition=GAMESTATE:IsHumanPlayer(PLAYER_2),
-			Name="TimePlayerP2",
-			InitCommand=function(self)
-				local adjust = WideScaleFixed(95*WideScreenDiff(),130*WideScreenDiff())
-				self:x(SCREEN_CENTER_X+adjust):y(SCREEN_BOTTOM-11*WideScreenDiff())
-			end,
-			OnCommand=function(self) self:addy(100):decelerate(0.6):addy(-100) end,
-			OffCommand=function(self) self:accelerate(0.5):addy(100) end,
-			Def.BitmapText {
-				File = "_v 26px bold black",
-				OnCommand=function(self)
-					local time = getenv("TimePlayedP2")+TimePlayerP2Adjust
-					self:settext( string.format('Time Played\n%02i:%02i', math.floor(time/60), math.floor(time%60))):zoom(0.5*WideScreenDiff()):diffuse(PlayerColor(PLAYER_2)):shadowlength(0):halign(0):valign(1):vertspacing(-8)
-				end
+		Condition=ThemePrefs.Get("ShowSummary"),
+			Def.ActorFrame{
+				Condition=GAMESTATE:IsHumanPlayer(PLAYER_1),
+				Name="TimePlayerP1",
+				InitCommand=function(self)
+					local adjust = WideScaleFixed(95*WideScreenDiff(),130*WideScreenDiff())
+					self:x(SCREEN_CENTER_X-adjust):y(SCREEN_BOTTOM-11*WideScreenDiff())
+				end,
+				OnCommand=function(self) self:addy(100):decelerate(0.6):addy(-100) end,
+				OffCommand=function(self) self:accelerate(0.5):addy(100) end,
+				Def.BitmapText {
+					File = "_v 26px bold black",
+					OnCommand=function(self)
+						local time = getenv("TimePlayedP1")+TimePlayerP1Adjust
+						self:settext( string.format('Time Played\n%02i:%02i', math.floor(time/60), math.floor(time%60))):zoom(0.5*WideScreenDiff()):diffuse(PlayerColor(PLAYER_1)):shadowlength(0):halign(1):valign(1):vertspacing(-8)
+					end
+				}
+			},
+			Def.ActorFrame{
+				Condition=GAMESTATE:IsHumanPlayer(PLAYER_2),
+				Name="TimePlayerP2",
+				InitCommand=function(self)
+					local adjust = WideScaleFixed(95*WideScreenDiff(),130*WideScreenDiff())
+					self:x(SCREEN_CENTER_X+adjust):y(SCREEN_BOTTOM-11*WideScreenDiff())
+				end,
+				OnCommand=function(self) self:addy(100):decelerate(0.6):addy(-100) end,
+				OffCommand=function(self) self:accelerate(0.5):addy(100) end,
+				Def.BitmapText {
+					File = "_v 26px bold black",
+					OnCommand=function(self)
+						local time = getenv("TimePlayedP2")+TimePlayerP2Adjust
+						self:settext( string.format('Time Played\n%02i:%02i', math.floor(time/60), math.floor(time%60))):zoom(0.5*WideScreenDiff()):diffuse(PlayerColor(PLAYER_2)):shadowlength(0):halign(0):valign(1):vertspacing(-8)
+					end
+				}
 			}
 		}
 	},
@@ -1934,5 +1937,11 @@ return Def.ActorFrame{
 				InitCommand=function(self) self:xy(SCREEN_CENTER_X-272,SCREEN_CENTER_Y-7+28*4):maxwidth(265):halign(0):shadowlength(0):vertspacing(-3):diffuse(color(".5,.5,.5,1")) end
 			}
 		}
+	},
+	Def.Quad{
+		Name="BG",
+		InitCommand=function(self) self:FullScreen():diffuse(color("0,0,0")):diffusealpha(0) end,
+		DarkenScreenMessageCommand=function(self) self:linear(0.25):diffusealpha(0.5) end,
+		UndarkenScreenMessageCommand=function(self) self:linear(0.25):diffusealpha(0) end
 	}
 }
