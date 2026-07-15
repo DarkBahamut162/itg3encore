@@ -48,11 +48,17 @@ return Def.ActorFrame{
 						if length[pos+1] <= 0 then length[pos+1] = curSelection:GetFirstSecond() > curSelection:GetLastSecond() and 0 or (isOutFox(20211230) and steps:GetChartLength() or curSelection:GetLastSecond()-curSelection:GetFirstSecond()) end
 					end
 				else
-					local songs = SONGMAN:GetSongsInGroup(SCREENMAN:GetTopScreen():GetMusicWheel():GetSelectedSection())
-					for s=1,#songs do
-						if songs[s]:HasStepsType(stepsType) then
-							length[1] = length[1] + songs[s]:MusicLengthSeconds()
-							length[2] = length[2] + (songs[s]:GetFirstSecond() > songs[s]:GetLastSecond() and 0 or songs[s]:GetLastSecond()-songs[s]:GetFirstSecond())
+					local topscreen = SCREENMAN:GetTopScreen()
+					if topscreen then
+						local wheel = topscreen.GetMusicWheel and topscreen:GetMusicWheel() or nil
+						if wheel then
+							local songs = SONGMAN:GetSongsInGroup(wheel:GetSelectedSection())
+							for s=1,#songs do
+								if songs[s]:HasStepsType(stepsType) then
+									length[1] = length[1] + songs[s]:MusicLengthSeconds()
+									length[2] = length[2] + (songs[s]:GetFirstSecond() > songs[s]:GetLastSecond() and 0 or songs[s]:GetLastSecond()-songs[s]:GetFirstSecond())
+								end
+							end
 						end
 					end
 				end

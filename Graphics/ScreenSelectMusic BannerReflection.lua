@@ -11,7 +11,13 @@ return isEtterna("0.65") and Def.Sprite{
 			elseif sortOrder == 'SortOrder_ModeMenu' then
 				bnpath = THEME:GetPathG("Banner", "ModeMenu")
 			else
-				bnpath = SONGMAN:GetSongGroupBannerPath(SCREENMAN:GetTopScreen():GetMusicWheel():GetSelectedSection())
+				local topScreen = SCREENMAN:GetTopScreen()
+				if topScreen then
+					local wheel = topScreen.GetMusicWheel and topScreen:GetMusicWheel() or nil
+					if wheel then
+						bnpath = SONGMAN:GetSongGroupBannerPath(wheel:GetSelectedSection())
+					end
+				end
 			end
 			if not bnpath or bnpath == "" then bnpath = THEME:GetPathG("Common", "fallback banner") end
 			self:scaletoclipped(320*WideScreenDiff(),120*WideScreenDiff()):LoadBackground(bnpath):zoomy(-1):x(SCREEN_CENTER_X+140*WideScreenDiff())
@@ -29,26 +35,30 @@ return isEtterna("0.65") and Def.Sprite{
 		else
 			local topScreen = SCREENMAN:GetTopScreen()
 			if topScreen then
-				local wheel = topScreen:GetMusicWheel()
+				local wheel = topScreen.GetMusicWheel and topScreen:GetMusicWheel() or nil
 				if wheel then
-					local curIdx = wheel:GetCurrentIndex()
-					local numItems = wheel:GetNumItems()
-
-					if curIdx+1 == numItems-1 then
-						self:LoadRandom()
-					elseif curIdx+1 ~= numItems then
-						local path = SONGMAN:GetSongGroupBannerPath( wheel:GetSelectedSection() )
-						if path == "" or path == nil then
-							self:LoadFromSong(nil)
-						else
-							if isOutFoxV() then
-								self:LoadFromSongGroup(split("/",path)[3])
-							else
-								self:LoadFromSongGroup(split("/",path)[2])
-							end
-						end
-					elseif curIdx == 0 then
+					if wheel:GetSelectedType() == "WheelItemDataType_Custom" then
 						self:LoadFromSong(nil)
+					else
+						local curIdx = wheel:GetCurrentIndex()
+						local numItems = wheel:GetNumItems()
+
+						if curIdx+1 == numItems-1 then
+							self:LoadRandom()
+						elseif curIdx+1 ~= numItems then
+							local path = SONGMAN:GetSongGroupBannerPath( wheel:GetSelectedSection() )
+							if path == "" or path == nil then
+								self:LoadFromSong(nil)
+							else
+								if isOutFoxV() then
+									self:LoadFromSongGroup(split("/",path)[3])
+								else
+									self:LoadFromSongGroup(split("/",path)[2])
+								end
+							end
+						elseif curIdx == 0 then
+							self:LoadFromSong(nil)
+						end
 					end
 				end
 			end
