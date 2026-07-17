@@ -67,9 +67,9 @@ local HelpDisplay = isEtterna("0.65") and Def.ActorFrame{
 			if #text == 1 then
 				self:settext(text[1])
 			else
-				local currentScore = GetTimeSinceStart()
-				if currentScore-start >= switch then
-					start = currentScore
+				local current = GetTimeSinceStart()
+				if current-start >= switch then
+					start = current
 					if #text == index then index = 1 else index = index + 1 end
 				end
 
