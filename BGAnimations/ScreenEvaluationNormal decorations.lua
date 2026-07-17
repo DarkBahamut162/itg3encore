@@ -148,12 +148,21 @@ end
 
 for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
 	if GAMESTATE:IsPlayerEnabled(pn) then
-		t[#t+1] = loadfile(THEME:GetPathG(Var "LoadingScreen", "MachineRecord"))(pn) .. {
-			InitCommand=function(self)
-				self:player(pn):name("MachineRecord" .. PlayerNumberToString(pn))
-				ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen")
-			end
-		}
+		if ThemePrefs.Get("EnableGrooveStats") then
+			t[#t+1] = loadfile(THEME:GetPathG(Var "LoadingScreen", "GrooveStatsRecord"))(pn) .. {
+				InitCommand=function(self)
+					self:player(pn):name("GrooveStatsRecord" .. PlayerNumberToString(pn))
+					ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen")
+				end
+			}
+		else
+			t[#t+1] = loadfile(THEME:GetPathG(Var "LoadingScreen", "MachineRecord"))(pn) .. {
+				InitCommand=function(self)
+					self:player(pn):name("MachineRecord" .. PlayerNumberToString(pn))
+					ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen")
+				end
+			}
+		end
 		t[#t+1] = loadfile(THEME:GetPathG(Var "LoadingScreen", "PersonalRecord"))(pn)..{
 			InitCommand=function(self)
 				self:player(pn):name("PersonalRecord" .. PlayerNumberToString(pn))

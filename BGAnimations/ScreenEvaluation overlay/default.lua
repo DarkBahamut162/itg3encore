@@ -27,6 +27,15 @@ local GSH = { [PLAYER_1] = nil, [PLAYER_2] = nil }
 local direction = { [PLAYER_1] = 1, [PLAYER_2] = 1 }
 local keyboardEnabled = ThemePrefs.Get("KeyboardEnabled")
 
+local GSold = { [PLAYER_1] = nil, [PLAYER_2] = nil }
+local GSnew = { [PLAYER_1] = nil, [PLAYER_2] = nil }
+local EXold = { [PLAYER_1] = nil, [PLAYER_2] = nil }
+local EXnew = { [PLAYER_1] = nil, [PLAYER_2] = nil }
+local RPGold = { [PLAYER_1] = nil, [PLAYER_2] = nil }
+local RPGnew = { [PLAYER_1] = nil, [PLAYER_2] = nil }
+local ITLold = { [PLAYER_1] = nil, [PLAYER_2] = nil }
+local ITLnew = { [PLAYER_1] = nil, [PLAYER_2] = nil }
+
 if ThemePrefs.Get("EnableGrooveStats") then
 	for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
 		local song = GAMESTATE:GetCurrentSong()
@@ -150,12 +159,26 @@ end
 local function processData(pn,data)
 	local hash = data["chartHash"]
 	if hash then
+		for i=1,#(GSCache[hash] or {}) do if GSCache[hash][i]["isSelf"] then GSold[pn] = GSCache[hash][i]["rank"] end end
 		GSCache[hash] = data["gsLeaderboard"]
+		for i=1,#(GSCache[hash] or {}) do if GSCache[hash][i]["isSelf"] then GSnew[pn] = GSCache[hash][i]["rank"] end end
 		GSCaching[hash] = false
-		if data["exLeaderboard"] then EXCache[hash] = data["exLeaderboard"] end
+		if data["exLeaderboard"] then
+			for i=1,#(EXCache[hash] or {}) do if EXCache[hash][i]["isSelf"] then EXold[pn] = EXCache[hash][i]["rank"] end end
+			EXCache[hash] = data["exLeaderboard"]
+			for i=1,#(EXCache[hash] or {}) do if EXCache[hash][i]["isSelf"] then EXnew[pn] = EXCache[hash][i]["rank"] end end
+		end
 		if data["rpg"] or data["itl"] then
-			if data["rpg"] and data["rpg"]["rpgLeaderboard"] then RPGCache[hash] = data["rpg"]["rpgLeaderboard"] end
-			if data["itl"] and data["itl"]["itlLeaderboard"] then ITLCache[hash] = data["itl"]["itlLeaderboard"] end
+			if data["rpg"] and data["rpg"]["rpgLeaderboard"] then
+				for i=1,#(RPGCache[hash] or {}) do if RPGCache[hash][i]["isSelf"] then RPGold[pn] = RPGCache[hash][i]["rank"] end end
+				RPGCache[hash] = data["rpgLeaderboard"]
+				for i=1,#(RPGCache[hash] or {}) do if RPGCache[hash][i]["isSelf"] then RPGnew[pn] = RPGCache[hash][i]["rank"] end end
+			end
+			if data["itl"] and data["itl"]["itlLeaderboard"] then
+				for i=1,#(ITLCache[hash] or {}) do if ITLCache[hash][i]["isSelf"] then ITLold[pn] = ITLCache[hash][i]["rank"] end end
+				ITLCache[hash] = data["itlLeaderboard"]
+				for i=1,#(ITLCache[hash] or {}) do if ITLCache[hash][i]["isSelf"] then ITLnew[pn] = ITLCache[hash][i]["rank"] end end
+			end
 			if data["rpg"] and data["itl"] then
 				SCREENMAN:SystemMessage("RPG & ITL NOT SUPPORTED!")
 			elseif data["rpg"] then
@@ -164,6 +187,12 @@ local function processData(pn,data)
 				SCREENMAN:SystemMessage("ITL NOT SUPPORTED!")
 			end
 		end
+		local output = ""
+		if GSnew[pn] then if GSold[pn] and GSold[pn]~=GSnew[pn] then output = addToOutput(output,"GrooveStats #"..GSold[pn].." -> #"..GSnew[pn],"::") else output = addToOutput(output,"GrooveStats #"..GSnew[pn],"::") end end
+		if EXnew[pn] then if EXold[pn] and EXold[pn]~=EXnew[pn] then output = addToOutput(output,"GrooveStats EX #"..EXold[pn].." -> #"..EXnew[pn],"::") else output = addToOutput(output,"GrooveStats EX #"..EXnew[pn],"::") end end
+		if RPGnew[pn] then if RPGold[pn] and RPGold[pn]~=RPGnew[pn] then output = addToOutput(output,"Stamina RPG #"..RPGold[pn].." -> #"..RPGnew[pn],"::") else output = addToOutput(output,"Stamina RPG #"..RPGnew[pn],"::") end end
+		if ITLnew[pn] then if ITLold[pn] and ITLold[pn]~=ITLnew[pn] then output = addToOutput(output,"International Timing League #"..ITLold[pn].." -> #"..ITLnew[pn],"::") else output = addToOutput(output,"International Timing League #"..ITLnew[pn],"::") end end
+		MESSAGEMAN:Broadcast("GrooveStatsRecord"..pname(pn),{Text=output})
 	end
 end
 
