@@ -1,3 +1,5 @@
+if isTopScreen('ScreenGameplaySyncMachine') then return Def.ActorFrame{} end
+
 local mlevel = GAMESTATE:IsCourseMode() and "ModsLevel_Stage" or "ModsLevel_Preferred"
 local currentMini = 1-math.round(GAMESTATE:GetPlayerState(GAMESTATE:GetMasterPlayerNumber()):GetPlayerOptions(mlevel):Mini()*50) / 100
 --local currentTiny = 1-math.round(GAMESTATE:GetPlayerState(GAMESTATE:GetMasterPlayerNumber()):GetPlayerOptions(mlevel):Tiny()*50) / 100

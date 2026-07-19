@@ -1,3 +1,4 @@
+if isTopScreen('ScreenGameplaySyncMachine') or isTopScreen('ScreenEdit') then return Def.ActorFrame{} end
 local c
 local ShowComboAt = THEME:GetMetric("Combo", "ShowComboAt")
 local Pulse = THEME:GetMetric("Combo", "PulseCommand")

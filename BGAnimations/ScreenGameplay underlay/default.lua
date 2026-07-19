@@ -1,3 +1,5 @@
+if isTopScreen('ScreenGameplaySyncMachine') then return Def.ActorFrame{} end
+
 local t = Def.ActorFrame{ Name="GameplayUnderlay" }
 local stats = false
 
