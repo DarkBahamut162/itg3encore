@@ -58,7 +58,7 @@ return Def.ActorFrame{
 		OnCommand=function(self) self:linear(0.7):cropright(0) end
 	},
 	Def.BitmapText {
-		Condition=genre~="",
+		Condition=genre~="" and genre~=" ",
 		File = "_r bold 30px",
 		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+117*WideScreenDiff()):maxwidth(SCREEN_WIDTH/WideScreenDiff()):shadowlength(2*WideScreenDiff()):zoom(0.4*WideScreenDiff()):diffusealpha(0) end,
 		SetCommand=function(self) self:settext(genre) end,
@@ -66,7 +66,7 @@ return Def.ActorFrame{
 	},
 	Def.BitmapText {
 		File = "_r bold 30px",
-		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+(genre~="" and 137 or 127)*WideScreenDiff()):maxwidth(SCREEN_WIDTH/WideScreenDiff()):shadowlength(2):zoom(0.5*WideScreenDiff()):diffusealpha(0) end,
+		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+((genre~="" and genre~=" ") and 137 or 127)*WideScreenDiff()):maxwidth(SCREEN_WIDTH/WideScreenDiff()):shadowlength(2):zoom(0.5*WideScreenDiff()):diffusealpha(0) end,
 		SetCommand=function(self)
 			local SongOrSteps = checkBMS() and GAMESTATE:GetCurrentSteps(GAMESTATE:GetMasterPlayerNumber()) or GAMESTATE:GetCurrentSong()
 			local text = ""
@@ -77,7 +77,7 @@ return Def.ActorFrame{
 	},
 	Def.BitmapText {
 		File = "_r bold 30px",
-		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+(genre~="" and 157 or 147)*WideScreenDiff()):maxwidth(SCREEN_WIDTH/WideScreenDiff()):shadowlength(2):zoom(0.4*WideScreenDiff()):diffusealpha(0) end,
+		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y+((genre~="" and genre~=" ") and 157 or 147)*WideScreenDiff()):maxwidth(SCREEN_WIDTH/WideScreenDiff()):shadowlength(2):zoom(0.4*WideScreenDiff()):diffusealpha(0) end,
 		SetCommand=function(self)
 			local SongOrSteps = checkBMS() and GAMESTATE:GetCurrentSteps(GAMESTATE:GetMasterPlayerNumber()) or GAMESTATE:GetCurrentSong()
 			local text = ""
