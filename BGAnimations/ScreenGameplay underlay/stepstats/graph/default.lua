@@ -782,7 +782,7 @@ return Def.ActorFrame{
             end,
             CurrentSongChangedMessageCommand=function(self)
                 life_verts = {}
-                self:SetNumVertices(#life_verts):SetVertices(life_verts)
+                self:SetNumVertices(#life_verts):SetVertices(life_verts):sleep(1/60):queuecommand("Update")
             end
         },
         Def.BitmapText{
