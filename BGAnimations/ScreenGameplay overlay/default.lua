@@ -3,7 +3,6 @@ if isTopScreen('ScreenGameplaySyncMachine') then return Def.ActorFrame{
 		if GAMESTATE:GetPlayerState(param.Player):GetPlayerOptions("ModsLevel_Song"):FailSetting() ~= "FailType_Off" then
 			GAMESTATE:GetPlayerState(param.Player):GetPlayerOptions("ModsLevel_Song"):FailSetting("FailType_Off")
 		end
-		lua.ReportScriptError(GAMESTATE:GetPlayerState(param.Player):GetPlayerOptions("ModsLevel_Song"):FailSetting("FailType_Off"))
     end
 } end
 
