@@ -36,7 +36,7 @@ local versions = {
 	["ITGmania"]				= "itgmania",
 	["OpenDDR"]					= "openddr",
 	["OutFox"]					= "outfox",
-	["StepMania"]				= tonumber(split("-",ProductVersion())[1]) == 5.3 and "oldfox" or "stepmania"
+	["StepMania"]				= isLTEKStepMania() and "ltek" or tonumber(split("-",ProductVersion())[1]) == 5.3 and "oldfox" or "stepmania"
 }
 
 local groups = SONGMAN:GetSongGroupNames()

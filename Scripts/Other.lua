@@ -470,6 +470,11 @@ function isNewerStepMania()
 	return ProductFamily() == "StepMania" and VersionDateCheck(20190000)
 end
 
+function isLTEKStepMania()
+	local test = string.find(ProductVersion(),"L-TEK")
+	return test
+end
+
 function isOpenDDR()
 	return ProductFamily() == "OpenDDR"
 end
