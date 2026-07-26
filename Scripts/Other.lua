@@ -974,8 +974,9 @@ function EditorNoteskin()
 end
 
 function CachePref()
-	local name = (isOldStepMania() or isEtterna()) and "BannerCache" or "ImageCache"
-	local var = (isOldStepMania() or isEtterna()) and "BannerCacheMode" or "ImageCacheMode"
+	local isBannerCache = PREFSMAN:PreferenceExists("BannerCache")
+	local name = isBannerCache and "BannerCache" or "ImageCache"
+	local var = isBannerCache and "BannerCacheMode" or "ImageCacheMode"
 	local IMGCache = PREFSMAN:GetPreference(name)
 	local values = { var.."_Off", var.."_LowResPreload", var.."_LowResLoadOnDemand", var.."_Full" }
 	local choices = { "Off", "LowResPreload", "LowResLoadOnDemand", "Full" }
