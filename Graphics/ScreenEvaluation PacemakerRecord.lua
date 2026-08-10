@@ -38,13 +38,15 @@ if getenv("EvalCombo"..pname(player)) then
 			SPS = math.floor(SPS)
 			local category = isDouble() and StepsTypeDouble()[GetUserPrefN("StylePosition")] or StepsTypeSingle()[GetUserPrefN("StylePosition")]
 			local min = (PaceMaker[player][category] and PaceMaker[player][category][math.floor(SPS)]) and 1 or 0.5
+			local count = 0
 			for _,pms in pairs(PaceMaker[player][category] and PaceMaker[player][category][math.floor(SPS)] or {}) do
 				min = math.min(min,math.max(0.5,pms))
 				tmax = math.max(tmax,pms)
 				target = math.max(0.5,min)
+				count = count + 1
 			end
 			if min == 1 and tmax == 0 then target = 0.5 end
-			if #(PaceMaker[player][category] and PaceMaker[player][category][math.floor(SPS)] or {}) <= 1 then target = 0.5 end
+			if count <= 1 then target = 0.5 end
 		else
 			target = THEME:GetMetric("PlayerStageStats", "GradePercentTier" .. string.format("%02d", 18-(getenv("SetPacemaker"..pname(player)) or 0)))
 		end
