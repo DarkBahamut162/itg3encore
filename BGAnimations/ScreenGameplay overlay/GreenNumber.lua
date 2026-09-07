@@ -124,7 +124,7 @@ return Def.ActorFrame{
 			self:y(SCREEN_TOP+41*WideScreenDiff())
 		end
 	end,
-	OffCommand=function(self) stopping = true if not IsGame("pump") then if AnyPlayerFullComboed() then self:sleep(1) end self:accelerate(0.8):addy(-100):decelerate(0.8):addy(-100) end end,
+	OffCommand=function(self) stopping = true if not BMS then if AnyPlayerFullComboed() then self:sleep(1) end self:accelerate(0.8):addy(-100):decelerate(0.8):addy(-100) end end,
 	Def.BitmapText {
 		File = "_r bold numbers",
 		Name="Min"..pname(player),
