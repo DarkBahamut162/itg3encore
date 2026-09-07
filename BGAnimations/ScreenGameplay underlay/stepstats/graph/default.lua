@@ -688,18 +688,11 @@ local function GetVerticesAssist(insert)
     return vertices
 end
 
-local function GetVerticesLife(stepsPerSecList)
-    local stepsList = stepsPerSecList or {1}
-    local last = 0
-
-    for _i,_ in pairs( stepsList ) do
-        if _i > last then last = _i end
-    end
-
+local function GetVerticesLife()
     local seconds = GAMESTATE:GetCurMusicSeconds()
-    if seconds > last then return life_verts end
-    local x = scale( seconds, 0, last, 0, graphH*3.825 )
-    local y = scale( LifeMeter and LifeMeter:GetLife() or 0, 0, 1, 0, graphH )
+    if seconds > lastSec then return life_verts end
+    local x = scale(seconds,0,lastSec,0,graphH*3.825)
+    local y = scale(LifeMeter and LifeMeter:GetLife() or 0,0,1,0,graphH)
 
     if #life_verts >= 2 and life_verts[#life_verts][1][2] == y then
         life_verts[#life_verts][1] = {x, y, 0}
@@ -776,8 +769,11 @@ return Def.ActorFrame{
                 LifeMeter = SCREENMAN:GetTopScreen():GetChild("Life"..pname(pn))
                 self:sleep(1/60):queuecommand("Update")
             end,
+            LifeChangedMessageCommand=function(self,param)
+                if param.Player == player then self:stoptweening():queuecommand("Update") end
+            end,
             UpdateCommand=function(self)
-                local vertices = GetVerticesLife(isOutFox(20200400) and UpdateGraphAlt() or UpdateGraphAltOld())
+                local vertices = GetVerticesLife()
                 self:SetNumVertices(#vertices):SetVertices(vertices):sleep(1/60):queuecommand("Update")
             end,
             CurrentSongChangedMessageCommand=function(self)
