@@ -1183,12 +1183,12 @@ function Time(time,ms,min)
 	if not ms then time = math.round(time,2) end
 	local minus = time < 0
 	if min then time = math.abs(time) else time = math.max(0,time) end
-	return ((minus and min) and "-" or "")..math.floor(time/60)..":"..string.format(ms and "%05.2f" or "%02.0f",time%60)
+	return ((minus and min) and "-" or "")..math.floor(time/60)..":"..string.format(ms and "%05.2f" or "%02.0f",math.floor(time%60))
 end
 
 function TotalTime(time)
 	time = math.max(0,time)
-	return string.format("%02.0f",math.floor(time/3600))..":"..string.format("%02.0f",math.floor(time/60%60))..":"..string.format("%02.0f",time%60)
+	return string.format("%02.0f",math.floor(time/3600))..":"..string.format("%02.0f",math.floor(time/60%60))..":"..string.format("%02.0f",math.floor(time%60))
 end
 
 function DoesDanceRepoExist()
