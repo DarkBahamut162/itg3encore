@@ -109,7 +109,13 @@ return Def.ActorFrame{
 			local reverse = GAMESTATE:GetPlayerState(player):GetPlayerOptions('ModsLevel_Song'):UsingReverse()
 			if mods then reverse = not reverse end
 			local posY = reverse and THEME:GetMetric("Player","ReceptorArrowsYReverse") or THEME:GetMetric("Player","ReceptorArrowsYStandard")
-			self:y(SCREEN_CENTER_Y+posY-NoteFieldMiddle):addy(reverse and -30 or 30):valign(reverse and 1 or 0):zoom(iidx and 1 or 0.5):draworder(999)
+
+			local filterWidth = GetTrueWidth(player)
+			if IsGame("beat") or IsGame("be-mu") then filterWidth = filterWidth * 2 end
+			local widthZoom = Center1Player() and 1 or WideScreenDiff()
+
+			filterWidth = filterWidth * math.min(1,isOutFox(20200600) and NotefieldZoomOutFox() or NotefieldZoom())
+			self:x(player == PLAYER_1 and filterWidth/2 or -filterWidth/2):y(SCREEN_CENTER_Y+posY-NoteFieldMiddle):valign(reverse and 1 or 0):halign(player == PLAYER_1 and 0 or 1):zoom(iidx and 1 or 0.5):draworder(999):shadowlength(1)
 		end
 	}
 }
