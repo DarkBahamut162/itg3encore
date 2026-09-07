@@ -9,7 +9,7 @@ return Def.ActorFrame{
 			if showSummary and GAMESTATE:IsEventMode() then
 				if SummaryBackupCheck() then SCREENMAN:GetTopScreen():SetNextScreenName("ScreenSummaryBackup") end
 			end
-			if ThemePrefs.Get("ExperimentalProfileLevel") then LoadData(pn) MESSAGEMAN:Broadcast("EnablePlayerStats",{PLAYER=pn}) end
+			if ThemePrefs.Get("ExperimentalProfileLevel") then LoadData(pn) MESSAGEMAN:Broadcast("EnablePlayerStats",{PLAYER=pn}) else MESSAGEMAN:Broadcast("DisablePlayerStats",{PLAYER=pn}) end
 			if ThemePrefs.Get("EnableGrooveStats") then LoadGrooveStatsIni(pn) end
 			LoadFlare(pn)
 			WIFE3Load(pn)

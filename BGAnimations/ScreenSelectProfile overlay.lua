@@ -420,7 +420,7 @@ local InputHandler =function(event)
 							SCREENMAN:GetTopScreen():SetProfileIndex(pn,-2)
 							SCREENMAN:GetTopScreen():SetProfileIndex(pn,-1)
 							if inSessionProfileSwitch then
-								if ThemePrefs.Get("ExperimentalProfileLevel") then LoadData(pn) MESSAGEMAN:Broadcast("EnablePlayerStats",{PLAYER=pn}) end
+								if ThemePrefs.Get("ExperimentalProfileLevel") then LoadData(pn) MESSAGEMAN:Broadcast("EnablePlayerStats",{PLAYER=pn}) else MESSAGEMAN:Broadcast("DisablePlayerStats",{PLAYER=pn}) end
 								if ThemePrefs.Get("EnableGrooveStats") then LoadGrooveStatsIni(pn) end
 								LoadFlare(pn)
 								WIFE3Load(pn)
@@ -501,7 +501,7 @@ return Def.ActorFrame {
 		if inSessionProfileSwitch then
 			for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
 				selectedProfiles[pn] = SCREENMAN:GetTopScreen():GetProfileIndex(pn)
-				if ThemePrefs.Get("ExperimentalProfileLevel") then LoadData(pn) MESSAGEMAN:Broadcast("EnablePlayerStats",{PLAYER=pn}) end
+				if ThemePrefs.Get("ExperimentalProfileLevel") then LoadData(pn) MESSAGEMAN:Broadcast("EnablePlayerStats",{PLAYER=pn}) else MESSAGEMAN:Broadcast("DisablePlayerStats",{PLAYER=pn}) end
 				if ThemePrefs.Get("EnableGrooveStats") then LoadGrooveStatsIni(pn) end
 				LoadFlare(pn)
 				WIFE3Load(pn)
