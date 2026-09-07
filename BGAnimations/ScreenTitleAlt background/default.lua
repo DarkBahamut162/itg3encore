@@ -364,7 +364,7 @@ return Def.ActorFrame{
 					end
 				end
 				if GAMESTATE:GetCoinMode() == 'CoinMode_Home' then
-					if isOutFox() and ((not isOutFoxV() and IsGame("be-mu")) or (not isOutFoxV043() and IsGame("po-mu"))) then else
+					if isOutFox() and ((not isOutFoxV043() and (IsGame("po-mu") or IsGame("be-mu")))) and not isEtterna("0.55") then
 						if #courses > 0 then
 							for i=1,#courses do
 								if courses[i]:GetCourseType() == "CourseType_Nonstop" then
@@ -397,7 +397,7 @@ return Def.ActorFrame{
 				end
 
 				if GAMESTATE:GetCoinMode() == 'CoinMode_Home' then
-					if isOutFox() and ((not isOutFoxV() and IsGame("be-mu")) or (not isOutFoxV043() and IsGame("po-mu"))) then
+					if isOutFox() and ((not isOutFoxV043() and (IsGame("po-mu") or IsGame("be-mu")))) and not isEtterna("0.55") then
 						output = addToOutput(output,"Courses: ? marathons & ? survivals","\n")
 					else
 						local temp = "Courses:"

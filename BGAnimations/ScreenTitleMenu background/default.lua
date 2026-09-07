@@ -604,8 +604,8 @@ return Def.ActorFrame{
 							end
 						end
 					end
-					if isOutFox() and ((not isOutFoxV() and IsGame("be-mu")) or (not isOutFoxV043() and IsGame("po-mu"))) and not isEtterna("0.55") then else
-						if #courses > 0 then
+					if isOutFox() and ((not isOutFoxV043() and (IsGame("po-mu") or IsGame("be-mu")))) and not isEtterna("0.55") then else
+						if #courses > 0 and false then
 							for i=1,#courses do
 								if courses[i]:GetCourseType() == "CourseType_Nonstop" then
 									if courses[i]:IsPlayableIn(StepsTypeSingle) then coursesMarathonSingle = coursesMarathonSingle + 1 end
@@ -636,7 +636,7 @@ return Def.ActorFrame{
 					end
 
 					if not isEtterna("0.55") then
-						if isOutFox() and ((not isOutFoxV() and IsGame("be-mu")) or (not isOutFoxV043() and IsGame("po-mu"))) then
+						if isOutFox() and ((not isOutFoxV043() and (IsGame("po-mu") or IsGame("be-mu")))) then
 							output = addToOutput(output,"Courses: ? marathons & ? survivals","\n")
 						else
 							local temp = "Courses:"
