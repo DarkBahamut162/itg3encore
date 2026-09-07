@@ -412,50 +412,52 @@ if ThemePrefs.Get("ShowPackClears") and not courseMode then
 								[PLAYER_2]={}
 							}
 							for s=1,#songs do
-								local currentSongCleared = {}
-								local currentSongClearedCheck = {}
-								if songs[s]:HasStepsType(stepsType) then
-									songsTotal = songsTotal + 1
-									local steps = songs[s]:GetStepsByStepsType(stepsType)
-									for ss=1,#steps do
-										stepsTotal = stepsTotal + 1
-										for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
-											local grade = false
-											local level = 0
-											local profile = PROFILEMAN:GetProfile(pn):GetHighScoreList(songs[s],steps[ss]):GetHighScores()
-											if #profile > 0 then
-												for place,highscore in pairs(profile) do
-													if not grade then
-														grades[pn][highscore:GetGrade()] = (grades[pn][highscore:GetGrade()] or 0) + 1
-														currentSongClearedCheck[pn]=currentSongClearedCheck[pn] or highscore:GetGrade()~="Grade_Failed"
-														grade = true
+								if UNLOCKMAN:IsSongLocked(songs[s]) == 0 then
+									local currentSongCleared = {}
+									local currentSongClearedCheck = {}
+									if songs[s]:HasStepsType(stepsType) then
+										songsTotal = songsTotal + 1
+										local steps = songs[s]:GetStepsByStepsType(stepsType)
+										for ss=1,#steps do
+											stepsTotal = stepsTotal + 1
+											for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
+												local grade = false
+												local level = 0
+												local profile = PROFILEMAN:GetProfile(pn):GetHighScoreList(songs[s],steps[ss]):GetHighScores()
+												if #profile > 0 then
+													for place,highscore in pairs(profile) do
+														if not grade then
+															grades[pn][highscore:GetGrade()] = (grades[pn][highscore:GetGrade()] or 0) + 1
+															currentSongClearedCheck[pn]=currentSongClearedCheck[pn] or highscore:GetGrade()~="Grade_Failed"
+															grade = true
+														end
+														if not ThemePrefs.Get("ShowLamps") then break end
+														if level <= 0 then 
+															if highscore:GetGrade() ~= "Grade_Failed" then level = 1 elseif level <= 0 then level = -1 end
+														end
+														local stageAward = highscore:GetStageAward()
+														if states[stageAward] then
+															if states[stageAward] > level then level = states[stageAward] end
+														end
 													end
-													if not ThemePrefs.Get("ShowLamps") then break end
-													if level <= 0 then 
-														if highscore:GetGrade() ~= "Grade_Failed" then level = 1 elseif level <= 0 then level = -1 end
+													if level == 8 then
+														FC[pn]["MFC"] = FC[pn]["MFC"] + 1
+													elseif level >= 5 then
+														FC[pn]["PFC"] = FC[pn]["PFC"] + 1
+													elseif level >= 2 then
+														FC[pn]["GFC"] = FC[pn]["GFC"] + 1
 													end
-													local stageAward = highscore:GetStageAward()
-													if states[stageAward] then
-														if states[stageAward] > level then level = states[stageAward] end
+													if currentSongClearedCheck[pn] then
+														currentSongCleared[pn] = (currentSongCleared[pn] or 0) + 1
+														stepsCleared[pn] = (stepsCleared[pn] or 0) + 1
 													end
-												end
-												if level == 8 then
-													FC[pn]["MFC"] = FC[pn]["MFC"] + 1
-												elseif level >= 5 then
-													FC[pn]["PFC"] = FC[pn]["PFC"] + 1
-												elseif level >= 2 then
-													FC[pn]["GFC"] = FC[pn]["GFC"] + 1
-												end
-												if currentSongClearedCheck[pn] then
-													currentSongCleared[pn] = (currentSongCleared[pn] or 0) + 1
-													stepsCleared[pn] = (stepsCleared[pn] or 0) + 1
 												end
 											end
 										end
 									end
-								end
-								for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
-									if (currentSongCleared[pn] or 0) > 0 then songsCleared[pn] = (songsCleared[pn] or 0) + 1 end
+									for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
+										if (currentSongCleared[pn] or 0) > 0 then songsCleared[pn] = (songsCleared[pn] or 0) + 1 end
+									end
 								end
 							end
 							if songsTotal == 0 then self:settext("") else
