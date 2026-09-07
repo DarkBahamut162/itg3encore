@@ -46,6 +46,10 @@ local median = 0
 local offset = {}
 local errors = {}
 
+local StepsOrTrail = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentTrail(PLAYER_2) or GAMESTATE:GetCurrentSteps(PLAYER_2)
+local max = StepsOrTrail:GetRadarValues(PLAYER_2):GetValue("RadarCategory_TapsAndHolds") or 0
+local misses = 0
+
 local peak = -1
 local peak_counter = 0
 local maxRange = -1
@@ -69,6 +73,8 @@ if offsetInfo and showOffset then
 			t[2] = math.round(t[2],3)
 			if math.abs(t[2]) > maxRange then maxRange = math.abs(t[2]) end
 			errors[t[2]] = (errors[t[2]] or 0) + 1
+		elseif t[2] and t[2] == "Miss" then
+			misses = misses + 1
 		end
 	end
 	for t in ivalues(offsetInfoAll or {}) do
@@ -123,7 +129,7 @@ if columnInfo then
 	end
 end
 
-showOffset = showOffset and offsetInfo and #offsetInfo > 0 and counter > 0 and getenv("EvalComboP2")
+showOffset = showOffset and offsetInfo and #offsetInfo > 0 and (counter+misses) > 0 and getenv("EvalComboP2")
 local faplus = getenv("SetScoreFA"..pname(PLAYER_2))
 local c
 
@@ -183,7 +189,7 @@ end
 
 local iidx = IsGame("beat") or IsGame("be-mu")
 local popn = IsGame("popn") or IsGame("po-mu")
-local Single = iidx and "IIDX Grade: "..IIDXGrade(IIDX(PLAYER_2)) or popn and "POPN Grade: "..POPNGrade(POPN(PLAYER_1)) or ""
+local Single = iidx and "IIDX Grade: "..IIDXGrade(IIDX(PLAYER_2)) or popn and "POPN Grade: "..POPNGrade(POPN(PLAYER_2)) or ""
 local Column = ""
 for col = 1,NumColumns do
 	local current = 0
@@ -233,7 +239,7 @@ for col = 1,NumColumns do
 	end
 end
 
-local label = (IsGame("beat") or IsGame("be-mu")) and IIDXJudgments() or (IsGame("popn") or IsGame("po-mu")) and POPNJudgments() or ITGJudgments(GAMESTATE:GetCurrentSteps(PLAYER_1):GetDifficulty() == 'Difficulty_Beginner')
+local label = (IsGame("beat") or IsGame("be-mu")) and IIDXJudgments() or (IsGame("popn") or IsGame("po-mu")) and POPNJudgments() or ITGJudgments(GAMESTATE:GetCurrentSteps(PLAYER_2):GetDifficulty() == 'Difficulty_Beginner')
 local InputHandler = function(event)
 	if keyboardEnabled then
 		if event.type == "InputEventType_FirstPress" then
@@ -402,7 +408,7 @@ return Def.ActorFrame{
 		},
 		Def.BitmapText {
 			File="_v 26px bold shadow",
-			Condition=showOffset,
+			Condition=showOffset and counter > 0,
 			Text="average "..average.." | median "..math.round(median,3).." | peak "..peak,
 			InitCommand=function(self) self:x(78*(WideScreenDiff_(1.4) < 1 and 2/3 or 5/6)*WideScreenDiff()*WideScreenDiff()):maxwidth((WideScreenDiff_(1.4) < 1 and 256 or 300)*WideScreenSemiDiff()):y(faplus and -3*WideScreenDiff() or 2*WideScreenDiff()) end,
 			OnCommand=function(self) self:zoomx(0.6*WideScreenDiff()):zoomy(0.4*WideScreenDiff()):diffusealpha(0):sleep(3.60):linear(0.7):diffusealpha(1) end,
@@ -789,7 +795,7 @@ return Def.ActorFrame{
 		},
 		Def.ActorMultiVertex{
 			InitCommand=function(self)
-				self:x(172*WideScreenDiff()):y(-70*WideScreenDiff()):zoom(WideScreenDiff()):valign(0)
+				self:x(176*WideScreenDiff()):y(-70*WideScreenDiff()):zoom(WideScreenDiff()):valign(0)
                 local stats = STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_2)
 				local W0Count = getenv("W0"..pname(PLAYER_2)) or 0
 				local w1 = stats:GetTapNoteScores('TapNoteScore_W1')
@@ -799,8 +805,6 @@ return Def.ActorFrame{
 				local w5 = stats:GetTapNoteScores('TapNoteScore_W5')
 				local miss = stats:GetTapNoteScores('TapNoteScore_Miss')
 				local judgments = {}
-				local StepsOrTrail = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentTrail(PLAYER_2) or GAMESTATE:GetCurrentSteps(PLAYER_2)
-				local max = StepsOrTrail:GetRadarValues(PLAYER_2):GetValue("RadarCategory_TapsAndHolds") or 0
 
 				if getenv("SetScoreFA"..pname(PLAYER_2)) then
 					judgments[#judgments+1]=(w1-W0Count)/max*100
@@ -843,6 +847,18 @@ return Def.ActorFrame{
 
 			self:x(52*WideScreenDiff()):y(118*WideScreenDiff()):zoomx(0.5*WideScreenDiff()):zoomy(0.4*WideScreenDiff()):addx(EvalTweenDistance())
 			if fail then self:diffuseshift():effectcolor1(color("#FFFFFF")):effectcolor2(color("#FF0000")):effectclock("timerglobal") end
+		end,
+		OnCommand=function(self) self:sleep(3):decelerate(0.3):addx(-EvalTweenDistance()) end,
+		OffCommand=function(self) self:accelerate(0.3):addx(EvalTweenDistance()) end
+	},
+	Def.BitmapText {
+		Condition=counter~=max and (counter+misses)~=max,
+		File="_v 26px bold shadow",
+		InitCommand=function(self)
+			if STATSMAN:GetCurStageStats(PLAYER_2):GetPlayerStageStats(PLAYER_2):GetFailed() then
+				self:diffuseshift():effectcolor1(color("#FFFFFF")):effectcolor2(color("#FF0000")):effectclock("timerglobal"):settext(counter.."/"..max.." ("..math.round((counter/max)*100,1).."%)")
+			end
+			self:x(52*WideScreenDiff()):y(146*WideScreenDiff()):zoomx(0.5*WideScreenDiff()):zoomy(0.4*WideScreenDiff()):addx(EvalTweenDistance())
 		end,
 		OnCommand=function(self) self:sleep(3):decelerate(0.3):addx(-EvalTweenDistance()) end,
 		OffCommand=function(self) self:accelerate(0.3):addx(EvalTweenDistance()) end
