@@ -4,8 +4,8 @@ assert(pn)
 local IsUsingSoloSingles = getenv("Rotation"..pname(pn)) == 5
 local NumPlayers = GAMESTATE:GetNumPlayersEnabled()
 local NumSides = GAMESTATE:GetNumSidesJoined()
-local text = "full combo text"..(isFinal() and " final" or "")
-local glow = "full combo glow"..(isFinal() and " final" or "")
+local text = "full combo text"..(isFinal() and " final" or " normal")
+local glow = "full combo glow"..(isFinal() and " final" or " normal")
 
 local function GetPosition(pn)
 	if IsUsingSoloSingles and NumPlayers == 1 and NumSides == 1 then return SCREEN_CENTER_X end
