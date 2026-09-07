@@ -9,9 +9,11 @@ local sudden = GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Pref
 local hidden = GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Preferred"):HiddenOffset() ~= 0
 local val = 0
 
+local check = sudden or hidden or (isVS() and GAMESTATE:IsHumanPlayer(player))
+
 local function UpdateDynamic(self)
 	local YoffsetBeat = 0
-	if sudden or hidden or (isVS() and GAMESTATE:IsHumanPlayer(player)) then
+	if check then
 		YoffsetBeat = ArrowEffects.GetYOffset(GAMESTATE:GetPlayerState(player),1,timingData:GetBeatFromElapsedTime(GAMESTATE:GetSongPosition():GetMusicSecondsVisible()+1))/64
 		if sudden or isVS() then
 			val = YoffsetBeat / 3 - 1
@@ -25,5 +27,14 @@ local function UpdateDynamic(self)
 end
 
 return Def.ActorFrame{
-	OnCommand=function(self) if sudden or hidden or isVS() then self:SetUpdateFunction(UpdateDynamic) end end
+	OnCommand=function(self)
+		if check then
+			if sudden then
+				GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Song"):Sudden(99999,100)
+			elseif hidden then
+				GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Song"):Hidden(99999,100)
+			end
+			self:SetUpdateFunction(UpdateDynamic)
+		end
+	end
 }
