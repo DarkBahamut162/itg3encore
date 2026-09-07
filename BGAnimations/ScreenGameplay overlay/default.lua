@@ -155,11 +155,11 @@ local t = Def.ActorFrame{
 			ChangeCommand=function(self)
 				local text = "SPEED CHANGE: " .. (PREVIOUS[PLAYER_1] / (MOD[PLAYER_1] == "x" and 100 or 1))..MOD[PLAYER_1] .. " -> " .. (CURRENT[PLAYER_1] / (MOD[PLAYER_1] == "x" and 100 or 1))..MOD[PLAYER_1]
 				if IsIIDXFrame(PLAYER_1) then MESSAGEMAN:Broadcast("Speed",{PLAYER=PLAYER_1,SPEED=(CURRENT[PLAYER_1] / (MOD[PLAYER_1] == "x" and 100 or 1)),MOD=MOD[PLAYER_1]}) end
-				self:diffusealpha(1):settext(text):sleep(1):linear(0.25):diffusealpha(0):queuecommand("TrueChange")
+				self:stoptweening():diffusealpha(1):settext(text):sleep(1):linear(0.25):diffusealpha(0):queuecommand("TrueChange")
 			end,
 			TrueChangeCommand=function(self)
 				local text = "SPEED: " .. (CURRENT[PLAYER_1] / (MOD[PLAYER_1] == "x" and 100 or 1))..MOD[PLAYER_1]
-				self:diffusealpha(0):settext(text):linear(0.25):diffusealpha(1)
+				self:stoptweening():diffusealpha(0):settext(text):linear(0.25):diffusealpha(1)
 			end
 		},
 		Def.BitmapText {
@@ -180,11 +180,11 @@ local t = Def.ActorFrame{
 			ChangeCommand=function(self)
 				local text ="SPEED CHANGE: " .. (PREVIOUS[PLAYER_2] / (MOD[PLAYER_2] == "x" and 100 or 1))..MOD[PLAYER_2] .. " -> " .. (CURRENT[PLAYER_2] / (MOD[PLAYER_2] == "x" and 100 or 1))..MOD[PLAYER_2]
 				if IsIIDXFrame(PLAYER_2) then MESSAGEMAN:Broadcast("Speed",{PLAYER=PLAYER_2,SPEED=(CURRENT[PLAYER_2] / (MOD[PLAYER_2] == "x" and 100 or 1)),MOD=MOD[PLAYER_2]}) end
-				self:diffusealpha(1):settext(text):sleep(1):linear(0.25):diffusealpha(0):queuecommand("TrueChange")
+				self:stoptweening():diffusealpha(1):settext(text):sleep(1):linear(0.25):diffusealpha(0):queuecommand("TrueChange")
 			end,
 			TrueChangeCommand=function(self)
 				local text = "SPEED: " .. (CURRENT[PLAYER_2] / (MOD[PLAYER_2] == "x" and 100 or 1))..MOD[PLAYER_2]
-				self:diffusealpha(0):settext(text):linear(0.25):diffusealpha(1)
+				self:stoptweening():diffusealpha(0):settext(text):linear(0.25):diffusealpha(1)
 			end
 		}
 	},
