@@ -5,11 +5,17 @@ if not isEtterna("0.55") and GAMESTATE:IsAnyHumanPlayerUsingMemoryCard() then
 	GAMESTATE:LoadProfiles()
 end
 
-function LoadCard(cColor)
+function LoadCard(cColor,Player)
 	return Def.ActorFrame {
 		Def.Sprite {
 			Texture = THEME:GetPathG("frame","base"),
 			InitCommand=function(self) self:diffuse(cColor):zoomy(0.5) end
+		},
+		Def.Sprite {
+			Texture = THEME:GetPathG("frame","base"),
+			InitCommand=function(self) self:diffuseshift():effectcolor1(PlayerColor(Player)):effectcolor2(color("#000000")):blend(Blend.Add):zoomy(0.5):diffusealpha(0) end,
+			["Selected"..pname(Player).."MessageCommand"]=function(self) self:diffusealpha(1) end,
+			["Unselected"..pname(Player).."MessageCommand"]=function(self) self:diffusealpha(0) end
 		}
 	}
 end
@@ -34,7 +40,7 @@ function LoadPlayerStuff(Player)
 	return Def.ActorFrame {
 		Def.ActorFrame {
 			Name = 'JoinFrame',
-			LoadCard(PlayerColor(Player)),
+			LoadCard(PlayerColor(Player),Player),
 			Def.BitmapText {
 				File = "_r bold shadow 30px",
 				InitCommand=function(self) self:maxwidth(200):shadowlength(1):playcommand("Refresh") end,
@@ -58,7 +64,7 @@ function LoadPlayerStuff(Player)
 		},
 		Def.ActorFrame {
 			Name = 'BigFrame',
-			LoadCard(PlayerColor(Player)),
+			LoadCard(PlayerColor(Player),Player),
 			Def.Sprite {
 				Name="Background",
 				Texture = THEME:GetPathG("frame","background"),
