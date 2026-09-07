@@ -135,20 +135,30 @@ return Def.ActorFrame{
 			File = "_r bold 30px",
 			Text="Step Artist:",
 			InitCommand=function(self) self:x(SCREEN_LEFT+5*WideScreenDiff()):y(SCREEN_CENTER_Y+152*WideScreenDiff()):zoom(0.6*WideScreenDiff()):halign(0):shadowlength(2) end,
-			BeginCommand=function(self) self:visible(GAMESTATE:IsPlayerEnabled(PLAYER_1) and isRegular() or isVS()) end
+			BeginCommand=function(self)self:visible(GAMESTATE:IsPlayerEnabled(PLAYER_1) and isRegular() or isVS()) end,
+			OnCommand=function(self)
+				if GAMESTATE:IsPlayerEnabled(PLAYER_1) then
+					local text = ""
+					if GAMESTATE:GetCurrentSong() then
+						local steps = GAMESTATE:GetCurrentSteps(PLAYER_1)
+						if steps then if steps:GetAuthorCredit() == "" then self:settext("Difficulty:") end end
+					end
+				end
+			end
 		},
 		Def.BitmapText {
 			File = "_r bold 30px",
 			Name="AuthorText",
 			InitCommand=function(self) self:x(SCREEN_LEFT+100*WideScreenDiff()):y(SCREEN_CENTER_Y+152*WideScreenDiff()):maxwidth(SCREEN_WIDTH/4.25/WideScreenDiff()):shadowlength(2):halign(0):zoom(0.6*WideScreenDiff()) end,
 			SetCommand=function(self)
-				local song = GAMESTATE:GetCurrentSong()
 				local text = ""
-				if song then
+				if GAMESTATE:GetCurrentSong() then
 					local steps = GAMESTATE:GetCurrentSteps(PLAYER_1)
-					if steps then text = steps:GetAuthorCredit() end
+					if steps then
+						text = steps:GetAuthorCredit()
+						if text == "" then text = ToEnumShortString(steps:GetDifficulty()) self:addx(-12) end
+					end
 				end
-				if text == "" then text = "Unknown" end
 				self:settext(text)
 			end,
 			OnCommand=function(self) self:playcommand("Set") end
@@ -183,20 +193,30 @@ return Def.ActorFrame{
 			File = "_r bold 30px",
 			Text=":Step Artist",
 			InitCommand=function(self) self:x(SCREEN_RIGHT-5*WideScreenDiff()):y(SCREEN_CENTER_Y+152*WideScreenDiff()):zoom(0.6*WideScreenDiff()):halign(1):shadowlength(2) end,
-			BeginCommand=function(self) self:visible(GAMESTATE:IsPlayerEnabled(PLAYER_2) and isRegular() or isVS()) end
+			BeginCommand=function(self) self:visible(GAMESTATE:IsPlayerEnabled(PLAYER_2) and isRegular() or isVS()) end,
+			OnCommand=function(self)
+				if GAMESTATE:IsPlayerEnabled(PLAYER_1) then
+					local text = ""
+					if GAMESTATE:GetCurrentSong() then
+						local steps = GAMESTATE:GetCurrentSteps(PLAYER_1)
+						if steps then if steps:GetAuthorCredit() == "" then self:settext(":Difficulty") end end
+					end
+				end
+			end
 		},
 		Def.BitmapText {
 			File = "_r bold 30px",
 			Name="AuthorText",
 			InitCommand=function(self) self:x(SCREEN_RIGHT-100*WideScreenDiff()):y(SCREEN_CENTER_Y+152*WideScreenDiff()):maxwidth(SCREEN_WIDTH/4.25/WideScreenDiff()):shadowlength(2):halign(1):zoom(0.6*WideScreenDiff()) end,
 			SetCommand=function(self)
-				local song = GAMESTATE:GetCurrentSong()
 				local text = ""
-				if song then
+				if GAMESTATE:GetCurrentSong() then
 					local steps = GAMESTATE:GetCurrentSteps(PLAYER_2)
-					if steps then text = steps:GetAuthorCredit() end
+					if steps then
+						text = steps:GetAuthorCredit()
+						if text == "" then text = ToEnumShortString(steps:GetDifficulty()) self:addx(12) end
+					end
 				end
-				if text == "" then text = "Unknown" end
 				self:settext(text)
 			end,
 			OnCommand=function(self) self:playcommand("Set") end

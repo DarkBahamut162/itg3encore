@@ -26,7 +26,7 @@ for player in ivalues(GAMESTATE:GetEnabledPlayers()) do
 end
 
 local timing = GetTimingDifficulty()
-local timingChange = { 1.50,1.33,1.16,1.00,0.84,0.66,0.50,0.33,0.20 }
+local timingChange = {1.50,1.33,1.16,1.00,0.84,0.66,0.50,0.33,0.20}
 local ctrlHeld = false
 local keyboardEnabled = ThemePrefs.Get("KeyboardEnabled")
 
@@ -102,7 +102,7 @@ local t = Def.ActorFrame{
 			end
 		end
 	end,
-	CodeMessageCommand = function(self, params)
+	CodeMessageCommand = function(self,params)
 		if params.Name == 'SpeedUp' or params.Name == 'SpeedDown' then
 			if MOD[params.PlayerNumber] == "a" or MOD[params.PlayerNumber] == "ca" or MOD[params.PlayerNumber] == "av" then
 				self:GetChild("MODS"):GetChild("MOD"..(params.PlayerNumber == PLAYER_1 and "1" or "2")):playcommand("Block")
@@ -248,6 +248,13 @@ local t = Def.ActorFrame{
 				Text="Step Artist:",
 				InitCommand=function(self) self:x(SCREEN_LEFT+5*WideScreenDiff()):y(SCREEN_CENTER_Y+152*WideScreenDiff()):zoom(0.6*WideScreenDiff()):halign(0):shadowlength(2*WideScreenDiff()) end,
 				BeginCommand=function(self)
+					if GAMESTATE:IsPlayerEnabled(PLAYER_1) then
+						local text = ""
+						if GAMESTATE:GetCurrentSong() then
+							local steps = GAMESTATE:GetCurrentSteps(PLAYER_1)
+							if steps then if steps:GetAuthorCredit() == "" then self:settext("Difficulty:") end end
+						end
+					end
 					self:visible(GAMESTATE:IsPlayerEnabled(PLAYER_1) and isRegular() or isVS())
 				end,
 				OnCommand=function(self) self:sleep(1):linear(1):diffusealpha(0) end
@@ -257,13 +264,12 @@ local t = Def.ActorFrame{
 				Name="AuthorText",
 				InitCommand=function(self) self:x(SCREEN_LEFT+100*WideScreenDiff()):y(SCREEN_CENTER_Y+152*WideScreenDiff()):maxwidth(SCREEN_WIDTH/4.25/WideScreenDiff()):shadowlength(2*WideScreenDiff()):halign(0):zoom(0.6*WideScreenDiff()) end,
 				BeginCommand=function(self)
-					local song = GAMESTATE:GetCurrentSong()
 					local text = ""
-					if song then
+					if GAMESTATE:GetCurrentSong() then
 						local steps = GAMESTATE:GetCurrentSteps(PLAYER_1)
 						if steps then text = steps:GetAuthorCredit() end
+						if text == "" then text = ToEnumShortString(steps:GetDifficulty()) self:addx(-12) end
 					end
-					if text == "" then text = "Unknown" end
 					self:settext(text)
 				end,
 				OnCommand=function(self) self:sleep(1):linear(1):diffusealpha(0) end
@@ -301,6 +307,10 @@ local t = Def.ActorFrame{
 				Text=":Step Artist",
 				InitCommand=function(self) self:x(SCREEN_RIGHT-5*WideScreenDiff()):y(SCREEN_CENTER_Y+152*WideScreenDiff()):zoom(0.6*WideScreenDiff()):halign(1):shadowlength(2*WideScreenDiff()) end,
 				BeginCommand=function(self)
+					if GAMESTATE:GetCurrentSong() then
+						local steps = GAMESTATE:GetCurrentSteps(PLAYER_2)
+						if steps then if steps:GetAuthorCredit() == "" then self:settext(":Difficulty") end end
+					end
 					self:visible(GAMESTATE:IsPlayerEnabled(PLAYER_2) and isRegular() or isVS())
 				end,
 				OnCommand=function(self) self:sleep(1):linear(1):diffusealpha(0) end
@@ -310,13 +320,12 @@ local t = Def.ActorFrame{
 				Name="AuthorText",
 				InitCommand=function(self) self:x(SCREEN_RIGHT-100*WideScreenDiff()):y(SCREEN_CENTER_Y+152*WideScreenDiff()):maxwidth(SCREEN_WIDTH/4.25/WideScreenDiff()):shadowlength(2*WideScreenDiff()):halign(1):zoom(0.6*WideScreenDiff()) end,
 				BeginCommand=function(self)
-					local song = GAMESTATE:GetCurrentSong()
 					local text = ""
-					if song then
+					if GAMESTATE:GetCurrentSong() then
 						local steps = GAMESTATE:GetCurrentSteps(PLAYER_2)
 						if steps then text = steps:GetAuthorCredit() end
+						if text == "" then text = ToEnumShortString(steps:GetDifficulty()) self:addx(12) end
 					end
-					if text == "" then text = "Unknown" end
 					self:settext(text)
 				end,
 				OnCommand=function(self) self:sleep(1):linear(1):diffusealpha(0) end
@@ -384,8 +393,8 @@ local t = Def.ActorFrame{
 			InitCommand=function(self) self:FullScreen():diffusealpha(0.8) end
 		}
 	},
-	loadfile(THEME:GetPathB("","_coins"))()..{ InitCommand=function(self) self:visible(not isEtterna() and not GAMESTATE:IsDemonstration()) end },
-	JudgmentMessageCommand=function(self, params)
+	loadfile(THEME:GetPathB("","_coins"))()..{InitCommand=function(self) self:visible(not isEtterna() and not GAMESTATE:IsDemonstration()) end},
+	JudgmentMessageCommand=function(self,params)
 		if not string.find(params.TapNoteScore,"Checkpoint") and not string.find(params.TapNoteScore,"None") and params.TapNoteScore ~= "TapNoteScore_" then
 			local player = params.Player
 			if params.Notes then
