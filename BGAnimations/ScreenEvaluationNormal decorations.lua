@@ -526,7 +526,7 @@ local function GraphDisplay(pn)
 			Name = "Name"..pname(pn),
 			File = "_v 26px bold white",
 			Text = names[1],
-			InitCommand=function(self) self:zoom(0.33*WideScreenDiff()):x(pn == PLAYER_1 and 104 or -104):rotationz(pn == PLAYER_1 and 90 or -90) end
+			InitCommand=function(self) self:zoom(0.33*WideScreenDiff()):x(pn == PLAYER_1 and 104 or -104):rotationz(pn == PLAYER_1 and 90 or -90):maxwidth(220) end
 		}
 	}
 	local float = getenv("FlareDisplay"..pname(pn))

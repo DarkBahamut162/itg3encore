@@ -153,9 +153,9 @@ Branch.AfterGameplay = function()
 end
 
 Branch.AfterSaveSummary = function()
-	if STATSMAN:GetBestGrade() <= 0 then return "ScreenEndingPerfect"
-	elseif STATSMAN:GetBestGrade() <= 3 then return "ScreenEndingGood"
-	elseif STATSMAN:GetBestGrade() <= 6 then return "ScreenEndingOkay"
+	if STATSMAN:GetBestGrade() <= 0 or getenv("ForcedPerfectEnding") then setenv("ForcedPerfectEnding",false) return "ScreenEndingPerfect"
+	elseif STATSMAN:GetBestGrade() <= 3 or getenv("ForcedGoodEnding") then setenv("ForcedGoodEnding",false) return "ScreenEndingGood"
+	elseif STATSMAN:GetBestGrade() <= 6 or getenv("ForcedOkayEnding") then setenv("ForcedOkayEnding",false) return "ScreenEndingOkay"
 	else return "ScreenEndingNormal" end
 end
 

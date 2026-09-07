@@ -194,7 +194,7 @@ local function SaveAI()
 		end
 	end
 	if configfile:Open("Data/AI.ini",2) then
-		SOUND:PlayOnce(THEME:GetPathS("","_save"),true)
+		SOUND:PlayOnce(THEME:GetPathS("","_save"))
 		configfile:Write(output)
 		configfile:Close()
 	else
@@ -399,7 +399,7 @@ local InputHandler = function(event)
 					prompt.BG:playcommand("BGOff")
 					prompt.Text:stoptweening():linear(0.125):diffusealpha(0)
 					prompt.Value:stoptweening():linear(0.125):diffusealpha(0)
-					SOUND:PlayOnce(THEME:GetPathS("","_prompt"),true)
+					SOUND:PlayOnce(THEME:GetPathS("","_prompt"),ue)
 				end
 			elseif event.GameButton == "Start" then
 				if not editing and not checking then -- setup value changer
@@ -423,7 +423,7 @@ local InputHandler = function(event)
 						if totalWeights>6 then
 							for update in ivalues(ToUpdatePro) do weight[update]:playcommand("Update") end
 						end
-						SOUND:PlayOnce(THEME:GetPathS("ScreenPlayerOptions","cancel all"),true)
+						SOUND:PlayOnce(THEME:GetPathS("ScreenPlayerOptions","cancel all"))
 					elseif currentList == totalWeights + 3 then -- save ai
 						SaveAI()
 						AIiniOLD = DeepCopy(AIini)

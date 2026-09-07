@@ -430,6 +430,10 @@ function InitOptions()
 
 	local battle = ThemePrefs.Get("AutoBattle")
 	if battle then setenv("BattleMode",battle) else setenv("BattleMode","rave") end
+	
+	setenv("ForcedOkayEnding",false)
+	setenv("ForcedGoodEnding",false)
+	setenv("ForcedPerfectEnding",false)
 end
 
 function InitPlayerOptions()

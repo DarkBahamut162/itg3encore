@@ -26,7 +26,7 @@ local function updateFavorites()
 			screen:GetMusicWheel():Move(0)
 		else
 			preventedSLUpdate = true
-			SOUND:PlayOnce(THEME:GetPathS("MusicWheel","locked"),true)
+			SOUND:PlayOnce(THEME:GetPathS("MusicWheel","locked"))
 		end
 	end
 end
@@ -249,7 +249,7 @@ return Def.ActorFrame{
 				if (params.Move == -1 and chartint > 1) or (params.Move == 1 and chartint < #stepsAll) then
 					GAMESTATE:SetCurrentSteps(player,stepsAll[chartint+params.Move])
 					GAMESTATE:SetPreferredDifficulty(player,stepsAll[chartint+params.Move]:GetDifficulty())
-					SOUND:PlayOnce(THEME:GetPathS("ScreenSelectMusic difficulty",params.Move == -1 and "easier" or "harder"),true)
+					SOUND:PlayOnce(THEME:GetPathS("ScreenSelectMusic difficulty",params.Move == -1 and "easier" or "harder"))
 				end
 			end
 		end
@@ -272,7 +272,7 @@ return Def.ActorFrame{
 						if check1 == check2 then
 							if isStepMania(20160400) then SCREENMAN:PlayInvalidSound() else SOUND:PlayOnce(THEME:GetPathS('Common',"invalid")) end
 						else
-							SOUND:PlayOnce(THEME:GetPathS("MusicWheel","expand"),true)
+							SOUND:PlayOnce(THEME:GetPathS("MusicWheel","expand"))
 						end
 					end
 				else
@@ -282,7 +282,7 @@ return Def.ActorFrame{
 					if "Section" == ToEnumShortString(wheel:GetSelectedType()) then
 						local check2 = wheel:GetSelectedSection()
 						if check1 ~= check2 then
-							SOUND:PlayOnce(THEME:GetPathS("MusicWheel","expand"),true)
+							SOUND:PlayOnce(THEME:GetPathS("MusicWheel","expand"))
 						end
 						wheel:SetOpenSection(wheel:GetSelectedSection())
 					end

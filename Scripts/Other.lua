@@ -208,7 +208,7 @@ end
 
 function GetScreenNameEntryTraditionalHelpText()
 	if GAMESTATE:AnyPlayerHasRankingFeats() then
-		return THEME:GetString("ScreenNameEntryTraditional","HelpTextHasHighScores") .. "\n" .. THEME:GetString( "ScreenNameEntryTraditional", "HelpTextHasHighScoresSelectAvailableText" )
+		return THEME:GetString("ScreenNameEntryTraditional","HelpTextHasHighScores").."::"..THEME:GetString("ScreenNameEntryTraditional","HelpTextHasHighScoresSelectAvailableText")
 	end
 	return THEME:GetString("ScreenNameEntryTraditional","HelpTextNoHighScores")
 end
