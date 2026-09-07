@@ -807,8 +807,8 @@ return Def.ActorFrame{
 				local judgments = {}
 
 				if getenv("SetScoreFA"..pname(PLAYER_2)) then
-					judgments[#judgments+1]=(w1-W0Count)/max*100
 					judgments[#judgments+1]=W0Count/max*100
+					judgments[#judgments+1]=(w1-W0Count)/max*100
 				else
 					judgments[#judgments+1]=w1/max*100
 				end
