@@ -105,7 +105,7 @@ local t = Def.ActorFrame{
 	CodeMessageCommand = function(self,params)
 		if params.Name == 'SpeedUp' or params.Name == 'SpeedDown' then
 			if MOD[params.PlayerNumber] == "a" or MOD[params.PlayerNumber] == "ca" or MOD[params.PlayerNumber] == "av" then
-				self:GetChild("MODS"):GetChild("MOD"..(params.PlayerNumber == PLAYER_1 and "1" or "2")):playcommand("Block")
+				self:GetChild("MODS"):GetChild("MOD"..(params.PlayerNumber == PLAYER_1 and "1" or "2")):GetChild("MOD"..(params.PlayerNumber == PLAYER_1 and "1" or "2").."Text"):playcommand("Block")
 			else
 				PREVIOUS[params.PlayerNumber] = CURRENT[params.PlayerNumber]
 				if params.Name == 'SpeedUp' then
@@ -129,7 +129,7 @@ local t = Def.ActorFrame{
 				end
 
 				if PREVIOUS[params.PlayerNumber] ~= CURRENT[params.PlayerNumber] then
-					self:GetChild("MODS"):GetChild("MOD"..(params.PlayerNumber == PLAYER_1 and "1" or "2")):playcommand("Change")
+					self:GetChild("MODS"):GetChild("MOD"..(params.PlayerNumber == PLAYER_1 and "1" or "2")):GetChild("MOD"..(params.PlayerNumber == PLAYER_1 and "1" or "2").."Text"):playcommand("Change")
 				end
 			end
 		end
@@ -137,55 +137,62 @@ local t = Def.ActorFrame{
 	Def.ActorFrame{
 		Name="MODS",
 		Condition=not getenv("Workout"),
-		Def.BitmapText {
-			File = "_eurostile normal",
-			Condition=GAMESTATE:IsPlayerEnabled(PLAYER_1) and modify,
+		Def.ActorFrame{
 			Name="MOD1",
 			InitCommand=function(self) if IsIIDXFrame(PLAYER_1) then self:visible(false) end self:shadowlength(1):zoom(0.4*WideScreenDiff()):x(THEME:GetMetric("ScreenGameplay","ScoreP1X")):y(THEME:GetMetric("ScreenGameplay","ScoreP1Y")-15*WideScreenDiff()) end,
 			BeginCommand=function(self) if not IsIIDXFrame(PLAYER_1) then self:addy(-100):sleep(0.5):decelerate(0.8):addy(100) end end,
 			OffCommand=function(self) if not IsGame("pump") then if AnyPlayerFullComboed() then self:sleep(1) end if not IsIIDXFrame(PLAYER_1) then self:accelerate(0.8):addy(-100) end end end,
-			OnCommand=function(self)
-				self:settext(CURRENT[PLAYER_1] and "SPEED: " .. (CURRENT[PLAYER_1] / (MOD[PLAYER_1] == "x" and 100 or 1))..MOD[PLAYER_1] or "")
-				if IsIIDXFrame(PLAYER_1) then self:halign(1) MESSAGEMAN:Broadcast("Speed",{PLAYER=PLAYER_1,SPEED=(CURRENT[PLAYER_1] / (MOD[PLAYER_1] == "x" and 100 or 1)),MOD=MOD[PLAYER_1]}) end
-				if IsGame("pump") then self:addy(33*WideScreenDiff()) end
-			end,
-			BlockCommand=function(self)
-				self:diffuse(color("1,0,0,1")):diffusealpha(1):settext("This MOD can't be changed while GamePlay"):sleep(1):linear(0.25):diffusealpha(0):queuecommand("TrueChange"):diffuse(color("1,1,1,1"))
-			end,
-			ChangeCommand=function(self)
-				local text = "SPEED CHANGE: " .. (PREVIOUS[PLAYER_1] / (MOD[PLAYER_1] == "x" and 100 or 1))..MOD[PLAYER_1] .. " -> " .. (CURRENT[PLAYER_1] / (MOD[PLAYER_1] == "x" and 100 or 1))..MOD[PLAYER_1]
-				if IsIIDXFrame(PLAYER_1) then MESSAGEMAN:Broadcast("Speed",{PLAYER=PLAYER_1,SPEED=(CURRENT[PLAYER_1] / (MOD[PLAYER_1] == "x" and 100 or 1)),MOD=MOD[PLAYER_1]}) end
-				self:stoptweening():diffusealpha(1):settext(text):sleep(1):linear(0.25):diffusealpha(0):queuecommand("TrueChange")
-			end,
-			TrueChangeCommand=function(self)
-				local text = "SPEED: " .. (CURRENT[PLAYER_1] / (MOD[PLAYER_1] == "x" and 100 or 1))..MOD[PLAYER_1]
-				self:stoptweening():diffusealpha(0):settext(text):linear(0.25):diffusealpha(1)
-			end
+			
+			Def.BitmapText {
+				File = "_eurostile normal",
+				Condition=GAMESTATE:IsPlayerEnabled(PLAYER_1) and modify,
+				Name="MOD1Text",
+				OnCommand=function(self)
+					self:settext(CURRENT[PLAYER_1] and "SPEED: " .. (CURRENT[PLAYER_1] / (MOD[PLAYER_1] == "x" and 100 or 1))..MOD[PLAYER_1] or "")
+					if IsIIDXFrame(PLAYER_1) then self:halign(1) MESSAGEMAN:Broadcast("Speed",{PLAYER=PLAYER_1,SPEED=(CURRENT[PLAYER_1] / (MOD[PLAYER_1] == "x" and 100 or 1)),MOD=MOD[PLAYER_1]}) end
+					if IsGame("pump") then self:addy(33*WideScreenDiff()) end
+				end,
+				BlockCommand=function(self)
+					self:diffuse(color("1,0,0,1")):diffusealpha(1):settext("This MOD can't be changed while GamePlay"):sleep(1):linear(0.25):diffusealpha(0):queuecommand("TrueChange"):diffuse(color("1,1,1,1"))
+				end,
+				ChangeCommand=function(self)
+					local text = "SPEED CHANGE: " .. (PREVIOUS[PLAYER_1] / (MOD[PLAYER_1] == "x" and 100 or 1))..MOD[PLAYER_1] .. " -> " .. (CURRENT[PLAYER_1] / (MOD[PLAYER_1] == "x" and 100 or 1))..MOD[PLAYER_1]
+					if IsIIDXFrame(PLAYER_1) then MESSAGEMAN:Broadcast("Speed",{PLAYER=PLAYER_1,SPEED=(CURRENT[PLAYER_1] / (MOD[PLAYER_1] == "x" and 100 or 1)),MOD=MOD[PLAYER_1]}) end
+					self:stoptweening():diffusealpha(1):settext(text):sleep(1):linear(0.25):diffusealpha(0):queuecommand("TrueChange")
+				end,
+				TrueChangeCommand=function(self)
+					local text = "SPEED: " .. (CURRENT[PLAYER_1] / (MOD[PLAYER_1] == "x" and 100 or 1))..MOD[PLAYER_1]
+					self:stoptweening():diffusealpha(0):settext(text):linear(0.25):diffusealpha(1)
+				end
+			}
 		},
-		Def.BitmapText {
-			File = "_eurostile normal",
-			Condition=GAMESTATE:IsPlayerEnabled(PLAYER_2) and modify,
+		Def.ActorFrame{
 			Name="MOD2",
 			InitCommand=function(self) if IsIIDXFrame(PLAYER_2) then self:visible(false) end self:shadowlength(1):zoom(0.4*WideScreenDiff()):x(THEME:GetMetric("ScreenGameplay","ScoreP2X")):y(THEME:GetMetric("ScreenGameplay","ScoreP2Y")-15*WideScreenDiff()) end,
 			BeginCommand=function(self) if not IsIIDXFrame(PLAYER_2) then self:addy(-100):sleep(0.5):decelerate(0.8):addy(100) end end,
 			OffCommand=function(self) if not IsGame("pump") then if AnyPlayerFullComboed() then self:sleep(1) end if not IsIIDXFrame(PLAYER_2) then self:accelerate(0.8):addy(-100) end end end,
-			OnCommand=function(self)
-				self:settext(CURRENT[PLAYER_2] and "SPEED: " .. (CURRENT[PLAYER_2] / (MOD[PLAYER_2] == "x" and 100 or 1))..MOD[PLAYER_2] or "")
-				if IsIIDXFrame(PLAYER_2) then self:halign(0) MESSAGEMAN:Broadcast("Speed",{PLAYER=PLAYER_2,SPEED=(CURRENT[PLAYER_2] / (MOD[PLAYER_2] == "x" and 100 or 1)),MOD=MOD[PLAYER_2]}) end
-				if IsGame("pump") then self:addy(33*WideScreenDiff()) end
-			end,
-			BlockCommand=function(self)
-				self:diffuse(color("1,0,0,1")):diffusealpha(1):settext("This MOD can't be changed while GamePlay"):sleep(1):linear(0.25):diffusealpha(0):queuecommand("TrueChange"):diffuse(color("1,1,1,1"))
-			end,
-			ChangeCommand=function(self)
-				local text ="SPEED CHANGE: " .. (PREVIOUS[PLAYER_2] / (MOD[PLAYER_2] == "x" and 100 or 1))..MOD[PLAYER_2] .. " -> " .. (CURRENT[PLAYER_2] / (MOD[PLAYER_2] == "x" and 100 or 1))..MOD[PLAYER_2]
-				if IsIIDXFrame(PLAYER_2) then MESSAGEMAN:Broadcast("Speed",{PLAYER=PLAYER_2,SPEED=(CURRENT[PLAYER_2] / (MOD[PLAYER_2] == "x" and 100 or 1)),MOD=MOD[PLAYER_2]}) end
-				self:stoptweening():diffusealpha(1):settext(text):sleep(1):linear(0.25):diffusealpha(0):queuecommand("TrueChange")
-			end,
-			TrueChangeCommand=function(self)
-				local text = "SPEED: " .. (CURRENT[PLAYER_2] / (MOD[PLAYER_2] == "x" and 100 or 1))..MOD[PLAYER_2]
-				self:stoptweening():diffusealpha(0):settext(text):linear(0.25):diffusealpha(1)
-			end
+			Def.BitmapText {
+				File = "_eurostile normal",
+				Condition=GAMESTATE:IsPlayerEnabled(PLAYER_2) and modify,
+				Name="MOD2Text",
+				OnCommand=function(self)
+					self:settext(CURRENT[PLAYER_2] and "SPEED: " .. (CURRENT[PLAYER_2] / (MOD[PLAYER_2] == "x" and 100 or 1))..MOD[PLAYER_2] or "")
+					if IsIIDXFrame(PLAYER_2) then self:halign(0) MESSAGEMAN:Broadcast("Speed",{PLAYER=PLAYER_2,SPEED=(CURRENT[PLAYER_2] / (MOD[PLAYER_2] == "x" and 100 or 1)),MOD=MOD[PLAYER_2]}) end
+					if IsGame("pump") then self:addy(33*WideScreenDiff()) end
+				end,
+				BlockCommand=function(self)
+					self:diffuse(color("1,0,0,1")):diffusealpha(1):settext("This MOD can't be changed while GamePlay"):sleep(1):linear(0.25):diffusealpha(0):queuecommand("TrueChange"):diffuse(color("1,1,1,1"))
+				end,
+				ChangeCommand=function(self)
+					local text ="SPEED CHANGE: " .. (PREVIOUS[PLAYER_2] / (MOD[PLAYER_2] == "x" and 100 or 1))..MOD[PLAYER_2] .. " -> " .. (CURRENT[PLAYER_2] / (MOD[PLAYER_2] == "x" and 100 or 1))..MOD[PLAYER_2]
+					if IsIIDXFrame(PLAYER_2) then MESSAGEMAN:Broadcast("Speed",{PLAYER=PLAYER_2,SPEED=(CURRENT[PLAYER_2] / (MOD[PLAYER_2] == "x" and 100 or 1)),MOD=MOD[PLAYER_2]}) end
+					self:stoptweening():diffusealpha(1):settext(text):sleep(1):linear(0.25):diffusealpha(0):queuecommand("TrueChange")
+				end,
+				TrueChangeCommand=function(self)
+					local text = "SPEED: " .. (CURRENT[PLAYER_2] / (MOD[PLAYER_2] == "x" and 100 or 1))..MOD[PLAYER_2]
+					self:stoptweening():diffusealpha(0):settext(text):linear(0.25):diffusealpha(1)
+				end
+			}
 		}
 	},
 	Overlay,
