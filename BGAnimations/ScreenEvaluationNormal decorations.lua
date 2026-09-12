@@ -30,14 +30,16 @@ local Hmax = { [PLAYER_1] = 0, [PLAYER_2] = 0 }
 local Hmul = { [PLAYER_1] = 1, [PLAYER_2] = 1 }
 local Tmax = { [PLAYER_1] = 0, [PLAYER_2] = 0 }
 local Tmul = { [PLAYER_1] = 1, [PLAYER_2] = 1 }
-local maxView = { [PLAYER_1] = 3, [PLAYER_2] = 3 }
+local maxJ = { [PLAYER_1] = 0, [PLAYER_2] = 0 }
+local maxT = { [PLAYER_1] = 0, [PLAYER_2] = 0 }
+local maxView = { [PLAYER_1] = 5, [PLAYER_2] = 5 }
 
 for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
 	if target[pn] ~= {} then
 		if highscore[pn] ~= {} then
-			maxView[pn] = 5
+			maxView[pn] = 7
 		else
-			maxView[pn] = 4
+			maxView[pn] = 6
 		end
 	end
 end
@@ -220,6 +222,29 @@ local function CalcMinusStepSeconds(pn)
     return fSecs / songoptions:MusicRate()
 end
 
+local function CalcMaxStepSeconds(pn)
+	if isEtterna("0.55") then return 0 end
+	local fSecs = 0
+
+	if GAMESTATE:IsCourseMode() then
+		for trail in ivalues(GAMESTATE:GetCurrentTrail(pn):GetTrailEntries()) do
+			if trail then
+				local song = trail:GetSong()
+				if song then
+					fSecs = fSecs + song:GetLastSecond() - song:GetFirstSecond()
+				end
+			end
+		end
+	else
+		fSecs = fSecs + GAMESTATE:GetCurrentSong():GetLastSecond() - GAMESTATE:GetCurrentSong():GetFirstSecond()
+	end
+
+    local songoptions = GAMESTATE:GetSongOptionsObject("ModsLevel_Song")
+    if not songoptions then return fSecs end
+
+    return fSecs / songoptions:MusicRate()
+end
+
 local function GetVertices(flare,level)
 	local graphH = 68
 	local graphW = 192
@@ -261,24 +286,36 @@ local function GetVerticesOutFox(lives,pn)
     return vertices
 end
 
-local function GetVerticesBackground()
+local function GetVerticesBackground(other)
 	local graphH = 68
 	local graphW = 192
     local vertices = {}
 
-	vertices[#vertices+1] = { {0, -graphH*0.0, 0}, color("#80000080") }
-	vertices[#vertices+1] = { {0, -graphH*0.5, 0}, color("#80000080") }
-	vertices[#vertices+1] = { {graphW, -graphH*0.5, 0}, color("#80000080") }
-	vertices[#vertices+1] = { {graphW, -graphH*0.0, 0}, color("#80000080") }
-	vertices[#vertices+1] = { {0, -graphH*1.0, 0}, color("#00008080") }
-	vertices[#vertices+1] = { {0, -graphH*0.5, 0}, color("#00008080") }
-	vertices[#vertices+1] = { {graphW, -graphH*0.5, 0}, color("#00008080") }
-	vertices[#vertices+1] = { {graphW, -graphH*1.0, 0}, color("#00008080") }
+	if other then
+		vertices[#vertices+1] = { {graphW*1.0, 0, 0}, color("#80000080") }
+		vertices[#vertices+1] = { {graphW*0.5, 0, 0}, color("#80000080") }
+		vertices[#vertices+1] = { {graphW*0.5, -graphH, 0}, color("#80000080") }
+		vertices[#vertices+1] = { {graphW*1.0, -graphH, 0}, color("#80000080") }
+		vertices[#vertices+1] = { {graphW*0.0, 0, 0}, color("#00008080") }
+		vertices[#vertices+1] = { {graphW*0.5, 0, 0}, color("#00008080") }
+		vertices[#vertices+1] = { {graphW*0.5, -graphH, 0}, color("#00008080") }
+		vertices[#vertices+1] = { {graphW*0.0, -graphH, 0}, color("#00008080") }
+	else
+		vertices[#vertices+1] = { {0, -graphH*0.0, 0}, color("#80000080") }
+		vertices[#vertices+1] = { {0, -graphH*0.5, 0}, color("#80000080") }
+		vertices[#vertices+1] = { {graphW, -graphH*0.5, 0}, color("#80000080") }
+		vertices[#vertices+1] = { {graphW, -graphH*0.0, 0}, color("#80000080") }
+		vertices[#vertices+1] = { {0, -graphH*1.0, 0}, color("#00008080") }
+		vertices[#vertices+1] = { {0, -graphH*0.5, 0}, color("#00008080") }
+		vertices[#vertices+1] = { {graphW, -graphH*0.5, 0}, color("#00008080") }
+		vertices[#vertices+1] = { {graphW, -graphH*1.0, 0}, color("#00008080") }
+	end
 
 	return vertices
 end
 
-local function GetVerticesOffsetDot(offset,pn)
+local function GetVerticesOffsetDot(pn)
+	local offset = offsetInfo[pn]
 	local graphH = 68/2
 	local graphW = 192
     local vertices = {}
@@ -351,20 +388,23 @@ local function GetVerticesPacemakerDot(PMT,pn)
 		local currentY = offset[off][2]*-1
 		local color = currentY > 0 and color("#FF0000") or color("#00FF00")
 		currentY = currentY / PMmax - 1
-		if lines then
-			vertices[#vertices+1] = { {math.min(1,currentX/max)*graphW, (currentY-0.01)*graphH, 0}, color }
-			vertices[#vertices+1] = { {math.min(1,currentX/max)*graphW, (currentY+0.01)*graphH, 0}, color  }
-		else
-			vertices[#vertices+1] = { {math.min(1,currentX/max-0.0015)*graphW, (currentY-0.01)*graphH, 0}, color }
-			vertices[#vertices+1] = { {math.min(1,currentX/max-0.0015)*graphW, (currentY+0.01)*graphH, 0}, color }
-			vertices[#vertices+1] = { {math.min(1,currentX/max+0.0015)*graphW, (currentY+0.01)*graphH, 0}, color }
-			vertices[#vertices+1] = { {math.min(1,currentX/max+0.0015)*graphW, (currentY-0.01)*graphH, 0}, color }
+		if currentX > 0 then
+			if lines then
+				vertices[#vertices+1] = { {math.min(1,currentX/max)*graphW, (currentY-0.01)*graphH, 0}, color }
+				vertices[#vertices+1] = { {math.min(1,currentX/max)*graphW, (currentY+0.01)*graphH, 0}, color  }
+			else
+				vertices[#vertices+1] = { {math.min(1,currentX/max-0.0015)*graphW, (currentY-0.01)*graphH, 0}, color }
+				vertices[#vertices+1] = { {math.min(1,currentX/max-0.0015)*graphW, (currentY+0.01)*graphH, 0}, color }
+				vertices[#vertices+1] = { {math.min(1,currentX/max+0.0015)*graphW, (currentY+0.01)*graphH, 0}, color }
+				vertices[#vertices+1] = { {math.min(1,currentX/max+0.0015)*graphW, (currentY-0.01)*graphH, 0}, color }
+			end
 		end
     end
     return vertices
 end
 
-local function GetVerticesOffsetLine(data,pn)
+local function GetVerticesOffsetLine(pn)
+	local data = offsetInfo[pn]
 	local graphH = 68
 	local graphW = 192/2
     local vertices = {}
@@ -377,11 +417,6 @@ local function GetVerticesOffsetLine(data,pn)
 	if not isOpenDDR() then jugd[#jugd+1]={W5*JudgeScale+Wadd,color("#FF7149")} end
 	local maxjudg = math.round(jugd[judges[pn]][1],3)
     local lines = isOutFox(20201100)
-
-	vertices[#vertices+1] = { {math.min(1,0-0.01)*graphW+graphW, -(1)*graphH, 0}, color("#000080") }
-	vertices[#vertices+1] = { {math.min(1,0-0.01)*graphW+graphW, (0)*graphH, 0}, color("#000080") }
-	vertices[#vertices+1] = { {math.min(1,0+0.01)*graphW+graphW, (0)*graphH, 0}, color("#800000") }
-	vertices[#vertices+1] = { {math.min(1,0+0.01)*graphW+graphW, -(1)*graphH, 0}, color("#800000") }
 
 	local offset = {}
 	for t in ivalues(data) do
@@ -417,12 +452,178 @@ local function GetVerticesOffsetLine(data,pn)
     return vertices
 end
 
+local function GetVerticesJudgmentTime(pn)
+	local data = offsetInfo[pn]
+	local graphH = 68
+	local graphW = 192/2
+    local vertices = {}
+    local lines = isOutFox(20201100)
+
+	local countJudgments = 0
+	local judgments = {}
+	local second = -1
+	local max = 0
+
+	for t in ivalues(data) do
+		if not judgments[math.floor(t[1])] then judgments[math.floor(t[1])] = {} end
+		if second < math.floor(t[1]) then second = math.floor(t[1]) countJudgments = 0 end
+		countJudgments = countJudgments + 1
+		judgments[math.floor(t[1])][t[3]] = judgments[math.floor(t[1])][t[3]] and judgments[math.floor(t[1])][t[3]] + 1 or 1
+		maxJ[pn] = math.max(maxJ[pn],countJudgments)
+		max = math.max(max,second)
+	end
+
+	local JudgmentColor = {
+		"TapNoteScore_Miss",
+		"TapNoteScore_W5",
+		"TapNoteScore_W4",
+		"TapNoteScore_W3",
+		"TapNoteScore_W2",
+		"TapNoteScore_W1",
+		"TapNoteScore_W0"
+	}
+	local current = 0
+	local split = graphW/max/2
+	local counter = 0
+
+	maxJ[pn] = math.ceil(maxJ[pn]/2)*2
+	MESSAGEMAN:Broadcast("SetJudgeText",{Player=pn})
+
+	local first = math.floor(CalcMinusStepSeconds())
+	local trueMax = math.floor(CalcMaxStepSeconds(pn))
+	for sec=first, max do
+		current = 0
+		if judgments[sec] then
+			for judge in ivalues(JudgmentColor) do
+				if judgments[sec][judge] then
+					counter = judgments[sec][judge]
+					if lines then
+						vertices[#vertices+1] = { {math.min(1,(sec-first)/trueMax)*2*graphW, -((current+counter)/maxJ[pn])*graphH, 0}, TapNoteScoreToColor(judge) }
+						vertices[#vertices+1] = { {math.min(1,(sec-first)/trueMax)*2*graphW, -(current/maxJ[pn])*graphH, 0}, TapNoteScoreToColor(judge) }
+					else
+						vertices[#vertices+1] = { {math.min(1,(sec-first)/trueMax-split)*2*graphW, -((current+counter)/maxJ[pn])*graphH, 0}, TapNoteScoreToColor(judge) }
+						vertices[#vertices+1] = { {math.min(1,(sec-first)/trueMax-split)*2*graphW, -(current/maxJ[pn])*graphH, 0}, TapNoteScoreToColor(judge) }
+						vertices[#vertices+1] = { {math.min(1,(sec-first)/trueMax+split)*2*graphW, -(current/maxJ[pn])*graphH, 0}, TapNoteScoreToColor(judge) }
+						vertices[#vertices+1] = { {math.min(1,(sec-first)/trueMax+split)*2*graphW, -((current+counter)/maxJ[pn])*graphH, 0}, TapNoteScoreToColor(judge) }
+					end
+					current = current + counter
+				end
+			end
+		end
+	end
+    return vertices,trueMax
+end
+
+local function GetVerticesTimingTime(pn)
+	local data = offsetInfo[pn]
+	local graphH = 68
+	local graphW = 192/2
+    local vertices = {}
+    local lines = isOutFox(20201100)
+	local isFA = getenv("SetScoreFA"..pname(pn))
+	local JudgmentNumber = {
+		["TapNoteScore_Miss"] = 1,
+		["TapNoteScore_W5"] = 2,
+		["TapNoteScore_W4"] = 3,
+		["TapNoteScore_W3"] = 4,
+		["TapNoteScore_W2"] = 5,
+		["TapNoteScore_W1"] = 6
+	}
+
+	local timings = {}
+	local second = -1
+	local countEarly = 0
+	local countLate = 0
+	local max = 0
+
+	for t in ivalues(data) do
+		if t[2] and type(t[2]) == "number" then
+			if JudgmentNumber[t[3]] <= (isFA and 6 or 5) then
+				if not timings[math.floor(t[1])] then timings[math.floor(t[1])] = {} end
+				if second < math.floor(t[1]) then second = math.floor(t[1]) countEarly = 0 countLate = 0 end
+				if t[2] < 0 then
+					countEarly = countEarly + 1
+					if not timings[math.floor(t[1])]["Early"] then timings[math.floor(t[1])]["Early"] = {} end
+					timings[math.floor(t[1])]["Early"][t[3]] = timings[math.floor(t[1])]["Early"][t[3]] and timings[math.floor(t[1])]["Early"][t[3]] + 1 or 1
+				elseif t[2] > 0 then
+					countLate = countLate + 1
+					if not timings[math.floor(t[1])]["Late"] then timings[math.floor(t[1])]["Late"] = {} end
+					timings[math.floor(t[1])]["Late"][t[3]] = timings[math.floor(t[1])]["Late"][t[3]] and timings[math.floor(t[1])]["Late"][t[3]] + 1 or 1
+				end
+				maxT[pn] = math.max(maxT[pn],math.max(countEarly,countLate))
+			end
+			max = math.max(max,second)
+		end
+	end
+
+	local JudgmentColor = {
+		"TapNoteScore_Miss",
+		"TapNoteScore_W5",
+		"TapNoteScore_W4",
+		"TapNoteScore_W3",
+		"TapNoteScore_W2",
+		"TapNoteScore_W1"
+	}
+	local current = 0
+	local split = graphW/max/2
+	local counterEarly = 0
+	local counterLate = 0
+
+	maxT[pn] = math.ceil(maxT[pn]/2)*2
+	MESSAGEMAN:Broadcast("SetTimingText",{Player=pn})
+
+	local first = math.floor(CalcMinusStepSeconds())
+	local trueMax = math.floor(CalcMaxStepSeconds(pn))
+	local add = graphH*0.5
+	for sec=first, max do
+		counterEarly = 0
+		counterLate = 0
+		if timings[sec] then
+			for i,judge in ipairs(JudgmentColor) do
+				if i <= (isFA and 6 or 5) then
+					if timings[sec]["Early"] and timings[sec]["Early"][judge] then
+						current = timings[sec]["Early"][judge]
+						if lines then
+							vertices[#vertices+1] = { {math.min(1,(sec-first)/trueMax)*2*graphW, -((counterEarly+current)/maxT[pn])*graphH*0.5-graphH*0.5, 0}, TapNoteScoreToColor(judge) }
+							vertices[#vertices+1] = { {math.min(1,(sec-first)/trueMax)*2*graphW, -(counterEarly/maxT[pn])*graphH*0.5-graphH*0.5, 0}, TapNoteScoreToColor(judge) }
+						else
+							vertices[#vertices+1] = { {math.min(1,(sec-first)/trueMax-split)*2*graphW, -((counterEarly+current)/maxT[pn])*graphH*0.5-graphH*0.5, 0}, TapNoteScoreToColor(judge) }
+							vertices[#vertices+1] = { {math.min(1,(sec-first)/trueMax-split)*2*graphW, -(counterEarly/maxT[pn])*graphH*0.5-graphH*0.5, 0}, TapNoteScoreToColor(judge) }
+							vertices[#vertices+1] = { {math.min(1,(sec-first)/trueMax+split)*2*graphW, -(counterEarly/maxT[pn])*graphH*0.5-graphH*0.5, 0}, TapNoteScoreToColor(judge) }
+							vertices[#vertices+1] = { {math.min(1,(sec-first)/trueMax+split)*2*graphW, -((counterEarly+current)/maxT[pn])*graphH*0.5-graphH*0.5, 0}, TapNoteScoreToColor(judge) }
+						end
+						counterEarly = counterEarly + current
+					end
+				end
+				if i >= (isFA and 6 or 5) then
+					if timings[sec]["Late"] and timings[sec]["Late"][judge] then
+						current = timings[sec]["Late"][judge]
+						if lines then
+							vertices[#vertices+1] = { {math.min(1,(sec-first)/trueMax)*2*graphW, ((counterLate+current)/maxT[pn])*graphH*0.5-graphH*0.5, 0}, TapNoteScoreToColor(judge) }
+							vertices[#vertices+1] = { {math.min(1,(sec-first)/trueMax)*2*graphW, (counterLate/maxT[pn])*graphH*0.5-graphH*0.5, 0}, TapNoteScoreToColor(judge) }
+						else
+							vertices[#vertices+1] = { {math.min(1,(sec-first)/trueMax-split)*2*graphW, ((counterLate+current)/maxT[pn])*graphH*0.5-graphH*0.5, 0}, TapNoteScoreToColor(judge) }
+							vertices[#vertices+1] = { {math.min(1,(sec-first)/trueMax-split)*2*graphW, (counterLate/maxT[pn])*graphH*0.5-graphH*0.5, 0}, TapNoteScoreToColor(judge) }
+							vertices[#vertices+1] = { {math.min(1,(sec-first)/trueMax+split)*2*graphW, (counterLate/maxT[pn])*graphH*0.5-graphH*0.5, 0}, TapNoteScoreToColor(judge) }
+							vertices[#vertices+1] = { {math.min(1,(sec-first)/trueMax+split)*2*graphW, ((counterLate+current)/maxT[pn])*graphH*0.5-graphH*0.5, 0}, TapNoteScoreToColor(judge) }
+						end
+						counterLate = counterLate + current
+					end
+				end
+			end
+		end
+	end
+    return vertices,trueMax
+end
+
 local names = {
 	"Life Graph",
-	"Judgment (Time)",
-	"Judgment (Total)",
-	"Pacemaker (Highscore)",
-	"Pacemaker (Target)"
+	"Judgment Scatterplot",
+	"Judgment Histogram",
+	"Judgment over Time",
+	"Timing over Time",
+	"Pacemaker Highscore",
+	"Pacemaker Target"
 }
 
 local function SwitchView(pn)
@@ -430,8 +631,10 @@ local function SwitchView(pn)
 	c[pn]["Graph"..pname(pn)]:diffusealpha(check == 0 and 1 or 0)
 	c[pn]["Dot"..pname(pn)]:diffusealpha(check == 1 and 1 or 0)
 	c[pn]["Line"..pname(pn)]:diffusealpha(check == 2 and 1 or 0)
-	c[pn]["Highscore"..pname(pn)]:diffusealpha(check == 3 and 1 or 0)
-	c[pn]["Target"..pname(pn)]:diffusealpha(check == 4 and 1 or 0)
+	c[pn]["Judge"..pname(pn)]:diffusealpha(check == 3 and 1 or 0)
+	c[pn]["Timing"..pname(pn)]:diffusealpha(check == 4 and 1 or 0)
+	c[pn]["Highscore"..pname(pn)]:diffusealpha(check == 5 and 1 or 0)
+	c[pn]["Target"..pname(pn)]:diffusealpha(check == 6 and 1 or 0)
 	c[pn]["Name"..pname(pn)]:settext(names[check+1])
 	tChild["StageAward"..pname(pn)]:diffusealpha(check == 0 and 1 or 0)
 	tChild["PeakComboAward"..pname(pn)]:diffusealpha(check == 0 and 1 or 0)
@@ -465,19 +668,19 @@ local InputHandler = function(event)
 			if event.GameButton == "MenuLeft" then
 				if holdRight then addOrRemoveFavorite(event.PlayerNumber) elseif not holdLeft then holdLeft = true end
 				view[event.PlayerNumber] = view[event.PlayerNumber] - 1
-				if view[event.PlayerNumber] % maxView[event.PlayerNumber] == 4 and #target[event.PlayerNumber] == 0 then
+				if view[event.PlayerNumber] % maxView[event.PlayerNumber] == 6 and #target[event.PlayerNumber] == 0 then
 					view[event.PlayerNumber] = view[event.PlayerNumber] - 1
 				end
-				if view[event.PlayerNumber] % maxView[event.PlayerNumber] == 3 and #highscore[event.PlayerNumber] == 0 then
+				if view[event.PlayerNumber] % maxView[event.PlayerNumber] == 5 and #highscore[event.PlayerNumber] == 0 then
 					view[event.PlayerNumber] = view[event.PlayerNumber] - 1
 				end
 			elseif event.GameButton == "MenuRight" then
 				if holdLeft then addOrRemoveFavorite(event.PlayerNumber) elseif not holdRight then holdRight = true end
 				view[event.PlayerNumber] = view[event.PlayerNumber] + 1
-				if view[event.PlayerNumber] % maxView[event.PlayerNumber] == 3 and #highscore[event.PlayerNumber] == 0 then
+				if view[event.PlayerNumber] % maxView[event.PlayerNumber] == 5 and #highscore[event.PlayerNumber] == 0 then
 					view[event.PlayerNumber] = view[event.PlayerNumber] + 1
 				end
-				if view[event.PlayerNumber] % maxView[event.PlayerNumber] == 4 and #target[event.PlayerNumber] == 0 then
+				if view[event.PlayerNumber] % maxView[event.PlayerNumber] == 6 and #target[event.PlayerNumber] == 0 then
 					view[event.PlayerNumber] = view[event.PlayerNumber] + 1
 				end
 			end
@@ -526,7 +729,7 @@ local function GraphDisplay(pn)
 			Name = "Name"..pname(pn),
 			File = "_v 26px bold white",
 			Text = names[1],
-			InitCommand=function(self) self:zoom(0.33*WideScreenDiff()):x(pn == PLAYER_1 and 104 or -104):rotationz(pn == PLAYER_1 and 90 or -90):maxwidth(220) end
+			InitCommand=function(self) self:zoom(0.33*WideScreenDiff()):y(-0.5):x(pn == PLAYER_1 and 104 or -104):rotationz(pn == PLAYER_1 and 90 or -90):maxwidth(210):shadowlength(1) end
 		}
 	}
 	local float = getenv("FlareDisplay"..pname(pn))
@@ -635,7 +838,7 @@ local function GraphDisplay(pn)
 			Def.ActorMultiVertex{
 				InitCommand=function(self) self:playcommand("Draw") end,
 				DrawCommand=function(self)
-					local vertices = GetVerticesOffsetDot(offsetInfo[pn],pn)
+					local vertices = GetVerticesOffsetDot(pn)
 					self:SetDrawState(isOutFox(20201100) and {Mode = 'DrawMode_Lines'} or {Mode = 'DrawMode_Quads'})
 					self:SetVertices(1, vertices)
 					self:SetNumVertices(#vertices)
@@ -643,16 +846,113 @@ local function GraphDisplay(pn)
 				end
 			}
 		}
-		display[#display+1] = Def.ActorMultiVertex{
+		display[#display+1] = Def.ActorFrame {
 			Name="Line"..pname(pn),
-			InitCommand=function(self) self:diffusealpha(0):playcommand("Draw") end,
-			DrawCommand=function(self)
-				local vertices = GetVerticesOffsetLine(offsetInfo[pn],pn)
-                self:SetDrawState(isOutFox(20201100) and {Mode = 'DrawMode_Lines'} or {Mode = 'DrawMode_Quads'})
-				self:SetVertices(1, vertices)
-				self:SetNumVertices(#vertices)
-				self:x(-96):y(34)
-			end
+			InitCommand=function(self) self:diffusealpha(0) end,
+			Def.ActorMultiVertex{
+				InitCommand=function(self) self:playcommand("Draw") end,
+				DrawCommand=function(self)
+					local vertices = GetVerticesBackground(true)
+					self:SetDrawState({Mode = 'DrawMode_Quads'})
+					self:SetVertices(1, vertices)
+					self:SetNumVertices(#vertices)
+					self:x(-96):y(34)
+				end
+			},
+			Def.ActorMultiVertex{
+				InitCommand=function(self) self:playcommand("Draw") end,
+				DrawCommand=function(self)
+					local vertices = GetVerticesOffsetLine(pn)
+					self:SetDrawState(isOutFox(20201100) and {Mode = 'DrawMode_Lines'} or {Mode = 'DrawMode_Quads'})
+					self:SetVertices(1, vertices)
+					self:SetNumVertices(#vertices)
+					self:x(-96):y(34)
+				end
+			}
+		}
+		display[#display+1] = Def.ActorFrame {
+			Name="Judge"..pname(pn),
+			InitCommand=function(self) self:diffusealpha(0) end,
+			Def.BitmapText {
+				File = "_v 26px bold white",
+				InitCommand=function(self) self:zoom(0.33*WideScreenDiff()):x(pn == PLAYER_1 and -96 or 96):y(-34):halign(pn == PLAYER_1 and 1 or 0):shadowlength(1) end,
+				SetJudgeTextMessageCommand=function(self,param) if param.Player==pn then self:settext("   "..maxJ[pn].."  ") end end
+			},
+			Def.BitmapText {
+				File = "_v 26px bold white",
+				InitCommand=function(self) self:zoom(0.33*WideScreenDiff()):x(pn == PLAYER_1 and -96 or 96):halign(pn == PLAYER_1 and 1 or 0):shadowlength(1) end,
+				SetJudgeTextMessageCommand=function(self,param) if param.Player==pn then self:settext("   "..(maxJ[pn]/2).."  ") end end
+			},
+			Def.BitmapText {
+				File = "_v 26px bold white",
+				Text = "   0  ",
+				InitCommand=function(self) self:zoom(0.33*WideScreenDiff()):x(pn == PLAYER_1 and -96 or 96):y(34):halign(pn == PLAYER_1 and 1 or 0):shadowlength(1) end
+			},
+			Def.ActorMultiVertex{
+				InitCommand=function(self) self:playcommand("Draw") end,
+				DrawCommand=function(self)
+					local vertices,max = GetVerticesJudgmentTime(pn)
+					self:SetDrawState(isOutFox(20201100) and {Mode = 'DrawMode_Lines'} or {Mode = 'DrawMode_Quads'})
+					local width = 192/max*1.4
+					if isOutFox(20201100) then self:SetLineWidth(width) end
+					self:SetVertices(1, vertices)
+					self:SetNumVertices(#vertices)
+					self:x(-96):y(34):zoomx(0.99):addx(1)
+				end
+			}
+		}
+		display[#display+1] = Def.ActorFrame {
+			Name="Timing"..pname(pn),
+			InitCommand=function(self) self:diffusealpha(0) end,
+			Def.BitmapText {
+				File = "_v 26px bold white",
+				InitCommand=function(self) self:zoom(0.33*WideScreenDiff()):x(pn == PLAYER_1 and -96 or 96):y(-34):halign(pn == PLAYER_1 and 1 or 0):shadowlength(1) end,
+				SetTimingTextMessageCommand=function(self,param) if param.Player==pn then self:settext("   "..maxT[pn].."  ") end end
+			},
+			Def.BitmapText {
+				File = "_v 26px bold white",
+				InitCommand=function(self) self:zoom(0.33*WideScreenDiff()):x(pn == PLAYER_1 and -96 or 96):y(-17):halign(pn == PLAYER_1 and 1 or 0):shadowlength(1) end,
+				SetTimingTextMessageCommand=function(self,param) if param.Player==pn then self:settext("   "..(maxT[pn]/2).."  ") end end
+			},
+			Def.BitmapText {
+				File = "_v 26px bold white",
+				Text = "   0  ",
+				InitCommand=function(self) self:zoom(0.33*WideScreenDiff()):x(pn == PLAYER_1 and -96 or 96):halign(pn == PLAYER_1 and 1 or 0):shadowlength(1) end
+			},
+			Def.BitmapText {
+				File = "_v 26px bold white",
+				InitCommand=function(self) self:zoom(0.33*WideScreenDiff()):x(pn == PLAYER_1 and -96 or 96):y(17):halign(pn == PLAYER_1 and 1 or 0):shadowlength(1) end,
+				SetTimingTextMessageCommand=function(self,param) if param.Player==pn then self:settext("   "..(maxT[pn]/2).."  ") end end
+			},
+			Def.BitmapText {
+				File = "_v 26px bold white",
+				InitCommand=function(self) self:zoom(0.33*WideScreenDiff()):x(pn == PLAYER_1 and -96 or 96):y(34):halign(pn == PLAYER_1 and 1 or 0):shadowlength(1) end,
+				SetTimingTextMessageCommand=function(self,param) if param.Player==pn then self:settext("   "..maxT[pn].."  ") end end
+			},
+			Def.ActorFrame {
+				Def.ActorMultiVertex{
+					InitCommand=function(self) self:playcommand("Draw") end,
+					DrawCommand=function(self)
+						local vertices = GetVerticesBackground()
+						self:SetDrawState({Mode = 'DrawMode_Quads'})
+						self:SetVertices(1, vertices)
+						self:SetNumVertices(#vertices)
+						self:x(-96):y(34)
+					end
+				},
+				Def.ActorMultiVertex{
+					InitCommand=function(self) self:playcommand("Draw") end,
+					DrawCommand=function(self)
+						local vertices,max = GetVerticesTimingTime(pn)
+						self:SetDrawState(isOutFox(20201100) and {Mode = 'DrawMode_Lines'} or {Mode = 'DrawMode_Quads'})
+						local width = 192/max*1.4
+						if isOutFox(20201100) then self:SetLineWidth(width) end
+						self:SetVertices(1, vertices)
+						self:SetNumVertices(#vertices)
+						self:x(-96):y(34):zoomx(0.99):addx(1)
+					end
+				}
+			}
 		}
 		display[#display+1] = Def.ActorFrame {
 			Name="Highscore"..pname(pn),
@@ -660,47 +960,47 @@ local function GraphDisplay(pn)
 			Def.BitmapText {
 				File = "_v 26px bold white",
 				Text = "  +"..(Hmul[pn]*4).."  ",
-				InitCommand=function(self) self:zoom(0.33*WideScreenDiff()):x(pn == PLAYER_1 and -96 or 96):y(-34):halign(pn == PLAYER_1 and 1 or 0) end
+				InitCommand=function(self) self:zoom(0.33*WideScreenDiff()):x(pn == PLAYER_1 and -96 or 96):y(-34):halign(pn == PLAYER_1 and 1 or 0):shadowlength(1) end
 			},
 			Def.BitmapText {
 				File = "_v 26px bold white",
 				Text = "  +"..(Hmul[pn]*3).."  ",
-				InitCommand=function(self) self:zoom(0.33*WideScreenDiff()):x(pn == PLAYER_1 and -96 or 96):y(-25.5):halign(pn == PLAYER_1 and 1 or 0) end
+				InitCommand=function(self) self:zoom(0.33*WideScreenDiff()):x(pn == PLAYER_1 and -96 or 96):y(-25.5):halign(pn == PLAYER_1 and 1 or 0):shadowlength(1) end
 			},
 			Def.BitmapText {
 				File = "_v 26px bold white",
 				Text = "  +"..(Hmul[pn]*2).."  ",
-				InitCommand=function(self) self:zoom(0.33*WideScreenDiff()):x(pn == PLAYER_1 and -96 or 96):y(-17):halign(pn == PLAYER_1 and 1 or 0) end
+				InitCommand=function(self) self:zoom(0.33*WideScreenDiff()):x(pn == PLAYER_1 and -96 or 96):y(-17):halign(pn == PLAYER_1 and 1 or 0):shadowlength(1) end
 			},
 			Def.BitmapText {
 				File = "_v 26px bold white",
 				Text = "  +"..(Hmul[pn]*1).."  ",
-				InitCommand=function(self) self:zoom(0.33*WideScreenDiff()):x(pn == PLAYER_1 and -96 or 96):y(-8.5):halign(pn == PLAYER_1 and 1 or 0) end
+				InitCommand=function(self) self:zoom(0.33*WideScreenDiff()):x(pn == PLAYER_1 and -96 or 96):y(-8.5):halign(pn == PLAYER_1 and 1 or 0):shadowlength(1) end
 			},
 			Def.BitmapText {
 				File = "_v 26px bold white",
 				Text = "  0  ",
-				InitCommand=function(self) self:zoom(0.33*WideScreenDiff()):x(pn == PLAYER_1 and -96 or 96):halign(pn == PLAYER_1 and 1 or 0) end
+				InitCommand=function(self) self:zoom(0.33*WideScreenDiff()):x(pn == PLAYER_1 and -96 or 96):halign(pn == PLAYER_1 and 1 or 0):shadowlength(1) end
 			},
 			Def.BitmapText {
 				File = "_v 26px bold white",
 				Text = "  -"..(Hmul[pn]*1).."  ",
-				InitCommand=function(self) self:zoom(0.33*WideScreenDiff()):x(pn == PLAYER_1 and -96 or 96):y(8.5):halign(pn == PLAYER_1 and 1 or 0) end
+				InitCommand=function(self) self:zoom(0.33*WideScreenDiff()):x(pn == PLAYER_1 and -96 or 96):y(8.5):halign(pn == PLAYER_1 and 1 or 0):shadowlength(1) end
 			},
 			Def.BitmapText {
 				File = "_v 26px bold white",
 				Text = "  -"..(Hmul[pn]*2).."  ",
-				InitCommand=function(self) self:zoom(0.33*WideScreenDiff()):x(pn == PLAYER_1 and -96 or 96):y(17):halign(pn == PLAYER_1 and 1 or 0) end
+				InitCommand=function(self) self:zoom(0.33*WideScreenDiff()):x(pn == PLAYER_1 and -96 or 96):y(17):halign(pn == PLAYER_1 and 1 or 0):shadowlength(1) end
 			},
 			Def.BitmapText {
 				File = "_v 26px bold white",
 				Text = "  -"..(Hmul[pn]*3).."  ",
-				InitCommand=function(self) self:zoom(0.33*WideScreenDiff()):x(pn == PLAYER_1 and -96 or 96):y(25.5):halign(pn == PLAYER_1 and 1 or 0) end
+				InitCommand=function(self) self:zoom(0.33*WideScreenDiff()):x(pn == PLAYER_1 and -96 or 96):y(25.5):halign(pn == PLAYER_1 and 1 or 0):shadowlength(1) end
 			},
 			Def.BitmapText {
 				File = "_v 26px bold white",
 				Text = "  -"..(Hmul[pn]*4).."  ",
-				InitCommand=function(self) self:zoom(0.33*WideScreenDiff()):x(pn == PLAYER_1 and -96 or 96):y(34):halign(pn == PLAYER_1 and 1 or 0) end
+				InitCommand=function(self) self:zoom(0.33*WideScreenDiff()):x(pn == PLAYER_1 and -96 or 96):y(34):halign(pn == PLAYER_1 and 1 or 0):shadowlength(1) end
 			},
 			Def.ActorMultiVertex{
 				InitCommand=function(self) self:playcommand("Draw") end,
@@ -729,47 +1029,47 @@ local function GraphDisplay(pn)
 			Def.BitmapText {
 				File = "_v 26px bold white",
 				Text = "  +"..(Tmul[pn]*4).."  ",
-				InitCommand=function(self) self:zoom(0.33*WideScreenDiff()):x(pn == PLAYER_1 and -96 or 96):y(-34):halign(pn == PLAYER_1 and 1 or 0) end
+				InitCommand=function(self) self:zoom(0.33*WideScreenDiff()):x(pn == PLAYER_1 and -96 or 96):y(-34):halign(pn == PLAYER_1 and 1 or 0):shadowlength(1) end
 			},
 			Def.BitmapText {
 				File = "_v 26px bold white",
 				Text = "  +"..(Tmul[pn]*3).."  ",
-				InitCommand=function(self) self:zoom(0.33*WideScreenDiff()):x(pn == PLAYER_1 and -96 or 96):y(-25.5):halign(pn == PLAYER_1 and 1 or 0) end
+				InitCommand=function(self) self:zoom(0.33*WideScreenDiff()):x(pn == PLAYER_1 and -96 or 96):y(-25.5):halign(pn == PLAYER_1 and 1 or 0):shadowlength(1) end
 			},
 			Def.BitmapText {
 				File = "_v 26px bold white",
 				Text = "  +"..(Tmul[pn]*2).."  ",
-				InitCommand=function(self) self:zoom(0.33*WideScreenDiff()):x(pn == PLAYER_1 and -96 or 96):y(-17):halign(pn == PLAYER_1 and 1 or 0) end
+				InitCommand=function(self) self:zoom(0.33*WideScreenDiff()):x(pn == PLAYER_1 and -96 or 96):y(-17):halign(pn == PLAYER_1 and 1 or 0):shadowlength(1) end
 			},
 			Def.BitmapText {
 				File = "_v 26px bold white",
 				Text = "  +"..(Tmul[pn]*1).."  ",
-				InitCommand=function(self) self:zoom(0.33*WideScreenDiff()):x(pn == PLAYER_1 and -96 or 96):y(-8.5):halign(pn == PLAYER_1 and 1 or 0) end
+				InitCommand=function(self) self:zoom(0.33*WideScreenDiff()):x(pn == PLAYER_1 and -96 or 96):y(-8.5):halign(pn == PLAYER_1 and 1 or 0):shadowlength(1) end
 			},
 			Def.BitmapText {
 				File = "_v 26px bold white",
 				Text = "  0  ",
-				InitCommand=function(self) self:zoom(0.33*WideScreenDiff()):x(pn == PLAYER_1 and -96 or 96):halign(pn == PLAYER_1 and 1 or 0) end
+				InitCommand=function(self) self:zoom(0.33*WideScreenDiff()):x(pn == PLAYER_1 and -96 or 96):halign(pn == PLAYER_1 and 1 or 0):shadowlength(1) end
 			},
 			Def.BitmapText {
 				File = "_v 26px bold white",
 				Text = "  -"..(Tmul[pn]*1).."  ",
-				InitCommand=function(self) self:zoom(0.33*WideScreenDiff()):x(pn == PLAYER_1 and -96 or 96):y(8.5):halign(pn == PLAYER_1 and 1 or 0) end
+				InitCommand=function(self) self:zoom(0.33*WideScreenDiff()):x(pn == PLAYER_1 and -96 or 96):y(8.5):halign(pn == PLAYER_1 and 1 or 0):shadowlength(1) end
 			},
 			Def.BitmapText {
 				File = "_v 26px bold white",
 				Text = "  -"..(Tmul[pn]*2).."  ",
-				InitCommand=function(self) self:zoom(0.33*WideScreenDiff()):x(pn == PLAYER_1 and -96 or 96):y(17):halign(pn == PLAYER_1 and 1 or 0) end
+				InitCommand=function(self) self:zoom(0.33*WideScreenDiff()):x(pn == PLAYER_1 and -96 or 96):y(17):halign(pn == PLAYER_1 and 1 or 0):shadowlength(1) end
 			},
 			Def.BitmapText {
 				File = "_v 26px bold white",
 				Text = "  -"..(Tmul[pn]*3).."  ",
-				InitCommand=function(self) self:zoom(0.33*WideScreenDiff()):x(pn == PLAYER_1 and -96 or 96):y(25.5):halign(pn == PLAYER_1 and 1 or 0) end
+				InitCommand=function(self) self:zoom(0.33*WideScreenDiff()):x(pn == PLAYER_1 and -96 or 96):y(25.5):halign(pn == PLAYER_1 and 1 or 0):shadowlength(1) end
 			},
 			Def.BitmapText {
 				File = "_v 26px bold white",
 				Text = "  -"..(Tmul[pn]*4).."  ",
-				InitCommand=function(self) self:zoom(0.33*WideScreenDiff()):x(pn == PLAYER_1 and -96 or 96):y(34):halign(pn == PLAYER_1 and 1 or 0) end
+				InitCommand=function(self) self:zoom(0.33*WideScreenDiff()):x(pn == PLAYER_1 and -96 or 96):y(34):halign(pn == PLAYER_1 and 1 or 0):shadowlength(1) end
 			},
 			Def.ActorMultiVertex{
 				InitCommand=function(self) self:playcommand("Draw") end,

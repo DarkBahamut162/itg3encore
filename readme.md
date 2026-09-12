@@ -449,8 +449,10 @@ I could have actually forked it but I didn't. My reasoning was that it wasn't go
 * Re-added **marvelous/perfect/great color bar** on top of the **LifeGraph**
 * Added more **Graphs** *(press left/right to switch graphs)*
   * **LifeGraph**
-  * **JudgmentGraph** *over time*
-  * **JudgmentGraph** *in total*
+  * **JudgmentGraph** *Scatterplot*
+  * **JudgmentGraph** *Histogram*
+  * **JudgmentGraph** *over Time*
+  * **TimingGraph** *over Time*
   * **PaceMaker** *Highscore* *(only if PlayerStats is in **IIDX** mode)*
   * **PaceMaker** *Target* *(only if PlayerStats is in **IIDX** mode)*
 * Added ability to restart current song
