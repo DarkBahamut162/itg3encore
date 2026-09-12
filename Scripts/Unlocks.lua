@@ -1,4 +1,5 @@
 function Unlock(Title)
+    if isEtterna("0.55") then return end
     local id = UNLOCKMAN:FindEntryID(Title)
     if id then UNLOCKMAN:UnlockEntryID(id) end
 
@@ -54,9 +55,11 @@ local unlocks = {
 
 function UnlockNames(code)
     local list = code and "OkayEnding,GoodEnding,PerfectEnding" or ""
-    for entry in ivalues(unlocks) do
-        if SONGMAN:FindSong(entry[2]) then
-            list = addToOutput(list,entry[1],",")
+    if not isEtterna("0.55") then
+        for entry in ivalues(unlocks) do
+            if SONGMAN:FindSong(entry[2]) then
+                list = addToOutput(list,entry[1],",")
+            end
         end
     end
     return list
