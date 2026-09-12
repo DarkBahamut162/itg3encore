@@ -148,7 +148,7 @@ local t = Def.ActorFrame{
 				Condition=GAMESTATE:IsPlayerEnabled(PLAYER_1) and modify,
 				Name="MOD1Text",
 				OnCommand=function(self)
-					self:settext(CURRENT[PLAYER_1] and "SPEED: " .. (CURRENT[PLAYER_1] / (MOD[PLAYER_1] == "x" and 100 or 1))..MOD[PLAYER_1] or "")
+					self:settext(CURRENT[PLAYER_1] and "SPEED: " .. (CURRENT[PLAYER_1] / (MOD[PLAYER_1] == "x" and 100 or 1))..MOD[PLAYER_1] or ""):shadowlength(1)
 					if IsIIDXFrame(PLAYER_1) then self:halign(1) MESSAGEMAN:Broadcast("Speed",{PLAYER=PLAYER_1,SPEED=(CURRENT[PLAYER_1] / (MOD[PLAYER_1] == "x" and 100 or 1)),MOD=MOD[PLAYER_1]}) end
 					if IsGame("pump") then self:addy(33*WideScreenDiff()) end
 				end,
@@ -176,7 +176,7 @@ local t = Def.ActorFrame{
 				Condition=GAMESTATE:IsPlayerEnabled(PLAYER_2) and modify,
 				Name="MOD2Text",
 				OnCommand=function(self)
-					self:settext(CURRENT[PLAYER_2] and "SPEED: " .. (CURRENT[PLAYER_2] / (MOD[PLAYER_2] == "x" and 100 or 1))..MOD[PLAYER_2] or "")
+					self:settext(CURRENT[PLAYER_2] and "SPEED: " .. (CURRENT[PLAYER_2] / (MOD[PLAYER_2] == "x" and 100 or 1))..MOD[PLAYER_2] or ""):shadowlength(1)
 					if IsIIDXFrame(PLAYER_2) then self:halign(0) MESSAGEMAN:Broadcast("Speed",{PLAYER=PLAYER_2,SPEED=(CURRENT[PLAYER_2] / (MOD[PLAYER_2] == "x" and 100 or 1)),MOD=MOD[PLAYER_2]}) end
 					if IsGame("pump") then self:addy(33*WideScreenDiff()) end
 				end,
