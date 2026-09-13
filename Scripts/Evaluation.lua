@@ -330,7 +330,7 @@ function PacemakerLoad(player)
 				return false
 			else
 				for k, v in pairs(PM) do
-					PaceMaker[player][category][tonumber(k)] = v
+					if k and tonumber(k) then PaceMaker[player][category][tonumber(k)] = v end
 				end
 				return true
 			end
