@@ -16,7 +16,7 @@ return Def.ActorFrame{
 			OnCommand=function(self) self:diffuseshift():effectcolor1(color("#973636")):effectcolor2(color("#f11e1e")):effectclock("bgm") end
 		},
 		Def.Sprite {
-			Texture = "border red "..(isFinal() and "final" or "normal"),
+			Texture = isFinal() and "flare final" or "border red normal",
 			InitCommand=function(self) self:x(SCREEN_CENTER_X+140*WideScreenDiff()):y(SCREEN_CENTER_Y-19*WideScreenDiff()):zoom(WideScreenDiff()) end,
 			OnCommand=function(self) self:playcommand("Blink") end,
 			BlinkCommand=function(self)

@@ -115,7 +115,7 @@ function songfail(bVertex)
 end
 
 function AllowOptionsMenu()
-	if isEtterna("0.65") then
+	if isEtterna("0.55") then
 		return true
 	elseif GAMESTATE:IsAnExtraStage() then
 		return false

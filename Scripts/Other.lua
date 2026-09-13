@@ -214,23 +214,23 @@ function GetScreenNameEntryTraditionalHelpText()
 end
 
 function HumanAndProfile(pn)
-	return GAMESTATE:IsHumanPlayer(pn) and (not isEtterna("0.65") and not PROFILEMAN:ProfileWasLoadedFromMemoryCard(pn) or false)
+	return GAMESTATE:IsHumanPlayer(pn) and (not isEtterna("0.55") and not PROFILEMAN:ProfileWasLoadedFromMemoryCard(pn) or false)
 end
 
 function EnabledAndProfile(pn)
-	return GAMESTATE:IsPlayerEnabled(pn) and (not isEtterna("0.65") and not PROFILEMAN:ProfileWasLoadedFromMemoryCard(pn) or false)
+	return GAMESTATE:IsPlayerEnabled(pn) and (not isEtterna("0.55") and not PROFILEMAN:ProfileWasLoadedFromMemoryCard(pn) or false)
 end
 
 function HumanAndUSBReady(pn)
-	return GAMESTATE:IsHumanPlayer(pn) and (not isEtterna("0.65") and PROFILEMAN:ProfileWasLoadedFromMemoryCard(pn) or false)
+	return GAMESTATE:IsHumanPlayer(pn) and (not isEtterna("0.55") and PROFILEMAN:ProfileWasLoadedFromMemoryCard(pn) or false)
 end
 
 function EnabledAndUSBReady(pn)
-	return GAMESTATE:IsPlayerEnabled(pn) and (not isEtterna("0.65") and PROFILEMAN:ProfileWasLoadedFromMemoryCard(pn) or false)
+	return GAMESTATE:IsPlayerEnabled(pn) and (not isEtterna("0.55") and PROFILEMAN:ProfileWasLoadedFromMemoryCard(pn) or false)
 end
 
 function USBReady(pn)
-	return not isEtterna("0.65") and MEMCARDMAN:GetCardState(pn) == 'MemoryCardState_ready' or false
+	return not isEtterna("0.55") and MEMCARDMAN:GetCardState(pn) == 'MemoryCardState_ready' or false
 end
 
 function AnyUSBReady()
@@ -980,7 +980,8 @@ end
 
 function CachePref()
 	local isBannerCache = PREFSMAN:PreferenceExists("BannerCache")
-	local name = isBannerCache and "BannerCache" or "ImageCache"
+	local isImageCache = PREFSMAN:PreferenceExists("ImageCache")
+	local name = isBannerCache and "BannerCache" or isImageCache and "ImageCache" or "CacheImages"
 	local var = isBannerCache and "BannerCacheMode" or "ImageCacheMode"
 	local IMGCache = PREFSMAN:GetPreference(name)
 	local values = { var.."_Off", var.."_LowResPreload", var.."_LowResLoadOnDemand", var.."_Full" }

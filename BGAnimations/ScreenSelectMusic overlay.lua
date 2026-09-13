@@ -754,8 +754,8 @@ return Def.ActorFrame{
 				end
 			end
 			GAMESTATE:UpdateDiscordScreenInfo(text,"",1)
-		elseif isEtterna("0.57") then
-			updateDiscordStatusForMenus()
+		else
+			if updateDiscordStatusForMenus then updateDiscordStatusForMenus() end
 		end
 		SCREENMAN:GetTopScreen():AddInputCallback(InputHandler)
 		c = self:GetChildren()
@@ -1289,7 +1289,7 @@ return Def.ActorFrame{
 		}
 	},
 	Def.ActorFrame{
-		Condition=not isEtterna("0.55"),
+		Condition=not isEtterna("0.60"),
 		Name="StepArtistP2",
 		InitCommand=function(self) self:x(SCREEN_RIGHT):y(SCREEN_BOTTOM-109*WideScreenDiff()):addx(SCREEN_WIDTH):player(PLAYER_2):draworder(-2) end,
 		OnCommand=function(self) self:decelerate(0.75):addx(-SCREEN_WIDTH) end,
@@ -1459,7 +1459,7 @@ return Def.ActorFrame{
 			}
 		},
 		Def.ActorFrame{
-			Condition=not isEtterna("0.55") and GAMESTATE:IsPlayerEnabled(PLAYER_2) and not isDouble(),
+			Condition=not isEtterna("0.60") and GAMESTATE:IsPlayerEnabled(PLAYER_2) and not isDouble(),
 			Name="LightP2",
 			Def.Sprite {
 				Texture = THEME:GetPathG("_pane elements/_lneon",isFinal() and "final" or "normal"),
@@ -1527,7 +1527,7 @@ return Def.ActorFrame{
 		},
 		Def.ActorFrame{
 			Name="PaneDisplayP2",
-			Condition=not isEtterna("0.55") and GAMESTATE:IsHumanPlayer(PLAYER_2),
+			Condition=not isEtterna("0.60") and GAMESTATE:IsHumanPlayer(PLAYER_2),
 			InitCommand=function(self) self:x(SCREEN_RIGHT/WideScreenDiff()-SCREEN_WIDTH/5.415/WideScreenDiff()):player(PLAYER_2) end,
 			loadfile(THEME:GetPathG("_pane","icons"))(PLAYER_2),
 			loadfile(THEME:GetPathG("_pane","fill"))(PLAYER_2),
@@ -1626,7 +1626,7 @@ return Def.ActorFrame{
 	},
 	Def.ActorFrame{
 		Name="OptionsListBaseP2",
-		Condition=not isEtterna("0.55"),
+		Condition=not isEtterna("0.60"),
 		InitCommand=function(self) self:x(SCREEN_CENTER_X+220*WideScreenDiff()):y(SCREEN_CENTER_Y+22*WideScreenDiff()):zoomy(WideScreenDiff()):zoomx(isFinal() and 1.1*WideScreenDiff() or 1*WideScreenDiff()) end,
 		Def.Sprite {
 			Texture = THEME:GetPathG("options pane",isFinal() and "final" or "normal"),
@@ -1670,7 +1670,7 @@ return Def.ActorFrame{
 			}
 		},
 		Def.ActorFrame{
-		Condition=ThemePrefs.Get("ShowSummary"),
+			Condition=ThemePrefs.Get("ShowSummary"),
 			Def.ActorFrame{
 				Condition=GAMESTATE:IsHumanPlayer(PLAYER_1),
 				Name="TimePlayerP1",
@@ -1689,7 +1689,7 @@ return Def.ActorFrame{
 				}
 			},
 			Def.ActorFrame{
-				Condition=GAMESTATE:IsHumanPlayer(PLAYER_2),
+				Condition=not isEtterna("0.60") and GAMESTATE:IsHumanPlayer(PLAYER_2),
 				Name="TimePlayerP2",
 				InitCommand=function(self)
 					local adjust = WideScaleFixed(95*WideScreenDiff(),130*WideScreenDiff())

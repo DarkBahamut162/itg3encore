@@ -534,12 +534,12 @@ return Def.ActorFrame {
 	end,
 	UpdateInternal2Command=function(self)
 		UpdateInternal3(self,PLAYER_1)
-		UpdateInternal3(self,PLAYER_2)
+		if not isEtterna("0.60") then UpdateInternal3(self,PLAYER_2) end
 	end,
 	children = {
 		Def.ActorFrame {
 			Name = 'P1Frame',
-			InitCommand=function(self) self:x(SCREEN_CENTER_X-160*WideScreenDiff()):y(SCREEN_CENTER_Y) end,
+			InitCommand=function(self) self:x(isEtterna("0.60") and SCREEN_CENTER_X or SCREEN_CENTER_X-160*WideScreenDiff()):y(SCREEN_CENTER_Y) end,
 			OnCommand=function(self) self:zoom(0):bounceend(0.35):zoom(WideScreenDiff()) end,
 			OffCommand=function(self) self:stoptweening():bouncebegin(0.35):zoom(0) end,
 			PlayerJoinedMessageCommand=function(self,param)
@@ -548,6 +548,7 @@ return Def.ActorFrame {
 			children = LoadPlayerStuff(PLAYER_1)
 		},
 		Def.ActorFrame {
+			Condition=not isEtterna("0.60"),
 			Name = 'P2Frame',
 			InitCommand=function(self) self:x(SCREEN_CENTER_X+160*WideScreenDiff()):y(SCREEN_CENTER_Y) end,
 			OnCommand=function(self) self:zoom(0):bounceend(0.35):zoom(WideScreenDiff()) end,

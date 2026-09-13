@@ -280,7 +280,7 @@ end
 
 function ModeMenu()
 	if isEtterna("0.55") and isEtterna("0.62") then return "Group,Title,Bpm,TopGrades,Artist,Genre,Favorites,Overall,Stream,Jumpstream,Handstream,Stamina,JackSpeed,Chordjack,Technical,Length,DateAdded,Author,Ungrouped" end
-	local options = (isITGmania(20260631) and "Series," or "").."Group,Title,Artist,Genre,Bpm,Length,"
+	local options = (isITGmania(20260631) and "Series," or "").."Group,Title,Artist,Genre,Bpm,Length"
 
 	if isITGmania(20240225) then
 		options = addToOutput(options,"Meter",",")
@@ -309,7 +309,8 @@ function ModeMenu()
 		options = addToOutput(options,"Popularity,Recent",",")
 	end
 
-	options = addToOutput(options,"Preferred,Dance,Battle,Rave",",")
+	options = addToOutput(options,"Preferred",",")
+	if not isEtterna("0.55") then options = addToOutput(options,"Dance,Battle,Rave",",") end
 
 	return options
 end

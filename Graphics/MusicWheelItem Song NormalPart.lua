@@ -244,7 +244,7 @@ return Def.ActorFrame{
 			OnCommand=function(self) self:diffuseshift():effectcolor1(PlayerColor(PLAYER_1)):effectcolor2(PlayerColorSemi(PLAYER_1)) end,
 			SetCommand=function(self,params)
 				if params.Song then
-					local isFav = isEtterna() and params.Song:IsFavorited() or FindInTable(params.Song, getSLFavorites(ToEnumShortString(PLAYER_1)))
+					local isFav = isEtterna("0.52") and params.Song:IsFavorited() or FindInTable(params.Song, getSLFavorites(ToEnumShortString(PLAYER_1)))
 
 					if isFav then
 						local spmp = VersionDateCheck(20150300) and params.Song:GetPreviewMusicPath() or GetPreviewMusicPath(params.Song)

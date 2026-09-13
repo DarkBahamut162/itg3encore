@@ -100,8 +100,8 @@ return Def.ActorFrame{
 				GAMESTATE:UpdateDiscordProfile(GAMESTATE:GetPlayerDisplayName(master))
 				GAMESTATE:UpdateDiscordScreenInfo(songname,states,1)
 			end
-		elseif isEtterna("0.57") then
-			updateDiscordStatus(true)
+		else
+			if updateDiscordStatus then updateDiscordStatus(true) end
 		end
 	end,
 	OffCommand = function(self) if GAMESTATE:IsEventMode() then SCREENMAN:GetTopScreen():RemoveInputCallback(InputHandler) end end,

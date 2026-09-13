@@ -45,16 +45,20 @@ if not isOutFoxV() then
 	else
 		if PREFSMAN:PreferenceExists("BannerCache") then
 			bannerForced = PREFSMAN:GetPreference("BannerCache") == "BannerCacheMode_Off"
-		else
+		elseif PREFSMAN:PreferenceExists("ImageCache") then
 			bannerForced = PREFSMAN:GetPreference("ImageCache") == "ImageCacheMode_Off"
+		elseif PREFSMAN:PreferenceExists("CacheImages") then
+			bannerForced = PREFSMAN:GetPreference("CacheImages") == "ImageCacheMode_Off"
 		end
 	end
 	if PREFSMAN:PreferenceExists("ShowBanners") and not tobool(PREFSMAN:GetPreference("ShowBanners")) then
 		local check = false
 		if PREFSMAN:PreferenceExists("BannerCache") then
 			check = PREFSMAN:GetPreference("BannerCache") == "BannerCacheMode_"..full
-		else
+		elseif PREFSMAN:PreferenceExists("ImageCache") then
 			check = PREFSMAN:GetPreference("ImageCache") == "ImageCacheMode_"..full
+		elseif PREFSMAN:PreferenceExists("CacheImages") then
+			check = PREFSMAN:GetPreference("CacheImages") == "ImageCacheMode_"..full
 		end
 		if check then bannerForced = true end
 	end

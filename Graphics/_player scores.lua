@@ -19,7 +19,7 @@ return Def.ActorFrame{
 		local iidx = 0
 
 		if SongOrCourse and StepsOrTrail then
-			if isEtterna("0.50") then
+			if isEtterna("0.63") then
 				local scores = GetDisplayScore()
 				if scores then
 					self:GetChild("MachineScore"):GetChild("ScoreName"):settext("NEXT")

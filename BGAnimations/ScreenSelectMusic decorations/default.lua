@@ -234,8 +234,10 @@ t[#t+1] = Def.ActorFrame{
 	CurrentSongChangedMessageCommand=function(self)
 		if not courseMode and ThemePrefs.Get("ShowOrigin") then
 			if SCREENMAN:GetTopScreen():IsTransitioning() then
-				Artist:stoptweening():queuecommand("Off")
-				Origin:stoptweening():queuecommand("Off") 
+				if not isEtterna("0.55") then
+					Artist:stoptweening():queuecommand("Off")
+					Origin:stoptweening():queuecommand("Off")
+				end
 			elseif (GAMESTATE:GetCurrentSong() and GetSMParameter(GAMESTATE:GetCurrentSong(),"ORIGIN") or "") == "" then
 				Artist:stoptweening():diffusealpha(1)
 				Origin:stoptweening():diffusealpha(0)
@@ -331,6 +333,8 @@ else
 	end
 end
 
+local etternaCheck = GetTimeSinceStart()
+
 t[#t+1] = Def.BitmapText {
 	File = "_v 26px bold shadow",
 	InitCommand=function(self) self:x(SCREEN_CENTER_X+140*WideScreenDiff()):y(SCREEN_CENTER_Y-154*WideScreenDiff()):zoom(0.5*WideScreenDiff()) end,
@@ -343,9 +347,11 @@ t[#t+1] = Def.BitmapText {
 		if topScreen then
 			local wheel = topScreen:GetMusicWheel()
 			if wheel then
-				wheel:Move(1)
-				wheel:Move(-1)
-				wheel:Move(0)
+				if etternaCheck - GetTimeSinceStart() > 100 then
+					wheel:Move(1)
+					wheel:Move(-1)
+					wheel:Move(0)
+				end
 			end
 		end
 	end,
