@@ -595,7 +595,7 @@ local function GetVerticesTimingTime(pn)
 						counterEarly = counterEarly + current
 					end
 				end
-				if i >= (isFA and 6 or 5) then
+				if i >= (isFA and 1 or 2) then
 					if timings[sec]["Late"] and timings[sec]["Late"][judge] then
 						current = timings[sec]["Late"][judge]
 						if lines then
