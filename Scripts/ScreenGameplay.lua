@@ -412,7 +412,7 @@ function GetTrueJudgment(params,player)
 		local semi = ""
 		local late = -1
 		local early = 1
-		for col,tapnote in pairs(params.Notes) do
+		for col,tapnote in pairs(params.Notes or {}) do
 			local tnt = ToEnumShortString(tapnote:GetTapNoteType())
 			if tnt == "Tap" or tnt == "HoldHead" or tnt == "LongNoteHead" or tnt == "Lift" then
 				local tns = tapnote:GetTapNoteResult():GetTapNoteScore()

@@ -144,7 +144,9 @@ local t = Def.ActorFrame{}
 
 if isITGmania() then t[#t+1] = CreateOnlineHandler() end
 t[#t+1] = loadfile(THEME:GetPathB("ScreenSystemLayer",isEtterna() and "error" or "aux"))()
-t[#t+1] = Def.ActorFrame{
+t[#t+1] = isEtterna("0.60") and Def.ActorFrame{
+	CreditsText(PLAYER_1)
+} or Def.ActorFrame{
 	CreditsText(PLAYER_1),
 	CreditsText(PLAYER_2)
 }

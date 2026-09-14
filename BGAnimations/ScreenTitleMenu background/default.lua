@@ -1,3 +1,8 @@
+if isEtterna("0.55") then
+	if "d3d" == string.lower(split(',',PREFSMAN:GetPreference('VideoRenderers'))[1]) then
+		SCREENMAN:SystemMessage("Please switch your VideoRenderer!\nD3D can cause graphical bugs!!")
+	end
+end
 if isEtterna("0.60") and PREFSMAN:GetPreference("AutoConnectMultiplayer") == 1 then
 	PREFSMAN:SetPreference("AutoConnectMultiplayer", 0)
 	GAMEMAN:SetGame(GAMESTATE:GetCurrentGame():GetName(),THEME:GetCurThemeName())

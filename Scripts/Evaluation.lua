@@ -172,8 +172,15 @@ function prepSummary()
 			Step["CalcedMeter"] = calced
 		end
 		if ThemePrefs.Get("ShowTime") then
-			local fail = STATSMAN:GetCurStageStats(player):GetPlayerStageStats(player):GetFailed()
-			local alive = STATSMAN:GetCurStageStats(player):GetPlayerStageStats(player):GetAliveSeconds()
+			local fail = STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetFailed()
+			local alive = STATSMAN:GetCurStageStats():GetPlayerStageStats(player).GetAliveSeconds and STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetAliveSeconds() or 0
+			
+			if alive == 0 and not STATSMAN:GetCurStageStats():GetPlayerStageStats(player).GetAliveSeconds then
+				local length = TotalPossibleStepSeconds()
+				local comboes = STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetComboList()
+				for combo in ivalues(comboes) do alive = combo.SizeSeconds+combo.StartSecond end
+			end
+
 			local first = 0
 			local last = 0
 			if UsesStepCache() then

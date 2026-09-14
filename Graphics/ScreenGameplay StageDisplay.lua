@@ -2,7 +2,7 @@ return Def.ActorFrame{
 	Def.Sprite{
 		CurrentSongChangedMessageCommand=function(self) self:playcommand("Set") end,
 		SetCommand=function(self)
-			local curStage = isEtterna() and "Stage_Event" or GAMESTATE:GetCurrentStage()
+			local curStage = isEtterna("0.55") and "Stage_Event" or GAMESTATE:GetCurrentStage()
 			if GAMESTATE:IsCourseMode() then
 				if GAMESTATE:GetCourseSongIndex()+1 <= 5 then
 					self:Load(THEME:GetPathG("_gameplay","course song " .. GAMESTATE:GetCourseSongIndex()+1))

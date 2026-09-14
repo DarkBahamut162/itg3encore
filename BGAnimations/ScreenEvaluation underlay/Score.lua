@@ -179,6 +179,7 @@ return Def.ActorFrame{
 		Name="EXP"..pname(player),
 		InitCommand=function(self)
 			local adjust = WideScaleFixed(95*WideScreenDiff(),130*WideScreenDiff())
+			if isEtterna("0.60") and player == PLAYER_2 then self:visible(false) end
 			self:x(player == PLAYER_1 and SCREEN_CENTER_X-adjust or SCREEN_CENTER_X+adjust)
 			self:y(SCREEN_BOTTOM-11*WideScreenDiff()):zoom(0.5*WideScreenDiff()):shadowlength(0):halign(player == PLAYER_1 and 1 or 0):valign(1):vertspacing(-8):settext("EXP GAINED\n"..EXP_STEPS.."/"..EXP_MAX)
 		end

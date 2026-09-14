@@ -45,6 +45,7 @@ if getenv("EvalCombo"..pname(player)) then
 
 			local DP = STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetPercentDancePoints()
 			if DP > 0.5 then
+				if not PaceMaker[player][category] then PaceMaker[player][category] = {} end
 				if tonumber(PaceMaker[player][category][math.floor(SPS)] and PaceMaker[player][category][math.floor(SPS)][arr[3].."/"..songDir] or 0) < DP then
 					if not PaceMaker[player][category][math.floor(SPS)] then PaceMaker[player][category][math.floor(SPS)] = {} end
 					PaceMaker[player][category][math.floor(SPS)][arr[3].."/"..songDir] = DP

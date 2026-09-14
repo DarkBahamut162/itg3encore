@@ -1,4 +1,4 @@
-local curStage = isEtterna("0.62") and "Stage_Event" or GAMESTATE:GetCurrentStage()
+local curStage = isEtterna("0.55") and "Stage_Event" or GAMESTATE:GetCurrentStage()
 local stageNum = curStage:gsub("%D+", "")
 local songsPerPlay = isEtterna("0.55") and 0 or PREFSMAN:GetPreference("SongsPerPlay")
 if stageNum == songsPerPlay then curStage = 'Stage_Final' end

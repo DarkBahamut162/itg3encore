@@ -254,12 +254,12 @@ end
 
 function GetDisplayNameFromProfileOrMemoryCard(pn)
 	if PROFILEMAN:IsPersistentProfile(pn) then return GAMESTATE:GetPlayerDisplayName(pn) end
-	if PROFILEMAN:ProfileWasLoadedFromMemoryCard(pn) then return MEMCARDMAN:GetName(pn) end
+	if not isEtterna("0.55") and PROFILEMAN:ProfileWasLoadedFromMemoryCard(pn) then return MEMCARDMAN:GetName(pn) end
 	return "PLAYER "..(pn == PLAYER_1 and "1" or "2")
 end
 
 function ScreenEndingGetDisplayName(pn)
-	if PROFILEMAN:ProfileWasLoadedFromMemoryCard(pn) then return MEMCARDMAN:GetName(pn) end
+	if not isEtterna("0.55") and PROFILEMAN:ProfileWasLoadedFromMemoryCard(pn) then return MEMCARDMAN:GetName(pn) end
 	return "No Card"
 end
 

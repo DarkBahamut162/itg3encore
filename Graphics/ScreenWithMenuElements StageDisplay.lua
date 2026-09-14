@@ -13,7 +13,7 @@ return Def.ActorFrame{
 		CurrentStepsChangedMessageCommand=function(self) self:finishtweening():playcommand("Set") end,
 		CurrentStepsP2ChangedMessageCommand=function(self) self:finishtweening():playcommand("Set") end,
 		SetCommand=function(self)
-			local curStage = isEtterna() and 'Stage_Event' or isEvaluation and STATSMAN:GetCurStageStats():GetStage() or GAMESTATE:GetCurrentStage()
+			local curStage = isEtterna("0.55") and 'Stage_Event' or isEvaluation and STATSMAN:GetCurStageStats():GetStage() or GAMESTATE:GetCurrentStage()
 			local stageNum = curStage:gsub("%D+", "")
 			local songsPerPlay = isEtterna("0.55") and 0 or PREFSMAN:GetPreference("SongsPerPlay")
 			if stageNum == songsPerPlay then curStage = 'Stage_Final' end

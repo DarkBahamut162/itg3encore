@@ -824,11 +824,18 @@ return Def.ActorFrame{
 		}
 	},
 	Def.BitmapText {
-		Condition=ThemePrefs.Get("ShowSurvivedTime"),
+		Condition=not isEtterna("0.60") and ThemePrefs.Get("ShowSurvivedTime"),
 		File="_v 26px bold shadow",
 		InitCommand=function(self)
 			local fail = STATSMAN:GetCurStageStats(PLAYER_2):GetPlayerStageStats(PLAYER_2):GetFailed()
-			local alive = STATSMAN:GetCurStageStats(PLAYER_2):GetPlayerStageStats(PLAYER_2):GetAliveSeconds()
+			local alive = STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_2).GetAliveSeconds and STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_2):GetAliveSeconds() or 0
+			
+			if alive == 0 and not STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_2).GetAliveSeconds then
+				local length = TotalPossibleStepSeconds()
+				local comboes = STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_2):GetComboList()
+				for combo in ivalues(comboes) do alive = combo.SizeSeconds+combo.StartSecond end
+			end
+
 			local total = GAMESTATE:IsCourseMode() and TrailUtil.GetTotalSeconds(GAMESTATE:GetCurrentTrail(PLAYER_2)) or 0
 			local first = 0
 			local last = 0

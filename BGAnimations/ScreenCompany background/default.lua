@@ -39,6 +39,10 @@ if isOutFox(20220900) and not isOutFox(20230400) then
 	end
 elseif isOutFoxV043() and UsesStepCache() then
 	SCREENMAN:SystemMessage("WARNING!\nThis OutFox Version might cause Frame Crashes when trying to use the StepCache!\nTurn off StepCache until further notice!\nAnd please report to OutFox...")
+elseif isEtterna() and VersionDateCheck(20161205) then
+	if "d3d" == string.lower(split(',',PREFSMAN:GetPreference('VideoRenderers'))[1]) then
+		SCREENMAN:SystemMessage("Please switch your VideoRenderer!\nD3D can cause graphical bugs!!")
+	end
 end
 
 if UsesStepCache() and ThemePrefs.Get("UseStepCacheQuickload") then QuickLoadStepCache() end

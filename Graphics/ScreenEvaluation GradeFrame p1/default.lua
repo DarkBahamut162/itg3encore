@@ -828,7 +828,14 @@ return Def.ActorFrame{
 		File="_v 26px bold shadow",
 		InitCommand=function(self)
 			local fail = STATSMAN:GetCurStageStats(PLAYER_1):GetPlayerStageStats(PLAYER_1):GetFailed()
-			local alive = STATSMAN:GetCurStageStats(PLAYER_1):GetPlayerStageStats(PLAYER_1):GetAliveSeconds()
+			local alive = STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_1).GetAliveSeconds and STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_1):GetAliveSeconds() or 0
+			
+			if alive == 0 and not STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_1).GetAliveSeconds then
+				local length = TotalPossibleStepSeconds()
+				local comboes = STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_1):GetComboList()
+				for combo in ivalues(comboes) do alive = combo.SizeSeconds+combo.StartSecond end
+			end
+
 			local total = GAMESTATE:IsCourseMode() and TrailUtil.GetTotalSeconds(GAMESTATE:GetCurrentTrail(PLAYER_1)) or 0
 			local first = 0
 			local last = 0
