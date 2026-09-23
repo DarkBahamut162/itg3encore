@@ -10,7 +10,7 @@ end
 local passed = false
 if isEtterna("0.71") then passed = not STATSMAN:GetCurStageStats():Failed() else passed = STATSMAN:GetCurStageStats():OnePassed() end
 
-prepSummary()
+if not StepsUpdate[PLAYER_1] and not StepsUpdate[PLAYER_2] then prepSummary() end
 
 return Def.ActorFrame{
 	loadfile(THEME:GetPathB("_fade in","normal"))(),

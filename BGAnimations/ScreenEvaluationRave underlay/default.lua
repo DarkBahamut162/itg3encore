@@ -132,7 +132,34 @@ return Def.ActorFrame{
 			screen:GetChild("RollsNumberP2"):addy(7)
 			screen:GetChild("MaxComboNumberP2"):addy(7)
 		end
+		if not StepsUpdate[PLAYER_1] then
+			local totalCounter = 0
+			for t in ivalues(getenv("OffsetTableAllP1") or {}) do
+				if t[2] and t[2] ~= "Miss" then
+					totalCounter = totalCounter + 1
+				end
+			end
+			if getenv("EvalComboP1") then
+				setenv("StepsPlayed"..pname(PLAYER_1),getenv("StepsPlayed"..pname(PLAYER_1))+totalCounter)
+				if ThemePrefs.Get("ShowSummary") then P1[0]["StepsPlayed"]=getenv("StepsPlayedP1")+StepsPlayerP1Adjust end
+				StepsUpdate[PLAYER_1] = true
+			end
+		end
+		if not StepsUpdate[PLAYER_2] then
+			local totalCounter = 0
+			for t in ivalues(getenv("OffsetTableAllP2") or {}) do
+				if t[2] and t[2] ~= "Miss" then
+					totalCounter = totalCounter + 1
+				end
+			end
+			if getenv("EvalComboP2") then
+				setenv("StepsPlayed"..pname(PLAYER_2),getenv("StepsPlayed"..pname(PLAYER_2))+totalCounter)
+				if ThemePrefs.Get("ShowSummary") then P2[0]["StepsPlayed"]=getenv("StepsPlayedP2")+StepsPlayerP2Adjust end
+				StepsUpdate[PLAYER_2] = true
+			end
+		end
 	end,
+	OffCommand=function() StepsUpdate[PLAYER_1] = false StepsUpdate[PLAYER_2] = false end,
 	loadfile(THEME:GetPathB("ScreenWithMenuElements","underlay/_sides"))(),
 	loadfile(THEME:GetPathB("ScreenWithMenuElements","underlay/_base"))(),
 	loadfile(THEME:GetPathB("ScreenWithMenuElements","underlay/_expandtop"))(),

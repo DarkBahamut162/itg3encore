@@ -56,6 +56,7 @@ local WXCounter = getenv("WX"..pname(player)) or 0
 local offsetdata = {}
 local offsetdataall = {}
 local enableOffsets = ThemePrefs.Get("ShowOffset")
+local enablePlayerSteps = ThemePrefs.Get("ShowPlayerSteps")
 
 setenv("checkFantastics"..pname(player),true)
 setenv("checkPerfects"..pname(player),true)
@@ -240,7 +241,7 @@ return Def.ActorFrame{
 				if tnt == "Tap" or tnt == "HoldHead" or tnt == "LongNoteHead" or tnt == "Lift" then
 					local tns = tapnote:GetTapNoteResult():GetTapNoteScore()
 					local tno = string.format("%0.10f", tapnote:GetTapNoteResult():GetTapNoteOffset())
-					if enableOffsets then
+					if enableOffsets or enablePlayerSteps then
 						local vStats = STATSMAN:GetCurStageStats():GetPlayerStageStats( player )
 						local time = GAMESTATE:IsCourseMode() and vStats:GetAliveSeconds() or GAMESTATE:GetCurMusicSeconds()/GAMESTATE:GetSongOptionsObject("ModsLevel_Song"):MusicRate()
 						local noff = tns == "TapNoteScore_Miss" and "Miss" or tonumber(tno)
@@ -277,7 +278,7 @@ return Def.ActorFrame{
 				MESSAGEMAN:Broadcast("W0",{Player=player,W0=W0Counter,W1=W1Counter,WX=WXCounter})
 			end
 
-			if enableOffsets then
+			if enableOffsets or enablePlayerSteps then
 				local vStats = STATSMAN:GetCurStageStats():GetPlayerStageStats( player )
 				local time = GAMESTATE:IsCourseMode() and vStats:GetAliveSeconds() or GAMESTATE:GetCurMusicSeconds()/GAMESTATE:GetSongOptionsObject("ModsLevel_Song"):MusicRate()
 				local noff = params.TapNoteScore == "TapNoteScore_Miss" and "Miss" or params.TapNoteOffset

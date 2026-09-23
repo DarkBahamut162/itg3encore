@@ -142,6 +142,8 @@ Switches back and forth between the stepchart's BPMs and the player's current mo
 Switches back and forth between the song's Artist and the song's Origin *(only if Origin Value has been set)*
 - **ShowPackClears:**
 Displays amount of clears for songs/steps when selecting a song pack
+- **ShowPlayerSteps:**
+Shows **Steps** done per Player during session
 - **ShowRounds/Length:**
 Shows either **amount of rounds** or **length specification** during song selection
   - Will be adjusted if **TrueRounds** is enabled

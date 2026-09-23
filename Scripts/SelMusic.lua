@@ -6,6 +6,9 @@ Master,P1,P2={},{},{}
 SummaryAdjust = 0
 TimePlayerP1Adjust = 0
 TimePlayerP2Adjust = 0
+StepsPlayerP1Adjust = 0
+StepsPlayerP2Adjust = 0
+StepsUpdate = {[PLAYER_1]=false,[PLAYER_2]=false}
 SessionTimeAdjust = 0
 AllowLateJoin = true
 bannerForced = false

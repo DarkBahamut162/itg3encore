@@ -203,8 +203,10 @@ function prepSummary()
 			seconds = Song:GetLastSecond()-Song:GetFirstSecond()
 		end
 		seconds = seconds / GAMESTATE:GetSongOptionsObject("ModsLevel_Preferred"):MusicRate()
-		local total = getenv("TimePlayed"..pname(player))
-		setenv("TimePlayed"..pname(player),total+seconds)
+		if getenv("EvalCombo"..pname(player)) then
+			local total = getenv("TimePlayed"..pname(player))
+			setenv("TimePlayed"..pname(player),total+seconds)
+		end
 
 		if player == PLAYER_1 then
 			P1[0] = {
@@ -264,6 +266,8 @@ function SummaryBackupClear()
 	SummaryAdjust = 0
 	TimePlayerP1Adjust = 0
 	TimePlayerP2Adjust = 0
+	StepsPlayerP1Adjust = 0
+	StepsPlayerP2Adjust = 0
 	SessionTimeAdjust = 0
 	if FILEMAN:DoesFileExist(path.."Master.ini") then
 		IniFile.WriteFile(path.."Master.ini",{[""]={}})
@@ -294,11 +298,13 @@ function SummaryBackupCheck()
 		local loaded = IniFile.ReadFile(path.."P1.ini")
 		for _,value in pairs(loaded) do P1[tonumber(_)] = value end
 		if P1[0] and P1[0]["TimePlayed"] then TimePlayerP1Adjust = P1[0]["TimePlayed"] end
+		if P1[0] and P1[0]["StepsPlayed"] then StepsPlayerP1Adjust = P1[0]["StepsPlayed"] end
 	end
 	if FILEMAN:DoesFileExist(path.."P2.ini") then
 		local loaded = IniFile.ReadFile(path.."P2.ini")
 		for _,value in pairs(loaded) do P2[tonumber(_)] = value end
 		if P2[0] and P2[0]["TimePlayed"] then TimePlayerP2Adjust = P2[0]["TimePlayed"] end
+		if P2[0] and P2[0]["StepsPlayed"] then StepsPlayerP2Adjust = P2[0]["StepsPlayed"] end
 	end
 	if SummaryAdjust > 0 then return true else return false end
 end

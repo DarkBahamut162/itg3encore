@@ -3,7 +3,7 @@ if ThemePrefs.Get("ExperimentalProfileLevel") then
 end
 
 setenv("SessionStart",0)
-for pn in ivalues({PLAYER_1,PLAYER_2}) do setenv("TimePlayed"..pname(pn),0) end
+for pn in ivalues({PLAYER_1,PLAYER_2}) do setenv("TimePlayed"..pname(pn),0) setenv("StepsPlayed"..pname(pn),0) end
 
 return Def.Quad{
 	InitCommand=function(self) self:FullScreen() end,

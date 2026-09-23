@@ -1189,7 +1189,7 @@ end
 
 function TotalTime(time)
 	time = math.max(0,time)
-	return string.format("%02.0f",math.floor(time/3600))..":"..string.format("%02.0f",math.floor(time/60%60))..":"..string.format("%02.0f",math.floor(time%60))
+	return string.format("%02.0f",math.floor(time/3600))..":"..string.format("%02.0f",math.floor(time/60%60))..":"..string.format("%02.0f",math.floor(time%60*100)/100)
 end
 
 function DoesDanceRepoExist()

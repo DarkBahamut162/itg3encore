@@ -1670,10 +1670,10 @@ return Def.ActorFrame{
 			}
 		},
 		Def.ActorFrame{
-			Condition=ThemePrefs.Get("ShowSummary"),
+			Condition=ThemePrefs.Get("ShowPlayerSteps"),
 			Def.ActorFrame{
 				Condition=GAMESTATE:IsHumanPlayer(PLAYER_1),
-				Name="TimePlayerP1",
+				Name="StepsPlayerP1",
 				InitCommand=function(self)
 					local adjust = WideScaleFixed(95*WideScreenDiff(),130*WideScreenDiff())
 					self:x(SCREEN_CENTER_X-adjust):y(SCREEN_BOTTOM-11*WideScreenDiff())
@@ -1683,14 +1683,14 @@ return Def.ActorFrame{
 				Def.BitmapText {
 					File = "_v 26px bold black",
 					OnCommand=function(self)
-						local time = getenv("TimePlayedP1")+TimePlayerP1Adjust
-						self:settext( string.format('Time Played\n%02i:%02i', math.floor(time/60), math.floor(time%60))):zoom(0.5*WideScreenDiff()):diffuse(PlayerColor(PLAYER_1)):shadowlength(0):halign(1):valign(1):vertspacing(-8)
+						local steps = getenv("StepsPlayedP1")+StepsPlayerP1Adjust
+						self:settext(steps.." Steps"):zoom(0.5*WideScreenDiff()):diffuse(PlayerColor(PLAYER_1)):shadowlength(0):halign(1):valign(1):vertspacing(-8)
 					end
 				}
 			},
 			Def.ActorFrame{
 				Condition=not isEtterna("0.60") and GAMESTATE:IsHumanPlayer(PLAYER_2),
-				Name="TimePlayerP2",
+				Name="StepsPlayerP2",
 				InitCommand=function(self)
 					local adjust = WideScaleFixed(95*WideScreenDiff(),130*WideScreenDiff())
 					self:x(SCREEN_CENTER_X+adjust):y(SCREEN_BOTTOM-11*WideScreenDiff())
@@ -1700,8 +1700,55 @@ return Def.ActorFrame{
 				Def.BitmapText {
 					File = "_v 26px bold black",
 					OnCommand=function(self)
+						local steps = getenv("StepsPlayedP2")+StepsPlayerP2Adjust
+						self:settext(steps.." Steps"):zoom(0.5*WideScreenDiff()):diffuse(PlayerColor(PLAYER_2)):shadowlength(0):halign(1):valign(1):vertspacing(-8)
+					end
+				}
+			}
+		},
+		Def.ActorFrame{
+			Condition=ThemePrefs.Get("ShowTime"),
+			Def.ActorFrame{
+				Condition=GAMESTATE:IsHumanPlayer(PLAYER_1),
+				Name="TimePlayerP1",
+				InitCommand=function(self)
+					local adjust = WideScaleFixed(95*WideScreenDiff(),130*WideScreenDiff())
+					self:x(SCREEN_CENTER_X-adjust):y(SCREEN_BOTTOM-22*WideScreenDiff())
+				end,
+				OnCommand=function(self) self:addy(100):decelerate(0.6):addy(-100) end,
+				OffCommand=function(self) self:accelerate(0.5):addy(100) end,
+				Def.BitmapText {
+					File = "_v 26px bold black",
+					OnCommand=function(self)
+						local time = getenv("TimePlayedP1")+TimePlayerP1Adjust
+						if time >= 60*60 then
+							self:settext(string.format('%2im %02im %02is',math.floor(time/60/60),math.floor(time/60%60),math.floor(time%60*100)/100))
+						else
+							self:settext(string.format('%2im %02is',math.floor(time/60),math.floor(time%60*100)/100))
+						end
+						self:zoom(0.5*WideScreenDiff()):diffuse(PlayerColor(PLAYER_1)):shadowlength(0):halign(1):valign(1):vertspacing(-8)
+					end
+				}
+			},
+			Def.ActorFrame{
+				Condition=not isEtterna("0.60") and GAMESTATE:IsHumanPlayer(PLAYER_2),
+				Name="TimePlayerP2",
+				InitCommand=function(self)
+					local adjust = WideScaleFixed(95*WideScreenDiff(),130*WideScreenDiff())
+					self:x(SCREEN_CENTER_X+adjust):y(SCREEN_BOTTOM-22*WideScreenDiff())
+				end,
+				OnCommand=function(self) self:addy(100):decelerate(0.6):addy(-100) end,
+				OffCommand=function(self) self:accelerate(0.5):addy(100) end,
+				Def.BitmapText {
+					File = "_v 26px bold black",
+					OnCommand=function(self)
 						local time = getenv("TimePlayedP2")+TimePlayerP2Adjust
-						self:settext( string.format('Time Played\n%02i:%02i', math.floor(time/60), math.floor(time%60))):zoom(0.5*WideScreenDiff()):diffuse(PlayerColor(PLAYER_2)):shadowlength(0):halign(0):valign(1):vertspacing(-8)
+						if time >= 60*60 then
+							self:settext( string.format('%2im %02im %02is',math.floor(time/60/60),math.floor(time/60%60),math.floor(time%60*100)/100))
+						else
+							self:settext( string.format('%2im %02is',math.floor(time/60),math.floor(time%60*100)/100))
+						end
+						self:zoom(0.5*WideScreenDiff()):diffuse(PlayerColor(PLAYER_2)):shadowlength(0):halign(0):valign(1):vertspacing(-8)
 					end
 				}
 			}

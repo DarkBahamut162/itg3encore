@@ -54,10 +54,12 @@ if getenv("EvalCombo"..pname(player)) then
 			end
 
 			local WIFE3Score = getenv("WIFE3"..pname(player))
-			if tonumber(WIFE3[player][category][arr[3]] and WIFE3[player][category][arr[3]][songDir] or 0) < WIFE3Score then
-				if not WIFE3[player][category][arr[3]] then WIFE3[player][category][arr[3]] = {} end
-				WIFE3[player][category][arr[3]][songDir] = WIFE3Score
-				WIFE3Save(player)
+			if WIFE3Score then
+				if tonumber(WIFE3[player][category][arr[3]] and WIFE3[player][category][arr[3]][songDir] or 0) < WIFE3Score then
+					if not WIFE3[player][category][arr[3]] then WIFE3[player][category][arr[3]] = {} end
+					WIFE3[player][category][arr[3]][songDir] = WIFE3Score
+					WIFE3Save(player)
+				end
 			end
 
 			local W0Count = getenv("W0"..pname(player))

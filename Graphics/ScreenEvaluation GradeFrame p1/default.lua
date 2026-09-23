@@ -2,6 +2,7 @@ local offsetInfo = getenv("OffsetTableP1")
 local offsetInfoAll = getenv("OffsetTableAllP1")
 local columnInfo = getenv("perColJudgeData")
 local showOffset = ThemePrefs.Get("ShowOffset")
+local enablePlayerSteps = ThemePrefs.Get("ShowPlayerSteps")
 local showColumnGrades = ThemePrefs.Get("ShowColumnGrades")
 local showAll = false
 local early = {
@@ -56,7 +57,9 @@ local maxRange = -1
 local NumColumns = GAMESTATE:GetCurrentStyle():ColumnsPerPlayer()
 local maxJudg = 0
 
-if offsetInfo and showOffset then
+local totalCounter = 0
+
+if offsetInfo and (showOffset or enablePlayerSteps) then
 	for t in ivalues(offsetInfo) do
 		if t[2] and t[2] ~= "Miss" then
 			t[2] = tonumber(t[2])
@@ -77,6 +80,7 @@ if offsetInfo and showOffset then
 			misses = misses + 1
 		end
 	end
+
 	for t in ivalues(offsetInfoAll or {}) do
 		if t[2] and t[2] ~= "Miss" then
 			t[2] = tonumber(t[2])
@@ -87,6 +91,7 @@ if offsetInfo and showOffset then
 			else
 				perfectP1 = perfectP1 + 1
 			end
+			totalCounter = totalCounter + 1
 		end
 	end
 
@@ -416,7 +421,15 @@ return Def.ActorFrame{
 		}
 	},
 	Def.ActorFrame{
-		InitCommand=function(self) c = self:GetChildren() if WideScreenDiff_(1.4) < 1 and showOffset then self:zoomx(5/6) end end,
+		InitCommand=function(self) if WideScreenDiff_(1.4) < 1 and showOffset then self:zoomx(5/6) end end,
+		OnCommand=function()
+			if getenv("EvalComboP1") and not StepsUpdate[PLAYER_1] then
+				setenv("StepsPlayed"..pname(PLAYER_1),getenv("StepsPlayed"..pname(PLAYER_1))+totalCounter)
+				if ThemePrefs.Get("ShowSummary") then P1[0]["StepsPlayed"]=getenv("StepsPlayedP1")+StepsPlayerP1Adjust end
+				StepsUpdate[PLAYER_1] = true
+			end
+		end,
+		OffCommand=function() StepsUpdate[PLAYER_1] = false end,
 		Name="JudgeFrames",
 		Def.ActorFrame{
 			Name="W0",
@@ -859,11 +872,11 @@ return Def.ActorFrame{
 		OffCommand=function(self) self:accelerate(0.3):addx(-EvalTweenDistance()) end
 	},
 	Def.BitmapText {
-		Condition=counter~=max and (counter+misses)~=max,
+		Condition=getenv("EvalComboP1") and counter~=max and (counter+misses)~=max,
 		File="_v 26px bold shadow",
 		InitCommand=function(self)
 			if STATSMAN:GetCurStageStats(PLAYER_1):GetPlayerStageStats(PLAYER_1):GetFailed() then
-				self:diffuseshift():effectcolor1(color("#FFFFFF")):effectcolor2(color("#FF0000")):effectclock("timerglobal"):settext(counter.."/"..max.." ("..math.round((counter/max)*100,1).."%)")
+				self:diffuseshift():effectcolor1(color("#FFFFFF")):effectcolor2(color("#FF0000")):effectclock("timerglobal"):settext((counter+misses).."/"..max.." ("..math.round(((counter+misses)/max)*100,1).."%)")
 			end
 			self:x(-52*WideScreenDiff()):y(146*WideScreenDiff()):zoomx(0.5*WideScreenDiff()):zoomy(0.4*WideScreenDiff()):addx(-EvalTweenDistance())
 		end,
