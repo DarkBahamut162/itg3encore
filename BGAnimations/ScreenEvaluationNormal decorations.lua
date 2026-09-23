@@ -32,6 +32,8 @@ local Tmax = { [PLAYER_1] = 0, [PLAYER_2] = 0 }
 local Tmul = { [PLAYER_1] = 1, [PLAYER_2] = 1 }
 local maxJ = { [PLAYER_1] = 0, [PLAYER_2] = 0 }
 local maxT = { [PLAYER_1] = 0, [PLAYER_2] = 0 }
+local maxEarly = { [PLAYER_1] = 0, [PLAYER_2] = 0 }
+local maxLate = { [PLAYER_1] = 0, [PLAYER_2] = 0 }
 local maxView = { [PLAYER_1] = 5, [PLAYER_2] = 5 }
 
 for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
@@ -483,7 +485,6 @@ local function GetVerticesJudgmentTime(pn)
 		"TapNoteScore_W0"
 	}
 	local current = 0
-	local split = graphW/max/2
 	local counter = 0
 
 	maxJ[pn] = math.ceil(maxJ[pn]/2)*2
@@ -501,10 +502,10 @@ local function GetVerticesJudgmentTime(pn)
 						vertices[#vertices+1] = { {math.min(1,(sec-first)/trueMax)*2*graphW, -((current+counter)/maxJ[pn])*graphH, 0}, TapNoteScoreToColor(judge) }
 						vertices[#vertices+1] = { {math.min(1,(sec-first)/trueMax)*2*graphW, -(current/maxJ[pn])*graphH, 0}, TapNoteScoreToColor(judge) }
 					else
-						vertices[#vertices+1] = { {math.min(1,(sec-first)/trueMax-split)*2*graphW, -((current+counter)/maxJ[pn])*graphH, 0}, TapNoteScoreToColor(judge) }
-						vertices[#vertices+1] = { {math.min(1,(sec-first)/trueMax-split)*2*graphW, -(current/maxJ[pn])*graphH, 0}, TapNoteScoreToColor(judge) }
-						vertices[#vertices+1] = { {math.min(1,(sec-first)/trueMax+split)*2*graphW, -(current/maxJ[pn])*graphH, 0}, TapNoteScoreToColor(judge) }
-						vertices[#vertices+1] = { {math.min(1,(sec-first)/trueMax+split)*2*graphW, -((current+counter)/maxJ[pn])*graphH, 0}, TapNoteScoreToColor(judge) }
+						vertices[#vertices+1] = { {math.min(1,(sec-first)/trueMax-0.01)*2*graphW, -((current+counter)/maxJ[pn])*graphH, 0}, TapNoteScoreToColor(judge) }
+						vertices[#vertices+1] = { {math.min(1,(sec-first)/trueMax-0.01)*2*graphW, -(current/maxJ[pn])*graphH, 0}, TapNoteScoreToColor(judge) }
+						vertices[#vertices+1] = { {math.min(1,(sec-first)/trueMax+0.01)*2*graphW, -(current/maxJ[pn])*graphH, 0}, TapNoteScoreToColor(judge) }
+						vertices[#vertices+1] = { {math.min(1,(sec-first)/trueMax+0.01)*2*graphW, -((current+counter)/maxJ[pn])*graphH, 0}, TapNoteScoreToColor(judge) }
 					end
 					current = current + counter
 				end
@@ -545,10 +546,12 @@ local function GetVerticesTimingTime(pn)
 					countEarly = countEarly + 1
 					if not timings[math.floor(t[1])]["Early"] then timings[math.floor(t[1])]["Early"] = {} end
 					timings[math.floor(t[1])]["Early"][t[3]] = timings[math.floor(t[1])]["Early"][t[3]] and timings[math.floor(t[1])]["Early"][t[3]] + 1 or 1
+					maxEarly[pn] = math.min(maxEarly[pn],t[2])
 				elseif t[2] > 0 then
 					countLate = countLate + 1
 					if not timings[math.floor(t[1])]["Late"] then timings[math.floor(t[1])]["Late"] = {} end
 					timings[math.floor(t[1])]["Late"][t[3]] = timings[math.floor(t[1])]["Late"][t[3]] and timings[math.floor(t[1])]["Late"][t[3]] + 1 or 1
+					maxLate[pn] = math.max(maxLate[pn],t[2])
 				end
 				maxT[pn] = math.max(maxT[pn],math.max(countEarly,countLate))
 			end
@@ -565,7 +568,6 @@ local function GetVerticesTimingTime(pn)
 		"TapNoteScore_W1"
 	}
 	local current = 0
-	local split = graphW/max/2
 	local counterEarly = 0
 	local counterLate = 0
 
@@ -587,10 +589,10 @@ local function GetVerticesTimingTime(pn)
 							vertices[#vertices+1] = { {math.min(1,(sec-first)/trueMax)*2*graphW, -((counterEarly+current)/maxT[pn])*graphH*0.5-graphH*0.5, 0}, TapNoteScoreToColor(judge) }
 							vertices[#vertices+1] = { {math.min(1,(sec-first)/trueMax)*2*graphW, -(counterEarly/maxT[pn])*graphH*0.5-graphH*0.5, 0}, TapNoteScoreToColor(judge) }
 						else
-							vertices[#vertices+1] = { {math.min(1,(sec-first)/trueMax-split)*2*graphW, -((counterEarly+current)/maxT[pn])*graphH*0.5-graphH*0.5, 0}, TapNoteScoreToColor(judge) }
-							vertices[#vertices+1] = { {math.min(1,(sec-first)/trueMax-split)*2*graphW, -(counterEarly/maxT[pn])*graphH*0.5-graphH*0.5, 0}, TapNoteScoreToColor(judge) }
-							vertices[#vertices+1] = { {math.min(1,(sec-first)/trueMax+split)*2*graphW, -(counterEarly/maxT[pn])*graphH*0.5-graphH*0.5, 0}, TapNoteScoreToColor(judge) }
-							vertices[#vertices+1] = { {math.min(1,(sec-first)/trueMax+split)*2*graphW, -((counterEarly+current)/maxT[pn])*graphH*0.5-graphH*0.5, 0}, TapNoteScoreToColor(judge) }
+							vertices[#vertices+1] = { {math.min(1,(sec-first)/trueMax-0.01)*2*graphW, -((counterEarly+current)/maxT[pn])*graphH*0.5-graphH*0.5, 0}, TapNoteScoreToColor(judge) }
+							vertices[#vertices+1] = { {math.min(1,(sec-first)/trueMax-0.01)*2*graphW, -(counterEarly/maxT[pn])*graphH*0.5-graphH*0.5, 0}, TapNoteScoreToColor(judge) }
+							vertices[#vertices+1] = { {math.min(1,(sec-first)/trueMax+0.01)*2*graphW, -(counterEarly/maxT[pn])*graphH*0.5-graphH*0.5, 0}, TapNoteScoreToColor(judge) }
+							vertices[#vertices+1] = { {math.min(1,(sec-first)/trueMax+0.01)*2*graphW, -((counterEarly+current)/maxT[pn])*graphH*0.5-graphH*0.5, 0}, TapNoteScoreToColor(judge) }
 						end
 						counterEarly = counterEarly + current
 					end
@@ -602,10 +604,10 @@ local function GetVerticesTimingTime(pn)
 							vertices[#vertices+1] = { {math.min(1,(sec-first)/trueMax)*2*graphW, ((counterLate+current)/maxT[pn])*graphH*0.5-graphH*0.5, 0}, TapNoteScoreToColor(judge) }
 							vertices[#vertices+1] = { {math.min(1,(sec-first)/trueMax)*2*graphW, (counterLate/maxT[pn])*graphH*0.5-graphH*0.5, 0}, TapNoteScoreToColor(judge) }
 						else
-							vertices[#vertices+1] = { {math.min(1,(sec-first)/trueMax-split)*2*graphW, ((counterLate+current)/maxT[pn])*graphH*0.5-graphH*0.5, 0}, TapNoteScoreToColor(judge) }
-							vertices[#vertices+1] = { {math.min(1,(sec-first)/trueMax-split)*2*graphW, (counterLate/maxT[pn])*graphH*0.5-graphH*0.5, 0}, TapNoteScoreToColor(judge) }
-							vertices[#vertices+1] = { {math.min(1,(sec-first)/trueMax+split)*2*graphW, (counterLate/maxT[pn])*graphH*0.5-graphH*0.5, 0}, TapNoteScoreToColor(judge) }
-							vertices[#vertices+1] = { {math.min(1,(sec-first)/trueMax+split)*2*graphW, ((counterLate+current)/maxT[pn])*graphH*0.5-graphH*0.5, 0}, TapNoteScoreToColor(judge) }
+							vertices[#vertices+1] = { {math.min(1,(sec-first)/trueMax-0.01)*2*graphW, ((counterLate+current)/maxT[pn])*graphH*0.5-graphH*0.5, 0}, TapNoteScoreToColor(judge) }
+							vertices[#vertices+1] = { {math.min(1,(sec-first)/trueMax-0.01)*2*graphW, (counterLate/maxT[pn])*graphH*0.5-graphH*0.5, 0}, TapNoteScoreToColor(judge) }
+							vertices[#vertices+1] = { {math.min(1,(sec-first)/trueMax+0.01)*2*graphW, (counterLate/maxT[pn])*graphH*0.5-graphH*0.5, 0}, TapNoteScoreToColor(judge) }
+							vertices[#vertices+1] = { {math.min(1,(sec-first)/trueMax+0.01)*2*graphW, ((counterLate+current)/maxT[pn])*graphH*0.5-graphH*0.5, 0}, TapNoteScoreToColor(judge) }
 						end
 						counterLate = counterLate + current
 					end
@@ -929,6 +931,18 @@ local function GraphDisplay(pn)
 				InitCommand=function(self) self:zoom(0.33*WideScreenDiff()):x(pn == PLAYER_1 and -96 or 96):y(34):halign(pn == PLAYER_1 and 1 or 0):shadowlength(1) end,
 				SetTimingTextMessageCommand=function(self,param) if param.Player==pn then self:settext("   "..maxT[pn].."  ") end end
 			},
+			--[[
+			Def.BitmapText {
+				File = "_v 26px bold white",
+				InitCommand=function(self) self:zoom(0.33*WideScreenDiff()):x(pn == PLAYER_1 and 96 or -96):y(-28):halign(pn == PLAYER_1 and 1 or 0):draworder(10):shadowlength(1) end,
+				SetTimingTextMessageCommand=function(self,param) if param.Player==pn then self:settext(string.format("%0.3f",maxEarly[pn])) end end
+			},
+			Def.BitmapText {
+				File = "_v 26px bold white",
+				InitCommand=function(self) self:zoom(0.33*WideScreenDiff()):x(pn == PLAYER_1 and 96 or -96):y(28):halign(pn == PLAYER_1 and 1 or 0):draworder(10):shadowlength(1) end,
+				SetTimingTextMessageCommand=function(self,param) if param.Player==pn then self:settext(string.format("%0.3f",maxLate[pn])) end end
+			},
+			]]--
 			Def.ActorFrame {
 				Def.ActorMultiVertex{
 					InitCommand=function(self) self:playcommand("Draw") end,
