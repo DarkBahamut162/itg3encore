@@ -11,13 +11,9 @@ local previousScore = 0
 local previousLevel = 1
 local update = false
 
-
 if visible and getenv("FlareFloat"..pname(player)) then
-	if type(float[#float][2]) ~= 'table' then
-		currentLevel = #split("|",float[#float][2])
-	else
-		currentLevel = #float[#float][2]
-	end
+	if type(float[#float][2]) ~= 'table' then float[#float][2] = split("|",float[#float][2]) end
+	currentLevel = #float[#float][2]
 end
 
 if visible and getenv("EvalCombo"..pname(player)) then
