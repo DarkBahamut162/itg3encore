@@ -110,7 +110,7 @@ return Def.ActorFrame{
 	Def.ActorFrame{
 		InitCommand=function(self) self:x(SCREEN_CENTER_X+100*WideScreenSemiDiff()):y(SCREEN_CENTER_Y+13*WideScreenSemiDiff()):z(-100):zoom(1.3*WideScreenDiff()) end,
 		Def.Sprite {
-			Texture = "char",
+			Texture = "char2",
 			InitCommand=function(self) self:zoom(0.5):glow(color("1,1,1,0")):diffusealpha(0):linear(0.3):glow(color("1,1,1,1")):sleep(0.001):diffusealpha(1):linear(0.3):glow(color("1,1,1,0")) end,
 			MadeChoiceP1MessageCommand=function(self) self:playcommand("GoOff") end,
 			MadeChoiceP2MessageCommand=function(self) self:playcommand("GoOff") end,
