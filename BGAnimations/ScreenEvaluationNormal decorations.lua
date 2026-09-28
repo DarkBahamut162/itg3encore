@@ -422,7 +422,8 @@ local function GetVerticesOffsetLine(pn)
 
 	local offset = {}
 	for t in ivalues(data) do
-		if t[2] and type(t[2]) == "number" then
+		if t[2] and t[2] ~= "Miss" then
+			if type(t[2]) == "string" then t[2] = tonumber(t[2]) end
 			t[2]=math.round(t[2],3)
 			offset[t[2]] = (offset[t[2]] or 0) + 1
 		end
@@ -538,7 +539,8 @@ local function GetVerticesTimingTime(pn)
 	local max = 0
 
 	for t in ivalues(data) do
-		if t[2] and type(t[2]) == "number" then
+		if t[2] and t[2] ~= "Miss" then
+			if type(t[2]) == "string" then t[2] = tonumber(t[2]) end
 			if JudgmentNumber[t[3]] <= (isFA and 6 or 5) then
 				if not timings[math.floor(t[1])] then timings[math.floor(t[1])] = {} end
 				if second < math.floor(t[1]) then second = math.floor(t[1]) countEarly = 0 countLate = 0 end
