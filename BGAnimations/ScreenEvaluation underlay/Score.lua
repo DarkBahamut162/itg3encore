@@ -12,7 +12,6 @@ local cleared = false
 if isEtterna("0.71") then cleared = not STATSMAN:GetCurStageStats():Failed() else cleared = STATSMAN:GetCurStageStats():OnePassed() end
 
 if PROFILEMAN:IsPersistentProfile(player) and enableEPL then
-	local PSS = STATSMAN:GetCurStageStats():GetPlayerStageStats(player)
 	if cleared then allowed = getenv("EvalCombo"..pname(player)) else allowed = false end
 
 	local Song = GAMESTATE:GetCurrentSong()
@@ -174,7 +173,7 @@ return Def.ActorFrame{
 		end
 	},
 	Def.BitmapText {
-		Condition=enableEPL and allowed,
+		Condition=enableEPL and allowed and PROFILEMAN:IsPersistentProfile(player),
 		File = "_v 26px bold black",
 		Name="EXP"..pname(player),
 		InitCommand=function(self)
