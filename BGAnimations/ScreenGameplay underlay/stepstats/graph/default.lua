@@ -694,9 +694,10 @@ local function GetVerticesLife()
     local x = scale(seconds,0,lastSec,0,graphH*3.825)
     local y = scale(LifeMeter and LifeMeter:GetLife() or 0,0,1,0,graphH)
 
-    if #life_verts >= 2 and life_verts[#life_verts][1][2] == y then
+    if life_verts[#life_verts] and math.abs(life_verts[#life_verts-1][1][2] - y) < 1/1000 then
         life_verts[#life_verts][1] = {x, y, 0}
     else
+        if #life_verts == 0 then life_verts[#life_verts+1] = {{x, y, 0}, {1,1,1,1}} end
         life_verts[#life_verts+1] = {{x, y, 0}, {1,1,1,1}}
     end
 
