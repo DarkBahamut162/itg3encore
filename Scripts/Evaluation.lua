@@ -194,31 +194,13 @@ function prepSummary()
 			Step["TotalTime"] = last-first
 		end
 
-		local Song = GAMESTATE:GetCurrentSong()
-		local seconds = 0
-		if UsesStepCache() then
-			local Steps = GAMESTATE:GetCurrentSteps(player)
-			seconds = tonumber(LoadFromCache(Song,Steps,"TrueSeconds"))
-		else
-			seconds = Song:GetLastSecond()-Song:GetFirstSecond()
-		end
-		seconds = seconds / GAMESTATE:GetSongOptionsObject("ModsLevel_Preferred"):MusicRate()
-		if getenv("EvalCombo"..pname(player)) then
-			local total = getenv("TimePlayed"..pname(player))
-			setenv("TimePlayed"..pname(player),total+seconds)
-		end
-
 		if player == PLAYER_1 then
-			P1[0] = {
-				["Name"]=PROFILEMAN:GetPlayerName(player) == "" and ToEnumShortString(player) or PROFILEMAN:GetPlayerName(player),
-				["TimePlayed"]=getenv("TimePlayedP1")+TimePlayerP1Adjust
-			}
+			if not P1[0] then P1[0] = {} end
+			P1[0]["Name"]=PROFILEMAN:GetPlayerName(player) == "" and ToEnumShortString(player) or PROFILEMAN:GetPlayerName(player)
 			P1[currentStage] = Step
 		else
-			P2[0] = {
-				["Name"]=PROFILEMAN:GetPlayerName(player) == "" and ToEnumShortString(player) or PROFILEMAN:GetPlayerName(player),
-				["TimePlayed"]=getenv("TimePlayedP2")+TimePlayerP2Adjust
-			}
+			if not P2[0] then P2[0] = {} end
+			P2[0]["Name"]=PROFILEMAN:GetPlayerName(player) == "" and ToEnumShortString(player) or PROFILEMAN:GetPlayerName(player)
 			P2[currentStage] = Step
 		end
 	end

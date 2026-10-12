@@ -854,6 +854,8 @@ return Def.ActorFrame{
 			local last = 0
 			if GAMESTATE:IsCourseMode() then
 				self:settext(fail and Time(math.min(alive,total),true).." - "..Time(total,true) or Time(total,true))
+				local total = getenv("TimePlayed"..pname(PLAYER_1))
+				setenv("TimePlayed"..pname(PLAYER_1),total+alive)
 			else
 				if UsesStepCache() then
 					first = LoadFromCache(GAMESTATE:GetCurrentSong(),GAMESTATE:GetCurrentSteps(PLAYER_1),"TrueFirstSecond")
@@ -863,7 +865,10 @@ return Def.ActorFrame{
 					last = GAMESTATE:GetCurrentSong():GetLastSecond()
 				end
 				self:settext(fail and Time(math.min(alive-first,last-first),true).." - "..Time(last-first,true) or Time(last-first,true))
+				local total = getenv("TimePlayed"..pname(PLAYER_1))
+				setenv("TimePlayed"..pname(PLAYER_1),total+math.min(alive-first,last-first))
 			end
+			P1[0]["TimePlayed"]=getenv("TimePlayedP1")+TimePlayerP1Adjust
 
 			self:x(-52*WideScreenDiff()):y(118*WideScreenDiff()):zoomx(0.5*WideScreenDiff()):zoomy(0.4*WideScreenDiff()):addx(-EvalTweenDistance())
 			if fail then self:diffuseshift():effectcolor1(color("#FFFFFF")):effectcolor2(color("#FF0000")):effectclock("timerglobal") end
