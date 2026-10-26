@@ -275,6 +275,7 @@ t[#t+1] = Def.ActorFrame{
 		end
 	},
 	loadfile(THEME:GetPathG(Var "LoadingScreen", "SongTime"))() .. {
+		Condition=ThemePrefs.Get("ShowSongTime"),
 		InitCommand=function(self)
 			self:name("SongTime")
 			ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen")

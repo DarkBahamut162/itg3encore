@@ -54,6 +54,7 @@ local Online = IsNetSMOnline() and Def.ActorFrame{
 		end
 	},
 	loadfile(THEME:GetPathG(Var "LoadingScreen", "SongTime"..pname(GAMESTATE:GetMasterPlayerNumber())))() .. {
+		Condition=ThemePrefs.Get("ShowSongTime"),
 		InitCommand=function(self)
 			self:name("SongTime"..pname(GAMESTATE:GetMasterPlayerNumber()))
 			ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen")

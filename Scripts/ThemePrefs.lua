@@ -394,6 +394,11 @@ local Prefs = {
 		Choices = { OptionNameString('Off'), OptionNameString('On') },
 		Values = { false, true }
 	},
+	ShowSongTime = {
+		Default = false,
+		Choices = { OptionNameString('Off'), OptionNameString('On') },
+		Values = { false, true }
+	},
 	ShowStepCounter = {
 		Default = false,
 		Choices = { OptionNameString('Off'), OptionNameString('On') },
