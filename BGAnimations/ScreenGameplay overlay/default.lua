@@ -274,8 +274,10 @@ local t = Def.ActorFrame{
 					local text = ""
 					if GAMESTATE:GetCurrentSong() then
 						local steps = GAMESTATE:GetCurrentSteps(PLAYER_1)
-						if steps then text = steps:GetAuthorCredit() end
-						if text == "" then text = ToEnumShortString(steps:GetDifficulty()) self:addx(-12) end
+						if steps then
+							text = steps:GetAuthorCredit()
+							if text == "" then text = ToEnumShortString(steps:GetDifficulty()) self:addx(-12) end
+						end
 					end
 					self:settext(text)
 				end,
@@ -330,8 +332,10 @@ local t = Def.ActorFrame{
 					local text = ""
 					if GAMESTATE:GetCurrentSong() then
 						local steps = GAMESTATE:GetCurrentSteps(PLAYER_2)
-						if steps then text = steps:GetAuthorCredit() end
-						if text == "" then text = ToEnumShortString(steps:GetDifficulty()) self:addx(12) end
+						if steps then
+							text = steps:GetAuthorCredit()
+							if text == "" then text = ToEnumShortString(steps:GetDifficulty()) self:addx(12) end
+						end
 					end
 					self:settext(text)
 				end,
