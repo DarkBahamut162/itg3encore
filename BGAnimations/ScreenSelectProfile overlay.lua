@@ -410,13 +410,15 @@ local InputHandler =function(event)
 					selected = SCREENMAN:GetTopScreen():GetProfileIndex(event.PlayerNumber)
 					playerReady = event.PlayerNumber
 					MESSAGEMAN:Broadcast("StartButton")
-				elseif selected and selected == SCREENMAN:GetTopScreen():GetProfileIndex(event.PlayerNumber) then
+				elseif selected and selected == SCREENMAN:GetTopScreen():GetProfileIndex(event.PlayerNumber) and selected >=0 then
 					if playerReady and playerReady == event.PlayerNumber then
 						if GAMESTATE:GetNumPlayersEnabled()==2 then return end
 					else
 						SOUND:PlayOnce( THEME:GetPathS( 'MemoryCardManager', "error" ) )
 						return
 					end
+				else
+					MESSAGEMAN:Broadcast("StartButton")
 				end
 				ready[event.PlayerNumber] = true
 				if AllPlayersReady() then
