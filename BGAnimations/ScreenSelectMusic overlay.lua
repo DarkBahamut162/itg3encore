@@ -1523,6 +1523,7 @@ return Def.ActorFrame{
 			loadfile(THEME:GetPathG("_pane","numbers"))(PLAYER_1)..{ InitCommand=function(self) self:y(129) end },
 			loadfile(THEME:GetPathG("_pane","avatar"))(PLAYER_1),
 			loadfile(THEME:GetPathG("_player","scores"))(PLAYER_1),
+			loadfile(THEME:GetPathG("_player","counter"))(PLAYER_1)..{ Condition=ThemePrefs.Get("ShowSongsChartsCounter") },
 			loadfile(THEME:GetPathG("_player","steps"))(PLAYER_1),
 			loadfile(THEME:GetPathG("_player","groovestats"))(PLAYER_1)..{ Condition=ThemePrefs.Get("EnableGrooveStats") }
 		},
@@ -1536,6 +1537,7 @@ return Def.ActorFrame{
 			loadfile(THEME:GetPathG("_pane","numbers"))(PLAYER_2)..{ InitCommand=function(self) self:y(129) end },
 			loadfile(THEME:GetPathG("_pane","avatar"))(PLAYER_2),
 			loadfile(THEME:GetPathG("_player","scores"))(PLAYER_2),
+			loadfile(THEME:GetPathG("_player","counter"))(PLAYER_2)..{ Condition=ThemePrefs.Get("ShowSongsChartsCounter") },
 			loadfile(THEME:GetPathG("_player","steps"))(PLAYER_2),
 			loadfile(THEME:GetPathG("_player","groovestats"))(PLAYER_2)..{ Condition=ThemePrefs.Get("EnableGrooveStats") }
 		}
@@ -1655,21 +1657,6 @@ return Def.ActorFrame{
 	},
 	loadfile(THEME:GetPathB("","_coins"))(),
 	Def.ActorFrame{
-		Condition=ThemePrefs.Get("ShowTime"),
-		Def.ActorFrame{
-			Name="Session",
-			InitCommand=function(self) self:CenterX():y(isFinal() and SCREEN_BOTTOM-70*WideScreenDiff() or SCREEN_BOTTOM-67*WideScreenDiff()) end,
-			OnCommand=function(self) self:addy(100):decelerate(0.6):addy(-100) end,
-			OffCommand=function(self) self:accelerate(0.5):addy(100) end,
-			Def.BitmapText {
-				File = "_v 26px bold black",
-				InitCommand=function(self) self:zoom(0.5*WideScreenDiff()):playcommand("Set") end,
-				SetCommand=function(self)
-					local time = GetTimeSinceStart() - getenv("SessionStart") + SessionTimeAdjust
-					self:settext( string.format('Session Time: %02i:%02i', math.floor(time/60), math.floor(time%60))):sleep(1/6):queuecommand("Set")
-				end
-			}
-		},
 		Def.ActorFrame{
 			Condition=ThemePrefs.Get("ShowPlayerSteps"),
 			Def.ActorFrame{
@@ -1702,13 +1689,27 @@ return Def.ActorFrame{
 					File = "_v 26px bold black",
 					OnCommand=function(self)
 						local steps = getenv("StepsPlayedP2")+StepsPlayerP2Adjust
-						self:settext(steps.." Steps"):zoom(0.5*WideScreenDiff()):diffuse(PlayerColor(PLAYER_2)):shadowlength(0):halign(1):valign(1):vertspacing(-8)
+						self:settext(steps.." Steps"):zoom(0.5*WideScreenDiff()):diffuse(PlayerColor(PLAYER_2)):shadowlength(0):halign(0):valign(1):vertspacing(-8)
 					end
 				}
 			}
 		},
 		Def.ActorFrame{
-			Condition=ThemePrefs.Get("ShowTime"),
+			Condition=ThemePrefs.Get("ShowSessionTime"),
+			Def.ActorFrame{
+				Name="Session",
+				InitCommand=function(self) self:CenterX():y(isFinal() and SCREEN_BOTTOM-70*WideScreenDiff() or SCREEN_BOTTOM-67*WideScreenDiff()) end,
+				OnCommand=function(self) self:addy(100):decelerate(0.6):addy(-100) end,
+				OffCommand=function(self) self:accelerate(0.5):addy(100) end,
+				Def.BitmapText {
+					File = "_v 26px bold black",
+					InitCommand=function(self) self:zoom(0.5*WideScreenDiff()):playcommand("Set") end,
+					SetCommand=function(self)
+						local time = GetTimeSinceStart() - getenv("SessionStart") + SessionTimeAdjust
+						self:settext( string.format('Session Time: %02i:%02i', math.floor(time/60), math.floor(time%60))):sleep(1/6):queuecommand("Set")
+					end
+				}
+			},
 			Def.ActorFrame{
 				Condition=GAMESTATE:IsHumanPlayer(PLAYER_1),
 				Name="TimePlayerP1",

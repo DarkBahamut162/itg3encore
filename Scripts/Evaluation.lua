@@ -171,7 +171,7 @@ function prepSummary()
 			calced = split(" ",calced[1])[1]
 			Step["CalcedMeter"] = calced
 		end
-		if ThemePrefs.Get("ShowTime") then
+		if ThemePrefs.Get("ShowSessionTime") then
 			local fail = STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetFailed()
 			local alive = STATSMAN:GetCurStageStats():GetPlayerStageStats(player).GetAliveSeconds and STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetAliveSeconds() or 0
 			
@@ -245,12 +245,18 @@ end
 function SummaryBackupClear()
 	local category = isDouble() and StepsTypeDouble()[GetUserPrefN("StylePosition")] or StepsTypeSingle()[GetUserPrefN("StylePosition")]
 	local path = "Save/SummaryBackup/"..category.."_"
+
 	SummaryAdjust = 0
 	TimePlayerP1Adjust = 0
 	TimePlayerP2Adjust = 0
 	StepsPlayerP1Adjust = 0
 	StepsPlayerP2Adjust = 0
 	SessionTimeAdjust = 0
+
+	SongsP1={}
+	SongsP2={}
+	StepsP1={}
+	StepsP2={}
 	if FILEMAN:DoesFileExist(path.."Master.ini") then
 		IniFile.WriteFile(path.."Master.ini",{[""]={}})
 		if FILEMAN.FlushDirCache then FILEMAN:FlushDirCache(path.."Master.ini") end

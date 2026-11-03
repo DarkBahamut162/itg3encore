@@ -23,25 +23,69 @@ local ani
 local P1,P2
 local screen
 
+local scrolls = {[PLAYER_1]=nil,[PLAYER_2]=nil}
+local scroll = {[PLAYER_1]=1,[PLAYER_2]=1}
+local speeds = {[PLAYER_1]=nil,[PLAYER_2]=nil}
+local speed = {[PLAYER_1]=1,[PLAYER_2]=1}
+
+function repopulate()
+	for pn in ivalues(GAMESTATE:GetEnabledPlayers()) do
+		local StepsOrTrail
+		if GAMESTATE:IsCourseMode() then
+			local trail = GAMESTATE:GetCurrentTrail(pn):GetTrailEntries()[GAMESTATE:GetCourseSongIndex()+1]
+			StepsOrTrail = trail:GetSteps()
+		else
+			StepsOrTrail = GAMESTATE:GetCurrentSteps(pn)
+		end
+		local timingData = StepsOrTrail:GetTimingData()
+		scrolls[pn] = timingData:GetScrolls()
+		speeds[pn] = timingData:GetSpeeds()
+		scroll[pn] = 1
+		speed[pn] = 1
+	end
+end
+
 local function Update(self, delta)
 	totalDelta = totalDelta + delta
 	if totalDelta - tmpDelta > 1.0/60 then
 		tmpDelta = totalDelta
 		if P1 and P2 then
-			P1 = string.format("%03.0f",screen:GetTrueBPS(PLAYER_1)*60)
-			P2 = string.format("%03.0f",screen:GetTrueBPS(PLAYER_2)*60)
+			if ThemePrefs.Get("AddScrollSpeed") then
+				local update = {[PLAYER_1]=false,[PLAYER_2]=false}
+				local currentBeatP1 = GAMESTATE:GetPlayerState(PLAYER_1):GetSongPosition():GetSongBeat()
+				if scrolls[PLAYER_1] and #scrolls[PLAYER_1] > 0 then
+					update[PLAYER_1],temp,scrolls[PLAYER_1] = GetScrollAtBeat(currentBeatP1,scrolls[PLAYER_1])
+					if update[PLAYER_1] then scroll[PLAYER_1] = temp end
+				end
+				if speeds[PLAYER_1] and #speeds[PLAYER_1] > 0 then
+					update[PLAYER_1],temp,speeds[PLAYER_1] = GetSpeedAtBeat(PLAYER_1,currentBeatP1,speeds[PLAYER_1])
+					if update[PLAYER_1] then speed[PLAYER_1] = temp end
+				end
+				local currentBeatP2 = GAMESTATE:GetPlayerState(PLAYER_2):GetSongPosition():GetSongBeat()
+				if scrolls[PLAYER_2] and #scrolls[PLAYER_2] > 0 then
+					update[PLAYER_2],temp,scrolls[PLAYER_2] = GetScrollAtBeat(currentBeatP2,scrolls[PLAYER_2])
+					if update[PLAYER_2] then scroll[PLAYER_2] = temp end
+				end
+				if speeds[PLAYER_2] and #speeds[PLAYER_2] > 0 then
+					update[PLAYER_2],temp,speeds[PLAYER_2] = GetSpeedAtBeat(PLAYER_2,currentBeatP2,speeds[PLAYER_2])
+					if update[PLAYER_2] then speed[PLAYER_2] = temp end
+				end
+			end
+			P1 = string.format("%03.0f",screen:GetTrueBPS(PLAYER_1)*60*scroll[PLAYER_1]*speed[PLAYER_1])
+			P2 = string.format("%03.0f",screen:GetTrueBPS(PLAYER_2)*60*scroll[PLAYER_2]*speed[PLAYER_2])
 			if P1 ~= P2 and not ani then
 				ani = true
-				self:GetChild("Frames"):GetChild("BPMFrame"):linear(0.125):zoomx(2)
+				self:GetChild("Frames"):GetChild("BPMFrame"):linear(1/30):zoomx(2)
 			elseif P1 == P2 and ani then
 				ani = false
-				self:GetChild("Frames"):GetChild("BPMFrame"):linear(0.125):zoomx(1)
+				self:GetChild("Frames"):GetChild("BPMFrame"):linear(1/30):zoomx(1)
 			end
 		end
 	end
 end
 
 return Def.ActorFrame{
+	DoneLoadingNextSongMessageCommand=function() if ThemePrefs.Get("AddScrollSpeed") then repopulate() end end,
 	OnCommand = function(self)
 		if GAMESTATE:GetNumPlayersEnabled() > 1 then
 			screen = SCREENMAN:GetTopScreen()

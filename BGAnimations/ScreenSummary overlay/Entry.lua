@@ -104,7 +104,7 @@ if version < 3 then
                     end
                 },
                 Def.BitmapText {
-                    Condition=ThemePrefs.Get("ShowTime"),
+                    Condition=ThemePrefs.Get("ShowSessionTime"),
                     File = "_v 26px bold black",
                     Text = P1[index]["PlayedTime"] and Time(P1[index]["PlayedTime"],true) or "0:00.00",
                     InitCommand=function(self)
@@ -120,19 +120,21 @@ if version < 3 then
                     end
                 },
                 Def.BitmapText {
-                    Condition=ThemePrefs.Get("ExperimentalProfileLevel"),
                     File = "_v 26px bold black",
-                    Text = P1[index]["EXP"] and math.abs(P1[index]["EXP"]).." EXP" or "0 EXP",
                     InitCommand=function(self)
+                        local output = ""
                         self:y(25*WideScreenDiff()):zoom(0.5*WideScreenDiff()):shadowlength(1):maxheight(13)
                         if version == 2 then
                             self:x(scale(1/5,0,1,borderLeft,version==1 and borderRight or borderLeftCenter))
                         else
                             self:x(scale(1.5/9,0,1,borderLeft,version==1 and borderRight or borderLeftCenter))
                         end
+                        if ThemePrefs.Get("ExperimentalProfileLevel") then output = (P1[index]["EXP"] and math.abs(P1[index]["EXP"]) or 0).." EXP" end
+                        if P1[index]["Steps"] then output = addToOutput(output,P1[index]["Steps"].." Steps"," | ") end
+                        self:settext(output)
                     end,
                     OnCommand=function(self)
-                        if P1[index]["EXP"] and P1[index]["EXP"] < 0 then self:diffuse(Color("Red")) end
+                        if P1[index]["EXP"] and P1[index]["EXP"] <= 0 then self:diffuse(Color("Red")) end
                     end
                 }
             },
@@ -462,7 +464,7 @@ if version > 1 then
                     end
                 },
                 Def.BitmapText {
-                    Condition=ThemePrefs.Get("ShowTime"),
+                    Condition=ThemePrefs.Get("ShowSessionTime"),
                     File = "_v 26px bold black",
                     Text = P2[index]["PlayedTime"] and Time(math.abs(P2[index]["PlayedTime"]),true) or "0:00.00",
                     InitCommand=function(self)
@@ -478,19 +480,21 @@ if version > 1 then
                     end
                 },
                 Def.BitmapText {
-                    Condition=ThemePrefs.Get("ExperimentalProfileLevel"),
                     File = "_v 26px bold black",
-                    Text = P2[index]["EXP"] and math.abs(P2[index]["EXP"]).." EXP" or "0 EXP",
                     InitCommand=function(self)
+                        local output = ""
                         self:y(25*WideScreenDiff()):zoom(0.5*WideScreenDiff()):shadowlength(1):maxheight(13)
                         if version == 2 then
                             self:x(scale(1-1/5,0,1,version==3 and borderLeft or borderRightCenter,borderRight))
                         else
                             self:x(scale(1-1.5/9,0,1,version==3 and borderLeft or borderRightCenter,borderRight))
                         end
+                        if ThemePrefs.Get("ExperimentalProfileLevel") then output = (P2[index]["EXP"] and math.abs(P2[index]["EXP"]) or 0).." EXP" end
+                        if P2[index]["Steps"] then output = addToOutput(output,P2[index]["Steps"].." Steps"," | ") end
+                        self:settext(output)
                     end,
                     OnCommand=function(self)
-                        if P2[index]["EXP"] and P2[index]["EXP"] < 0 then self:diffuse(Color("Red")) end
+                        if P2[index]["EXP"] and P2[index]["EXP"] <= 0 then self:diffuse(Color("Red")) end
                     end
                 }
             },
@@ -797,7 +801,7 @@ return Def.ActorFrame{
             end
         },
         Def.BitmapText {
-            Condition=ThemePrefs.Get("ShowTime"),
+            Condition=ThemePrefs.Get("ShowSessionTime"),
             File = "_v 26px bold black",
             InitCommand=function(self) self:x(bannerX):y(-25*WideScreenDiff()):zoom(0.5*WideScreenDiff()):shadowlength(1):maxheight(13) end,
             OnCommand=function(self)
@@ -823,7 +827,10 @@ return Def.ActorFrame{
             InitCommand=function(self) self:x(bannerX):y(25*WideScreenDiff()):zoom(0.5*WideScreenDiff()):shadowlength(1):maxheight(13) end,
             OnCommand=function(self)
                 if Master[index] then
-                    self:settext((Master[index]["EXP"] and Master[index]["EXP"] or 0).." EXP")
+                    local output = ""
+                    if ThemePrefs.Get("ExperimentalProfileLevel") then output = (Master[index]["EXP"] and Master[index]["EXP"] or 0).." EXP" end
+                    if Master[index]["Steps"] then output = addToOutput(output,Master[index]["Steps"].." Steps"," | ") end
+                    self:settext(output)
                 end
             end
         }

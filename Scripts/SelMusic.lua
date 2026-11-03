@@ -3,6 +3,12 @@ stepCache = {}
 addedToStepCache = false
 local typeList = {"avi","f4v","flv","mkv","mp4","mpeg","mpg","mov","ogv","webm","wmv"}
 Master,P1,P2={},{},{}
+
+SongsP1={}
+SongsP2={}
+StepsP1={}
+StepsP2={}
+
 SummaryAdjust = 0
 TimePlayerP1Adjust = 0
 TimePlayerP2Adjust = 0
@@ -10,12 +16,15 @@ StepsPlayerP1Adjust = 0
 StepsPlayerP2Adjust = 0
 StepsUpdate = {[PLAYER_1]=false,[PLAYER_2]=false}
 SessionTimeAdjust = 0
+
 AllowLateJoin = true
 bannerForced = false
 KeysChecked = false
+
 ThemeVersion = "????????"
 CheckVersion = "????????"
 EngineVersion = "?.?.?"
+
 local full = isOutFoxV() and "FullRes" or "Full"
 DefaultLuaModifiers = {}
 PaceMaker = {[PLAYER_1]={},[PLAYER_2]={}}
@@ -582,6 +591,47 @@ function HasWarpAtBeat(beat,warps)
 		end
 	end
 	return false, warps
+end
+
+function GetScrollAtBeat(beat,scrlls)
+	while scrlls and scrlls[1] do
+		local check = tonumber(split('=',scrlls[1])[1])
+		local scrll = tonumber(split('=',scrlls[1])[2])
+		if beat < check then
+			return false,nil,scrlls
+		elseif beat >= check then
+			table.remove(scrlls,1)
+			return true,scrll,scrlls
+		end
+	end
+	return false,nil,scrlls
+end
+
+local speedBackup = {[PLAYER_1]=nil,[PLAYER_2]=nil}
+function GetSpeedAtBeat(pn,beat,spds)
+	while spds and spds[1] do
+		local check = tonumber(split('=',spds[1])[1])
+		local spd = tonumber(split('=',spds[1])[2])
+		local time = tonumber(split('=',spds[1])[3])
+		if beat < check then
+			return false,nil,spds
+		elseif beat >= check then
+			if time > 0 then
+				if check + time >= beat then
+					return true,scale(beat,check,check+time,speedBackup[pn],spd),spds
+				else
+					table.remove(spds,1)
+					speedBackup[pn] = spd
+					return true,spd,spds
+				end
+			else
+				speedBackup[pn] = spd
+				table.remove(spds,1)
+				return true,spd,spds
+			end
+		end
+	end
+	return false,nil,spds
 end
 
 function checkStopAtBeat(beat,timing)

@@ -394,6 +394,16 @@ local Prefs = {
 		Choices = { OptionNameString('Off'), OptionNameString('On') },
 		Values = { false, true }
 	},
+	ShowSessionTime = {
+		Default = false,
+		Choices = { OptionNameString('Off'), OptionNameString('On') },
+		Values = { false, true }
+	},
+	ShowSongsChartsCounter = {
+		Default = false,
+		Choices = { OptionNameString('Off'), OptionNameString('On') },
+		Values = { false, true }
+	},
 	ShowSongTime = {
 		Default = false,
 		Choices = { OptionNameString('Off'), OptionNameString('On') },
@@ -409,11 +419,6 @@ local Prefs = {
 		Choices = { OptionNameString('Off'), OptionNameString('On') },
 		Values = { false, true }
 	},
-	ShowTime = {
-		Default = false,
-		Choices = { OptionNameString('Off'), OptionNameString('On') },
-		Values = { false, true }
-	},
 	--[ScreenPlayerOptions]
 	SplitOptions = {
 		Default = false,
@@ -421,6 +426,11 @@ local Prefs = {
 		Values = { false, true }
 	},
 	--[ScreenGameplay]
+	AddScrollSpeed = {
+		Default = false,
+		Choices = { OptionNameString('Off'), OptionNameString('On') },
+		Values = { false, true }
+	},
 	AnimatePlayerScore = {
 		Default = false,
 		Choices = { OptionNameString('Off'), OptionNameString('On') },

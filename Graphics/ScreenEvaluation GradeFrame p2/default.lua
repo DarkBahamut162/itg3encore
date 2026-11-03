@@ -2,7 +2,6 @@ local offsetInfo = getenv("OffsetTableP2")
 local offsetInfoAll = getenv("OffsetTableAllP2")
 local columnInfo = getenv("perColJudgeData")
 local showOffset = ThemePrefs.Get("ShowOffset")
-local enablePlayerSteps = ThemePrefs.Get("ShowPlayerSteps")
 local showColumnGrades = ThemePrefs.Get("ShowColumnGrades")
 local showAll = false
 local early = {
@@ -59,7 +58,7 @@ local maxJudg = 0
 
 local totalCounter = 0
 
-if offsetInfo and (showOffset or enablePlayerSteps) then
+if offsetInfo and showOffset then
 	for t in ivalues(offsetInfo) do
 		if t[2] and t[2] ~= "Miss" then
 			t[2] = tonumber(t[2])
@@ -423,9 +422,20 @@ return Def.ActorFrame{
 	Def.ActorFrame{
 		InitCommand=function(self) if WideScreenDiff_(1.4) < 1 and showOffset then self:zoomx(5/6) end end,
 		OnCommand=function()
-			if getenv("EvalComboP2") and not StepsUpdate[PLAYER_2] then
+			if getenv("EvalComboP2") and ThemePrefs.Get("ShowPlayerSteps") and not StepsUpdate[PLAYER_2] then
+				local currentStage = GAMESTATE:GetCurrentStageIndex()+SummaryAdjust
+				if not StepsUpdate[PLAYER_2] then
+					local song = GAMESTATE:GetCurrentSong()
+					local steps = GAMESTATE:GetCurrentSteps(PLAYER_2)
+					if not VersionDateCheck(20150500) then
+						Master[currentStage]["Steps"] = RadarCategory_Notes(song,steps)
+					else
+						Master[currentStage]["Steps"] = steps:GetRadarValues(player):GetValue("RadarCategory_Notes")
+					end
+				end
 				setenv("StepsPlayed"..pname(PLAYER_2),getenv("StepsPlayed"..pname(PLAYER_2))+totalCounter)
 				if ThemePrefs.Get("ShowSummary") then P2[0]["StepsPlayed"]=getenv("StepsPlayedP2")+StepsPlayerP2Adjust end
+				P2[currentStage]["Steps"] = totalCounter
 				StepsUpdate[PLAYER_2] = true
 			end
 		end,
