@@ -252,6 +252,37 @@ function checkBMS()
 	return false
 end
 
+function checkBMSHoldsBroken(steps)
+	local filePath = steps:GetFilename():lower()
+	if filePath:sub(-3):sub(2,2) ~= 'm' then return false end
+	local file = RageFileUtil.CreateRageFile()
+	local holds = {}
+	if file:Open(filePath,1) then
+		file:Seek(0)
+		local line
+		while true do
+			line = file:GetLine()
+			if file:AtEOF() then break end
+			if string.find(line,"#[0-9][0-9][0-9][56][0-9]:") then
+				line = splitByChunk(line:sub(8),2)
+				for row in ivalues(line) do
+					if row ~= "00" then
+						local index = FindInTable(row,holds)
+						if index then
+							table.remove(holds,index)
+						else
+							table.insert(holds,row)
+						end
+					end
+				end
+			end
+		end
+	end
+	file:Close()
+	file:destroy()
+	return #holds>0
+end
+
 function GetBMSTitle(steps,solo)
 	local title = GetBMSParameter(steps,"TITLE")
 	if solo == 1 then return title end

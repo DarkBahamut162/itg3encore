@@ -15,15 +15,16 @@ local function GetSimfileString(steps)
 	return contents, filetype
 end
 
+function splitByChunk(text, chunkSize)
+	local s = {}
+	for i=1, #text, chunkSize do
+		s[#s+1] = text:sub(i,i+chunkSize - 1)
+	end
+	return s
+end
+
 function BMSParser(steps)
 	local simfileString,filetype = GetSimfileString( steps )
-	local function splitByChunk(text, chunkSize)
-		local s = {}
-		for i=1, #text, chunkSize do
-			s[#s+1] = text:sub(i,i+chunkSize - 1)
-		end
-		return s
-	end
 	if simfileString then
 		simfileString = simfileString:gsub('[\r\t\f\v ]+', '')
 		local currentMeasure = -1

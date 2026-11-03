@@ -77,6 +77,10 @@ return Def.ActorFrame{
 					end
 					if IsGame("beat") or IsGame("be-mu") or IsGame("popn") or IsGame("po-mu") then
 						if not steps then steps = GAMESTATE:GetCurrentSteps(GAMESTATE:GetMasterPlayerNumber()) end
+						if steps and checkBMSHoldsBroken(steps) then
+							output = addToOutput(output,"BROKEN HOLDS"," & ")
+							self:diffuse(Color("Red"))
+						end
 						if steps and not HasKeysounds(steps) then
 							output = addToOutput(output,"NO KEYSOUNDS"," & ")
 							self:diffuse(Color("Red"))
