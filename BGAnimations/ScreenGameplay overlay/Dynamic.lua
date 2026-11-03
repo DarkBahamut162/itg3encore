@@ -23,6 +23,9 @@ local function UpdateDynamic(self)
 			val = math.min(4,YoffsetBeat / 2) / 3 - 1
 			GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Song"):HiddenOffset(val,100)
 		end
+        if GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Song").StealthPastReceptors then
+			GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Song"):StealthPastReceptors(true)
+		end
 	end
 end
 
