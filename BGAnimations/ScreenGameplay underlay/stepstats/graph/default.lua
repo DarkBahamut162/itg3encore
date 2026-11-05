@@ -811,22 +811,24 @@ local function GetVerticesAssist(insert)
     local lines = isOutFox(20201100)
 
     for sec,typ in pairs(assistList) do
-        if typ < 0 then
-            col = color('0, 0, 1, 0.5')
-        elseif typ > 0 then
-            col = color('1, 0, 0, 0.5')
-        else
-            col = color('1, 1, 1, 0.25')
-        end
+        if sec < lastSec then
+            if typ < 0 then
+                col = color('0, 0, 1, 0.5')
+            elseif typ > 0 then
+                col = color('1, 0, 0, 0.5')
+            else
+                col = color('1, 1, 1, 0.25')
+            end
 
-        if lines then
-            vertices[#vertices+1] = { {sec*graphW/lastSec, 0, 0},col }
-            vertices[#vertices+1] = { {sec*graphW/lastSec, graphH, 0},col }
-        else
-            vertices[#vertices+1] = { {(sec-length)*graphW/lastSec, 0, 0},col }
-            vertices[#vertices+1] = { {(sec-length)*graphW/lastSec, graphH, 0},col }
-            vertices[#vertices+1] = { {(sec+length)*graphW/lastSec, graphH, 0},col }
-            vertices[#vertices+1] = { {(sec+length)*graphW/lastSec, 0, 0},col }
+            if lines then
+                vertices[#vertices+1] = { {sec*graphW/lastSec, 0, 0},col }
+                vertices[#vertices+1] = { {sec*graphW/lastSec, graphH, 0},col }
+            else
+                vertices[#vertices+1] = { {(sec-length)*graphW/lastSec, 0, 0},col }
+                vertices[#vertices+1] = { {(sec-length)*graphW/lastSec, graphH, 0},col }
+                vertices[#vertices+1] = { {(sec+length)*graphW/lastSec, graphH, 0},col }
+                vertices[#vertices+1] = { {(sec+length)*graphW/lastSec, 0, 0},col }
+            end
         end
     end
     return vertices
@@ -841,7 +843,7 @@ local function GetVerticesBPM(BPMList)
     if UsesStepCache() then
         maxBPM = tonumber(LoadFromCache(GAMESTATE:GetCurrentSong(),GAMESTATE:GetCurrentSteps(pn),"TrueMaxBPM"))
     end
-    maxBPM = maxBPM * 1.05
+    maxBPM = maxBPM * 1.1
 
     local times = {}
     for time in pairs(BPMList) do times[#times+1] = time end
@@ -849,13 +851,15 @@ local function GetVerticesBPM(BPMList)
 
     local prevX,prevY
     for sec in ivalues(times) do
-        local bpm = BPMList[sec]
-        local x = scale(sec,0,lastSec,0,graphW)
-        local y = scale(math.min(bpm/maxBPM,1),0,1,0,graphH)
-        if prevY then vertices[#vertices+1] = { {x, prevY, 0}, {0, 1, 0, 1} } end
-        vertices[#vertices+1] = { {x, y, 0}, {0, 1, 0, 1} }
-        prevX = x
-        prevY = y
+        if sec < lastSec then
+            local bpm = BPMList[sec]
+            local x = scale(sec,0,lastSec,0,graphW)
+            local y = scale(math.min(bpm/maxBPM,1),0,1,0,graphH)
+            if prevY then vertices[#vertices+1] = { {x, prevY, 0}, {0, 1, 0, 1} } end
+            vertices[#vertices+1] = { {x, y, 0}, {0, 1, 0, 1} }
+            prevX = x
+            prevY = y
+        end
     end
     if prevY and prevX < graphW then vertices[#vertices+1] = { {graphW, prevY, 0}, {0, 1, 0, 1} } end
     return vertices
