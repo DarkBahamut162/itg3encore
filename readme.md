@@ -50,6 +50,9 @@ Most additional features have been moved to an additional **Theme Options** menu
 
 - **EncoreThemeMode:**
 Switch between **Encore Normal *(Light Mode)*** and **Encore Final *(Dark Mode)*** mode
+- **EnableGrooveStats:**
+Enable the use of **GrooveStats**
+  - **GrooveStatsLauncher** needed if not on **ITGmania**
 - **ExperimentalProfileLevel:**
 Enable the Experimental Profile Leveling System
   - **Differentiates** between **GameModes** and **Styles**
@@ -117,15 +120,15 @@ Ability to change the BPMDisplay type
   - **ActualBPM** displays the **minimum & maximum BPMs** of the **Song** *(excluding ???s)*
   - **CalculatedBPM** displays the **true minimum & maximum BPMs** of the **Song** outside of Speed Ups
     - More accurate when using **StepCache**!
-- **ShowCalcDiff:**
+- **ShowCalculatedDifficulties:**
 Show the calculated Difficulty of the currently selected stepchart
   - The **highest value** will be displayed alongside the original difficulty *(OG)*
     - **DB9** *(average steps per second)*
     - **SPS (StepCache Only)** *(median steps per second per steps)*
-- **ShowCalcDiffDecimals**
-Change the number of decimals for the calculated Difficulty
-- **ShowCalcDiffOnly**
+- **ShowCalculatedDifficultiesOnly**
 Choose if the calculated difficulty should be displayed with or without the original difficulty
+- **CalculatedDifficultiesDecimals**
+Change the number of decimals for the calculated Difficulty
 - **DanceDifficultyType:** *(GameMode Dance Only)*
 Switch between **Old DDR/ITG & DDR X-SCALE** difficulty ranges
 - **ShowGrade:**
@@ -147,13 +150,17 @@ Shows **Steps** done per Player during session
 - **ShowRounds/Length:**
 Shows either **amount of rounds** or **length specification** during song selection
   - Will be adjusted if **TrueRounds** is enabled
+- **ShowSessionTime:**
+Shows **Session Time** and **Time Played** per Player
 - **ShowStepCounter:** *(StepCache Only)*
 Shows **total step quantification amounts** (might be useful especially for BEMU/POMU, including scratches and foots)
+- **ShowSongTime:**
+Shows **Song Time** within **Banner Display**.
+  - Shows **True Seconds** per player as well according to selected **StepChart**
+    - More accurate when using **StepCache**!
 - **ShowTechCounter:** *(ITGmania Only)*
 Shows stepchart's Techniques
   - If *both Counters* have been enabled, **both switch between one another** like *BPMDisplay* and *MODDisplay*
-- **ShowTime**
-Shows **Session Time** and **Time Played** per Player
 </details>
 
 <details>
@@ -166,6 +173,8 @@ Ability to **split** the **PlayerOptions** into categoties
 <details>
   <summary><b>ScreenGameplay</b> <i>(click to expand)</i></summary>
 
+- **AddScrollSpeed:**
+Add **Scrolls & Speeds** according to the selected **StepChart**
 - **AnimatePlayerScore:**
 Have the Player Score animate instead of instantly updating
 - **AnimateSongTitle:**
@@ -307,7 +316,7 @@ I could have actually forked it but I didn't. My reasoning was that it wasn't go
 * Shows **TechCounter** *(when TechCounter enabled | ITGmania Only)*
 * Shows **Player Avatar** *(Project OutFox AND WideScreen Only)*
 * Shows **Player's Level & EXP** over Player's Username *(when ExperimentalProfileLevel enabled)*
-* Shows **Session Time & Player's Time Played** *(when ShowTime enabled)*
+* Shows **Session Time & Player's Time Played** *(when ShowSessionTime enabled)*
   - **Session Time** starts upon first entry of **ScreenSelectMusic**
 * Shows **HighscoreList** by holding **CTRL** (if KeyboardEnabled | otherwise **SELECT**)
   - **Left CTRL/SELECT** for **Player 1** / **Right CTRL/SELECT** for **Player 2**
