@@ -266,6 +266,7 @@ local function UpdateGraphAlt()
 	local stepsPerSecList = {}
     local chartint = 1
     local previousSec = -999
+    local bufferedSec = -999
     local combo = 1
     local lastBeat = 0
 
@@ -285,6 +286,7 @@ local function UpdateGraphAlt()
         local delays = check and {} or timingData:GetDelays()
         local warps = check and {} or timingData:GetWarps()
         local IsJudgableAtBeat = false
+        local bufferedNotes = {}
 
         for v in ivalues(isOutFoxV043() and StepsOrTrail:GetNoteData() or SongOrCourse:GetNoteData(chartint)) do
             if check then
@@ -300,12 +302,24 @@ local function UpdateGraphAlt()
                 if allowednotes[v[3]] then
                     local currentSec = math.round(timingData:GetElapsedTimeFromBeat(v[1]),3)
                     if previousSec ~= currentSec then
-                        combo = 1
-						stepsPerSecList[currentSec] = math.max(combo,1/(currentSec-previousSec))
+                        if currentSec-previousSec < 1/20 and not bufferedNotes[v[2]] then
+                            if not bufferedSec then bufferedSec = previousSec end
+                            bufferedNotes[v[2]] = true
+                            if not rowLimit then
+                                combo = combo + 1
+                                stepsPerSecList[bufferedSec] = math.max(combo,stepsPerSecList[bufferedSec] / (combo-1) * combo)
+                            end
+                        else
+                            combo = 1
+                            bufferedSec = nil
+                            stepsPerSecList[currentSec] = math.max(combo,1/(currentSec-previousSec))
+                            bufferedNotes = {}
+                        end
                     else
                         if not rowLimit then
                             combo = combo + 1
-                            stepsPerSecList[currentSec] = math.max(combo,stepsPerSecList[currentSec] / (combo-1) * combo)
+                            bufferedNotes[v[2]] = true
+                            stepsPerSecList[currentSec] = math.max(combo,(stepsPerSecList[currentSec] or 1) / (combo-1) * combo)
                         end
                     end
                     if v["length"] then
@@ -340,8 +354,11 @@ local function UpdateGraphAltSM(Step)
         local warps = timingData:GetWarps()
         local chart = SMParser(Step)
         local previousSec = -999
+        local bufferedSec = -999
+        local combo = 1
         
         local beat = 0
+        local bufferedNotes = {}
         if chart then
             chart = split("\n,\n",chart)
             local currentMeasure = -1
@@ -362,8 +379,31 @@ local function UpdateGraphAltSM(Step)
                         local isJudgableAtBeat = not isWarp or (isWarp and (isStop or isDelay))
                         if isJudgableAtBeat then
                             local currentSec = math.round(timingData:GetElapsedTimeFromBeat(beat),3)
-                            if previousSec ~= currentSec then
-                                stepsPerSecList[currentSec] = math.max(count,1/(currentSec-previousSec) * count)
+                            for i=1,#row do
+                                local cur = row:sub(i,i)
+                                if cur == "1" or cur == "2" or cur == "4" or cur == "L" then
+                                    if previousSec ~= currentSec then
+                                        if currentSec-previousSec < 1/20 and not bufferedNotes[i] then
+                                            if not bufferedSec then bufferedSec = previousSec end
+                                            bufferedNotes[i] = true
+                                            if not rowLimit then
+                                                combo = combo + 1
+                                                stepsPerSecList[bufferedSec] = math.max(combo,(stepsPerSecList[bufferedSec] or 1) / (combo-1) * combo)
+                                            else break end
+                                        else
+                                            combo = 1
+                                            bufferedSec = nil
+                                            stepsPerSecList[currentSec] = math.max(combo,1/(currentSec-previousSec))
+                                            bufferedNotes = {}
+                                        end
+                                    else
+                                        if not rowLimit then
+                                            combo = combo + 1
+                                            bufferedNotes[i] = true
+                                            stepsPerSecList[currentSec] = math.max(combo,(stepsPerSecList[currentSec] or 1) / (combo-1) * combo)
+                                        else break end
+                                    end
+                                end
                             end
                             previousSec = currentSec
                         end
@@ -394,8 +434,11 @@ local function UpdateGraphAltDWI(Step)
         local warps = timingData:GetWarps()
         local chart = DWIParser(Step)
         local previousSec = -999
+        local bufferedSec = -999
+        local combo = 1
         
         local beat = 0
+        local bufferedNotes = {}
         if chart then
             local currentMeasure = 0
             for measure in ivalues(chart) do
@@ -414,8 +457,31 @@ local function UpdateGraphAltDWI(Step)
                         local isJudgableAtBeat = not isWarp or (isWarp and (isStop or isDelay))
                         if isJudgableAtBeat then
                             local currentSec = math.round(timingData:GetElapsedTimeFromBeat(beat),3)
-                            if previousSec ~= currentSec then
-                                stepsPerSecList[currentSec] = math.max(count,1/(currentSec-previousSec) * count)
+                            for i=1,#row do
+                                local cur = row:sub(i,i)
+                                if cur == "1" or cur == "2" or cur == "4" or cur == "L" then
+                                    if previousSec ~= currentSec then
+                                        if currentSec-previousSec < 1/20 and not bufferedNotes[i] then
+                                            if not bufferedSec then bufferedSec = previousSec end
+                                            bufferedNotes[i] = true
+                                            if not rowLimit then
+                                                combo = combo + 1
+                                                stepsPerSecList[bufferedSec] = math.max(combo,(stepsPerSecList[bufferedSec] or 1) / (combo-1) * combo)
+                                            else break end
+                                        else
+                                            combo = 1
+                                            bufferedSec = nil
+                                            stepsPerSecList[currentSec] = math.max(combo,1/(currentSec-previousSec))
+                                            bufferedNotes = {}
+                                        end
+                                    else
+                                        if not rowLimit then
+                                            combo = combo + 1
+                                            bufferedNotes[i] = true
+                                            stepsPerSecList[currentSec] = math.max(combo,(stepsPerSecList[currentSec] or 1) / (combo-1) * combo)
+                                        else break end
+                                    end
+                                end
                             end
                             previousSec = currentSec
                         end
@@ -444,26 +510,49 @@ local function UpdateGraphAltBMS(Step)
         local stops = timingData:GetStops()
         local delays = timingData:GetDelays()
         local warps = timingData:GetWarps()
-        local chart,lastHold = BMSParser(Step)
+        local chart,lastHold,_,__,actualChart = BMSParser(Step)
         local previousSec = -999
+        local bufferedSec = -999
+        local combo = 1
 
         local beats = {}
         for beat in pairs(chart) do beats[#beats+1] = beat end
         table.sort(beats)
+        local actualBeats = {}
+        for beat in pairs(actualChart) do actualBeats[#actualBeats+1] = beat end
+        table.sort(actualBeats)
 
         local beat = 0
+        local bufferedNotes = {}
         if chart then
             for beat in ivalues( beats ) do
-                if rowLimit then chart[beat] = 1 end
                 local isStop, isDelay, isWarp = false, false, false
                 if stops and #stops > 0 then isStop,stops = HasStopAtBeat(beat,stops) end
                 if delays and #delays > 0 then isDelay,delays = HasDelayAtBeat(beat,delays) end
                 if warps and #warps > 0 then isWarp,warps = HasWarpAtBeat(beat,warps) end
                 if not isWarp or (isWarp and (isStop or isDelay)) then
                     local currentSec = math.round(timingData:GetElapsedTimeFromBeat(beat),3)
-                    if previousSec ~= currentSec then
+                    for beat in ivalues(actualBeats) do
                         if previousSec ~= currentSec then
-                            stepsPerSecList[currentSec] = math.max(chart[beat],(1/(currentSec-previousSec)) * chart[beat])
+                            if currentSec-previousSec < 1/20 and not bufferedNotes[beat] then
+                                if not bufferedSec then bufferedSec = previousSec end
+                                bufferedNotes[beat] = true
+                                if not rowLimit then
+                                    combo = combo + 1
+                                    stepsPerSecList[bufferedSec] = math.max(combo,(stepsPerSecList[bufferedSec] or 1) / (combo-1) * combo)
+                                else break end
+                            else
+                                combo = 1
+                                bufferedSec = nil
+                                stepsPerSecList[currentSec] = math.max(combo,1/(currentSec-previousSec))
+                                bufferedNotes = {}
+                            end
+                        else
+                            if not rowLimit then
+                                combo = combo + 1
+                                bufferedNotes[beat] = true
+                                stepsPerSecList[currentSec] = math.max(combo,(stepsPerSecList[currentSec] or 1) / (combo-1) * combo)
+                            else break end
                         end
                     end
                     previousSec = currentSec
