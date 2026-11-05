@@ -594,14 +594,14 @@ return Def.ActorFrame{
 					if #songs > 0 then
 						for i=1,#songs do
 							if songs[i]:HasStepsType(StepsTypeSingle) then
-								if not string.find(groupsSingle,songs[i]:GetGroupName()) then
+								if not string.find(groupsSingle,songs[i]:GetGroupName(),1,true) then
 									groupsSingle = addToOutput(groupsSingle,songs[i]:GetGroupName(),"|")
 								end
 								songsSingle = songsSingle + 1
 							end
 							if StepsTypeDouble then
 								if songs[i]:HasStepsType(StepsTypeDouble) then
-									if not string.find(groupsDouble,songs[i]:GetGroupName()) then
+									if not string.find(groupsDouble,songs[i]:GetGroupName(),1,true) then
 										groupsDouble = addToOutput(groupsDouble,songs[i]:GetGroupName(),"|")
 									end
 									songsDouble = songsDouble + 1
