@@ -483,6 +483,7 @@ function InitPlayerOptions()
 		setenv("PlayerNoteGraphType"..pname(pn),not isVS() and LoadUserPrefN(pn, "PlayerNoteGraphType", tonumber(DefaultLuaModifiers["PlayerNoteGraphType"])) or 2)
 		setenv("PlayerNoteGraphRange"..pname(pn),not isVS() and LoadUserPrefN(pn, "PlayerNoteGraphRange", tonumber(DefaultLuaModifiers["PlayerNoteGraphRange"])) or 1)
 		setenv("PlayerNoteLifeGraph"..pname(pn),not isVS() and LoadUserPrefB(pn, "PlayerNoteLifeGraph", tobool(DefaultLuaModifiers["PlayerNoteLifeGraph"])) or false)
+		setenv("PlayerNoteBPMGraph"..pname(pn),not isVS() and LoadUserPrefB(pn, "PlayerNoteBPMGraph", tobool(DefaultLuaModifiers["PlayerNoteBPMGraph"])) or false)
 		setenv("PlayerNoteGraphData"..pname(pn),not isVS() and LoadUserPrefB(pn, "PlayerNoteGraphData", tobool(DefaultLuaModifiers["PlayerNoteGraphData"])) or false)
 		setenv("SetPacemaker"..pname(pn),not isVS() and LoadUserPrefN(pn, "SetPacemaker", tonumber(DefaultLuaModifiers["SetPacemaker"])) or 0)
 		setenv("SetPacemakerFail"..pname(pn),not isVS() and LoadUserPrefN(pn, "SetPacemakerFail", tonumber(DefaultLuaModifiers["SetPacemakerFail"])) or 0)
@@ -1072,11 +1073,12 @@ function OptionPlayerNoteGraph()
 		SelectType = "SelectMultiple",
 		OneChoiceForAllPlayers = false,
 		ExportOnChange = false,
-		Choices = { "Off","Normal","SPS","One","All","Fixed","Adjusted","Show Life","Show Data" },
+		Choices = { "Off","On","SPS","One","All","Fixed","Adjusted","Show BPMs","Show Life","Show Data" },
 		LoadSelections = function(self, list, pn)
 			local PlayerNoteGraph = (getenv("PlayerNoteGraph"..pname(pn)) or 1)
 			local PlayerNoteGraphType = (getenv("PlayerNoteGraphType"..pname(pn)) or 1) + 3
 			local PlayerNoteGraphRange = (getenv("PlayerNoteGraphRange"..pname(pn)) or 1) + 5
+			local PlayerNoteBPMGraph = (getenv("PlayerNoteBPMGraph"..pname(pn)) or false)
 			local PlayerNoteLifeGraph = (getenv("PlayerNoteLifeGraph"..pname(pn)) or false)
 			local PlayerNoteGraphData = (getenv("PlayerNoteGraphData"..pname(pn)) or false)
 			if PlayerNoteGraph and PlayerNoteGraph ~= 0 then
@@ -1094,8 +1096,9 @@ function OptionPlayerNoteGraph()
 			else
 				list[6] = true
 			end
-			list[8] = PlayerNoteLifeGraph
-			list[9] = PlayerNoteGraphData
+			list[8] = PlayerNoteBPMGraph
+			list[9] = PlayerNoteLifeGraph
+			list[10] = PlayerNoteGraphData
 		end,
 		SaveSelections = function() end,
 		NotifyOfSelection= function(self, pn, choice)
@@ -1106,9 +1109,12 @@ function OptionPlayerNoteGraph()
 			elseif choice <= 7 then
 				setenv("PlayerNoteGraphRange"..pname(pn),SaveUserPref(pn, "PlayerNoteGraphRange", choice-5))
 			elseif choice == 8 then
+				local PlayerNoteBPMGraph = (getenv("PlayerNoteBPMGraph"..pname(pn)) or false)
+				setenv("PlayerNoteBPMGraph"..pname(pn),SaveUserPref(pn, "PlayerNoteBPMGraph", not PlayerNoteBPMGraph))
+			elseif choice == 9 then
 				local PlayerNoteLifeGraph = (getenv("PlayerNoteLifeGraph"..pname(pn)) or false)
 				setenv("PlayerNoteLifeGraph"..pname(pn),SaveUserPref(pn, "PlayerNoteLifeGraph", not PlayerNoteLifeGraph))
-			elseif choice == 9 then
+			elseif choice == 10 then
 				local PlayerNoteGraphData = (getenv("PlayerNoteGraphData"..pname(pn)) or false)
 				setenv("PlayerNoteGraphData"..pname(pn),SaveUserPref(pn, "PlayerNoteGraphData", not PlayerNoteGraphData))
 			end

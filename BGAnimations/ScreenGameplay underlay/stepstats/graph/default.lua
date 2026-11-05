@@ -589,6 +589,61 @@ local function UpdateGraphAltOld()
     return {}
 end
 
+local function UpdateGraphBPM()
+	local BPMList = {}
+    local Step = GAMESTATE:GetCurrentSteps(pn)
+    if Step then
+        local timingData = Step:GetTimingData()
+        for i,v in ipairs(timingData:GetBPMsAndTimes()) do
+            local data = split('=',v)
+            local time = i==1 and 0 or math.round(timingData:GetElapsedTimeFromBeat(tonumber(data[1])),3)
+            local bpm = math.round(tonumber(data[2]),3)
+            BPMList[time] = bpm
+        end
+
+        for v in ivalues(timingData:GetStops()) do
+            local data = split('=',v)
+            local time = i==1 and 0 or math.round(timingData:GetElapsedTimeFromBeat(tonumber(data[1])),3)
+            local length = math.round(tonumber(data[2]),3)
+            local actualBPM
+            for i,v in ipairs(timingData:GetBPMsAndTimes()) do
+                local data = split('=',v)
+                local check = i==1 and 0 or math.round(timingData:GetElapsedTimeFromBeat(tonumber(data[1])),3)
+                if check < time then actualBPM = math.round(tonumber(data[2]),3) end
+            end
+
+            if BPMList[time] then
+                BPMList[time+length] = BPMList[time]
+                BPMList[time] = 0
+            else
+                BPMList[time+length] = actualBPM
+                BPMList[time] = 0
+            end
+        end
+
+        for v in ivalues(timingData:GetDelays()) do
+            local data = split('=',v)
+            local time = i==1 and 0 or math.round(timingData:GetElapsedTimeFromBeat(tonumber(data[1])),3)
+            local length = math.round(tonumber(data[2]),3)
+            local actualBPM
+            for i,v in ipairs(timingData:GetBPMsAndTimes()) do
+                local data = split('=',v)
+                local check = i==1 and 0 or math.round(timingData:GetElapsedTimeFromBeat(tonumber(data[1])),3)
+                if check < time then actualBPM = math.round(tonumber(data[2]),3) end
+            end
+
+            if BPMList[time] then
+                BPMList[time+length] = BPMList[time]
+                BPMList[time] = 0
+            else
+                BPMList[time+length] = actualBPM
+                BPMList[time] = 0
+            end
+        end
+    end
+    return BPMList
+end
+
 local function UpdateGraphAssist()
     local SongOrCourse = GAMESTATE:GetCurrentSong()
     local StepsOrTrail = GAMESTATE:GetCurrentSteps(pn)
@@ -777,6 +832,35 @@ local function GetVerticesAssist(insert)
     return vertices
 end
 
+local function GetVerticesBPM(BPMList)
+    local graphW = SCREEN_HEIGHT-130
+    local vertices = {}
+    local maxBPM = 0
+
+    for i,bpm in pairs(BPMList) do if bpm > maxBPM then maxBPM = bpm end end
+    if UsesStepCache() then
+        maxBPM = tonumber(LoadFromCache(GAMESTATE:GetCurrentSong(),GAMESTATE:GetCurrentSteps(pn),"TrueMaxBPM"))
+    end
+    maxBPM = maxBPM * 1.05
+
+    local times = {}
+    for time in pairs(BPMList) do times[#times+1] = time end
+    table.sort(times)
+
+    local prevX,prevY
+    for sec in ivalues(times) do
+        local bpm = BPMList[sec]
+        local x = scale(sec,0,lastSec,0,graphW)
+        local y = scale(math.min(bpm/maxBPM,1),0,1,0,graphH)
+        if prevY then vertices[#vertices+1] = { {x, prevY, 0}, {0, 1, 0, 1} } end
+        vertices[#vertices+1] = { {x, y, 0}, {0, 1, 0, 1} }
+        prevX = x
+        prevY = y
+    end
+    if prevY and prevX < graphW then vertices[#vertices+1] = { {graphW, prevY, 0}, {0, 1, 0, 1} } end
+    return vertices
+end
+
 local function GetVerticesLife()
     local seconds = GAMESTATE:GetCurMusicSeconds()
     if seconds > lastSec then return life_verts end
@@ -841,6 +925,25 @@ return Def.ActorFrame{
                 local vertices = GetVerticesAssist(UpdateGraphAssist())
                 self:SetDrawState(isOutFox(20201100) and {Mode = 'DrawMode_Lines'} or {Mode = 'DrawMode_Quads'})
                 self:SetVertices(1, vertices)
+                self:SetNumVertices(#vertices)
+                self:rotationz(player == PLAYER_1 and 90 or -90)
+                self:rotationx(player == PLAYER_1 and 180 or 0)
+                self:x(player == PLAYER_1 and -graphH*1.5 or graphH*1.5):y(175)
+            end
+        },
+        Def.ActorMultiVertex{
+            Condition=getenv("PlayerNoteBPMGraph"..pname(pn)) and not screenCheck,
+            DoneLoadingNextSongMessageCommand=function(self) self:sleep(1/30):queuecommand("Draw") end,
+            CurrentStepsP1ChangedMessageCommand=function(self) if not courseMode and player == PLAYER_1 then self:sleep(1/30):queuecommand("Draw") end end,
+            CurrentStepsChangedMessageCommand=function(self) if not courseMode and player == PLAYER_1 then self:sleep(1/30):queuecommand("Draw") end end,
+            CurrentStepsP2ChangedMessageCommand=function(self) if not courseMode and player == PLAYER_2 then self:sleep(1/30):queuecommand("Draw") end end,
+            CurrentTrailP1ChangedMessageCommand=function(self) if courseMode and player == PLAYER_1 then self:sleep(1/30):queuecommand("Draw") end end,
+            CurrentTrailP2ChangedMessageCommand=function(self) if courseMode and player == PLAYER_2 then self:sleep(1/30):queuecommand("Draw") end end,
+            InitCommand=function(self) self:sleep(1/30):queuecommand("Draw") end,
+            DrawCommand=function(self)
+                local vertices = GetVerticesBPM(UpdateGraphBPM())
+                self:SetDrawState({Mode="DrawMode_LineStrip"})
+                self:SetVertices(vertices)
                 self:SetNumVertices(#vertices)
                 self:rotationz(player == PLAYER_1 and 90 or -90)
                 self:rotationx(player == PLAYER_1 and 180 or 0)
