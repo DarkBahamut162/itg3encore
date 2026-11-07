@@ -862,21 +862,23 @@ return Def.ActorFrame{
 			local total = GAMESTATE:IsCourseMode() and TrailUtil.GetTotalSeconds(GAMESTATE:GetCurrentTrail(PLAYER_1)) or 0
 			local first = 0
 			local last = 0
-			if GAMESTATE:IsCourseMode() then
-				self:settext(fail and Time(math.min(alive,total),true).." - "..Time(total,true) or Time(total,true))
-				local total = getenv("TimePlayed"..pname(PLAYER_1))
-				setenv("TimePlayed"..pname(PLAYER_1),total+alive)
-			else
-				if UsesStepCache() then
-					first = LoadFromCache(GAMESTATE:GetCurrentSong(),GAMESTATE:GetCurrentSteps(PLAYER_1),"TrueFirstSecond")
-					last = LoadFromCache(GAMESTATE:GetCurrentSong(),GAMESTATE:GetCurrentSteps(PLAYER_1),"TrueLastSecond")
+			if getenv("EvalComboP1") then
+				if GAMESTATE:IsCourseMode() then
+					self:settext(fail and Time(math.min(alive,total),true).." - "..Time(total,true) or Time(total,true))
+					local total = getenv("TimePlayedP1")
+					setenv("TimePlayedP1",total+alive)
 				else
-					first = GAMESTATE:GetCurrentSong():GetFirstSecond()
-					last = GAMESTATE:GetCurrentSong():GetLastSecond()
+					if UsesStepCache() then
+						first = LoadFromCache(GAMESTATE:GetCurrentSong(),GAMESTATE:GetCurrentSteps(PLAYER_1),"TrueFirstSecond")
+						last = LoadFromCache(GAMESTATE:GetCurrentSong(),GAMESTATE:GetCurrentSteps(PLAYER_1),"TrueLastSecond")
+					else
+						first = GAMESTATE:GetCurrentSong():GetFirstSecond()
+						last = GAMESTATE:GetCurrentSong():GetLastSecond()
+					end
+					self:settext(fail and Time(math.min(alive-first,last-first),true).." - "..Time(last-first,true) or Time(last-first,true))
+						local total = getenv("TimePlayedP1")
+						setenv("TimePlayedP1",total+math.min(alive-first,last-first))
 				end
-				self:settext(fail and Time(math.min(alive-first,last-first),true).." - "..Time(last-first,true) or Time(last-first,true))
-				local total = getenv("TimePlayed"..pname(PLAYER_1))
-				setenv("TimePlayed"..pname(PLAYER_1),total+math.min(alive-first,last-first))
 			end
 			P1[0]["TimePlayed"]=getenv("TimePlayedP1")+TimePlayerP1Adjust
 

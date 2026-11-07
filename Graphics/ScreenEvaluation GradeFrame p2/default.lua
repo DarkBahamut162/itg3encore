@@ -862,21 +862,23 @@ return Def.ActorFrame{
 			local total = GAMESTATE:IsCourseMode() and TrailUtil.GetTotalSeconds(GAMESTATE:GetCurrentTrail(PLAYER_2)) or 0
 			local first = 0
 			local last = 0
-			if GAMESTATE:IsCourseMode() then
-				self:settext(fail and Time(math.min(alive,total),true).." - "..Time(total,true) or Time(total,true))
-				local played = getenv("TimePlayed"..pname(PLAYER_2))
-				setenv("TimePlayed"..pname(PLAYER_2),played+math.min(alive,total))
-			else
-				if UsesStepCache() then
-					first = LoadFromCache(GAMESTATE:GetCurrentSong(),GAMESTATE:GetCurrentSteps(PLAYER_2),"TrueFirstSecond")
-					last = LoadFromCache(GAMESTATE:GetCurrentSong(),GAMESTATE:GetCurrentSteps(PLAYER_2),"TrueLastSecond")
+			if getenv("EvalComboP2") then
+				if GAMESTATE:IsCourseMode() then
+					self:settext(fail and Time(math.min(alive,total),true).." - "..Time(total,true) or Time(total,true))
+					local total = getenv("TimePlayedP2")
+					setenv("TimePlayedP2",total+alive)
 				else
-					first = GAMESTATE:GetCurrentSong():GetFirstSecond()
-					last = GAMESTATE:GetCurrentSong():GetLastSecond()
+					if UsesStepCache() then
+						first = LoadFromCache(GAMESTATE:GetCurrentSong(),GAMESTATE:GetCurrentSteps(PLAYER_2),"TrueFirstSecond")
+						last = LoadFromCache(GAMESTATE:GetCurrentSong(),GAMESTATE:GetCurrentSteps(PLAYER_2),"TrueLastSecond")
+					else
+						first = GAMESTATE:GetCurrentSong():GetFirstSecond()
+						last = GAMESTATE:GetCurrentSong():GetLastSecond()
+					end
+					self:settext(fail and Time(math.min(alive-first,last-first),true).." - "..Time(last-first,true) or Time(last-first,true))
+					local total = getenv("TimePlayedP2")
+					setenv("TimePlayedP2",played+math.min(alive-first,last-first))
 				end
-				self:settext(fail and Time(math.min(alive-first,last-first),true).." - "..Time(last-first,true) or Time(last-first,true))
-				local played = getenv("TimePlayed"..pname(PLAYER_2))
-				setenv("TimePlayed"..pname(PLAYER_2),played+math.min(alive-first,last-first))
 			end
 			P2[0]["TimePlayed"]=getenv("TimePlayedP2")+TimePlayerP2Adjust
 
