@@ -1,1 +1,0 @@
-return THEME:GetPathS("_common menu",(isFinal() and "final" or "normal").." music")
