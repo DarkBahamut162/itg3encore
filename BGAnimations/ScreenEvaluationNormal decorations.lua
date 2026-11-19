@@ -491,7 +491,7 @@ local function GetVerticesJudgmentTime(pn)
 	maxJ[pn] = math.ceil(maxJ[pn]/2)*2
 	MESSAGEMAN:Broadcast("SetJudgeText",{Player=pn})
 
-	local first = math.floor(CalcMinusStepSeconds())
+	local first = math.floor(CalcMinusStepSeconds(pn))
 	local trueMax = math.floor(CalcMaxStepSeconds(pn))
 	for sec=first, max do
 		current = 0
@@ -576,7 +576,7 @@ local function GetVerticesTimingTime(pn)
 	maxT[pn] = math.ceil(maxT[pn]/2)*2
 	MESSAGEMAN:Broadcast("SetTimingText",{Player=pn})
 
-	local first = math.floor(CalcMinusStepSeconds())
+	local first = math.floor(CalcMinusStepSeconds(pn))
 	local trueMax = math.floor(CalcMaxStepSeconds(pn))
 	local add = graphH*0.5
 	for sec=first, max do
