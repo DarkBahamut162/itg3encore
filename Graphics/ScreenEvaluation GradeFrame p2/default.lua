@@ -48,7 +48,16 @@ local errors = {}
 
 local StepsOrTrail = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentTrail(PLAYER_2) or GAMESTATE:GetCurrentSteps(PLAYER_2)
 local max = StepsOrTrail:GetRadarValues(PLAYER_2):GetValue("RadarCategory_TapsAndHolds") or 0
+local maxP2 = 0
 local misses = 0
+local missesP2 = 0
+
+if not VersionDateCheck(20150500) then
+	local SongOrCourse = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentCourse() or GAMESTATE:GetCurrentSong()
+	maxP2 = RadarCategory_Notes(SongOrCourse,StepsOrTrail)
+else
+	maxP2 = StepsOrTrail:GetRadarValues(PLAYER_2):GetValue("RadarCategory_Notes")
+end
 
 local peak = -1
 local peak_counter = 0
@@ -91,6 +100,8 @@ if offsetInfo and showOffset then
 				perfectP2 = perfectP2 + 1
 			end
 			totalCounter = totalCounter + 1
+		elseif t[2] and t[2] == "Miss" then
+			missesP2 = missesP2 + 1
 		end
 	end
 
@@ -243,7 +254,7 @@ for col = 1,NumColumns do
 	end
 end
 
-local label = (IsGame("beat") or IsGame("be-mu")) and IIDXJudgments() or (IsGame("popn") or IsGame("po-mu")) and POPNJudgments() or ITGJudgments(GAMESTATE:GetCurrentSteps(PLAYER_2):GetDifficulty() == 'Difficulty_Beginner')
+local label = (IsGame("beat") or IsGame("be-mu")) and IIDXJudgments() or (IsGame("popn") or IsGame("po-mu")) and POPNJudgments() or ITGJudgments(GAMESTATE:IsCourseMode() and false or GAMESTATE:GetCurrentSteps(PLAYER_2):GetDifficulty() == 'Difficulty_Beginner')
 local InputHandler = function(event)
 	if keyboardEnabled then
 		if event.type == "InputEventType_FirstPress" then
@@ -332,6 +343,7 @@ local InputHandler = function(event)
 				c.OffsetFrames:GetChild("W3"):RunCommandsOnChildren(function(self) self:playcommand("On") end)
 				c.OffsetFrames:GetChild("W4"):RunCommandsOnChildren(function(self) self:playcommand("On") end)
 				c.OffsetFrames:GetChild("W5"):RunCommandsOnChildren(function(self) self:playcommand("On") end)
+				if ThemePrefs.Get("ShowOffsetGraphics") then c.OffsetGraphics:RunCommandsRecursively( function(self) self:playcommand("On") end ) end
 			end
 		end
 	end
@@ -768,18 +780,19 @@ return Def.ActorFrame{
 	},
 	Def.ActorFrame{
 		Condition=showOffset and ThemePrefs.Get("ShowOffsetGraphics"),
+		Name="OffsetGraphics",
 		InitCommand=function(self) if WideScreenDiff_(1.4) < 1 and showOffset then self:zoomx(5/6-0.01) end self:diffusealpha(0) end,
-		OnCommand=function(self) self:diffusealpha(0):sleep(3.60):linear(0.7):diffusealpha(1) end,
+		BeginCommand=function(self) self:diffusealpha(0):sleep(3.60):linear(0.7):diffusealpha(1) end,
 		OffCommand=function(self) self:linear(0.2):diffusealpha(0) end,
 		Def.Quad{
 			InitCommand=function(self) self:x(191*WideScreenDiff()):y(-85*WideScreenDiff()):zoom(WideScreenDiff()):valign(1):diffuse(color("#800000")):zoomto(2,120) end
 		},
 		Def.Quad{
-			InitCommand=function(self)
-				self:x(191*WideScreenDiff()):y(-85*WideScreenDiff()):zoom(WideScreenDiff()):valign(1):diffuse(color("#FF0000"))
+			InitCommand=function(self) self:x(191*WideScreenDiff()):y(-85*WideScreenDiff()):zoom(WideScreenDiff()):valign(1):diffuse(color("#FF0000")) end,
+			OnCommand=function(self)
 				local cur,max,size = 0,perfect,120
-				for _,e in pairs(early) do max = max + e end
-				for _,l in pairs(late) do
+				for _,e in pairs(showAll and earlyP2 or early) do max = max + e end
+				for _,l in pairs(showAll and lateP2 or late) do
 					cur = cur + l
 					max = max + l
 				end
@@ -790,11 +803,11 @@ return Def.ActorFrame{
 			InitCommand=function(self) self:x(193*WideScreenDiff()):y(-205*WideScreenDiff()):zoom(WideScreenDiff()):valign(0):diffuse(color("#404040")):zoomto(2,120) end
 		},
 		Def.Quad{
-			InitCommand=function(self)
-				self:x(193*WideScreenDiff()):zoom(WideScreenDiff()):valign(0):diffuse(color("#FFFFFF"))
+			InitCommand=function(self) self:x(193*WideScreenDiff()):zoom(WideScreenDiff()):valign(0):diffuse(color("#FFFFFF")) end,
+			OnCommand=function(self)
 				local move,max,size = 0,perfect,120
-				for _,l in pairs(late) do max = max + l end
-				for _,e in pairs(early) do
+				for _,l in pairs(showAll and lateP2 or late) do max = max + l end
+				for _,e in pairs(showAll and earlyP2 or early) do
 					move = move + e
 					max = max + e
 				end
@@ -805,11 +818,11 @@ return Def.ActorFrame{
 			InitCommand=function(self) self:x(195*WideScreenDiff()):y(-205*WideScreenDiff()):zoom(WideScreenDiff()):valign(0):diffuse(color("#000080")):zoomto(2,120) end
 		},
 		Def.Quad{
-			InitCommand=function(self)
-				self:x(195*WideScreenDiff()):y(-205*WideScreenDiff()):zoom(WideScreenDiff()):valign(0):diffuse(color("#1E90FF"))
+			InitCommand=function(self) self:x(195*WideScreenDiff()):y(-205*WideScreenDiff()):zoom(WideScreenDiff()):valign(0):diffuse(color("#1E90FF")) end,
+			OnCommand=function(self)
 				local cur,max,size = 0,perfect,120
-				for _,l in pairs(late) do max = max + l end
-				for _,e in pairs(early) do
+				for _,l in pairs(showAll and lateP2 or late) do max = max + l end
+				for _,e in pairs(showAll and earlyP2 or early) do
 					cur = cur + e
 					max = max + e
 				end
@@ -817,29 +830,22 @@ return Def.ActorFrame{
 			end
 		},
 		Def.ActorMultiVertex{
-			InitCommand=function(self)
-				self:x(176*WideScreenDiff()):y(-70*WideScreenDiff()):zoom(WideScreenDiff()):valign(0)
-                local stats = STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_2)
-				local W0Count = getenv("W0"..pname(PLAYER_2)) or 0
-				local w1 = stats:GetTapNoteScores('TapNoteScore_W1')
-				local w2 = stats:GetTapNoteScores('TapNoteScore_W2')
-				local w3 = stats:GetTapNoteScores('TapNoteScore_W3')
-				local w4 = stats:GetTapNoteScores('TapNoteScore_W4')
-				local w5 = stats:GetTapNoteScores('TapNoteScore_W5')
-				local miss = stats:GetTapNoteScores('TapNoteScore_Miss')
+			InitCommand=function(self) self:x(176*WideScreenDiff()):y(-70*WideScreenDiff()):zoom(WideScreenDiff()):valign(0) end,
+			OnCommand=function(self)
 				local judgments = {}
 
 				if getenv("SetScoreFA"..pname(PLAYER_2)) then
-					judgments[#judgments+1]=W0Count/max*100
-					judgments[#judgments+1]=(w1-W0Count)/max*100
+					judgments[#judgments+1]=(showAll and (earlyP2["TapNoteScore_W0"] + lateP2["TapNoteScore_W0"] + perfectP2) or (early["TapNoteScore_W0"] + late["TapNoteScore_W0"]) + perfect)/(showAll and maxP2 or max)*100
+					judgments[#judgments+1]=(showAll and (earlyP2["TapNoteScore_W1"] + lateP2["TapNoteScore_W1"]) or (early["TapNoteScore_W1"] + late["TapNoteScore_W1"]))/(showAll and maxP2 or max)*100
 				else
-					judgments[#judgments+1]=w1/max*100
+					judgments[#judgments+1]=(showAll and (earlyP2["TapNoteScore_W1"] + lateP2["TapNoteScore_W1"] + perfectP2) or (early["TapNoteScore_W1"] + late["TapNoteScore_W1"]) + perfect)/(showAll and maxP2 or max)*100
 				end
-				judgments[#judgments+1]=w2/max*100
-				judgments[#judgments+1]=w3/max*100
-				judgments[#judgments+1]=w4/max*100
-				judgments[#judgments+1]=w5/max*100
-				judgments[#judgments+1]=miss/max*100
+				judgments[#judgments+1]=(showAll and (earlyP2["TapNoteScore_W1"] + lateP2["TapNoteScore_W1"]) or (early["TapNoteScore_W1"] + late["TapNoteScore_W1"]))/(showAll and maxP2 or max)*100
+				judgments[#judgments+1]=(showAll and (earlyP2["TapNoteScore_W2"] + lateP2["TapNoteScore_W2"]) or (early["TapNoteScore_W2"] + late["TapNoteScore_W2"]))/(showAll and maxP2 or max)*100
+				judgments[#judgments+1]=(showAll and (earlyP2["TapNoteScore_W3"] + lateP2["TapNoteScore_W3"]) or (early["TapNoteScore_W3"] + late["TapNoteScore_W3"]))/(showAll and maxP2 or max)*100
+				judgments[#judgments+1]=(showAll and (earlyP2["TapNoteScore_W4"] + lateP2["TapNoteScore_W4"]) or (early["TapNoteScore_W4"] + late["TapNoteScore_W4"]))/(showAll and maxP2 or max)*100
+				judgments[#judgments+1]=(showAll and (earlyP2["TapNoteScore_W5"] + lateP2["TapNoteScore_W5"]) or (early["TapNoteScore_W5"] + late["TapNoteScore_W5"]))/(showAll and maxP2 or max)*100
+				judgments[#judgments+1]=(showAll and missesP2 or misses)/(showAll and maxP2 or max)*100
 
 				local vertices = JudgmentCircle(16,judgments)
 				self:SetDrawState({Mode = 'DrawMode_Triangles'}):SetVertices(1, vertices):SetNumVertices(#vertices):rotationz(-90)
