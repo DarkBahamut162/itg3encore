@@ -4,11 +4,6 @@ addedToStepCache = false
 local typeList = {"avi","f4v","flv","mkv","mp4","mpeg","mpg","mov","ogv","webm","wmv"}
 Master,P1,P2={},{},{}
 
-SongsP1={}
-SongsP2={}
-StepsP1={}
-StepsP2={}
-
 SummaryAdjust = 0
 TimePlayerP1Adjust = 0
 TimePlayerP2Adjust = 0

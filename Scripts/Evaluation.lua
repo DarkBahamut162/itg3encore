@@ -253,10 +253,6 @@ function SummaryBackupClear()
 	StepsPlayerP2Adjust = 0
 	SessionTimeAdjust = 0
 
-	SongsP1={}
-	SongsP2={}
-	StepsP1={}
-	StepsP2={}
 	if FILEMAN:DoesFileExist(path.."Master.ini") then
 		IniFile.WriteFile(path.."Master.ini",{[""]={}})
 		if FILEMAN.FlushDirCache then FILEMAN:FlushDirCache(path.."Master.ini") end
