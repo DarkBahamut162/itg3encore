@@ -223,7 +223,7 @@ return Def.ActorFrame{
 			local tnt = ToEnumShortString(tapnote:GetTapNoteType())
 			if tnt == "Tap" or tnt == "HoldHead" or tnt == "LongNoteHead" or tnt == "Lift" then
 				local tns = tapnote:GetTapNoteResult():GetTapNoteScore()
-				local tno = string.format("%0.10f", tapnote:GetTapNoteResult():GetTapNoteOffset())
+				local tno = string.format("%0.3f", tapnote:GetTapNoteResult():GetTapNoteOffset())
 				if enableOffsets then
 					local vStats = STATSMAN:GetCurStageStats():GetPlayerStageStats( player )
 					local time = GAMESTATE:IsCourseMode() and vStats:GetAliveSeconds() or GAMESTATE:GetCurMusicSeconds()/GAMESTATE:GetSongOptionsObject("ModsLevel_Song"):MusicRate()
