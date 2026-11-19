@@ -410,16 +410,14 @@ function RadarCategory_Notes(SongOrCourse,StepsOrTrail)
 	local total = 0
 	if SongOrCourse and StepsOrTrail then
 		if GAMESTATE:IsCourseMode() then
-			if SongOrCourse and StepsOrTrail then
-				local entries = StepsOrTrail:GetTrailEntries()
-				for i=1, #entries do
-					local song = entries[i]:GetSong()
-					local steps = entries[i]:GetSteps()
-					local StepCounter = LoadFromCache(song,steps,"StepCounter")
-					if StepCounter and StepCounter ~= "" then
-						StepCounter = split("_",StepCounter)
-						for i=1,#StepCounter do total = total + (tonumber(StepCounter[i])*i) end
-					end
+			local entries = StepsOrTrail:GetTrailEntries()
+			for i=1, #entries do
+				local song = entries[i]:GetSong()
+				local steps = entries[i]:GetSteps()
+				local StepCounter = LoadFromCache(song,steps,"StepCounter")
+				if StepCounter and StepCounter ~= "" then
+					StepCounter = split("_",StepCounter)
+					for i=1,#StepCounter do total = total + (tonumber(StepCounter[i])*i) end
 				end
 			end
 		else
