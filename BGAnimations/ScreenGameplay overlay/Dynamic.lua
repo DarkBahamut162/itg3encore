@@ -7,24 +7,33 @@ if SongOrCourse and StepsOrTrail then timingData = StepsOrTrail:GetTimingData() 
 
 local sudden = GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Preferred"):SuddenOffset() ~= 0
 local hidden = GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Preferred"):HiddenOffset() ~= 0
-local val = 0
-
 local check = sudden or hidden or (isVS() and GAMESTATE:IsHumanPlayer(player))
+local active = 0
+local val = 0
 
 local function UpdateDynamic(self)
 	local YoffsetBeat = 0
 	if check then
-		YoffsetBeat = ArrowEffects.GetYOffset(GAMESTATE:GetPlayerState(player),1,timingData:GetBeatFromElapsedTime(GAMESTATE:GetSongPosition():GetMusicSecondsVisible()+1))/64
+		local currentMini = 1-math.round(GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Song"):Mini()*50) / 100
+		YoffsetBeat = ArrowEffects.GetYOffset(GAMESTATE:GetPlayerState(player),1,timingData:GetBeatFromElapsedTime(GAMESTATE:GetSongPosition():GetMusicSecondsVisible()+1))/GAMESTATE:GetSongOptionsObject("ModsLevel_Song"):MusicRate()*currentMini
 		if sudden or isVS() then
-			val = YoffsetBeat / 3 - 1
-			GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Song"):SuddenOffset(val,100)
+			val = YoffsetBeat / 160
+			if active ~= val then
+				active = val
+				GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Song"):SuddenOffset(val-1,99999)
+			end
 		end
 		if hidden or isVS() then
-			val = math.min(4,YoffsetBeat / 2) / 3 - 1
-			GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Song"):HiddenOffset(val,100)
+			val = math.min(4,YoffsetBeat / 2 / 160)
+			if active ~= val then
+				active = val
+				GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Song"):HiddenOffset(val-1,99999)
+			end
 		end
         if GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Song").StealthPastReceptors then
-			GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Song"):StealthPastReceptors(true)
+			if not GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Song"):StealthPastReceptors() then
+				GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Song"):StealthPastReceptors(true)
+			end
 		end
 	end
 end
