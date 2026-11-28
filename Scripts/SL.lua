@@ -4,8 +4,8 @@ local ProfileSlot = {
     ["Machine"] = "ProfileSlot_Machine",
 }
 
-local SLFavorites = {}
-local OFFavorites = {}
+local SLFavorites = SLFavorites or {}
+local OFFavorites = OFFavorites or {}
 
 function getSLFavorites(player)
     return SLFavorites[player] or {}

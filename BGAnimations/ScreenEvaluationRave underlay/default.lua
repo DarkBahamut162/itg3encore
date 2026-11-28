@@ -133,23 +133,23 @@ return Def.ActorFrame{
 			screen:GetChild("MaxComboNumberP2"):addy(7)
 		end
 		local currentStage = GAMESTATE:GetCurrentStageIndex()+SummaryAdjust
-		if not StepsUpdate[PLAYER_1] and not StepsUpdate[PLAYER_2] and ThemePrefs.Get("ShowPlayerSteps") then
-			local song = GAMESTATE:GetCurrentSong()
-			local steps = GAMESTATE:GetCurrentSteps(GAMESTATE:GetMasterPlayerNumber())
-			if not VersionDateCheck(20150500) then
-				Master[currentStage]["Steps"] = RadarCategory_Notes(song,steps)
-			else
-				Master[currentStage]["Steps"] = steps:GetRadarValues(player):GetValue("RadarCategory_Notes")
-			end
-		end
 		if not StepsUpdate[PLAYER_1] and ThemePrefs.Get("ShowPlayerSteps") then
-			local totalCounter = 0
-			for t in ivalues(getenv("OffsetTableAllP1") or {}) do
-				if t[2] and t[2] ~= "Miss" then
-					totalCounter = totalCounter + 1
-				end
-			end
 			if getenv("EvalComboP1") then
+				local totalCounter = 0
+				for t in ivalues(getenv("OffsetTableAllP1") or {}) do
+					if t[2] and t[2] ~= "Miss" then
+						totalCounter = totalCounter + 1
+					end
+				end
+				if not Master[currentStage]["Steps"] then
+					local song = GAMESTATE:GetCurrentSong()
+					local steps = GAMESTATE:GetCurrentSteps(PLAYER_1)
+					if not VersionDateCheck(20150500) then
+						Master[currentStage]["Steps"] = RadarCategory_Notes(song,steps)
+					else
+						Master[currentStage]["Steps"] = steps:GetRadarValues(player):GetValue("RadarCategory_Notes")
+					end
+				end
 				setenv("StepsPlayed"..pname(PLAYER_1),getenv("StepsPlayed"..pname(PLAYER_1))+totalCounter)
 				if ThemePrefs.Get("ShowSummary") then P1[0]["StepsPlayed"]=getenv("StepsPlayedP1")+StepsPlayerP1Adjust end
 				P1[currentStage]["Steps"] = totalCounter
@@ -157,13 +157,22 @@ return Def.ActorFrame{
 			end
 		end
 		if not StepsUpdate[PLAYER_2] and ThemePrefs.Get("ShowPlayerSteps") then
-			local totalCounter = 0
-			for t in ivalues(getenv("OffsetTableAllP2") or {}) do
-				if t[2] and t[2] ~= "Miss" then
-					totalCounter = totalCounter + 1
-				end
-			end
 			if getenv("EvalComboP2") then
+				local totalCounter = 0
+				for t in ivalues(getenv("OffsetTableAllP2") or {}) do
+					if t[2] and t[2] ~= "Miss" then
+						totalCounter = totalCounter + 1
+					end
+				end
+				if not Master[currentStage]["Steps"] then
+					local song = GAMESTATE:GetCurrentSong()
+					local steps = GAMESTATE:GetCurrentSteps(PLAYER_2)
+					if not VersionDateCheck(20150500) then
+						Master[currentStage]["Steps"] = RadarCategory_Notes(song,steps)
+					else
+						Master[currentStage]["Steps"] = steps:GetRadarValues(player):GetValue("RadarCategory_Notes")
+					end
+				end
 				setenv("StepsPlayed"..pname(PLAYER_2),getenv("StepsPlayed"..pname(PLAYER_2))+totalCounter)
 				if ThemePrefs.Get("ShowSummary") then P2[0]["StepsPlayed"]=getenv("StepsPlayedP2")+StepsPlayerP2Adjust end
 				P2[currentStage]["Steps"] = totalCounter

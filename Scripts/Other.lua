@@ -33,7 +33,7 @@ function GetRandomCourseNames(n)
 	return s
 end
 
-StepChartFacts = ""
+StepChartFacts = StepChartFacts or ""
 function GetStepChartFacts()
 	if StepChartFacts ~= "" then return StepChartFacts end
 	local diffCount = {0,0,0,0,0,0}
@@ -343,8 +343,12 @@ function isPlayMode(mode)
 end
 
 function isDouble()
-	local styleType = GAMESTATE:GetCurrentStyle():GetStyleType()
-	return styleType == 'StyleType_OnePlayerTwoSides' or styleType == 'StyleType_TwoPlayersSharedSides'
+	local style = GAMESTATE:GetCurrentStyle()
+	if style then
+		local styleType = style:GetStyleType()
+		return styleType == 'StyleType_OnePlayerTwoSides' or styleType == 'StyleType_TwoPlayersSharedSides'
+	end
+	return nil
 end
 
 function isITGmania(version)

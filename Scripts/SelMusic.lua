@@ -1,34 +1,36 @@
 local cacheVersion = "0.46"
-stepCache = {}
-addedToStepCache = false
+stepCache = stepCache or {}
+addedToStepCache = addedToStepCache or false
 local typeList = {"avi","f4v","flv","mkv","mp4","mpeg","mpg","mov","ogv","webm","wmv"}
-Master,P1,P2={},{},{}
+Master = Master or {}
+P1 = P1 or {}
+P2 = P2 or {}
 
-SummaryAdjust = 0
-TimePlayerP1Adjust = 0
-TimePlayerP2Adjust = 0
-StepsPlayerP1Adjust = 0
-StepsPlayerP2Adjust = 0
-StepsUpdate = {[PLAYER_1]=false,[PLAYER_2]=false}
-SessionTimeAdjust = 0
+SummaryAdjust = SummaryAdjust or 0
+TimePlayerP1Adjust = TimePlayerP1Adjust or 0
+TimePlayerP2Adjust = TimePlayerP2Adjust or 0
+StepsPlayerP1Adjust = StepsPlayerP1Adjust or 0
+StepsPlayerP2Adjust = StepsPlayerP2Adjust or 0
+StepsUpdate = StepsUpdate or {[PLAYER_1]=false,[PLAYER_2]=false}
+SessionTimeAdjust = SessionTimeAdjust or 0
 
-AllowLateJoin = true
-bannerForced = false
-KeysChecked = false
+AllowLateJoin = AllowLateJoin or true
+bannerForced = bannerForced or false
+KeysChecked = KeysChecked or false
 
-ThemeVersion = "????????"
-CheckVersion = "????????"
-EngineVersion = "?.?.?"
+ThemeVersion = ThemeVersion or "????????"
+CheckVersion = CheckVersion or "????????"
+EngineVersion = EngineVersion or "?.?.?"
 
 local full = isOutFoxV() and "FullRes" or "Full"
-DefaultLuaModifiers = {}
-PaceMaker = {[PLAYER_1]={},[PLAYER_2]={}}
-WIFE3 = {[PLAYER_1]={},[PLAYER_2]={}}
-FAplus = {[PLAYER_1]={},[PLAYER_2]={}}
-IIDXClear = {[PLAYER_1]={},[PLAYER_2]={}}
+DefaultLuaModifiers = DefaultLuaModifiers or {}
+PaceMaker = PaceMaker or {[PLAYER_1]={},[PLAYER_2]={}}
+WIFE3 = WIFE3 or {[PLAYER_1]={},[PLAYER_2]={}}
+FAplus = FAplus or {[PLAYER_1]={},[PLAYER_2]={}}
+IIDXClear = IIDXClear or {[PLAYER_1]={},[PLAYER_2]={}}
 local buffer = 24
-PackListHeader = {}
-PackList = {}
+PackListHeader = PackListHeader or {}
+PackList = PackList or {}
 
 function GetThemeVersion()
 	if not FILEMAN:DoesFileExist(THEME:GetCurrentThemeDirectory().."/version.txt") then return "????????" end

@@ -1,13 +1,13 @@
-GS = {}
-GSCaching = {}
-OFCaching = {}
-EXCaching = {}
-OFCache = {}
-GSCache = {}
-EXCache = {}
-RPGCache = {}
-ITLCache = {}
-preventedSLUpdate = false
+GS = GS or {}
+GSCaching = GSCaching or {}
+OFCaching = OFCaching or {}
+EXCaching = EXCaching or {}
+OFCache = OFCache or {}
+GSCache = GSCache or {}
+EXCache = EXCache or {}
+RPGCache = RPGCache or {}
+ITLCache = ITLCache or {}
+preventedSLUpdate = preventedSLUpdate or false
 
 function isCaching()
 	for GSH,check in pairs(GSCaching) do if check then return check end end

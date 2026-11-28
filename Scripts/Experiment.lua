@@ -3,12 +3,13 @@ local ProfileSlot = {
     [PLAYER_2] = "ProfileSlot_Player2"
 }
 
-local DATA = { [PLAYER_1] = {}, [PLAYER_2] = {} }
-local category = GAMESTATE:GetCurrentGame():GetName()
+local DATA = DATA or { [PLAYER_1] = {}, [PLAYER_2] = {} }
+local category = nil
 
 function SetCategory(new) category = new end
 
 function GetData(player)
+    category = isDouble() and StepsTypeDouble()[GetUserPrefN("StylePosition")] or StepsTypeSingle()[GetUserPrefN("StylePosition")] or category
     if DATA[player] and DATA[player][category] then
         if type(DATA[player][category]["LV"]) == "string" then DATA[player][category]["LV"] = tonumber(DATA[player][category]["LV"]) end
         if type(DATA[player][category]["EXP"]) == "string" then DATA[player][category]["EXP"] = tonumber(DATA[player][category]["EXP"]) end
@@ -39,6 +40,7 @@ end
 
 function UpdateData(player,data)
     if data then
+        category = isDouble() and StepsTypeDouble()[GetUserPrefN("StylePosition")] or StepsTypeSingle()[GetUserPrefN("StylePosition")] or category
         DATA[player][category] = data
         return true
     end

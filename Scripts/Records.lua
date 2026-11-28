@@ -109,7 +109,7 @@ function GetGradeNameFromGradeTier(tier)
 	return grades[tier]
 end
 
-XMLdata = {}
+XMLdata = XMLdata or {}
 
 function LoadXML(file)
 	if not FILEMAN:DoesFileExist(file) then return {} end
@@ -127,6 +127,7 @@ end
 
 function XML()
 	local files = FILEMAN:GetDirListing("/Save/LocalProfiles/")
+	XMLdata = {}
 	for dir in ivalues(files) do
 		local file = "/Save/LocalProfiles/"..dir.."/Etterna.xml"
 		local read = false

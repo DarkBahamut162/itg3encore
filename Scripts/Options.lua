@@ -398,8 +398,8 @@ function InitRotationOptions()
 	end
 end
 
-inSessionProfileSwitch = false
-selectedProfiles = {[PLAYER_1]=nil,[PLAYER_2]=nil}
+inSessionProfileSwitch = inSessionProfileSwitch or false
+selectedProfiles = selectedProfiles or {[PLAYER_1]=nil,[PLAYER_2]=nil}
 
 function switchProfiles()
 	if not inSessionProfileSwitch then
