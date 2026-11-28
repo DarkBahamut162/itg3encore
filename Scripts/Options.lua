@@ -317,6 +317,7 @@ end
 
 function TitleMenu()
 	local output = "01"
+	if isStepManiaY() then output = addToOutput(output,"OnlineSMY",",") end
 	if GameModeEnabled() then
 		if ThemePrefs.Get("AllowBattle") then output = addToOutput(output,"02",",") end
 		if ThemePrefs.Get("AllowMarathon") then output = addToOutput(output,"03",",") end
@@ -332,7 +333,11 @@ function TitleMenu()
 		if ThemePrefs.Get("AllowFitness") then output = addToOutput(output,"05",",") end
 		if ThemePrefs.Get("AllowEdit") then output = addToOutput(output,"07",",") end
 	end
-	if isITGmania() and NETWORK:IsUrlAllowed("https://stepmaniaonline.net/api/packs") then output = addToOutput(output,"99",",") end
+	if isStepManiaY() then
+		output = addToOutput(output,"DownloadSMY",",")
+	elseif isITGmania() and NETWORK:IsUrlAllowed("https://stepmaniaonline.net/api/packs") then
+		output = addToOutput(output,"DownloadITG",",")
+	end
 	output = addToOutput(output,"09,11",",")
 	return output
 end
@@ -1781,7 +1786,7 @@ function ScreenAfterPlayerOptions(part)
 		["Options4"] = "ScreenPlayerOptions4",
 		["Options5"] = "ScreenPlayerOptions5"
 	}
-	local engine = isOutFox() and "OutFox" or isStepMania() and "StepMania" or isITGmania() and "ITGmania" or isEtterna() and "Etterna" or isOpenDDR() and "DDR" or "Engine"
+	local engine = isStepManiaY() and "StepManiaY" or isOutFox() and "OutFox" or isStepMania() and "StepMania" or isITGmania() and "ITGmania" or isEtterna() and "Etterna" or isOpenDDR() and "DDR" or "Engine"
 	local names = {
 		["Gameplay"] = "Gameplay",
 		["SelectMusic"] = "SelectMusic",

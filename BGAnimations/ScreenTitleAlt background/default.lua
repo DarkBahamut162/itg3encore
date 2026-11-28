@@ -29,6 +29,16 @@ local function sortArray(array)
 	return output
 end
 
+local function adjust()
+	if isStepManiaY() then
+		return 26
+	elseif isITGmania() then
+		return 28
+	else
+		return 30
+	end
+end
+
 return Def.ActorFrame{
 	OnCommand=function(self)
 		if isOutFox(20200500) then
@@ -93,7 +103,7 @@ return Def.ActorFrame{
 	Def.ActorFrame{
 		Def.Sprite {
 			Texture = "_frame",
-			InitCommand=function(self) self:x(SCREEN_RIGHT+70*WideScreenDiff()):y(SCREEN_CENTER_Y+30+27*0*WideScreenDiff()):zoom(WideScreenDiff()):addy(IsHome() and -172.5 or 0) end,
+			InitCommand=function(self) self:x(SCREEN_RIGHT+70*WideScreenDiff()):y(SCREEN_CENTER_Y+adjust()+27*0*WideScreenDiff()):zoom(WideScreenDiff()):addy(IsHome() and -172.5 or 0) end,
 			OnCommand=function(self) self:shadowlength(3):horizalign(right):addx(200):sleep(0.9):decelerate(0.25):addx(-200):playcommand("Fade") end,
 			FadeCommand=function(self) self:glow(1,1,1,0):sleep(2):linear(0.3):glow(1,1,1,0.25):sleep(0.05):linear(0.5):glow(1,1,1,0):sleep(1):queuecommand("Fade") end,
 			ScreenChangedMessageCommand=function(self) self:stoptweening():playcommand("Init"):playcommand("On") end,
@@ -101,14 +111,14 @@ return Def.ActorFrame{
 		},
 		Def.BitmapText {
 			File = "stencil",
-			InitCommand=function(self) self:settext("ITG3 ADDONS"):shadowlength(1):x(SCREEN_RIGHT-5*WideScreenDiff()):y(SCREEN_CENTER_Y+30+27*0*WideScreenDiff()):addy(IsHome() and -172.5 or 0) end,
+			InitCommand=function(self) self:settext("ITG3 ADDONS"):shadowlength(1):x(SCREEN_RIGHT-5*WideScreenDiff()):y(SCREEN_CENTER_Y+adjust()+27*0*WideScreenDiff()):addy(IsHome() and -172.5 or 0) end,
 			OnCommand=function(self) self:horizalign(right):addx(200):sleep(0.9):decelerate(0.25):addx(-200):maxwidth(166):zoom(WideScreenDiff()) end,
 			ScreenChangedMessageCommand=function(self) self:stoptweening():playcommand("Init"):playcommand("On") end,
 			Condition=ITG3ADDONS
 		},
 		Def.Sprite {
 			Texture = "_frame",
-			InitCommand=function(self) self:x(SCREEN_RIGHT+70*WideScreenDiff()):y(SCREEN_CENTER_Y+30+27*1*WideScreenDiff()):zoom(WideScreenDiff()):addy(IsHome() and -172.5 or 0) end,
+			InitCommand=function(self) self:x(SCREEN_RIGHT+70*WideScreenDiff()):y(SCREEN_CENTER_Y+adjust()+27*1*WideScreenDiff()):zoom(WideScreenDiff()):addy(IsHome() and -172.5 or 0) end,
 			OnCommand=function(self) self:shadowlength(3):horizalign(right):addx(200):sleep(0.9):decelerate(0.25):addx(-200):playcommand("Fade") end,
 			FadeCommand=function(self) self:glow(1,1,1,0):sleep(2):linear(0.3):glow(1,1,1,0.25):sleep(0.05):linear(0.5):glow(1,1,1,0):sleep(1):queuecommand("Fade") end,
 			ScreenChangedMessageCommand=function(self) self:stoptweening():playcommand("Init"):playcommand("On") end,
@@ -116,14 +126,14 @@ return Def.ActorFrame{
 		},
 		Def.BitmapText {
 			File = "stencil",
-			InitCommand=function(self) self:settext("ITG3 UNLOCKS"):shadowlength(1):x(SCREEN_RIGHT-5*WideScreenDiff()):y(SCREEN_CENTER_Y+30+27*1*WideScreenDiff()):addy(IsHome() and -172.5 or 0) end,
+			InitCommand=function(self) self:settext("ITG3 UNLOCKS"):shadowlength(1):x(SCREEN_RIGHT-5*WideScreenDiff()):y(SCREEN_CENTER_Y+adjust()+27*1*WideScreenDiff()):addy(IsHome() and -172.5 or 0) end,
 			OnCommand=function(self) self:horizalign(right):addx(200):sleep(0.9):decelerate(0.25):addx(-200):maxwidth(166):zoom(WideScreenDiff()) end,
 			ScreenChangedMessageCommand=function(self) self:stoptweening():playcommand("Init"):playcommand("On") end,
 			Condition=ITG3UNLOCKS
 		},
 		Def.Sprite {
 			Texture = "_frame",
-			InitCommand=function(self) self:x(SCREEN_RIGHT+70*WideScreenDiff()):y(SCREEN_CENTER_Y+30+27*2*WideScreenDiff()):zoom(WideScreenDiff()):addy(IsHome() and -172.5 or 0) end,
+			InitCommand=function(self) self:x(SCREEN_RIGHT+70*WideScreenDiff()):y(SCREEN_CENTER_Y+adjust()+27*2*WideScreenDiff()):zoom(WideScreenDiff()):addy(IsHome() and -172.5 or 0) end,
 			OnCommand=function(self) self:shadowlength(3):horizalign(right):addx(200):sleep(0.9):decelerate(0.25):addx(-200):playcommand("Fade") end,
 			FadeCommand=function(self) self:glow(1,1,1,0):sleep(2):linear(0.3):glow(1,1,1,0.25):sleep(0.05):linear(0.5):glow(1,1,1,0):sleep(1):queuecommand("Fade") end,
 			ScreenChangedMessageCommand=function(self) self:stoptweening():playcommand("Init"):playcommand("On") end,
@@ -131,14 +141,14 @@ return Def.ActorFrame{
 		},
 		Def.BitmapText {
 			File = "stencil",
-			InitCommand=function(self) self:settext("REBIRTH"):shadowlength(1):x(SCREEN_RIGHT-5*WideScreenDiff()):y(SCREEN_CENTER_Y+30+27*2*WideScreenDiff()):addy(IsHome() and -172.5 or 0) end,
+			InitCommand=function(self) self:settext("REBIRTH"):shadowlength(1):x(SCREEN_RIGHT-5*WideScreenDiff()):y(SCREEN_CENTER_Y+adjust()+27*2*WideScreenDiff()):addy(IsHome() and -172.5 or 0) end,
 			OnCommand=function(self) self:horizalign(right):addx(200):sleep(0.9):decelerate(0.25):addx(-200):maxwidth(166):zoom(WideScreenDiff()) end,
 			ScreenChangedMessageCommand=function(self) self:stoptweening():playcommand("Init"):playcommand("On") end,
 			Condition=REBIRTH
 		},
 		Def.Sprite {
 			Texture = "_frame",
-			InitCommand=function(self) self:x(SCREEN_RIGHT+70*WideScreenDiff()):y(SCREEN_CENTER_Y+30+27*3*WideScreenDiff()):zoom(WideScreenDiff()):addy(IsHome() and -172.5 or 0) end,
+			InitCommand=function(self) self:x(SCREEN_RIGHT+70*WideScreenDiff()):y(SCREEN_CENTER_Y+adjust()+27*3*WideScreenDiff()):zoom(WideScreenDiff()):addy(IsHome() and -172.5 or 0) end,
 			OnCommand=function(self) self:shadowlength(3):horizalign(right):addx(200):sleep(0.9):decelerate(0.25):addx(-200):playcommand("Fade") end,
 			FadeCommand=function(self) self:glow(1,1,1,0):sleep(2):linear(0.3):glow(1,1,1,0.25):sleep(0.05):linear(0.5):glow(1,1,1,0):sleep(1):queuecommand("Fade") end,
 			ScreenChangedMessageCommand=function(self) self:stoptweening():playcommand("Init"):playcommand("On") end,
@@ -146,14 +156,14 @@ return Def.ActorFrame{
 		},
 		Def.BitmapText {
 			File = "stencil",
-			InitCommand=function(self) self:settext("REBIRTH +"):shadowlength(1):x(SCREEN_RIGHT-5*WideScreenDiff()):y(SCREEN_CENTER_Y+30+27*3*WideScreenDiff()):addy(IsHome() and -172.5 or 0) end,
+			InitCommand=function(self) self:settext("REBIRTH +"):shadowlength(1):x(SCREEN_RIGHT-5*WideScreenDiff()):y(SCREEN_CENTER_Y+adjust()+27*3*WideScreenDiff()):addy(IsHome() and -172.5 or 0) end,
 			OnCommand=function(self) self:horizalign(right):addx(200):sleep(0.9):decelerate(0.25):addx(-200):maxwidth(166):zoom(WideScreenDiff()) end,
 			ScreenChangedMessageCommand=function(self) self:stoptweening():playcommand("Init"):playcommand("On") end,
 			Condition=REBIRTHPLUS
 		},
 		Def.Sprite {
 			Texture = "_frame",
-			InitCommand=function(self) self:x(SCREEN_RIGHT+70*WideScreenDiff()):y(SCREEN_CENTER_Y+30+27*4*WideScreenDiff()):zoom(WideScreenDiff()):addy(IsHome() and -172.5 or 0) end,
+			InitCommand=function(self) self:x(SCREEN_RIGHT+70*WideScreenDiff()):y(SCREEN_CENTER_Y+adjust()+27*4*WideScreenDiff()):zoom(WideScreenDiff()):addy(IsHome() and -172.5 or 0) end,
 			OnCommand=function(self) self:shadowlength(3):horizalign(right):addx(200):sleep(0.9):decelerate(0.25):addx(-200):playcommand("Fade") end,
 			FadeCommand=function(self) self:glow(1,1,1,0):sleep(2):linear(0.3):glow(1,1,1,0.25):sleep(0.05):linear(0.5):glow(1,1,1,0):sleep(1):queuecommand("Fade") end,
 			ScreenChangedMessageCommand=function(self) self:stoptweening():playcommand("Init"):playcommand("On") end,
@@ -161,7 +171,7 @@ return Def.ActorFrame{
 		},
 		Def.BitmapText {
 			File = "stencil",
-			InitCommand=function(self) self:settext("REBIRTH 2"):shadowlength(1):x(SCREEN_RIGHT-5*WideScreenDiff()):y(SCREEN_CENTER_Y+30+27*4*WideScreenDiff()):addy(IsHome() and -172.5 or 0) end,
+			InitCommand=function(self) self:settext("REBIRTH 2"):shadowlength(1):x(SCREEN_RIGHT-5*WideScreenDiff()):y(SCREEN_CENTER_Y+adjust()+27*4*WideScreenDiff()):addy(IsHome() and -172.5 or 0) end,
 			OnCommand=function(self) self:horizalign(right):addx(200):sleep(0.9):decelerate(0.25):addx(-200):maxwidth(166):zoom(WideScreenDiff()) end,
 			ScreenChangedMessageCommand=function(self) self:stoptweening():playcommand("Init"):playcommand("On") end,
 			Condition=REBIRTHTWO
@@ -222,7 +232,7 @@ return Def.ActorFrame{
 		EngineVersionMessageCommand=function(self) self:playcommand("Refresh") end,
 		RefreshCommand=function(self)
 			if not isTopScreen("ScreenLogo") then
-				if isITGmania() and tobool(PREFSMAN:GetPreference("HttpEnabled")) and string.find(PREFSMAN:GetPreference("HttpAllowHosts"),"*.itgmania.com") then
+				if isITGmania() and not isStepManiaY() and tobool(PREFSMAN:GetPreference("HttpEnabled")) and string.find(PREFSMAN:GetPreference("HttpAllowHosts"),"*.itgmania.com") then
 					self:diffuse(Color("Green"))
 					local newest = split("%.",EngineVersion)
 					local current = split("%.",ProductVersion())
@@ -237,7 +247,7 @@ return Def.ActorFrame{
 						end
 					end
 				end
-				self:settext(ProductFamily() .. " " .. ProductVersion() .. (not isEtterna(20191216) and " (" .. VersionDate() .. ")" or ""))
+				self:settext((ProductBrand and ProductBrand() or ProductFamily()) .. " " .. ProductVersion() .. (not isEtterna(20191216) and " (" .. VersionDate() .. ")" or ""))
 			end
 		end
 	},
@@ -297,138 +307,143 @@ return Def.ActorFrame{
 		OnCommand=function(self) self:diffusealpha(0):sleep(0.5):linear(0.5):diffusealpha(1):playcommand("Refresh") end,
 		ScreenChangedMessageCommand=function(self) self:playcommand("Refresh") end,
 		RefreshCommand=function(self)
-			local songs = SONGMAN:GetAllSongs()
-			local songsSingle = 0
-			local songsDouble = 0
+			if not isTopScreen("ScreenLogo")then
+				local songs = SONGMAN:GetAllSongs()
+				local songsSingle = 0
+				local songsDouble = 0
 
-			local groupsSingle = ""
-			local groupsDouble = ""
-			local groupsSingleCount = 0
-			local groupsDoubleCount = 0
+				local groupsSingle = ""
+				local groupsDouble = ""
+				local groupsSingleCount = 0
+				local groupsDoubleCount = 0
 
-			local courses = SONGMAN:GetAllCourses(PREFSMAN:GetPreference("AutogenGroupCourses"))
-			local coursesMarathonSingle = 0
-			local coursesMarathonDouble = 0
-			local coursesSurvivalSingle = 0
-			local coursesSurvivalDouble = 0
+				local coursesMarathonSingle = 0
+				local coursesMarathonDouble = 0
+				local coursesSurvivalSingle = 0
+				local coursesSurvivalDouble = 0
 
-			if (StepsTypeSingle() or StepsTypeDouble()) and (IsGame("dance") or isOutFoxV() or not isOutFox()) then
-				local auto = nil
-				local style = IsAutoStyle()
-				local versus = false
-				local double = false
-				if style then
-					if IsGame("dance") and ThemePrefs.Get("AutoStyleDance") then
-						style = ThemePrefs.Get("AutoStyleDance")
-					elseif IsGame("groove") and ThemePrefs.Get("AutoStyleGroove") then
-						style = ThemePrefs.Get("AutoStyleGroove")
-					elseif IsGame("solo") and ThemePrefs.Get("AutoStyleSolo") then
-						style = ThemePrefs.Get("AutoStyleSolo")
-					elseif IsGame("pump") and ThemePrefs.Get("AutoStylePump") then
-						style = ThemePrefs.Get("AutoStylePump")
-					elseif IsGame("smx") and ThemePrefs.Get("AutoStyleSmx") then
-						style = ThemePrefs.Get("AutoStyleSmx")
-					elseif IsGame("be-mu") and ThemePrefs.Get("AutoStyleBeMu") then
-						style = ThemePrefs.Get("AutoStyleBeMu")
-					elseif IsGame("beat") and ThemePrefs.Get("AutoStyleBeat") then
-						style = ThemePrefs.Get("AutoStyleBeat")
-					elseif IsGame("po-mu") and ThemePrefs.Get("AutoStylePoMu") then
-						style = ThemePrefs.Get("AutoStylePoMu")
-					elseif IsGame("popn") and ThemePrefs.Get("AutoStylePopn") then
-						style = ThemePrefs.Get("AutoStylePopn")
-					elseif IsGame("rechno") and ThemePrefs.Get("AutoStyleTechno") then
-						style = ThemePrefs.Get("AutoStyleTechno")
-					end
-					for i,choice in ipairs(ChoiceSingle()) do if choice == style then auto = i end end
-					for i,choice in ipairs(ChoiceVersus()) do if choice == style then auto = i versus = true end end
-					for i,choice in ipairs(ChoiceDouble()) do if choice == style then auto = i double = true end end
-				end
-				local StepsTypeSingle = StepsTypeSingle()[auto or GetUserPrefN("StylePosition")]
-				local StepsTypeDouble = StepsTypeDouble()[auto or GetUserPrefN("StylePosition")]
-				if #songs > 0 then
-					for i=1,#songs do
-						if songs[i]:HasStepsType(StepsTypeSingle) then
-							if not string.find(groupsSingle,songs[i]:GetGroupName()),1,true then
-								groupsSingle = addToOutput(groupsSingle,songs[i]:GetGroupName(),"|")
-							end
-							songsSingle = songsSingle + 1
+				if (StepsTypeSingle() or StepsTypeDouble()) and (IsGame("dance") or isOutFoxV() or not isOutFox())then
+					local auto = nil
+					local style = IsAutoStyle()
+					local versus = false
+					local double = false
+					if style then
+						if IsGame("dance") and ThemePrefs.Get("AutoStyleDance") then
+							style = ThemePrefs.Get("AutoStyleDance")
+						elseif IsGame("groove") and ThemePrefs.Get("AutoStyleGroove") then
+							style = ThemePrefs.Get("AutoStyleGroove")
+						elseif IsGame("solo") and ThemePrefs.Get("AutoStyleSolo") then
+							style = ThemePrefs.Get("AutoStyleSolo")
+						elseif IsGame("pump") and ThemePrefs.Get("AutoStylePump") then
+							style = ThemePrefs.Get("AutoStylePump")
+						elseif IsGame("smx") and ThemePrefs.Get("AutoStyleSmx") then
+							style = ThemePrefs.Get("AutoStyleSmx")
+						elseif IsGame("be-mu") and ThemePrefs.Get("AutoStyleBeMu") then
+							style = ThemePrefs.Get("AutoStyleBeMu")
+						elseif IsGame("beat") and ThemePrefs.Get("AutoStyleBeat") then
+							style = ThemePrefs.Get("AutoStyleBeat")
+						elseif IsGame("po-mu") and ThemePrefs.Get("AutoStylePoMu") then
+							style = ThemePrefs.Get("AutoStylePoMu")
+						elseif IsGame("popn") and ThemePrefs.Get("AutoStylePopn") then
+							style = ThemePrefs.Get("AutoStylePopn")
+						elseif IsGame("rechno") and ThemePrefs.Get("AutoStyleTechno") then
+							style = ThemePrefs.Get("AutoStyleTechno")
 						end
-						if StepsTypeDouble then
-							if songs[i]:HasStepsType(StepsTypeDouble) then
-								if not string.find(groupsDouble,songs[i]:GetGroupName(),1,true) then
-									groupsDouble = addToOutput(groupsDouble,songs[i]:GetGroupName(),"|")
+						for i,choice in ipairs(ChoiceSingle()) do if choice == style then auto = i end end
+						for i,choice in ipairs(ChoiceVersus()) do if choice == style then auto = i versus = true end end
+						for i,choice in ipairs(ChoiceDouble()) do if choice == style then auto = i double = true end end
+					end
+					local StepsTypeSingle = StepsTypeSingle()[auto or GetUserPrefN("StylePosition")]
+					local StepsTypeDouble = StepsTypeDouble()[auto or GetUserPrefN("StylePosition")]
+					if #songs > 0 then
+						for i=1,#songs do
+							if songs[i]:HasStepsType(StepsTypeSingle) then
+								if not string.find(groupsSingle,songs[i]:GetGroupName(),1,true) then
+									groupsSingle = addToOutput(groupsSingle,songs[i]:GetGroupName(),"|")
 								end
-								songsDouble = songsDouble + 1
+								songsSingle = songsSingle + 1
+							end
+							if StepsTypeDouble then
+								if songs[i]:HasStepsType(StepsTypeDouble) then
+									if not string.find(groupsDouble,songs[i]:GetGroupName(),1,true) then
+										groupsDouble = addToOutput(groupsDouble,songs[i]:GetGroupName(),"|")
+									end
+									songsDouble = songsDouble + 1
+								end
 							end
 						end
 					end
-				end
-				if GAMESTATE:GetCoinMode() == 'CoinMode_Home' then
-					if isOutFox() and ((not isOutFoxV043() and (IsGame("po-mu") or IsGame("be-mu")))) and not isEtterna("0.55") then
-						if #courses > 0 then
-							for i=1,#courses do
-								if courses[i]:GetCourseType() == "CourseType_Nonstop" then
-									if courses[i]:IsPlayableIn(StepsTypeSingle) then coursesMarathonSingle = coursesMarathonSingle + 1 end
-									if StepsTypeDouble and songsDouble > 0 then
-										if courses[i]:IsPlayableIn(StepsTypeDouble) then coursesMarathonDouble = coursesMarathonDouble + 1 end
+					if GAMESTATE:GetCoinMode() == 'CoinMode_Home' then
+						if isOutFox() and ((not isOutFoxV043() and (IsGame("po-mu") or IsGame("be-mu")))) and not isEtterna("0.55") then
+							local courses = {}
+							if not isEtterna("0.55") then
+								courses = SONGMAN:GetAllCourses(PREFSMAN:GetPreference("AutogenGroupCourses"))
+							end
+							if #courses > 0 then
+								for i=1,#courses do
+									if courses[i]:GetCourseType() == "CourseType_Nonstop" then
+										if courses[i]:IsPlayableIn(StepsTypeSingle) then coursesMarathonSingle = coursesMarathonSingle + 1 end
+										if StepsTypeDouble and songsDouble > 0 then
+											if courses[i]:IsPlayableIn(StepsTypeDouble) then coursesMarathonDouble = coursesMarathonDouble + 1 end
+										end
+									end
+									if courses[i]:GetCourseType() == "CourseType_Oni" or courses[i]:GetCourseType() == "CourseType_Survival" then
+										if courses[i]:IsPlayableIn(StepsTypeSingle) then coursesSurvivalSingle = coursesSurvivalSingle + 1 end
+										if StepsTypeDouble and songsDouble > 0 then
+											if courses[i]:IsPlayableIn(StepsTypeDouble) then coursesSurvivalDouble = coursesSurvivalDouble + 1 end
+										end
 									end
 								end
-								if courses[i]:GetCourseType() == "CourseType_Oni" or courses[i]:GetCourseType() == "CourseType_Survival" then
-									if courses[i]:IsPlayableIn(StepsTypeSingle) then coursesSurvivalSingle = coursesSurvivalSingle + 1 end
-									if StepsTypeDouble and songsDouble > 0 then
-										if courses[i]:IsPlayableIn(StepsTypeDouble) then coursesSurvivalDouble = coursesSurvivalDouble + 1 end
-									end
-								end
 							end
 						end
 					end
-				end
 
-				groupsSingle = sortArray(groupsSingle)
-				groupsDouble = sortArray(groupsDouble)
-				groupsSingleCount = #groupsSingle
-				groupsDoubleCount = #groupsDouble
+					groupsSingle = sortArray(groupsSingle)
+					groupsDouble = sortArray(groupsDouble)
+					groupsSingleCount = #groupsSingle
+					groupsDoubleCount = #groupsDouble
 
-				local output = ""
-				if groupsSingleCount == groupsDoubleCount then
-					output = addToOutput(output,"Songs: "..songsSingle.." singles & "..songsDouble.." doubles in "..SONGMAN:GetNumSongGroups().." groups","\n")
-				else
-					output = addToOutput(output,"Songs: "..songsSingle.." singles ("..groupsSingleCount.." groups) & "..songsDouble.." doubles ("..groupsDoubleCount.." groups)","\n")
-				end
-
-				if GAMESTATE:GetCoinMode() == 'CoinMode_Home' then
-					if isOutFox() and ((not isOutFoxV043() and (IsGame("po-mu") or IsGame("be-mu")))) and not isEtterna("0.55") then
-						output = addToOutput(output,"Courses: ? marathons & ? survivals","\n")
+					local output = ""
+					if groupsSingleCount == groupsDoubleCount then
+						output = addToOutput(output,"Songs: "..songsSingle.." singles & "..songsDouble.." doubles in "..SONGMAN:GetNumSongGroups().." groups","\n")
 					else
-						local temp = "Courses:"
-						if coursesMarathonSingle == coursesMarathonDouble then
-							temp = addToOutput(temp,coursesMarathonSingle.." marathons"," ")
-						else
-							temp = addToOutput(temp,coursesMarathonSingle.."s/"..coursesMarathonDouble.."d marathons"," ")
-						end
-						if coursesSurvivalSingle == coursesSurvivalDouble then
-							temp = addToOutput(temp,coursesSurvivalSingle.." survivals"," & ")
-						else
-							temp = addToOutput(temp,coursesSurvivalSingle.."s/"..coursesSurvivalDouble.."d survivals"," & ")
-						end
-						output = addToOutput(output,temp,"\n")
+						output = addToOutput(output,"Songs: "..songsSingle.." singles ("..groupsSingleCount.." groups) & "..songsDouble.." doubles ("..groupsDoubleCount.." groups)","\n")
 					end
-				end
-				output = addToOutput(output,"Current Game Mode: "..GAMESTATE:GetCurrentGame():GetName(),"\n")
-				if isTopScreen('ScreenTitleAlt') and (IsAutoPlayMode(true) and IsAutoStyle()) then output = addToOutput(output,IsAutoPlayMode(),"\n") end
-				if isTopScreen('ScreenTitleAlt') and (IsAutoPlayMode(true) and IsAutoStyle()) or (isTopScreen('ScreenTitleMenuAlt') and IsAutoStyle()) then
-					output = addToOutput(output,"Auto Style: "..StyleName()[auto or GetUserPrefN("StylePosition")],"\n")
-					if versus then output = output.." (Versus)" elseif double then output = output.." (Double)" else output = output.." (Single)" end
-					if ThemePrefs.Get("AllowBattle") then output = addToOutput(output,"Auto Battle: "..string.gsub(" "..ThemePrefs.Get("AutoBattle"), "%W%l", string.upper):sub(2),"\n") end
+
+					if GAMESTATE:GetCoinMode() == 'CoinMode_Home' then
+						if isOutFox() and ((not isOutFoxV043() and (IsGame("po-mu") or IsGame("be-mu")))) and not isEtterna("0.55") then
+							output = addToOutput(output,"Courses: ? marathons & ? survivals","\n")
+						else
+							local temp = "Courses:"
+							if coursesMarathonSingle == coursesMarathonDouble then
+								temp = addToOutput(temp,coursesMarathonSingle.." marathons"," ")
+							else
+								temp = addToOutput(temp,coursesMarathonSingle.."s/"..coursesMarathonDouble.."d marathons"," ")
+							end
+							if coursesSurvivalSingle == coursesSurvivalDouble then
+								temp = addToOutput(temp,coursesSurvivalSingle.." survivals"," & ")
+							else
+								temp = addToOutput(temp,coursesSurvivalSingle.."s/"..coursesSurvivalDouble.."d survivals"," & ")
+							end
+							output = addToOutput(output,temp,"\n")
+						end
+					end
+					output = addToOutput(output,"Current Game Mode: "..GAMESTATE:GetCurrentGame():GetName(),"\n")
+					if isTopScreen('ScreenTitleAlt') and (IsAutoPlayMode(true) and IsAutoStyle()) then output = addToOutput(output,IsAutoPlayMode(),"\n") end
+					if isTopScreen('ScreenTitleAlt') and (IsAutoPlayMode(true) and IsAutoStyle()) or (isTopScreen('ScreenTitleMenuAlt') and IsAutoStyle()) then
+						output = addToOutput(output,"Auto Style: "..StyleName()[auto or GetUserPrefN("StylePosition")],"\n")
+						if versus then output = output.." (Versus)" elseif double then output = output.." (Double)" else output = output.." (Single)" end
+						if ThemePrefs.Get("AllowBattle") then output = addToOutput(output,"Auto Battle: "..string.gsub(" "..ThemePrefs.Get("AutoBattle"), "%W%l", string.upper):sub(2),"\n") end
+					else
+						output = addToOutput(output,"Current Style: "..StyleName()[GetUserPrefN("StylePosition")],"\n")
+					end
+					self:settext(output):vertspacing(-10)
 				else
-					output = addToOutput(output,"Current Style: "..StyleName()[GetUserPrefN("StylePosition")],"\n")
-				end
-				self:settext(output):vertspacing(-10)
-			else
-				if GameModeEnabled() then
-					self:settext("Information: The song/course counter currently only works in Dance Mode!\nSome other functionalities might also be broken!\nCurrent Game Mode: "..GAMESTATE:GetCurrentGame():GetName()):diffuse(Color.Yellow)
-				else
-					self:settext("WARNING: This Game Mode isn't supported here!\nErrors might occur!"):diffuse(Color.Red)
+					if GameModeEnabled() then
+						self:settext("Information: The song/course counter currently only works in Dance Mode!\nSome other functionalities might also be broken!\nCurrent Game Mode: "..GAMESTATE:GetCurrentGame():GetName()):diffuse(Color.Yellow)
+					else
+						self:settext("WARNING: This Game Mode isn't supported here!\nErrors might occur!"):diffuse(Color.Red)
+					end
 				end
 			end
 		end

@@ -351,7 +351,13 @@ function isDouble()
 	return nil
 end
 
+function isStepManiaY()
+	if type(StepManiaYSignInWanted) == "function" or type(StepManiaYQRCode) == "function" or type(StepManiaYShortUrl) == "function" then return true end
+	return false
+end
+
 function isITGmania(version)
+	if isStepManiaY() then return true end
 	if version then return ProductFamily() == "ITGmania" and VersionDateCheck(version) else return ProductFamily() == "ITGmania" end
 end
 

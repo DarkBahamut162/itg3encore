@@ -91,7 +91,7 @@ else
 end
 
 
-local showData = {
+local showData = showData or {
 	[PLAYER_1] = false,
 	[PLAYER_2] = false
 }
@@ -109,7 +109,19 @@ local function CreditsText(pn)
 			if PROFILEMAN:IsPersistentProfile(pn) then
 				local data = nil
 				if str == "" then str = "PLAYER "..(pn == PLAYER_1 and "1" or "2") end
-				if showData[pn] then data = GetData(pn) self:settext("LV"..data["LV"].." | EXP "..data["EXP"].."\n"..str):vertspacing(-8) else self:settext(str) end
+				if showData[pn] then
+					if isStepManiaY() then
+						local screen = SCREENMAN:GetTopScreen():GetName()
+						if string.find(screen:lower(),"evaluation") then
+							self:settext(str.."\n"):vertspacing(-8)
+							return
+						end
+					end
+					data = GetData(pn)
+					self:settext("LV"..data["LV"].." | EXP "..data["EXP"].."\n"..str):vertspacing(-8)
+				else
+					self:settext(str)
+				end
 			else
 				self:settext(str)
 			end
@@ -122,7 +134,7 @@ local function CreditsText(pn)
 		end,
 		DisablePlayerStatsMessageCommand=function(self,param)
 			if param.PLAYER and self:GetName() == "Credits"..pname(param.PLAYER) then
-				if showData[pn] and PROFILEMAN:IsPersistentProfile(pn) then showData[pn] = false end
+				if showData[pn] then showData[pn] = false end
 				self:queuecommand("UpdateText")
 			end
 		end,

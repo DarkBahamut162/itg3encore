@@ -1,5 +1,6 @@
 local selected
 local playerReady
+local signin = {[PLAYER_1]=false,[PLAYER_2]=false}
 
 if not isEtterna("0.55") and GAMESTATE:IsAnyHumanPlayerUsingMemoryCard() then
 	GAMESTATE:LoadProfiles()
@@ -100,8 +101,8 @@ function LoadPlayerStuff(Player)
 					["Left"..pname(Player).."MessageCommand"]=function(self) self:queuecommand("CheckAvatar") end,
 					["Right"..pname(Player).."MessageCommand"]=function(self) self:queuecommand("CheckAvatar") end,
 					CheckAvatarCommand=function(self)
-						local index = SCREENMAN:GetTopScreen():GetProfileIndex(Player)
-						if index > 0 then
+						local index = SCREENMAN:GetTopScreen():GetProfileIndex(Player) + (signin[Player] and 1 or 0)
+						if index > 0 and index <= PROFILEMAN:GetNumLocalProfiles() then
 							local id = PROFILEMAN:GetLocalProfileIDFromIndex(index-1)
 							local outfox = "/Save/LocalProfiles/"..id.."/OutFoxPrefs.ini"
 							local avatar = LoadModule("Config.Load.lua")("AvatarImage",outfox)
@@ -140,10 +141,10 @@ function LoadPlayerStuff(Player)
 				["Left"..pname(Player).."MessageCommand"]=function(self) self:queuecommand("Update") end,
 				["Right"..pname(Player).."MessageCommand"]=function(self) self:queuecommand("Update") end,
 				UpdateCommand=function(self)
-					local index = SCREENMAN:GetTopScreen():GetProfileIndex(Player)
+					local index = SCREENMAN:GetTopScreen():GetProfileIndex(Player) + (signin[Player] and 1 or 0)
 					local values = ""
 					local numbers = ""
-					if index > 0 then
+					if index > 0 and index <= PROFILEMAN:GetNumLocalProfiles() then
 						local profile = PROFILEMAN:GetLocalProfileFromIndex(index-1)
 						local num = profile:GetNumTotalSongsPlayed()
 						values = addToOutput(values,"Song"..(num==1 and "" or "s").." Played","\n")
@@ -223,13 +224,14 @@ function LoadPlayerStuff(Player)
 				["Left"..pname(Player).."MessageCommand"]=function(self) self:queuecommand("Update") end,
 				["Right"..pname(Player).."MessageCommand"]=function(self) self:queuecommand("Update") end,
 				UpdateCommand=function(self)
-					local index = SCREENMAN:GetTopScreen():GetProfileIndex(Player)
+					local index = SCREENMAN:GetTopScreen():GetProfileIndex(Player) + (signin[Player] and 1 or 0)
 					local output = ""
-					if index > 0 then
+					if index > 0 and index <= PROFILEMAN:GetNumLocalProfiles() then
 						local profile = PROFILEMAN:GetLocalProfileFromIndex(index-1)
 						local num = profile:GetTotalSessions()
 						output = addToOutput(output,num.." Session"..(num==1 and "" or "s").." Played","\n")
 						num = profile:GetTotalGameplaySeconds()
+						if profile:GetTotalSessions() == 0 and profile:GetTotalGameplaySeconds() > 0 then output = "? Sessions Played" end
 						output = addToOutput(output,TotalTime(num).." (Gameplay)","\n")
 						num = profile:GetTotalSessionSeconds()
 						output = addToOutput(output,TotalTime(num).." (Session)","\n")
@@ -263,9 +265,10 @@ function LoadPlayerStuff(Player)
 					for i=-1,PROFILEMAN:GetNumLocalProfiles() do
 						selection = addToOutput(selection,i == -1 and "×" or i == 0 and (memoryCheck and "·" or " ") or "•","")
 					end
+					if isStepManiaY() then selection = addToOutput(selection,"-","") end
 					self:settext(selection):ClearAttributes()
 
-					local index = SCREENMAN:GetTopScreen():GetProfileIndex(Player)
+					local index = SCREENMAN:GetTopScreen():GetProfileIndex(Player) + (signin[Player] and 1 or 0)
 					self:AddAttribute(index+1, {
 						Length = 1,
 						Diffuse = PlayerColor(Player)
@@ -277,6 +280,11 @@ function LoadPlayerStuff(Player)
 			File = "_r bold shadow 30px",
 			Name = 'SelectedProfileText',
 			InitCommand=function(self) self:y(0):maxwidth(200):shadowlength(1) end
+		},
+		Def.BitmapText {
+			File = "_r bold shadow 30px",
+			Name = 'SignedProfileText',
+			InitCommand=function(self) self:y(0):valign(0):maxwidth(200):shadowlength(1) end
 		}
 	}
 end
@@ -301,28 +309,45 @@ function UpdateInternal3(self,Player)
 	local pn = (Player == PLAYER_1) and 1 or 2
 	local frame = self:GetChild(string.format('P%uFrame',pn))
 	local seltext = frame:GetChild('SelectedProfileText')
+	local sigtext = frame:GetChild('SignedProfileText')
 	local joinframe = frame:GetChild('JoinFrame')
 	local bigframe = frame:GetChild('BigFrame')
 	local border = bigframe:GetChild('Border')
 	local frameBorder = border:GetChild('Frame')
+	sigtext:visible(false):valign(0.5)
 
 	if GAMESTATE:IsHumanPlayer(Player) then
 		frame:visible(true)
 		joinframe:visible(false)
 		bigframe:visible(true)
-		seltext:visible(true):y(0)
-		local ind = SCREENMAN:GetTopScreen():GetProfileIndex(Player)
+		seltext:visible(true):y(0):valign(0.5)
+		local ind = SCREENMAN:GetTopScreen():GetProfileIndex(Player) + (signin[Player] and 1 or 0)
 		if ind > 0 then
-			seltext:settext(PROFILEMAN:GetLocalProfileFromIndex(ind-1):GetDisplayName())
-			if ThemePrefs.Get("EnableGrooveStats") then
-				local id = PROFILEMAN:GetLocalProfileIDFromIndex(ind-1)
-				if id then
-					if GrooveStatsCheck("/Save/LocalProfiles/"..id.."/GrooveStats.ini") then
-						frameBorder:diffuse(color("#00FF00"))
+			if ind <= PROFILEMAN:GetNumLocalProfiles() then
+				seltext:settext(PROFILEMAN:GetLocalProfileFromIndex(ind-1):GetDisplayName())
+				if isStepManiaY() then
+					local signed = STEPMANIAY:GetProfiles()[ind]
+					if signed["State"] == "signed_in" then
+						frameBorder:diffuseleftedge(color("#00FFFF"))
+						frameBorder:diffuserightedge(color("#FF00FF"))
+						seltext:valign(1):maxheight(16):y(5)
+						sigtext:visible(true):settext("Signed as "..signed["DisplayName"]):valign(0):maxheight(10):y(5)
 					else
-						frameBorder:diffuse(color("#FF0000"))
+						frameBorder:diffuse(color("#FFFFFF"))
+					end
+				elseif ThemePrefs.Get("EnableGrooveStats") then
+					local id = PROFILEMAN:GetLocalProfileIDFromIndex(ind-1)
+					if id then
+						if GrooveStatsCheck("/Save/LocalProfiles/"..id.."/GrooveStats.ini") then
+							frameBorder:diffuse(color("#00FF00"))
+						else
+							frameBorder:diffuse(color("#FF0000"))
+						end
 					end
 				end
+			else
+				seltext:settext("[ SIGN IN ]")
+				frameBorder:diffuse(color("#FFFFFF"))
 			end
 		elseif ind == 0 then
 			local name = ""
@@ -378,9 +403,15 @@ local InputHandler =function(event)
 				local ind = SCREENMAN:GetTopScreen():GetProfileIndex(event.PlayerNumber)
 				local memoryCheck = not isEtterna("0.55") and MEMCARDMAN:GetCardState(event.PlayerNumber) ~= 'MemoryCardState_none' or false
 				if ind > (memoryCheck and 0 or 1) then
-					if SCREENMAN:GetTopScreen():SetProfileIndex(event.PlayerNumber,ind-1) then
+					if signin[event.PlayerNumber] then
+						signin[event.PlayerNumber] = false
 						MESSAGEMAN:Broadcast("DirectionButton")
 						MESSAGEMAN:Broadcast("Left"..pname(event.PlayerNumber))
+					else
+						if SCREENMAN:GetTopScreen():SetProfileIndex(event.PlayerNumber,ind-1) then
+							MESSAGEMAN:Broadcast("DirectionButton")
+							MESSAGEMAN:Broadcast("Left"..pname(event.PlayerNumber))
+						end
 					end
 				elseif ind == (memoryCheck and 0 or 1) then
 					if SCREENMAN:GetTopScreen():SetProfileIndex(event.PlayerNumber,-1) then
@@ -394,7 +425,13 @@ local InputHandler =function(event)
 				local ind = SCREENMAN:GetTopScreen():GetProfileIndex(event.PlayerNumber)
 				local memoryCheck = not isEtterna("0.55") and MEMCARDMAN:GetCardState(event.PlayerNumber) ~= 'MemoryCardState_none' or false
 				if ind >= 0 or memoryCheck then
-					if SCREENMAN:GetTopScreen():SetProfileIndex(event.PlayerNumber,ind+1) then
+					if ind+1 and ind+1 <= PROFILEMAN:GetNumLocalProfiles() then
+						if SCREENMAN:GetTopScreen():SetProfileIndex(event.PlayerNumber,ind+1) then
+							MESSAGEMAN:Broadcast("DirectionButton")
+							MESSAGEMAN:Broadcast("Right"..pname(event.PlayerNumber))
+						end
+					elseif isStepManiaY() and not signin[event.PlayerNumber] then
+						signin[event.PlayerNumber] = true
 						MESSAGEMAN:Broadcast("DirectionButton")
 						MESSAGEMAN:Broadcast("Right"..pname(event.PlayerNumber))
 					end
@@ -405,6 +442,11 @@ local InputHandler =function(event)
 					end
 				end
 			elseif event.GameButton == "Start" or event.GameButton == "Center" then
+				if signin[event.PlayerNumber] then
+					SCREENMAN:SystemMessage("Feature not implemented yet for this theme!\nContact StepManiaY Team for support!")
+					SOUND:PlayOnce( THEME:GetPathS( 'MemoryCardManager', "error" ) )
+					return
+				end
 				if not selected then
 					MESSAGEMAN:Broadcast("Selected"..pname(event.PlayerNumber))
 					selected = SCREENMAN:GetTopScreen():GetProfileIndex(event.PlayerNumber)
@@ -428,7 +470,7 @@ local InputHandler =function(event)
 							SCREENMAN:GetTopScreen():SetProfileIndex(pn,-2)
 							SCREENMAN:GetTopScreen():SetProfileIndex(pn,-1)
 							if inSessionProfileSwitch then
-								if ThemePrefs.Get("ExperimentalProfileLevel") then LoadData(pn) MESSAGEMAN:Broadcast("EnablePlayerStats",{PLAYER=pn}) else MESSAGEMAN:Broadcast("DisablePlayerStats",{PLAYER=pn}) end
+								if ThemePrefs.Get("ExperimentalProfileLevel") then LoadData(pn) else MESSAGEMAN:Broadcast("DisablePlayerStats",{PLAYER=pn}) end
 								if ThemePrefs.Get("EnableGrooveStats") then LoadGrooveStatsIni(pn) end
 								LoadFlare(pn)
 								WIFE3Load(pn)
@@ -463,6 +505,7 @@ local InputHandler =function(event)
 						selected = inSessionProfileSwitch and -1 or nil
 						ready[event.PlayerNumber] = false
 					end
+					signin[event.PlayerNumber] = false
 					MESSAGEMAN:Broadcast("BackButton")
 					SCREENMAN:GetTopScreen():SetProfileIndex(event.PlayerNumber,-2)
 				end
@@ -509,7 +552,7 @@ return Def.ActorFrame {
 		if inSessionProfileSwitch then
 			for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
 				selectedProfiles[pn] = SCREENMAN:GetTopScreen():GetProfileIndex(pn)
-				if ThemePrefs.Get("ExperimentalProfileLevel") then LoadData(pn) MESSAGEMAN:Broadcast("EnablePlayerStats",{PLAYER=pn}) else MESSAGEMAN:Broadcast("DisablePlayerStats",{PLAYER=pn}) end
+				if ThemePrefs.Get("ExperimentalProfileLevel") then LoadData(pn) else MESSAGEMAN:Broadcast("DisablePlayerStats",{PLAYER=pn}) end
 				if ThemePrefs.Get("EnableGrooveStats") then LoadGrooveStatsIni(pn) end
 				LoadFlare(pn)
 				WIFE3Load(pn)

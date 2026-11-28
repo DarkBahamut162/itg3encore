@@ -4,14 +4,15 @@ local versions = {
 	["ITGmania"]				= "itgmania",
 	["OpenDDR"]					= "openddr",
 	["OutFox"]					= "outfox",
-	["StepMania"]				= isLTEKStepMania() and "ltek" or tonumber(split("-",ProductVersion())[1]) == 5.3 and "oldfox" or "stepmania"
+	["StepMania"]				= isLTEKStepMania() and "ltek" or tonumber(split("-",ProductVersion())[1]) == 5.3 and "oldfox" or "stepmania",
+	["StepManiaY"]				= "smy"
 }
 
 return Def.ActorFrame{
 	loadfile(THEME:GetPathB("ScreenOITG","overlay/inthegroove"))()..{
 		InitCommand=function(self) self:CenterX():y(SCREEN_CENTER_Y-80):zoom(0.7*WideScreenDiff()) end
 	},
-	loadfile(THEME:GetPathB("ScreenOITG","overlay/"..versions[ProductFamily()]))()..{
+	loadfile(THEME:GetPathB("ScreenOITG","overlay/"..versions[ProductBrand and ProductBrand() or ProductFamily()]))()..{
 		InitCommand=function(self) self:x(SCREEN_LEFT+SCREEN_WIDTH/4):y(SCREEN_CENTER_Y+80):zoom(0.65*WideScreenDiff_(16/10)) end
 	},
 	loadfile(THEME:GetPathB("ScreenOITG","overlay/bxrx"))()..{

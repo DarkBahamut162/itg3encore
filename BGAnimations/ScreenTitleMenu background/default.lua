@@ -41,7 +41,8 @@ local versions = {
 	["ITGmania"]				= "itgmania",
 	["OpenDDR"]					= "openddr",
 	["OutFox"]					= "outfox",
-	["StepMania"]				= isLTEKStepMania() and "ltek" or tonumber(split("-",ProductVersion())[1]) == 5.3 and "oldfox" or "stepmania"
+	["StepMania"]				= isLTEKStepMania() and "ltek" or tonumber(split("-",ProductVersion())[1]) == 5.3 and "oldfox" or "stepmania",
+	["StepManiaY"]				= "smy"
 }
 
 local groups = SONGMAN:GetSongGroupNames()
@@ -126,6 +127,16 @@ local GrooveStats = isITGmania() and RequestResponseActor()..{
 		end
 	}
 }
+
+local function adjust()
+	if isStepManiaY() then
+		return 45
+	elseif isITGmania() then
+		return 50
+	else
+		return 60
+	end
+end
 
 return Def.ActorFrame{
 	OnCommand=function(self)
@@ -253,7 +264,7 @@ return Def.ActorFrame{
 	Def.ActorFrame{
 		Def.Sprite {
 			Texture = "../_overlay/addons",
-			InitCommand=function(self) self:x(SCREEN_RIGHT):y(SCREEN_CENTER_Y+60+27.5*0*WideScreenDiff()):zoom(0.65*WideScreenDiff()):addy((IsHome() and isScreenTitle()) and -200 or 0) end,
+			InitCommand=function(self) self:x(SCREEN_RIGHT):y(SCREEN_CENTER_Y+adjust()+27.5*0*WideScreenDiff()):zoom(0.65*WideScreenDiff()):addy((IsHome() and isScreenTitle()) and -200 or 0) end,
 			OnCommand=function(self) self:horizalign(right):addx(200):sleep(0.9):decelerate(0.25):addx(-200):playcommand("Fade") end,
 			FadeCommand=function(self) self:glow(1,1,1,0):sleep(2):linear(0.3):glow(1,1,1,0.25):sleep(0.05):glow(1,1,1,0):sleep(1):queuecommand("Fade") end,
 			ScreenChangedMessageCommand=function(self) self:stoptweening():playcommand("Init"):playcommand("On") end,
@@ -261,7 +272,7 @@ return Def.ActorFrame{
 		},
 		Def.Sprite {
 			Texture = "../_overlay/joinin",
-			InitCommand=function(self) self:x(SCREEN_RIGHT+20*WideScreenDiff()):y(SCREEN_CENTER_Y+60+27.5*0*WideScreenDiff()):zoom(0.475*WideScreenDiff()):addy((IsHome() and isScreenTitle()) and -200 or 0) end,
+			InitCommand=function(self) self:x(SCREEN_RIGHT+20*WideScreenDiff()):y(SCREEN_CENTER_Y+adjust()+27.5*0*WideScreenDiff()):zoom(0.475*WideScreenDiff()):addy((IsHome() and isScreenTitle()) and -200 or 0) end,
 			OnCommand=function(self) self:horizalign(right):addx(200):sleep(0.9):decelerate(0.25):addx(-200):playcommand("Fade") end,
 			FadeCommand=function(self) self:glow(1,1,1,0):sleep(2):linear(0.3):glow(1,1,1,0.25):sleep(0.05):glow(1,1,1,0):sleep(1):queuecommand("Fade") end,
 			ScreenChangedMessageCommand=function(self) self:stoptweening():playcommand("Init"):playcommand("On") end,
@@ -269,14 +280,14 @@ return Def.ActorFrame{
 		},
 		Def.BitmapText {
 			File = "_v profile",
-			InitCommand=function(self) self:settext("ITG3 ADDONS"):shadowlength(1):x(SCREEN_RIGHT-106*WideScreenDiff()):y(SCREEN_CENTER_Y+60+27.5*0*WideScreenDiff()):addy((IsHome() and isScreenTitle()) and -200 or 0) end,
+			InitCommand=function(self) self:settext("ITG3 ADDONS"):shadowlength(1):x(SCREEN_RIGHT-106*WideScreenDiff()):y(SCREEN_CENTER_Y+adjust()+27.5*0*WideScreenDiff()):addy((IsHome() and isScreenTitle()) and -200 or 0) end,
 			OnCommand=function(self) self:horizalign(left):addx(200):sleep(0.9):decelerate(0.25):addx(-200):zoom(0.7*WideScreenDiff()) end,
 			ScreenChangedMessageCommand=function(self) self:stoptweening():playcommand("Init"):playcommand("On") end,
 			Condition=ITG3ADDONS and not isFinal()
 		},
 		Def.Sprite {
 			Texture = "../_overlay/unlocks",
-			InitCommand=function(self) self:x(SCREEN_RIGHT):y(SCREEN_CENTER_Y+60+27.5*1*WideScreenDiff()):zoom(0.65*WideScreenDiff()):addy((IsHome() and isScreenTitle()) and -200 or 0) end,
+			InitCommand=function(self) self:x(SCREEN_RIGHT):y(SCREEN_CENTER_Y+adjust()+27.5*1*WideScreenDiff()):zoom(0.65*WideScreenDiff()):addy((IsHome() and isScreenTitle()) and -200 or 0) end,
 			OnCommand=function(self) self:horizalign(right):addx(200):sleep(0.9):decelerate(0.25):addx(-200):playcommand("Fade") end,
 			FadeCommand=function(self) self:glow(1,1,1,0):sleep(2):linear(0.3):glow(1,1,1,0.25):sleep(0.05):glow(1,1,1,0):sleep(1):queuecommand("Fade") end,
 			ScreenChangedMessageCommand=function(self) self:stoptweening():playcommand("Init"):playcommand("On") end,
@@ -284,7 +295,7 @@ return Def.ActorFrame{
 		},
 		Def.Sprite {
 			Texture = "../_overlay/joinin",
-			InitCommand=function(self) self:x(SCREEN_RIGHT+20*WideScreenDiff()):y(SCREEN_CENTER_Y+60+27.5*1*WideScreenDiff()):zoom(0.475*WideScreenDiff()):addy((IsHome() and isScreenTitle()) and -200 or 0) end,
+			InitCommand=function(self) self:x(SCREEN_RIGHT+20*WideScreenDiff()):y(SCREEN_CENTER_Y+adjust()+27.5*1*WideScreenDiff()):zoom(0.475*WideScreenDiff()):addy((IsHome() and isScreenTitle()) and -200 or 0) end,
 			OnCommand=function(self) self:horizalign(right):addx(200):sleep(0.9):decelerate(0.25):addx(-200):playcommand("Fade") end,
 			FadeCommand=function(self) self:glow(1,1,1,0):sleep(2):linear(0.3):glow(1,1,1,0.25):sleep(0.05):glow(1,1,1,0):sleep(1):queuecommand("Fade") end,
 			ScreenChangedMessageCommand=function(self) self:stoptweening():playcommand("Init"):playcommand("On") end,
@@ -292,14 +303,14 @@ return Def.ActorFrame{
 		},
 		Def.BitmapText {
 			File = "_v profile",
-			InitCommand=function(self) self:settext("ITG3 UNLOCKS"):shadowlength(1):x(SCREEN_RIGHT-106*WideScreenDiff()):y(SCREEN_CENTER_Y+60+27.5*1*WideScreenDiff()):addy((IsHome() and isScreenTitle()) and -200 or 0) end,
+			InitCommand=function(self) self:settext("ITG3 UNLOCKS"):shadowlength(1):x(SCREEN_RIGHT-106*WideScreenDiff()):y(SCREEN_CENTER_Y+adjust()+27.5*1*WideScreenDiff()):addy((IsHome() and isScreenTitle()) and -200 or 0) end,
 			OnCommand=function(self) self:horizalign(left):addx(200):sleep(0.9):decelerate(0.25):addx(-200):zoom(0.7*WideScreenDiff()) end,
 			ScreenChangedMessageCommand=function(self) self:stoptweening():playcommand("Init"):playcommand("On") end,
 			Condition=ITG3UNLOCKS and not isFinal()
 		},
 		Def.Sprite {
 			Texture = "../_overlay/rebirth1",
-			InitCommand=function(self) self:x(SCREEN_RIGHT):y(SCREEN_CENTER_Y+60+27.5*2*WideScreenDiff()):zoom(0.65*WideScreenDiff()):addy((IsHome() and isScreenTitle()) and -200 or 0) end,
+			InitCommand=function(self) self:x(SCREEN_RIGHT):y(SCREEN_CENTER_Y+adjust()+27.5*2*WideScreenDiff()):zoom(0.65*WideScreenDiff()):addy((IsHome() and isScreenTitle()) and -200 or 0) end,
 			OnCommand=function(self) self:horizalign(right):addx(200):sleep(0.9):decelerate(0.25):addx(-200):playcommand("Fade") end,
 			FadeCommand=function(self) self:glow(1,1,1,0):sleep(2):linear(0.3):glow(1,1,1,0.25):sleep(0.05):glow(1,1,1,0):sleep(1):queuecommand("Fade") end,
 			ScreenChangedMessageCommand=function(self) self:stoptweening():playcommand("Init"):playcommand("On") end,
@@ -307,7 +318,7 @@ return Def.ActorFrame{
 		},
 		Def.Sprite {
 			Texture = "../_overlay/joinin",
-			InitCommand=function(self) self:x(SCREEN_RIGHT+20*WideScreenDiff()):y(SCREEN_CENTER_Y+60+27.5*2*WideScreenDiff()):zoom(0.475*WideScreenDiff()):addy((IsHome() and isScreenTitle()) and -200 or 0) end,
+			InitCommand=function(self) self:x(SCREEN_RIGHT+20*WideScreenDiff()):y(SCREEN_CENTER_Y+adjust()+27.5*2*WideScreenDiff()):zoom(0.475*WideScreenDiff()):addy((IsHome() and isScreenTitle()) and -200 or 0) end,
 			OnCommand=function(self) self:horizalign(right):addx(200):sleep(0.9):decelerate(0.25):addx(-200):playcommand("Fade") end,
 			FadeCommand=function(self) self:glow(1,1,1,0):sleep(2):linear(0.3):glow(1,1,1,0.25):sleep(0.05):glow(1,1,1,0):sleep(1):queuecommand("Fade") end,
 			ScreenChangedMessageCommand=function(self) self:stoptweening():playcommand("Init"):playcommand("On") end,
@@ -315,14 +326,14 @@ return Def.ActorFrame{
 		},
 		Def.BitmapText {
 			File = "_v profile",
-			InitCommand=function(self) self:settext("REBIRTH"):shadowlength(1):x(SCREEN_RIGHT-106*WideScreenDiff()):y(SCREEN_CENTER_Y+60+27.5*2*WideScreenDiff()):addy((IsHome() and isScreenTitle()) and -200 or 0) end,
+			InitCommand=function(self) self:settext("REBIRTH"):shadowlength(1):x(SCREEN_RIGHT-106*WideScreenDiff()):y(SCREEN_CENTER_Y+adjust()+27.5*2*WideScreenDiff()):addy((IsHome() and isScreenTitle()) and -200 or 0) end,
 			OnCommand=function(self) self:horizalign(left):addx(200):sleep(0.9):decelerate(0.25):addx(-200):zoom(0.7*WideScreenDiff()) end,
 			ScreenChangedMessageCommand=function(self) self:stoptweening():playcommand("Init"):playcommand("On") end,
 			Condition=REBIRTH and not isFinal()
 		},
 		Def.Sprite {
 			Texture = "../_overlay/rebirth+",
-			InitCommand=function(self) self:x(SCREEN_RIGHT):y(SCREEN_CENTER_Y+60+27.5*3*WideScreenDiff()):zoom(0.65*WideScreenDiff()):addy((IsHome() and isScreenTitle()) and -200 or 0) end,
+			InitCommand=function(self) self:x(SCREEN_RIGHT):y(SCREEN_CENTER_Y+adjust()+27.5*3*WideScreenDiff()):zoom(0.65*WideScreenDiff()):addy((IsHome() and isScreenTitle()) and -200 or 0) end,
 			OnCommand=function(self) self:horizalign(right):addx(200):sleep(0.9):decelerate(0.25):addx(-200):playcommand("Fade") end,
 			FadeCommand=function(self) self:glow(1,1,1,0):sleep(2):linear(0.3):glow(1,1,1,0.25):sleep(0.05):glow(1,1,1,0):sleep(1):queuecommand("Fade") end,
 			ScreenChangedMessageCommand=function(self) self:stoptweening():playcommand("Init"):playcommand("On") end,
@@ -330,7 +341,7 @@ return Def.ActorFrame{
 		},
 		Def.Sprite {
 			Texture = "../_overlay/joinin",
-			InitCommand=function(self) self:x(SCREEN_RIGHT+20*WideScreenDiff()):y(SCREEN_CENTER_Y+60+27.5*3*WideScreenDiff()):zoom(0.475*WideScreenDiff()):addy((IsHome() and isScreenTitle()) and -200 or 0) end,
+			InitCommand=function(self) self:x(SCREEN_RIGHT+20*WideScreenDiff()):y(SCREEN_CENTER_Y+adjust()+27.5*3*WideScreenDiff()):zoom(0.475*WideScreenDiff()):addy((IsHome() and isScreenTitle()) and -200 or 0) end,
 			OnCommand=function(self) self:horizalign(right):addx(200):sleep(0.9):decelerate(0.25):addx(-200):playcommand("Fade") end,
 			FadeCommand=function(self) self:glow(1,1,1,0):sleep(2):linear(0.3):glow(1,1,1,0.25):sleep(0.05):glow(1,1,1,0):sleep(1):queuecommand("Fade") end,
 			ScreenChangedMessageCommand=function(self) self:stoptweening():playcommand("Init"):playcommand("On") end,
@@ -338,14 +349,14 @@ return Def.ActorFrame{
 		},
 		Def.BitmapText {
 			File = "_v profile",
-			InitCommand=function(self) self:settext("REBIRTH +"):shadowlength(1):x(SCREEN_RIGHT-106*WideScreenDiff()):y(SCREEN_CENTER_Y+60+27.5*3*WideScreenDiff()):addy((IsHome() and isScreenTitle()) and -200 or 0) end,
+			InitCommand=function(self) self:settext("REBIRTH +"):shadowlength(1):x(SCREEN_RIGHT-106*WideScreenDiff()):y(SCREEN_CENTER_Y+adjust()+27.5*3*WideScreenDiff()):addy((IsHome() and isScreenTitle()) and -200 or 0) end,
 			OnCommand=function(self) self:horizalign(left):addx(200):sleep(0.9):decelerate(0.25):addx(-200):zoom(0.7*WideScreenDiff()) end,
 			ScreenChangedMessageCommand=function(self) self:stoptweening():playcommand("Init"):playcommand("On") end,
 			Condition=REBIRTHPLUS and not isFinal()
 		},
 		Def.Sprite {
 			Texture = "../_overlay/rebirth2",
-			InitCommand=function(self) self:x(SCREEN_RIGHT):y(SCREEN_CENTER_Y+60+27.5*4*WideScreenDiff()):zoom(0.65*WideScreenDiff()):addy((IsHome() and isScreenTitle()) and -200 or 0) end,
+			InitCommand=function(self) self:x(SCREEN_RIGHT):y(SCREEN_CENTER_Y+adjust()+27.5*4*WideScreenDiff()):zoom(0.65*WideScreenDiff()):addy((IsHome() and isScreenTitle()) and -200 or 0) end,
 			OnCommand=function(self) self:horizalign(right):addx(200):sleep(0.9):decelerate(0.25):addx(-200):playcommand("Fade") end,
 			FadeCommand=function(self) self:glow(1,1,1,0):sleep(2):linear(0.3):glow(1,1,1,0.25):sleep(0.05):glow(1,1,1,0):sleep(1):queuecommand("Fade") end,
 			ScreenChangedMessageCommand=function(self) self:stoptweening():playcommand("Init"):playcommand("On") end,
@@ -353,7 +364,7 @@ return Def.ActorFrame{
 		},
 		Def.Sprite {
 			Texture = "../_overlay/joinin",
-			InitCommand=function(self) self:x(SCREEN_RIGHT+20*WideScreenDiff()):y(SCREEN_CENTER_Y+60+27.5*4*WideScreenDiff()):zoom(0.475*WideScreenDiff()):addy((IsHome() and isScreenTitle()) and -200 or 0) end,
+			InitCommand=function(self) self:x(SCREEN_RIGHT+20*WideScreenDiff()):y(SCREEN_CENTER_Y+adjust()+27.5*4*WideScreenDiff()):zoom(0.475*WideScreenDiff()):addy((IsHome() and isScreenTitle()) and -200 or 0) end,
 			OnCommand=function(self) self:horizalign(right):addx(200):sleep(0.9):decelerate(0.25):addx(-200):playcommand("Fade") end,
 			FadeCommand=function(self) self:glow(1,1,1,0):sleep(2):linear(0.3):glow(1,1,1,0.25):sleep(0.05):glow(1,1,1,0):sleep(1):queuecommand("Fade") end,
 			ScreenChangedMessageCommand=function(self) self:stoptweening():playcommand("Init"):playcommand("On") end,
@@ -361,7 +372,7 @@ return Def.ActorFrame{
 		},
 		Def.BitmapText {
 			File = "_v profile",
-			InitCommand=function(self) self:settext("REBIRTH 2"):shadowlength(1):x(SCREEN_RIGHT-106*WideScreenDiff()):y(SCREEN_CENTER_Y+60+27.5*4*WideScreenDiff()):addy((IsHome() and isScreenTitle()) and -200 or 0) end,
+			InitCommand=function(self) self:settext("REBIRTH 2"):shadowlength(1):x(SCREEN_RIGHT-106*WideScreenDiff()):y(SCREEN_CENTER_Y+adjust()+27.5*4*WideScreenDiff()):addy((IsHome() and isScreenTitle()) and -200 or 0) end,
 			OnCommand=function(self) self:horizalign(left):addx(200):sleep(0.9):decelerate(0.25):addx(-200):zoom(0.7*WideScreenDiff()) end,
 			ScreenChangedMessageCommand=function(self) self:stoptweening():playcommand("Init"):playcommand("On") end,
 			Condition=REBIRTHTWO and not isFinal()
@@ -436,7 +447,7 @@ return Def.ActorFrame{
 		OnCommand=function(self) self:sleep(0.5):linear(0.5):diffusealpha(1) end,
 		OffCommand=function(self) self:accelerate(0.5):addy(isFinal() and -500 or -100) end
 	},
-	loadfile(THEME:GetPathB("","_thanks/_"..versions[ProductFamily()]))()..{
+	loadfile(THEME:GetPathB("","_thanks/_"..versions[ProductBrand and ProductBrand() or ProductFamily()]))()..{
 		InitCommand=function(self) self:x(isFinal() and SCREEN_LEFT+105*WideScreenDiff() or SCREEN_LEFT+360*WideScreenDiff()):y(isFinal() and SCREEN_TOP+10*WideScreenDiff() or SCREEN_TOP+16*WideScreenDiff()):valign(1):zoom(WideScreenDiff()):diffusealpha(0) end,
 		OnCommand=function(self) self:sleep(0.5):linear(0.5):diffusealpha(1) end,
 		OffCommand=function(self) self:accelerate(0.5):addy(isFinal() and -500 or -100) end,
@@ -462,7 +473,20 @@ return Def.ActorFrame{
 		EngineVersionMessageCommand=function(self) self:playcommand("Refresh") end,
 		RefreshCommand=function(self)
 			if not isTopScreen("ScreenLogo") then
-				if isITGmania() and tobool(PREFSMAN:GetPreference("HttpEnabled")) and string.find(PREFSMAN:GetPreference("HttpAllowHosts"),"*.itgmania.com") then
+				if isStepManiaY() then
+					local date = STEPMANIAY:GetConfig()["update"]["latest"]
+					local currentVersion = ProductVersion()
+					local currentDate = VersionDate()
+					local latestVersion = date:sub(1,5)
+					local latestDate = "20"..date:sub(-10):sub(1,6)
+					if currentVersion == latestVersion and currentDate == latestDate then
+						self:diffuse(Color("Green"))
+					elseif currentVersion == latestVersion and currentDate ~= latestDate then
+						self:diffuse(Color("Yellow"))
+					else
+						self:diffuse(Color("Red"))
+					end
+				elseif isITGmania() and not isStepManiaY() and tobool(PREFSMAN:GetPreference("HttpEnabled")) and string.find(PREFSMAN:GetPreference("HttpAllowHosts"),"*.itgmania.com") then
 					self:diffuse(Color("Green"))
 					local newest = split("%.",EngineVersion)
 					local current = split("%.",ProductVersion())
@@ -477,7 +501,7 @@ return Def.ActorFrame{
 						end
 					end
 				end
-				self:settext(ProductFamily() .. " " .. ProductVersion() .. (not isEtterna(20191216) and " (" .. VersionDate() .. ")" or ""))
+				self:settext((ProductBrand and ProductBrand() or ProductFamily()) .. " " .. ProductVersion() .. (not isEtterna(20191216) and " (" .. VersionDate() .. ")" or ""))
 			end
 		end
 	},
@@ -549,10 +573,6 @@ return Def.ActorFrame{
 				local groupsSingleCount = 0
 				local groupsDoubleCount = 0
 
-				local courses = {}
-				if not isEtterna("0.55") then
-					courses = SONGMAN:GetAllCourses(PREFSMAN:GetPreference("AutogenGroupCourses"))
-				end
 				local coursesMarathonSingle = 0
 				local coursesMarathonDouble = 0
 				local coursesSurvivalSingle = 0
@@ -610,6 +630,10 @@ return Def.ActorFrame{
 						end
 					end
 					if isOutFox() and ((not isOutFoxV043() and (IsGame("po-mu") or IsGame("be-mu")))) and not isEtterna("0.55") then else
+						local courses = {}
+						if not isEtterna("0.55") then
+							courses = SONGMAN:GetAllCourses(PREFSMAN:GetPreference("AutogenGroupCourses"))
+						end
 						if #courses > 0 and false then
 							for i=1,#courses do
 								if courses[i]:GetCourseType() == "CourseType_Nonstop" then
@@ -679,22 +703,35 @@ return Def.ActorFrame{
 		end
 	},
 	Def.ActorFrame{
-		Condition=(ThemePrefs.Get("EnableGrooveStats") or isOutFoxOnline()),
+		Condition=(ThemePrefs.Get("EnableGrooveStats") or isOutFoxOnline() or isStepManiaY()),
 		Name="OnlineInfo",
 		OnCommand=function(self)
 			self:zoom(0.5):x(10)
+			if isStepManiaY() then self:queuecommand("SMY") end
 			if isFinal() then self:y(72) else self:y(self:GetParent():GetChild("GameInfo"):GetHeight()*0.6+(isFinal() and 50*WideScreenDiff() or 40*WideScreenDiff())+8) end
 			self:queuecommand("SendRequest"):diffusealpha(0):sleep(0.5):linear(0.5):diffusealpha(1)
 		end,
+		SMYCommand=function(self)
+			local online = STEPMANIAY and STEPMANIAY:IsOnline() or false
+			local status = self:GetChild("Status")
+			local stepmaniay = self:GetChild("StepManiaY")
+			if online then
+				status:diffuse(Color("Green")):settext("   StepManiaY")
+				stepmaniay:diffuse(Color("Green"))
+			else
+				status:diffuse(Color("Red")):settext("   StepManiaY")
+				stepmaniay:diffuse(Color("Red"))
+			end
+		end,
 		SendRequestCommand=function(self)
 			if isOutFoxOnline() then
-				local online = self:GetChild("Online")
+				local status = self:GetChild("Status")
 				local outfox = self:GetChild("OutFox")
 				if isOutFoxV042() and not isOutFoxV043() then
-					online:diffuse(Color("Yellow")):settext("   OutFox Online\nNo Score Submissions"):valign(0.2):halign(0)
+					status:diffuse(Color("Yellow")):settext("   OutFox Online\nNo Score Submissions"):valign(0.2):halign(0)
 					outfox:diffuse(Color("Yellow"))
 				else
-					online:diffuse(Color("Green")):settext("   OutFox Online")
+					status:diffuse(Color("Green")):settext("   OutFox Online")
 					outfox:diffuse(Color("Green"))
 				end
 			end	
@@ -704,42 +741,42 @@ return Def.ActorFrame{
 			if isOutFoxOnline() then
 				local online = params.Response ~= nil
 				local color = online and "Green" or "Red"
-				local online = self:GetChild("Online"):diffuse(Color(color)):settext("   OutFox Online"..(params.Reason and " "..params.Reason or ""))
-				local outfox = self:GetChild("OutFox"):diffuse(Color(color))
+				self:GetChild("Status"):diffuse(Color(color)):settext("   OutFox Online"..(params.Reason and " "..params.Reason or ""))
+				self:GetChild("OutFox"):diffuse(Color(color))
 			end
 		end,
 		OffCommand=function(self) self:accelerate(0.5):addy(isFinal() and -500 or -100) end,
 		GrooveStatsUpdateMessageCommand=function(self)
-			local online = self:GetChild("Online")
-			local logo = self:GetChild("Logo")
+			local status = self:GetChild("Status")
+			local groovestats = self:GetChild("GrooveStats")
 			local service1 = self:GetChild("Service1")
 			local service2 = self:GetChild("Service2")
 			local service3 = self:GetChild("Service3")
 			if GS and GS.IsConnected then
-				online:settext(GS.Launcher and "   GrooveStats (Launcher)" or "   GrooveStats")
+				status:settext(GS.Launcher and "   GrooveStats (Launcher)" or "   GrooveStats")
 				if GS.GetScores and GS.Leaderboard and GS.AutoSubmit then
-					online:diffuse(Color("Green"))
-					logo:diffuse(Color("Green"))
+					status:diffuse(Color("Green"))
+					groovestats:diffuse(Color("Green"))
 				elseif not GS.GetScores and not GS.Leaderboard and not GS.AutoSubmit then
-					online:diffuse(Color("Red"))
-					logo:diffuse(Color("Red"))
+					status:diffuse(Color("Red"))
+					groovestats:diffuse(Color("Red"))
 				else
-					online:diffuse(Color("Yellow"))
-					logo:diffuse(Color("Yellow"))
+					status:diffuse(Color("Yellow"))
+					groovestats:diffuse(Color("Yellow"))
 				end
 				if GS.GetScores then service1:diffuse(Color("Green")) else service1:diffuse(Color("Red")) end
 				if GS.Leaderboard then service2:diffuse(Color("Green")) else service2:diffuse(Color("Red")) end
 				if GS.AutoSubmit then service3:diffuse(Color("Green")) else service3:diffuse(Color("Red")) end
 			else
-				online:settext("   GrooveStats"):diffuse(Color("Red"))
-				logo:diffuse(Color("Red"))
+				status:settext("   GrooveStats"):diffuse(Color("Red"))
+				groovestats:diffuse(Color("Red"))
 				service1:diffuse(color("#ff000000"))
 				service2:diffuse(color("#ff000000"))
 				service3:diffuse(color("#ff000000"))
 			end
 		end,
 		Def.Sprite{
-			Name="Logo",
+			Name="GrooveStats",
 			Texture=THEME:GetPathG("GS","White"),
 			InitCommand=function(self) self:addx(10):diffuse(color("#ff000000")):setsize(32,32) end
 		},
@@ -748,9 +785,14 @@ return Def.ActorFrame{
 			Texture=THEME:GetPathG("OF","Online"),
 			InitCommand=function(self) self:addx(10):diffuse(color("#ff000000")):setsize(32,32) end
 		},
+		Def.Sprite{
+			Name="StepManiaY",
+			Texture=THEME:GetPathG("SMY","Online"),
+			InitCommand=function(self) self:addx(10):diffuse(color("#ff000000")):setsize(32,32) end
+		},
 		Def.BitmapText {
 			File = "Common Normal",
-			Name="Online",
+			Name="Status",
 			Text="   GrooveStats",
 			InitCommand=function(self) self:horizalign(left):diffuse(color("#ff000000")):shadowlength(2) end
 		},
