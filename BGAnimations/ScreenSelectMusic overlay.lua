@@ -537,7 +537,6 @@ local Leaderboard = isOutFoxOnline() and Def.ActorFrame{
 						Rate = GAMESTATE:GetSongOptionsObject("ModsLevel_Preferred"):MusicRate(),
 						PlayerNumber = pn,
 						OnResponse = function(data)
-							local DATA = data.response.scores
 							local newDATA = {}
 							for i,score in ipairs(data.response.scores) do
 								if i > 10 then break end
@@ -556,7 +555,6 @@ local Leaderboard = isOutFoxOnline() and Def.ActorFrame{
 						end,
 						OnFail = function(data)
 							SCREENMAN:SystemMessage("FuncHighScoresForChart Failed!")
-							--lua.ReportScriptError(rin_inspect(data))
 						end
 					}
 				end
@@ -614,7 +612,6 @@ local Leaderboard = isOutFoxOnline() and Def.ActorFrame{
 						Rate = GAMESTATE:GetSongOptionsObject("ModsLevel_Preferred"):MusicRate(),
 						PlayerNumber = pn,
 						OnResponse = function(data)
-							local DATA = data.response.scores
 							local newDATA = {}
 							for i,score in ipairs(data.response.scores) do
 								if i > 10 then break end
@@ -633,7 +630,6 @@ local Leaderboard = isOutFoxOnline() and Def.ActorFrame{
 						end,
 						OnFail = function(data)
 							SCREENMAN:SystemMessage("FuncHighScoresForChart Failed!")
-							--lua.ReportScriptError(rin_inspect(data))
 						end
 					}
 				end

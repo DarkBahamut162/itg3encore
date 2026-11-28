@@ -147,8 +147,6 @@ return Def.ActorFrame{
 						self:GetChild("Slots"):GetChild("Slot"..i):diffuse(playerColor):AddAttribute(pair.FIRST,{Length=pair.LAST,Diffuse=pair.COLOR})
 					end
 					self:GetChild("Slots"):GetChild("Position"..i):settext(i..".")
-				else
-					--lua.ReportScriptError(rin_inspect(player))
 				end
 			end
 		end,
