@@ -88,11 +88,11 @@ local function modifiedBPM(speed,mode)
 		modifiedBPM[3] = currentBPM[3] * mult
 	end
 
-	modifiedBPM[1] = math.round(modifiedBPM[1],3)
-	modifiedBPM[2] = math.round(modifiedBPM[2],3)
-	modifiedBPM[3] = math.round(modifiedBPM[3],3)
+	modifiedBPM[1] = math.round(modifiedBPM[1])
+	modifiedBPM[2] = math.round(modifiedBPM[2])
+	modifiedBPM[3] = math.round(modifiedBPM[3])
 
-	if modifiedBPM[3] == 0.0 then
+	if modifiedBPM[3] == 0 then
 		if modifiedBPM[2] and modifiedBPM[1] ~= modifiedBPM[2] then
 			return modifiedBPM[1].."-"..modifiedBPM[2]
 		else
